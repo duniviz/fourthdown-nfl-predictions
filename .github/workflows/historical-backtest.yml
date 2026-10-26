@@ -31,6 +31,8 @@ jobs:
         run: python -m backtest.compare | tee model-comparison.json
       - name: Validate v2 against benchmarks and future-data perturbation
         run: python -m backtest.validate | tee model-validation.json
+      - name: Run comprehensive v3 Elo and calibration evaluation
+        run: python -m backtest.v3 | tee model-v3-comparison.json
       - name: Upload backtest results
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,4 +42,5 @@ jobs:
             historical-results.json
             model-comparison.json
             model-validation.json
+            model-v3-comparison.json
           if-no-files-found: ignore
