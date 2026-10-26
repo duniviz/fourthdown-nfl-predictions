@@ -68,7 +68,7 @@ def main():
             ok+=1
         except Exception as e:
             data["teams"][ALIASES.get(team,team)]={"status":"unavailable","players":[]}
-    if not ok: raise RuntimeError("All injury feeds unavailable: do not overwrite prior data")
+    if not ok:\n        print("WARNING: No current injury feeds available; publishing explicit unavailable statuses.")
     Path("data").mkdir(exist_ok=True)
     Path("data/injuries.json").write_text(json.dumps(data,indent=2)+"\n",encoding="utf-8")
     print(f"Fetched {ok}/{len(TEAMS)} team injury reports")
