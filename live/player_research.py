@@ -95,8 +95,8 @@ def generate():
         if key not in seen:
             old.append(item)
             seen.add(key)
-    archive_path.write_text(json.dumps({"players":old},indent=2)+"\\n",encoding="utf-8")
-    p.write_text(json.dumps(out,indent=2)+"\\n",encoding="utf-8")
+    archive_path.write_text(json.dumps({"players":old},indent=2)+"\n",encoding="utf-8")
+    p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
     print(f"Published {len(results)} player baselines for week {week}")
 
 if __name__=="__main__": generate()
