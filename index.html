@@ -284,10 +284,11 @@ renderParlays();
    const available=actual!==null&&Number.isFinite(expected);
    if(available)graded++;
    const delta=available?actual-expected:null;
-   const outcome=!available?'Not graded':Math.abs(delta)<=0.5?'On target':delta>0?'Above projection':'Below projection';
+   const tolerance=Math.max(5,expected*0.10);
+   const outcome=!available?'Not graded':Math.abs(delta)<=tolerance?'HIT':'MISS';
    return '<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.market)+'</strong><span>Projected '+esc(expected.toFixed(1))+' · Actual '+(available?esc(actual):'Unavailable')+' · '+esc(outcome)+(available?' ('+(delta>=0?'+':'')+delta.toFixed(1)+' yds)':'')+'</span></div>';
   }).join('');
-  return '<p>'+graded+' of '+rows.length+' projections matched to official final-game box-score values. Above/below refers to our projection, not a sportsbook bet result.</p>'+cards;
+  return '<p>'+graded+' of '+rows.length+' projections matched to official final-game box-score values. HIT means actual yards within 10% of our projection (minimum 5 yards); MISS means outside that range. This is forecast accuracy, not a sportsbook bet result.</p>'+cards;
  }
  async function loadCompletedPlayerResults(el){
   const body=el.querySelector('.fd-props-body'),id=el.dataset.gameId;
