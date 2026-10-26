@@ -170,6 +170,7 @@ renderParlays();
  let activeFilter='all';
  const weatherCache=new Map();
  const recapCache=new Map();
+ let playerResearch=[];
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -199,9 +200,10 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
-  try{const h=await fetch('/data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
+  try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
+  try{const h=await fetch('data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
   try{
-   const response=await fetch('/data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
+   const response=await fetch('data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
    if(!response.ok)throw Error('No forecast');
    const d=await response.json();
    const stamp=new Date(d.generated_at_utc);
@@ -257,6 +259,13 @@ renderParlays();
   const playerSection=leaders.length?'<h4>Player leaders</h4>'+leaders.map(x=>'<div class="fd-recap-play">'+esc(x.team)+' · '+esc(x.name)+' · '+esc(x.category)+': '+esc(x.value)+'</div>').join(''):'';
   const scoringSection=scoring.length?'<h4>Scoring highlights</h4>'+scoring.map(x=>'<div class="fd-recap-play">'+esc(x.clock?.displayValue||'')+' '+esc(x.team?.abbreviation||'')+' · '+esc(x.text||x.type?.text||'Scoring play')+'</div>').join(''):'';
   return overview+stats+playerSection+scoringSection+'<p class="fd-recap-source">Based on ESPN final-game box score and scoring plays. This is a statistical recap, not a generated play-by-play narrative.</p>';
+ }
+ function propPanel(g){
+  if(g.state==='post')return '';
+  const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
+  if(!matches.length)return '';
+  const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,5);
+  return '<details class="fd-props"><summary>Player yardage projections · '+best.length+' players</summary><div class="fd-props-body"><p>Research baselines only. Not ranked bets: no verified DraftKings lines, odds, injuries, or calibrated probabilities.</p>'+best.map(x=>'<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.team)+' · '+esc(x.market)+'</strong><span>Projected '+esc(x.projection)+' · Last 3 avg '+esc(x.last_3_avg)+' · Last 5 avg '+esc(x.last_5_avg)+' · '+esc(x.games_used)+' prior games</span><span>Last five: '+esc((x.last_5||[]).join(', '))+'</span><span>Why: recent '+esc(x.market.toLowerCase())+' production; weighted 55% last 3 and 45% last 5. Opponent-specific and injury adjustments not yet validated.</span></div>').join('')+'</div></details>';
  }
  function renderPropResearch(raw,isFinal){
   const players=(raw.boxscore?.players||[]);
@@ -354,7 +363,7 @@ renderParlays();
      const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
-     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+(isFinal?'<details class="fd-props" data-game-id="'+esc(g.id)+'" data-final="true"><summary>Player stats & prop review</summary><div class="fd-props-body">Tap to load player stats.</div></details>':'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
+     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+propPanel(g)+(isFinal?'<details class="fd-props" data-game-id="'+esc(g.id)+'" data-final="true"><summary>Player stats & prop review</summary><div class="fd-props-body">Tap to load player stats.</div></details>':'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join(''):'<div class="score-placeholder">No games match this filter.</div>';
    // Weather is fetched only if a user expands a specific matchup.
    
