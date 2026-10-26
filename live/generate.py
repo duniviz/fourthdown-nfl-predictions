@@ -4,6 +4,7 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 from collections import defaultdict
+from live.injury_adjust import estimate
 
 def number(x):
     try:
@@ -12,7 +13,7 @@ def number(x):
     except (ValueError, TypeError):
         return None
 
-def forecast(schedules, team_games, now=None):
+def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None: raise ValueError("now must be timezone-aware")
     season=now.year if now.month>=3 else now.year-1
@@ -99,6 +100,8 @@ def forecast(schedules, team_games, now=None):
     offense_rank={t:i+1 for i,t in enumerate(offensive_order)}
     defense_rank={t:i+1 for i,t in enumerate(defensive_order)}
     results=[]
+    injury_reports=injury_reports or {}
+    player_weekly=player_weekly or []
     for dt,g in target_games:
         ho,hd,hn=rating(g["home_team"])
         ao,ad,an=rating(g["away_team"])
@@ -108,6 +111,17 @@ def forecast(schedules, team_games, now=None):
         total=max(1.0,44+45*(home_epa+away_epa))
         home_points=max(0,(total+margin)/2)
         away_points=max(0,(total-margin)/2)
+        adjustments={}
+        for team in (g["home_team"],g["away_team"]):
+            report=injury_reports.get(team,{})
+            if report.get("status")!="retrieved":
+                adjustments[team]={"points":0.0,"status":"injury_feed_unavailable","players":[]}
+            else:
+                adjustments[team]=estimate(team,report.get("players",[]),player_weekly,games,target_week)
+        home_points=max(0,home_points+adjustments[g["home_team"]]["points"])
+        away_points=max(0,away_points+adjustments[g["away_team"]]["points"])
+        margin=home_points-away_points
+        total=home_points+away_points
         results.append({"game_id":str(g["game_id"]),"season":season,"week":target_week,
             "kickoff_utc":dt.astimezone(timezone.utc).isoformat(),
             "home":g["home_team"],"away":g["away_team"],
@@ -115,6 +129,7 @@ def forecast(schedules, team_games, now=None):
             "projected_away_score":round(away_points,1),
             "projected_margin_home":round(margin,2),"projected_total":round(total,2),
             "predicted_winner":g["home_team"] if margin>0 else g["away_team"],
+            "injury_adjustments":adjustments,
             "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"offense_rank":offense_rank.get(g["home_team"]),"defense_rank":defense_rank.get(g["home_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["home_team"])},
                         "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
                         "estimated_home_advantage_points":1.5,
@@ -123,7 +138,7 @@ def forecast(schedules, team_games, now=None):
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
     return {"model":"FOURTHDOWN v2","generated_at_utc":now.isoformat(),
             "season":season,"week":target_week,"status":"research_uncalibrated",
-            "note":"Pregame EPA-only projections; no injuries, QB updates, live odds or calibrated win probabilities.",
+            "note":"Pregame EPA projections with experimental QB injury splits when data supports them; other injuries and weather not numerically adjusted.",
             "games":results}
 
 def main():
@@ -142,7 +157,18 @@ def main():
     offense=base.group_by(["season","week","game_id","posteam"]).agg(pl.col("epa").mean().alias("offense_epa")).rename({"posteam":"team"})
     defense=base.group_by(["season","week","game_id","defteam"]).agg(pl.col("epa").mean().alias("defense_epa")).rename({"defteam":"team"})
     epa=offense.join(defense,on=["season","week","game_id","team"],how="inner").to_dicts()
-    data=forecast(schedules,epa,now)
+    injury_reports={}
+    injury_path=Path("data/injuries.json")
+    if injury_path.exists():
+        try:
+            feed=json.loads(injury_path.read_text(encoding="utf-8"))
+            age=(now-datetime.fromisoformat(feed["generated_at_utc"].replace("Z","+00:00"))).total_seconds()/3600
+            if 0<=age<=24:
+                injury_reports=feed.get("teams",{})
+        except (ValueError,KeyError,TypeError):
+            pass
+    weekly=nfl.load_player_stats([season],summary_level="week").to_dicts() if injury_reports else []
+    data=forecast(schedules,epa,now,injury_reports,weekly)
     dest=Path("data/live-v2.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
     # Keep immutable first-published predictions for transparent future grading.
