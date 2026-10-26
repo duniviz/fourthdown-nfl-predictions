@@ -90,6 +90,13 @@ def forecast(schedules, team_games, now=None):
                 "avg_points_for":round(sum(pf for _,pf,pa in recent)/len(recent),1),
                 "avg_points_against":round(sum(pa for _,pf,pa in recent)/len(recent),1),
                 "avg_margin":round(sum(pf-pa for _,pf,pa in recent)/len(recent),1)}
+    # Rank all clubs with enough prior observations; lower defensive EPA is better.
+    eligible={t:rating(t) for t in set(form)|set(histories)}
+    eligible={t:v for t,v in eligible.items() if v[2]>=3}
+    offensive_order=sorted(eligible,key=lambda t:eligible[t][0],reverse=True)
+    defensive_order=sorted(eligible,key=lambda t:eligible[t][1])
+    offense_rank={t:i+1 for i,t in enumerate(offensive_order)}
+    defense_rank={t:i+1 for i,t in enumerate(defensive_order)}
     results=[]
     for dt,g in target_games:
         ho,hd,hn=rating(g["home_team"])
@@ -107,8 +114,8 @@ def forecast(schedules, team_games, now=None):
             "projected_away_score":round(away_points,1),
             "projected_margin_home":round(margin,2),"projected_total":round(total,2),
             "predicted_winner":g["home_team"] if margin>0 else g["away_team"],
-            "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"recent_form":team_form(g["home_team"])},
-                        "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"recent_form":team_form(g["away_team"])},
+            "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"offense_rank":offense_rank.get(g["home_team"]),"defense_rank":defense_rank.get(g["home_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["home_team"])},
+                        "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
                         "estimated_home_advantage_points":1.5,
                         "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last three completed prior games."}})
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
