@@ -250,6 +250,26 @@ renderParlays();
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
+  // Join public DraftKings odds snapshot to research rows by player + full-game market.
+  // A missing quote remains missing; never invent a line or betting edge.
+  try{
+   const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});
+   if(r.ok){
+    const data=await r.json();
+    const keys={'Passing yards':'player_pass_yds','Rushing yards':'player_rush_yds','Receiving yards':'player_rec_yds'};
+    const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const byKey=new Map();
+    for(const x of (data.rows||[])){
+     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line)))continue;
+     const key=norm(x.player)+'|'+x.market_key;
+     if(!byKey.has(key))byKey.set(key,x);
+    }
+    for(const x of playerResearch){
+     const q=byKey.get(norm(x.player)+'|'+keys[x.market]);
+     if(q){x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';}
+    }
+   }
+  }catch(e){}
   try{const h=await fetch('data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
   try{
    const response=await fetch('data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
