@@ -286,6 +286,7 @@ renderParlays();
  }
 
  const hybridAvatar=x=>{const id=String(x.athlete_id||x.espn_athlete_id||'');const initials=String(x.player||'').split(/\\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase();return '<div class="hybrid-avatar">'+(/^[0-9]{3,12}$/.test(id)?'<img loading="lazy" alt="" src="https://a.espncdn.com/i/headshots/nfl/players/full/'+id+'.png" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>'+esc(initials)+'</span>':'<span>'+esc(initials)+'</span>')+'</div>';};
+ const hybridBars=x=>{const p=Number(x.projection),l=Number(x.dk_line);if(x.projection==null||x.projection===''||x.dk_line==null||x.dk_line===''||!Number.isFinite(p)||!Number.isFinite(l))return '';const max=Math.max(1,p,l)*1.08;return '<div class="hybrid-bars"><div class="hybrid-label"><span>DraftKings</span><b>'+esc(x.dk_line)+'</b></div><div class="hybrid-track"><span style="width:'+Math.max(0,Math.min(100,l/max*100))+'%"></span></div><div class="hybrid-label"><span>Model</span><b>'+esc(x.projection)+'</b></div><div class="hybrid-track model"><span style="width:'+Math.max(0,Math.min(100,p/max*100))+'%"></span></div></div>';};
 function fdOpenMatchup(g){
  const p=getProjection(g),away=canon(g.away.abbr),home=canon(g.home.abbr);
  const num=v=>v===null||v===undefined||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1);
@@ -296,7 +297,7 @@ function fdOpenMatchup(g){
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No verified injury adjustment in this published forecast';
  const injury='<div class="fd-modal-section"><h3>Injuries and model impact</h3><div class="fd-modal-grid">'+[away,home].map(t=>{const feed=injuryData?.teams?.[t];const rows=feed?.status==='retrieved'?(feed.players||[]):null;return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(rows===null?'<p>Report unavailable</p>':rows.length?rows.slice(0,12).map(x=>'<p>'+esc(x.player)+' · '+esc(x.status||'Unknown')+'</p>').join(''):'<p>No listed injuries; availability unconfirmed</p>')+'</div>'}).join('')+'</div><p class="fd-modal-muted">'+impact+'</p></div>';
  const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)).slice(0,12);
- const hybridBars=x=>{const p=Number(x.projection),l=Number(x.dk_line);if(x.projection==null||x.projection===''||x.dk_line==null||x.dk_line===''||!Number.isFinite(p)||!Number.isFinite(l))return '';const max=Math.max(1,p,l)*1.08;return '<div class="hybrid-bars"><div class="hybrid-label"><span>DraftKings</span><b>'+esc(x.dk_line)+'</b></div><div class="hybrid-track"><span style="width:'+Math.max(0,Math.min(100,l/max*100))+'%"></span></div><div class="hybrid-label"><span>Model</span><b>'+esc(x.projection)+'</b></div><div class="hybrid-track model"><span style="width:'+Math.max(0,Math.min(100,p/max*100))+'%"></span></div></div>';};
+
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const propOrder=['Passing','Rushing','Receiving','Other'];
  const propCards=propOrder.map(group=>{
