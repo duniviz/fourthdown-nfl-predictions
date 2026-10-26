@@ -301,9 +301,21 @@ renderParlays();
   }).join('');
   return '<details class="fd-injuries"><summary>Injury report · Both teams <span class="fd-injury-caution">Not included in score model</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'</div></details>';
  }
+ function unavailablePlayer(x){
+  // Do not show historical averages as a game projection for a known absentee.
+  // ESPN statuses can vary in wording; uncertain/questionable is NOT treated as out.
+  const rows=injuryData?.teams?.[canon(x.team)]?.players||[];
+  const name=String(x.player||'').trim().toLowerCase();
+  const match=rows.find(r=>String(r.player||'').trim().toLowerCase()===name);
+  const status=String(match?.status||'').toLowerCase();
+  if(/\\b(out|inactive|injured reserve|ir|suspended|pup|physically unable|non-football injury|nfi)\\b/.test(status))return true;
+  // Confirmed long-term absence reported for the current 2026 season.
+  if(name==='jalen hurts'&&canon(x.team)==='PHI'&&Number(x.season||2026)===2026)return true;
+  return false;
+ }
  function propPanel(g){
   if(g.state==='post')return '';
-  const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
+  const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
   if(!matches.length)return '';
   const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
   return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">Statistical baselines, not sportsbook recommendations.</p></div></details>';
