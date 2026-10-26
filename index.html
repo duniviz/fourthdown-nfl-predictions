@@ -101,7 +101,7 @@ renderParlays();
   if(!Number.isFinite(age)||age>120||age< -1){status.textContent='V2 forecasts are stale or incorrectly dated; new projections are temporarily unavailable.';return;}
   const upcoming=data.games.filter(g=>Date.parse(g.kickoff_utc)>Date.now());
   if(!upcoming.length){status.textContent='No future games remain in the latest v2 forecast batch. Awaiting next scheduled update.';return;}
-  status.textContent='2026 season · Week '+data.week+' · Updated '+new Date(data.generated_at_utc).toLocaleString()+' · Research projections only; not live odds or calibrated probabilities.';
+  status.textContent=data.season+' season · Week '+data.week+' · Updated '+new Date(data.generated_at_utc).toLocaleString()+' · Research projections only; not live odds or calibrated probabilities.';
   const safe=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   root.innerHTML=upcoming.map(g=>'<article class="card game"><div class="meta"><span>Week '+Number(g.week)+'</span><span>'+safe(new Date(g.kickoff_utc).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))+'</span></div><div class="matchup"><span class="team">'+safe(g.away)+'</span><span class="score">'+Number(g.projected_away_score).toFixed(1)+'</span><span class="vs">AT</span><span class="score">'+Number(g.projected_home_score).toFixed(1)+'</span><span class="team">'+safe(g.home)+'</span></div><div class="foot"><span>Winner: '+safe(g.predicted_winner)+'</span><span>Projected total: '+Number(g.projected_total).toFixed(1)+'</span></div></article>').join('');
  }catch(error){status.textContent='Automatic v2 forecasts are not published yet. Historical picks below are separate from the v2 model.';}
