@@ -68,6 +68,23 @@ def main():
             ok+=1
         except Exception as e:
             data["teams"][ALIASES.get(team,team)]={"status":"unavailable","players":[]}
+    # Scoped official-report fallback for the 2026 Week 7 Monday matchup.
+    # Do not carry this historical snapshot into later games/weeks.
+    today=datetime.now(timezone.utc).date()
+    if datetime(2026,10,24,tzinfo=timezone.utc).date() <= today <= datetime(2026,10,27,tzinfo=timezone.utc).date():
+        verified=Path("data/verified-week7-injuries.json")
+        if verified.exists():
+            snapshot=json.loads(verified.read_text(encoding="utf-8"))
+            for team, rows in snapshot.get("teams",{}).items():
+                current=data["teams"].get(team,{})
+                players=list(current.get("players",[]))
+                names={r.get("player","").casefold() for r in players}
+                for name,position,status in rows:
+                    # Official game designation takes precedence over generic ESPN labels.
+                    players=[r for r in players if r.get("player","").casefold()!=name.casefold()]
+                    players.append({"player":name,"position":position,"status":status,"detail":"Official game designation"})
+                data["teams"][team]={"status":"retrieved","players":players,"source":snapshot["source"],"source_url":snapshot["source_url"]}
+            data["official_snapshot"]={"season":2026,"week":7,"teams":["DAL","PHI"],"source_url":snapshot["source_url"]}
     if not ok:
         print("WARNING: No current injury feeds available; publishing explicit unavailable statuses.")
     Path("data").mkdir(exist_ok=True)
