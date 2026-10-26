@@ -21,7 +21,7 @@ def elo_predictions(schedules, k=20.0, home_elo=55.0, carryover=0.75):
     grouped=defaultdict(list)
     for g in schedules:
         if g.get("game_type","REG")!="REG": continue
-        if not g.get("home_score") or not g.get("away_score"): continue
+        if g.get("home_score") is None or g.get("away_score") is None: continue
         grouped[(int(g["season"]),int(g["week"]))].append(g)
     for season,week in sorted(grouped):
         if previous_season != season:
