@@ -13,7 +13,7 @@ class RollingTests(unittest.TestCase):
         self.assertEqual([r["week"] for r in a], [4, 5])
         # Changing week 4 stats must not affect week 4 prediction.
         for r in team_games:
-            if r["week"] == 4: r["offense_epa"] = 1000
+            if r["week"] == 4 and r["team"] == "H": r["offense_epa"] = 1000
         b = build_rolling_predictions(schedules, team_games)
         self.assertEqual(a[0]["pred_margin"], b[0]["pred_margin"])
         self.assertNotEqual(a[1]["pred_margin"], b[1]["pred_margin"])
