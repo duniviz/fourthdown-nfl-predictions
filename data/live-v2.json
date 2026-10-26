@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-10-26T04:19:29.632748+00:00",
+  "generated_at_utc": "2026-10-26T04:41:01.992914+00:00",
   "season": 2026,
   "week": 7,
   "status": "research_uncalibrated",
@@ -17,7 +17,112 @@
       "projected_away_score": 23.9,
       "projected_margin_home": -1.47,
       "projected_total": 46.43,
-      "predicted_winner": "DAL"
+      "predicted_winner": "DAL",
+      "analysis": {
+        "home": {
+          "team": "PHI",
+          "games_used": 6,
+          "offense_epa_rating": -0.0829,
+          "defense_epa_rating": 0.033,
+          "offense_rank": 30,
+          "defense_rank": 25,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 16.4,
+            "avg_points_against": 23.0,
+            "avg_margin": -6.6,
+            "results": [
+              {
+                "week": 2,
+                "points_for": 24,
+                "points_against": 20,
+                "result": "W"
+              },
+              {
+                "week": 3,
+                "points_for": 7,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 4,
+                "points_for": 20,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 17,
+                "points_against": 19,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 14,
+                "points_against": 25,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "DAL",
+          "games_used": 6,
+          "offense_epa_rating": 0.027,
+          "defense_epa_rating": 0.0769,
+          "offense_rank": 11,
+          "defense_rank": 32,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 26.2,
+            "avg_points_against": 26.2,
+            "avg_margin": 0.0,
+            "results": [
+              {
+                "week": 2,
+                "points_for": 37,
+                "points_against": 20,
+                "result": "W"
+              },
+              {
+                "week": 3,
+                "points_for": 31,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 4,
+                "points_for": 34,
+                "points_against": 30,
+                "result": "W"
+              },
+              {
+                "week": 5,
+                "points_for": 16,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 13,
+                "points_against": 23,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -0.27,
+          "away_offense_vs_home_defense": 2.7,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      }
     }
   ]
 }
