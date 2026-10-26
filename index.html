@@ -291,7 +291,7 @@ renderParlays();
   const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
   if(!matches.length)return '';
   const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
-  return '<details class="fd-props fd-player-results"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">Statistical baselines, not sportsbook recommendations.</p></div></details>';
+  return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">Statistical baselines, not sportsbook recommendations.</p></div></details>';
  }
  function completedPlayerPanel(g){
   const rows=playerHistory.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
@@ -438,7 +438,7 @@ renderParlays();
   }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
- container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-player-results')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
+ container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();
