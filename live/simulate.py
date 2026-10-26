@@ -64,6 +64,7 @@ def simulate_players(players):
             entry["over_pct"]=round(100*sum(x>threshold for x in vals)/DRAWS,1)
             entry["under_pct"]=round(100*sum(x<threshold for x in vals)/DRAWS,1)
             entry["push_pct"]=round(100*sum(x==threshold for x in vals)/DRAWS,1)
+        entry["sorted_draws"]=[round(v,1) for v in sorted(vals)]
         output.append(entry)
     return output
 
