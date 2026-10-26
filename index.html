@@ -262,13 +262,14 @@ renderParlays();
   const winner=canon(p.predicted_winner);
   const margin=Math.abs(home-away);
   const total=Number.isFinite(Number(p.projected_total))?Number(p.projected_total):home+away;
+  const injuryNote=p.injury_adjustments?Object.entries(p.injury_adjustments).map(([team,a])=>esc(team)+': '+esc(a.status||'unknown')+' ('+(Number(a.points)||0).toFixed(1)+' pts)').join(' · '):'No verified injury adjustment in this published forecast';
   const actual=g.state==='post'&&g.away.score!==null&&g.home.score!==null;
   const actualWinner=Number(g.away.score)===Number(g.home.score)?'TIE':Number(g.away.score)>Number(g.home.score)?canon(g.away.abbr):canon(g.home.abbr);
   const result=actual?(actualWinner==='TIE'?'Tied game':actualWinner===winner?'Pick correct':'Pick missed'):'Model prediction';
   const d=p.analysis;
   const metric=(team,key)=>d&&d[team]&&Number.isFinite(Number(d[team][key]))?Number(d[team][key]).toFixed(3):'—';
   const why=d?'<div class="fd-evidence"><div><span>'+esc(g.away.abbr)+' offense EPA</span><strong>'+metric('away','offense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' offense EPA</span><strong>'+metric('home','offense_epa_rating')+'</strong></div><div><span>'+esc(g.away.abbr)+' defense EPA allowed</span><strong>'+metric('away','defense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' defense EPA allowed</span><strong>'+metric('home','defense_epa_rating')+'</strong></div></div>':'<p>EPA breakdown unavailable for this archived forecast.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<details class="fd-reason"><summary>Why this pick? · EPA comparison</summary>'+why+'<p class="fd-analytic-note">Higher offensive EPA and lower defensive EPA allowed are better. These are model inputs, not betting probabilities.</p></details></div>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick? · EPA comparison</summary>'+why+'<p class="fd-analytic-note">Higher offensive EPA and lower defensive EPA allowed are better. These are model inputs, not betting probabilities.</p></details></div>';
  }
 
  function renderRecap(raw){
@@ -299,7 +300,7 @@ renderParlays();
    if(!rows.length)return '<p><strong>'+esc(t)+':</strong> No injuries listed in this feed (not a healthy-roster confirmation).</p>';
    return '<div class="fd-injury-team"><strong>'+esc(t)+' · '+rows.length+' reported</strong>'+rows.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player)+'</b><span>'+esc(x.position||'')+' · '+esc(x.status||'Unspecified')+(x.detail?' · '+esc(x.detail):'')+'</span></div>').join('')+'</div>';
   }).join('');
-  return '<details class="fd-injuries"><summary>Injury report · Both teams <span class="fd-injury-caution">Not included in score model</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'</div></details>';
+  return '<details class="fd-injuries"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'</div></details>';
  }
  function unavailablePlayer(x){
   // Do not show historical averages as a game projection for a known absentee.
@@ -317,8 +318,9 @@ renderParlays();
   if(g.state==='post')return '';
   const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
   if(!matches.length)return '';
-  const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
-  return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">Statistical baselines, not sportsbook recommendations.</p></div></details>';
+  const best=[...matches].filter(x=>!unavailablePlayer(x)).sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
+  if(!best.length)return '';
+  return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">DK line shown only when verified and stored; — means unavailable. Statistical baselines, not sportsbook recommendations.</p></div></details>';
  }
  function completedPlayerPanel(g){
   const rows=playerHistory.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
