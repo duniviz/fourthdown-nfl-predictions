@@ -56,7 +56,43 @@ body.fd-expanded #performance-center,body.fd-expanded #model-v2,body.fd-expanded
 .fd-compare,.fd-delta,.fd-team-record{display:none}.fd-reason{margin-top:8px}.fd-reason summary{font-size:11px}
 .score-footer{font-size:10px}
 @media(min-width:800px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.fd-why{background:#0b2830;border:1px solid #356367;border-radius:12px;padding:12px;margin:10px 0}.fd-why h4{font-size:13px;color:#90f5da;margin:0 0 7px}.fd-why p{font-size:12px;margin:5px 0;color:#d1e4e9}.fd-evidence{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fd-evidence>div{padding:9px;background:#122e41;border-radius:9px}.fd-evidence strong{display:block;font-size:17px;color:#eafff6}.fd-evidence span{font-size:10px;color:#b4c9d7}.fd-game-form{font-size:11px;color:#bce7df;letter-spacing:.02em;margin-top:6px}.fd-analysis-grid{margin-top:9px}.fd-reason>p:first-of-type{display:none}@media(max-width:400px){.fd-evidence{grid-template-columns:1fr 1fr}}.fd-recap{margin-top:12px;border:1px solid #33536a;border-radius:12px;background:#0c2032;overflow:hidden}.fd-recap>summary{list-style:none;cursor:pointer;padding:12px 14px;color:#9af5da;font-weight:850;font-size:13px}.fd-recap>summary::-webkit-details-marker{display:none}.fd-recap>summary:after{content:' +';float:right}.fd-recap[open]>summary:after{content:' −'}.fd-recap-body{padding:0 13px 13px}.fd-recap-body h4{margin:14px 0 6px;color:#e6f8ff;font-size:13px}.fd-recap-body p{font-size:12px;color:#c0d3e1;margin:7px 0}.fd-recap-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.fd-recap-stats>div{background:#142b40;border-radius:8px;padding:10px}.fd-recap-stats strong{font-size:12px;color:#f1fbff}.fd-recap-stats span{font-size:11px;color:#b9cbd9;display:block}.fd-recap-play{border-bottom:1px solid #263c50;padding:7px 0;font-size:11px;color:#c9dbe8}.fd-recap-play:last-child{border-bottom:0}.fd-recap-source{font-size:10px;color:#a2b7c8;margin-top:12px}.fd-props{border:1px solid #3b506d;background:#101f35;border-radius:12px;margin-top:10px;overflow:hidden}.fd-props summary{padding:12px 13px;cursor:pointer;color:#a7e9ff;font-size:12px;font-weight:850}.fd-props-body{padding:0 13px 13px}.fd-props-body p{color:#b8cedf;font-size:12px;margin:7px 0}.fd-props-body a{font-size:12px;color:#80e8d1}.fd-prop-item{padding:9px 0;border-top:1px solid #284258}.fd-prop-item strong{display:block;font-size:12px}.fd-prop-item span{font-size:11px;color:#b9cbd9}.fd-no-projection{font-size:12px;color:#9bb2c6;padding:10px 2px}.fd-player-results .fd-prop-item b{color:#7ff0cf}</style></head><body>
+.fd-why{background:#0b2830;border:1px solid #356367;border-radius:12px;padding:12px;margin:10px 0}.fd-why h4{font-size:13px;color:#90f5da;margin:0 0 7px}.fd-why p{font-size:12px;margin:5px 0;color:#d1e4e9}.fd-evidence{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fd-evidence>div{padding:9px;background:#122e41;border-radius:9px}.fd-evidence strong{display:block;font-size:17px;color:#eafff6}.fd-evidence span{font-size:10px;color:#b4c9d7}.fd-game-form{font-size:11px;color:#bce7df;letter-spacing:.02em;margin-top:6px}.fd-analysis-grid{margin-top:9px}.fd-reason>p:first-of-type{display:none}@media(max-width:400px){.fd-evidence{grid-template-columns:1fr 1fr}}.fd-recap{margin-top:12px;border:1px solid #33536a;border-radius:12px;background:#0c2032;overflow:hidden}.fd-recap>summary{list-style:none;cursor:pointer;padding:12px 14px;color:#9af5da;font-weight:850;font-size:13px}.fd-recap>summary::-webkit-details-marker{display:none}.fd-recap>summary:after{content:' +';float:right}.fd-recap[open]>summary:after{content:' −'}.fd-recap-body{padding:0 13px 13px}.fd-recap-body h4{margin:14px 0 6px;color:#e6f8ff;font-size:13px}.fd-recap-body p{font-size:12px;color:#c0d3e1;margin:7px 0}.fd-recap-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.fd-recap-stats>div{background:#142b40;border-radius:8px;padding:10px}.fd-recap-stats strong{font-size:12px;color:#f1fbff}.fd-recap-stats span{font-size:11px;color:#b9cbd9;display:block}.fd-recap-play{border-bottom:1px solid #263c50;padding:7px 0;font-size:11px;color:#c9dbe8}.fd-recap-play:last-child{border-bottom:0}.fd-recap-source{font-size:10px;color:#a2b7c8;margin-top:12px}.fd-props{border:1px solid #3b506d;background:#101f35;border-radius:12px;margin-top:10px;overflow:hidden}.fd-props summary{padding:12px 13px;cursor:pointer;color:#a7e9ff;font-size:12px;font-weight:850}.fd-props-body{padding:0 13px 13px}.fd-props-body p{color:#b8cedf;font-size:12px;margin:7px 0}.fd-props-body a{font-size:12px;color:#80e8d1}.fd-prop-item{padding:9px 0;border-top:1px solid #284258}.fd-prop-item strong{display:block;font-size:12px}.fd-prop-item span{font-size:11px;color:#b9cbd9}.fd-no-projection{font-size:12px;color:#9bb2c6;padding:10px 2px}.fd-player-results .fd-prop-item b{color:#7ff0cf}
+/* FOURTHDOWN visual refresh — concise, readable, mobile first */
+:root{--bg:#06101d;--panel:#0e2034;--panel2:#142b43;--stroke:#2b4d69;--ink:#f3f8ff;--muted:#a6bdd1;--aqua:#27e7b2}
+body{background:radial-gradient(ellipse at 90% 0%,#0c3944 0,transparent 38%),#06101d;line-height:1.45}
+.top{background:#06111eef;border-color:#24425b}
+.nav{min-height:74px}.logo{font-size:clamp(21px,3vw,32px);font-weight:950;letter-spacing:-1.4px}.logo b{color:#25e4b1}
+.nav>.pill{background:#0b3c36;border:1px solid #12b98e;color:#83f5d5;padding:10px 16px;font-size:11px}
+.fd-filters{gap:8px;margin:15px 0 22px}.fd-filter{padding:11px 17px;border-radius:100px;font-size:13px;color:#d5e6f6;background:#102840;border:1px solid #335a7a}
+.fd-filter[aria-pressed=true]{background:#075b4e;border-color:#25edb9;color:white;box-shadow:inset 0 0 0 1px #20e7b9}
+.scoreboard{gap:17px}.scorecard{background:linear-gradient(135deg,#11263d,#0b1a2d);border:1px solid #30506d;border-radius:22px;padding:20px;box-shadow:0 14px 40px #0003}
+.scorecard .score-head{margin-bottom:18px}.score-state{font-size:12px;letter-spacing:.08em}.scorecard .caption{font-size:12px}
+.score-teams{gap:12px}.score-team{gap:12px}.score-team img{width:40px;height:40px}.score-team .name{font-size:21px;font-weight:850}.score-team .points{font-size:31px;letter-spacing:-1px}
+.projection-panel{background:#0c302e;border:1px solid #2d7c73;border-radius:14px;padding:16px;margin-top:18px}
+.projection-label{font-size:11px;letter-spacing:.08em;color:#7af1d0}.fd-pick-head strong{font-size:18px}.fd-pick-head span{font-size:12px}.fd-forecast-score{font-size:14px;margin-top:12px}
+.fd-reason{margin-top:13px;padding-top:12px}.fd-reason summary{font-size:13px}
+.fd-props,.fd-recap{border:1px solid #315575;border-radius:15px;background:#0d2035;margin-top:14px}
+.fd-props>summary,.fd-recap>summary{display:flex;align-items:center;gap:8px;color:#9cdefd;font-size:14px;font-weight:850;padding:15px 16px;cursor:pointer;list-style:none}
+.fd-props>summary::-webkit-details-marker,.fd-recap>summary::-webkit-details-marker{display:none}
+.fd-props>summary:before,.fd-recap>summary:before{content:'▸';color:#35e8b7;transition:transform .15s}.fd-props[open]>summary:before,.fd-recap[open]>summary:before{transform:rotate(90deg)}
+.fd-count{border-radius:100px;padding:2px 9px;background:#183c50;font-size:11px;color:#bce9f8}
+.fd-props-body{padding:0 12px 13px}.fd-prop-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:2px 0 12px}
+.fd-prop-summary>div{border:1px solid #2d4b64;border-radius:11px;padding:10px 5px;text-align:center;background:#10273d;min-width:0}
+.fd-prop-summary small,.fd-result-values small{display:block;font-size:9px;color:#aac3d7;letter-spacing:.06em;font-weight:750}
+.fd-prop-summary strong{display:block;font-size:20px;margin-top:3px;color:#f1faff;white-space:nowrap}.fd-positive{color:#39e7b3!important}.fd-negative{color:#ff808b!important}
+.fd-result-list{border:1px solid #2a4a63;border-radius:12px;overflow:hidden}
+.fd-result-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;background:#0e2338;border-bottom:1px solid #29465c}
+.fd-result-row:nth-child(even){background:#102940}.fd-result-row:last-child{border-bottom:0}
+.fd-result-name{min-width:0;flex:1}.fd-result-name strong{display:block;font-size:13px;color:#f1f8ff}.fd-result-name small{display:block;color:#a8c1d7;font-size:11px;margin-top:3px}
+.fd-result-values{display:flex;align-items:center;gap:12px;text-align:center;flex-shrink:0}.fd-result-values strong{font-size:16px;display:block;font-variant-numeric:tabular-nums}
+.fd-result-badge{font-size:10px;font-weight:900;letter-spacing:.04em;padding:6px 8px;border-radius:8px;border:1px solid #526377;min-width:52px}
+.fd-hit{background:#075b46;color:#77ffcd;border-color:#0ec78e}.fd-miss{background:#542632;color:#ff9aa3;border-color:#df5367}.fd-ungraded{background:#283b4f;color:#b5c9da}
+.fd-grading-note{font-size:11px;color:#a8c3d3;margin:12px 4px 3px}
+.fd-no-projection{margin-top:13px;border:1px dashed #38536c;border-radius:12px;padding:13px;color:#a6bdcf}
+.scorecard .score-footer{margin-top:18px;padding-top:13px}
+@media(min-width:800px){.scoreboard{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.wrap{padding:0 15px}.nav{min-height:70px}.nav>.pill{font-size:10px;padding:9px 10px}.fd-filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:7px;scrollbar-width:none}.fd-filter{flex-shrink:0;padding:10px 14px}.scorecard{padding:17px}.score-team img{width:36px;height:36px}.score-team .name{font-size:19px}.score-team .points{font-size:28px}.fd-prop-summary strong{font-size:16px}.fd-result-values{gap:8px}.fd-result-values strong{font-size:14px}.fd-result-badge{min-width:45px;font-size:9px;padding:6px 5px}}
+</style></head><body>
 <header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="#live-v2">V2 Forecasts</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><div class="fd-simple-intro"><div class="eyebrow">FOURTHDOWN / NFL</div><h1>Games & <span>picks.</span></h1><p>Live scores first. Model picks and deeper stats only when you want them.</p></div><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
 <div class="stats"><div class="stat"><strong>14</strong><small>Games on full schedule</small></div><div class="stat"><strong>10</strong><small>Game score forecasts</small></div><div class="stat"><strong>1</strong><small>Speculative ATS selection</small></div><div class="stat"><strong>—</strong><small>Verified ROI (not graded)</small></div></div>
@@ -255,7 +291,7 @@ renderParlays();
   const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
   if(!matches.length)return '';
   const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
-  return '<details class="fd-props"><summary>Player projections · '+best.length+'</summary><div class="fd-props-body">'+best.map(x=>'<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.market)+'</strong><span>Projected '+esc(x.projection)+' · Last 5 avg '+esc(x.last_5_avg)+' · Last 3 avg '+esc(x.last_3_avg)+'</span></div>').join('')+'<p>Research projections only; not sportsbook picks.</p></div></details>';
+  return '<details class="fd-props fd-player-results"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">Statistical baselines, not sportsbook recommendations.</p></div></details>';
  }
  function completedPlayerPanel(g){
   const rows=playerHistory.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
@@ -266,14 +302,14 @@ renderParlays();
   const all=(raw.boxscore?.players||[]).flatMap(t=>(t.statistics||[]).flatMap(group=>{
    const labels=(group.labels||[]).map(x=>String(x).toUpperCase());
    const keys=(group.keys||[]).map(x=>String(x).toLowerCase());
-   return (group.athletes||[]).map(a=>({name:String(a.athlete?.displayName||''),labels,keys,stats:a.stats||[]}));
+   return (group.athletes||[]).map(a=>({name:String(a.athlete?.displayName||''),labels,keys,stats:a.stats||[],category:String(group.name||'').toLowerCase()}));
   }));
   const clean=x=>String(x||'').toLowerCase().replace(/[^a-z]/g,'');
-  let graded=0;
+  let hits=0,misses=0,graded=0,totalError=0;
   const cards=rows.map(x=>{
-   const expected=Number(x.projection);
-   const key=String(x.stat_key);
-   const match=all.find(a=>clean(a.name)===clean(x.player)&&((key==='passing_yards'&&a.keys.some(k=>k.includes('pass')))||(key==='rushing_yards'&&a.keys.some(k=>k.includes('rush')))||(key==='receiving_yards'&&a.keys.some(k=>k.includes('receiv')))));
+   const expected=Number(x.projection),key=String(x.stat_key);
+   const category=key==='passing_yards'?'pass':key==='rushing_yards'?'rush':'receiv';
+   const match=all.find(a=>clean(a.name)===clean(x.player)&&(a.category.includes(category)||a.keys.some(k=>k.includes(category))));
    let actual=null;
    if(match){
     let idx=match.keys.findIndex(k=>k===key||k===key.replaceAll('_','')||k===key.replace(/_([a-z])/g,(_,v)=>v.toUpperCase()).toLowerCase());
@@ -281,13 +317,13 @@ renderParlays();
     if(idx>=0&&idx<match.stats.length&&Number.isFinite(Number(match.stats[idx])))actual=Number(match.stats[idx]);
    }
    const available=actual!==null&&Number.isFinite(expected);
-   if(available)graded++;
    const delta=available?actual-expected:null;
    const tolerance=Math.max(5,expected*0.10);
    const outcome=!available?'NOT GRADED':Math.abs(delta)<=tolerance?'HIT':'MISS';
-   return '<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.market)+'</strong><span><b>'+esc(outcome)+'</b> · Projection '+esc(expected.toFixed(1))+' · Actual '+(available?esc(actual):'Unavailable')+(available?' · Difference '+(delta>=0?'+':'')+delta.toFixed(1)+' yds':'')+'</span></div>';
+   if(available){graded++;totalError+=Math.abs(delta);if(outcome==='HIT')hits++;else misses++;}
+   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(expected.toFixed(1))+'</strong></div><div><small>ACTUAL</small><strong>'+(available?esc(actual):'—')+'</strong></div><span class="fd-result-badge '+(outcome==='HIT'?'fd-hit':outcome==='MISS'?'fd-miss':'fd-ungraded')+'">'+esc(outcome)+'</span></div></div>';
   }).join('');
-  return '<p>'+graded+' of '+rows.length+' projections matched to official final-game box-score values. HIT means actual yards within 10% of our projection (minimum 5 yards); MISS means outside that range. This is forecast accuracy, not a sportsbook bet result.</p>'+cards;
+  return '<div class="fd-prop-summary"><div><small>GRADED</small><strong>'+graded+' / '+rows.length+'</strong></div><div><small>HITS</small><strong class="fd-positive">'+hits+'</strong></div><div><small>MISSES</small><strong class="fd-negative">'+misses+'</strong></div><div><small>AVG ERROR</small><strong>'+(graded?(totalError/graded).toFixed(1)+' yd':'—')+'</strong></div></div><div class="fd-result-list">'+cards+'</div><p class="fd-grading-note">HIT = actual within 10% of projection (minimum 5 yards). This measures forecast accuracy, not a DraftKings bet result.</p>';
  }
  async function loadCompletedPlayerResults(el){
   const body=el.querySelector('.fd-props-body'),id=el.dataset.gameId;
