@@ -49,7 +49,7 @@ body{background:radial-gradient(ellipse at 85% -10%,#124553 0,transparent 35%),r
 <main class="wrap"><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
 <div class="stats"><div class="stat"><strong>14</strong><small>Games on full schedule</small></div><div class="stat"><strong>10</strong><small>Game score forecasts</small></div><div class="stat"><strong>1</strong><small>Speculative ATS selection</small></div><div class="stat"><strong>—</strong><small>Verified ROI (not graded)</small></div></div>
 <div class="dashboard-strip"><span class="dash-chip"><span class="live-dot pulse"></span> NFL GAME CENTER</span><span class="dash-chip">V2 · EPA MODEL</span><span class="dash-chip">AUTOMATED FORECASTS</span><span class="dash-chip">DRAFTKINGS SNAPSHOTS</span></div>
-<section id="scoreboard"><div class="section-head"><div><div class="eyebrow">NFL Game Center · scores & game status</div><h2>Scoreboard <span style="color:var(--aqua)">/</span> This Week</h2></div><div class="score-tools"><span class="caption" id="score-refresh-label">Waiting for feed</span><button type="button" id="refresh-scores">Refresh scores</button></div></div><p class="caption" id="score-status" aria-live="polite">Loading latest NFL scoreboard snapshot…</p><div class="scoreboard" id="scoreboard-cards"><div class="score-placeholder">Waiting for the first published scoreboard update. Scores are not fabricated.</div></div><p class="caption" style="margin-top:12px">Source: ESPN scoreboard · scheduled updates approximately every 15 minutes (GitHub scheduling and data-provider delays may apply). Not an official instantaneous live feed.</p></section>
+<section id="scoreboard"><div class="section-head"><div><div class="eyebrow">NFL Game Center · scores & game status</div><h2>Scoreboard <span style="color:var(--aqua)">/</span> This Week</h2></div><div class="score-tools"><span class="caption" id="score-refresh-label">Waiting for feed</span><button type="button" id="refresh-scores">Refresh scores</button></div></div><p class="caption" id="score-status" aria-live="polite">Loading latest NFL scoreboard snapshot…</p><div class="scoreboard" id="scoreboard-cards"><div class="score-placeholder">Waiting for the first published scoreboard update. Scores are not fabricated.</div></div><p class="caption" style="margin-top:12px">Source: ESPN scoreboard · direct browser updates approximately every minute while this page is open. Unofficial, best-effort feed; scores may be delayed.</p></section>
 <section id="model-v2"><div class="section-head"><div><div class="eyebrow">Model version · published research</div><h2>FOURTHDOWN v2 · opponent-adjusted EPA</h2></div><span class="pill">V2 SOURCE PUBLISHED</span></div><div class="card info"><p><strong>Historical validation:</strong> 64.57% winner accuracy across 223 evaluated 2025 games; 62.54% across 1,116 games from 2021–2025. A limited future-data perturbation test passed. These are research backtests, not live win probabilities or verified betting returns.</p><p><strong>Current predictions:</strong> The existing game cards and player props remain historical snapshots. V2 is published in the site repository, but automatic weekly data ingestion and current-week v2 forecast generation are not yet connected. Do not interpret earlier picks as v2 outputs.</p><p><a href="https://github.com/duniviz/fourthdown-nfl-predictions/blob/main/backtest/v2.py" target="_blank" rel="noopener noreferrer">View v2 model source</a></p></div></section>
 <section id="live-v2"><div class="section-head"><div><div class="eyebrow">Scheduled forecast pipeline</div><h2>Upcoming games · FOURTHDOWN v2</h2></div><span class="pill">AUTOMATED DATA</span></div><p class="caption" id="live-v2-status">Checking for the latest published v2 projections…</p><div class="games" id="live-v2-games"></div></section>
 <section id="picks"><div class="section-head"><div><div class="eyebrow">Model watchlist</div><h2>Top projections by kickoff window</h2></div><select class="filter" id="featuredslot" aria-label="Choose top projection window"><option value="Sunday Afternoon">Sunday afternoon · latest report</option><option value="Sunday Early">Sunday early · earlier props</option><option value="Sunday Night">Sunday night</option><option value="Monday Night">Monday night</option><option value="Thursday Night">Thursday night</option><option value="all">Whole week · latest report</option></select></div><div class="pickgrid" id="featured"><article class="card pick"><div class="rank">SUNDAY AFTERNOON · SCORE FORECAST</div><h3>DEN @ ARI</h3><div class="match">Denver 24–20</div></article><article class="card pick"><div class="rank">SUNDAY AFTERNOON · SCORE FORECAST</div><h3>GB @ DET</h3><div class="match">Detroit 30–26</div></article><article class="card pick"><div class="rank">SUNDAY AFTERNOON · SCORE FORECAST</div><h3>LA @ LV</h3><div class="match">Rams 26–23</div></article></div></section>
@@ -158,9 +158,23 @@ renderParlays();
  async function update(){
   label.textContent='Checking…';
   try{
-   const response=await fetch('/data/live-scores.json?ts='+Date.now(),{cache:'no-store'});
-   if(!response.ok)throw new Error('Score feed not published yet');
-   const data=await response.json();
+   const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',{cache:'no-store'});
+   if(!response.ok)throw new Error('Live score provider unavailable ('+response.status+')');
+   const raw=await response.json();
+   const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
+     const comp=(event.competitions||[])[0]||{};
+     const teams=comp.competitors||[];
+     const team=(side)=>{
+       const x=teams.find(t=>t.homeAway===side)||{};
+       const t=x.team||{};
+       return {abbr:t.abbreviation||'',name:t.displayName||'',logo:t.logo||'',score:x.score??null};
+     };
+     const s=comp.status||event.status||{};
+     return {id:String(event.id||''),date:event.date,home:team('home'),away:team('away'),
+       state:(s.type||{}).state||'pre',status:(s.type||{}).shortDetail||(s.type||{}).detail||'',
+       broadcast:(comp.broadcasts||[]).flatMap(x=>x.names||[]).slice(0,2).join(', '),
+       link:'https://www.espn.com/nfl/game/_/gameId/'+String(event.id||'')};
+   }).filter(g=>g.home.abbr&&g.away.abbr)};
    if(!Array.isArray(data.games)||!data.games.length)throw new Error('Empty scoreboard');
    const updated=new Date(data.updated_at_utc);
    const age=Math.round((Date.now()-updated.getTime())/60000);
@@ -180,7 +194,7 @@ renderParlays();
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
      return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div><div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join('');
-  }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';label.textContent='Feed unavailable';}
+  }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
  update();setInterval(update,60000);
