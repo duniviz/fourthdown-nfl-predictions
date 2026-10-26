@@ -56,7 +56,7 @@ body.fd-expanded #performance-center,body.fd-expanded #model-v2,body.fd-expanded
 .fd-compare,.fd-delta,.fd-team-record{display:none}.fd-reason{margin-top:8px}.fd-reason summary{font-size:11px}
 .score-footer{font-size:10px}
 @media(min-width:800px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.fd-why{background:#0b2830;border:1px solid #356367;border-radius:12px;padding:12px;margin:10px 0}.fd-why h4{font-size:13px;color:#90f5da;margin:0 0 7px}.fd-why p{font-size:12px;margin:5px 0;color:#d1e4e9}.fd-evidence{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fd-evidence>div{padding:9px;background:#122e41;border-radius:9px}.fd-evidence strong{display:block;font-size:17px;color:#eafff6}.fd-evidence span{font-size:10px;color:#b4c9d7}.fd-game-form{font-size:11px;color:#bce7df;letter-spacing:.02em;margin-top:6px}.fd-analysis-grid{margin-top:9px}.fd-reason>p:first-of-type{display:none}@media(max-width:400px){.fd-evidence{grid-template-columns:1fr 1fr}}</style></head><body>
+.fd-why{background:#0b2830;border:1px solid #356367;border-radius:12px;padding:12px;margin:10px 0}.fd-why h4{font-size:13px;color:#90f5da;margin:0 0 7px}.fd-why p{font-size:12px;margin:5px 0;color:#d1e4e9}.fd-evidence{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fd-evidence>div{padding:9px;background:#122e41;border-radius:9px}.fd-evidence strong{display:block;font-size:17px;color:#eafff6}.fd-evidence span{font-size:10px;color:#b4c9d7}.fd-game-form{font-size:11px;color:#bce7df;letter-spacing:.02em;margin-top:6px}.fd-analysis-grid{margin-top:9px}.fd-reason>p:first-of-type{display:none}@media(max-width:400px){.fd-evidence{grid-template-columns:1fr 1fr}}.fd-recap{margin-top:12px;border:1px solid #33536a;border-radius:12px;background:#0c2032;overflow:hidden}.fd-recap>summary{list-style:none;cursor:pointer;padding:12px 14px;color:#9af5da;font-weight:850;font-size:13px}.fd-recap>summary::-webkit-details-marker{display:none}.fd-recap>summary:after{content:' +';float:right}.fd-recap[open]>summary:after{content:' −'}.fd-recap-body{padding:0 13px 13px}.fd-recap-body h4{margin:14px 0 6px;color:#e6f8ff;font-size:13px}.fd-recap-body p{font-size:12px;color:#c0d3e1;margin:7px 0}.fd-recap-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.fd-recap-stats>div{background:#142b40;border-radius:8px;padding:10px}.fd-recap-stats strong{font-size:12px;color:#f1fbff}.fd-recap-stats span{font-size:11px;color:#b9cbd9;display:block}.fd-recap-play{border-bottom:1px solid #263c50;padding:7px 0;font-size:11px;color:#c9dbe8}.fd-recap-play:last-child{border-bottom:0}.fd-recap-source{font-size:10px;color:#a2b7c8;margin-top:12px}</style></head><body>
 <header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="#live-v2">V2 Forecasts</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><div class="fd-simple-intro"><div class="eyebrow">FOURTHDOWN / NFL</div><h1>Games & <span>picks.</span></h1><p>Live scores first. Model picks and deeper stats only when you want them.</p></div><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
 <div class="stats"><div class="stat"><strong>14</strong><small>Games on full schedule</small></div><div class="stat"><strong>10</strong><small>Game score forecasts</small></div><div class="stat"><strong>1</strong><small>Speculative ATS selection</small></div><div class="stat"><strong>—</strong><small>Verified ROI (not graded)</small></div></div>
@@ -169,6 +169,7 @@ renderParlays();
  const prettyScore=s=>s===null||s===undefined||s===''?'–':esc(s);
  let activeFilter='all';
  const weatherCache=new Map();
+ const recapCache=new Map();
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -239,6 +240,40 @@ renderParlays();
   const matchupLinks='<div class="fd-extras"><h4>Weather, injuries & quarterback checks</h4><p class="fd-weather" data-weather-team="'+esc(g.home.abbr)+'" data-weather-date="'+esc(g.date)+'" data-loading="true">Checking kickoff forecast…</p><p>Weather is contextual only and is not included in this v2 score projection. Roof status is based on venue type, not an actual game-day roof decision.</p><a target="_blank" rel="noopener noreferrer" href="https://www.espn.com/nfl/injuries">NFL injury reports ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.espn.com/nfl/depth">QB depth charts ↗</a><p>Confirm starters and injury designations at the source. These inputs have not been verified for this matchup or added to the prediction model.</p></div>';
   return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN V2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Edge: +'+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted final: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div><div class="fd-muted">Model estimate · '+total.toFixed(1)+' total points</div><details class="fd-reason"><summary>View matchup stats & reasoning</summary><p>The model expects '+esc(p.predicted_winner)+' to score about '+margin.toFixed(1)+' more points than its opponent, based on recent and opponent-adjusted EPA performance. The combined scoring estimate is '+total.toFixed(1)+' points.</p><p><strong>What this does not mean:</strong> The point difference is not a win probability, confidence rating or confirmed betting advantage. This forecast does not incorporate verified current injuries, quarterback changes, weather or live DraftKings odds.</p>'+why+detail+matchupLinks+'</details></div>';
  }
+
+ function renderRecap(raw){
+  const box=raw.boxscore||{},teams=box.teams||[];
+  const pickStats=['totalYards','netPassingYards','rushingYards','turnovers','firstDowns','thirdDownEff','possessionTime'];
+  const names={totalYards:'Total yards',netPassingYards:'Pass yards',rushingYards:'Rush yards',turnovers:'Turnovers',firstDowns:'First downs',thirdDownEff:'Third down',possessionTime:'Possession'};
+  const teamPanels=teams.map(t=>{
+   const vals=(t.statistics||[]).filter(s=>pickStats.includes(s.name));
+   return '<div><strong>'+esc(t.team?.abbreviation||t.team?.displayName||'Team')+'</strong>'+vals.map(s=>'<span>'+esc(names[s.name]||s.label||s.name)+': '+esc(s.displayValue||'—')+'</span>').join('')+'</div>';
+  }).join('');
+  const leaders=(box.players||[]).flatMap(team=>(team.statistics||[]).flatMap(group=>(group.leaders||[]).slice(0,1).map(x=>({team:team.team?.abbreviation||'',category:group.name||'',name:x.athlete?.displayName||'',value:x.displayValue||''})))).filter(x=>x.name).slice(0,8);
+  const scoring=(raw.scoringPlays||[]).slice(-8);
+  const article=(raw.news?.articles||[]).find(x=>x.headline&&x.story);
+  const overview=article?'<h4>Game story</h4><p>'+esc(article.headline)+'</p>':'';
+  const stats=teamPanels?'<h4>Team box score</h4><div class="fd-recap-stats">'+teamPanels+'</div>':'';
+  const playerSection=leaders.length?'<h4>Player leaders</h4>'+leaders.map(x=>'<div class="fd-recap-play">'+esc(x.team)+' · '+esc(x.name)+' · '+esc(x.category)+': '+esc(x.value)+'</div>').join(''):'';
+  const scoringSection=scoring.length?'<h4>Scoring highlights</h4>'+scoring.map(x=>'<div class="fd-recap-play">'+esc(x.clock?.displayValue||'')+' '+esc(x.team?.abbreviation||'')+' · '+esc(x.text||x.type?.text||'Scoring play')+'</div>').join(''):'';
+  return overview+stats+playerSection+scoringSection+'<p class="fd-recap-source">Based on ESPN final-game box score and scoring plays. This is a statistical recap, not a generated play-by-play narrative.</p>';
+ }
+ async function loadRecap(el){
+  const body=el.querySelector('.fd-recap-body'),id=el.dataset.gameId;
+  if(!/^\d+$/.test(id)){body.textContent='Game identifier unavailable.';return;}
+  body.textContent='Loading completed-game statistics…';
+  try{
+   let data=recapCache.get(id);
+   if(!data){
+    const res=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(id),{cache:'no-store'});
+    if(!res.ok)throw Error('Recap feed unavailable');
+    data=await res.json();recapCache.set(id,data);
+   }
+   const html=renderRecap(data);
+   body.innerHTML=html||'<p>Detailed box-score data is not available for this game.</p>';
+  }catch(e){body.innerHTML='<p>Could not load this recap right now. Use the ESPN game details link below for the full box score.</p>';}
+ }
+
  async function update(){
   label.textContent='Checking…';
   try{
@@ -290,14 +325,14 @@ renderParlays();
      const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
-     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
+     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join(''):'<div class="score-placeholder">No games match this filter.</div>';
    // Weather is fetched only if a user expands a specific matchup.
    
   }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
- container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-reason')&&e.target.open)showWeather();},true);
+ container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-reason')&&e.target.open)showWeather();if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();
