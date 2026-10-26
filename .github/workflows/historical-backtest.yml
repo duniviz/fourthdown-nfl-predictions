@@ -1,0 +1,36 @@
+name: Historical NFL backtest
+on:
+  push:
+    branches:
+      - feature/prediction-engine-v1
+    paths:
+      - 'backtest/**'
+      - 'requirements-backtest.txt'
+      - '.github/workflows/historical-backtest.yml'
+  workflow_dispatch:
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install data dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Download historical schedules and EPA data
+        run: python -m backtest.download
+      - name: Run rolling historical backtest
+        run: python -m backtest.run | tee historical-results.json
+      - name: Upload backtest results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fourthdown-historical-results
+          path: historical-results.json
+          if-no-files-found: ignore
