@@ -43,11 +43,28 @@ def entries(obj):
 def main():
     data={"generated_at_utc":datetime.now(timezone.utc).isoformat(),"source":"ESPN team injury reports","model_adjusted":False,"teams":{}}
     ok=0
+    # Prefer the league-wide report: one consistent snapshot and less risk of
+    # team-code mismatch. Fall back to team feeds when unavailable.
+    try:
+        req=urllib.request.Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries",headers={"User-Agent":"Mozilla/5.0 FOURTHDOWN","Accept":"application/json"})
+        with urllib.request.urlopen(req,timeout=15) as response:
+            league=json.load(response)
+        blocks=league.get("injuries",[])
+        for block in blocks:
+            team=(block.get("team") or {}).get("abbreviation","").upper()
+            team=ALIASES.get(team,team)
+            if team:
+                data["teams"][team]={"status":"retrieved","players":entries(block.get("injuries",[]))}
+        ok=len(data["teams"])
+    except Exception:
+        pass
     for team in TEAMS:
+        code=ALIASES.get(team,team)
+        if code in data["teams"]: continue
         try:
             raw=load(team)
             rows=entries(raw)
-            data["teams"][ALIASES.get(team,team)]={"status":"retrieved","players":rows}
+            data["teams"][code]={"status":"retrieved","players":rows}
             ok+=1
         except Exception as e:
             data["teams"][ALIASES.get(team,team)]={"status":"unavailable","players":[]}
