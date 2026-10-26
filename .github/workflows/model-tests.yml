@@ -1,0 +1,24 @@
+name: FOURTHDOWN model tests
+on:
+  push:
+    paths:
+      - 'model/**'
+      - 'backtest/**'
+      - 'tests/**'
+      - '.github/workflows/model-tests.yml'
+  pull_request:
+    paths:
+      - 'model/**'
+      - 'backtest/**'
+      - 'tests/**'
+      - '.github/workflows/model-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v

@@ -1,0 +1,23 @@
+{
+  "away": {
+    "team": "AWAY",
+    "offense": 2,
+    "defense": 1
+  },
+  "home": {
+    "team": "HOME",
+    "offense": 1,
+    "defense": 2
+  },
+  "game_settings": {
+    "home_advantage": 1.5,
+    "league_points": 22,
+    "pace_factor": 1
+  },
+  "simulation_settings": {
+    "n": 5000,
+    "seed": 42,
+    "spread_home": -2.5,
+    "total_line": 44.5
+  }
+}
