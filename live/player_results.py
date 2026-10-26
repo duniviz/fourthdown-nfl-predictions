@@ -40,9 +40,28 @@ def main():
             result["recommendation_result"]="push" if observed==line else (
                 "hit" if (observed>line)==(side=="over") else "miss")
         out.append(result)
+    # Market-level bias is learned only from saved forecasts. It feeds the next
+    # run and is applied by player_research only after a minimum sample is met.
+    grouped={}
+    for row in out:
+        key=row["stat_key"]
+        grouped.setdefault(key,[]).append(float(row["error"]))
+    markets=[]
+    for key,errors in sorted(grouped.items()):
+        n=len(errors)
+        mae=sum(abs(v) for v in errors)/n
+        mean=sum(errors)/n
+        markets.append({"stat_key":key,"sample_size":n,"mean_error":round(mean,2),
+                        "mae":round(mae,2),"active":n>=40,
+                        "note":"Bias is active only with 40+ archived forecasts; otherwise reported for monitoring."})
+    generated=datetime.now(timezone.utc).isoformat()
     Path("data/player-results.json").write_text(json.dumps({
-        "generated_at_utc":datetime.now(timezone.utc).isoformat(),
+        "generated_at_utc":generated,
         "note":"Only archived pregame projections; missing player stats and absent DK lines are not graded",
         "rows":out},indent=2)+"\n")
+    Path("data/player-calibration.json").write_text(json.dumps({
+        "generated_at_utc":generated,
+        "method":"Market-level mean residual from archived pregame forecasts; capped at ±5 yards and inactive below 40 samples.",
+        "markets":markets},indent=2)+"\n")
     print(f"Graded {len(out)} archived player forecasts; no recommendations inferred")
 if __name__=="__main__":main()

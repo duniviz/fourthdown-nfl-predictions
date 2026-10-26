@@ -18,6 +18,35 @@ def num(x):
     try: return float(x or 0)
     except (TypeError, ValueError): return 0.0
 
+
+def clamp(value, low, high):
+    return max(low, min(high, value))
+
+def load_game_context():
+    """Read this run's published team forecast without requiring it."""
+    try:
+        payload=json.loads(Path("data/live-v2.json").read_text(encoding="utf-8"))
+        return {(str(g.get("home")),str(g.get("away"))):g for g in payload.get("games",[])}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+def load_calibration():
+    """Use only a sufficiently large, archived forecast sample."""
+    try:
+        rows=json.loads(Path("data/player-calibration.json").read_text(encoding="utf-8")).get("markets",[])
+        return {str(row.get("stat_key")):row for row in rows}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+def game_script_multiplier(metric, team_margin):
+    """Small, capped volume adjustment from the team's published score forecast."""
+    if not math.isfinite(team_margin):
+        return 1.0
+    if metric=="rushing_yards":
+        return round(1+clamp(team_margin*0.008,-0.06,0.06),4)
+    # Passing and receiving volume get a modest boost for projected trailing teams.
+    return round(1-clamp(team_margin*0.005,-0.04,0.04),4)
+
 def project_yards(stats, metric, volume):
     """Volume x efficiency with regression and an uncertainty estimate.
 
@@ -113,9 +142,20 @@ def generate():
         for team in {key[0] for key in defense_week}:
             vals=[v[metric] for key,v in defense_week.items() if key[0]==team and v[metric]>0]
             defense_mean[(team,metric)]=(sum(vals)/len(vals),len(vals)) if vals else (league_mean[metric],0)
+    # Current official statuses exclude confirmed absences. Questionable is not treated as out.
+    overrides={}
+    try:
+        current_injuries=json.loads(Path("data/injuries.json").read_text(encoding="utf-8"))
+        for injury_team,payload in current_injuries.get("teams",{}).items():
+            for item in payload.get("players",[]):
+                name=str(item.get("player") or "").casefold()
+                status=str(item.get("status") or "").lower()
+                if name and status:
+                    overrides[(str(injury_team),name)]=status
+    except (OSError, ValueError, TypeError):
+        pass
     # Availability overrides apply only to the exact verified game/week.
     # Never infer that a player is active from a missing injury report.
-    overrides={}
     verified=Path("data/verified-week7-injuries.json")
     if verified.exists() and season==2026 and week==7:
         snap=json.loads(verified.read_text(encoding="utf-8"))
@@ -127,9 +167,16 @@ def generate():
             overrides[("PHI","jalen hurts")]="out"
             overrides[("PHI","will shipley")]="out"
             overrides[("PHI","carson steele")]="out"
+    # These files are generated earlier in the same workflow. Missing files fail open.
+    game_context=load_game_context()
+    calibration=load_calibration()
     results=[]
     for game in games:
+        context=game_context.get((str(game["home_team"]),str(game["away_team"])),{})
+        home_score=num(context.get("projected_home_score"))
+        away_score=num(context.get("projected_away_score"))
         for team,opp in ((game["home_team"],game["away_team"]),(game["away_team"],game["home_team"])):
+            team_margin=(home_score-away_score) if team==game["home_team"] else (away_score-home_score)
             # Forecast team opportunity totals before allocating player workloads.
             # Blend recent team play volume with season history; no future games.
             team_keys=sorted((k for k in team_volume_week if k[0]==team),key=lambda k:k[1])
@@ -191,7 +238,14 @@ def generate():
                     defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
-                    baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment),1)
+                    role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
+                    script_multiplier=game_script_multiplier(metric,team_margin)
+                    calibrated=calibration.get(metric,{})
+                    calibration_n=int(calibrated.get("sample_size",0) or 0)
+                    # A bias correction is deliberately dormant until 40 archived forecasts
+                    # establish a stable market-level direction.
+                    calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0) if calibration_n>=40 else 0.0
+                    baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
                     # Explicit RB workload scenarios when a listed starting RB
                     # is questionable. Never treat "questionable" as "out".
                     scenario=None
@@ -237,9 +291,15 @@ def generate():
                         "uncertainty_yards":uncertainty,
                         "expected_opportunities":round(adjusted,1),
                         "opponent_adjustment":round(adjustment,3),
+                        "game_script_adjustment":script_multiplier,
+                        "calibration_bias_yards":round(calibration_bias,2),
+                        "calibration_sample_size":calibration_n,
+                        "role_share":round(role_share,3),
+                        "committee_risk":"high" if metric=="rushing_yards" and role_share<0.30 else ("moderate" if metric=="rushing_yards" and role_share<0.48 else "low"),
+                        "availability_status":availability,
                         "team_opportunity_allocation":True,
                         "expected_yards_per_opportunity":expected_rate,
-                        "method":"Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent adjustment; uncalibrated research forecast",
+                        "method":"Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts",
                         "bet_recommendation":False,
                     })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
