@@ -315,6 +315,8 @@ function fdOpenMatchup(g){
      const projection=Number(x.projection),line=Number(x.dk_line);
      const validProjection=x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(projection);
      const validLine=x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(line);
+     const sim=simulationPlayers.find(s=>s.game_id===x.game_id&&s.player_id===x.player_id&&s.stat_key===x.stat_key);
+     const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+' yards · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+' yards</div>':'';
      const edge=validProjection&&validLine?projection-line:null;
      const direction=edge===null?'No verified line':edge>0?'OVER':edge<0?'UNDER':'EVEN';
      return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+'</article>';
