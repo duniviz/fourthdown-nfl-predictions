@@ -219,6 +219,7 @@ renderParlays();
  let simulationGames=[];
  let simulationPlayers=[];
  let playerHistory=[];
+ let playerResults=[];
  let injuryData=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
@@ -249,6 +250,7 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
+  try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
@@ -318,9 +320,12 @@ function fdOpenMatchup(g){
  const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.length?propCards:'<p>Player projections unavailable</p>')+'<p class="fd-modal-muted">DK line appears only when verified; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3><p class="fd-modal-muted">'+(isFinal?'No archived pregame DraftKings lines were saved for this matchup.':'Verified live DK spread, total and moneyline are not currently available.')+' No odds are invented.</p></div>';
  const score=p?'<div class="fd-modal-pick"><h3>FOURTHDOWN v2 · Model prediction</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+num(p.projected_away_score)+'</div><small>AT</small><div><small>'+esc(home)+'</small>'+num(p.projected_home_score)+'</div></div><p><strong>Pick: '+esc(p.predicted_winner)+' wins</strong> · edge '+num(Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score)))+' pts</p><p class="fd-modal-muted">Projected total: '+num(p.projected_total)+' · '+impact+'</p>'+simScore+'</div>' :'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
+ const completedRows=isFinal?playerResults.filter(x=>x.game_id&&x.game_id.endsWith('_'+away+'_'+home)):[];
+ const completedGroups=['Passing yards','Rushing yards','Receiving yards'].map(m=>{const rows=completedRows.filter(x=>x.market===m);return rows.length?'<h4>'+esc(m)+'</h4><div style="overflow-x:auto"><table style="width:100%;font-size:13px;text-align:left"><thead><tr><th>Player</th><th>Projected</th><th>Actual</th><th>Difference</th><th>Over/Under pick</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.player)+'</td><td>'+num(x.projection)+'</td><td>'+num(x.actual)+'</td><td>'+num(x.error)+'</td><td>'+(x.recommendation_result==='hit'?'✓ HIT':x.recommendation_result==='miss'?'✕ MISS':x.recommendation_result==='push'?'PUSH':'Not recorded')+'</td></tr>').join('')+'</tbody></table></div>':''}).join('');
+ const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">Historical game-day injury snapshot not saved. Current injury reports would not describe this completed game accurately.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
- document.getElementById('fd-modal-body').innerHTML=header+score+market+stats+(isFinal?historicalInjury:injury)+props;
+ document.getElementById('fd-modal-body').innerHTML=header+score+market+stats+(isFinal?historicalInjury+completedBox:injury)+props;
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.querySelector('[data-close-matchup]').focus();
 }
 function fdCloseMatchup(){document.getElementById('fd-modal').classList.remove('open');document.body.style.overflow='';}
