@@ -319,8 +319,27 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const result=actual?(actualWinner==='TIE'?'Tied game':actualWinner===winner?'Pick correct':'Pick missed'):'Model prediction';
   const d=p.analysis;
   const metric=(team,key)=>d&&d[team]&&Number.isFinite(Number(d[team][key]))?Number(d[team][key]).toFixed(3):'—';
-  const why=d?'<div class="fd-evidence"><div><span>'+esc(g.away.abbr)+' offense EPA</span><strong>'+metric('away','offense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' offense EPA</span><strong>'+metric('home','offense_epa_rating')+'</strong></div><div><span>'+esc(g.away.abbr)+' defense EPA allowed</span><strong>'+metric('away','defense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' defense EPA allowed</span><strong>'+metric('home','defense_epa_rating')+'</strong></div></div>':'<p>EPA breakdown unavailable for this archived forecast.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick? · EPA comparison</summary>'+why+'<p class="fd-analytic-note">Higher offensive EPA and lower defensive EPA allowed are better. These are model inputs, not betting probabilities.</p></details></div>';
+  const side=canon(p.predicted_winner)===canon(g.away.abbr)?'away':'home';
+  const other=side==='away'?'home':'away';
+  const chosen=d?.[side],rival=d?.[other];
+  const notes=[];
+  const form=chosen?.recent_form||{},oppForm=rival?.recent_form||{};
+  if(Number.isFinite(Number(chosen?.offense_rank))&&Number.isFinite(Number(rival?.offense_rank))){
+    const a=Number(chosen.offense_rank),b=Number(rival.offense_rank);
+    if(a+5<=b)notes.push(esc(p.predicted_winner)+' has the stronger-ranked offense ('+a+' vs '+b+').');
+  }
+  if(Number.isFinite(Number(chosen?.defense_rank))&&Number.isFinite(Number(rival?.defense_rank))){
+    const a=Number(chosen.defense_rank),b=Number(rival.defense_rank);
+    if(a+5<=b)notes.push(esc(p.predicted_winner)+' has the stronger-ranked defense ('+a+' vs '+b+').');
+  }
+  if(Number.isFinite(Number(form.avg_points_for))&&Number.isFinite(Number(oppForm.avg_points_for))&&Number(form.avg_points_for)>Number(oppForm.avg_points_for)+3)
+    notes.push('Recent scoring favors '+esc(p.predicted_winner)+' ('+Number(form.avg_points_for).toFixed(1)+' vs '+Number(oppForm.avg_points_for).toFixed(1)+' points per game).');
+  if(Number.isFinite(Number(form.wins))&&Number.isFinite(Number(oppForm.wins))&&Number(form.wins)>Number(oppForm.wins))
+    notes.push('They have more wins over the last five games ('+form.wins+' vs '+oppForm.wins+').');
+  if(!notes.length)notes.push('The model gives '+esc(p.predicted_winner)+' a slight overall matchup advantage.');
+  const marginNote=Math.abs(margin)<3?'This is a close prediction, so the outcome is uncertain.':'The projected margin is '+Math.abs(margin).toFixed(1)+' points.';
+  const why='<p>'+notes.slice(0,2).join(' ')+' '+marginNote+'</p><p class="fd-analytic-note">Based on prior game performance. Injuries are displayed separately and may not be fully reflected in the score.</p>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick?</summary>'+why+'<p class="fd-analytic-note">Higher offensive EPA and lower defensive EPA allowed are better. These are model inputs, not betting probabilities.</p></details></div>';
  }
 
  function renderRecap(raw){
