@@ -82,7 +82,21 @@ def generate():
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
     out={"generated_at_utc":now.isoformat(),"season":season,"week":week,"status":"research_only_no_market_odds","players":results}
     p=Path("data/player-research.json");p.parent.mkdir(exist_ok=True)
-    p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
+    archive_path=Path("data/player-history.json")
+    try:
+        existing=json.loads(archive_path.read_text(encoding="utf-8"))
+        old=existing.get("players",[])
+    except (OSError,ValueError,TypeError):
+        old=[]
+    # Preserve original pregame forecasts; never rewrite past predictions.
+    seen={(str(x.get("game_id")),str(x.get("player_id")),str(x.get("stat_key"))) for x in old}
+    for item in results:
+        key=(str(item["game_id"]),str(item["player_id"]),str(item["stat_key"]))
+        if key not in seen:
+            old.append(item)
+            seen.add(key)
+    archive_path.write_text(json.dumps({"players":old},indent=2)+"\\n",encoding="utf-8")
+    p.write_text(json.dumps(out,indent=2)+"\\n",encoding="utf-8")
     print(f"Published {len(results)} player baselines for week {week}")
 
 if __name__=="__main__": generate()
