@@ -171,6 +171,7 @@ renderParlays();
  const weatherCache=new Map();
  const recapCache=new Map();
  let playerResearch=[];
+ let playerHistory=[];
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -200,6 +201,7 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
+  try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const h=await fetch('data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
   try{
@@ -225,22 +227,10 @@ renderParlays();
   const actual=g.state==='post'&&g.away.score!==null&&g.home.score!==null;
   const actualWinner=Number(g.away.score)===Number(g.home.score)?'TIE':Number(g.away.score)>Number(g.home.score)?canon(g.away.abbr):canon(g.home.abbr);
   const result=actual?(actualWinner==='TIE'?'Tied game':actualWinner===winner?'Pick correct':'Pick missed'):'Model prediction';
-  const diagnostics=p.analysis;
-  const teamStats=(x)=>{
-   if(!x)return '';
-   const f=x.recent_form;
-   const e=Number(x.offense_epa_rating),d=Number(x.defense_epa_rating);
-   return '<div><strong>'+esc(x.team)+' · recent form</strong>'+(f?'<span>Last '+f.games+': '+f.wins+' wins · '+(f.games-f.wins)+' losses/ties</span><div class="fd-metric"><span>Points scored / game</span><b>'+Number(f.avg_points_for).toFixed(1)+'</b></div><div class="fd-metric"><span>Points allowed / game</span><b>'+Number(f.avg_points_against).toFixed(1)+'</b></div><div class="fd-metric"><span>Average point margin</span><b>'+Number(f.avg_margin).toFixed(1)+'</b></div>':'<span>No recent form available</span>')+'<div class="fd-metric"><span>Adjusted offensive EPA rating</span><b>'+(Number.isFinite(e)?e.toFixed(3):'—')+'</b></div><div class="fd-metric"><span>Adjusted defensive EPA rating</span><b>'+(Number.isFinite(d)?d.toFixed(3):'—')+'</b></div><span>Model history: '+esc(x.games_used)+' prior games</span></div>';
-  };
-  const detail=diagnostics?'<div class="fd-analysis-grid">'+teamStats(diagnostics.away)+teamStats(diagnostics.home)+'</div><p class="fd-analytic-note">Offensive rating: higher generally indicates stronger offense. Defensive EPA allowed: lower generally indicates stronger defense. These are shrunk, opponent-adjusted model inputs, not league rankings. Recent form is descriptive, not an additional independent model input.</p><p class="fd-analytic-note">The score formula includes approximately '+Number(diagnostics.estimated_home_advantage_points||0).toFixed(1)+' points for home field. These inputs were measured before this matchup.</p>':'<p class="fd-analytic-note">Detailed team trends will appear after the next successful forecast update. This older prediction file contains only projected scores.</p>';
-
-  const formRow=x=>x&&x.recent_form&&Array.isArray(x.recent_form.results)?'<div class="fd-game-form">Last '+x.recent_form.results.length+': '+x.recent_form.results.map(z=>esc(z.result)+' '+esc(z.points_for)+'–'+esc(z.points_against)).join(' · ')+'</div>':'';
-  const components=diagnostics&&diagnostics.scoring_edge_components;
-  const homeEffect=components?Number(components.home_offense_vs_away_defense):NaN;
-  const awayEffect=components?Number(components.away_offense_vs_home_defense):NaN;
-  const why=diagnostics?'<div class="fd-why"><h4>Why '+esc(p.predicted_winner)+'?</h4><p>The model compares each offense against the opposing defense using opponent-adjusted, recency-weighted EPA per play. Here are the actual inputs behind this matchup:</p><div class="fd-evidence"><div><span>'+esc(g.away.abbr)+' offense EPA</span><strong>'+Number(diagnostics.away.offense_epa_rating).toFixed(3)+'</strong></div><div><span>'+esc(g.home.abbr)+' offense EPA</span><strong>'+Number(diagnostics.home.offense_epa_rating).toFixed(3)+'</strong></div><div><span>'+esc(g.away.abbr)+' defense EPA allowed</span><strong>'+Number(diagnostics.away.defense_epa_rating).toFixed(3)+'</strong></div><div><span>'+esc(g.home.abbr)+' defense EPA allowed</span><strong>'+Number(diagnostics.home.defense_epa_rating).toFixed(3)+'</strong></div></div>'+(components?'<p><strong>How the projected margin is built:</strong> '+esc(g.home.abbr)+' matchup contribution '+homeEffect.toFixed(1)+' pts, '+esc(g.away.abbr)+' matchup contribution '+awayEffect.toFixed(1)+' pts, plus '+Number(components.home_field_points).toFixed(1)+' pts for home field. Their difference gives the model margin (before score rounding).</p>':'')+'<p><strong>Recent results (descriptive):</strong></p><p>'+esc(g.away.abbr)+formRow(diagnostics.away)+'</p><p>'+esc(g.home.abbr)+formRow(diagnostics.home)+'</p><p>EPA measures value added per play; positive offensive EPA is favorable, while lower defensive EPA allowed is favorable. Recent game results are shown for context and are not separately double-counted in the formula.</p></div>':'<div class="fd-why"><h4>Detailed statistical explanation pending</h4><p>This published prediction only includes a projected score. The numeric offensive/defensive EPA, recent results and margin components were not saved with it, so we cannot honestly reconstruct the specific reason for this pick. The next successful forecast publication will include those numbers.</p></div>';
-  const matchupLinks='<div class="fd-extras"><h4>Weather, injuries & quarterback checks</h4><p class="fd-weather" data-weather-team="'+esc(g.home.abbr)+'" data-weather-date="'+esc(g.date)+'" data-loading="true">Checking kickoff forecast…</p><p>Weather is contextual only and is not included in this v2 score projection. Roof status is based on venue type, not an actual game-day roof decision.</p><a target="_blank" rel="noopener noreferrer" href="https://www.espn.com/nfl/injuries">NFL injury reports ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.espn.com/nfl/depth">QB depth charts ↗</a><p>Confirm starters and injury designations at the source. These inputs have not been verified for this matchup or added to the prediction model.</p></div>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN V2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Edge: +'+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted final: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div><div class="fd-muted">Model estimate · '+total.toFixed(1)+' total points</div><details class="fd-reason"><summary>View matchup stats & reasoning</summary><p>The model expects '+esc(p.predicted_winner)+' to score about '+margin.toFixed(1)+' more points than its opponent, based on recent and opponent-adjusted EPA performance. The combined scoring estimate is '+total.toFixed(1)+' points.</p><p><strong>What this does not mean:</strong> The point difference is not a win probability, confidence rating or confirmed betting advantage. This forecast does not incorporate verified current injuries, quarterback changes, weather or live DraftKings odds.</p>'+why+detail+matchupLinks+'</details></div>';
+  const d=p.analysis;
+  const metric=(team,key)=>d&&d[team]&&Number.isFinite(Number(d[team][key]))?Number(d[team][key]).toFixed(3):'—';
+  const why=d?'<div class="fd-evidence"><div><span>'+esc(g.away.abbr)+' offense EPA</span><strong>'+metric('away','offense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' offense EPA</span><strong>'+metric('home','offense_epa_rating')+'</strong></div><div><span>'+esc(g.away.abbr)+' defense EPA allowed</span><strong>'+metric('away','defense_epa_rating')+'</strong></div><div><span>'+esc(g.home.abbr)+' defense EPA allowed</span><strong>'+metric('home','defense_epa_rating')+'</strong></div></div>':'<p>EPA breakdown unavailable for this archived forecast.</p>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<details class="fd-reason"><summary>Why this pick? · EPA comparison</summary>'+why+'<p class="fd-analytic-note">Higher offensive EPA and lower defensive EPA allowed are better. These are model inputs, not betting probabilities.</p></details></div>';
  }
 
  function renderRecap(raw){
@@ -264,8 +254,50 @@ renderParlays();
   if(g.state==='post')return '';
   const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
   if(!matches.length)return '';
-  const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,5);
-  return '<details class="fd-props"><summary>Player yardage projections · '+best.length+' players</summary><div class="fd-props-body"><p>Research baselines only. Not ranked bets: no verified DraftKings lines, odds, injuries, or calibrated probabilities.</p>'+best.map(x=>'<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.team)+' · '+esc(x.market)+'</strong><span>Projected '+esc(x.projection)+' · Last 3 avg '+esc(x.last_3_avg)+' · Last 5 avg '+esc(x.last_5_avg)+' · '+esc(x.games_used)+' prior games</span><span>Last five: '+esc((x.last_5||[]).join(', '))+'</span><span>Why: recent '+esc(x.market.toLowerCase())+' production; weighted 55% last 3 and 45% last 5. Opponent-specific and injury adjustments not yet validated.</span></div>').join('')+'</div></details>';
+  const best=[...matches].sort((a,b)=>b.last_5_avg-a.last_5_avg).slice(0,8);
+  return '<details class="fd-props"><summary>Player projections · '+best.length+'</summary><div class="fd-props-body">'+best.map(x=>'<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.market)+'</strong><span>Projected '+esc(x.projection)+' · Last 5 avg '+esc(x.last_5_avg)+' · Last 3 avg '+esc(x.last_3_avg)+'</span></div>').join('')+'<p>Research projections only; not sportsbook picks.</p></div></details>';
+ }
+ function completedPlayerPanel(g){
+  const rows=playerHistory.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
+  if(!rows.length)return '';
+  return '<details class="fd-props fd-player-results" data-game-id="'+esc(g.id)+'" data-home="'+esc(g.home.abbr)+'" data-away="'+esc(g.away.abbr)+'"><summary>Player projections vs actual · '+rows.length+'</summary><div class="fd-props-body">Tap to compare with final box score.</div></details>';
+ }
+ function actualPlayerResults(raw,rows){
+  const all=(raw.boxscore?.players||[]).flatMap(t=>(t.statistics||[]).flatMap(group=>{
+   const labels=(group.labels||[]).map(x=>String(x).toUpperCase());
+   const keys=(group.keys||[]).map(x=>String(x).toLowerCase());
+   return (group.athletes||[]).map(a=>({name:String(a.athlete?.displayName||''),labels,keys,stats:a.stats||[]}));
+  }));
+  const clean=x=>String(x||'').toLowerCase().replace(/[^a-z]/g,'');
+  const columns={passing_yards:['YDS','passingYards','passing_yards'],rushing_yards:['YDS','rushingYards','rushing_yards'],receiving_yards:['YDS','receivingYards','receiving_yards']};
+  let graded=0;
+  const cards=rows.map(x=>{
+   const expected=Number(x.projection);
+   const key=String(x.stat_key);
+   const match=all.find(a=>clean(a.name)===clean(x.player)&&((key==='passing_yards'&&a.keys.some(k=>k.includes('pass')))||(key==='rushing_yards'&&a.keys.some(k=>k.includes('rush')))||(key==='receiving_yards'&&a.keys.some(k=>k.includes('receiv')))));
+   let actual=null;
+   if(match){
+    let idx=match.keys.findIndex(k=>k===key||k===key.replaceAll('_','')||k===key.replace(/_([a-z])/g,(_,v)=>v.toUpperCase()).toLowerCase());
+    if(idx<0)idx=match.labels.indexOf('YDS');
+    if(idx>=0&&idx<match.stats.length&&Number.isFinite(Number(match.stats[idx])))actual=Number(match.stats[idx]);
+   }
+   const available=actual!==null&&Number.isFinite(expected);
+   if(available)graded++;
+   const delta=available?actual-expected:null;
+   const outcome=!available?'Not graded':Math.abs(delta)<=0.5?'On target':delta>0?'Above projection':'Below projection';
+   return '<div class="fd-prop-item"><strong>'+esc(x.player)+' · '+esc(x.market)+'</strong><span>Projected '+esc(expected.toFixed(1))+' · Actual '+(available?esc(actual):'Unavailable')+' · '+esc(outcome)+(available?' ('+(delta>=0?'+':'')+delta.toFixed(1)+' yds)':'')+'</span></div>';
+  }).join('');
+  return '<p>'+graded+' of '+rows.length+' projections matched to official final-game box-score values. Above/below refers to our projection, not a sportsbook bet result.</p>'+cards;
+ }
+ async function loadCompletedPlayerResults(el){
+  const body=el.querySelector('.fd-props-body'),id=el.dataset.gameId;
+  body.textContent='Loading final player statistics…';
+  const rows=playerHistory.filter(x=>String(x.game_id).includes('_'+String(id))||([canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.team))&&[canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.opponent))));
+  try{
+   let raw=recapCache.get(id);
+   if(!raw){const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(id));if(!response.ok)throw Error('ESPN unavailable');raw=await response.json();recapCache.set(id,raw);}
+   body.innerHTML=actualPlayerResults(raw,rows);
+  }catch(e){body.textContent='Final player statistics unavailable. Try again later.';}
  }
  function renderPropResearch(raw,isFinal){
   const players=(raw.boxscore?.players||[]);
@@ -363,14 +395,14 @@ renderParlays();
      const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
-     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+propPanel(g)+(isFinal?'<details class="fd-props" data-game-id="'+esc(g.id)+'" data-final="true"><summary>Player stats & prop review</summary><div class="fd-props-body">Tap to load player stats.</div></details>':'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
+     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+propPanel(g)+(isFinal?completedPlayerPanel(g):'')+(isFinal?'<details class="fd-props" data-game-id="'+esc(g.id)+'" data-final="true"><summary>Player stats & prop review</summary><div class="fd-props-body">Tap to load player stats.</div></details>':'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join(''):'<div class="score-placeholder">No games match this filter.</div>';
    // Weather is fetched only if a user expands a specific matchup.
    
   }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
- container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-reason')&&e.target.open)showWeather();if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-props')&&e.target.open)loadPropResearch(e.target);},true);
+ container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-reason')&&e.target.open)showWeather();if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-player-results')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();
