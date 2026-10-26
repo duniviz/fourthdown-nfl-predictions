@@ -179,6 +179,15 @@ def generate():
                     allocated=allocation.get((player,metric))
                     if allocated is None: continue
                     adjusted=0.75*allocated+0.25*expected_volume
+                    # A newly elevated player with fewer than three observed
+                    # games cannot be assumed to absorb the entire missing
+                    # teammate workload without an independently verified role.
+                    # Cap extrapolation at 20% above their observed carry/target
+                    # workload until at least three games establish the role.
+                    limited_sample=len(stats)<3
+                    if limited_sample:
+                        observed=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
+                        adjusted=min(adjusted,observed*1.20)
                     defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
@@ -190,6 +199,8 @@ def generate():
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
                         "market":label,"stat_key":metric,"games_used":len(stats),
+                        "sample_warning":"Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None,
+                        "bet_recommendation":False,
                         "last_5":[round(x,1) for x in values],
                         "last_5_avg":round(avg,1),
                         "last_3_avg":round(sum(values[-3:])/min(3,len(values)),1),
