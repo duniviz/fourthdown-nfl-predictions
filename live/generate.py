@@ -84,12 +84,13 @@ def forecast(schedules, team_games, now=None):
         form[g["home_team"]].append((w,hs,ass))
         form[g["away_team"]].append((w,ass,hs))
     def team_form(team):
-        recent=sorted(form[team],key=lambda x:x[0])[-3:]
+        recent=sorted(form[team],key=lambda x:x[0])[-5:]
         if not recent: return None
         return {"games":len(recent),"wins":sum(pf>pa for _,pf,pa in recent),
                 "avg_points_for":round(sum(pf for _,pf,pa in recent)/len(recent),1),
                 "avg_points_against":round(sum(pa for _,pf,pa in recent)/len(recent),1),
-                "avg_margin":round(sum(pf-pa for _,pf,pa in recent)/len(recent),1)}
+                "avg_margin":round(sum(pf-pa for _,pf,pa in recent)/len(recent),1),
+                "results":[{"week":w,"points_for":int(pf),"points_against":int(pa),"result":"W" if pf>pa else "L" if pf<pa else "T"} for w,pf,pa in recent]}
     # Rank all clubs with enough prior observations; lower defensive EPA is better.
     eligible={t:rating(t) for t in set(form)|set(histories)}
     eligible={t:v for t,v in eligible.items() if v[2]>=3}
@@ -117,7 +118,8 @@ def forecast(schedules, team_games, now=None):
             "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"offense_rank":offense_rank.get(g["home_team"]),"defense_rank":defense_rank.get(g["home_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["home_team"])},
                         "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
                         "estimated_home_advantage_points":1.5,
-                        "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last three completed prior games."}})
+                        "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5},
+                        "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."}})
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
     return {"model":"FOURTHDOWN v2","generated_at_utc":now.isoformat(),
             "season":season,"week":target_week,"status":"research_uncalibrated",
