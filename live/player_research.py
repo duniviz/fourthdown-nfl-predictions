@@ -46,6 +46,19 @@ def generate():
         history[(team,player)].append(r)
         for metric,_,_ in METRICS:
             if opp: opponents[opp][metric].append(num(r.get(metric)))
+    # nflverse player registry maps GSIS player IDs in weekly stats to ESPN
+    # athlete IDs used by ESPN's public headshot CDN. Fail open to initials.
+    espn_ids={}
+    try:
+        registry=nfl.load_players().to_dicts()
+        for athlete in registry:
+            gsis=str(athlete.get("gsis_id") or athlete.get("player_id") or "").strip()
+            espn=str(athlete.get("espn_id") or "").strip()
+            if gsis and espn.isdigit():
+                espn_ids[gsis]=espn
+        print(f"Mapped {len(espn_ids)} player IDs to ESPN headshots")
+    except Exception as exc:
+        print(f"Player headshot lookup unavailable: {exc}")
     results=[]
     for game in games:
         for team,opp in ((game["home_team"],game["away_team"]),(game["away_team"],game["home_team"])):
@@ -66,6 +79,7 @@ def generate():
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
+                        "espn_athlete_id":espn_ids.get(player),
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
                         "market":label,"stat_key":metric,"games_used":len(stats),
