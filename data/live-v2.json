@@ -1,10 +1,10 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-10-26T04:49:17.059245+00:00",
+  "generated_at_utc": "2026-10-26T05:27:04.406494+00:00",
   "season": 2026,
   "week": 7,
   "status": "research_uncalibrated",
-  "note": "Pregame EPA-only projections; no injuries, QB updates, live odds or calibrated win probabilities.",
+  "note": "Pregame EPA projections with experimental QB injury splits when data supports them; other injuries and weather not numerically adjusted.",
   "games": [
     {
       "game_id": "2026_07_DAL_PHI",
@@ -18,6 +18,22 @@
       "projected_margin_home": -1.47,
       "projected_total": 46.43,
       "predicted_winner": "DAL",
+      "injury_adjustments": {
+        "PHI": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "DAL": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
       "analysis": {
         "home": {
           "team": "PHI",
