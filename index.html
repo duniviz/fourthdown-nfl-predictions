@@ -216,6 +216,8 @@ renderParlays();
  const weatherCache=new Map();
  const recapCache=new Map();
  let playerResearch=[];
+ let simulationGames=[];
+ let simulationPlayers=[];
  let playerHistory=[];
  let injuryData=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
@@ -247,6 +249,7 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
+  try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
@@ -309,12 +312,12 @@ function fdOpenMatchup(g){
      const validLine=x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(line);
      const edge=validProjection&&validLine?projection-line:null;
      const direction=edge===null?'No verified line':edge>0?'OVER':edge<0?'UNDER':'EVEN';
-     return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div></article>';
+     return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+'</article>';
    }).join('')+'</div>';
  }).join('');
  const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.length?propCards:'<p>Player projections unavailable</p>')+'<p class="fd-modal-muted">DK line appears only when verified; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3><p class="fd-modal-muted">'+(isFinal?'No archived pregame DraftKings lines were saved for this matchup.':'Verified live DK spread, total and moneyline are not currently available.')+' No odds are invented.</p></div>';
- const score=p?'<div class="fd-modal-pick"><h3>FOURTHDOWN v2 · Model prediction</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+num(p.projected_away_score)+'</div><small>AT</small><div><small>'+esc(home)+'</small>'+num(p.projected_home_score)+'</div></div><p><strong>Pick: '+esc(p.predicted_winner)+' wins</strong> · edge '+num(Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score)))+' pts</p><p class="fd-modal-muted">Projected total: '+num(p.projected_total)+' · '+impact+'</p></div>' :'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
+ const score=p?'<div class="fd-modal-pick"><h3>FOURTHDOWN v2 · Model prediction</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+num(p.projected_away_score)+'</div><small>AT</small><div><small>'+esc(home)+'</small>'+num(p.projected_home_score)+'</div></div><p><strong>Pick: '+esc(p.predicted_winner)+' wins</strong> · edge '+num(Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score)))+' pts</p><p class="fd-modal-muted">Projected total: '+num(p.projected_total)+' · '+impact+'</p>'+simScore+'</div>' :'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">Historical game-day injury snapshot not saved. Current injury reports would not describe this completed game accurately.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
  document.getElementById('fd-modal-body').innerHTML=header+score+market+stats+(isFinal?historicalInjury:injury)+props;
