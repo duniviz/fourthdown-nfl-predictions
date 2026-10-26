@@ -74,6 +74,22 @@ def forecast(schedules, team_games, now=None):
         den=4.0+sum(weights)
         return (sum(weight*off for weight,(_,off,_) in zip(weights,hist))/den,
                 sum(weight*de for weight,(_,_,de) in zip(weights,hist))/den,len(hist))
+    # Transparent, pregame-only team form; completed prior weeks only.
+    form=defaultdict(list)
+    for g in games:
+        w=int(g["week"])
+        if w>=target_week or (w,g["home_team"],g["away_team"]) not in complete: continue
+        hs,ass=number(g.get("home_score")),number(g.get("away_score"))
+        if hs is None or ass is None: continue
+        form[g["home_team"]].append((w,hs,ass))
+        form[g["away_team"]].append((w,ass,hs))
+    def team_form(team):
+        recent=sorted(form[team],key=lambda x:x[0])[-3:]
+        if not recent: return None
+        return {"games":len(recent),"wins":sum(pf>pa for _,pf,pa in recent),
+                "avg_points_for":round(sum(pf for _,pf,pa in recent)/len(recent),1),
+                "avg_points_against":round(sum(pa for _,pf,pa in recent)/len(recent),1),
+                "avg_margin":round(sum(pf-pa for _,pf,pa in recent)/len(recent),1)}
     results=[]
     for dt,g in target_games:
         ho,hd,hn=rating(g["home_team"])
@@ -90,7 +106,11 @@ def forecast(schedules, team_games, now=None):
             "projected_home_score":round(home_points,1),
             "projected_away_score":round(away_points,1),
             "projected_margin_home":round(margin,2),"projected_total":round(total,2),
-            "predicted_winner":g["home_team"] if margin>0 else g["away_team"]})
+            "predicted_winner":g["home_team"] if margin>0 else g["away_team"],
+            "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"recent_form":team_form(g["home_team"])},
+                        "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"recent_form":team_form(g["away_team"])},
+                        "estimated_home_advantage_points":1.5,
+                        "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last three completed prior games."}})
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
     return {"model":"FOURTHDOWN v2","generated_at_utc":now.isoformat(),
             "season":season,"week":target_week,"status":"research_uncalibrated",
