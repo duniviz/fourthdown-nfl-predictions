@@ -10,7 +10,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:95px}
 body{background:radial-gradient(ellipse at 85% -10%,#124553 0,transparent 35%),radial-gradient(ellipse at 0 35%,#111d39 0,transparent 32%),#060c15}
 .top{background:#08111de8;border-bottom:1px solid #274052}
-.nav{min-height:76px}.logo{font-size:23px;letter-spacing:-1.1px}
+.nav{min-height:76px}.logo{font-size:23px;letter-spacing:-1.1px;display:flex;align-items:center;gap:7px;flex-wrap:nowrap;white-space:nowrap;min-width:0}.logo .logo-subtitle{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:0;white-space:nowrap}
 .hero{padding-top:56px;padding-bottom:24px;position:relative}
 .hero:before{content:"";position:absolute;right:0;top:0;width:42%;height:100%;background:repeating-linear-gradient(90deg,transparent 0 58px,#42e9c008 59px 60px);pointer-events:none}
 .hero h1{text-wrap:balance;text-shadow:0 8px 50px #00e3b51c}
@@ -39,13 +39,13 @@ body{background:radial-gradient(ellipse at 85% -10%,#124553 0,transparent 35%),r
 .scorecard a{color:#70e6ca;text-decoration:none}
 .score-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 .score-tools button{background:#172c42;color:#e7f6ff;border:1px solid #36516a;padding:7px 12px;border-radius:9px;cursor:pointer}
-.score-placeholder{padding:24px;border:1px dashed #395068;border-radius:15px;color:#a8bed2;background:#0d1c2b}
+.projection-panel{margin-top:13px;padding:12px 13px;border:1px solid #285d59;background:#102d33;border-radius:11px}.projection-label{font-size:10px;letter-spacing:.09em;color:#70f2d2;font-weight:900;margin-bottom:8px}.projection-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px}.projection-line strong{font-size:16px;color:#f2fbff}.projection-note{font-size:10px;color:#9bb8bd;margin-top:7px}.score-placeholder{padding:24px;border:1px dashed #395068;border-radius:15px;color:#a8bed2;background:#0d1c2b}
 #score-status{margin:8px 0 15px}
 .model-kicker{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 @media(max-width:950px){.scoreboard{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.scoreboard{grid-template-columns:1fr}.hero{padding-top:35px}.dashboard-strip{gap:7px}.dash-chip{font-size:10px;padding:7px 10px}.scorecard{padding:16px}.links{display:none}}
+@media(max-width:600px){.nav{min-height:64px;gap:8px;flex-wrap:nowrap}.nav .logo{font-size:clamp(17px,4.6vw,23px);letter-spacing:-.8px}.nav .logo-subtitle{display:none}.nav>.pill{font-size:10px;padding:9px 10px;white-space:nowrap;flex-shrink:0}.scoreboard{grid-template-columns:1fr}.hero{padding-top:35px}.dashboard-strip{gap:7px}.dash-chip{font-size:10px;padding:7px 10px}.scorecard{padding:16px}.links{display:none}}
 </style></head><body>
-<header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span style="font-size:12px;color:var(--muted);font-weight:500">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="#live-v2">V2 Forecasts</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
+<header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="#live-v2">V2 Forecasts</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
 <div class="stats"><div class="stat"><strong>14</strong><small>Games on full schedule</small></div><div class="stat"><strong>10</strong><small>Game score forecasts</small></div><div class="stat"><strong>1</strong><small>Speculative ATS selection</small></div><div class="stat"><strong>—</strong><small>Verified ROI (not graded)</small></div></div>
 <div class="dashboard-strip"><span class="dash-chip"><span class="live-dot pulse"></span> NFL GAME CENTER</span><span class="dash-chip">V2 · EPA MODEL</span><span class="dash-chip">AUTOMATED FORECASTS</span><span class="dash-chip">DRAFTKINGS SNAPSHOTS</span></div>
@@ -155,6 +155,32 @@ renderParlays();
  const label=document.getElementById('score-refresh-label');
  const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const prettyScore=s=>s===null||s===undefined||s===''?'–':esc(s);
+ const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
+ const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
+ let forecasts=[];
+ async function loadForecasts(){
+  try{
+   const response=await fetch('/data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('No forecast');
+   const d=await response.json();
+   const stamp=new Date(d.generated_at_utc);
+   if(!Array.isArray(d.games)||!Number.isFinite(stamp.getTime())||Date.now()-stamp.getTime()>120*3600000){forecasts=[];return;}
+   forecasts=d.games.filter(g=>Number.isFinite(Number(g.projected_home_score))&&Number.isFinite(Number(g.projected_away_score)));
+  }catch(e){forecasts=[];}
+ }
+ function getProjection(g){
+  const kickoff=new Date(g.date).getTime();
+  return forecasts.find(p=>canon(p.home)===canon(g.home.abbr)&&canon(p.away)===canon(g.away.abbr)&&Math.abs(new Date(p.kickoff_utc).getTime()-kickoff)<12*3600000);
+ }
+ function projectionHtml(g){
+  const p=getProjection(g);
+  if(!p)return '';
+  const away=Number(p.projected_away_score).toFixed(1),home=Number(p.projected_home_score).toFixed(1);
+  const winner=canon(p.predicted_winner);
+  const actual=g.state==='post'&&g.away.score!==null&&g.home.score!==null;
+  const outcome=actual?' · '+(Number(g.away.score)===Number(g.home.score)?'TIE':(Number(g.away.score)>Number(g.home.score)?canon(g.away.abbr):canon(g.home.abbr))===winner?'PICK CORRECT':'PICK MISSED'):'';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN V2 · PREGAME MODEL'+esc(outcome)+'</div><div class="projection-line"><span>'+esc(g.away.abbr)+' <strong>'+away+'</strong> · '+esc(g.home.abbr)+' <strong>'+home+'</strong></span><span>Pick: <strong>'+esc(p.predicted_winner)+'</strong></span></div><div class="projection-note">Projected final scores, not live scores · EPA-only research model</div></div>';
+ }
  async function update(){
   label.textContent='Checking…';
   try{
@@ -190,13 +216,13 @@ renderParlays();
      const kickoff=new Date(g.date);
      const title=active?'IN PROGRESS':isFinal?'FINAL':'UPCOMING';
      const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
-     const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+prettyScore(t.score)+'</span></div>';
+     const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
-     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div><div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
+     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+projectionHtml(g)+'<div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join('');
   }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
- update();setInterval(update,60000);
+ loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();
 </script></body></html>
