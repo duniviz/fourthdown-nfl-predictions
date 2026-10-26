@@ -91,13 +91,61 @@ def generate():
         print(f"Mapped {len(espn_ids)} player IDs to ESPN headshots")
     except Exception as exc:
         print(f"Player headshot lookup unavailable: {exc}")
+    # Opponent adjustments use completed prior games only. Aggregate TEAM totals
+    # rather than player appearances, and shrink small samples toward neutral.
+    team_week=defaultdict(lambda:defaultdict(float))
+    team_volume_week=defaultdict(lambda:defaultdict(float))
+    defense_week=defaultdict(lambda:defaultdict(float))
+    for (team,player),records in history.items():
+        for record in records:
+            key=(team,int(record["week"]))
+            opp=str(record.get("opponent_team") or "")
+            for metric,_,volume in METRICS:
+                team_week[key][metric]+=max(0,num(record.get(metric)))
+                team_volume_week[key][volume]+=max(0,num(record.get(volume)))
+                if opp:
+                    defense_week[(opp,int(record["week"]))][metric]+=max(0,num(record.get(metric)))
+    league_mean={}
+    defense_mean={}
+    for metric,_,_ in METRICS:
+        league_values=[v[metric] for v in team_week.values() if v[metric]>0]
+        league_mean[metric]=sum(league_values)/len(league_values) if league_values else 1
+        for team in {key[0] for key in defense_week}:
+            vals=[v[metric] for key,v in defense_week.items() if key[0]==team and v[metric]>0]
+            defense_mean[(team,metric)]=(sum(vals)/len(vals),len(vals)) if vals else (league_mean[metric],0)
     results=[]
     for game in games:
         for team,opp in ((game["home_team"],game["away_team"]),(game["away_team"],game["home_team"])):
+            # Forecast team opportunity totals before allocating player workloads.
+            # Blend recent team play volume with season history; no future games.
+            team_keys=sorted((k for k in team_volume_week if k[0]==team),key=lambda k:k[1])
+            team_targets={}
+            for metric,_,volume in METRICS:
+                series=[team_volume_week[k][volume] for k in team_keys if team_volume_week[k][volume]>0]
+                if series:
+                    recent=series[-4:]
+                    team_targets[volume]=0.65*sum(recent)/len(recent)+0.35*sum(series)/len(series)
+            # Each player's raw expected share is reconciled to the team total.
+            allocation={}
+            for metric,_,volume in METRICS:
+                eligible=[]
+                for (t,pid),records in history.items():
+                    if t!=team or len(records)<3: continue
+                    recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
+                    last_week=int(recent[-1]["week"])
+                    # Do not automatically reallocate to long-inactive players.
+                    if week-last_week>2: continue
+                    vol=[max(0,num(x.get(volume))) for x in recent]
+                    raw=0.7*sum(vol[-3:])/len(vol[-3:])+0.3*sum(vol)/len(vol)
+                    if raw>0: eligible.append((pid,raw))
+                total=sum(v for _,v in eligible)
+                target=team_targets.get(volume)
+                for pid,raw in eligible:
+                    allocation[(pid,metric)]=target*raw/total if total>0 and target is not None else raw
             for (t,player),stats in history.items():
                 if t!=team: continue
                 stats=sorted(stats,key=lambda x:int(x["week"]))
-                if len(stats)<3: continue
+                if len(stats)<3 or week-int(stats[-1]["week"])>2: continue
                 for metric,label,volume in METRICS:
                     last=stats[-5:]
                     values=[num(x.get(metric)) for x in last]
@@ -108,6 +156,15 @@ def generate():
                     # position-adjusted; do not use it as an unvalidated multiplier.
                     opp_values=opponents[opp][metric]
                     baseline,uncertainty,expected_volume,expected_rate=project_yards(stats,metric,volume)
+                    # Team-consistent workload allocation; conservative defensive
+                    # adjustment (capped ±10%, shrunk by observed games).
+                    allocated=allocation.get((player,metric))
+                    if allocated is None: continue
+                    adjusted=0.75*allocated+0.25*expected_volume
+                    defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
+                    ratio=defensive_avg/max(1,league_mean[metric])
+                    adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
+                    baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment),1)
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
@@ -123,9 +180,11 @@ def generate():
                         "opponent_player_appearance_avg":round(sum(opp_values)/len(opp_values),1) if len(opp_values)>=10 else None,
                         "projection":baseline,
                         "uncertainty_yards":uncertainty,
-                        "expected_opportunities":expected_volume,
+                        "expected_opportunities":round(adjusted,1),
+                        "opponent_adjustment":round(adjustment,3),
+                        "team_opportunity_allocation":True,
                         "expected_yards_per_opportunity":expected_rate,
-                        "method":"Recency-weighted opportunities × regularized yards per opportunity, blended with season average; uncalibrated research forecast",
+                        "method":"Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent adjustment; uncalibrated research forecast",
                         "bet_recommendation":False,
                     })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
