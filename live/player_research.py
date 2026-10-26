@@ -113,6 +113,20 @@ def generate():
         for team in {key[0] for key in defense_week}:
             vals=[v[metric] for key,v in defense_week.items() if key[0]==team and v[metric]>0]
             defense_mean[(team,metric)]=(sum(vals)/len(vals),len(vals)) if vals else (league_mean[metric],0)
+    # Availability overrides apply only to the exact verified game/week.
+    # Never infer that a player is active from a missing injury report.
+    overrides={}
+    verified=Path("data/verified-week7-injuries.json")
+    if verified.exists() and season==2026 and week==7:
+        snap=json.loads(verified.read_text(encoding="utf-8"))
+        if snap.get("season")==season and snap.get("week")==week:
+            for team,rows in snap.get("teams",{}).items():
+                for name,position,status in rows:
+                    overrides[(team,name.casefold())]=status.lower()
+            # Confirmed IR and starting-QB news, scoped to this matchup only.
+            overrides[("PHI","jalen hurts")]="out"
+            overrides[("PHI","will shipley")]="out"
+            overrides[("PHI","carson steele")]="out"
     results=[]
     for game in games:
         for team,opp in ((game["home_team"],game["away_team"]),(game["away_team"],game["home_team"])):
@@ -130,7 +144,8 @@ def generate():
             for metric,_,volume in METRICS:
                 eligible=[]
                 for (t,pid),records in history.items():
-                    if t!=team or len(records)<2: continue
+                    if t!=team or len(records)<1: continue
+                    if overrides.get((team,str(records[-1].get("player_display_name") or records[-1].get("player_name") or "").casefold())) in ("out","inactive","ir"): continue
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
                     # Do not automatically reallocate to long-inactive players.
@@ -145,7 +160,10 @@ def generate():
             for (t,player),stats in history.items():
                 if t!=team: continue
                 stats=sorted(stats,key=lambda x:int(x["week"]))
-                if len(stats)<2 or week-int(stats[-1]["week"])>2: continue
+                if len(stats)<1 or week-int(stats[-1]["week"])>2: continue
+                player_name=str(stats[-1].get("player_display_name") or stats[-1].get("player_name") or player)
+                availability=overrides.get((team,player_name.casefold()),"unconfirmed")
+                if availability in ("out","inactive","ir"): continue
                 for metric,label,volume in METRICS:
                     last=stats[-5:]
                     values=[num(x.get(metric)) for x in last]
