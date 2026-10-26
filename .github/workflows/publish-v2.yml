@@ -32,13 +32,17 @@ jobs:
         run: python -m live.generate
       - name: Generate player research baselines
         run: python -m live.player_research
+      - name: Fetch DraftKings NFL props from ParlayAPI
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: python -m live.dk_odds
       - name: Refresh stadium weather forecasts
         run: python -m live.weather
       - name: Publish forecast and player research JSON
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json
+          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
