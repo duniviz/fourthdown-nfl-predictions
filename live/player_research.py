@@ -192,6 +192,31 @@ def generate():
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment),1)
+                    # Explicit RB workload scenarios when a listed starting RB
+                    # is questionable. Never treat "questionable" as "out".
+                    scenario=None
+                    if metric=="rushing_yards" and team=="PHI" and player_name.casefold()=="dameon pierce" and overrides.get(("PHI","saquon barkley"))=="questionable":
+                        # Barkley fully active: backup gets only a modest
+                        # fraction of recent carries. Limited: intermediate.
+                        # Out: reallocated carries, but still cap speculative
+                        # workload growth for a player with <3 observations.
+                        recent_carries=sum(max(0,num(x.get("carries"))) for x in stats[-3:])/min(3,len(stats))
+                        full_carries=min(adjusted,recent_carries*0.45)
+                        limited_carries=min(adjusted,recent_carries*0.80)
+                        out_carries=adjusted
+                        yard_per_carry=baseline/max(0.1,adjusted)
+                        scenario={
+                            "trigger_player":"Saquon Barkley",
+                            "trigger_status":"questionable",
+                            "note":"Conditional research scenarios, not verified snap-share forecasts. Do not rank as a confirmed betting edge until starter availability and role are verified.",
+                            "full_go":{"carries":round(full_carries,1),"projection":round(full_carries*yard_per_carry,1)},
+                            "limited":{"carries":round(limited_carries,1),"projection":round(limited_carries*yard_per_carry,1)},
+                            "out":{"carries":round(out_carries,1),"projection":round(out_carries*yard_per_carry,1)}
+                        }
+                        # Default to the conservative active-starter scenario
+                        # until a verified inactive designation arrives.
+                        adjusted=full_carries
+                        baseline=scenario["full_go"]["projection"]
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
@@ -208,6 +233,7 @@ def generate():
                         "opportunity_type":volume,
                         "opponent_player_appearance_avg":round(sum(opp_values)/len(opp_values),1) if len(opp_values)>=10 else None,
                         "projection":baseline,
+                        "injury_scenarios":scenario,
                         "uncertainty_yards":uncertainty,
                         "expected_opportunities":round(adjusted,1),
                         "opponent_adjustment":round(adjustment,3),
