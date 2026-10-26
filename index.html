@@ -309,7 +309,7 @@ renderParlays();
   const name=String(x.player||'').trim().toLowerCase();
   const match=rows.find(r=>String(r.player||'').trim().toLowerCase()===name);
   const status=String(match?.status||'').toLowerCase();
-  if(/\\b(out|inactive|injured reserve|ir|suspended|pup|physically unable|non-football injury|nfi)\\b/.test(status))return true;
+  if(/\b(out|inactive|injured reserve|ir|suspended|pup|physically unable|non-football injury|nfi)\b/.test(status))return true;
   // Confirmed long-term absence reported for the current 2026 season.
   if(name==='jalen hurts'&&canon(x.team)==='PHI'&&Number(x.season||2026)===2026)return true;
   return false;
