@@ -130,7 +130,7 @@ def generate():
             for metric,_,volume in METRICS:
                 eligible=[]
                 for (t,pid),records in history.items():
-                    if t!=team or len(records)<3: continue
+                    if t!=team or len(records)<2: continue
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
                     # Do not automatically reallocate to long-inactive players.
@@ -145,12 +145,12 @@ def generate():
             for (t,player),stats in history.items():
                 if t!=team: continue
                 stats=sorted(stats,key=lambda x:int(x["week"]))
-                if len(stats)<3 or week-int(stats[-1]["week"])>2: continue
+                if len(stats)<2 or week-int(stats[-1]["week"])>2: continue
                 for metric,label,volume in METRICS:
                     last=stats[-5:]
                     values=[num(x.get(metric)) for x in last]
                     avg=sum(values)/len(values)
-                    if avg< (85 if metric=="passing_yards" else 18): continue
+                    # Eligibility follows meaningful recent opportunity, not a high yardage cutoff.\n                    # Include backups and secondary receivers while excluding zero-role players.\n                    if max(num(x.get(volume)) for x in last)<(8 if metric=="passing_yards" else 2): continue
                     v=[num(x.get(volume)) for x in last]
                     # Opponent allowed yards per player appearance is descriptive, not
                     # position-adjusted; do not use it as an unvalidated multiplier.
@@ -205,6 +205,6 @@ def generate():
             seen.add(key)
     archive_path.write_text(json.dumps({"players":old},indent=2)+"\n",encoding="utf-8")
     p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
-    print(f"Published {len(results)} player baselines for week {week}")
+    print(f"Published {len(results)} player baselines across {len(games)} games for week {week}")
 
 if __name__=="__main__": generate()
