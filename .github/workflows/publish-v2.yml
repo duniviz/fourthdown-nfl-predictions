@@ -1,6 +1,9 @@
 name: Publish weekly v2 forecasts
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/forecast-refresh.txt'
   schedule:
     - cron: '15 13 * * 2,4,6,0'
 permissions:
