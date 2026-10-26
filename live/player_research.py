@@ -2,6 +2,8 @@
 Only completed prior weeks are used. No sportsbook odds or injury adjustments.
 """
 import json
+import math
+import statistics
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +17,36 @@ METRICS = (
 def num(x):
     try: return float(x or 0)
     except (TypeError, ValueError): return 0.0
+
+def project_yards(stats, metric, volume):
+    """Volume x efficiency with regression and an uncertainty estimate.
+
+    Avoid chasing short-term yardage spikes. This is a research forecast,
+    not a calibrated sportsbook edge or a probability of covering a line.
+    """
+    recent=stats[-8:]
+    opportunities=[max(0.0,num(r.get(volume))) for r in recent]
+    yards=[max(0.0,num(r.get(metric))) for r in recent]
+    weights=[0.88**(len(recent)-1-i) for i in range(len(recent))]
+    wsum=sum(weights)
+    weighted_volume=sum(w*v for w,v in zip(weights,opportunities))/wsum
+    total_opp=sum(w*v for w,v in zip(weights,opportunities))
+    total_yards=sum(w*y for w,y in zip(weights,yards))
+    # Regularization dampens explosive small-sample efficiency outliers.
+    prior_rate={"passing_yards":6.6,"rushing_yards":4.1,"receiving_yards":7.0}[metric]
+    prior_opportunities={"passing_yards":70,"rushing_yards":35,"receiving_yards":25}[metric]
+    rate=(total_yards+prior_rate*prior_opportunities)/(total_opp+prior_opportunities)
+    # Player's own season-long workload anchors the more recent workload.
+    season_volume=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
+    expected_volume=0.65*weighted_volume+0.35*season_volume
+    forecast=max(0,expected_volume*rate)
+    # Conservative shrinkage to player's season yards/game mean.
+    season_mean=sum(max(0,num(x.get(metric))) for x in stats)/len(stats)
+    forecast=0.8*forecast+0.2*season_mean
+    deviations=[y-forecast for y in yards]
+    spread=math.sqrt(sum(d*d for d in deviations)/max(1,len(deviations)))
+    # Descriptive uncertainty only, not a calibrated prediction interval.
+    return round(forecast,1),round(spread,1),round(expected_volume,1),round(rate,2)
 
 def generate():
     now=datetime.now(timezone.utc)
@@ -75,7 +107,7 @@ def generate():
                     # Opponent allowed yards per player appearance is descriptive, not
                     # position-adjusted; do not use it as an unvalidated multiplier.
                     opp_values=opponents[opp][metric]
-                    baseline=0.55*(sum(values[-3:])/min(3,len(values)))+0.45*avg
+                    baseline,uncertainty,expected_volume,expected_rate=project_yards(stats,metric,volume)
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
@@ -89,8 +121,11 @@ def generate():
                         "last_5_opportunities_avg":round(sum(v)/len(v),1),
                         "opportunity_type":volume,
                         "opponent_player_appearance_avg":round(sum(opp_values)/len(opp_values),1) if len(opp_values)>=10 else None,
-                        "projection":round(baseline,1),
-                        "method":"55% last-three average + 45% last-five average; uncalibrated research baseline",
+                        "projection":baseline,
+                        "uncertainty_yards":uncertainty,
+                        "expected_opportunities":expected_volume,
+                        "expected_yards_per_opportunity":expected_rate,
+                        "method":"Recency-weighted opportunities × regularized yards per opportunity, blended with season average; uncalibrated research forecast",
                         "bet_recommendation":False,
                     })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
