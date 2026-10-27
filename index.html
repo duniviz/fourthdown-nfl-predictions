@@ -564,6 +564,19 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
        broadcast:(comp.broadcasts||[]).flatMap(x=>x.names||[]).slice(0,2).join(', '),
        link:'https://www.espn.com/nfl/game/_/gameId/'+String(event.id||'')};
    }).filter(g=>g.home.abbr&&g.away.abbr)};
+   // Published forecasts define the active week. ESPN can return the previous
+   // week's scores even when explicitly asked for a future week.
+   if(forecasts.length){
+     const matched=data.games;
+     data.games=forecasts.map(p=>{
+       const found=matched.find(g=>canon(g.home.abbr)===canon(p.home)&&canon(g.away.abbr)===canon(p.away)
+         &&Math.abs(new Date(g.date).getTime()-new Date(p.kickoff_utc).getTime())<12*3600000);
+       if(found)return found;
+       const team=abbr=>({abbr,name:abbr,logo:'',score:null,record:''});
+       return {id:p.game_id,date:p.kickoff_utc,home:team(p.home),away:team(p.away),
+         state:'pre',status:'Scheduled · Week '+p.week,broadcast:'NFL',link:null};
+     });
+   }
    if(!Array.isArray(data.games)||!data.games.length)throw new Error('Empty scoreboard');
    const updated=new Date(data.updated_at_utc);
    const age=Math.round((Date.now()-updated.getTime())/60000);
