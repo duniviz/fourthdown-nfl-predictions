@@ -1,0 +1,32 @@
+name: Historical 2024-2025 model comparison
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/walkforward_2024_2025.py'
+      - '.github/workflows/backtest-2024-2025.yml'
+permissions:
+  contents: read
+jobs:
+  walkforward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Run 2024-2025 walk-forward comparisons
+        run: python -m research.walkforward_2024_2025
+      - name: Publish mobile-readable research results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fourtdown-2024-2025-backtest
+          path: |
+            research/backtest-2024-2025/RESULTS.md
+            research/backtest-2024-2025/results.json
+            research/backtest-2024-2025/index.html
+          if-no-files-found: warn
