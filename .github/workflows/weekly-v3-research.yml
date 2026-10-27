@@ -1,0 +1,36 @@
+name: Weekly V3 research learning and readiness
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 15 * * 3'
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/v3-challenger
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install historical data dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Audit weekly player learning
+        run: python -m research.weekly_learning
+      - name: Audit weekly game learning
+        run: python -m research.game_learning
+      - name: Run 2024-2025 V3 challenger holdout
+        run: python -m research.v3_challenger
+      - name: Archive model readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fourtdown-weekly-model-readiness
+          path: |
+            research/weekly-learning/
+            research/game-learning/
+            research/v3-results/
+          if-no-files-found: warn
