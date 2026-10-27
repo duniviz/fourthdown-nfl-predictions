@@ -227,6 +227,12 @@ def generate():
                 if series:
                     recent=series[-4:]
                     team_targets[volume]=0.65*sum(recent)/len(recent)+0.35*sum(series)/len(series)
+            # Fail closed if input aggregation or source schema creates
+            # impossible per-game team workloads. Never publish false edges.
+            hard_max={"attempts":80.0,"carries":65.0,"targets":85.0}
+            for volume,cap in hard_max.items():
+                if team_targets.get(volume,0)>cap:
+                    raise ValueError(f"Implausible {team} team {volume}: {team_targets[volume]:.1f} > {cap}; refusing player projections")
             # Each player's raw expected share is reconciled to the team total.
             allocation={}
             for metric,_,volume in METRICS:
