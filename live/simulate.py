@@ -11,6 +11,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DRAWS=10000
+# Keep all draws for simulation statistics, but publish a compact empirical
+# quantile grid for browser-side threshold exploration (max 501 points).
+PUBLISHED_QUANTILES=501
+
+def compact_draws(values):
+    ordered=sorted(values)
+    if len(ordered)<=PUBLISHED_QUANTILES:
+        return [round(v,1) for v in ordered]
+    return [round(ordered[round(i*(len(ordered)-1)/(PUBLISHED_QUANTILES-1))],1)
+
 def quantile(values,p):
     v=sorted(values)
     return round(v[min(len(v)-1,max(0,int(p*(len(v)-1))))],1)
@@ -53,7 +63,7 @@ def simulate_players(players):
             output.append(dict(game_id=player.get("game_id"),player_id=player.get("player_id"),
                 stat_key="anytime_td",player=player.get("player"),simulations=DRAWS,
                 mean_projection=round(probability*100,1),anytime_td_probability=round(probability*100,1),
-                sorted_draws=vals))
+                sorted_draws=compact_draws(vals)))
             continue
         mu=max(0,float(player.get("projection") or 0))
         sigma=max(.25,float(player.get("uncertainty") or player.get("uncertainty_yards") or mu*.5))
@@ -74,7 +84,7 @@ def simulate_players(players):
             entry["over_pct"]=round(100*sum(x>threshold for x in vals)/DRAWS,1)
             entry["under_pct"]=round(100*sum(x<threshold for x in vals)/DRAWS,1)
             entry["push_pct"]=round(100*sum(x==threshold for x in vals)/DRAWS,1)
-        entry["sorted_draws"]=[round(v,1) for v in sorted(vals)]
+        entry["sorted_draws"]=compact_draws(vals)
         output.append(entry)
     return output
 
@@ -84,6 +94,6 @@ def main():
     result=dict(generated_at_utc=datetime.now(timezone.utc).isoformat(),simulations=DRAWS,
         status="exploratory_uncalibrated",distribution_note="Gaussian correlated team scores and gamma player yardage; historical calibration pending",
         games=simulate_games(games),players=simulate_players(players))
-    Path("data/simulations.json").write_text(json.dumps(result,indent=2)+"\n")
+    Path("data/simulations.json").write_text(json.dumps(result,separators=(",",":"))+"\n")
     print(f"Simulated {len(result['games'])} games and {len(result['players'])} player markets {DRAWS} times each")
 if __name__=="__main__": main()
