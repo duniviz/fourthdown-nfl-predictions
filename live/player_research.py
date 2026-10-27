@@ -166,9 +166,13 @@ def generate():
         for record in records:
             key=(team,int(record["week"]))
             opp=str(record.get("opponent_team") or "")
-            for metric,_,volume in METRICS:
-                team_week[key][metric]+=max(0,num(record.get(metric)))
+            # Each opportunity column is counted once per player-game.
+            # Several markets share attempts/carries/targets; counting each
+            # market separately multiplies team workload and every projection.
+            for volume in {volume for _,_,volume in METRICS}:
                 team_volume_week[key][volume]+=max(0,num(record.get(volume)))
+            for metric,_,_ in METRICS:
+                team_week[key][metric]+=max(0,num(record.get(metric)))
                 if opp:
                     defense_week[(opp,int(record["week"]))][metric]+=max(0,num(record.get(metric)))
     league_mean={}
