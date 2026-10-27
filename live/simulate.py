@@ -19,7 +19,7 @@ def compact_draws(values):
     ordered=sorted(values)
     if len(ordered)<=PUBLISHED_QUANTILES:
         return [round(v,1) for v in ordered]
-    return [round(ordered[round(i*(len(ordered)-1)/(PUBLISHED_QUANTILES-1))],1)
+    return [round(ordered[round(i*(len(ordered)-1)/(PUBLISHED_QUANTILES-1))],1) for i in range(PUBLISHED_QUANTILES)]
 
 def quantile(values,p):
     v=sorted(values)
