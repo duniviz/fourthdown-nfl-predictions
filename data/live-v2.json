@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-10-27T23:36:24.959599+00:00",
+  "generated_at_utc": "2026-10-27T23:53:24.995472+00:00",
   "season": 2026,
   "week": 8,
   "status": "research_uncalibrated",
@@ -138,6 +138,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -147,7 +152,7 @@
       "kickoff_utc": "2026-11-01T18:00:00+00:00",
       "home": "BUF",
       "away": "BAL",
-      "projected_home_score": 27.7,
+      "projected_home_score": 27.6,
       "projected_away_score": 25.1,
       "projected_margin_home": 2.59,
       "projected_total": 52.71,
@@ -162,10 +167,8 @@
         },
         "BAL": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -272,6 +275,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -406,6 +414,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -446,10 +459,8 @@
         },
         "ARI": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -556,6 +567,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -580,10 +596,8 @@
         },
         "MIN": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -690,6 +704,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -712,10 +731,8 @@
         },
         "IND": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -822,6 +839,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -846,10 +868,8 @@
         },
         "LV": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -956,6 +976,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1090,6 +1115,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1224,6 +1254,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1356,6 +1391,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1373,10 +1413,8 @@
       "injury_adjustments": {
         "DEN": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         },
         "KC": {
           "points": 0.0,
@@ -1490,6 +1528,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1624,6 +1667,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1779,6 +1827,11 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     },
     {
@@ -1913,7 +1966,32 @@
           "home_field_points": 1.5
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 0.0
       }
     }
-  ]
+  ],
+  "weekly_learning": {
+    "method": "chronological_shrunk_residual",
+    "validation": {
+      "margin": {
+        "enabled": false,
+        "adjustment": 0.0,
+        "walkforward_games": 0,
+        "baseline_mae": null,
+        "learner_mae": null
+      },
+      "total": {
+        "enabled": false,
+        "adjustment": 0.0,
+        "walkforward_games": 0,
+        "baseline_mae": null,
+        "learner_mae": null
+      }
+    },
+    "note": "Validated margin and total bias corrections only; ATS/total probabilities are not calibrated."
+  }
 }
