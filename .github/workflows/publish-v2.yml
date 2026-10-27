@@ -5,7 +5,11 @@ on:
     paths:
       - '.github/forecast-refresh.txt'
   schedule:
-    - cron: '15 13 * * 2,4,6,0'
+    # Tuesday at noon America/Chicago, using UTC schedules plus a local-time guard.
+    # Both UTC hours are needed because Central Time observes daylight saving.
+    - cron: '0 17,18 * * 2'
+    # Keep Thursday, Saturday and Sunday morning refreshes.
+    - cron: '15 13 * * 4,6,0'
 permissions:
   contents: write
 concurrency:
@@ -16,35 +20,58 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Check Tuesday Central Time schedule
+        id: schedule_guard
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18 * * 2" ]]; then
+            if [[ "$(TZ=America/Chicago date +%H)" != "12" ]]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "run=true" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
+        if: steps.schedule_guard.outputs.run == 'true'
         with:
           ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install nflverse data dependencies
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m pip install -r requirements-backtest.txt
       - name: Validate pipeline
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m unittest discover -s tests -p 'test_*.py' -v
       - name: Refresh NFL injury reports
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.injuries
       - name: Generate current-season v2 forecasts
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.generate
       - name: Generate player research baselines
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_research
       - name: Fetch DraftKings NFL props from ParlayAPI
+        if: steps.schedule_guard.outputs.run == 'true'
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_odds
       - name: Archive DraftKings line movement
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.line_history
       - name: Grade completed-game player projections
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_results
       - name: Simulate game scores and player yardage 10000 times
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
       - name: Refresh stadium weather forecasts
+        if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.weather
       - name: Publish forecast and player research JSON
+        if: steps.schedule_guard.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
