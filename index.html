@@ -541,7 +541,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
  async function update(){
   label.textContent='Checking…';
   try{
-   const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',{cache:'no-store'});
+   // Request the same NFL week as our published forecasts; ESPN's default
+   // scoreboard window can lag behind the upcoming forecast week.
+   const target=forecasts.find(g=>Number.isInteger(Number(g.week))&&Number.isInteger(Number(g.season)));
+   const scoreboardUrl=target
+     ? 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+encodeURIComponent(target.season)+'&seasontype=2&week='+encodeURIComponent(target.week)
+     : 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+   const response=await fetch(scoreboardUrl,{cache:'no-store'});
    if(!response.ok)throw new Error('Live score provider unavailable ('+response.status+')');
    const raw=await response.json();
    const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
