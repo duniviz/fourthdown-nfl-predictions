@@ -7,13 +7,48 @@ import statistics
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-import nflreadpy as nfl
+try:
+    import nflreadpy as nfl
+except ModuleNotFoundError:  # lets pure projection helpers be unit tested locally
+    nfl = None
 
 METRICS = (
     ("passing_yards", "Passing yards", "attempts"),
+    ("attempts", "Pass attempts", "attempts"),
+    ("completions", "Pass completions", "attempts"),
+    ("passing_tds", "Pass TDs", "attempts"),
+    ("interceptions", "Interceptions", "attempts"),
     ("rushing_yards", "Rushing yards", "carries"),
+    ("carries", "Rush attempts", "carries"),
+    ("rushing_tds", "Rushing TDs", "carries"),
     ("receiving_yards", "Receiving yards", "targets"),
+    ("receptions", "Receptions", "targets"),
+    ("receiving_tds", "Receiving TDs", "targets"),
 )
+
+# Forecasting a stat and publishing a recommendation are deliberately separate.
+# Count/TD forecasts remain research-only until their own archived calibration
+# becomes available to the recommendation gate.
+PRIOR_RATE = {
+    "passing_yards": 6.6, "attempts": 1.0, "completions": .63,
+    "passing_tds": .043, "interceptions": .022, "rushing_yards": 4.1,
+    "carries": 1.0, "rushing_tds": .030, "receiving_yards": 7.0,
+    "receptions": .64, "receiving_tds": .045,
+}
+PRIOR_OPPORTUNITIES = {
+    "passing_yards": 70, "attempts": 70, "completions": 70,
+    "passing_tds": 100, "interceptions": 100, "rushing_yards": 35,
+    "carries": 35, "rushing_tds": 80, "receiving_yards": 25,
+    "receptions": 25, "receiving_tds": 60,
+}
+MARKET_KEYS = {
+    "passing_yards": "player_pass_yds", "attempts": "player_pass_attempts",
+    "completions": "player_pass_completions", "passing_tds": "player_pass_tds",
+    "interceptions": "player_pass_interceptions", "rushing_yards": "player_rush_yds",
+    "carries": "player_rush_attempts", "rushing_tds": "player_rush_tds",
+    "receiving_yards": "player_rec_yds", "receptions": "player_receptions",
+    "receiving_tds": "player_rec_tds", "anytime_td": "player_anytime_td",
+}
 def num(x):
     try: return float(x or 0)
     except (TypeError, ValueError): return 0.0
@@ -62,8 +97,8 @@ def project_yards(stats, metric, volume):
     total_opp=sum(w*v for w,v in zip(weights,opportunities))
     total_yards=sum(w*y for w,y in zip(weights,yards))
     # Regularization dampens explosive small-sample efficiency outliers.
-    prior_rate={"passing_yards":6.6,"rushing_yards":4.1,"receiving_yards":7.0}[metric]
-    prior_opportunities={"passing_yards":70,"rushing_yards":35,"receiving_yards":25}[metric]
+    prior_rate=PRIOR_RATE[metric]
+    prior_opportunities=PRIOR_OPPORTUNITIES[metric]
     rate=(total_yards+prior_rate*prior_opportunities)/(total_opp+prior_opportunities)
     # Player's own season-long workload anchors the more recent workload.
     season_volume=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
@@ -78,6 +113,8 @@ def project_yards(stats, metric, volume):
     return round(forecast,1),round(spread,1),round(expected_volume,1),round(rate,2)
 
 def generate():
+    if nfl is None:
+        raise RuntimeError("nflreadpy is required to generate player research")
     now=datetime.now(timezone.utc)
     season=now.year if now.month>=3 else now.year-1
     schedule=nfl.load_schedules([season]).to_dicts()
@@ -277,7 +314,7 @@ def generate():
                         "espn_athlete_id":espn_ids.get(player),
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
-                        "market":label,"stat_key":metric,"games_used":len(stats),
+                        "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
                         "sample_warning":"Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None,
                         "bet_recommendation":False,
                         "last_5":[round(x,1) for x in values],
@@ -289,6 +326,7 @@ def generate():
                         "projection":baseline,
                         "injury_scenarios":scenario,
                         "uncertainty_yards":uncertainty,
+                        "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
                         "opponent_adjustment":round(adjustment,3),
                         "game_script_adjustment":script_multiplier,
@@ -302,6 +340,29 @@ def generate():
                         "method":"Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts",
                         "bet_recommendation":False,
                     })
+    # A player's anytime-TD chance is derived only from this model's rushing
+    # and receiving TD rate forecasts.  It is a probability research field,
+    # not an invented O/U line, and is matched only to a verified DK anytime
+    # market by the client.
+    touchdown_rates={}
+    for row in results:
+        if row["stat_key"] in ("rushing_tds", "receiving_tds"):
+            key=(row["game_id"],row["player_id"])
+            touchdown_rates.setdefault(key, []).append(row)
+    for pair, rows_for_player in touchdown_rates.items():
+        rate=sum(max(0,float(x["projection"])) for x in rows_for_player)
+        probability=1-math.exp(-rate)
+        source=rows_for_player[0]
+        results.append({
+            "game_id":source["game_id"],"team":source["team"],"opponent":source["opponent"],
+            "player_id":source["player_id"],"espn_athlete_id":source["espn_athlete_id"],
+            "player":source["player"],"position":source["position"],"market":"Anytime TD",
+            "stat_key":"anytime_td","market_key":MARKET_KEYS["anytime_td"],"games_used":source["games_used"],
+            "projection":round(probability*100,1),"projection_probability":round(probability,4),
+            "last_5":None,"last_5_avg":None,"last_3_avg":None,"injury_scenarios":None,
+            "availability_status":source["availability_status"],"bet_recommendation":False,
+            "method":"Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only.",
+        })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
     out={"generated_at_utc":now.isoformat(),"season":season,"week":week,"status":"research_only_no_market_odds","players":results}
     p=Path("data/player-research.json");p.parent.mkdir(exist_ok=True)

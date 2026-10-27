@@ -45,8 +45,18 @@ def simulate_games(games):
 def simulate_players(players):
     output=[]
     for player in players:
+        if player.get("stat_key")=="anytime_td":
+            probability=max(0,min(1,float(player.get("projection_probability") or 0)))
+            seed=int(hashlib.sha256((str(player.get("game_id"))+str(player.get("player_id"))+"anytime_td").encode()).hexdigest()[:16],16)
+            rng=random.Random(seed)
+            vals=[1 if rng.random()<probability else 0 for _ in range(DRAWS)]
+            output.append(dict(game_id=player.get("game_id"),player_id=player.get("player_id"),
+                stat_key="anytime_td",player=player.get("player"),simulations=DRAWS,
+                mean_projection=round(probability*100,1),anytime_td_probability=round(probability*100,1),
+                sorted_draws=vals))
+            continue
         mu=max(0,float(player.get("projection") or 0))
-        sigma=max(3,float(player.get("uncertainty_yards") or mu*.5))
+        sigma=max(.25,float(player.get("uncertainty") or player.get("uncertainty_yards") or mu*.5))
         seed=int(hashlib.sha256((str(player.get("game_id"))+str(player.get("player_id"))+str(player.get("stat_key"))).encode()).hexdigest()[:16],16)
         rng=random.Random(seed)
         # Nonnegative, right-skewed yardage; parameters matched to mean and SD.
