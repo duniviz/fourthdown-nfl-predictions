@@ -1,0 +1,33 @@
+{
+  "generated_at_utc": "2026-10-27T23:27:08.831122+00:00",
+  "method": "Market-level mean residual from archived pregame forecasts. This is not probability calibration; recommendation probability gates remain off until separately validated.",
+  "markets": [
+    {
+      "stat_key": "passing_yards",
+      "sample_size": 2,
+      "mean_error": -42.25,
+      "mae": 44.15,
+      "active": false,
+      "probability_calibrated": false,
+      "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
+    },
+    {
+      "stat_key": "receiving_yards",
+      "sample_size": 14,
+      "mean_error": -5.87,
+      "mae": 15.97,
+      "active": false,
+      "probability_calibrated": false,
+      "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
+    },
+    {
+      "stat_key": "rushing_yards",
+      "sample_size": 9,
+      "mean_error": 17.07,
+      "mae": 18.33,
+      "active": false,
+      "probability_calibrated": false,
+      "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
+    }
+  ]
+}
