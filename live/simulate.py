@@ -21,6 +21,35 @@ def compact_draws(values):
         return [round(v,1) for v in ordered]
     return [round(ordered[round(i*(len(ordered)-1)/(PUBLISHED_QUANTILES-1))],1) for i in range(PUBLISHED_QUANTILES)]
 
+# Integer markets need discrete outcomes: an NFL player cannot record 0.4
+# receptions or 1.7 touchdowns. These are exploratory assumptions, not
+# historically calibrated probability distributions.
+COUNT_STATS={"attempts","completions","carries","receptions"}
+TD_STATS={"passing_tds","rushing_tds","receiving_tds","interceptions"}
+
+def poisson_draw(rng, rate):
+    # Exact inverse-CDF method for typical NFL TD/INT rates.
+    if rate<=0: return 0
+    if rate>20:
+        return max(0,round(rng.gauss(rate,math.sqrt(rate))))
+    threshold=math.exp(-rate)
+    product=1.0
+    k=0
+    while product>threshold:
+        product*=rng.random()
+        k+=1
+    return k-1
+
+def player_draws(rng,stat_key,mu,sigma):
+    if stat_key in TD_STATS:
+        return [poisson_draw(rng,mu) for _ in range(DRAWS)]
+    if stat_key in COUNT_STATS:
+        return [max(0,round(rng.gauss(mu,sigma))) for _ in range(DRAWS)]
+    # Yardage is continuous and right-skewed.
+    shape=max(.25,(mu/max(1,sigma))**2)
+    scale=mu/shape if mu else 0
+    return [rng.gammavariate(shape,scale) if mu else 0 for _ in range(DRAWS)]
+
 def quantile(values,p):
     v=sorted(values)
     return round(v[min(len(v)-1,max(0,int(p*(len(v)-1))))],1)
@@ -69,10 +98,7 @@ def simulate_players(players):
         sigma=max(.25,float(player.get("uncertainty") or player.get("uncertainty_yards") or mu*.5))
         seed=int(hashlib.sha256((str(player.get("game_id"))+str(player.get("player_id"))+str(player.get("stat_key"))).encode()).hexdigest()[:16],16)
         rng=random.Random(seed)
-        # Nonnegative, right-skewed yardage; parameters matched to mean and SD.
-        shape=max(.25,(mu/max(1,sigma))**2)
-        scale=mu/shape if mu else 0
-        vals=[rng.gammavariate(shape,scale) if mu else 0 for _ in range(DRAWS)]
+        vals=player_draws(rng,str(player.get("stat_key") or ""),mu,sigma)
         entry=dict(game_id=player.get("game_id"),player_id=player.get("player_id"),
             stat_key=player.get("stat_key"),player=player.get("player"),
             simulations=DRAWS,mean_projection=round(mu,1),median=quantile(vals,.5),
@@ -92,7 +118,7 @@ def main():
     games=json.loads(Path("data/live-v2.json").read_text())["games"]
     players=json.loads(Path("data/player-research.json").read_text())["players"]
     result=dict(generated_at_utc=datetime.now(timezone.utc).isoformat(),simulations=DRAWS,
-        status="exploratory_uncalibrated",distribution_note="Gaussian correlated team scores and gamma player yardage; historical calibration pending",
+        status="exploratory_uncalibrated",distribution_note="Correlated Gaussian game scores, gamma yardage, discrete count and Poisson TD/INT simulations; historical calibration pending",
         games=simulate_games(games),players=simulate_players(players))
     Path("data/simulations.json").write_text(json.dumps(result,separators=(",",":"))+"\n")
     print(f"Simulated {len(result['games'])} games and {len(result['players'])} player markets {DRAWS} times each")
