@@ -41,7 +41,7 @@ jobs:
           python -m pip install --disable-pip-version-check polars
           python tools/download_current_player_stats.py --season "${INPUT_SEASON:-2026}" \
             --output staging/player_stats.csv
-          TARGET=$(python -c 'import sys; from pathlib import Path; sys.path.insert(0,"tools"); from run_research_refresh import season_week; a,b=season_week(Path("staging/games.csv"),"",""); print(f"{a} {b}")')
+          TARGET=$(python -c 'import sys; from pathlib import Path; sys.path.insert(0,"tools"); from run_research_refresh import season_week; a,b=season_week(Path("staging/games.csv"),__import__("os").environ.get("INPUT_SEASON",""),__import__("os").environ.get("INPUT_WEEK","")); print(f"{a} {b}")')
           read -r TARGET_SEASON TARGET_WEEK <<< "$TARGET"
           if curl --fail --location --retry 2 --max-time 60 --silent --show-error \
             "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${TARGET_SEASON}.csv" \
