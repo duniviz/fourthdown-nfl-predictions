@@ -538,10 +538,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +'; defense ranks are '+esc(pick)+' '+rank(chosen?.defense_rank)+' and '+esc(opponent)+' '+rank(rival?.defense_rank)+'. Lower rank is better.'
     +(allowed!==null&&otherAllowed!==null?' Recent points allowed: '+esc(pick)+' '+pts(allowed)+' per game and '+esc(opponent)+' '+pts(otherAllowed)+'. ':' ')
     +esc(recentSummary)+' Recent scoring: '+esc(pick)+' '+pts(scored)+' points per game and '+esc(opponent)+' '+pts(otherScored)+'.';
-  const riskSentence=margin<3?'The model sees this as a close game.':'The projected margin is meaningful, but it does not guarantee the result.';
-  const secondParagraph=esc(opponent)+' can still change the game script. '+riskSentence
-    +' '+injuriesSummary+' '+injuryDetails+'. Feed updated '+(injuryData?.generated_at_utc?esc(new Date(injuryData.generated_at_utc).toLocaleString()):'unknown')+'. '
-    +weatherSummary+'. '+homeDetails+' Weather is informational and is not a verified model point adjustment. Turnovers, late availability changes and in-game events can alter the result.';
+  const possessive=name=>String(name).endsWith('s')?name+"'":name+"'s";
+  const pickPossessive=possessive(pick),opponentPossessive=possessive(opponent);
+  const scoringCounterpoint=scored!==null&&otherScored!==null&&otherScored>scored
+    ?opponent+' have scored '+pts(otherScored)+' points per game recently, compared with '+pts(scored)+' for '+pick+'.'
+    :scored!==null&&otherScored!==null
+      ?pick+' and '+opponent+' have produced similar recent scoring.'
+      :'Recent scoring is unavailable for one or both teams.';
+  const secondParagraph='The key counterpoint is the unit-on-unit matchup. '+scoringCounterpoint+' '
+    +opponentPossessive+' offense is ranked '+rank(rival?.offense_rank)+' and faces '+pickPossessive+' '+rank(chosen?.defense_rank)+' defense, while '
+    +pickPossessive+' offense is '+rank(chosen?.offense_rank)+' against '+opponentPossessive+' '+rank(rival?.defense_rank)+' defense. '
+    +'The projection holds if '+pick+' turn that two-way ranking advantage into sustained drives; it can miss if '+opponent+' maintain their recent scoring pace against the stronger defense.';
   const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Why this pick</strong><h4>'+headline+'</h4>'
     +'<p>'+firstParagraph+'</p>'
     +'<p>'+secondParagraph+'</p>'
