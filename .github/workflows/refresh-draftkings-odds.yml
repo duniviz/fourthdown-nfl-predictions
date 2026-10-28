@@ -33,6 +33,9 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python tools/refresh_draftkings_odds.py
+      - name: Audit published data feeds
+        if: steps.clock.outputs.run == 'true'
+        run: python tools/audit_published_data.py
       - name: Commit refreshed snapshot
         if: steps.clock.outputs.run == 'true'
         run: |
