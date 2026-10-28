@@ -133,8 +133,10 @@ def main():
                 totals.append({"edge": total_edge, "grade": grade(selection, row["ou_result"])})
         threshold_results[str(threshold)] = {"ats": summarize(ats), "over_under": summarize(totals)}
 
+    minimum_matches = 200
+    valid_match = len(matched) >= minimum_matches
     result = {
-        "status": "research_only_historical_replay",
+        "status": "research_only_historical_replay" if valid_match else "invalid_schedule_alignment",
         "season": args.season,
         "source_csv_rows": len(lines),
         "eligible_pregame_v2_forecasts": len(holdout),
@@ -151,6 +153,7 @@ def main():
             "The CSV has closing lines but not odds/juice, so ROI and break-even-after-vig are not reported.",
             "Thresholds are reported side by side; none are selected or optimized on the 2025 holdout.",
             "The score model does not use these lines as inputs.",
+            "A valid evaluation requires at least 200 matchup-aligned closing-line rows.",
         ],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
