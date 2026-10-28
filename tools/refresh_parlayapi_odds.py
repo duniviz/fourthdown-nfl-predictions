@@ -36,6 +36,36 @@ def save(filename, payload):
     temp.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     temp.replace(target)
 
+def load(filename, fallback):
+    target = ROOT / filename
+    try:
+        value = json.loads(target.read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else fallback
+    except (OSError, json.JSONDecodeError):
+        return fallback
+
+def opening_key(row, fields):
+    return "|".join(str(row.get(field) or "") for field in fields)
+
+def capture_openings(game_rows, prop_rows, now):
+    """Keep the first valid DraftKings quote observed for every market."""
+    opening = load("dk-opening-odds.json", {"schema_version": 1, "source": "ParlayAPI", "bookmaker": "draftkings", "games": {}, "props": {}})
+    games = opening.setdefault("games", {})
+    props = opening.setdefault("props", {})
+    for row in game_rows:
+        key = opening_key(row, ("home", "away", "commence_time"))
+        if key and key not in games:
+            games[key] = {**row, "opening_captured_at_utc": now}
+    for row in prop_rows:
+        key = opening_key(row, ("player", "market_key", "home_team", "away_team", "commence_time"))
+        if key and key not in props:
+            props[key] = {**row, "opening_captured_at_utc": now}
+    opening["schema_version"] = 1
+    opening["source"] = "ParlayAPI"
+    opening["bookmaker"] = "draftkings"
+    opening["updated_at_utc"] = now
+    return opening
+
 def main():
     if not KEY:
         raise SystemExit("PARLAY_API_KEY GitHub Actions secret required")
@@ -77,6 +107,7 @@ def main():
         raise SystemExit("No DraftKings player props returned; preserving prior data")
     save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
     save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
+    save("dk-opening-odds.json", capture_openings(game_rows, prop_rows, now))
     print(f"ParlayAPI refreshed {len(game_rows)} games, {len(prop_rows)} player quotes")
 
 if __name__ == "__main__":
