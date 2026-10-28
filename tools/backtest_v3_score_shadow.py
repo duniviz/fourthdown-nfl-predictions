@@ -119,10 +119,16 @@ def evaluate(schedules, pbp):
             home,away=game.get("home_team"),game.get("away_team")
             if not base or home not in features or away not in features: continue
             v3_total,v3_margin=candidate(base,features[home],features[away],means)
+            # Pace-only is the minimal total intervention: it preserves v2's
+            # margin/winner forecast and uses the same bounded pace hypothesis.
+            pace_adjust=max(-MAX_TOTAL_ADJUSTMENT,min(MAX_TOTAL_ADJUSTMENT,
+                PACE_POINTS_PER_PLAY*((features[home]["plays_per_game"]+features[away]["plays_per_game"])-2*means["plays_per_game"])))
+            pace_total=max(1.0,base["pred_total"]+pace_adjust)
             actual_margin=num(game["home_score"])-num(game["away_score"])
             actual_total=num(game["home_score"])+num(game["away_score"])
             rows.append({"season":season,"week":week,"game_id":str(game["game_id"]),
               "v2_margin":base["pred_margin"],"v2_total":base["pred_total"],
+              "pace_margin":base["pred_margin"],"pace_total":pace_total,
               "v3_margin":v3_margin,"v3_total":v3_total,"actual_margin":actual_margin,"actual_total":actual_total})
     return rows
 
@@ -130,9 +136,9 @@ def summarize(rows):
     def block(records):
         out={}
         for market,actual in (("margin","actual_margin"),("total","actual_total")):
-            for model in ("v2","v3"):
+            for model in ("v2","pace","v3"):
                 out[f"{model}_{market}"]=metric([r[f"{model}_{market}"]-r[actual] for r in records])
-        for model in ("v2","v3"):
+        for model in ("v2","pace","v3"):
             out[f"{model}_winner_accuracy"]=round(sum((r[f"{model}_margin"]>0)==(r["actual_margin"]>0) for r in records)/len(records),4) if records else None
         return out
     dev=[r for r in rows if r["season"]==2024]
@@ -151,7 +157,7 @@ def main():
     args=p.parse_args()
     seasons=[2024,2025]
     rows=evaluate(nfl.load_schedules(seasons).to_dicts(),nfl.load_pbp(seasons).to_dicts())
-    result={"status":"research_only_historical_replay","models":["FOURTHDOWN v2 replay","FOURTHDOWN v3 feature shadow"],
+    result={"status":"research_only_historical_replay","models":["FOURTHDOWN v2 replay","FOURTHDOWN pace-only total shadow","FOURTHDOWN v3 feature shadow"],
             "results":summarize(rows)}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+"\n")
