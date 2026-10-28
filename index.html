@@ -781,17 +781,27 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
 
  function safeScoreWidget(fn){try{return fn()||'';}catch(e){console.warn('Optional scoreboard widget unavailable',e);return '';}}
 
- let fdGameOdds={};
-async function fdLoadGameOdds(){try{const r=await fetch('data/dk-game-odds.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();fdGameOdds=Object.fromEntries((j.games||[]).filter(x=>x.game_id&&x.bookmaker==='draftkings').map(x=>[x.game_id,x]));}catch(e){console.warn('DK game odds unavailable',e);}}
+ let fdGameOdds={},fdOpeningGameOdds={};
+async function fdLoadGameOdds(){try{
+ const [current,opening]=await Promise.all([
+   fetch('data/dk-game-odds.json?ts='+Date.now(),{cache:'no-store'}),
+   fetch('data/dk-opening-odds.json?ts='+Date.now(),{cache:'no-store'})
+ ]);
+ if(current.ok){const j=await current.json();fdGameOdds=Object.fromEntries((j.games||[]).filter(x=>x.game_id&&x.bookmaker==='draftkings').map(x=>[x.game_id,x]));}
+ if(opening.ok){const j=await opening.json();fdOpeningGameOdds=j.games&&typeof j.games==='object'?j.games:{};}
+}catch(e){console.warn('DK game odds unavailable',e);}}
 function fdGameLineComparison(p){
- const o=fdGameOdds[p.game_id]||Object.values(fdGameOdds).find(x=>canon(x.home)===canon(p.home)&&canon(x.away)===canon(p.away)&&(!x.commence_time||Math.abs(Date.parse(x.commence_time)-Date.parse(p.kickoff_utc))<12*3600000)),m=Number(p.projected_home_score)-Number(p.projected_away_score),t=Number(p.projected_home_score)+Number(p.projected_away_score);
+ const match=(rows)=>Object.values(rows||{}).find(x=>canon(x.home)===canon(p.home)&&canon(x.away)===canon(p.away)&&(!x.commence_time||Math.abs(Date.parse(x.commence_time)-Date.parse(p.kickoff_utc))<12*3600000));
+ const o=fdGameOdds[p.game_id]||match(fdGameOdds),opening=match(fdOpeningGameOdds),m=Number(p.projected_home_score)-Number(p.projected_away_score),t=Number(p.projected_home_score)+Number(p.projected_away_score);
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
  const sp=valid(o?.home_spread)?Number(o.home_spread):null,tot=valid(o?.total)?Number(o.total):null;
+ const openSp=valid(opening?.home_spread)?Number(opening.home_spread):null,openTot=valid(opening?.total)?Number(opening.total):null;
  const tm=m>=0?p.home:p.away,modelSpread=tm+' '+(m>=0?'-':'+')+Math.abs(m).toFixed(1);
  const dkSpread=sp===null?'Not available':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
  const updated=o?.updated_at_utc?Date.parse(o.updated_at_utc):NaN,age=Date.now()-updated;
  const state=!o?'DK lines unavailable':Number.isFinite(updated)&&age>=0&&age<15*3600000?'DK quote snapshot':'DK quote stale · verify before use';
- return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings</b><div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div><div><small>DK SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div><div><small>DK O/U</small><strong>'+(tot===null?'Not available':tot.toFixed(1))+'</strong></div></div><p>'+(sp===null?'Spread comparison unavailable. ':'Model home margin minus DK-implied home margin: '+(m+sp).toFixed(1)+' points. ')+(tot===null?'Total comparison unavailable. ':'Model total vs DK: '+(t-tot>0?'+':'')+(t-tot).toFixed(1)+' points. ')+state+(Number.isFinite(updated)?' · '+esc(new Date(updated).toLocaleString()):'')+'. Market lines are for comparison only; no market weighting is claimed.</p></div>';
+ const movement=openSp===null&&openTot===null?'':(' Opening → current: '+(openSp===null||sp===null?'spread unavailable':(openSp.toFixed(1)+' → '+sp.toFixed(1)+' ('+(sp-openSp>=0?'+':'')+(sp-openSp).toFixed(1)+')'))+' · '+(openTot===null||tot===null?'total unavailable':(openTot.toFixed(1)+' → '+tot.toFixed(1)+' ('+(tot-openTot>=0?'+':'')+(tot-openTot).toFixed(1)+')'))+'.');
+ return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings</b><div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div><div><small>DK SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div><div><small>DK O/U</small><strong>'+(tot===null?'Not available':tot.toFixed(1))+'</strong></div></div><p>'+(sp===null?'Spread comparison unavailable. ':'Model home margin minus DK-implied home margin: '+(m+sp).toFixed(1)+' points. ')+(tot===null?'Total comparison unavailable. ':'Model total vs DK: '+(t-tot>0?'+':'')+(t-tot).toFixed(1)+' points. ')+state+(Number.isFinite(updated)?' · '+esc(new Date(updated).toLocaleString()):'')+'.'+movement+' Market lines are for comparison only; no market weighting is claimed.</p></div>';
 }
 function renderMatchupCards(games){
   const root=document.getElementById('fd-matchup-grid');if(!root)return;
