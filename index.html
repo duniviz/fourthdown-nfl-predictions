@@ -292,6 +292,7 @@ renderParlays();
  let injuryData=null;
  let supplementalInjuryFlags=[];
  let savedWeather=null;
+ let gameContext=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -326,6 +327,7 @@ renderParlays();
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
   try{const response=await fetch('data/research-injury-flags.json?ts='+Date.now(),{cache:'no-store'});const j=response.ok?await response.json():null;supplementalInjuryFlags=Array.isArray(j?.flags)?j.flags:[];}catch(e){supplementalInjuryFlags=[];}
   try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
+  try{const response=await fetch('data/game-context.json?ts='+Date.now(),{cache:'no-store'});gameContext=response.ok?await response.json():null;}catch(e){gameContext=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
   // Join public DraftKings odds snapshot to research rows by player + full-game market.
@@ -561,13 +563,24 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const forecastNote=homeFieldEdge!==null
     ?'The forecast adds '+signed(homeFieldEdge)+' points for '+homeName+' at home and projects '+awayName+' '+away.toFixed(1)+' to '+homeName+' '+home.toFixed(1)+' (total '+total.toFixed(1)+').'
     :'The forecast projects '+awayName+' '+away.toFixed(1)+' to '+homeName+' '+home.toFixed(1)+' (total '+total.toFixed(1)+').';
+  const context=gameContext?.games?.[p.game_id]||{};
+  const homeRest=context.rest?.home,awayRest=context.rest?.away;
+  const restNote=homeRest?.status==='verified'&&awayRest?.status==='verified'
+    ?homeName+' have '+homeRest.days_since_last_game+' days since their last game'+(homeRest.bye_week?' (bye-week rest)':'')+', while '+awayName+' have '+awayRest.days_since_last_game+(awayRest.bye_week?' days (bye-week rest)':' days')+'.'
+    :'';
+  const availabilityRows=Array.isArray(context.availability?.players)?context.availability.players:[];
+  const availabilityNote=availabilityRows.length
+    ?availabilityRows.slice(0,6).map(row=>row.team+' '+row.player+(row.position?' ('+row.position+')':'')+' — '+row.status+(row.detail?' / '+row.detail:'')).join('; ')+'.'
+    :'';
   const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Matchup metrics</strong><h4>'+headline+'</h4>'
     +'<ul class="fd-metric-notes">'
     +metricNote(homeName+' offense vs '+awayName+' defense',homeOffenseNote)
     +metricNote(awayName+' offense vs '+homeName+' defense',awayOffenseNote)
     +metricNote('Recent five-game form',recentNote)
     +metricNote('Forecast context',forecastNote)
-    +'</ul></article><p class="fd-explain-disclaimer">Metrics are from the saved pregame forecast. They explain the matchup context and do not guarantee the result.</p>';
+    +(restNote?metricNote('Rest and preparation',restNote):'')
+    +(availabilityNote?metricNote('Verified availability',availabilityNote):'')
+    +'</ul></article><p class="fd-explain-disclaimer">Metrics come from the saved pregame forecast and verified public context feeds. They explain matchup context and do not guarantee the result.</p>';
   return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick?</summary>'+why+'</details></div>';
  }
 
