@@ -564,6 +564,36 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const scoringSection=scoring.length?'<h4>Scoring highlights</h4>'+scoring.map(x=>'<div class="fd-recap-play">'+esc(x.clock?.displayValue||'')+' '+esc(x.team?.abbreviation||'')+' · '+esc(x.text||x.type?.text||'Scoring play')+'</div>').join(''):'';
   return overview+stats+playerSection+scoringSection+'<p class="fd-recap-source">Based on ESPN final-game box score and scoring plays. This is a statistical recap, not a generated play-by-play narrative.</p>';
  }
+ async function loadGameCardInjuries(el){
+  const target=el.querySelector('[data-game-card-injuries]'),id=el.dataset.gameId;
+  if(!target||target.dataset.loaded==='true')return;
+  if(!/^\d+$/.test(id)){target.textContent='ESPN game-card injury report is unavailable for this matchup.';return;}
+  target.textContent='Loading ESPN game-card injury report…';
+  try{
+   const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(id),{cache:'no-store'});
+   if(!response.ok)throw Error('unavailable');
+   const raw=await response.json(),rows=[],seen=new Set();
+   const walk=(node,team='')=>{
+    if(Array.isArray(node)){node.forEach(x=>walk(x,team));return;}
+    if(!node||typeof node!=='object')return;
+    const next=canon(node.team?.abbreviation||node.team?.team?.abbreviation||node.athlete?.team?.abbreviation||team);
+    const athlete=node.athlete;
+    const status=node.status?.name||node.status?.description||node.status;
+    const type=node.type?.description||node.type?.name||node.type;
+    const name=athlete?.displayName||athlete?.fullName;
+    if(name&&(status||type)){
+     const key=next+'|'+name+'|'+String(status||type);
+     if(!seen.has(key)){seen.add(key);rows.push({team:next,name,status:String(status||type),detail:node.details?.detail||node.details?.type||''});}
+    }
+    Object.entries(node).forEach(([key,value])=>{if(key!=='athlete'&&key!=='team')walk(value,next);});
+   };
+   walk(raw.injuries||raw);
+   const teams=(el.dataset.teams||'').split(',').map(canon);
+   const matching=rows.filter(x=>!x.team||teams.includes(x.team));
+   target.dataset.loaded='true';
+   target.innerHTML=matching.length?'<strong>ESPN game-card report</strong>'+matching.map(x=>'<div class="fd-injury-row"><b>'+esc(x.name)+'</b><span>'+esc(x.team||'Team')+' · '+esc(x.status)+(x.detail?' · '+esc(x.detail):'')+'</span></div>').join(''):'<strong>ESPN game-card report</strong><p>No player statuses were returned for this matchup. This does not confirm a healthy roster.</p>';
+  }catch(error){target.textContent='ESPN game-card injury report is temporarily unavailable.';}
+ }
  function injuryPanel(g){
   const teams=[g.away.abbr,g.home.abbr];
   const age=injuryData?.generated_at_utc?(Date.now()-Date.parse(injuryData.generated_at_utc))/3600000:Infinity;
@@ -577,7 +607,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    if(flags.length)return '<div class="fd-injury-team"><strong>'+esc(t)+' · preliminary availability flags</strong>'+flags.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player_name||x.player||'Unknown player')+'</b><span>'+esc(x.injury_flag||x.status||'Availability flag')+' · supplemental source, not an official game-day designation</span></div>').join('')+'</div>';
    return '<p><strong>'+esc(t)+':</strong> No official report published in the current feed and no supplemental availability flags (not a healthy-roster confirmation).</p>';
   }).join('');
-  return '<details class="fd-injuries"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'</div></details>';
+  return '<details class="fd-injuries" data-game-id="'+esc(g.id)+'" data-teams="'+esc(teams.join(','))+'"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'<div class="fd-injury-team" data-game-card-injuries>Open this panel to load ESPN’s game-card report.</div></div></details>';
  }
  function unavailablePlayer(x){
   // Do not show historical averages as a game projection for a known absentee.
@@ -799,7 +829,7 @@ function renderMatchupCards(games){
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
  container.addEventListener('click',e=>{const b=e.target.closest('[data-matchup-id]');if(b){const g=(window.fdVisibleGames||[]).find(x=>String(x.id)===b.dataset.matchupId);if(g)fdOpenMatchup(g);}});
- container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
+ container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-injuries')&&e.target.open)loadGameCardInjuries(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();
