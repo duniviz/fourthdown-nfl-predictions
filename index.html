@@ -385,7 +385,7 @@ function fdOpenMatchup(g){
  const matchupPanel=(!isFinal&&p)?(()=>{const awayData=analysis.away||{},homeData=analysis.home||{},edges=analysis.scoring_edge_components||{};const row=(off,def,offLabel,defLabel,edge)=>'<article class="fd-matchup-rank-card"><div class="fd-matchup-rank-title"><b>'+esc(offLabel)+' offense</b><span>vs</span><b>'+esc(defLabel)+' defense</b></div><div class="fd-matchup-rank-values"><div><small>Offense rank</small><strong>'+rankText(off.offense_rank)+'</strong><em>EPA/play</em></div><div><small>Defense rank</small><strong>'+rankText(def.defense_rank)+'</strong><em>EPA/play</em></div></div><div class="fd-matchup-rank-form"><span>'+esc(offLabel)+' recent scoring: '+num(off.recent_form?.avg_points_for)+' for · '+num(off.recent_form?.avg_points_against)+' allowed</span><b>Model scoring effect: '+(Number(edge)>=0?'+':'')+num(edge)+' pts</b></div></article>';return '<div class="fd-modal-section fd-matchup-ranks"><h3>Offense vs. defense matchups</h3><div class="fd-matchup-rank-grid">'+row(awayData,homeData,away,home,edges.away_offense_vs_home_defense)+row(homeData,awayData,home,away,edges.home_offense_vs_away_defense)+'</div><p class="fd-modal-muted">Ranks use the forecast’s recency-weighted, opponent-adjusted EPA/play inputs; #1 is strongest. “Model scoring effect” is that matchup’s contribution to projected points, not a stand-alone prediction.</p></div>';})():'';
  const stats=isFinal&&!p?'<div class="fd-modal-section"><h3>Completed game</h3><div class="fd-modal-grid"><div class="fd-modal-stat"><b>'+esc(away)+'</b><strong>'+esc(g.away.score??'—')+'</strong><small>Final score</small></div><div class="fd-modal-stat"><b>'+esc(home)+'</b><strong>'+esc(g.home.score??'—')+'</strong><small>Final score</small></div></div><p class="fd-modal-muted">Historical team ranks and pregame scoring averages were not saved for this matchup. Open Game recap on the scoreboard for actual team statistics.</p></div>':(matchupPanel||'')+'<div class="fd-modal-section"><h3>Team form and model inputs</h3><div class="fd-modal-grid">'+[['away',away],['home',home]].map(([s,t])=>'<div class="fd-modal-stat"><b>'+esc(t)+'</b><small style="display:block">Offense '+rankText(analysis[s]?.offense_rank)+' · Defense '+rankText(analysis[s]?.defense_rank)+'</small><strong>'+num(form(s).avg_points_for)+' scored</strong><small>'+num(form(s).avg_points_against)+' allowed · '+esc(form(s).wins??'—')+' wins in last '+esc(form(s).games??'—')+'</small></div>').join('')+'</div><p class="fd-modal-muted">Historical model snapshot; ranks and records may not be live.</p></div>';
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No verified injury adjustment in this published forecast';
- const injury='<div class="fd-modal-section"><h3>Injuries and model impact</h3><div class="fd-modal-grid">'+[away,home].map(t=>{const feed=injuryData?.teams?.[t];const rows=feed?.status==='retrieved'?(feed.players||[]):null;return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(rows===null?'<p>Report unavailable</p>':rows.length?rows.slice(0,12).map(x=>'<p>'+esc(x.player)+' · '+esc(x.status||'Unknown')+'</p>').join(''):'<p>Injury feed has no confirmed player reports; availability unknown</p>')+'</div>'}).join('')+'</div><p class="fd-modal-muted">'+impact+'</p></div>';
+ const injury='<div class="fd-modal-section" data-modal-game-card-injuries data-game-id="'+esc(g.id)+'"><h3>Injuries and model impact</h3><p class="fd-modal-muted">Loading ESPN game-card injury report…</p></div>';
  const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
@@ -433,6 +433,7 @@ function fdOpenMatchup(g){
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">Historical game-day injury snapshot not saved. Current injury reports would not describe this completed game accurately.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
  document.getElementById('fd-modal-body').innerHTML=header+score+market+stats+(isFinal?historicalInjury+completedBox:injury)+props;
+ if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.querySelector('[data-close-matchup]').focus();
 }
 function fdCloseMatchup(){document.getElementById('fd-modal').classList.remove('open');document.body.style.overflow='';}
@@ -574,10 +575,35 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    };
    walk(raw.injuries||raw);
    const teams=(el.dataset.teams||'').split(',').map(canon);
+   if(document.querySelector('[data-modal-game-card-injuries]')!==target)return;
    const matching=rows.filter(x=>!x.team||teams.includes(x.team));
    target.dataset.loaded='true';
    target.innerHTML=matching.length?'<strong>ESPN game-card report</strong>'+matching.map(x=>'<div class="fd-injury-row"><b>'+esc(x.name)+'</b><span>'+esc(x.team||'Team')+' · '+esc(x.status)+(x.detail?' · '+esc(x.detail):'')+'</span></div>').join(''):'<strong>ESPN game-card report</strong><p>No player statuses were returned for this matchup. This does not confirm a healthy roster.</p>';
   }catch(error){target.textContent='ESPN game-card injury report is temporarily unavailable.';}
+ }
+ async function loadModalGameCardInjuries(g){
+  const target=document.querySelector('[data-modal-game-card-injuries]');
+  const teams=[canon(g.away?.abbr),canon(g.home?.abbr)].filter(Boolean),id=String(g.id||'');
+  if(!target)return;
+  const fallback=()=>'<div class="fd-modal-grid">'+teams.map(t=>{const feed=injuryData?.teams?.[t],rows=feed?.status==='retrieved'?(feed.players||[]):null;return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(rows===null?'<p>Team injury feed unavailable.</p>':rows.length?rows.slice(0,12).map(x=>'<p>'+esc(x.player)+' · '+esc(x.status||'Unknown')+'</p>').join(''):'<p>No confirmed player report in the current team feed. This does not confirm a healthy roster.</p>')+'</div>';}).join('')+'</div>';
+  if(!/^\d+$/.test(id)){target.innerHTML='<h3>Injuries and model impact</h3>'+fallback()+'<p class="fd-modal-muted">ESPN’s game-card report is unavailable because the scheduled game identifier has not been published yet.</p>';return;}
+  try{
+   const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(id),{cache:'no-store'});
+   if(!response.ok)throw Error('unavailable');
+   const raw=await response.json(),rows=[],seen=new Set();
+   const walk=(node,team='')=>{
+    if(Array.isArray(node)){node.forEach(x=>walk(x,team));return;}
+    if(!node||typeof node!=='object')return;
+    const next=canon(node.team?.abbreviation||node.team?.team?.abbreviation||node.athlete?.team?.abbreviation||team);
+    const athlete=node.athlete,status=node.status?.name||node.status?.description||node.status,type=node.type?.description||node.type?.name||node.type,name=athlete?.displayName||athlete?.fullName;
+    if(name&&(status||type)){const key=next+'|'+name+'|'+String(status||type);if(!seen.has(key)){seen.add(key);rows.push({team:next,name,status:String(status||type),detail:node.details?.detail||node.details?.type||''});}}
+    Object.entries(node).forEach(([key,value])=>{if(key!=='athlete'&&key!=='team')walk(value,next);});
+   };
+   walk(raw.injuries||raw);
+   const matching=rows.filter(x=>!x.team||teams.includes(x.team));
+   if(!matching.length){target.innerHTML='<h3>Injuries and model impact</h3>'+fallback()+'<p class="fd-modal-muted">ESPN’s game card did not return player statuses for this matchup. This does not confirm a healthy roster.</p>';return;}
+   target.innerHTML='<h3>Injuries and model impact</h3><div class="fd-modal-grid">'+teams.map(t=>{const teamRows=matching.filter(x=>!x.team||x.team===t);return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(teamRows.length?teamRows.slice(0,12).map(x=>'<p>'+esc(x.name)+' · '+esc(x.status)+(x.detail?' · '+esc(x.detail):'')+'</p>').join(''):'<p>No player status returned by ESPN’s game card.</p>')+'</div>';}).join('')+'</div><p class="fd-modal-muted">Source: ESPN game-card report. Player availability is display-only unless a confirmed model adjustment is published.</p>';
+  }catch(error){target.innerHTML='<h3>Injuries and model impact</h3>'+fallback()+'<p class="fd-modal-muted">ESPN game-card report is temporarily unavailable. Existing forecast adjustments, if any, remain shown in the prediction panel.</p>';}
  }
  function injuryPanel(g){
   const teams=[g.away.abbr,g.home.abbr];
