@@ -1,10 +1,10 @@
 {
-  "generated_at_utc": "2026-10-27T23:56:36.847379+00:00",
+  "generated_at_utc": "2026-10-28T00:06:00.639759+00:00",
   "source": "ESPN team injury reports",
   "model_adjusted": false,
   "teams": {
     "ARI": {
-      "status": "retrieved",
+      "status": "unavailable",
       "players": []
     },
     "ATL": {
@@ -37,40 +37,7 @@
     },
     "DAL": {
       "status": "retrieved",
-      "players": [
-        {
-          "player": "KaVontae Turpin",
-          "position": "WR",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Dee Winters",
-          "position": "LB",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Drew Shelton",
-          "position": "OT",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Marist Liufau",
-          "position": "LB",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "P.J. Locke",
-          "position": "S",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        }
-      ],
-      "source": "NFL official Week 7 injury report (Oct 24, 2026)",
-      "source_url": "https://www.nfl.com/injuries/"
+      "players": []
     },
     "DEN": {
       "status": "retrieved",
@@ -89,7 +56,7 @@
       "players": []
     },
     "IND": {
-      "status": "retrieved",
+      "status": "unavailable",
       "players": []
     },
     "JAC": {
@@ -138,76 +105,7 @@
     },
     "PHI": {
       "status": "retrieved",
-      "players": [
-        {
-          "player": "DeVonta Smith",
-          "position": "WR",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Dontayvion Wicks",
-          "position": "WR",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Nolan Smith",
-          "position": "LB",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Michael Carter II",
-          "position": "DB",
-          "status": "Out",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Saquon Barkley",
-          "position": "RB",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Jonathan Greenard",
-          "position": "LB",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Jalyx Hunt",
-          "position": "LB",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Landon Dickerson",
-          "position": "G",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Jakorian Bennett",
-          "position": "CB",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Grant Calcaterra",
-          "position": "TE",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        },
-        {
-          "player": "Eli Stowers",
-          "position": "TE",
-          "status": "Questionable",
-          "detail": "Official game designation"
-        }
-      ],
-      "source": "NFL official Week 7 injury report (Oct 24, 2026)",
-      "source_url": "https://www.nfl.com/injuries/"
+      "players": []
     },
     "PIT": {
       "status": "retrieved",
@@ -233,14 +131,5 @@
       "status": "retrieved",
       "players": []
     }
-  },
-  "official_snapshot": {
-    "season": 2026,
-    "week": 7,
-    "teams": [
-      "DAL",
-      "PHI"
-    ],
-    "source_url": "https://www.nfl.com/injuries/"
   }
 }
