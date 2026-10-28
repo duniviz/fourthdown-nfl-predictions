@@ -37,9 +37,9 @@ jobs:
           curl --fail --location --retry 3 --max-time 90 --silent --show-error \
             https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv \
             -o staging/games.csv
-          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
-            https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv \
-            -o staging/player_stats.csv
+          python -m pip install --disable-pip-version-check polars
+          python tools/download_current_player_stats.py --season "${INPUT_SEASON:-2026}" \
+            --output staging/player_stats.csv
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --output-dir staging/results
