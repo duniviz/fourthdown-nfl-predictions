@@ -1,0 +1,20 @@
+name: Validate staged prediction candidates
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify production generator integration
+        run: |
+          echo "No verified prediction generator is configured."
+          echo "Do not copy existing forecasts to a staging file and change the timestamp."
+          echo "Candidate validation command once a real generator is wired:"
+          echo "python tools/validate_forecast_candidate.py --candidate staging/live-v2.json"
+          echo "Automatic publication remains disabled."
