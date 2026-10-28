@@ -31,6 +31,7 @@ jobs:
         env:
           INPUT_SEASON: ${{ inputs.season }}
           INPUT_WEEK: ${{ inputs.week }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p staging
