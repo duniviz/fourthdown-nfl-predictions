@@ -493,8 +493,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const card=(emoji,heading,summary,details)=>'<div class="fd-explain-card"><div class="fd-explain-heading"><span aria-hidden="true">'+emoji+'</span><strong>'+heading+'</strong></div><p>'+summary+'</p>'+(details?'<details class="fd-explain-more"><summary>See the numbers</summary><p>'+details+'</p></details>':'')+'</div>';
   const offenseRank=num(chosen?.offense_rank),otherOffenseRank=num(rival?.offense_rank);
   const defenseRank=num(chosen?.defense_rank),otherDefenseRank=num(rival?.defense_rank);
-  const offenseSummary=offenseRank!==null&&otherOffenseRank!==null?(offenseRank<otherOffenseRank?pick+' is ranked higher on offense.':offenseRank>otherOffenseRank?opponent+' is ranked higher on offense.':'Both offenses have the same ranking.'):'The available forecast does not include both offensive rankings.';
-  const defenseSummary=defenseRank!==null&&otherDefenseRank!==null?(defenseRank<otherDefenseRank?pick+' is ranked higher on defense.':defenseRank>otherDefenseRank?opponent+' is ranked higher on defense.':'Both defenses have the same ranking.'):'The available forecast does not include both defensive rankings.';
+  const offenseSummary=offenseRank!==null&&otherOffenseRank!==null?(offenseRank<otherOffenseRank?pick+' are ranked higher on offense.':offenseRank>otherOffenseRank?opponent+' are ranked higher on offense.':'Both offenses have the same ranking.'):'The available forecast does not include both offensive rankings.';
+  const defenseSummary=defenseRank!==null&&otherDefenseRank!==null?(defenseRank<otherDefenseRank?pick+' are ranked higher on defense.':defenseRank>otherDefenseRank?opponent+' are ranked higher on defense.':'Both defenses have the same ranking.'):'The available forecast does not include both defensive rankings.';
   const scored=num(form.avg_points_for),otherScored=num(oppForm.avg_points_for);
   const allowed=num(form.avg_points_against),otherAllowed=num(oppForm.avg_points_against);
   const recentSummary=scored!==null&&otherScored!==null?(scored>otherScored?'Recent scoring favors '+pick+'.':scored<otherScored?'Recent scoring favors '+opponent+'.':'Both teams have scored about the same recently.'):'Recent scoring averages are not available for both teams.';
@@ -507,9 +507,10 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     const listed=Array.isArray(players)?players.length:null;
     const out=num(x.adjust?.reported_out);
     const impact=num(x.adjust?.points);
-    return esc(team(x.team))+': '+(listed===null?'injury report unavailable':listed+' players listed in ESPN feed')
-      +(out!==null?' · '+out+' recorded out':'')
-      +(impact!==null?' · model adjustment '+impact.toFixed(1)+' pts':'')
+    const report=listed===null?'injury report unavailable':listed?listed+' player'+(listed===1?'':'s')+' listed in ESPN feed':'no players listed in ESPN feed';
+    return esc(team(x.team))+': '+report
+      +(out>0?' · '+out+' recorded out':'')
+      +(impact!==null&&impact!==0?' · model adjustment '+impact.toFixed(1)+' pts':'')
       +(listed?' · '+players.slice(0,5).map(z=>esc(z.player||z.name||'Player')+' ('+esc(z.status||'status unknown')+')').join(', '):'');
   }).join('. ');
   const weather=savedWeather?.games?.[p.game_id];
@@ -524,22 +525,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const weatherSummary=weather?.status==='forecast'?'Saved game-time forecast: '+weatherDetails:
     weather?.status==='roofed_stadium'?'Roofed venue; outdoor weather impact is uncertain.':'Game-time weather forecast unavailable.';
   const homeTeam=team(g.home.abbr);
-  const homeDetails=homeTeam+' is at home. The forecast does not isolate a numeric home-field point contribution.';
+  const homeDetails=homeTeam+' will play at home. The forecast does not isolate a numeric home-field point contribution.';
 
   const risks=[];
   if(scored!==null&&otherScored!==null&&otherScored>scored)risks.push('Recent scoring favors '+opponent+'.');
-  if(defenseRank!==null&&otherDefenseRank!==null&&otherDefenseRank<defenseRank)risks.push(opponent+' is ranked higher on defense.');
+  if(defenseRank!==null&&otherDefenseRank!==null&&otherDefenseRank<defenseRank)risks.push(opponent+' are ranked higher on defense.');
   if(margin<3)risks.push('The model expects a close game (under 3 points).');
   if(!risks.length)risks.push('The projected lead is not a guarantee; game-day changes can still affect the outcome.');
-  const headline=margin<3?esc(pick)+' has a narrow projected edge':esc(pick)+' has the stronger pregame profile';
-  const firstParagraph=esc(pick)+' is projected to win by '+margin.toFixed(1)+' points. '+esc(offenseSummary)+' '+esc(defenseSummary)
+  const headline=margin<3?esc(pick)+' have a narrow projected edge':esc(pick)+' have the stronger pregame profile';
+  const firstParagraph=esc(pick)+' are projected to win by '+margin.toFixed(1)+' points. '+esc(offenseSummary)+' '+esc(defenseSummary)
     +' Offense ranks are '+esc(pick)+' '+rank(chosen?.offense_rank)+' and '+esc(opponent)+' '+rank(rival?.offense_rank)
     +'; defense ranks are '+esc(pick)+' '+rank(chosen?.defense_rank)+' and '+esc(opponent)+' '+rank(rival?.defense_rank)+'. Lower rank is better.'
     +(allowed!==null&&otherAllowed!==null?' Recent points allowed: '+esc(pick)+' '+pts(allowed)+' per game and '+esc(opponent)+' '+pts(otherAllowed)+'. ':' ')
     +esc(recentSummary)+' Recent scoring: '+esc(pick)+' '+pts(scored)+' points per game and '+esc(opponent)+' '+pts(otherScored)+'.';
-  const secondParagraph=esc(opponent)+' can still change the game script. '+esc(risks.join(' '))
+  const riskSentence=margin<3?'The model sees this as a close game.':'The projected margin is meaningful, but it does not guarantee the result.';
+  const secondParagraph=esc(opponent)+' can still change the game script. '+riskSentence
     +' '+injuriesSummary+' '+injuryDetails+'. Feed updated '+(injuryData?.generated_at_utc?esc(new Date(injuryData.generated_at_utc).toLocaleString()):'unknown')+'. '
-    +weatherSummary+' '+weatherDetails+'. '+homeDetails+' Weather is informational and is not a verified model point adjustment. Turnovers, late availability changes and in-game events can alter the result.';
+    +weatherSummary+'. '+homeDetails+' Weather is informational and is not a verified model point adjustment. Turnovers, late availability changes and in-game events can alter the result.';
   const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Why this pick</strong><h4>'+headline+'</h4>'
     +'<p>'+firstParagraph+'</p>'
     +'<p>'+secondParagraph+'</p>'
