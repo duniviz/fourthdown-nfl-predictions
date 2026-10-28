@@ -56,7 +56,7 @@ def match(players,odds,now,max_age_hours=3):
         unique={line for line,_,_ in candidates}
         # Never guess when an initial-and-surname match could refer to multiple names.
         candidate_names={norm(q.get("player")) for _,_,q in candidates}
-        entry={"player_id":p.get("player_id"),"player_name":p.get("player_name"),"team":p.get("team"),"opponent":p.get("opponent"),"market":p.get("market"),"projected_yards":p.get("projected_yards"),"availability_status":p.get("availability_status","unverified"),"recommendation_eligible":bool(p.get("eligible_for_recommendation",False))}
+        entry={"player_id":p.get("player_id"),"player_name":p.get("player_name"),"team":p.get("team"),"opponent":p.get("opponent"),"market":p.get("market"),"projected_yards":p.get("projected_yards"),"availability_status":p.get("availability_status","presumed_available"),"provisional_research_eligible":bool(p.get("provisional_research_eligible",False)),"recommendation_eligible":bool(p.get("eligible_for_recommendation",False))}
         if len(unique)==1 and len(candidate_names)==1:
             line=next(iter(unique))
             q=max((x for x in candidates if x[0]==line),key=lambda x:x[1])[2]
