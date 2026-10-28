@@ -61,9 +61,29 @@ def project(rows, season, week, min_games=3):
                            "recent_opportunities":round(sum(v for _,v in recent_touches)/len(recent_touches),1)})
     return sorted(result,key=lambda x:(x["market"],x["player_name"],x["player_id"]))
 
+def scheduled_opponents(path, season, week):
+    matchups={}
+    with path.open(newline="",encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            try:
+                if int(row["season"])!=season or int(row["week"])!=week or row.get("game_type","REG")!="REG":
+                    continue
+            except (KeyError,ValueError,TypeError):
+                continue
+            home=row.get("home_team","").strip()
+            away=row.get("away_team","").strip()
+            if not home or not away or home==away or home in matchups or away in matchups:
+                raise ValueError("Missing or conflicting scheduled teams")
+            matchups[home]={"opponent":away,"home":True,"game_id":row.get("game_id","")}
+            matchups[away]={"opponent":home,"home":False,"game_id":row.get("game_id","")}
+    if not matchups:
+        raise ValueError("No scheduled regular-season matchups found")
+    return matchups
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--weekly-csv",type=Path,required=True)
+    p.add_argument("--schedule-csv",type=Path,required=True)
     p.add_argument("--season",type=int,required=True)
     p.add_argument("--week",type=int,required=True)
     p.add_argument("--output",type=Path,required=True)
@@ -76,9 +96,16 @@ def main():
         result=project(csv.DictReader(f),a.season,a.week)
     if not result:
         p.error("No eligible historical player samples")
+    try:
+        matchups=scheduled_opponents(a.schedule_csv,a.season,a.week)
+    except ValueError as exc:
+        p.error(str(exc))
+    result=[{**item,**matchups[item["team"]]} for item in result if item["team"] in matchups]
+    if not result:
+        p.error("No role-eligible players matched the scheduled teams")
     payload={"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
              "status":"research_only_uncalibrated","source":"supplied_nflverse_weekly_csv",
-             "note":"Role-filtered, but not opponent, injury, snap, schedule, or playing-status adjusted; inactive players may appear",
+             "note":"Role- and schedule-filtered; opponent identified but not statistically adjusted; injuries, snaps, trades and playing status unverified",
              "projections":result}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(payload,indent=2)+"\n")
