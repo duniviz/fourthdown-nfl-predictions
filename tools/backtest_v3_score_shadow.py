@@ -7,8 +7,16 @@ tool is research-only and never reads or writes live forecast files.
 """
 import json
 import math
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+# The workflow invokes this file directly, so add the repository root before
+# importing the repository packages.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from backtest.v2 import build_v2_predictions
 from v3_score_shadow import PACE_POINTS_PER_PLAY, SUCCESS_MARGIN_POINTS, PASS_MARGIN_POINTS, MAX_TOTAL_ADJUSTMENT, MAX_MARGIN_ADJUSTMENT
 
