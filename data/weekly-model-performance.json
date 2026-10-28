@@ -1,0 +1,39 @@
+{
+  "status": "timestamped_pregame_accuracy_only",
+  "generated_at_utc": "2026-10-28T04:03:59.546852+00:00",
+  "graded_weeks": 0,
+  "weekly_reports": [
+    {
+      "season": 2026,
+      "week": 8,
+      "locked_at_utc": "2026-10-28T04:03:59.546852+00:00",
+      "status": "awaiting_completed_games",
+      "completed_games": 0,
+      "game_metrics": {},
+      "player_metrics": {
+        "passing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "rushing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "receiving_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "market_diagnostics": {},
+      "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
+    }
+  ],
+  "season_to_date": {},
+  "note": "Aggregated errors are rounded from weekly metrics. No historical backfill is treated as a locked pregame prediction."
+}
