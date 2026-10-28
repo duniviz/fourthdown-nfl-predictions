@@ -549,7 +549,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const homeFieldEdge=num(edges.home_field_points);
   const signed=v=>(v>=0?'+':'')+v.toFixed(1);
   const homeOffenseNote=homeOffenseRank!==null&&awayDefenseRank!==null
-    ?homeName+' are #'+homeOffenseRank+' on offense against '+awayName+'\'s #'+awayDefenseRank+' defense'+(homeOffenseEdge!==null+'; saved EPA effect: '+signed(homeOffenseEdge)+' projected home-margin points':'')+'.'
+    ?homeName+' are #'+homeOffenseRank+' on offense against '+awayName+'\'s #'+awayDefenseRank+' defense'+(homeOffenseEdge!==null?'; saved EPA effect: '+signed(homeOffenseEdge)+' projected home-margin points':'')+'.'
     :'Offense-versus-defense ranks are not available for this side.';
   const awayOffenseNote=awayOffenseRank!==null&&homeDefenseRank!==null
     ?awayName+' are #'+awayOffenseRank+' on offense against '+homeName+'\'s #'+homeDefenseRank+' defense'+(awayOffenseEdge!==null?'; saved EPA effect: '+signed(awayOffenseEdge)+' projected home-margin points':'')+'.'
