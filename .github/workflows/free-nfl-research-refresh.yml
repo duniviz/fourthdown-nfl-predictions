@@ -158,6 +158,12 @@ jobs:
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2024.csv --season 2024 --output staging/results/nfl-savant-feature-lab-2024.json
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2025.csv --season 2025 --output staging/results/nfl-savant-feature-lab-2025.json
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats.csv --season 2026 --output staging/results/nfl-savant-feature-lab-2026.json
+      - name: Track advanced metric challengers and validation gaps
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_challenger_registry.py' -v
+          python tools/challenger_registry.py --reports staging/results/nfl-savant-feature-lab-2024.json staging/results/nfl-savant-feature-lab-2025.json staging/results/nfl-savant-feature-lab-2026.json staging/results/three-factor-prop-lab-2024.json staging/results/three-factor-prop-lab-2025.json staging/results/three-factor-prop-lab-2026.json --output staging/results/challenger-registry.json
       - name: Validate historical player uncertainty (research only)
         if: success()
         run: |
