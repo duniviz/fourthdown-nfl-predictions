@@ -59,6 +59,39 @@ jobs:
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Run walk-forward player yards backtest (completed weeks only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_player_walkforward_backtest.py' -v
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          projections=json.loads(Path("staging/results/player-projections.json").read_text())
+          season=int(projections["season"])
+          target_week=int(projections["week"])
+          through_week=target_week-1
+          with Path("staging/player_stats.csv").open(newline="",encoding="utf-8-sig") as handle:
+              completed_weeks=sorted({int(r["week"]) for r in csv.DictReader(handle) if r.get("season")==str(season) and r.get("week","").isdigit() and int(r["week"])<target_week})
+          if completed_weeks and through_week>max(completed_weeks):
+              through_week=max(completed_weeks)
+          Path("staging/backtest-target.json").write_text(json.dumps({"season":season,"through_week":through_week}))
+          print("Backtest cutoff:",season,through_week,"target week:",target_week)
+          PY
+          python - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          target=json.loads(Path("staging/backtest-target.json").read_text())
+          if target["through_week"]<4:
+              output={"status":"insufficient_completed_weeks","season":target["season"],"through_week":target["through_week"],"markets":{},"note":"At least four completed weeks required; no metrics fabricated."}
+              Path("staging/results/player-walkforward-backtest.json").write_text(json.dumps(output,indent=2)+"\\n")
+              print("Backtest skipped: insufficient completed weeks")
+          else:
+              subprocess.run([sys.executable,"tools/backtest_player_yards_walkforward.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output","staging/results/player-walkforward-backtest.json"],check=True)
+              result=json.loads(Path("staging/results/player-walkforward-backtest.json").read_text())
+              if not result.get("markets"):
+                  raise SystemExit("Backtest returned no evaluated markets; refusing empty success")
+          PY
       - name: Monitor configured official NFL inactive report pages (research only)
         if: success()
         continue-on-error: true
