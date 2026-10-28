@@ -59,6 +59,13 @@ jobs:
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Fetch supplemental Sleeper injury flags (research only)
+        if: success()
+        continue-on-error: true
+        run: |
+          python tools/research_sleeper_injuries.py \
+            --players-json staging/results/player-projections.json \
+            --output staging/results/sleeper-injury-flags.json
       - name: Compare research player yards to existing DraftKings odds snapshot
         if: success()
         run: |
