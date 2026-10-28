@@ -150,6 +150,14 @@ jobs:
           python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2024.csv --schedule-csv staging/games.csv --season 2024 --output staging/results/three-factor-prop-lab-2024.json
           python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2025.csv --schedule-csv staging/games.csv --season 2025 --output staging/results/three-factor-prop-lab-2025.json
           python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats.csv --schedule-csv staging/games.csv --season 2026 --output staging/results/three-factor-prop-lab-2026.json
+      - name: NFL Savant-style feature research and coverage audit
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_nfl_savant_feature_lab.py' -v
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2024.csv --season 2024 --output staging/results/nfl-savant-feature-lab-2024.json
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2025.csv --season 2025 --output staging/results/nfl-savant-feature-lab-2025.json
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats.csv --season 2026 --output staging/results/nfl-savant-feature-lab-2026.json
       - name: Validate historical player uncertainty (research only)
         if: success()
         run: |
