@@ -195,7 +195,7 @@ def generate():
         position_league[(pos,metric)]=neutral
         for opponent in {k[0] for k in position_allowed}:
             samples=[v[metric] for (opp,w,p),v in position_allowed.items() if opp==opponent and p==pos]
-            position_defense[(opponent,pos,metric)]=sorted(samples[-5:]) if samples else []
+            position_defense[(opponent,pos,metric)]=samples[-5:] if samples else []
     league_mean={}
     defense_mean={}
     for metric,_,_ in METRICS:
