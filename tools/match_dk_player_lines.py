@@ -31,6 +31,9 @@ def match(players,odds,now,max_age_hours=3):
         parts=re.findall(r"[a-z]+",str(projection or "").lower())
         quoted=re.findall(r"[a-z]+",str(quote or "").lower())
         return len(parts)==2 and len(parts[0])==1 and len(quoted)>=2 and parts[0]==quoted[0][:1] and parts[1]==quoted[-1]
+    # Inventory actual supported markets before claiming missing player lines.
+    market_inventory={m:sum(q.get("market_key") in aliases for q in rows) for m,aliases in MARKETS.items()}
+    unmatched_examples={m:[] for m in MARKETS}
     matched=[]
     counts={"total":len(players),"matched":0,"missing":0,"stale":0,"ambiguous":0,"unverified":0}
     for p in players:
@@ -63,9 +66,11 @@ def match(players,odds,now,max_age_hours=3):
             reason="ambiguous" if len(unique)>1 or len(candidate_names)>1 else ("stale" if stale else "missing")
             entry.update({"match_status":reason,"dk_line":None,"difference_yards":None})
             counts[reason]+=1
+        if entry["match_status"]!="matched" and len(unmatched_examples.get(p.get("market"),[]))<10:
+            unmatched_examples[p["market"]].append({"player":p.get("player_name"),"team":p.get("team"),"opponent":p.get("opponent"),"reason":entry["match_status"]})
         if not entry["recommendation_eligible"]: counts["unverified"]+=1
         matched.append(entry)
-    return matched,counts
+    return matched,counts,{"market_inventory":market_inventory,"unmatched_examples":unmatched_examples,"matched_pct":round(100*counts["matched"]/counts["total"],1) if counts["total"] else 0}
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--players-json",type=Path,required=True)
@@ -77,8 +82,8 @@ def main():
     with a.players_json.open() as f: players=json.load(f)
     with a.odds_json.open() as f: odds=json.load(f)
     now=datetime.now(timezone.utc)
-    matches,counts=match(players.get("projections",[]),odds,now,a.max_age_hours)
-    result={"season":players.get("season"),"week":players.get("week"),"generated_at_utc":now.isoformat(),"status":"research_only_no_publication","source":"DraftKings via existing ParlayAPI snapshot","odds_snapshot_generated_at":odds.get("generated_at_utc"),"counts":counts,"note":"Differences are not calibrated edges; stale, ambiguous, missing or unverified players are not betting recommendations","comparisons":matches}
+    matches,counts,coverage=match(players.get("projections",[]),odds,now,a.max_age_hours)
+    result={"season":players.get("season"),"week":players.get("week"),"generated_at_utc":now.isoformat(),"status":"research_only_no_publication","source":"DraftKings via existing ParlayAPI snapshot","odds_snapshot_generated_at":odds.get("generated_at_utc"),"counts":counts,"coverage_diagnostics":coverage,"note":"Differences are not calibrated edges; stale, ambiguous, missing or unverified players are not betting recommendations","comparisons":matches}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps(counts))
