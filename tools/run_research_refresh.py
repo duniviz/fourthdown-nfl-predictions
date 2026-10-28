@@ -58,8 +58,8 @@ def main():
                "--schedule-csv",str(a.schedule_csv),"--season",str(season),
                "--week",str(week),"--output",str(a.output_dir/"game-projections.json")],
       "players":[sys.executable,str(ROOT/"tools/project_player_yards.py"),
-                 "--weekly-csv",str(a.weekly_csv),"--season",str(season),
-                 "--week",str(week),"--output",str(a.output_dir/"player-projections.json")],
+                 "--weekly-csv",str(a.weekly_csv),"--schedule-csv",str(a.schedule_csv),
+                 "--season",str(season),"--week",str(week),"--output",str(a.output_dir/"player-projections.json")],
       "player_backtest":[sys.executable,str(ROOT/"tools/backtest_player_yards.py"),
                          "--weekly-csv",str(a.weekly_csv),"--season",str(season),
                          "--first-week","5","--last-week",str(min(18,max(5,week-1)))]
