@@ -16,6 +16,7 @@ def main():
     p.add_argument("--week",type=int,required=True)
     a=p.parse_args()
     latest={}
+    source_dates=set()
     week_rows=Counter()
     target_rows=0
     target_statuses=Counter()
@@ -50,6 +51,7 @@ def main():
                 unknown_statuses[status or "(blank)"]+=1
                 continue  # No official designation is NOT proof of active status
             modified=(row.get(date_col) or "").strip() if date_col else "unknown"
+            if modified and modified!="unknown": source_dates.add(modified)
             if pid not in latest or modified>latest[pid][0]:
                 latest[pid]=(modified,STATUS[status])
     a.output.parent.mkdir(parents=True,exist_ok=True)
@@ -59,7 +61,7 @@ def main():
         for pid,(_,status) in sorted(latest.items()):
             writer.writerow({"season":a.season,"week":a.week,"player_id":pid,"status":status})
     print(f"Injury coverage: season={a.season} target_week={a.week} rows_by_week={dict(sorted(week_rows.items()))} target_week_rows={target_rows} target_statuses={dict(target_statuses)} unknown_statuses={dict(unknown_statuses)}")
-    print(f"Normalized {len(latest)} explicit injury designations; undesignated players remain unverified")
+    print(f"Normalized {len(latest)} explicit injury designations; undesignated players remain unverified; latest_source_timestamp={max(source_dates) if source_dates else 'unknown'}")
     if target_rows==0:
         print("WARNING: No injury report rows for requested week; projections must remain unverified")
     elif not latest:
