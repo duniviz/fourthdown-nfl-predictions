@@ -126,10 +126,30 @@ def opponent_defense(rows, season, week, min_games=3):
             factors[(team,market)]=round(max(.9,min(1.1,1+.25*(ratio-1))),4)
     return factors
 
+def injury_status(path, season, week):
+    """Optional externally supplied pregame injury CSV: season,week,player_id,status."""
+    statuses={}
+    with path.open(newline="",encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            try:
+                if int(row["season"])!=season or int(row["week"])!=week:
+                    continue
+            except (KeyError,ValueError,TypeError):
+                continue
+            pid=(row.get("player_id") or "").strip()
+            status=(row.get("status") or "").strip().lower()
+            if not pid or status not in {"out","doubtful","questionable","active","probable","inactive"}:
+                raise ValueError("Invalid injury row: player_id/status required and status must be recognized")
+            if pid in statuses and statuses[pid]!=status:
+                raise ValueError("Conflicting injury statuses for player "+pid)
+            statuses[pid]=status
+    return statuses
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--weekly-csv",type=Path,required=True)
     p.add_argument("--schedule-csv",type=Path,required=True)
+    p.add_argument("--injury-csv",type=Path,default=None,help="Optional verified pregame availability CSV; no live feed is assumed")
     p.add_argument("--season",type=int,required=True)
     p.add_argument("--week",type=int,required=True)
     p.add_argument("--output",type=Path,required=True)
@@ -157,9 +177,20 @@ def main():
         item["opponent_defense_factor"]=factor
         item["opponent_defense_available"]=(item["opponent"],item["market"]) in defense
         item["projected_yards"]=round(item["projected_yards"]*factor,1)
-    payload={"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
+    statuses=injury_status(a.injury_csv,a.season,a.week) if a.injury_csv else {}
+    excluded=0
+    for item in result:
+        status=statuses.get(item["player_id"],"unverified")
+        item["availability_status"]=status
+        item["availability_verified"]=status!="unverified"
+        item["eligible_for_recommendation"]=status in {"active","probable"}
+    if statuses:
+        before=len(result)
+        result=[item for item in result if item["availability_status"] not in {"out","inactive","doubtful"}]
+        excluded=before-len(result)
+    payload={"injury_source_supplied":bool(a.injury_csv),"injury_exclusions":excluded,"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
              "status":"research_only_uncalibrated","source":"supplied_nflverse_weekly_csv",
-             "note":"Role- and schedule-filtered; conservative opponent-defense adjustment only when historical opponent field exists; no injury, snap, playing-status or sportsbook validation",
+             "note":"Role- and schedule-filtered; conservative opponent-defense adjustment only when historical opponent field exists; availability is unverified without an explicitly supplied pregame injury file; no snap or sportsbook validation",
              "projections":result}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(payload,indent=2)+"\n")
