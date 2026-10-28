@@ -543,7 +543,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     :'Recent scoring and defensive averages are not available for both teams.';
   const firstParagraph=esc(pick)+' are projected to win '+away.toFixed(1)+'–'+home.toFixed(1)+', a '+margin.toFixed(1)+'-point margin. '
     +esc(matchupContext)+' '+esc(recentContext);
-  const edges=analysis.scoring_edge_components||{};
+  const edges=d?.scoring_edge_components||{};
   const homeOffenseEdge=num(edges.home_offense_vs_away_defense);
   const awayOffenseEdge=num(edges.away_offense_vs_home_defense);
   const homeFieldEdge=num(edges.home_field_points);
