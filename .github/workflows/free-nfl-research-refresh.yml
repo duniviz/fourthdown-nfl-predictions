@@ -94,7 +94,19 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/research-dk-comparisons.json
+          if [ -f staging/results/sleeper-injury-flags.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path("staging/results/sleeper-injury-flags.json")
+          data=json.loads(source.read_text())
+          if data.get("status")!="supplemental_research_only":
+              raise SystemExit("Unexpected injury flag status")
+          Path("data/research-injury-flags.json").write_text(json.dumps(data,indent=2)+"\\n")
+          print("Published supplemental injury flags:",data.get("flagged_markets",0))
+          PY
+          fi
+          git add data/research-dk-comparisons.json data/research-injury-flags.json 2>/dev/null || git add data/research-dk-comparisons.json
           if ! git diff --cached --quiet; then
             git commit -m "Update research-only DK player comparisons"
             git pull --rebase origin main
