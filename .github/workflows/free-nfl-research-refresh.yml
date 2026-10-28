@@ -59,6 +59,21 @@ jobs:
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Archive pregame projections and grade completed games
+        if: success() && github.ref == 'refs/heads/main' && inputs.season == '' && inputs.week == ''
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_weekly_performance.py' -v
+          python tools/track_weekly_performance.py --schedule-csv staging/games.csv --stats-csv staging/player_stats.csv --games-json staging/results/game-projections.json --players-json staging/results/player-projections.json --archive-dir data/pregame-archives --report staging/results/weekly-model-performance.json
+          cp staging/results/weekly-model-performance.json data/weekly-model-performance.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pregame-archives/ data/weekly-model-performance.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Archive immutable pregame projections and weekly performance"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
       - name: Run walk-forward player yards backtest (completed weeks only)
         if: success()
         run: |
