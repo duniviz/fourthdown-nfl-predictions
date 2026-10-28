@@ -142,6 +142,14 @@ jobs:
           for season in 2024 2025 2026; do
             python tools/game_score_model_lab.py --schedule-csv staging/games.csv --season "$season" --output "staging/results/game-score-model-lab-${season}.json"
           done
+      - name: Three-factor QB and receiver prop research championship
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_three_factor_prop_lab.py' -v
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2024.csv --schedule-csv staging/games.csv --season 2024 --output staging/results/three-factor-prop-lab-2024.json
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2025.csv --schedule-csv staging/games.csv --season 2025 --output staging/results/three-factor-prop-lab-2025.json
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats.csv --schedule-csv staging/games.csv --season 2026 --output staging/results/three-factor-prop-lab-2026.json
       - name: Validate historical player uncertainty (research only)
         if: success()
         run: |
