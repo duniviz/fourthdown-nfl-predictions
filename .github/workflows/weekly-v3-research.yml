@@ -26,7 +26,7 @@ jobs:
         run: python -m research.v3_challenger
       - name: Backtest position-specific defensive matchups
         run: python -m research.position_matchup
-      - name: Archive model readiness evidence
+      - name: Evaluate guarded auto-promotion readiness\n        if: always()\n        run: python research/auto_promotion_gate.py\n      - name: Archive model readiness evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -35,5 +35,5 @@ jobs:
             research/weekly-learning/
             research/game-learning/
             research/v3-results/
-            research/position-matchup/
+            research/position-matchup/\n            research/auto-promotion/
           if-no-files-found: warn
