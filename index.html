@@ -307,6 +307,7 @@ renderParlays();
  let playerHistory=[];
  let playerResults=[];
  let injuryData=null;
+ let supplementalInjuryFlags=[];
  let savedWeather=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
@@ -340,6 +341,7 @@ renderParlays();
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
+  try{const response=await fetch('data/research-injury-flags.json?ts='+Date.now(),{cache:'no-store'});const j=response.ok?await response.json():null;supplementalInjuryFlags=Array.isArray(j?.flags)?j.flags:[];}catch(e){supplementalInjuryFlags=[];}
   try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
@@ -570,8 +572,10 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    const data=injuryData.teams?.[canon(t)];
    if(!data||data.status!=='retrieved')return '<p><strong>'+esc(t)+':</strong> Injury feed unavailable.</p>';
    const rows=data.players||[];
-   if(!rows.length)return '<p><strong>'+esc(t)+':</strong> No injuries listed in this feed (not a healthy-roster confirmation).</p>';
-   return '<div class="fd-injury-team"><strong>'+esc(t)+' · '+rows.length+' reported</strong>'+rows.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player)+'</b><span>'+esc(x.position||'')+' · '+esc(x.status||'Unspecified')+(x.detail?' · '+esc(x.detail):'')+'</span></div>').join('')+'</div>';
+   if(rows.length)return '<div class="fd-injury-team"><strong>'+esc(t)+' · '+rows.length+' officially reported</strong>'+rows.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player)+'</b><span>'+esc(x.position||'')+' · '+esc(x.status||'Unspecified')+(x.detail?' · '+esc(x.detail):'')+'</span></div>').join('')+'</div>';
+   const flags=supplementalInjuryFlags.filter(x=>canon(x.team)===canon(t));
+   if(flags.length)return '<div class="fd-injury-team"><strong>'+esc(t)+' · preliminary availability flags</strong>'+flags.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player_name||x.player||'Unknown player')+'</b><span>'+esc(x.injury_flag||x.status||'Availability flag')+' · supplemental source, not an official game-day designation</span></div>').join('')+'</div>';
+   return '<p><strong>'+esc(t)+':</strong> No official report published in the current feed and no supplemental availability flags (not a healthy-roster confirmation).</p>';
   }).join('');
   return '<details class="fd-injuries"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'</div></details>';
  }
