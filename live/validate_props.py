@@ -23,6 +23,24 @@ def validate(players):
                 raise ValueError("Anytime TD percent/probability mismatch")
         elif stat in YARD_LIMITS and p.get("opportunity_type") not in ("attempts","carries","targets"):
             raise ValueError(f"Yardage market missing valid opportunity unit: {stat}")
+        if stat in YARD_LIMITS:
+            volume=p.get("expected_opportunities")
+            rate=p.get("expected_yards_per_opportunity")
+            if volume is not None and (not isinstance(volume,(int,float)) or not math.isfinite(volume) or volume<0):
+                raise ValueError(f"Invalid workload: {p.get('player')} {stat} {volume}")
+            if rate is not None and (not isinstance(rate,(int,float)) or not math.isfinite(rate) or rate<0):
+                raise ValueError(f"Invalid efficiency: {p.get('player')} {stat} {rate}")
+            # These are intentionally loose physical sanity bounds, not target forecasts.
+            max_volume={"passing_yards":75,"rushing_yards":50,"receiving_yards":35}[stat]
+            max_rate={"passing_yards":20,"rushing_yards":15,"receiving_yards":30}[stat]
+            if volume is not None and volume>max_volume:
+                raise ValueError(f"Unrealistic player workload: {p.get('player')} {stat} {volume}")
+            if rate is not None and rate>max_rate:
+                raise ValueError(f"Unrealistic yards per opportunity: {p.get('player')} {stat} {rate}")
+            share=p.get("role_share")
+            if share is not None and (not isinstance(share,(int,float)) or not math.isfinite(share) or share<0 or share>1.05):
+                raise ValueError(f"Invalid team opportunity share: {p.get('player')} {stat} {share}")
+
     return len(players)
 
 def main():
