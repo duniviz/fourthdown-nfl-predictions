@@ -46,7 +46,13 @@ def main():
         p.error("Specify both season and week or neither")
     season,week=season_week(a.schedule_csv,a.season,a.week)
     a.output_dir.mkdir(parents=True,exist_ok=True)
-    summary={"season":season,"week":week,"status":"research_only_no_publication","steps":{}}\n    diagnostic=subprocess.run([sys.executable,str(ROOT/"tools/diagnose_player_feed.py"),\n        "--csv",str(a.weekly_csv),"--season",str(season),"--week",str(week)],\n        capture_output=True,text=True,timeout=120,check=False)\n    summary["player_feed_diagnostic"]={"exit_code":diagnostic.returncode,\n        "stdout":diagnostic.stdout[-10000:],"stderr":diagnostic.stderr[-2000:]}\n    (a.output_dir/"player-feed-diagnostic.json").write_text(diagnostic.stdout or "{}")
+    summary={"season":season,"week":week,"status":"research_only_no_publication","steps":{}}
+    diagnostic=subprocess.run([sys.executable,str(ROOT/"tools/diagnose_player_feed.py"),
+        "--csv",str(a.weekly_csv),"--season",str(season),"--week",str(week)],
+        capture_output=True,text=True,timeout=120,check=False)
+    summary["player_feed_diagnostic"]={"exit_code":diagnostic.returncode,
+        "stdout":diagnostic.stdout[-10000:],"stderr":diagnostic.stderr[-2000:]}
+    (a.output_dir/"player-feed-diagnostic.json").write_text(diagnostic.stdout or "{}")
     commands={
       "games":[sys.executable,str(ROOT/"tools/project_game_scores.py"),
                "--schedule-csv",str(a.schedule_csv),"--season",str(season),
@@ -65,7 +71,17 @@ def main():
         if label=="player_backtest" and result.returncode==0:
             (a.output_dir/"player-backtest.json").write_text(result.stdout)
     (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\n")
-    if summary["steps"]["player_backtest"]["exit_code"] == 0:\n        try:\n            report = json.loads(summary["steps"]["player_backtest"]["stdout"])\n            if not report.get("markets"):\n                summary["steps"]["player_backtest"]["exit_code"] = 3\n                summary["steps"]["player_backtest"]["stderr"] = "No graded player observations; cannot claim a successful backtest"\n        except (ValueError, TypeError):\n            summary["steps"]["player_backtest"]["exit_code"] = 3\n            summary["steps"]["player_backtest"]["stderr"] = "Unparseable backtest output"\n    (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\\n")\n    if diagnostic.returncode or any(x["exit_code"] for x in summary["steps"].values()):
+    if summary["steps"]["player_backtest"]["exit_code"] == 0:
+        try:
+            report = json.loads(summary["steps"]["player_backtest"]["stdout"])
+            if not report.get("markets"):
+                summary["steps"]["player_backtest"]["exit_code"] = 3
+                summary["steps"]["player_backtest"]["stderr"] = "No graded player observations; cannot claim a successful backtest"
+        except (ValueError, TypeError):
+            summary["steps"]["player_backtest"]["exit_code"] = 3
+            summary["steps"]["player_backtest"]["stderr"] = "Unparseable backtest output"
+    (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\\n")
+    if diagnostic.returncode or any(x["exit_code"] for x in summary["steps"].values()):
         print(json.dumps(summary,indent=2))
         raise SystemExit("One or more research steps failed; no publication attempted")
     print(json.dumps({"season":season,"week":week,"research_completed":True,
