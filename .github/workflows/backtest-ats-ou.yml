@@ -1,0 +1,31 @@
+name: Backtest ATS and O/U
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - research/nfl_2025_season_betting_results.csv
+      - tools/backtest_ats_ou_2025.py
+      - backtest/**
+      - .github/workflows/backtest-ats-ou.yml
+
+permissions:
+  contents: read
+
+jobs:
+  replay-2025:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install replay dependencies
+        run: pip install nflreadpy
+      - name: Replay V2 against closing lines
+        run: python tools/backtest_ats_ou_2025.py --output research/ats-ou-2025/results.json
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ats-ou-2025-backtest
+          path: research/ats-ou-2025/results.json
