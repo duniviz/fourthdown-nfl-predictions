@@ -62,7 +62,7 @@ def main():
     def write_json(name, payload):
         target = ROOT / "data" / name
         temp = target.with_suffix(".tmp")
-        temp.write_text(json.dumps(payload, indent=2) + "\\n", encoding="utf-8")
+        temp.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         temp.replace(target)
     game_rows = []
     for game in result["games"]:
