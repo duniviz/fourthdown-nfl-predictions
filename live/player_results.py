@@ -1,5 +1,6 @@
 """Grade archived pregame player yardage forecasts against completed NFL games."""
 import json
+import time
 from datetime import datetime,timezone
 from pathlib import Path
 import nflreadpy as nfl
@@ -11,10 +12,19 @@ def main():
     seasons=sorted({int(x["game_id"].split("_")[0]) for x in rows if x.get("game_id")})
     actual={}
     for season in seasons:
-        schedules=nfl.load_schedules([season]).to_dicts()
+        for attempt in range(3):
+            try:
+                schedules=nfl.load_schedules([season]).to_dicts()
+                stats=nfl.load_player_stats([season],summary_level="week").to_dicts()
+                break
+            except (ConnectionError, TimeoutError, OSError) as exc:
+                if attempt == 2:
+                    print(f"WARNING: nflverse download failed for {season}; preserving existing player grading: {exc}")
+                    return
+                time.sleep(2 ** attempt)
         completed={(int(g["week"]),g["home_team"],g["away_team"]):str(g["game_id"]) for g in schedules
             if g.get("game_type")=="REG" and g.get("home_score") is not None and g.get("away_score") is not None}
-        for r in nfl.load_player_stats([season],summary_level="week").to_dicts():
+        for r in stats:
             try:
                 week=int(r["week"]); team=str(r.get("team") or "");opp=str(r.get("opponent_team") or "")
                 game_id=completed.get((week,team,opp)) or completed.get((week,opp,team))
