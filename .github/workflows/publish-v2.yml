@@ -56,6 +56,19 @@ jobs:
       - name: Generate player research baselines
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_research
+      - name: Diagnose QB passing yard forecasts and saved snapshot
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('data/player-research.json').read_text())
+          print('PLAYER_FORECAST_GENERATED_AT:',j.get('generated_at_utc'))
+          print('PLAYER_FORECAST_WEEK:',j.get('week'))
+          for p in j.get('players',[]):
+              if p.get('stat_key')=='passing_yards' and any(n in str(p.get('player','')).lower() for n in ('mayfield','cousins')):
+                  print('QB_FORECAST_DIAGNOSTIC:',json.dumps({k:p.get(k) for k in ('player','game_id','projection','expected_opportunities','last_5_opportunities_avg','last_5_avg','expected_yards_per_opportunity','role_share','availability_status','opponent_adjustment','game_script_adjustment')}))
+          PY
       - name: Validate player projection units and plausible ranges
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.validate_props
