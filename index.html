@@ -355,19 +355,21 @@ renderParlays();
     const snapshotTime=Date.parse(data.generated_at_utc||'');
     for(const x of (data.rows||[])){
      const update=Date.parse(x.last_update||'');
-     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line))||!Number.isFinite(update)||Date.now()-update>3*3600000||update>Date.now()+300000)continue;
+     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line))||!Number.isFinite(update)||update>Date.now()+300000)continue;
      const key=norm(x.player)+'|'+x.market_key;
      if(!byKey.has(key))byKey.set(key,[]);
      byKey.get(key).push(x);
     }
     for(const x of playerResearch){
      const candidates=byKey.get(norm(x.player)+'|'+keys[x.market])||[];
-     const sameTeam=q=>[q.home_team,q.away_team].some(t=>String(t||'').toUpperCase()===String(x.team||'').toUpperCase());
-     const sameOpponent=q=>[q.home_team,q.away_team].some(t=>String(t||'').toUpperCase()===String(x.opponent||'').toUpperCase());
-     const matched=candidates.filter(q=>sameTeam(q)&&sameOpponent(q));
-     if(matched.length!==1)continue;
+     const aliases={'ARI':'Arizona Cardinals','ATL':'Atlanta Falcons','BAL':'Baltimore Ravens','BUF':'Buffalo Bills','CAR':'Carolina Panthers','CHI':'Chicago Bears','CIN':'Cincinnati Bengals','CLE':'Cleveland Browns','DAL':'Dallas Cowboys','DEN':'Denver Broncos','DET':'Detroit Lions','GB':'Green Bay Packers','HOU':'Houston Texans','IND':'Indianapolis Colts','JAX':'Jacksonville Jaguars','JAC':'Jacksonville Jaguars','KC':'Kansas City Chiefs','LV':'Las Vegas Raiders','LAC':'Los Angeles Chargers','LA':'Los Angeles Rams','LAR':'Los Angeles Rams','MIA':'Miami Dolphins','MIN':'Minnesota Vikings','NE':'New England Patriots','NO':'New Orleans Saints','NYG':'New York Giants','NYJ':'New York Jets','PHI':'Philadelphia Eagles','PIT':'Pittsburgh Steelers','SF':'San Francisco 49ers','SEA':'Seattle Seahawks','TB':'Tampa Bay Buccaneers','TEN':'Tennessee Titans','WAS':'Washington Commanders'};
+     const team=t=>norm(aliases[String(t||'').toUpperCase()]||t);
+     const sameTeam=q=>[q.home_team,q.away_team].some(t=>team(t)===team(x.team));
+     const sameOpponent=q=>[q.home_team,q.away_team].some(t=>team(t)===team(x.opponent));
+     const matched=candidates.filter(q=>sameTeam(q)&&sameOpponent(q)).sort((a,b)=>Date.parse(b.last_update)-Date.parse(a.last_update));
+     if(!matched.length)continue;
      const q=matched[0];
-     x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';
+     x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';x.dk_quote_time=q.last_update;x.dk_quote_stale=Date.now()-Date.parse(q.last_update)>3*3600000;
     }
    }
   }catch(e){}
@@ -397,7 +399,7 @@ function fdOpenMatchup(g){
  const stats=isFinal&&!p?'<div class="fd-modal-section"><h3>Completed game</h3><div class="fd-modal-grid"><div class="fd-modal-stat"><b>'+esc(away)+'</b><strong>'+esc(g.away.score??'—')+'</strong><small>Final score</small></div><div class="fd-modal-stat"><b>'+esc(home)+'</b><strong>'+esc(g.home.score??'—')+'</strong><small>Final score</small></div></div><p class="fd-modal-muted">Historical team ranks and pregame scoring averages were not saved for this matchup. Open Game recap on the scoreboard for actual team statistics.</p></div>':'<div class="fd-modal-section"><h3>Team comparison</h3><div class="fd-modal-grid">'+[['away',away],['home',home]].map(([s,t])=>'<div class="fd-modal-stat"><b>'+esc(t)+'</b><small style="display:block">Offense rank: '+esc(analysis[s]?.offense_rank??'—')+' · Defense rank: '+esc(analysis[s]?.defense_rank??'—')+'</small><strong>'+num(form(s).avg_points_for)+' scored</strong><small>'+num(form(s).avg_points_against)+' allowed · '+esc(form(s).wins??'—')+' wins in last '+esc(form(s).games??'—')+'</small></div>').join('')+'</div><p class="fd-modal-muted">Historical model snapshot; ranks and records may not be live.</p></div>';
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No verified injury adjustment in this published forecast';
  const injury='<div class="fd-modal-section"><h3>Injuries and model impact</h3><div class="fd-modal-grid">'+[away,home].map(t=>{const feed=injuryData?.teams?.[t];const rows=feed?.status==='retrieved'?(feed.players||[]):null;return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(rows===null?'<p>Report unavailable</p>':rows.length?rows.slice(0,12).map(x=>'<p>'+esc(x.player)+' · '+esc(x.status||'Unknown')+'</p>').join(''):'<p>No listed injuries; availability unconfirmed</p>')+'</div>'}).join('')+'</div><p class="fd-modal-muted">'+impact+'</p></div>';
- const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
+ const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const propExplanation=(x,line,edge)=>{
@@ -433,7 +435,7 @@ function fdOpenMatchup(g){
      return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+propExplanation(x,validLine?line:null,edge)+'</article>';
    }).join('')+'</div>';
  }).join('');
- const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable</p>')+'<p class="fd-modal-muted">DK line appears only when verified; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
+ const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3><p class="fd-modal-muted">'+(isFinal?'No archived pregame DraftKings lines were saved for this matchup.':'Verified live DK spread, total and moneyline are not currently available.')+' No odds are invented.</p></div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const simScore=simGame?'<div class="fd-modal-section"><h3>10,000 simulated outcomes</h3><p>'+esc(away)+' win '+num(simGame.away_win_pct)+'% · '+esc(home)+' win '+num(simGame.home_win_pct)+'% · tie '+num(simGame.tie_pct)+'%</p><p>Median '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory, uncalibrated probabilities.</p></div>':'';
