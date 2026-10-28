@@ -24,6 +24,8 @@ jobs:
         run: python -m research.game_learning
       - name: Run 2024-2025 V3 challenger holdout
         run: python -m research.v3_challenger
+      - name: Backtest position-specific defensive matchups
+        run: python -m research.position_matchup
       - name: Archive model readiness evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -33,4 +35,5 @@ jobs:
             research/weekly-learning/
             research/game-learning/
             research/v3-results/
+            research/position-matchup/
           if-no-files-found: warn
