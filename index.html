@@ -536,6 +536,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const metricNote=(title,detail)=>'<li><strong>'+esc(title)+'</strong><span>'+esc(detail)+'</span></li>';
   const homeData=d?.home||{},awayData=d?.away||{};
   const homeName=team(g.home.abbr),awayName=team(g.away.abbr);
+  const possessive=name=>String(name).endsWith('s')?name+"'":name+"'s";
   const homeOffenseRank=num(homeData.offense_rank),awayOffenseRank=num(awayData.offense_rank);
   const homeDefenseRank=num(homeData.defense_rank),awayDefenseRank=num(awayData.defense_rank);
   const homeForm=homeData.recent_form||{},awayForm=awayData.recent_form||{};
@@ -549,10 +550,10 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const homeFieldEdge=num(edges.home_field_points);
   const signed=v=>(v>=0?'+':'')+v.toFixed(1);
   const homeOffenseNote=homeOffenseRank!==null&&awayDefenseRank!==null
-    ?homeName+' are #'+homeOffenseRank+' on offense against '+awayName+'\'s #'+awayDefenseRank+' defense'+(homeOffenseEdge!==null?'; saved EPA effect: '+signed(homeOffenseEdge)+' projected home-margin points':'')+'.'
+    ?homeName+' are #'+homeOffenseRank+' on offense against '+possessive(awayName)+' #'+awayDefenseRank+' defense'+(homeOffenseEdge!==null?'; saved EPA effect: '+signed(homeOffenseEdge)+' projected home-margin points':'')+'.'
     :'Offense-versus-defense ranks are not available for this side.';
   const awayOffenseNote=awayOffenseRank!==null&&homeDefenseRank!==null
-    ?awayName+' are #'+awayOffenseRank+' on offense against '+homeName+'\'s #'+homeDefenseRank+' defense'+(awayOffenseEdge!==null?'; saved EPA effect: '+signed(awayOffenseEdge)+' projected home-margin points':'')+'.'
+    ?awayName+' are #'+awayOffenseRank+' on offense against '+possessive(homeName)+' #'+homeDefenseRank+' defense'+(awayOffenseEdge!==null?'; saved EPA effect: '+signed(awayOffenseEdge)+' projected home-margin points':'')+'.'
     :'Offense-versus-defense ranks are not available for this side.';
   const recentNote=homeScored!==null&&awayScored!==null&&homeAllowed!==null&&awayAllowed!==null
     ?homeName+' are '+homeRecord+' in the saved recent sample, scoring '+pts(homeScored)+' and allowing '+pts(homeAllowed)+' per game; '+awayName+' are '+awayRecord+', scoring '+pts(awayScored)+' and allowing '+pts(awayAllowed)+'.'
