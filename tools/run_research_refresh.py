@@ -38,6 +38,7 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument("--schedule-csv",type=Path,required=True)
     p.add_argument("--weekly-csv",type=Path,required=True)
+    p.add_argument("--injury-csv",type=Path,default=None)
     p.add_argument("--season",default="")
     p.add_argument("--week",default="")
     p.add_argument("--output-dir",type=Path,required=True)
@@ -64,6 +65,8 @@ def main():
                          "--weekly-csv",str(a.weekly_csv),"--season",str(season),
                          "--first-week","5","--last-week",str(min(18,max(5,week-1)))]
     }
+    if a.injury_csv and a.injury_csv.exists():
+        commands["players"].extend(["--injury-csv",str(a.injury_csv)])
     for label,cmd in commands.items():
         result=subprocess.run(cmd,capture_output=True,text=True,timeout=120,check=False)
         summary["steps"][label]={"exit_code":result.returncode,"stdout":result.stdout[-6000:],
