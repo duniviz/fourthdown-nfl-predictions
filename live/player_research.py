@@ -365,7 +365,12 @@ def generate():
                             adjustment=clamp(factor,0.90,1.10)
                         else:
                             adjustment=1.0
-                    role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
+                    # Full-game QB workload is an individual conditional starter
+                    # forecast, not a simultaneous share of the team's passing.
+                    # A value >1 signals competing QB scenarios or mismatched
+                    # team baseline, not an impossible QB passing-yard forecast.
+                    raw_role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
+                    role_share=clamp(raw_role_share,0.0,1.0) if position=="QB" and volume=="attempts" and qb_full_game_volume is not None else raw_role_share
                     script_multiplier=game_script_multiplier(metric,team_margin)
                     calibrated=calibration.get(metric,{})
                     calibration_n=int(calibrated.get("sample_size",0) or 0)
@@ -419,6 +424,7 @@ def generate():
                         "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
                         "qb_full_game_workload":round(qb_full_game_volume,1) if qb_full_game_volume is not None else None,
+                        "qb_raw_team_share":round(raw_role_share,3) if qb_full_game_volume is not None else None,
                         "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
                         "opponent_adjustment":round(adjustment,3),
                         "opponent_defense_context":defense_context.get((opp,metric)),
