@@ -1,0 +1,53 @@
+name: Free NFL research forecast refresh
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: Season to research
+        required: false
+        type: string
+      week:
+        description: Target week (strict pre-week cutoff)
+        required: false
+        type: string
+  schedule:
+    - cron: '35 13 * * 2,4,6'
+    - cron: '35 14 * * 0'
+permissions:
+  contents: read
+concurrency:
+  group: research-forecast-refresh
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch public NFL snapshots and compute research-only forecasts
+        env:
+          INPUT_SEASON: ${{ inputs.season }}
+          INPUT_WEEK: ${{ inputs.week }}
+        run: |
+          set -euo pipefail
+          mkdir -p staging
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
+            https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv \
+            -o staging/games.csv
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
+            https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv \
+            -o staging/player_stats.csv
+          python tools/run_research_refresh.py --schedule-csv staging/games.csv \
+            --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
+            --week "${INPUT_WEEK:-}" --output-dir staging/results
+      - name: Upload research reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-research-forecast-${{ github.run_id }}
+          path: staging/results/
+          if-no-files-found: warn
+          retention-days: 30
