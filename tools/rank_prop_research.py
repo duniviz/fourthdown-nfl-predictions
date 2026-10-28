@@ -35,11 +35,13 @@ def evaluate(report,now=None,calibration=None):
             empirical_over=round(sum(projected+e>line for e in residuals)/len(residuals),3)
             bounds=market_cal["interval_80_residual_yards"]
             interval=[round(projected+b,1) for b in bounds]
-        r.update({"research_over_probability":empirical_over,"research_interval_80_yards":interval,"research_difference_yards":gap,"relative_difference_pct":relative,"ranking_status":"eligible_for_further_validation" if not reasons else "blocked","block_reasons":reasons,"calibrated_probability":None,"confidence_score":None})
+        provisional_reasons=[reason for reason in reasons if reason not in {"availability_not_verified","game_day_status_not_confirmed"}]
+        provisional_ok=r.get("availability_status")=="presumed_available" and r.get("provisional_research_eligible",False) and not provisional_reasons
+        r.update({"provisional_research_status":"provisional" if provisional_ok else "not_provisional","research_over_probability":empirical_over,"research_interval_80_yards":interval,"research_difference_yards":gap,"relative_difference_pct":relative,"ranking_status":"eligible_for_further_validation" if not reasons else "blocked","block_reasons":reasons,"calibrated_probability":None,"confidence_score":None})
         results.append(r)
     # Eligible rows are not betting recommendations; without historical calibration no ranked picks.
     eligible=sum(x["ranking_status"]=="eligible_for_further_validation" for x in results)
-    return {"status":"research_only_no_bet_ranking","season":report.get("season"),"week":report.get("week"),"generated_at_utc":now.isoformat(),"counts":{"total":len(results),"eligible_for_further_validation":eligible,"blocked":len(results)-eligible},"note":"Raw model-vs-book gaps are NOT probabilities or confidence. No bet ranking is produced without out-of-sample calibration and verified availability.","comparisons":results}
+    return {"status":"research_only_no_bet_ranking","season":report.get("season"),"week":report.get("week"),"generated_at_utc":now.isoformat(),"counts":{"total":len(results),"eligible_for_further_validation":eligible,"blocked":len(results)-eligible,"provisional_research":sum(x["provisional_research_status"]=="provisional" for x in results)},"note":"Raw model-vs-book gaps are NOT probabilities or confidence. No bet ranking is produced without out-of-sample calibration and verified availability.","comparisons":results}
 
 def main():
     p=argparse.ArgumentParser()
