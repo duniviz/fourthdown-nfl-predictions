@@ -89,6 +89,9 @@ jobs:
       - name: Simulate game scores and player yardage 10000 times
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
+      - name: Verify player projections match simulation data
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.validate_published
       - name: Refresh stadium weather forecasts
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.weather
