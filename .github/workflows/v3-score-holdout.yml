@@ -1,0 +1,28 @@
+name: V3 200-game score holdout
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/backtest_v3_score_shadow.py'
+      - 'tools/v3_score_shadow.py'
+      - '.github/workflows/v3-score-holdout.yml'
+permissions:
+  contents: read
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Run leak-free 2024 development and 2025 holdout replay
+        run: python tools/backtest_v3_score_shadow.py --output research/v3-score-holdout/results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-score-200-game-holdout
+          path: research/v3-score-holdout/
+          if-no-files-found: warn
