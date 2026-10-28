@@ -8,9 +8,9 @@ import json
 import sys
 from pathlib import Path
 
-MIN_PLAYER_HOLDOUT = 100
-MIN_GAME_HOLDOUT = 100
-MIN_MARKET_IMPROVEMENT = 0.01
+MIN_PLAYER_HOLDOUT = 200
+MIN_GAME_HOLDOUT = 200
+MIN_MARKET_IMPROVEMENT = 0.02
 
 def main():
     reasons = []
@@ -30,10 +30,10 @@ def main():
         baseline = float(r.get("baseline_2025_mae", 0))
         challenger = float(r.get("challenger_2025_mae", float("inf")))
         if baseline <= 0 or challenger > baseline * (1 - MIN_MARKET_IMPROVEMENT):
-            reasons.append(f"{market}: improvement below 1% MAE threshold")
+            reasons.append(f"{market}: improvement below 2% MAE threshold")
     # The V3 harness explicitly compares research formulas, not the production
     # model, and its 2025 holdout is not a final promotion evaluation.
-    reasons.append("No exact production-model replay on independent chronological holdouts")
+    reasons.append("No exact production-model replay on independent chronological holdouts")\n    reasons.append("No multiweek stability and cross-market regression checks")
     reasons.append("No verified automated deployment and rollback integration")
     report = {"approved_for_auto_promotion": False, "reasons": reasons,
               "policy": "fail-closed", "candidate_markets": list(results)}
