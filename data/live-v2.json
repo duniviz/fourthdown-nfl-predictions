@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-10-28T00:06:03.626072+00:00",
+  "generated_at_utc": "2026-10-28T00:16:55.929875+00:00",
   "season": 2026,
   "week": 8,
   "status": "research_uncalibrated",
@@ -167,10 +167,8 @@
         },
         "BAL": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "status": "injury_feed_unavailable",
+          "players": []
         }
       },
       "analysis": {
@@ -445,8 +443,10 @@
         },
         "ARI": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         }
       },
       "analysis": {
