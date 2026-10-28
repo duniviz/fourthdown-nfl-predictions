@@ -25,6 +25,7 @@ jobs:
       - name: Replay V2 against closing lines
         run: python tools/backtest_ats_ou_2025.py --output research/ats-ou-2025/results.json
       - name: Upload results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ats-ou-2025-backtest
