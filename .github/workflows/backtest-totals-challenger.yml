@@ -1,0 +1,31 @@
+name: Compare totals challenger
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - tools/backtest_totals_challenger.py
+      - backtest/**
+      - .github/workflows/backtest-totals-challenger.yml
+
+permissions:
+  contents: read
+
+jobs:
+  compare-2025:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install comparison dependencies
+        run: pip install nflreadpy numpy
+      - name: Compare totals challenger with V2
+        run: python tools/backtest_totals_challenger.py --output research/totals-challenger-2025/results.json
+      - name: Upload comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: totals-challenger-2025
+          path: research/totals-challenger-2025/results.json
