@@ -124,6 +124,16 @@ jobs:
               result=json.loads(output.read_text())
               if result.get("production_change_approved") is not False:raise SystemExit("Model lab must not auto-promote")
           PY
+      - name: Multi-season passing yards model championship
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_multiseason_passing_championship.py' -v
+          python tools/download_current_player_stats.py --season 2024 --output staging/player_stats_2024.csv
+          python tools/download_current_player_stats.py --season 2025 --output staging/player_stats_2025.csv
+          python tools/multiseason_passing_championship.py --season-csv staging/player_stats_2024.csv --season-csv staging/player_stats_2025.csv --season-csv staging/player_stats.csv --holdout-weeks 4 --output staging/results/multiseason-passing-championship.json
       - name: Validate historical player uncertainty (research only)
         if: success()
         run: |
