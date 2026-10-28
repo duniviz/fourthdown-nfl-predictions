@@ -179,6 +179,7 @@ def main():
         item["projected_yards"]=round(item["projected_yards"]*factor,1)
     statuses=injury_status(a.injury_csv,a.season,a.week) if a.injury_csv else {}
     excluded=0
+    pre_filter_count=len(result)
     for item in result:
         status=statuses.get(item["player_id"],"unverified")
         item["availability_status"]=status
@@ -188,7 +189,10 @@ def main():
         before=len(result)
         result=[item for item in result if item["availability_status"] not in {"out","inactive","doubtful"}]
         excluded=before-len(result)
-    payload={"injury_source_supplied":bool(a.injury_csv),"injury_exclusions":excluded,"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
+    from collections import Counter
+    availability_counts=dict(sorted(Counter(x["availability_status"] for x in result).items()))
+    matched_markets=sum(1 for x in result if x["availability_verified"])
+    payload={"injury_diagnostics":{"feed_supplied":bool(a.injury_csv),"feed_status_records":len(statuses),"projected_markets_before_exclusions":pre_filter_count,"matched_markets_before_exclusions":matched_markets+excluded,"matched_markets_remaining":matched_markets,"excluded_markets":excluded,"availability_counts":availability_counts,"eligible_markets":sum(x["eligible_for_recommendation"] for x in result)},"injury_source_supplied":bool(a.injury_csv),"injury_exclusions":excluded,"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
              "status":"research_only_uncalibrated","source":"supplied_nflverse_weekly_csv",
              "note":"Role- and schedule-filtered; conservative opponent-defense adjustment only when historical opponent field exists; availability is unverified without an explicitly supplied pregame injury file; no snap or sportsbook validation",
              "projections":result}
