@@ -75,6 +75,14 @@ jobs:
           else
             echo "DraftKings odds or player projections unavailable; no comparisons fabricated"
           fi
+      - name: Evaluate prop research ranking prerequisites
+        if: success()
+        run: |
+          if [ -f staging/results/dk-player-comparisons.json ]; then
+            python tools/rank_prop_research.py \
+              --comparisons-json staging/results/dk-player-comparisons.json \
+              --output staging/results/prop-ranking-diagnostics.json
+          fi
       - name: Publish clearly labeled research comparisons (current scheduled week only)
         if: success() && github.ref == 'refs/heads/main' && inputs.season == '' && inputs.week == ''
         run: |
