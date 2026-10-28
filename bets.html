@@ -158,10 +158,15 @@ async function loadResearchComparisons(){
   const old=!Number.isFinite(generated)||Date.now()-generated>3*3600000||Date.now()<generated-300000;
   const matched=(report.comparisons||[]).filter(x=>x.match_status==='matched'&&Number.isFinite(Number(x.dk_line))&&Number.isFinite(Number(x.projected_yards)));
   status.textContent='Week '+report.week+' · '+matched.length+' matched lines · snapshot '+(Number.isFinite(generated)?new Date(generated).toLocaleString():'unknown')+(old?' · STALE — historical research only':' · research only')+'. Player availability must be independently confirmed.';
+  let injury={flags:[],generated_at_utc:null};
+  try { const ir=await fetch('data/research-injury-flags.json?t='+Date.now(),{cache:'no-store'}); if(ir.ok)injury=await ir.json(); }catch{}
+  const flags=new Map((injury.flags||[]).filter(f=>f.player_id&&f.market).map(f=>[String(f.player_id)+'|'+f.market,f]));
+  const injuryDate=Date.parse(injury.generated_at_utc);
+  const injuryStale=!Number.isFinite(injuryDate)||Date.now()-injuryDate>24*3600000;
   const label={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
   board.innerHTML=matched.slice(0,60).map(x=>{
    const quoteTime=Date.parse(x.last_update),stale=old||!Number.isFinite(quoteTime)||Date.now()-quoteTime>3*3600000;
-   return '<article class="bet-card"><h3>'+escape(x.player_name)+'</h3><p class="bet-sub">'+escape(x.team)+' vs '+escape(x.opponent)+' · '+escape(label[x.market]||x.market)+' yards</p><div class="bet-metrics"><div><strong>'+escape(x.projected_yards)+'</strong><small>Model</small></div><div><strong>'+escape(x.dk_line)+'</strong><small>DK line</small></div><div><strong>'+escape(x.difference_yards)+'</strong><small>Difference</small></div></div><p class="bet-note">'+(stale?'STALE QUOTE · ':'')+'Availability: '+escape(x.availability_status||'unverified')+' · Research only, not a bet recommendation</p></article>';
+   return '<article class="bet-card"><h3>'+escape(x.player_name)+'</h3><p class="bet-sub">'+escape(x.team)+' vs '+escape(x.opponent)+' · '+escape(label[x.market]||x.market)+' yards</p><div class="bet-metrics"><div><strong>'+escape(x.projected_yards)+'</strong><small>Model</small></div><div><strong>'+escape(x.dk_line)+'</strong><small>DK line</small></div><div><strong>'+escape(x.difference_yards)+'</strong><small>Difference</small></div></div><p class="bet-note">'+(stale?'STALE QUOTE · ':'')+'Availability: '+escape(x.availability_status||'unverified')+' · '+(flags.has(String(x.player_id)+'|'+x.market)?'<strong> Sleeper flag: '+escape(flags.get(String(x.player_id)+'|'+x.market).injury_flag)+'</strong>'+(injuryStale?' (snapshot older than 24h)':'')+' · ':'')+'Research only, not a bet recommendation</p></article>';
   }).join('')||'<p class="bet-sub">No matching lines in this published research snapshot.</p>';
  }catch{status.textContent='No published research comparison yet. Scheduled research will populate this section when available.';board.innerHTML='';}
 }
