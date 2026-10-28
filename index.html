@@ -533,22 +533,30 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   if(margin<3)risks.push('The model expects a close game (under 3 points).');
   if(!risks.length)risks.push('The projected lead is not a guarantee; game-day changes can still affect the outcome.');
   const headline=margin<3?esc(pick)+' have a narrow projected edge':esc(pick)+' have the stronger pregame profile';
-  const firstParagraph=esc(pick)+' are projected to win by '+margin.toFixed(1)+' points. '+esc(offenseSummary)+' '+esc(defenseSummary)
-    +' Offense ranks are '+esc(pick)+' '+rank(chosen?.offense_rank)+' and '+esc(opponent)+' '+rank(rival?.offense_rank)
-    +'; defense ranks are '+esc(pick)+' '+rank(chosen?.defense_rank)+' and '+esc(opponent)+' '+rank(rival?.defense_rank)+'. Lower rank is better.'
-    +(allowed!==null&&otherAllowed!==null?' Recent points allowed: '+esc(pick)+' '+pts(allowed)+' per game and '+esc(opponent)+' '+pts(otherAllowed)+'. ':' ')
-    +esc(recentSummary)+' Recent scoring: '+esc(pick)+' '+pts(scored)+' points per game and '+esc(opponent)+' '+pts(otherScored)+'.';
-  const possessive=name=>String(name).endsWith('s')?name+"'":name+"'s";
-  const pickPossessive=possessive(pick),opponentPossessive=possessive(opponent);
+  const pickPossessive=name=>String(name).endsWith('s')?name+"'":name+"'s";
+  const chosenPossessive=pickPossessive(pick),opponentPossessive=pickPossessive(opponent);
+  const matchupContext=offenseRank!==null&&otherOffenseRank!==null&&defenseRank!==null&&otherDefenseRank!==null
+    ?pick+"'s "+rank(offenseRank)+" offense faces "+opponentPossessive+" "+rank(otherDefenseRank)+" defense, while "+opponentPossessive+" "+rank(otherOffenseRank)+" offense meets "+chosenPossessive+" "+rank(defenseRank)+" defense. Lower ranks are stronger."
+    :'The saved forecast does not include a complete set of unit rankings.';
+  const recentContext=scored!==null&&otherScored!==null&&allowed!==null&&otherAllowed!==null
+    ?'Over the recent completed-game sample, '+pick+' scored '+pts(scored)+' points per game and allowed '+pts(allowed)+', compared with '+pts(otherScored)+' scored and '+pts(otherAllowed)+' allowed by '+opponent+'.'
+    :'Recent scoring and defensive averages are not available for both teams.';
+  const firstParagraph=esc(pick)+' are projected to win '+away.toFixed(1)+'–'+home.toFixed(1)+', a '+margin.toFixed(1)+'-point margin. '
+    +esc(matchupContext)+' '+esc(recentContext);
+  const edges=analysis.scoring_edge_components||{};
+  const homeOffenseEdge=num(edges.home_offense_vs_away_defense);
+  const awayOffenseEdge=num(edges.away_offense_vs_home_defense);
+  const homeFieldEdge=num(edges.home_field_points);
+  const signed=v=>(v>=0?'+':'')+v.toFixed(1);
+  const componentNarrative=homeOffenseEdge!==null&&awayOffenseEdge!==null&&homeFieldEdge!==null
+    ?'The model’s saved EPA matchup layer assigns '+signed(homeOffenseEdge)+' projected home-margin points to '+homeTeam+'\'s offense against '+team(g.away.abbr)+'\'s defense, '+signed(awayOffenseEdge)+' to '+team(g.away.abbr)+'\'s offense against '+homeTeam+'\'s defense, and '+signed(homeFieldEdge)+' for '+homeTeam+' playing at home. These are inputs to the forecast, not a complete causal accounting of its final score.'
+    :'The saved forecast does not include a complete unit-level EPA point breakdown for this matchup.';
   const scoringCounterpoint=scored!==null&&otherScored!==null&&otherScored>scored
-    ?opponent+' have scored '+pts(otherScored)+' points per game recently, compared with '+pts(scored)+' for '+pick+'.'
+    ?opponent+' have the recent scoring edge, at '+pts(otherScored)+' points per game versus '+pts(scored)+' for '+pick+'.'
     :scored!==null&&otherScored!==null
-      ?pick+' and '+opponent+' have produced similar recent scoring.'
+      ?'Neither team has a meaningful recent scoring advantage in the saved sample.'
       :'Recent scoring is unavailable for one or both teams.';
-  const secondParagraph='The key counterpoint is the unit-on-unit matchup. '+scoringCounterpoint+' '
-    +opponentPossessive+' offense is ranked '+rank(rival?.offense_rank)+' and faces '+pickPossessive+' '+rank(chosen?.defense_rank)+' defense, while '
-    +pickPossessive+' offense is '+rank(chosen?.offense_rank)+' against '+opponentPossessive+' '+rank(rival?.defense_rank)+' defense. '
-    +'The projection holds if '+pick+' turn that two-way ranking advantage into sustained drives; it can miss if '+opponent+' maintain their recent scoring pace against the stronger defense.';
+  const secondParagraph=componentNarrative+' '+scoringCounterpoint+' The projection is most vulnerable if '+opponent+' translate that recent form into sustained drives against the stronger-ranked unit.';
   const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Why this pick</strong><h4>'+headline+'</h4>'
     +'<p>'+firstParagraph+'</p>'
     +'<p>'+secondParagraph+'</p>'
