@@ -130,8 +130,8 @@ def starter_qb_workload(records):
     if not full:
         return None
     recent=full[-5:]
-    # A returning starter should not be dragged down by zero/relief appearances.
-    return clamp(0.7*statistics.median(recent[-3:])+0.3*statistics.median(full),15,55)
+    # Blend recent and season full-game averages; exclude relief appearances.
+    return clamp(0.7*(sum(recent[-3:])/len(recent[-3:]))+0.3*(sum(full)/len(full)),15,55)
 
 def generate():
     if nfl is None:
