@@ -10,7 +10,7 @@ import math
 from collections import defaultdict
 from pathlib import Path
 from backtest.v2 import build_v2_predictions
-from live.v3_score_shadow import PACE_POINTS_PER_PLAY, SUCCESS_MARGIN_POINTS, PASS_MARGIN_POINTS, MAX_TOTAL_ADJUSTMENT, MAX_MARGIN_ADJUSTMENT
+from v3_score_shadow import PACE_POINTS_PER_PLAY, SUCCESS_MARGIN_POINTS, PASS_MARGIN_POINTS, MAX_TOTAL_ADJUSTMENT, MAX_MARGIN_ADJUSTMENT
 
 def num(value):
     try:
