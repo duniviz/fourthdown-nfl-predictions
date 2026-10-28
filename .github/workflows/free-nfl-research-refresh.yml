@@ -167,6 +167,15 @@ jobs:
             if [ "$season" = 2026 ]; then input=staging/player_stats.csv; else input="staging/player_stats_${season}.csv"; fi
             python tools/mix_match_challenger_lab.py --weekly-csv "$input" --season "$season" --output "staging/results/mix-match-challenger-${season}.json"
           done
+      - name: Head-to-head yardage challenger comparison (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python tools/prop_desk_head_to_head.py \
+            --report staging/results/mix-match-challenger-2024.json \
+            --report staging/results/mix-match-challenger-2025.json \
+            --report staging/results/mix-match-challenger-2026.json \
+            --output staging/results/prop-desk-head-to-head.json
       - name: Track advanced metric challengers and validation gaps
         if: success()
         run: |
