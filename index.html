@@ -314,13 +314,14 @@ function fdOpenMatchup(g){
  const stats=isFinal&&!p?'<div class="fd-modal-section"><h3>Completed game</h3><div class="fd-modal-grid"><div class="fd-modal-stat"><b>'+esc(away)+'</b><strong>'+esc(g.away.score??'—')+'</strong><small>Final score</small></div><div class="fd-modal-stat"><b>'+esc(home)+'</b><strong>'+esc(g.home.score??'—')+'</strong><small>Final score</small></div></div><p class="fd-modal-muted">Historical team ranks and pregame scoring averages were not saved for this matchup. Open Game recap on the scoreboard for actual team statistics.</p></div>':'<div class="fd-modal-section"><h3>Team comparison</h3><div class="fd-modal-grid">'+[['away',away],['home',home]].map(([s,t])=>'<div class="fd-modal-stat"><b>'+esc(t)+'</b><small style="display:block">Offense rank: '+esc(analysis[s]?.offense_rank??'—')+' · Defense rank: '+esc(analysis[s]?.defense_rank??'—')+'</small><strong>'+num(form(s).avg_points_for)+' scored</strong><small>'+num(form(s).avg_points_against)+' allowed · '+esc(form(s).wins??'—')+' wins in last '+esc(form(s).games??'—')+'</small></div>').join('')+'</div><p class="fd-modal-muted">Historical model snapshot; ranks and records may not be live.</p></div>';
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No verified injury adjustment in this published forecast';
  const injury='<div class="fd-modal-section"><h3>Injuries and model impact</h3><div class="fd-modal-grid">'+[away,home].map(t=>{const feed=injuryData?.teams?.[t];const rows=feed?.status==='retrieved'?(feed.players||[]):null;return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(rows===null?'<p>Report unavailable</p>':rows.length?rows.slice(0,12).map(x=>'<p>'+esc(x.player)+' · '+esc(x.status||'Unknown')+'</p>').join(''):'<p>No listed injuries; availability unconfirmed</p>')+'</div>'}).join('')+'</div><p class="fd-modal-muted">'+impact+'</p></div>';
- const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x));
+ const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const propExplanation=(x,line,edge)=>{
    const d=x.opponent_defense_context,parts=[];
    if(d){
      parts.push('<strong>'+esc(x.opponent)+' defensive matchup:</strong> '+esc(d.rank)+' of '+esc(d.ranked_teams)+' in '+esc(x.market.toLowerCase())+' allowed (1 = fewest), '+esc(d.season_allowed_per_game)+' team yards/game this season and '+esc(d.last_3_allowed_per_game)+' over the last '+esc(d.last_3_games)+' games.');
+     if(x.opponent_position_context)parts.push('<small>Position-specific opponent allowance: '+esc(x.opponent_position_context.last_5_allowed_per_game)+' yards/game to '+esc(x.position)+'s over '+esc(x.opponent_position_context.games)+' recent games. Descriptive only.</small>');
      if(x.stat_key==='rushing_yards')parts.push('<small>Team rushing yards include QB and RB carries; this is not an RB-only defensive ranking.</small>');
      if(x.stat_key==='receiving_yards')parts.push('<small>Receiving totals include all positions, not just this player’s position.</small>');
    }else parts.push('Opponent defensive ranking unavailable for this forecast.');
@@ -328,10 +329,11 @@ function fdOpenMatchup(g){
    if(Number.isFinite(adj)&&x.opponent_adjustment!=null)parts.push('Opponent adjustment in model: '+(100*(adj-1)>=0?'+':'')+(100*(adj-1)).toFixed(1)+'%.');
    const vol=Number(x.expected_opportunities),avg=Number(x.last_5_opportunities_avg);
    if(Number.isFinite(vol)&&x.expected_opportunities!=null&&Number.isFinite(avg)&&x.last_5_opportunities_avg!=null)parts.push('Expected '+esc(x.opportunity_type||'opportunities')+': '+vol.toFixed(1)+' vs '+avg.toFixed(1)+' per game over the last five.');
+   if(x.game_script_adjustment!=null)parts.push('Game-script adjustment: '+((Number(x.game_script_adjustment)-1)*100>=0?'+':'')+((Number(x.game_script_adjustment)-1)*100).toFixed(1)+'%.');
    if(x.last_3_avg!=null&&x.last_5_avg!=null)parts.push('Player form: '+num(x.last_3_avg)+' yards/game over the last three; '+num(x.last_5_avg)+' over the last five.');
    if(edge!=null)parts.push('Model projects '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'at')+' the displayed DK line. This is a directional comparison, not a validated betting advantage.');
    if(x.sample_warning)parts.push(esc(x.sample_warning));
-   return '<details class="fd-prop-why"><summary>Why '+(edge>0?'OVER':edge<0?'UNDER':'this projection')+'? · Matchup & trends</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
+   return '<details class="fd-prop-why"><summary>Why '+(edge>0?'model leans OVER':edge<0?'model leans UNDER':'this projection')+'? · Matchup & trends</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
  const propOrder=['Passing','Rushing','Receiving','Other'];
  const propCards=propOrder.map(group=>{
@@ -344,7 +346,7 @@ function fdOpenMatchup(g){
      const sim=simulationPlayers.find(s=>s.game_id===x.game_id&&s.player_id===x.player_id&&s.stat_key===x.stat_key);
      const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+' yards · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+' yards</div>':'';
      const edge=validProjection&&validLine?projection-line:null;
-     const direction=edge===null?'No verified line':edge>0?'OVER':edge<0?'UNDER':'EVEN';
+     const direction=edge===null?'No verified line':edge>0?'Model leans OVER':edge<0?'Model leans UNDER':'Model even';
      return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+propExplanation(x,validLine?line:null,edge)+'</article>';
    }).join('')+'</div>';
  }).join('');
