@@ -119,6 +119,20 @@ def project_yards(stats, metric, volume):
     # Descriptive uncertainty only, not a calibrated prediction interval.
     return round(forecast,1),round(spread,1),round(expected_volume,1),round(rate,2)
 
+def starter_qb_workload(records):
+    """Estimate starter-level pass volume from full QB appearances, not relief games.
+
+    This is a workload proxy, NOT independent confirmation of the named starter.
+    Do not infer a starter from DraftKings lines.
+    """
+    ordered=sorted(records,key=lambda r:int(r["week"]))
+    full=[max(0.0,num(r.get("attempts"))) for r in ordered if num(r.get("attempts"))>=20]
+    if not full:
+        return None
+    recent=full[-5:]
+    # A returning starter should not be dragged down by zero/relief appearances.
+    return clamp(0.7*statistics.median(recent[-3:])+0.3*statistics.median(full),15,55)
+
 def generate():
     if nfl is None:
         raise RuntimeError("nflreadpy is required to generate player research")
@@ -323,6 +337,12 @@ def generate():
                     allocated=allocation.get((player,metric))
                     if allocated is None: continue
                     adjusted=0.75*allocated+0.25*expected_volume
+                    # For a QB with established full-game passing volume, avoid
+                    # splitting his starter workload with a backup's recent starts.
+                    # Preserve every eligible player's record; never drop backups.
+                    qb_full_game_volume=starter_qb_workload(stats) if str(stats[-1].get("position") or "").upper()=="QB" and volume=="attempts" else None
+                    if qb_full_game_volume is not None:
+                        adjusted=0.85*qb_full_game_volume+0.15*expected_volume
                     # A newly elevated player with fewer than three observed
                     # games cannot be assumed to absorb the entire missing
                     # teammate workload without an independently verified role.
@@ -398,6 +418,8 @@ def generate():
                         "uncertainty_yards":uncertainty,
                         "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
+                        "qb_full_game_workload":round(qb_full_game_volume,1) if qb_full_game_volume is not None else None,
+                        "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
                         "opponent_adjustment":round(adjustment,3),
                         "opponent_defense_context":defense_context.get((opp,metric)),
                         "opponent_position_context":({"games":len(position_defense.get((opp,position,metric),[])),"last_5_allowed_per_game":round(sum(position_defense[(opp,position,metric)])/len(position_defense[(opp,position,metric)]),1)} if (position,metric) in position_markets and position_defense.get((opp,position,metric)) else None),
