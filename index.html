@@ -234,6 +234,7 @@ renderParlays();
  let playerHistory=[];
  let playerResults=[];
  let injuryData=null;
+ let savedWeather=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -266,6 +267,7 @@ renderParlays();
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
+  try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
   // Join public DraftKings odds snapshot to research rows by player + full-game market.
@@ -418,6 +420,32 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const recentSummary=scored!==null&&otherScored!==null?(scored>otherScored?pick+' has scored more points per game recently.':scored<otherScored?opponent+' has scored more points per game recently.':'Both teams have scored about the same recently.'):'Recent scoring averages are not available for both teams.';
   const injuriesKnown=p.injury_adjustments&&Object.values(p.injury_adjustments).some(v=>num(v?.points)!==null&&num(v.points)!==0);
   const injuriesSummary=injuriesKnown?'The published model includes a recorded injury adjustment.':'No verified injury point adjustment is recorded for this matchup.';
+  const injuryTeams=[canon(g.away.abbr),canon(g.home.abbr)];
+  const injuryCounts=injuryTeams.map(t=>({team:t,feed:injuryData?.teams?.[t],adjust:p.injury_adjustments?.[t]}));
+  const injuryDetails=injuryCounts.map(x=>{
+    const players=x.feed?.players;
+    const listed=Array.isArray(players)?players.length:null;
+    const out=num(x.adjust?.reported_out);
+    const impact=num(x.adjust?.points);
+    return esc(team(x.team))+': '+(listed===null?'injury report unavailable':listed+' players listed in ESPN feed')
+      +(out!==null?' · '+out+' recorded out':'')
+      +(impact!==null?' · model adjustment '+impact.toFixed(1)+' pts':'')
+      +(listed?' · '+players.slice(0,5).map(z=>esc(z.player||z.name||'Player')+' ('+esc(z.status||'status unknown')+')').join(', '):'');
+  }).join('. ');
+  const weather=savedWeather?.games?.[p.game_id];
+  const weatherDetails=weather?.status==='forecast'
+    ?[weather.conditions,num(weather.temperature_f)!==null?num(weather.temperature_f).toFixed(0)+'°F':null,
+       weather.wind_speed?'wind '+weather.wind_speed:null,
+       num(weather.precipitation_probability)!==null?num(weather.precipitation_probability).toFixed(0)+'% precipitation chance':null]
+       .filter(Boolean).map(esc).join(' · ')
+    :weather?.status==='roofed_stadium'?'Covered or retractable-roof stadium; roof position unverified.'
+    :weather?.status==='stadium_unknown'?'Stadium weather could not be resolved.'
+    :'No saved forecast for this game.';
+  const weatherSummary=weather?.status==='forecast'?'Saved game-time forecast: '+weatherDetails:
+    weather?.status==='roofed_stadium'?'Roofed venue; outdoor weather impact is uncertain.':'Game-time weather forecast unavailable.';
+  const homeTeam=team(g.home.abbr);
+  const homeDetails=homeTeam+' is at home. The forecast does not isolate a numeric home-field point contribution.';
+
   const risks=[];
   if(scored!==null&&otherScored!==null&&otherScored>scored)risks.push(opponent+' has been scoring more recently.');
   if(defenseRank!==null&&otherDefenseRank!==null&&otherDefenseRank<defenseRank)risks.push(opponent+' has the higher-ranked defense.');
@@ -427,8 +455,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +card('🏈','Offense',esc(offenseSummary),'Offense ranks: '+esc(pick)+' '+rank(chosen?.offense_rank)+'; '+esc(opponent)+' '+rank(rival?.offense_rank)+'. Lower ranking number means better.')
     +card('🛡️','Defense',esc(defenseSummary)+(allowed!==null&&otherAllowed!==null?' Recently, '+esc(pick)+' allows '+pts(allowed)+' points per game; '+esc(opponent)+' allows '+pts(otherAllowed)+'.':''),'Defense ranks: '+esc(pick)+' '+rank(chosen?.defense_rank)+'; '+esc(opponent)+' '+rank(rival?.defense_rank)+'. Lower is better. Recent points allowed are not adjusted for opponent strength.')
     +card('📈','Recent games',esc(recentSummary),'Recent points scored per game: '+esc(pick)+' '+pts(scored)+'; '+esc(opponent)+' '+pts(otherScored)+'. Recent wins: '+esc(form.wins??'unknown')+' of '+esc(form.games??'unknown')+' vs '+esc(oppForm.wins??'unknown')+' of '+esc(oppForm.games??'unknown')+'.')
-    +card('🏥','Injuries',injuriesSummary,'Recorded injury information: '+injuryNote+'. Check confirmed inactives before kickoff; unverified reports are not proof of a score change.')
-    +card('🌦️','Weather and home field','The saved prediction does not show how many points weather or home field added or removed.','These factors may matter, but their individual effect cannot be verified from this forecast. No adjustment has been invented.')
+    +card('🏥','Injuries',injuriesSummary,injuryDetails+'. Feed updated '+(injuryData?.generated_at_utc?esc(new Date(injuryData.generated_at_utc).toLocaleString()):'unknown')+'. Check game-day inactives.')
+    +card('🌦️','Weather and home field',weatherSummary,weatherDetails+'. '+homeDetails+' Weather is informational and is not a verified model point adjustment.')
     +card('⚠️','What could go wrong?',esc(risks.join(' ')),'Injuries, turnovers and weather can change the outcome. The model predicts a result; it does not guarantee it.')
     +'</div><p class="fd-explain-disclaimer">Team rankings and recent results come from the saved model snapshot, not necessarily live data. These comparisons explain the matchup; they are not measured model feature weights.</p>';
   return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick?</summary>'+why+'</details></div>';
