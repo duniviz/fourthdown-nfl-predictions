@@ -352,14 +352,22 @@ renderParlays();
     const keys={'Passing yards':'player_pass_yds','Rushing yards':'player_rush_yds','Receiving yards':'player_rec_yds'};
     const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
     const byKey=new Map();
+    const snapshotTime=Date.parse(data.generated_at_utc||'');
     for(const x of (data.rows||[])){
-     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line)))continue;
+     const update=Date.parse(x.last_update||'');
+     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line))||!Number.isFinite(update)||Date.now()-update>3*3600000||update>Date.now()+300000)continue;
      const key=norm(x.player)+'|'+x.market_key;
-     if(!byKey.has(key))byKey.set(key,x);
+     if(!byKey.has(key))byKey.set(key,[]);
+     byKey.get(key).push(x);
     }
     for(const x of playerResearch){
-     const q=byKey.get(norm(x.player)+'|'+keys[x.market]);
-     if(q){x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';}
+     const candidates=byKey.get(norm(x.player)+'|'+keys[x.market])||[];
+     const sameTeam=q=>[q.home_team,q.away_team].some(t=>String(t||'').toUpperCase()===String(x.team||'').toUpperCase());
+     const sameOpponent=q=>[q.home_team,q.away_team].some(t=>String(t||'').toUpperCase()===String(x.opponent||'').toUpperCase());
+     const matched=candidates.filter(q=>sameTeam(q)&&sameOpponent(q));
+     if(matched.length!==1)continue;
+     const q=matched[0];
+     x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';
     }
    }
   }catch(e){}
@@ -421,7 +429,7 @@ function fdOpenMatchup(g){
      const sim=simulationPlayers.find(s=>s.game_id===x.game_id&&s.player_id===x.player_id&&s.stat_key===x.stat_key);
      const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+' yards · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+' yards</div>':'';
      const edge=validProjection&&validLine?projection-line:null;
-     const direction=edge===null?'No verified line':edge>0?'Model leans OVER':edge<0?'Model leans UNDER':'Model even';
+     const direction=edge===null?'No verified line':Math.abs(edge)<Math.max(10,0.08*line)?'Small difference · no validated edge':edge>0?'Uncalibrated OVER lean':'Uncalibrated UNDER lean';
      return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+propExplanation(x,validLine?line:null,edge)+'</article>';
    }).join('')+'</div>';
  }).join('');
