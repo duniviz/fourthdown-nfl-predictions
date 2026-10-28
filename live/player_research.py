@@ -283,6 +283,23 @@ def generate():
             for volume,cap in hard_max.items():
                 if team_targets.get(volume,0)>cap:
                     raise ValueError(f"Implausible {team} team {volume}: {team_targets[volume]:.1f} > {cap}; refusing player projections")
+            # QB opportunity shares are not interchangeable with RB/WR committees.
+            # A backup's relief appearances must not siphon 20+ attempts from the
+            # projected starter. Identify a dominant recent passer; otherwise do
+            # not publish an unverified starter-level passing-yards forecast.
+            qb_candidates=[]
+            for (t,pid),records in history.items():
+                if t!=team: continue
+                recent=sorted(records,key=lambda x:int(x["week"]))[-3:]
+                if not recent or week-int(recent[-1]["week"])>2:continue
+                if str(recent[-1].get("position") or "").upper()!="QB":continue
+                name=str(recent[-1].get("player_display_name") or recent[-1].get("player_name") or "").casefold()
+                if overrides.get((team,name)) in ("out","inactive","ir"):continue
+                attempts=sum(max(0,num(x.get("attempts"))) for x in recent)
+                qb_candidates.append((pid,attempts))
+            qb_total=sum(v for _,v in qb_candidates)
+            qb_leader=max(qb_candidates,key=lambda x:x[1]) if qb_candidates else None
+            dominant_qb=qb_leader[0] if qb_leader and qb_total>=15 and qb_leader[1]/qb_total>=0.65 else None
             # Each player's raw expected share is reconciled to the team total.
             allocation={}
             for metric,_,volume in METRICS:
@@ -299,6 +316,9 @@ def generate():
                     if raw>0: eligible.append((pid,raw))
                 total=sum(v for _,v in eligible)
                 target=team_targets.get(volume)
+                if volume=="attempts":
+                    eligible=[(pid,raw) for pid,raw in eligible if pid==dominant_qb]
+                    total=sum(v for _,v in eligible)
                 for pid,raw in eligible:
                     allocation[(pid,metric)]=target*raw/total if total>0 and target is not None else raw
             for (t,player),stats in history.items():
