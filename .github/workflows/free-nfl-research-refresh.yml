@@ -14,7 +14,7 @@ on:
     - cron: '35 13 * * 2,4,6'
     - cron: '35 14 * * 0'
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: research-forecast-refresh
   cancel-in-progress: false
@@ -67,6 +67,31 @@ jobs:
               --odds-json data/dk-odds.json --output staging/results/dk-player-comparisons.json
           else
             echo "DraftKings odds or player projections unavailable; no comparisons fabricated"
+          fi
+      - name: Publish clearly labeled research comparisons (current scheduled week only)
+        if: success() && github.ref == 'refs/heads/main' && inputs.season == '' && inputs.week == ''
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path("staging/results/dk-player-comparisons.json")
+          if not source.exists():
+              raise SystemExit("No DK comparison report; skipping publication")
+          data=json.loads(source.read_text())
+          if not data.get("comparisons") or not data.get("counts",{}).get("total"):
+              raise SystemExit("No player comparisons; skipping publication")
+          target=Path("data/research-dk-comparisons.json")
+          target.write_text(json.dumps(data,indent=2)+"\\n")
+          print("Published research-only comparison snapshot:",data["counts"])
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/research-dk-comparisons.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update research-only DK player comparisons"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
       - name: Upload research reports only
         if: always()
