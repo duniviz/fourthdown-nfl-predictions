@@ -3,6 +3,7 @@
 import argparse
 import csv
 from pathlib import Path
+from collections import Counter
 
 STATUS={"out":"out","doubtful":"doubtful","questionable":"questionable",
         "ir":"inactive","injured reserve":"inactive","inactive":"inactive",
@@ -15,6 +16,10 @@ def main():
     p.add_argument("--week",type=int,required=True)
     a=p.parse_args()
     latest={}
+    week_rows=Counter()
+    target_rows=0
+    target_statuses=Counter()
+    unknown_statuses=Counter()
     with a.input.open(newline="",encoding="utf-8-sig") as f:
         reader=csv.DictReader(f)
         fields=set(reader.fieldnames or [])
@@ -25,17 +30,24 @@ def main():
             p.error("Injury feed missing required columns; found: "+", ".join(sorted(fields)))
         for row in reader:
             try:
-                if int(row["season"])!=a.season or int(row["week"])!=a.week:
-                    continue
+                row_season=int(row["season"])
+                row_week=int(row["week"])
             except (ValueError,TypeError):
                 continue
+            if row_season==a.season:
+                week_rows[row_week]+=1
+            if row_season!=a.season or row_week!=a.week:
+                continue
+            target_rows+=1
             if row.get("game_type",row.get("season_type","REG"))!="REG":
                 continue
             pid=(row.get(id_col) or "").strip()
             if not pid:
                 continue
             status=(row.get(status_col) or "").strip().lower()
+            target_statuses[status or "(blank)"]+=1
             if status not in STATUS:
+                unknown_statuses[status or "(blank)"]+=1
                 continue  # No official designation is NOT proof of active status
             modified=(row.get(date_col) or "").strip() if date_col else "unknown"
             if pid not in latest or modified>latest[pid][0]:
@@ -46,6 +58,11 @@ def main():
         writer.writeheader()
         for pid,(_,status) in sorted(latest.items()):
             writer.writerow({"season":a.season,"week":a.week,"player_id":pid,"status":status})
-    print(f"Normalized {len(latest)} explicit injury designations; undenoted players remain unverified")
+    print(f"Injury coverage: season={a.season} target_week={a.week} rows_by_week={dict(sorted(week_rows.items()))} target_week_rows={target_rows} target_statuses={dict(target_statuses)} unknown_statuses={dict(unknown_statuses)}")
+    print(f"Normalized {len(latest)} explicit injury designations; undesignated players remain unverified")
+    if target_rows==0:
+        print("WARNING: No injury report rows for requested week; projections must remain unverified")
+    elif not latest:
+        print("WARNING: Injury rows exist, but no recognized explicit game status; projections remain unverified")
 if __name__=="__main__":
     main()
