@@ -1,136 +1,315 @@
 {
-  "season": 2026,
-  "week": 8,
-  "source": "DraftKings Network odds board",
-  "source_url": "https://dknetwork.draftkings.com/moneyline-total-spread/",
-  "snapshot_date_utc": "2026-10-27",
-  "note": "Published DraftKings quotes captured for reference on October 27, 2026. Not live or automatically refreshed; verify current prices before use.",
+  "source": "ParlayAPI",
+  "bookmaker": "draftkings",
+  "snapshot_date_utc": "2026-10-28T02:21:36.120915+00:00",
   "games": [
     {
-      "game_id": "2026_08_CAR_GB",
-      "away": "CAR",
-      "home": "GB",
-      "bookmaker": "draftkings",
-      "home_spread": -3.5,
-      "total": 47.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_BAL_BUF",
-      "away": "BAL",
+      "game_id": "06a72fd770834369e82528c867af6e63",
       "home": "BUF",
+      "away": "BAL",
+      "home_team": "Buffalo Bills",
+      "away_team": "Baltimore Ravens",
+      "commence_time": "2026-11-01T18:00:00Z",
       "bookmaker": "draftkings",
       "home_spread": -3.5,
       "total": 54.5,
-      "updated_at_utc": null
+      "moneyline": [
+        {
+          "name": "Buffalo Bills",
+          "price": -185
+        },
+        {
+          "name": "Baltimore Ravens",
+          "price": 154
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     },
     {
-      "game_id": "2026_08_TEN_CIN",
-      "away": "TEN",
+      "game_id": "48c09fb502dae28eff2714c69a757b10",
       "home": "CIN",
+      "away": "TEN",
+      "home_team": "Cincinnati Bengals",
+      "away_team": "Tennessee Titans",
+      "commence_time": "2026-11-01T18:00:00Z",
       "bookmaker": "draftkings",
-      "home_spread": -10.5,
+      "home_spread": -10.0,
       "total": 46.5,
-      "updated_at_utc": null
+      "moneyline": [
+        {
+          "name": "Cincinnati Bengals",
+          "price": -500
+        },
+        {
+          "name": "Tennessee Titans",
+          "price": 380
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     },
     {
-      "game_id": "2026_08_ARI_DAL",
-      "away": "ARI",
+      "game_id": "6dfdc9c24a402d4c6fb04f77ce44f803",
       "home": "DAL",
+      "away": "ARI",
+      "home_team": "Dallas Cowboys",
+      "away_team": "Arizona Cardinals",
+      "commence_time": "2026-11-01T18:00:00Z",
       "bookmaker": "draftkings",
       "home_spread": -6.5,
       "total": 54.5,
-      "updated_at_utc": null
+      "moneyline": [
+        {
+          "name": "Dallas Cowboys",
+          "price": -310
+        },
+        {
+          "name": "Arizona Cardinals",
+          "price": 250
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     },
     {
-      "game_id": "2026_08_MIN_DET",
-      "away": "MIN",
-      "home": "DET",
-      "bookmaker": "draftkings",
-      "home_spread": -3,
-      "total": 46.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_IND_JAX",
-      "away": "IND",
-      "home": "JAX",
-      "bookmaker": "draftkings",
-      "home_spread": -9.5,
-      "total": 46.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_LV_NYJ",
-      "away": "LV",
-      "home": "NYJ",
-      "bookmaker": "draftkings",
-      "home_spread": -1.5,
-      "total": 45.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_CLE_PIT",
-      "away": "CLE",
-      "home": "PIT",
-      "bookmaker": "draftkings",
-      "home_spread": -3.5,
-      "total": 39.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_ATL_TB",
-      "away": "ATL",
-      "home": "TB",
-      "bookmaker": "draftkings",
-      "home_spread": -2.5,
-      "total": 45.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_LAC_LA",
-      "away": "LAC",
-      "home": "LA",
-      "bookmaker": "draftkings",
-      "home_spread": -6.5,
-      "total": 45.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_KC_DEN",
-      "away": "KC",
+      "game_id": "d24b62becceb0329971b41671dd051c4",
       "home": "DEN",
+      "away": "KC",
+      "home_team": "Denver Broncos",
+      "away_team": "Kansas City Chiefs",
+      "commence_time": "2026-11-01T21:25:00Z",
       "bookmaker": "draftkings",
       "home_spread": 1.5,
       "total": 41.5,
-      "updated_at_utc": null
+      "moneyline": [
+        {
+          "name": "Denver Broncos",
+          "price": 102
+        },
+        {
+          "name": "Kansas City Chiefs",
+          "price": -122
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     },
     {
-      "game_id": "2026_08_NE_MIA",
-      "away": "NE",
-      "home": "MIA",
+      "game_id": "1c54b6620dd9ff9c5d1f8a0405c18be0",
+      "home": "DET",
+      "away": "MIN",
+      "home_team": "Detroit Lions",
+      "away_team": "Minnesota Vikings",
+      "commence_time": "2026-11-01T18:00:00Z",
       "bookmaker": "draftkings",
-      "home_spread": 7,
-      "total": 44.5,
-      "updated_at_utc": null
+      "home_spread": -3.0,
+      "total": 46.5,
+      "moneyline": [
+        {
+          "name": "Detroit Lions",
+          "price": -170
+        },
+        {
+          "name": "Minnesota Vikings",
+          "price": 142
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     },
     {
-      "game_id": "2026_08_PHI_WAS",
-      "away": "PHI",
+      "game_id": "1f57031b991cc30d4f5d1554bc856369",
+      "home": "GB",
+      "away": "CAR",
+      "home_team": "Green Bay Packers",
+      "away_team": "Carolina Panthers",
+      "commence_time": "2026-10-30T00:15:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -3.5,
+      "total": 47.5,
+      "moneyline": [
+        {
+          "name": "Green Bay Packers",
+          "price": -185
+        },
+        {
+          "name": "Carolina Panthers",
+          "price": 154
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "f2919613792634b1614940076531f1f1",
+      "home": "JAX",
+      "away": "IND",
+      "home_team": "Jacksonville Jaguars",
+      "away_team": "Indianapolis Colts",
+      "commence_time": "2026-11-01T18:00:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -9.5,
+      "total": 46.5,
+      "moneyline": [
+        {
+          "name": "Jacksonville Jaguars",
+          "price": -410
+        },
+        {
+          "name": "Indianapolis Colts",
+          "price": 320
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "ee6186ee9bfacbc9ca8bf5c345fb8085",
+      "home": "LA",
+      "away": "LAC",
+      "home_team": "Los Angeles Rams",
+      "away_team": "Los Angeles Chargers",
+      "commence_time": "2026-11-01T21:05:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -6.5,
+      "total": 45.5,
+      "moneyline": [
+        {
+          "name": "Los Angeles Rams",
+          "price": -290
+        },
+        {
+          "name": "Los Angeles Chargers",
+          "price": 235
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "fe5e1e0ac316c080a59c06db07c4326b",
+      "home": "MIA",
+      "away": "NE",
+      "home_team": "Miami Dolphins",
+      "away_team": "New England Patriots",
+      "commence_time": "2026-11-01T21:25:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": 7.0,
+      "total": 44.5,
+      "moneyline": [
+        {
+          "name": "Miami Dolphins",
+          "price": 260
+        },
+        {
+          "name": "New England Patriots",
+          "price": -325
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "8b291c385fc84850854d27a785d3054a",
+      "home": "NYJ",
+      "away": "LV",
+      "home_team": "New York Jets",
+      "away_team": "Las Vegas Raiders",
+      "commence_time": "2026-11-01T18:00:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -1.5,
+      "total": 45.5,
+      "moneyline": [
+        {
+          "name": "New York Jets",
+          "price": -122
+        },
+        {
+          "name": "Las Vegas Raiders",
+          "price": 102
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "7b554f08dc39a7d5d0c9f036332b96aa",
+      "home": "PIT",
+      "away": "CLE",
+      "home_team": "Pittsburgh Steelers",
+      "away_team": "Cleveland Browns",
+      "commence_time": "2026-11-01T18:00:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -3.5,
+      "total": 39.5,
+      "moneyline": [
+        {
+          "name": "Pittsburgh Steelers",
+          "price": -185
+        },
+        {
+          "name": "Cleveland Browns",
+          "price": 154
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "cdc49d63dcfb018f17d2f504a8593b70",
+      "home": "SEA",
+      "away": "CHI",
+      "home_team": "Seattle Seahawks",
+      "away_team": "Chicago Bears",
+      "commence_time": "2026-11-03T01:15:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -3.0,
+      "total": 46.5,
+      "moneyline": [
+        {
+          "name": "Seattle Seahawks",
+          "price": -166
+        },
+        {
+          "name": "Chicago Bears",
+          "price": 140
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "4bdcc635ae85eaeff02180b4635eb425",
+      "home": "TB",
+      "away": "ATL",
+      "home_team": "Tampa Bay Buccaneers",
+      "away_team": "Atlanta Falcons",
+      "commence_time": "2026-11-01T18:00:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": -2.5,
+      "total": 45.5,
+      "moneyline": [
+        {
+          "name": "Tampa Bay Buccaneers",
+          "price": -135
+        },
+        {
+          "name": "Atlanta Falcons",
+          "price": 114
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
+    },
+    {
+      "game_id": "d8c79fad392822d460e5d1d1a766f0cf",
       "home": "WAS",
+      "away": "PHI",
+      "home_team": "Washington Commanders",
+      "away_team": "Philadelphia Eagles",
+      "commence_time": "2026-11-02T01:20:00Z",
       "bookmaker": "draftkings",
       "home_spread": -5.5,
       "total": 40.5,
-      "updated_at_utc": null
-    },
-    {
-      "game_id": "2026_08_CHI_SEA",
-      "away": "CHI",
-      "home": "SEA",
-      "bookmaker": "draftkings",
-      "home_spread": -3,
-      "total": 46.5,
-      "updated_at_utc": null
+      "moneyline": [
+        {
+          "name": "Washington Commanders",
+          "price": -218
+        },
+        {
+          "name": "Philadelphia Eagles",
+          "price": 180
+        }
+      ],
+      "updated_at_utc": "2026-10-28T02:21:36.120915+00:00"
     }
   ]
 }
