@@ -70,6 +70,9 @@ jobs:
       - name: Grade completed-game player projections
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_results
+      - name: Learn validated player correction weights for next forecast
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.player_weight_learning
       - name: Simulate game scores and player yardage 10000 times
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
@@ -81,7 +84,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/game-learning-status.json
+          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/game-learning-status.json data/player-weight-learning.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
