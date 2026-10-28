@@ -204,6 +204,27 @@ def generate():
         for team in {key[0] for key in defense_week}:
             vals=[v[metric] for key,v in defense_week.items() if key[0]==team and v[metric]>0]
             defense_mean[(team,metric)]=(sum(vals)/len(vals),len(vals)) if vals else (league_mean[metric],0)
+    # Descriptive opponent rankings: rank 1 allows the FEWEST yards.
+    # Based solely on completed games preceding the forecast week.
+    defense_context={}
+    for metric in ("passing_yards","rushing_yards","receiving_yards"):
+        by_team={}
+        for defense in {k[0] for k in defense_week}:
+            games_allowed=sorted(((w,vals[metric]) for (t,w),vals in defense_week.items() if t==defense),key=lambda x:x[0])
+            if games_allowed:
+                by_team[defense]=games_allowed
+        ranking=sorted(by_team,key=lambda t:sum(v for _,v in by_team[t])/len(by_team[t]))
+        for rank,defense in enumerate(ranking,1):
+            samples=by_team[defense]
+            season_avg=sum(v for _,v in samples)/len(samples)
+            recent=samples[-3:]
+            defense_context[(defense,metric)]={
+                "rank":rank,"ranked_teams":len(ranking),
+                "season_allowed_per_game":round(season_avg,1),
+                "last_3_allowed_per_game":round(sum(v for _,v in recent)/len(recent),1),
+                "last_3_games":len(recent),
+                "basis":"opponent team total yards allowed, not position-specific"
+            }
     # Current official statuses exclude confirmed absences. Questionable is not treated as out.
     overrides={}
     try:
@@ -370,6 +391,7 @@ def generate():
                         "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
                         "opponent_adjustment":round(adjustment,3),
+                        "opponent_defense_context":defense_context.get((opp,metric)),
                         "game_script_adjustment":script_multiplier,
                         "calibration_bias_yards":round(calibration_bias,2),
                         "calibration_sample_size":calibration_n,
