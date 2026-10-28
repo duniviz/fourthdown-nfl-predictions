@@ -41,9 +41,18 @@ jobs:
           python -m pip install --disable-pip-version-check polars
           python tools/download_current_player_stats.py --season "${INPUT_SEASON:-2026}" \
             --output staging/player_stats.csv
+          if [ -n "${INPUT_WEEK:-}" ] && curl --fail --location --retry 2 --max-time 60 --silent --show-error \
+            "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${INPUT_SEASON:-2026}.csv" \
+            -o staging/injuries.csv; then
+            python tools/normalize_nflverse_injuries.py --input staging/injuries.csv \
+              --season "${INPUT_SEASON:-2026}" --week "${INPUT_WEEK:-0}" \
+              --output staging/injury-status.csv
+          else
+            echo "Injury source unavailable or target week unspecified; all players remain unverified"
+          fi
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
-            --week "${INPUT_WEEK:-}" --output-dir staging/results
+            --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
       - name: Upload research reports only
         if: always()
         uses: actions/upload-artifact@v4
