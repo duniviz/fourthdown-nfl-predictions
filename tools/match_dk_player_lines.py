@@ -23,6 +23,14 @@ def match(players,odds,now,max_age_hours=3):
     rows=odds.get("rows",[])
     if odds.get("bookmaker","").lower()!="draftkings":
         raise ValueError("Odds must explicitly identify DraftKings")
+    # Only accept abbreviated names if unique within the same matchup and market.
+    def same_name(projection, quote):
+        full=norm(projection)
+        candidate=norm(quote)
+        if full==candidate: return True
+        parts=re.findall(r"[a-z]+",str(projection or "").lower())
+        quoted=re.findall(r"[a-z]+",str(quote or "").lower())
+        return len(parts)==2 and len(parts[0])==1 and len(quoted)>=2 and parts[0]==quoted[0][:1] and parts[1]==quoted[-1]
     matched=[]
     counts={"total":len(players),"matched":0,"missing":0,"stale":0,"ambiguous":0,"unverified":0}
     for p in players:
@@ -30,7 +38,7 @@ def match(players,odds,now,max_age_hours=3):
         stale=False
         for q in rows:
             if q.get("market_key") not in MARKETS.get(p.get("market"),set()): continue
-            if norm(q.get("player"))!=norm(p.get("player_name")): continue
+            if not same_name(p.get("player_name"),q.get("player")): continue
             if {team(q.get("home_team")),team(q.get("away_team"))}!={team(p.get("team")),team(p.get("opponent"))}: continue
             try:
                 line=float(q["line"])
@@ -43,14 +51,16 @@ def match(players,odds,now,max_age_hours=3):
                 continue
             candidates.append((line,t,q))
         unique={line for line,_,_ in candidates}
+        # Never guess when an initial-and-surname match could refer to multiple names.
+        candidate_names={norm(q.get("player")) for _,_,q in candidates}
         entry={"player_id":p.get("player_id"),"player_name":p.get("player_name"),"team":p.get("team"),"opponent":p.get("opponent"),"market":p.get("market"),"projected_yards":p.get("projected_yards"),"availability_status":p.get("availability_status","unverified"),"recommendation_eligible":bool(p.get("eligible_for_recommendation",False))}
-        if len(unique)==1:
+        if len(unique)==1 and len(candidate_names)==1:
             line=next(iter(unique))
             q=max((x for x in candidates if x[0]==line),key=lambda x:x[1])[2]
             entry.update({"match_status":"matched","dk_line":line,"difference_yards":round(float(p["projected_yards"])-line,1),"over_price":q.get("over_price"),"under_price":q.get("under_price"),"last_update":q.get("last_update")})
             counts["matched"]+=1
         else:
-            reason="ambiguous" if len(unique)>1 else ("stale" if stale else "missing")
+            reason="ambiguous" if len(unique)>1 or len(candidate_names)>1 else ("stale" if stale else "missing")
             entry.update({"match_status":reason,"dk_line":None,"difference_yards":None})
             counts[reason]+=1
         if not entry["recommendation_eligible"]: counts["unverified"]+=1
