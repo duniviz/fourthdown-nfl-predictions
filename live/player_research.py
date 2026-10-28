@@ -175,6 +175,27 @@ def generate():
                 team_week[key][metric]+=max(0,num(record.get(metric)))
                 if opp:
                     defense_week[(opp,int(record["week"]))][metric]+=max(0,num(record.get(metric)))
+    # Position-specific opponent totals, grouped by completed team-week.
+    # Only three markets demonstrated lower MAE in both historical seasons.
+    position_markets={("QB","passing_yards"),("RB","rushing_yards"),("RB","receiving_yards")}
+    position_allowed=defaultdict(lambda:defaultdict(float))
+    for (team,player),records in history.items():
+        for record in records:
+            pos=str(record.get("position") or "").upper()
+            opp=str(record.get("opponent_team") or "")
+            if not opp: continue
+            for eligible_pos,metric in position_markets:
+                if pos==eligible_pos:
+                    position_allowed[(opp,int(record["week"]),pos)][metric]+=max(0,num(record.get(metric)))
+    position_league={}
+    position_defense={}
+    for pos,metric in position_markets:
+        values=[v[metric] for (opp,w,p),v in position_allowed.items() if p==pos]
+        neutral=sum(values)/len(values) if values else 0
+        position_league[(pos,metric)]=neutral
+        for opponent in {k[0] for k in position_allowed}:
+            samples=[v[metric] for (opp,w,p),v in position_allowed.items() if opp==opponent and p==pos]
+            position_defense[(opponent,pos,metric)]=sorted(samples[-5:]) if samples else []
     league_mean={}
     defense_mean={}
     for metric,_,_ in METRICS:
@@ -285,6 +306,16 @@ def generate():
                     defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
+                    position=str(stats[-1].get("position") or "").upper()
+                    if (position,metric) in position_markets:
+                        samples=position_defense.get((opp,position,metric),[])
+                        neutral=position_league.get((position,metric),0)
+                        if len(samples)>=3 and neutral>0:
+                            observed=sum(samples)/len(samples)
+                            factor=(observed+5*neutral)/(6*neutral)
+                            adjustment=clamp(factor,0.90,1.10)
+                        else:
+                            adjustment=1.0
                     role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
                     script_multiplier=game_script_multiplier(metric,team_margin)
                     calibrated=calibration.get(metric,{})
