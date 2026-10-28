@@ -46,9 +46,12 @@ jobs:
           if curl --fail --location --retry 2 --max-time 60 --silent --show-error \
             "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${TARGET_SEASON}.csv" \
             -o staging/injuries.csv; then
-            python tools/normalize_nflverse_injuries.py --input staging/injuries.csv \
+            if ! python tools/normalize_nflverse_injuries.py --input staging/injuries.csv \
               --season "${TARGET_SEASON}" --week "${TARGET_WEEK}" \
-              --output staging/injury-status.csv
+              --output staging/injury-status.csv; then
+              rm -f staging/injury-status.csv
+              echo "WARNING: Injury schema incompatible; availability remains unverified"
+            fi
           else
             echo "Injury source unavailable; all players remain unverified"
           fi
