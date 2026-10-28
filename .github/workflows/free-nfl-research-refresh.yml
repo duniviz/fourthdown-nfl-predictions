@@ -98,6 +98,7 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s tests -p 'test_player_residual_calibration.py' -v
           python -m unittest discover -s tests -p 'test_provisional_availability.py' -v
+          python -m unittest discover -s tests -p 'test_publish_prop_desk.py' -v
           python - <<'PY'
           import json,subprocess,sys
           from pathlib import Path
@@ -157,6 +158,7 @@ jobs:
           target.write_text(json.dumps(data,indent=2)+"\\n")
           print("Published research-only comparison snapshot:",data["counts"])
           PY
+          python tools/publish_prop_desk_research.py --ranking-json staging/results/prop-ranking-diagnostics.json --calibration-json staging/results/player-residual-calibration.json --output data/research-prop-desk.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [ -f staging/results/sleeper-injury-flags.json ]; then
@@ -171,7 +173,8 @@ jobs:
           print("Published supplemental injury flags:",data.get("flagged_markets",0))
           PY
           fi
-          git add data/research-dk-comparisons.json data/research-injury-flags.json 2>/dev/null || git add data/research-dk-comparisons.json
+          git add data/research-dk-comparisons.json data/research-prop-desk.json
+          if [ -f data/research-injury-flags.json ]; then git add data/research-injury-flags.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "Update research-only DK player comparisons"
             git pull --rebase origin main
