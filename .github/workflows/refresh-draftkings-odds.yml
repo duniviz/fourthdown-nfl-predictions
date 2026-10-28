@@ -2,8 +2,8 @@ name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
   schedule:
-    # 06:00 and 18:00 America/Chicago, accounting for DST.
-    - cron: '0 11,12,23,0 * * *'
+    # Run hourly; the Central-time gate below performs API refreshes at 00, 06, 12 and 18.
+    - cron: '0 * * * *'
 permissions:
   contents: write
 concurrency:
@@ -23,7 +23,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           HOUR=$(TZ=America/Chicago date +%H)
-          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "06" || "$HOUR" == "18" ]]; then
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "00" || "$HOUR" == "06" || "$HOUR" == "12" || "$HOUR" == "18" ]]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -39,10 +39,10 @@ jobs:
       - name: Commit refreshed snapshot
         if: steps.clock.outputs.run == 'true'
         run: |
-          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json)" ]]; then
+          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/dk-game-odds.json data/dk-odds.json
+            git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json
             git commit -m "data: refresh DraftKings NFL odds"
             git push
           fi
