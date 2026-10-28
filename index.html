@@ -560,7 +560,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const forecastNote=homeFieldEdge!==null
     ?'The forecast adds '+signed(homeFieldEdge)+' points for '+homeName+' at home and projects '+awayName+' '+away.toFixed(1)+' to '+homeName+' '+home.toFixed(1)+' (total '+total.toFixed(1)+').'
     :'The forecast projects '+awayName+' '+away.toFixed(1)+' to '+homeName+' '+home.toFixed(1)+' (total '+total.toFixed(1)+').';
-  const headline=margin<3?esc(pick)+' have a narrow projected edge':esc(pick)+' have the stronger pregame profile';
   const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Matchup metrics</strong><h4>'+headline+'</h4>'
     +'<ul class="fd-metric-notes">'
     +metricNote(homeName+' offense vs '+awayName+' defense',homeOffenseNote)
