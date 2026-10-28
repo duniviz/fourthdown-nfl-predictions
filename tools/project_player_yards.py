@@ -80,6 +80,52 @@ def scheduled_opponents(path, season, week):
         raise ValueError("No scheduled regular-season matchups found")
     return matchups
 
+def opponent_defense(rows, season, week, min_games=3):
+    """Historical yards allowed per opponent and market, strictly before target week."""
+    allowed=defaultdict(lambda:defaultdict(lambda:defaultdict(float)))
+    games=defaultdict(set)
+    for r in rows:
+        try:
+            w=int(r["week"])
+            if int(r["season"])!=season or w>=week or w<1 or r.get("season_type","REG")!="REG":
+                continue
+        except (KeyError,ValueError,TypeError):
+            continue
+        opponent=(r.get("opponent_team") or "").strip()
+        team=(r.get("recent_team") or r.get("team") or "").strip()
+        pid=r.get("player_id") or r.get("gsis_id")
+        if not opponent or not team or not pid or opponent==team:
+            continue
+        game=(w,team)
+        games[opponent].add(game)
+        for market in FIELDS:
+            try:
+                yards=float(r[market])
+            except (KeyError,ValueError,TypeError):
+                continue
+            if 0<=yards<=700:
+                allowed[opponent][game][market]+=yards
+    totals=defaultdict(lambda:defaultdict(list))
+    for opponent, opponents_games in allowed.items():
+        for game, markets in opponents_games.items():
+            for market, yards in markets.items():
+                totals[opponent][market].append(yards)
+    # Compare defensive yards allowed to league mean, shrink aggressively
+    # and cap adjustment. This is a descriptive signal, not a validated edge.
+    league={}
+    for market in FIELDS:
+        values=[v for team in totals.values() for v in team.get(market,[]) if v>=0]
+        if values:
+            league[market]=sum(values)/len(values)
+    factors={}
+    for team, markets in totals.items():
+        for market, values in markets.items():
+            if len(values)<min_games or league.get(market,0)<=0:
+                continue
+            ratio=(sum(values)/len(values))/league[market]
+            factors[(team,market)]=round(max(.9,min(1.1,1+.25*(ratio-1))),4)
+    return factors
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--weekly-csv",type=Path,required=True)
@@ -93,7 +139,8 @@ def main():
     if a.output.resolve().is_relative_to((Path(__file__).resolve().parents[1]/"data").resolve()):
         p.error("Research cannot overwrite published data")
     with a.weekly_csv.open(newline="",encoding="utf-8-sig") as f:
-        result=project(csv.DictReader(f),a.season,a.week)
+        rows=list(csv.DictReader(f))
+    result=project(rows,a.season,a.week)
     if not result:
         p.error("No eligible historical player samples")
     try:
@@ -103,9 +150,16 @@ def main():
     result=[{**item,**matchups[item["team"]]} for item in result if item["team"] in matchups]
     if not result:
         p.error("No role-eligible players matched the scheduled teams")
+    defense=opponent_defense(rows,a.season,a.week)
+    for item in result:
+        factor=defense.get((item["opponent"],item["market"]),1.0)
+        item["unadjusted_yards"]=item["projected_yards"]
+        item["opponent_defense_factor"]=factor
+        item["opponent_defense_available"]=(item["opponent"],item["market"]) in defense
+        item["projected_yards"]=round(item["projected_yards"]*factor,1)
     payload={"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
              "status":"research_only_uncalibrated","source":"supplied_nflverse_weekly_csv",
-             "note":"Role- and schedule-filtered; opponent identified but not statistically adjusted; injuries, snaps, trades and playing status unverified",
+             "note":"Role- and schedule-filtered; conservative opponent-defense adjustment only when historical opponent field exists; no injury, snap, playing-status or sportsbook validation",
              "projections":result}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(payload,indent=2)+"\n")
