@@ -80,7 +80,7 @@ def main():
         except (ValueError, TypeError):
             summary["steps"]["player_backtest"]["exit_code"] = 3
             summary["steps"]["player_backtest"]["stderr"] = "Unparseable backtest output"
-    (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\\n")
+    (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\n")
     if diagnostic.returncode or any(x["exit_code"] for x in summary["steps"].values()):
         print(json.dumps(summary,indent=2))
         raise SystemExit("One or more research steps failed; no publication attempted")
