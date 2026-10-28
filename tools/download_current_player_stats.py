@@ -14,8 +14,11 @@ from pathlib import Path
 
 API="https://api.github.com/repos/nflverse/nflverse-data/releases/tags/stats_player"
 def fetch(url):
-    req=urllib.request.Request(url,headers={"User-Agent":"FOURTHDOWN-research/1.0",
-        "Accept":"application/vnd.github+json"})
+    headers={"User-Agent":"FOURTHDOWN-research/1.0","Accept":"application/vnd.github+json"}
+    token=os.environ.get("GITHUB_TOKEN","").strip()
+    if token and url.startswith("https://api.github.com/"):
+        headers["Authorization"]="Bearer "+token
+    req=urllib.request.Request(url,headers=headers)
     with urllib.request.urlopen(req,timeout=90) as response:
         return response.read()
 
