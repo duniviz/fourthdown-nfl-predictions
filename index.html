@@ -581,7 +581,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +(restNote?metricNote('Rest and preparation',restNote):'')
     +(availabilityNote?metricNote('Verified availability',availabilityNote):'')
     +'</ul></article><p class="fd-explain-disclaimer">Metrics come from the saved pregame forecast and verified public context feeds. They explain matchup context and do not guarantee the result.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick?</summary>'+why+'</details></div>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+fdTopModelSignals(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why this pick?</summary>'+why+'</details></div>';
  }
 
  function renderRecap(raw){
@@ -802,6 +802,33 @@ function fdGameLineComparison(p){
  const state=!o?'DK lines unavailable':Number.isFinite(updated)&&age>=0&&age<15*3600000?'DK quote snapshot':'DK quote stale · verify before use';
  const movement=openSp===null&&openTot===null?'':(' Opening → current: '+(openSp===null||sp===null?'spread unavailable':(openSp.toFixed(1)+' → '+sp.toFixed(1)+' ('+(sp-openSp>=0?'+':'')+(sp-openSp).toFixed(1)+')'))+' · '+(openTot===null||tot===null?'total unavailable':(openTot.toFixed(1)+' → '+tot.toFixed(1)+' ('+(tot-openTot>=0?'+':'')+(tot-openTot).toFixed(1)+')'))+'.');
  return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings</b><div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div><div><small>DK SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div><div><small>DK O/U</small><strong>'+(tot===null?'Not available':tot.toFixed(1))+'</strong></div></div><p>'+(sp===null?'Spread comparison unavailable. ':'Model home margin minus DK-implied home margin: '+(m+sp).toFixed(1)+' points. ')+(tot===null?'Total comparison unavailable. ':'Model total vs DK: '+(t-tot>0?'+':'')+(t-tot).toFixed(1)+' points. ')+state+(Number.isFinite(updated)?' · '+esc(new Date(updated).toLocaleString()):'')+'.'+movement+' Market lines are for comparison only; no market weighting is claimed.</p></div>';
+}
+
+function fdTopModelSignals(p){
+ const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
+ const match=Object.values(fdGameOdds||{}).find(x=>canon(x.home)===canon(p.home)&&canon(x.away)===canon(p.away)&&(!x.commence_time||Math.abs(Date.parse(x.commence_time)-Date.parse(p.kickoff_utc))<12*3600000));
+ const candidates=[],homeMargin=Number(p.projected_home_score)-Number(p.projected_away_score),modelTotal=Number(p.projected_home_score)+Number(p.projected_away_score);
+ if(valid(match?.home_spread)){
+  const line=Number(match.home_spread),gap=homeMargin+line;
+  const label=(line<0?p.home+' '+line.toFixed(1):p.home+' +'+line.toFixed(1));
+  candidates.push({score:Math.abs(gap)/2.5,title:'Spread · '+label,detail:'Model home margin: '+homeMargin.toFixed(1)+'; DraftKings home spread: '+line.toFixed(1)+'; difference: '+(gap>=0?'+':'')+gap.toFixed(1)+' points.'});
+ }
+ if(valid(match?.total)){
+  const line=Number(match.total),gap=modelTotal-line,side=gap>=0?'Over':'Under';
+  candidates.push({score:Math.abs(gap)/3,title:'Total · '+side+' '+line.toFixed(1),detail:'Model total: '+modelTotal.toFixed(1)+'; DraftKings total: '+line.toFixed(1)+'; difference: '+(gap>=0?'+':'')+gap.toFixed(1)+' points.'});
+ }
+ const yardKeys=new Set(['passing_yards','rushing_yards','receiving_yards']);
+ for(const row of playerResearch.filter(x=>String(x.game_id)===String(p.game_id)&&yardKeys.has(x.stat_key)&&valid(x.projection)&&valid(x.dk_line)&&!x.dk_quote_stale)){
+  const diff=Number(row.projection)-Number(row.dk_line),scale=Math.max(10,Number(row.uncertainty_yards)||({passing_yards:35,rushing_yards:22,receiving_yards:25}[row.stat_key]||25));
+  const side=diff>=0?'Over':'Under';
+  let detail='Model: '+Number(row.projection).toFixed(1)+'; DraftKings: '+Number(row.dk_line).toFixed(1)+'; difference: '+(diff>=0?'+':'')+diff.toFixed(1)+'.';
+  if(valid(row.last_5_avg))detail+=' Recent average: '+Number(row.last_5_avg).toFixed(1)+'.';
+  if(valid(row.expected_opportunities))detail+=' Expected '+esc(row.opportunity_type||'volume')+': '+Number(row.expected_opportunities).toFixed(1)+'.';
+  candidates.push({score:Math.abs(diff)/scale,title:esc(row.player)+' · '+side+' '+Number(row.dk_line).toFixed(1)+' '+esc(row.market||''),detail});
+ }
+ const top=candidates.sort((a,b)=>b.score-a.score).slice(0,3);
+ if(!top.length)return '';
+ return '<div class="fd-extras fd-top-signals"><h4>Top model signals</h4><p>Largest fresh model-to-line differences. Research only—not confidence ratings or betting recommendations.</p>'+top.map((x,i)=>'<p><strong>#'+(i+1)+' · '+x.title+'</strong><br>'+x.detail+'</p>').join('')+'</div>';
 }
 function renderMatchupCards(games){
   const root=document.getElementById('fd-matchup-grid');if(!root)return;
