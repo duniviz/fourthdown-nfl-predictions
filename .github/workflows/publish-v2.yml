@@ -98,12 +98,17 @@ jobs:
       - name: Refresh stadium weather forecasts
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.weather
+      - name: Generate research-only V3 feature shadow
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: |
+          python -m live.free_feature_research
+          python tools/v3_score_shadow.py --v2 data/live-v2.json --features data/free-feature-research.json --output data/v3-score-shadow.json --history data/v3-score-shadow-history.json
       - name: Publish forecast and player research JSON
         if: steps.schedule_guard.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json
+          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
