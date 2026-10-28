@@ -33,7 +33,7 @@ def project(rows, season, week, min_games=3):
                 continue
             if not (0 <= v <= 700):
                 continue
-            key=(pid,r.get("player_name") or r.get("player_display_name") or pid,r.get("recent_team") or r.get("team") or "")
+            key=(pid,r.get("player_display_name") or r.get("player_name") or pid,r.get("recent_team") or r.get("team") or "")
             history[key][market].append((int(r["week"]),v))
             try:
                 involvement=float(r.get(ROLE_ACTIVITY[market]) or 0)
