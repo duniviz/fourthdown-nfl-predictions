@@ -73,6 +73,13 @@ def load_calibration():
     except (OSError, ValueError, TypeError):
         return {}
 
+def load_learned_weights():
+    try:
+        rows=json.loads(Path("data/player-weight-learning.json").read_text(encoding="utf-8")).get("weights",{})
+        return {k:clamp(float(v.get("weight",0)),0,1) for k,v in rows.items()}
+    except (OSError,ValueError,TypeError,AttributeError):
+        return {}
+
 def game_script_multiplier(metric, team_margin):
     """Small, capped volume adjustment from the team's published score forecast."""
     if not math.isfinite(team_margin):
@@ -225,6 +232,7 @@ def generate():
                 "last_3_games":len(recent),
                 "basis":"opponent team total yards allowed, not position-specific"
             }
+    learned_weights=load_learned_weights()
     # Current official statuses exclude confirmed absences. Questionable is not treated as out.
     overrides={}
     try:
@@ -343,7 +351,7 @@ def generate():
                     calibration_n=int(calibrated.get("sample_size",0) or 0)
                     # A bias correction is deliberately dormant until 40 archived forecasts
                     # establish a stable market-level direction.
-                    calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0) if calibration_n>=40 else 0.0
+                    calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0)*learned_weights.get(metric,0.0) if calibration_n>=40 else 0.0
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
                     # Explicit RB workload scenarios when a listed starting RB
                     # is questionable. Never treat "questionable" as "out".
@@ -395,6 +403,7 @@ def generate():
                         "opponent_position_context":({"games":len(position_defense.get((opp,position,metric),[])),"last_5_allowed_per_game":round(sum(position_defense[(opp,position,metric)])/len(position_defense[(opp,position,metric)]),1)} if (position,metric) in position_markets and position_defense.get((opp,position,metric)) else None),
                         "game_script_adjustment":script_multiplier,
                         "calibration_bias_yards":round(calibration_bias,2),
+                        "learned_bias_weight":learned_weights.get(metric,0.0),
                         "calibration_sample_size":calibration_n,
                         "role_share":round(role_share,3),
                         "committee_risk":"high" if metric=="rushing_yards" and role_share<0.30 else ("moderate" if metric=="rushing_yards" and role_share<0.48 else "low"),
