@@ -314,7 +314,7 @@ function fdOpenMatchup(g){
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const propOrder=['Passing','Rushing','Receiving','Other'];
  const propCards=propOrder.map(group=>{
-   const entries=players.filter(x=>propGroup(x)===group).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
+   const entries=players.filter(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&propGroup(x)===group).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
    if(!entries.length)return '';
    return '<div class="fd-mobile-prop-group"><h4>'+group+'</h4>'+entries.map(x=>{
      const projection=Number(x.projection),line=Number(x.dk_line);
@@ -327,7 +327,7 @@ function fdOpenMatchup(g){
      return '<article class="fd-mobile-prop-card"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+'</article>';
    }).join('')+'</div>';
  }).join('');
- const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.length?propCards:'<p>Player projections unavailable</p>')+'<p class="fd-modal-muted">DK line appears only when verified; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
+ const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable</p>')+'<p class="fd-modal-muted">DK line appears only when verified; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3><p class="fd-modal-muted">'+(isFinal?'No archived pregame DraftKings lines were saved for this matchup.':'Verified live DK spread, total and moneyline are not currently available.')+' No odds are invented.</p></div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const simScore=simGame?'<div class="fd-modal-section"><h3>10,000 simulated outcomes</h3><p>'+esc(away)+' win '+num(simGame.away_win_pct)+'% · '+esc(home)+' win '+num(simGame.home_win_pct)+'% · tie '+num(simGame.tie_pct)+'%</p><p>Median '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory, uncalibrated probabilities.</p></div>':'';
