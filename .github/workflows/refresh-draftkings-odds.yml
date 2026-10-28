@@ -28,11 +28,11 @@ jobs:
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Fetch licensed DraftKings markets
+      - name: Fetch DraftKings markets from ParlayAPI
         if: steps.clock.outputs.run == 'true'
         env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: python tools/refresh_draftkings_odds.py
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: python tools/refresh_parlayapi_odds.py
       - name: Audit published data feeds
         if: steps.clock.outputs.run == 'true'
         run: python tools/audit_published_data.py
