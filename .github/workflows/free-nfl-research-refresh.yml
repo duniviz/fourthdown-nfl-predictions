@@ -46,6 +46,7 @@ jobs:
           if curl --fail --location --retry 2 --max-time 60 --silent --show-error \
             "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${TARGET_SEASON}.csv" \
             -o staging/injuries.csv; then
+            python -c 'import csv; f=open("staging/injuries.csv",encoding="utf-8-sig"); print("INJURY SOURCE HEADERS:",csv.DictReader(f).fieldnames)'
             if ! python tools/normalize_nflverse_injuries.py --input staging/injuries.csv \
               --season "${TARGET_SEASON}" --week "${TARGET_WEEK}" \
               --output staging/injury-status.csv; then
