@@ -6,7 +6,7 @@ import json
 from collections import defaultdict
 from math import fsum
 from pathlib import Path
-from project_player_yards import FIELDS, project
+from project_player_yards import FIELDS, project, opponent_defense
 
 def main():
     p=argparse.ArgumentParser()
@@ -21,10 +21,13 @@ def main():
         rows=list(csv.DictReader(f))
     errors=defaultdict(list)
     naive_errors=defaultdict(list)
+    adjusted_errors=defaultdict(list)
+    adjusted_coverage=defaultdict(int)
     matched=defaultdict(int)
     for week in range(a.first_week,a.last_week+1):
         preds=project(rows,a.season,week)
         keyed={(x["player_id"],x["market"]):x["projected_yards"] for x in preds}
+        factors=opponent_defense(rows,a.season,week)
         prior=defaultdict(list)
         for row in rows:
             try:
@@ -53,7 +56,13 @@ def main():
                 except (ValueError,TypeError,KeyError):
                     continue
                 if 0<=actual<=700:
-                    errors[market].append(abs(actual-keyed[(pid,market)]))
+                    base=keyed[(pid,market)]
+                    errors[market].append(abs(actual-base))
+                    opponent=(r.get("opponent_team") or "").strip()
+                    factor=factors.get((opponent,market),1.0)
+                    adjusted_errors[market].append(abs(actual-round(base*factor,1)))
+                    if (opponent,market) in factors:
+                        adjusted_coverage[market]+=1
                     hist=sorted(prior.get((pid,market),[]))
                     if hist:
                         naive=sum(v for _,v in hist[-3:])/len(hist[-3:])
@@ -61,7 +70,10 @@ def main():
                     matched[market]+=1
     print(json.dumps({"season":a.season,"weeks":[a.first_week,a.last_week],
         "markets":{k:{"observations":len(v),"mae":round(fsum(v)/len(v),2),
+            "opponent_adjusted_mae":round(fsum(adjusted_errors[k])/len(adjusted_errors[k]),2),
+            "opponent_adjusted_observations":adjusted_coverage[k],
+            "adjustment_improved_mae":fsum(adjusted_errors[k])<fsum(v),
             "last_3_games_mae":round(fsum(naive_errors[k])/len(naive_errors[k]),2) if naive_errors[k] else None} for k,v in errors.items() if v},
-        "warning":"Walk-forward, prior-only role selection; observed-player evaluation only, not an availability or betting-profit test"},indent=2))
+        "warning":"Walk-forward, prior-only role selection and defense; observed-player evaluation only, not an availability or betting-profit test. If opponent_adjusted_observations is zero, adjusted equals base and is not a validated improvement."},indent=2))
 if __name__=="__main__":
     main()
