@@ -84,7 +84,7 @@ def consensus_lines(schedules, season, start_week, end_week):
                 "week": week,
                 "away": away,
                 "home": home,
-                "home_spread": spread,
+                "home_spread": -spread,
                 "total_line": total,
                 "away_score": away_score,
                 "home_score": home_score,
@@ -206,7 +206,7 @@ def main():
         "score_result_mismatches": result_mismatches,
         "edge_thresholds": threshold_results,
         "conventions": {
-            "home_spread": "nflverse spread_line, expressed for the home team.",
+            "home_spread": "Negative nflverse spread_line, because nflverse expresses spread_line for the away team.",
             "ats_edge": "projected home margin plus home closing spread; positive selects home, negative selects away.",
             "total_edge": "projected total minus consensus closing total; positive selects over, negative selects under.",
         },
