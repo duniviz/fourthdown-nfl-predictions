@@ -430,7 +430,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   if(g.state==='post')return '';
   const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
   if(!matches.length)return '';
-  const best=[...matches].filter(x=>!unavailablePlayer(x)).sort((a,b)=>Number(b.projection||0)-Number(a.projection||0));
+  const best=[...matches].filter(x=>!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line))).sort((a,b)=>Number(b.projection||0)-Number(a.projection||0));
   if(!best.length)return '';
   return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>DK LINE</small><strong>'+esc(x.dk_line??'—')+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">DK line shown only when verified and stored; — means unavailable. Statistical baselines, not sportsbook recommendations.</p></div></details>';
  }
