@@ -8,9 +8,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 FIELDS={"passing_yards":"passing_yards","rushing_yards":"rushing_yards","receiving_yards":"receiving_yards"}
+# Require meaningful historical involvement, not zero-yard placeholder rows.
+ROLE_MIN={"passing_yards":10.0,"rushing_yards":5.0,"receiving_yards":5.0}
+ROLE_ACTIVITY={"passing_yards":"attempts","rushing_yards":"carries","receiving_yards":"targets"}
 
 def project(rows, season, week, min_games=3):
     history=defaultdict(lambda:defaultdict(list))
+    activity=defaultdict(lambda:defaultdict(list))
     for r in rows:
         try:
             if int(r["season"]) != season or int(r["week"]) >= week or int(r["week"]) < 1:
@@ -29,12 +33,22 @@ def project(rows, season, week, min_games=3):
                 continue
             if not (0 <= v <= 700):
                 continue
-            history[(pid,r.get("player_name") or r.get("player_display_name") or pid,r.get("recent_team") or r.get("team") or "")][market].append((int(r["week"]),v))
+            key=(pid,r.get("player_name") or r.get("player_display_name") or pid,r.get("recent_team") or r.get("team") or "")
+            history[key][market].append((int(r["week"]),v))
+            try:
+                involvement=float(r.get(ROLE_ACTIVITY[market]) or 0)
+            except (ValueError,TypeError):
+                involvement=0
+            activity[key][market].append((int(r["week"]),involvement))
     result=[]
     for (pid,name,team), markets in history.items():
         for market, vals in markets.items():
             vals.sort()
             if len(vals)<min_games:
+                continue
+            touches=sorted(activity[(pid,name,team)][market])
+            recent_touches=touches[-5:]
+            if sum(v for _,v in recent_touches)/len(recent_touches)<ROLE_MIN[market]:
                 continue
             recent=vals[-5:]
             # Shrunk recent mean vs full season mean, no post-cutoff information.
@@ -43,7 +57,8 @@ def project(rows, season, week, min_games=3):
             estimate=round(.65*recent_mean+.35*mean,1)
             result.append({"player_id":pid,"player_name":name,"team":team,
                            "market":market,"projected_yards":estimate,
-                           "games_used":len(vals),"latest_week_used":vals[-1][0]})
+                           "games_used":len(vals),"latest_week_used":vals[-1][0],
+                           "recent_opportunities":round(sum(v for _,v in recent_touches)/len(recent_touches),1)})
     return sorted(result,key=lambda x:(x["market"],x["player_name"],x["player_id"]))
 
 def main():
@@ -63,7 +78,7 @@ def main():
         p.error("No eligible historical player samples")
     payload={"season":a.season,"week":a.week,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
              "status":"research_only_uncalibrated","source":"supplied_nflverse_weekly_csv",
-             "note":"Not opponent, injury, snap, or playing-status adjusted; inactive players may appear",
+             "note":"Role-filtered, but not opponent, injury, snap, schedule, or playing-status adjusted; inactive players may appear",
              "projections":result}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(payload,indent=2)+"\n")
