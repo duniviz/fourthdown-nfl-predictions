@@ -581,7 +581,7 @@ function fdGameLineComparison(p){
  const tm=m>=0?p.home:p.away,modelSpread=tm+' '+(m>=0?'-':'+')+Math.abs(m).toFixed(1);
  const dkSpread=sp===null?'Not available':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
  const updated=o?.updated_at_utc?Date.parse(o.updated_at_utc):NaN,age=Date.now()-updated;
- const state=Number.isFinite(age)&&age>=0&&age<10800000?'Recent DK snapshot':'DK snapshot unavailable or stale';
+ const state=o?'DK snapshot · Oct 27 (not live)':'DK lines unavailable';
  return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings</b><div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div><div><small>DK SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div><div><small>DK O/U</small><strong>'+(tot===null?'Not available':tot.toFixed(1))+'</strong></div></div><p>'+(sp===null?'Spread comparison unavailable. ':'Model home margin minus DK-implied home margin: '+(m+sp).toFixed(1)+' points. ')+(tot===null?'Total comparison unavailable. ':'Model total vs DK: '+(t-tot>0?'+':'')+(t-tot).toFixed(1)+' points. ')+state+(Number.isFinite(updated)?' · '+esc(new Date(updated).toLocaleString()):'')+'. Market lines are for comparison only; no market weighting is claimed.</p></div>';
 }
 function renderMatchupCards(games){
