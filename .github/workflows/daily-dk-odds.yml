@@ -1,0 +1,42 @@
+name: Daily DraftKings odds refresh
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily at 15:40 UTC (9:40 AM CST / 10:40 AM CDT).
+    - cron: '40 15 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: publish-v2
+  cancel-in-progress: false
+jobs:
+  refresh-dk-lines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch all supported DraftKings player prop markets
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          test -n "$PARLAY_API_KEY" || { echo "Missing PARLAY_API_KEY"; exit 1; }
+          python -m live.dk_odds
+      - name: Archive line movement
+        run: python -m live.line_history
+      - name: Publish latest lines and history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/dk-odds.json data/dk-line-history.json
+          if git diff --cached --quiet; then
+            echo "No odds changes to publish"
+          else
+            git commit -m "Refresh daily DraftKings player lines [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
