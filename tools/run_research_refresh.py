@@ -65,7 +65,7 @@ def main():
         if label=="player_backtest" and result.returncode==0:
             (a.output_dir/"player-backtest.json").write_text(result.stdout)
     (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\n")
-    if any(x["exit_code"] for x in summary["steps"].values()):
+    if summary["steps"]["player_backtest"]["exit_code"] == 0:\n        try:\n            report = json.loads(summary["steps"]["player_backtest"]["stdout"])\n            if not report.get("markets"):\n                summary["steps"]["player_backtest"]["exit_code"] = 3\n                summary["steps"]["player_backtest"]["stderr"] = "No graded player observations; cannot claim a successful backtest"\n        except (ValueError, TypeError):\n            summary["steps"]["player_backtest"]["exit_code"] = 3\n            summary["steps"]["player_backtest"]["stderr"] = "Unparseable backtest output"\n    (a.output_dir/"run-summary.json").write_text(json.dumps(summary,indent=2)+"\\n")\n    if any(x["exit_code"] for x in summary["steps"].values()):
         print(json.dumps(summary,indent=2))
         raise SystemExit("One or more research steps failed; no publication attempted")
     print(json.dumps({"season":season,"week":week,"research_completed":True,
