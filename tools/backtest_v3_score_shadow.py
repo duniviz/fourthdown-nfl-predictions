@@ -20,6 +20,9 @@ if str(ROOT) not in sys.path:
 from backtest.v2 import build_v2_predictions
 from v3_score_shadow import PACE_POINTS_PER_PLAY, SUCCESS_MARGIN_POINTS, PASS_MARGIN_POINTS, MAX_TOTAL_ADJUSTMENT, MAX_MARGIN_ADJUSTMENT
 
+PASS_EPA_TO_TOTAL = 20.0
+MAX_PASS_EPA_TOTAL_ADJUSTMENT = 2.0
+
 def num(value):
     try:
         value=float(value)
@@ -36,7 +39,7 @@ def metric(errors):
 def weekly_features(pbp, schedules):
     completed={(int(g["season"]),int(g["week"]),str(g["game_id"])) for g in schedules
       if g.get("game_type","REG")=="REG" and num(g.get("home_score")) is not None and num(g.get("away_score")) is not None}
-    buckets=defaultdict(lambda: defaultdict(lambda: {"plays":0,"success":[],"pass":0}))
+    buckets=defaultdict(lambda: defaultdict(lambda: {"plays":0,"success":[],"pass":0,"pass_off":[],"pass_def":[]}))
     for row in pbp:
         try:
             season,week,gid=int(row["season"]),int(row["week"]),str(row["game_id"])
@@ -49,6 +52,12 @@ def weekly_features(pbp, schedules):
         bucket["plays"]+=1
         if row.get("play_type")=="pass":
             bucket["pass"]+=1
+            epa=num(row.get("epa"))
+            if epa is not None:
+                bucket["pass_off"].append(epa)
+                defense=row.get("defteam")
+                if defense:
+                    buckets[(season,week)][defense]["pass_def"].append(epa)
         value=num(row.get("success"))
         if value is not None:
             bucket["success"].append(value)
@@ -66,9 +75,12 @@ def feature_history(weekly, season, week):
         rows=sorted(rows)[-5:]
         plays=sum(x["plays"] for _,x in rows)
         successes=[v for _,x in rows for v in x["success"]]
-        if plays and successes:
+        pass_off=[v for _,x in rows for v in x["pass_off"]]
+        pass_def=[v for _,x in rows for v in x["pass_def"]]
+        if plays and successes and pass_off and pass_def:
             result[team]={"plays_per_game":plays/len(rows),"success_rate":sum(successes)/len(successes),
-                          "neutral_pass_proxy":sum(x["pass"] for _,x in rows)/plays}
+                          "neutral_pass_proxy":sum(x["pass"] for _,x in rows)/plays,
+                          "pass_epa_off":sum(pass_off)/len(pass_off),"pass_epa_def":sum(pass_def)/len(pass_def)}
     return result
 
 def candidate(v2, home, away, means):
@@ -113,7 +125,7 @@ def evaluate(schedules, pbp):
     for season,week in sorted({(int(g["season"]),int(g["week"])) for g in schedules}):
         features=feature_history(weekly,season,week)
         if len(features)<2: continue
-        means={key:sum(x[key] for x in features.values())/len(features) for key in ("plays_per_game","success_rate","neutral_pass_proxy")}
+        means={key:sum(x[key] for x in features.values())/len(features) for key in ("plays_per_game","success_rate","neutral_pass_proxy","pass_epa_off","pass_epa_def")}
         for game in (g for g in schedules if int(g["season"])==season and int(g["week"])==week):
             base=by_game.get(str(game["game_id"]))
             home,away=game.get("home_team"),game.get("away_team")
@@ -124,11 +136,19 @@ def evaluate(schedules, pbp):
             pace_adjust=max(-MAX_TOTAL_ADJUSTMENT,min(MAX_TOTAL_ADJUSTMENT,
                 PACE_POINTS_PER_PLAY*((features[home]["plays_per_game"]+features[away]["plays_per_game"])-2*means["plays_per_game"])))
             pace_total=max(1.0,base["pred_total"]+pace_adjust)
+            pass_adjust=max(-MAX_PASS_EPA_TOTAL_ADJUSTMENT,min(MAX_PASS_EPA_TOTAL_ADJUSTMENT,
+                PASS_EPA_TO_TOTAL * (
+                    features[home]["pass_epa_off"] + features[away]["pass_epa_def"]
+                    + features[away]["pass_epa_off"] + features[home]["pass_epa_def"]
+                    - 2 * (means["pass_epa_off"] + means["pass_epa_def"])
+                )))
+            pass_total=max(1.0,base["pred_total"]+pass_adjust)
             actual_margin=num(game["home_score"])-num(game["away_score"])
             actual_total=num(game["home_score"])+num(game["away_score"])
             rows.append({"season":season,"week":week,"game_id":str(game["game_id"]),
               "v2_margin":base["pred_margin"],"v2_total":base["pred_total"],
               "pace_margin":base["pred_margin"],"pace_total":pace_total,
+              "pass_margin":base["pred_margin"],"pass_total":pass_total,
               "v3_margin":v3_margin,"v3_total":v3_total,"actual_margin":actual_margin,"actual_total":actual_total})
     return rows
 
@@ -136,7 +156,7 @@ def summarize(rows):
     def block(records):
         out={}
         for market,actual in (("margin","actual_margin"),("total","actual_total")):
-            for model in ("v2","pace","v3"):
+            for model in ("v2","pace","pass","v3"):
                 out[f"{model}_{market}"]=metric([r[f"{model}_{market}"]-r[actual] for r in records])
         for model in ("v2","pace","v3"):
             out[f"{model}_winner_accuracy"]=round(sum((r[f"{model}_margin"]>0)==(r["actual_margin"]>0) for r in records)/len(records),4) if records else None
@@ -157,7 +177,7 @@ def main():
     args=p.parse_args()
     seasons=[2024,2025]
     rows=evaluate(nfl.load_schedules(seasons).to_dicts(),nfl.load_pbp(seasons).to_dicts())
-    result={"status":"research_only_historical_replay","models":["FOURTHDOWN v2 replay","FOURTHDOWN pace-only total shadow","FOURTHDOWN v3 feature shadow"],
+    result={"status":"research_only_historical_replay","models":["FOURTHDOWN v2 replay","FOURTHDOWN pace-only total shadow","FOURTHDOWN pass-EPA total shadow","FOURTHDOWN v3 feature shadow"],
             "results":summarize(rows)}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+"\n")
