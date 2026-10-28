@@ -92,6 +92,21 @@ jobs:
               if not result.get("markets"):
                   raise SystemExit("Backtest returned no evaluated markets; refusing empty success")
           PY
+      - name: Validate historical player uncertainty (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_player_residual_calibration.py' -v
+          python - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          target=json.loads(Path("staging/backtest-target.json").read_text())
+          output=Path("staging/results/player-residual-calibration.json")
+          if target["through_week"]<5:
+              output.write_text(json.dumps({"status":"insufficient_history","markets":{}})+"\\n")
+          else:
+              subprocess.run([sys.executable,"tools/calibrate_player_residuals.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output",str(output)],check=True)
+          PY
       - name: Monitor configured official NFL inactive report pages (research only)
         if: success()
         continue-on-error: true
@@ -121,6 +136,7 @@ jobs:
           if [ -f staging/results/dk-player-comparisons.json ]; then
             python tools/rank_prop_research.py \
               --comparisons-json staging/results/dk-player-comparisons.json \
+              --calibration-json staging/results/player-residual-calibration.json \
               --output staging/results/prop-ranking-diagnostics.json
           fi
       - name: Publish clearly labeled research comparisons (current scheduled week only)
