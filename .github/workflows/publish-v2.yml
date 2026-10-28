@@ -56,6 +56,9 @@ jobs:
       - name: Generate player research baselines
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_research
+      - name: Validate player projection units and plausible ranges
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.validate_props
       - name: Fetch DraftKings NFL props from ParlayAPI
         if: steps.schedule_guard.outputs.run == 'true'
         env:
