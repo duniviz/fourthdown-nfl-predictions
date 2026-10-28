@@ -138,7 +138,7 @@ def injury_status(path, season, week):
                 continue
             pid=(row.get("player_id") or "").strip()
             status=(row.get("status") or "").strip().lower()
-            if not pid or status not in {"out","doubtful","questionable","active","probable","inactive"}:
+            if not pid or status not in {"out","doubtful","questionable","active","probable","inactive","ir","suspended"}:
                 raise ValueError("Invalid injury row: player_id/status required and status must be recognized")
             if pid in statuses and statuses[pid]!=status:
                 raise ValueError("Conflicting injury statuses for player "+pid)
@@ -181,13 +181,14 @@ def main():
     excluded=0
     pre_filter_count=len(result)
     for item in result:
-        status=statuses.get(item["player_id"],"unverified")
+        status=statuses.get(item["player_id"],"presumed_available")
         item["availability_status"]=status
-        item["availability_verified"]=status!="unverified"
+        item["availability_verified"]=status in {"active","probable"}
         item["eligible_for_recommendation"]=status in {"active","probable"}
+        item["provisional_research_eligible"]=status=="presumed_available"
     if statuses:
         before=len(result)
-        result=[item for item in result if item["availability_status"] not in {"out","inactive","doubtful"}]
+        result=[item for item in result if item["availability_status"] not in {"out","inactive","doubtful","ir","suspended"}]
         excluded=before-len(result)
     from collections import Counter
     availability_counts=dict(sorted(Counter(x["availability_status"] for x in result).items()))

@@ -97,6 +97,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -p 'test_player_residual_calibration.py' -v
+          python -m unittest discover -s tests -p 'test_provisional_availability.py' -v
           python - <<'PY'
           import json,subprocess,sys
           from pathlib import Path
