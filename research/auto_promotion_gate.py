@@ -33,7 +33,8 @@ def main():
             reasons.append(f"{market}: improvement below 2% MAE threshold")
     # The V3 harness explicitly compares research formulas, not the production
     # model, and its 2025 holdout is not a final promotion evaluation.
-    reasons.append("No exact production-model replay on independent chronological holdouts")\n    reasons.append("No multiweek stability and cross-market regression checks")
+    reasons.append("No exact production-model replay on independent chronological holdouts")
+    reasons.append("No multiweek stability and cross-market regression checks")
     reasons.append("No verified automated deployment and rollback integration")
     report = {"approved_for_auto_promotion": False, "reasons": reasons,
               "policy": "fail-closed", "candidate_markets": list(results)}
