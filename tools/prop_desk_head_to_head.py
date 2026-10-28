@@ -18,7 +18,8 @@ def compare(reports):
    seasons[str(season)]={"holdout":{v:hold[v] for v in valid},"development":{v:dev[v] for v in valid}}
    winning={v for v in valid if v!="baseline" and all(part[v][k]<part["baseline"][k] for part in (dev,hold) for k in ("mae","rmse"))}
    common=winning if common is None else common&winning
-  result["markets"][market]={"season_results":seasons,"repeatable_research_candidates":sorted(common or []),"display_decision":"retain_current_pending_matched_live_model_backtest"}
+  candidates=sorted(common or [])
+  result["markets"][market]={"season_results":seasons,"repeatable_research_candidates":candidates,"research_champion":candidates[0] if len(candidates)==1 else None,"display_decision":"retain_current_pending_matched_live_model_backtest","promotion_eligible":False,"weekly_tuning_policy":"retest after completed games; require matching pregame samples and cross-season improvement before any live switch"}
  return result
 def main():
  p=argparse.ArgumentParser();p.add_argument("--report",action="append",type=Path,required=True);p.add_argument("--output",type=Path,required=True);a=p.parse_args()
