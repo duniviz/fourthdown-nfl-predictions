@@ -59,6 +59,15 @@ jobs:
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Compare research player yards to existing DraftKings odds snapshot
+        if: success()
+        run: |
+          if [ -f data/dk-odds.json ] && [ -f staging/results/player-projections.json ]; then
+            python tools/match_dk_player_lines.py --players-json staging/results/player-projections.json \\
+              --odds-json data/dk-odds.json --output staging/results/dk-player-comparisons.json
+          else
+            echo "DraftKings odds or player projections unavailable; no comparisons fabricated"
+          fi
       - name: Upload research reports only
         if: always()
         uses: actions/upload-artifact@v4
