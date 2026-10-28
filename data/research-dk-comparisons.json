@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "week": 8,
-  "generated_at_utc": "2026-10-28T03:38:28.227459+00:00",
+  "generated_at_utc": "2026-10-28T03:40:41.263517+00:00",
   "status": "research_only_no_publication",
   "source": "DraftKings via existing ParlayAPI snapshot",
   "odds_snapshot_generated_at": "2026-10-28T02:21:36.120915+00:00",
@@ -12,6 +12,202 @@
     "stale": 0,
     "ambiguous": 0,
     "unverified": 165
+  },
+  "coverage_diagnostics": {
+    "market_inventory": {
+      "passing_yards": 18,
+      "rushing_yards": 22,
+      "receiving_yards": 34
+    },
+    "unmatched_examples": {
+      "passing_yards": [
+        {
+          "player": "Aaron Rodgers",
+          "team": "PIT",
+          "opponent": "CLE",
+          "reason": "missing"
+        },
+        {
+          "player": "Dak Prescott",
+          "team": "DAL",
+          "opponent": "ARI",
+          "reason": "missing"
+        },
+        {
+          "player": "Daniel Jones",
+          "team": "IND",
+          "opponent": "JAX",
+          "reason": "missing"
+        },
+        {
+          "player": "Deshaun Watson",
+          "team": "CLE",
+          "opponent": "PIT",
+          "reason": "missing"
+        },
+        {
+          "player": "Jacoby Brissett",
+          "team": "ARI",
+          "opponent": "DAL",
+          "reason": "missing"
+        },
+        {
+          "player": "Jalen Hurts",
+          "team": "PHI",
+          "opponent": "WAS",
+          "reason": "missing"
+        },
+        {
+          "player": "Jalon Daniels",
+          "team": "TB",
+          "opponent": "ATL",
+          "reason": "missing"
+        },
+        {
+          "player": "Jayden Daniels",
+          "team": "WAS",
+          "opponent": "PHI",
+          "reason": "missing"
+        },
+        {
+          "player": "Josh Allen",
+          "team": "BUF",
+          "opponent": "BAL",
+          "reason": "missing"
+        },
+        {
+          "player": "Justin Herbert",
+          "team": "LAC",
+          "opponent": "LA",
+          "reason": "missing"
+        }
+      ],
+      "rushing_yards": [
+        {
+          "player": "Aaron Jones",
+          "team": "MIN",
+          "opponent": "DET",
+          "reason": "missing"
+        },
+        {
+          "player": "Ashton Jeanty",
+          "team": "LV",
+          "opponent": "NYJ",
+          "reason": "missing"
+        },
+        {
+          "player": "Bam Knight",
+          "team": "ARI",
+          "opponent": "DAL",
+          "reason": "missing"
+        },
+        {
+          "player": "Bijan Robinson",
+          "team": "ATL",
+          "opponent": "TB",
+          "reason": "missing"
+        },
+        {
+          "player": "Blake Corum",
+          "team": "LA",
+          "opponent": "LAC",
+          "reason": "missing"
+        },
+        {
+          "player": "Braelon Allen",
+          "team": "NYJ",
+          "opponent": "LV",
+          "reason": "missing"
+        },
+        {
+          "player": "Breece Hall",
+          "team": "NYJ",
+          "opponent": "LV",
+          "reason": "missing"
+        },
+        {
+          "player": "Brian Robinson",
+          "team": "ATL",
+          "opponent": "TB",
+          "reason": "missing"
+        },
+        {
+          "player": "Caleb Williams",
+          "team": "CHI",
+          "opponent": "SEA",
+          "reason": "missing"
+        },
+        {
+          "player": "Chase Brown",
+          "team": "CIN",
+          "opponent": "TEN",
+          "reason": "missing"
+        }
+      ],
+      "receiving_yards": [
+        {
+          "player": "AJ Barner",
+          "team": "SEA",
+          "opponent": "CHI",
+          "reason": "missing"
+        },
+        {
+          "player": "Adonai Mitchell",
+          "team": "NYJ",
+          "opponent": "LV",
+          "reason": "missing"
+        },
+        {
+          "player": "Ashton Jeanty",
+          "team": "LV",
+          "opponent": "NYJ",
+          "reason": "missing"
+        },
+        {
+          "player": "Brenton Strange",
+          "team": "JAX",
+          "opponent": "IND",
+          "reason": "missing"
+        },
+        {
+          "player": "Brock Bowers",
+          "team": "LV",
+          "opponent": "NYJ",
+          "reason": "missing"
+        },
+        {
+          "player": "CeeDee Lamb",
+          "team": "DAL",
+          "opponent": "ARI",
+          "reason": "missing"
+        },
+        {
+          "player": "Chase Brown",
+          "team": "CIN",
+          "opponent": "TEN",
+          "reason": "missing"
+        },
+        {
+          "player": "Chig Okonkwo",
+          "team": "WAS",
+          "opponent": "PHI",
+          "reason": "missing"
+        },
+        {
+          "player": "Chris Godwin Jr.",
+          "team": "TB",
+          "opponent": "ATL",
+          "reason": "missing"
+        },
+        {
+          "player": "DJ Moore",
+          "team": "BUF",
+          "opponent": "BAL",
+          "reason": "missing"
+        }
+      ]
+    },
+    "matched_pct": 29.7
   },
   "note": "Differences are not calibrated edges; stale, ambiguous, missing or unverified players are not betting recommendations",
   "comparisons": [
