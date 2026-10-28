@@ -1,0 +1,45 @@
+name: Refresh DraftKings NFL odds
+on:
+  workflow_dispatch:
+  schedule:
+    # 06:00 and 18:00 America/Chicago, accounting for DST.
+    - cron: '0 11,12,23,0 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: draftkings-odds-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Central time schedule
+        id: clock
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          HOUR=$(TZ=America/Chicago date +%H)
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "06" || "$HOUR" == "18" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fetch licensed DraftKings markets
+        if: steps.clock.outputs.run == 'true'
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python tools/refresh_draftkings_odds.py
+      - name: Commit refreshed snapshot
+        if: steps.clock.outputs.run == 'true'
+        run: |
+          if [[ -n "$(git status --porcelain -- data/draftkings_odds.json data/dk-game-odds.json data/dk-odds.json)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/draftkings_odds.json data/dk-game-odds.json data/dk-odds.json
+            git commit -m "data: refresh DraftKings NFL odds"
+            git push
+          fi
