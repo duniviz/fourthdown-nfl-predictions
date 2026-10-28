@@ -59,6 +59,13 @@ jobs:
           python tools/run_research_refresh.py --schedule-csv staging/games.csv \
             --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
             --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Monitor configured official NFL inactive report pages (research only)
+        if: success()
+        continue-on-error: true
+        run: |
+          python tools/fetch_official_inactive_sources.py \
+            --urls-json data/official-inactive-report-urls.json \
+            --output staging/results/official-inactive-source-evidence.json
       - name: Fetch supplemental Sleeper injury flags (research only)
         if: success()
         continue-on-error: true

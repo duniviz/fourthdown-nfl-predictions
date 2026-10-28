@@ -32,12 +32,22 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument("--source-url",action="append",default=[],help="Direct official nfl.com report URL; may repeat")
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--urls-json",type=Path,help="Optional JSON list of official report URLs")
     a=p.parse_args()
+    urls=list(a.source_url)
+    if a.urls_json and a.urls_json.exists():
+        try:
+            configured=json.loads(a.urls_json.read_text())
+            if not isinstance(configured,list) or not all(isinstance(u,str) for u in configured):
+                raise ValueError("Official report URL configuration must be a list of strings")
+            urls.extend(configured[:50])
+        except (ValueError,TypeError) as exc:
+            raise SystemExit("Invalid official URL configuration: "+str(exc))
     reports=[];errors=[]
-    for url in a.source_url:
+    for url in dict.fromkeys(urls):
         try: reports.append(retrieve(url))
         except Exception as exc: errors.append({"url":url,"error":str(exc)})
-    result={"status":"official_site_evidence_only","generated_at_utc":datetime.now(timezone.utc).isoformat(),"reports":reports,"errors":errors,"game_day_status_verified":False,"note":"Fetching official-site HTML does not prove report date, game, player identity or inactive designation. No eligibility changes or betting recommendations."}
+    result={"status":"official_site_evidence_only","generated_at_utc":datetime.now(timezone.utc).isoformat(),"reports":reports,"errors":errors,"game_day_status_verified":False,"configured_source_count":len(urls),"note":"Fetching official-site HTML does not prove report date, game, player identity or inactive designation. No eligibility changes or betting recommendations."}
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,indent=2)+"\n")
     print("Official NFL page fetches:",len(reports),"errors:",len(errors),"; no game-day status certification")
