@@ -158,6 +158,15 @@ jobs:
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2024.csv --season 2024 --output staging/results/nfl-savant-feature-lab-2024.json
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2025.csv --season 2025 --output staging/results/nfl-savant-feature-lab-2025.json
           python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats.csv --season 2026 --output staging/results/nfl-savant-feature-lab-2026.json
+      - name: Mix-and-match player yard challengers (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_mix_match_challenger_lab.py' -v
+          for season in 2024 2025 2026; do
+            if [ "$season" = 2026 ]; then input=staging/player_stats.csv; else input="staging/player_stats_${season}.csv"; fi
+            python tools/mix_match_challenger_lab.py --weekly-csv "$input" --season "$season" --output "staging/results/mix-match-challenger-${season}.json"
+          done
       - name: Track advanced metric challengers and validation gaps
         if: success()
         run: |
