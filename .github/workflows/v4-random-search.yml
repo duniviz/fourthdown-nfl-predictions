@@ -1,0 +1,41 @@
+name: V4 Randomized Challenger Research
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/challenger-metrics-2026
+    paths:
+      - 'research/v4_random_search.py'
+      - '.github/workflows/v4-random-search.yml'
+permissions:
+  contents: write
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/challenger-metrics-2026
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Screen 600 randomized combinations per market
+        run: python -m research.v4_random_search
+      - name: Save research-only results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/v4-random-search/results.json research/v4-random-search/RESULTS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish randomized V4 challenger results"
+            git pull --rebase origin research/challenger-metrics-2026
+            git push origin HEAD:research/challenger-metrics-2026
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v4-randomized-challengers
+          path: research/v4-random-search/
+          if-no-files-found: warn
