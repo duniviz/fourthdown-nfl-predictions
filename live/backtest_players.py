@@ -33,8 +33,9 @@ def backtest(seasons=(2024,2025)):
                 for (team,pid),past in history.items():
                     for r in past:
                         key=(team,int(r["week"]))
-                        for metric,_,volume in METRICS:
+                        for volume in {volume for _,_,volume in METRICS}:
                             team_week[key][volume]+=max(0,num(r.get(volume)))
+                        for metric,_,_ in METRICS:
                             if r.get("opponent_team"):
                                 defense_week[(r["opponent_team"],int(r["week"]))][metric]+=max(0,num(r.get(metric)))
                 league={}
