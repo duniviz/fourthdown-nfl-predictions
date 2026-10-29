@@ -6,31 +6,31 @@
       "market": "passing_yards",
       "train_n": 398,
       "holdout_n": 395,
-      "old_model_blend_weight": 0.5,
-      "baseline_mae": 639.7762,
-      "challenger_mae": 323.7285,
-      "improvement_pct": 49.4,
-      "beats_baseline": true
+      "old_model_blend_weight": 0.4,
+      "baseline_mae": 65.139,
+      "challenger_mae": 65.1403,
+      "improvement_pct": -0.002,
+      "beats_baseline": false
     },
     {
       "market": "rushing_yards",
       "train_n": 883,
       "holdout_n": 873,
-      "old_model_blend_weight": 0.5,
-      "baseline_mae": 69.7412,
-      "challenger_mae": 42.0957,
-      "improvement_pct": 39.64,
-      "beats_baseline": true
+      "old_model_blend_weight": 0.0,
+      "baseline_mae": 23.9293,
+      "challenger_mae": 23.9293,
+      "improvement_pct": 0.0,
+      "beats_baseline": false
     },
     {
       "market": "receiving_yards",
       "train_n": 1927,
       "holdout_n": 1852,
-      "old_model_blend_weight": 0.5,
-      "baseline_mae": 60.8548,
-      "challenger_mae": 38.0489,
-      "improvement_pct": 37.476,
-      "beats_baseline": true
+      "old_model_blend_weight": 0.0,
+      "baseline_mae": 22.6123,
+      "challenger_mae": 22.6123,
+      "improvement_pct": 0.0,
+      "beats_baseline": false
     }
   ]
 }
