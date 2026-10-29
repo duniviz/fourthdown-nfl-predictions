@@ -6,6 +6,7 @@ on:
       - research/challenger-metrics-2026
     paths:
       - 'research/v4_ensemble_screen.py'
+      - 'live/backtest_players.py'
       - '.github/workflows/v4-player-challenger-screen.yml'
 permissions:
   contents: write
