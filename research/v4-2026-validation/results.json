@@ -1,0 +1,73 @@
+{
+  "method": "2024 selection only; 2026 evaluation, no 2026 parameter fitting",
+  "warning": "2026 may already have been informally inspected; not a pristine unseen holdout. Partial season and selected cohort.",
+  "promotion": "NO AUTO PROMOTION. Requires production-equivalent paired replay, uncertainty analysis, 2026 week-by-week stability.",
+  "results": [
+    {
+      "market": "passing_yards",
+      "train_n": 398,
+      "test_n": 102,
+      "evaluated_weeks": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "frozen_weights": [
+        0,
+        0,
+        -0.8,
+        0.5,
+        0.3
+      ],
+      "baseline_mae": 63.6706,
+      "challenger_mae": 63.9566,
+      "improvement_pct": -0.449,
+      "candidate_for_further_validation": false
+    },
+    {
+      "market": "rushing_yards",
+      "train_n": 883,
+      "test_n": 193,
+      "evaluated_weeks": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "frozen_weights": [
+        -0.15,
+        0.3,
+        0.8,
+        -0.5,
+        0
+      ],
+      "baseline_mae": 24.3943,
+      "challenger_mae": 24.3543,
+      "improvement_pct": 0.164,
+      "candidate_for_further_validation": false
+    },
+    {
+      "market": "receiving_yards",
+      "train_n": 1927,
+      "test_n": 470,
+      "evaluated_weeks": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "frozen_weights": [
+        -0.5,
+        -0.15,
+        0,
+        0,
+        0
+      ],
+      "baseline_mae": 25.7923,
+      "challenger_mae": 25.5328,
+      "improvement_pct": 1.006,
+      "candidate_for_further_validation": true
+    }
+  ]
+}
