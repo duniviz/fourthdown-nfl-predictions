@@ -481,7 +481,7 @@ function fdOpenMatchup(g){
     const third=finish
       ?'Finish drives. '+esc(teamName)+' convert '+esc(show(finish[side+'_offense'],'%'))+' of red-zone chances (rank #'+esc(finish[side+'_offense'].rank)+'), so touchdowns instead of field goals can swing it.'
       :'The red zone and turnover battle will decide whether the edge holds.';
-    return '<article class="fd-win-path"><h4>How '+esc(teamName)+' win</h4><ul><li>'+first+'</li><li>'+second+'</li><li>'+third+'</li></ul></article>';
+    return '<article class="fd-win-path"><h4>How '+esc(teamName)+' can win</h4><ul><li>'+first+'</li><li>'+second+'</li><li>'+third+'</li></ul></article>';
    };
    const winPaths='<div class="fd-win-paths">'+path(leaderSide,leaderTeam,true)+path(otherSide,otherTeam,false)+'</div>';
    const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
