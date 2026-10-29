@@ -1,0 +1,36 @@
+{
+  "method": "2024 weight selection / 2025 holdout; same player-week rows; no 2025 tuning",
+  "promotion": "NOT AUTOMATIC: require production-equivalent replay, more seasons and calibration",
+  "results": [
+    {
+      "market": "passing_yards",
+      "train_n": 398,
+      "holdout_n": 395,
+      "old_model_blend_weight": 0.5,
+      "baseline_mae": 639.7762,
+      "challenger_mae": 323.7285,
+      "improvement_pct": 49.4,
+      "beats_baseline": true
+    },
+    {
+      "market": "rushing_yards",
+      "train_n": 883,
+      "holdout_n": 873,
+      "old_model_blend_weight": 0.5,
+      "baseline_mae": 69.7412,
+      "challenger_mae": 42.0957,
+      "improvement_pct": 39.64,
+      "beats_baseline": true
+    },
+    {
+      "market": "receiving_yards",
+      "train_n": 1927,
+      "holdout_n": 1852,
+      "old_model_blend_weight": 0.5,
+      "baseline_mae": 60.8548,
+      "challenger_mae": 38.0489,
+      "improvement_pct": 37.476,
+      "beats_baseline": true
+    }
+  ]
+}
