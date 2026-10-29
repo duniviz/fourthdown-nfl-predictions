@@ -1,0 +1,31 @@
+name: Research Challenger Leaderboard
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/challenger-metrics-2026
+    paths:
+      - 'research/results/**'
+      - 'research/challenger_leaderboard.py'
+      - '.github/workflows/research-challenger-leaderboard.yml'
+  schedule:
+    - cron: '0 16 * * 3'
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/challenger-metrics-2026
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate leaderboard
+        run: python research/challenger_leaderboard.py
+      - name: Upload comparison evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fourtdown-challenger-leaderboard
+          path: research/leaderboard-output/
