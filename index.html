@@ -459,9 +459,12 @@ function fdOpenMatchup(g){
    const simText=simGame&&Number.isFinite(Number(simGame.home_win_pct))&&Number.isFinite(Number(simGame.away_win_pct))
      ?' The simulation gives '+esc(leaderTeam)+' a '+num(leaderTeam===home?simGame.home_win_pct:simGame.away_win_pct)+'% win rate.':'';
    const scoreStory='This is a '+num(margin)+'-point call, not a runaway: '+esc(leaderTeam)+' are projected for '+num(leaderTeam===home?p.projected_home_score:p.projected_away_score)+' points while '+esc(otherTeam)+' land at '+num(otherTeam===home?p.projected_home_score:p.projected_away_score)+'.'+simText;
-   const passStory=pass
-     ?'The main football reason is the passing matchup. '+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking. That gives the favorite a steadier way to move the chains.'
-     :'The published matchup data points to a modest, rather than overwhelming, efficiency edge.';
+   const rushStory=rush&&Number.isFinite(Number(rush[otherDef]?.rank))&&Number(rush[otherDef].rank)>=25
+     ?'The biggest opening may be on the ground. '+esc(otherTeam)+' rank #'+esc(rush[otherDef].rank)+' against the run in EPA per rush, which gives '+esc(leaderTeam)+' a chance to establish the run and stay ahead of the chains.'
+     :null;
+   const passStory=rushStory||(pass
+     ?'The passing matchup also matters. '+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking.'
+     :'The published matchup data points to a modest, rather than overwhelming, efficiency edge.');
    const counterStory=challengerRed
      ?esc(otherTeam)+' are still very much in this game. Their red-zone offense converts '+esc(show(challengerRed[otherSide+'_offense'],'%'))+' of chances (rank #'+esc(challengerRed[otherSide+'_offense'].rank)+'), so a few clean drives can change the whole feel of it.'
      :'The game stays close if '+esc(otherTeam)+' win the high-leverage downs and the turnover battle.';
@@ -469,14 +472,18 @@ function fdOpenMatchup(g){
    const turnovers=metric('Turnovers / game',otherSide+'_offense',leaderSide+'_defense');
    const redZone=side=>metric('Red-zone TD rate',side+'_offense',(side==='home'?'away':'home')+'_defense');
    const passFor=side=>metric('EPA / pass',side+'_offense',(side==='home'?'away':'home')+'_defense');
+   const rushFor=side=>metric('EPA / rush',side+'_offense',(side==='home'?'away':'home')+'_defense');
    const winChance=side=>simGame?num(side==='home'?simGame.home_win_pct:simGame.away_win_pct):'—';
    const path=(side,teamName,isLean)=>{
     const opponentSide=side==='home'?'away':'home',opponentName=opponentSide==='home'?home:away;
-    const air=passFor(side),finish=redZone(side);
+    const air=passFor(side),ground=rushFor(side),finish=redZone(side);
     const first=isLean
       ?'The forecast has '+esc(teamName)+' ahead by '+num(margin)+' points, with a '+winChance(side)+'% simulated win rate. Playing from in front lets them stay patient.'
       :'They are still live in '+winChance(side)+'% of the simulations. A clean start keeps this inside one or two possessions.';
-    const second=air
+    const runWeakness=ground&&Number.isFinite(Number(ground[opponentSide+'_defense']?.rank))&&Number(ground[opponentSide+'_defense'].rank)>=25;
+    const second=runWeakness
+      ?'Start on the ground. '+esc(opponentName)+' rank #'+esc(ground[opponentSide+'_defense'].rank)+' against the run by EPA per rush, giving '+esc(teamName)+' a favorable matchup to attack. The key is turning that opening into sustained drives.'
+      :air
       ?'The passing game is '+(Number(air[side+'_offense'].rank)<=Number(air[opponentSide+'_defense'].rank)?'the clearest route':'the matchup they need to win')+': '+esc(teamName)+' rank #'+esc(air[side+'_offense'].rank)+' in EPA per pass, while '+esc(opponentName)+' rank #'+esc(air[opponentSide+'_defense'].rank)+' defensively.'
       :'Winning the passing-down snaps is the simplest way to control this game.';
     const third=finish
