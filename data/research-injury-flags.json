@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-10-28T12:03:57.904722+00:00",
+  "generated_at_utc": "2026-10-29T19:07:59.187075+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
   "projection_markets": 165,
-  "flagged_markets": 8,
+  "flagged_markets": 10,
   "flags": [
     {
       "player_id": "00-0034796",
@@ -19,11 +19,11 @@
       "game_day_status_verified": false
     },
     {
-      "player_id": "00-0032268",
-      "player_name": "Marcus Mariota",
-      "team": "WAS",
-      "market": "passing_yards",
-      "sleeper_id": "2307",
+      "player_id": "00-0035676",
+      "player_name": "A.J. Brown",
+      "team": "NE",
+      "market": "receiving_yards",
+      "sleeper_id": "5859",
       "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
@@ -49,6 +49,16 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0034960",
+      "player_name": "Jakobi Meyers",
+      "team": "JAX",
+      "market": "receiving_yards",
+      "sleeper_id": "5947",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0033555",
       "player_name": "Mack Hollins",
       "team": "NE",
@@ -59,12 +69,22 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0031588",
+      "player_name": "Stefon Diggs",
+      "team": "WAS",
+      "market": "receiving_yards",
+      "sleeper_id": "2449",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035659",
       "player_name": "Terry McLaurin",
       "team": "WAS",
       "market": "receiving_yards",
       "sleeper_id": "5927",
-      "injury_flag": "out",
+      "injury_flag": "injured_reserve",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
