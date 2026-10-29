@@ -133,6 +133,59 @@ def starter_qb_workload(records):
     # Blend recent and season full-game averages; exclude relief appearances.
     return clamp(0.7*(sum(recent[-3:])/len(recent[-3:]))+0.3*(sum(full)/len(full)),15,55)
 
+
+def snap_share(record):
+    """Return a normalized offensive-snap share when the source provides one."""
+    for field in ("offense_pct", "offensive_snap_pct", "snap_pct"):
+        value=record.get(field)
+        if value not in (None, ""):
+            share=num(value)
+            return share/100 if share>1 else share
+    return None
+
+
+def established_return_workload(current_records, prior_records, volume, availability="unconfirmed"):
+    """Conservative carry estimate for an established player returning to action.
+
+    This is deliberately a workload-only adjustment.  It uses at most five
+    completed, meaningful appearances available before the target game, keeps
+    the player's efficiency estimate unchanged, and is disabled without both a
+    limited current-season sample and established prior-season involvement.
+    """
+    current=sorted(current_records,key=lambda r:int(r.get("week",0)))
+    if volume != "carries" or not current or len(current) >= 3:
+        return None
+    # A carry threshold avoids treating a one-play appearance as a full game.
+    # A material snap share is accepted when a source supplies snap data.
+    def meaningful(row):
+        share=snap_share(row)
+        return max(0.0,num(row.get(volume))) >= 6 or (share is not None and share >= .35)
+    established=[r for r in prior_records if meaningful(r)]
+    if len(established) < 3:
+        return None
+    full_games=(established+ [r for r in current if meaningful(r)])[-5:]
+    if len(full_games) < 3:
+        return None
+    full_mean=sum(max(0.0,num(r.get(volume))) for r in full_games)/len(full_games)
+    recent_mean=sum(max(0.0,num(r.get(volume))) for r in current)/len(current)
+    shares=[snap_share(r) for r in current if snap_share(r) is not None]
+    # When snap data are absent, do not manufacture a favorable snap signal.
+    # A verified injury designation selects the more conservative role case.
+    snap_factor=clamp(sum(shares)/len(shares), .45, 1.0) if shares else .75
+    injury_limited=availability in {"questionable", "doubtful"}
+    role_factor=min(snap_factor, .70 if injury_limited else .82)
+    reduced_role=min(full_mean*role_factor, max(recent_mean*1.20, full_mean*.45))
+    blended=.65*reduced_role+.35*full_mean
+    return {
+        "full_game_carries":round(full_mean,1),
+        "recent_carries":round(recent_mean,1),
+        "reduced_role_carries":round(reduced_role,1),
+        "blended_carries":round(blended,1),
+        "full_games_used":len(full_games),
+        "snap_share_signal":round(sum(shares)/len(shares),3) if shares else None,
+        "injury_limited":injury_limited,
+    }
+
 def generate():
     if nfl is None:
         raise RuntimeError("nflreadpy is required to generate player research")
@@ -152,6 +205,13 @@ def generate():
     week=int(games[0][1]["week"])
     games=[g for dt,g in games if int(g["week"])==week]
     rows=nfl.load_player_stats([season],summary_level="week").to_dicts()
+    # Prior-season rows are used only for established RB return-workload
+    # handling below. They never enter current-season team or defense totals.
+    prior_rows=nfl.load_player_stats([season-1],summary_level="week").to_dicts()
+    prior_player_history=defaultdict(list)
+    for r in prior_rows:
+        if str(r.get("season_type","REG")).upper() in ("REG","2") and r.get("player_id"):
+            prior_player_history[str(r["player_id"])].append(r)
     history=defaultdict(list)
     opponents=defaultdict(lambda:defaultdict(list))
     for r in rows:
@@ -352,10 +412,19 @@ def generate():
                     if limited_sample:
                         observed=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
                         adjusted=min(adjusted,observed*1.20)
+                    position=str(stats[-1].get("position") or "").upper()
+                    # An established RB returning with only one or two current
+                    # rows is not equivalent to a newly promoted backup. Blend
+                    # up to five earlier meaningful games with a reduced-role
+                    # scenario; retain the existing efficiency estimate.
+                    return_workload=established_return_workload(
+                        stats,prior_player_history.get(str(player),[]),volume,availability
+                    ) if position=="RB" else None
+                    if return_workload is not None:
+                        adjusted=return_workload["blended_carries"]
                     defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
-                    position=str(stats[-1].get("position") or "").upper()
                     if (position,metric) in position_markets:
                         samples=position_defense.get((opp,position,metric),[])
                         neutral=position_league.get((position,metric),0)
@@ -426,7 +495,7 @@ def generate():
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
                         "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
-                        "sample_warning":"Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None,
+                        "sample_warning":("Limited current-season games; established return workload blends five prior meaningful games with a reduced-role scenario" if return_workload is not None else ("Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None)),
                         "bet_recommendation":False,
                         "last_5":[round(x,1) for x in values],
                         "last_5_avg":round(avg,1),
@@ -439,6 +508,7 @@ def generate():
                         "uncertainty_yards":uncertainty,
                         "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
+                        "established_return_workload":return_workload,
                         "qb_full_game_workload":round(qb_full_game_volume,1) if qb_full_game_volume is not None else None,
                         "qb_raw_team_share":round(raw_role_share,3) if qb_full_game_volume is not None else None,
                         "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
