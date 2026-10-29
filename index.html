@@ -444,22 +444,35 @@ function fdOpenMatchup(g){
  }).join('');
  const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">No model matchup available to compare with saved DraftKings quotes.</p>')+'<p class="fd-modal-muted">Odds are timestamped snapshots, not guaranteed live. Verify with DraftKings before use.</p></div>';
- const insight=(!isFinal&&p)?(()=>{
-   const insightLines=[];
-   const rank=v=>Number.isFinite(Number(v))?'#'+Number(v):'unranked';
-   const winner=canon(p.predicted_winner),margin=Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score));
-   if(winner)insightLines.push('<strong>Forecast edge:</strong> FOURTHDOWN projects '+esc(winner)+' by '+num(margin)+' points, '+esc(winner)+' '+num(winner===home?p.projected_home_score:p.projected_away_score)+' to '+esc(winner===home?p.projected_away_score:p.projected_home_score)+'.');
-   const awayOff=analysis.away||{},homeOff=analysis.home||{};
-   insightLines.push('<strong>Matchup context:</strong> '+esc(away)+' offense is '+rank(awayOff.offense_rank)+' while '+esc(home)+' defense is '+rank(homeOff.defense_rank)+'; '+esc(home)+' offense is '+rank(homeOff.offense_rank)+' while '+esc(away)+' defense is '+rank(awayOff.defense_rank)+'. These are current-season ranking inputs, not independent predictions.');
-   const awayForm=form('away'),homeForm=form('home');
-   if(Number.isFinite(Number(awayForm.avg_points_for))||Number.isFinite(Number(homeForm.avg_points_for)))insightLines.push('<strong>Recent scoring:</strong> '+esc(away)+' has scored '+num(awayForm.avg_points_for)+' per game and allowed '+num(awayForm.avg_points_against)+'; '+esc(home)+' has scored '+num(homeForm.avg_points_for)+' and allowed '+num(homeForm.avg_points_against)+'.');
-   const edges=analysis.scoring_edge_components||{};
-   const strongest=Object.entries(edges).filter(([,v])=>Number.isFinite(Number(v))).sort((a,b)=>Math.abs(Number(b[1]))-Math.abs(Number(a[1])))[0];
-   if(strongest)insightLines.push('<strong>Model input:</strong> The largest published scoring component is '+esc(String(strongest[0]).replaceAll('_',' '))+' at '+(Number(strongest[1])>=0?'+':'')+num(strongest[1])+' points.');
-   const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
-   return '<div class="fd-modal-section fd-ai-insights"><h3>Matchup insights</h3><p class="fd-modal-muted">Generated from the published FOURTHDOWN pregame inputs for this game. It summarizes the model evidence and does not make external facts or betting claims.</p><ul>'+insightLines.map(x=>'<li>'+x+'</li>').join('')+'</ul><p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury details load in the injury card when available.</span></p></div>';
- })():'';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
+ const insight=(!isFinal&&p)?(()=>{
+   const metrics=Array.isArray(analysis.matchup_metrics)?analysis.matchup_metrics:[];
+   const insightLines=[];
+   const metric=(label,offKey,defKey)=>{const row=metrics.find(x=>x.label===label);return row&&row[offKey]&&row[defKey]?row:null;};
+   const value=(entry,unit)=>Number.isFinite(Number(entry?.value))?Number(entry.value).toFixed(unit==='%'?1:2)+' '+unit:'not available';
+   const matchupCopy=(team,opponent,offKey,defKey,label,unit,theme)=>{
+     const row=metric(label,offKey,defKey);if(!row)return '';
+     const offense=row[offKey],defense=row[defKey];
+     return '<strong>'+esc(theme)+':</strong> '+esc(team)+' is #'+esc(offense.rank)+' in '+esc(label.toLowerCase())+' ('+esc(value(offense,unit))+'), against a '+esc(opponent)+' defense ranked #'+esc(defense.rank)+' ('+esc(value(defense,unit))+').';
+   };
+   const winner=canon(p.predicted_winner),margin=Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score));
+   const winLine=simGame&&Number.isFinite(Number(simGame.home_win_pct))&&Number.isFinite(Number(simGame.away_win_pct))
+     ?' The simulation puts '+esc(away)+' at '+num(simGame.away_win_pct)+'% and '+esc(home)+' at '+num(simGame.home_win_pct)+'%.':'';
+   if(winner)insightLines.push('<strong>How the model sees it:</strong> '+esc(winner)+' is projected to win by '+num(margin)+' points, '+esc(winner)+' '+num(winner===home?p.projected_home_score:p.projected_away_score)+' to '+num(winner===home?p.projected_away_score:p.projected_home_score)+'.'+winLine);
+   const awayPass=matchupCopy(away,home,'away_offense','home_defense','EPA / pass','EPA/pass','When '+away+' throws');
+   const awayRush=matchupCopy(away,home,'away_offense','home_defense','EPA / rush','EPA/rush','When '+away+' runs');
+   const awayTake=matchupCopy(away,home,'away_offense','home_defense','Turnovers / game','TO/g','Ball security test');
+   if(awayPass||awayRush||awayTake)insightLines.push((awayPass+' '+awayRush+' '+awayTake).trim());
+   const homePass=matchupCopy(home,away,'home_offense','away_defense','EPA / pass','EPA/pass','When '+home+' throws');
+   const homeRush=matchupCopy(home,away,'home_offense','away_defense','EPA / rush','EPA/rush','When '+home+' runs');
+   const homeTake=matchupCopy(home,away,'home_offense','away_defense','Turnovers / game','TO/g','Ball security test');
+   if(homePass||homeRush||homeTake)insightLines.push((homePass+' '+homeRush+' '+homeTake).trim());
+   const awayRed=matchupCopy(away,home,'away_offense','home_defense','Red-zone TD rate','%','Finishing drives');
+   const homeRed=matchupCopy(home,away,'home_offense','away_defense','Red-zone TD rate','%','Finishing drives');
+   if(awayRed||homeRed)insightLines.push('<strong>Where the score can swing:</strong> '+(awayRed+' '+homeRed).replace(/<strong>Finishing drives:<\/strong> /g,'').trim());
+   const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
+   return '<div class="fd-modal-section fd-ai-insights"><h3>Matchup insights</h3><p class="fd-modal-muted">A game-specific read built from the forecast inputs below. These are descriptive matchups, not external news claims or betting advice.</p><ul>'+insightLines.map(x=>'<li>'+x+'</li>').join('')+'</ul><p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury details load in the injury card when available.</span></p></div>';
+ })();
  const simScore=simGame?'<div class="fd-modal-section"><h3>10,000 simulated outcomes</h3><p>'+esc(away)+' win '+num(simGame.away_win_pct)+'% · '+esc(home)+' win '+num(simGame.home_win_pct)+'% · tie '+num(simGame.tie_pct)+'%</p><p>Median '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory, uncalibrated probabilities.</p></div>':'';
  const score=p?'<div class="fd-modal-pick"><h3>FOURTHDOWN v2 · Model prediction</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+num(p.projected_away_score)+'</div><small>AT</small><div><small>'+esc(home)+'</small>'+num(p.projected_home_score)+'</div></div><p><strong>Pick: '+esc(p.predicted_winner)+' wins</strong> · edge '+num(Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score)))+' pts</p><p class="fd-modal-muted">Projected total: '+num(p.projected_total)+' · '+impact+'</p>'+simScore+'</div>' :'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
  const completedRows=isFinal?playerResults.filter(x=>x.game_id&&x.game_id.endsWith('_'+away+'_'+home)):[];
