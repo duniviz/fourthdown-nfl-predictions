@@ -463,8 +463,7 @@ function fdOpenMatchup(g){
    if(rush)matchupParts.push('rushing efficiency (#'+esc(rush[leaderOff].rank)+' · '+esc(show(rush[leaderOff],'EPA/rush'))+')');
    const matchup=matchupParts.length?esc(leaderTeam)+' bring '+matchupParts.join(' and ')+' against '+esc(otherTeam)+'\'s defense.':'The published matchup feed does not isolate a clear efficiency advantage.';
    const swing=challengerRed?esc(otherTeam)+' have converted '+esc(show(challengerRed[otherSide+'_offense'],'%'))+' of red-zone chances (rank #'+esc(challengerRed[otherSide+'_offense'].rank)+'), which is the clearest path to beating the forecast.':'Game-day availability is the main unresolved counterpoint in the published inputs.';
-   const injuryUpdates=[{team:away},{team:home}].flatMap(x=>(injuryData?.teams?.[canon(x.team)]?.players||[]).filter(player=>/out|doubtful|questionable|injured reserve/i.test(String(player.status||''))).slice(0,3).map(player=>esc(x.team)+' '+esc(player.player||player.name||'player')+' ('+esc(player.status)+')')).slice(0,5);
-   const injuryBullet=injuryUpdates.length?'<li><strong>Injury watch:</strong> '+injuryUpdates.join('; ')+'.</li>':'';
+   const injuryBullet='<li data-ai-injury-watch><strong>Injury watch:</strong> ESPN game-card report loads below.</li>';
    const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
    return '<div class="fd-modal-section fd-ai-insights"><h3>The AI verdict</h3><p class="fd-modal-muted">A data-backed matchup brief from the published pregame feeds—not a betting recommendation.</p><div class="fd-ai-summary"><p><strong>'+esc(leaderTeam)+' are the lean.</strong> '+overview+'</p><ul><li><strong>Matchup edge:</strong> '+matchup+'</li>'+injuryBullet+'<li><strong>What keeps it close:</strong> '+swing+'</li></ul></div><p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury feed; confirm final actives before kickoff.</span></p></div>';
  })():'';
@@ -685,6 +684,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    walk(raw.injuries||raw);
    const matching=rows.filter(x=>!x.team||teams.includes(x.team));
    if(!matching.length){target.innerHTML='<h3>Injuries and model impact</h3>'+fallback()+'<p class="fd-modal-muted">ESPN’s game card did not return player statuses for this matchup. This does not confirm a healthy roster.</p>';return;}
+   const insightTarget=document.querySelector('[data-ai-injury-watch]');
+   if(insightTarget){
+    const featured=matching.slice(0,4);
+    insightTarget.innerHTML=featured.length?'<strong>Injury watch:</strong> '+featured.map(x=>esc(x.team||'Team')+' '+esc(x.name)+' ('+esc(x.status)+(x.detail?' · '+esc(x.detail):'')+')').join('; ')+'.':'<strong>Injury watch:</strong> No current player status returned by ESPN.';
+   }
    target.innerHTML='<h3>Injuries and model impact</h3><div class="fd-modal-grid">'+teams.map(t=>{const teamRows=matching.filter(x=>!x.team||x.team===t);return '<div class="fd-modal-stat"><b>'+esc(t)+'</b>'+(teamRows.length?teamRows.slice(0,12).map(x=>'<p>'+esc(x.name)+' · '+esc(x.status)+(x.detail?' · '+esc(x.detail):'')+'</p>').join(''):'<p>No player status returned by ESPN’s game card.</p>')+'</div>';}).join('')+'</div><p class="fd-modal-muted">Source: ESPN game-card report. Player availability is display-only unless a confirmed model adjustment is published.</p>';
   }catch(error){target.innerHTML='<h3>Injuries and model impact</h3>'+fallback()+'<p class="fd-modal-muted">ESPN game-card report is temporarily unavailable. Existing forecast adjustments, if any, remain shown in the prediction panel.</p>';}
  }
