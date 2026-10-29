@@ -474,21 +474,27 @@ function fdOpenMatchup(g){
    const passFor=side=>metric('EPA / pass',side+'_offense',(side==='home'?'away':'home')+'_defense');
    const rushFor=side=>metric('EPA / rush',side+'_offense',(side==='home'?'away':'home')+'_defense');
    const winChance=side=>simGame?num(side==='home'?simGame.home_win_pct:simGame.away_win_pct):'—';
+   const matchupEdges=side=>{
+    const opponentSide=side==='home'?'away':'home';
+    const categories=[['Running the ball','EPA / rush'],['Throwing the ball','EPA / pass'],['Finishing drives','Red-zone TD rate']];
+    return categories.map(([label,key])=>{
+      const row=metric(key,side+'_offense',opponentSide+'_defense');
+      if(!row)return null;
+      const offense=Number(row[side+'_offense']?.rank),defense=Number(row[opponentSide+'_defense']?.rank);
+      if(!Number.isFinite(offense)||!Number.isFinite(defense)||offense<1||defense<1)return null;
+      const advantage=defense-offense;
+      return {label,key,offense,defense,advantage,score:advantage+(offense<=10&&defense>=23?4:0)};
+    }).filter(Boolean).sort((a,b)=>b.score-a.score);
+   };
    const path=(side,teamName,isLean)=>{
     const opponentSide=side==='home'?'away':'home',opponentName=opponentSide==='home'?home:away;
-    const air=passFor(side),ground=rushFor(side),finish=redZone(side);
+    const edges=matchupEdges(side),top=edges[0],runnerUp=edges[1];
     const first=isLean
       ?'The forecast has '+esc(teamName)+' ahead by '+num(margin)+' points, with a '+winChance(side)+'% simulated win rate. Playing from in front lets them stay patient.'
       :'They are still live in '+winChance(side)+'% of the simulations. A clean start keeps this inside one or two possessions.';
-    const runWeakness=ground&&Number.isFinite(Number(ground[opponentSide+'_defense']?.rank))&&Number(ground[opponentSide+'_defense'].rank)>=25;
-    const second=runWeakness
-      ?'Start on the ground. '+esc(opponentName)+' rank #'+esc(ground[opponentSide+'_defense'].rank)+' against the run by EPA per rush, giving '+esc(teamName)+' a favorable matchup to attack. The key is turning that opening into sustained drives.'
-      :air
-      ?'The passing game is '+(Number(air[side+'_offense'].rank)<=Number(air[opponentSide+'_defense'].rank)?'the clearest route':'the matchup they need to win')+': '+esc(teamName)+' rank #'+esc(air[side+'_offense'].rank)+' in EPA per pass, while '+esc(opponentName)+' rank #'+esc(air[opponentSide+'_defense'].rank)+' defensively.'
-      :'Winning the passing-down snaps is the simplest way to control this game.';
-    const third=finish
-      ?'Finish drives. '+esc(teamName)+' convert '+esc(show(finish[side+'_offense'],'%'))+' of red-zone chances (rank #'+esc(finish[side+'_offense'].rank)+'), so touchdowns instead of field goals can swing it.'
-      :'The red zone and turnover battle will decide whether the edge holds.';
+    const explain=e=>e.label+': '+esc(teamName)+' rank #'+e.offense+' offensively, while '+esc(opponentName)+' rank #'+e.defense+' defensively. '+(e.advantage>=15?'That is a matchup worth attacking.':e.advantage>0?'There is an opening if they execute.':'They will need to overcome a difficult matchup.');
+    const second=top?explain(top):'Winning the line of scrimmage and avoiding negative plays will be important.';
+    const third=runnerUp?explain(runnerUp):'Finishing drives and protecting the football could make the difference.';
     return '<article class="fd-win-path"><h4>How '+esc(teamName)+' can win</h4><ul><li>'+first+'</li><li>'+second+'</li><li>'+third+'</li></ul></article>';
    };
    const winPaths='<div class="fd-win-paths">'+path(leaderSide,leaderTeam,true)+path(otherSide,otherTeam,false)+'</div>';
