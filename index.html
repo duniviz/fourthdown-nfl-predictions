@@ -491,7 +491,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   if(Number.isFinite(Number(form.avg_points_for))&&Number.isFinite(Number(oppForm.avg_points_for))&&Number(form.avg_points_for)>Number(oppForm.avg_points_for)+3)
     notes.push('Lately, the scoring numbers favor '+esc(p.predicted_winner)+' ('+Number(form.avg_points_for).toFixed(1)+' vs '+Number(oppForm.avg_points_for).toFixed(1)+' points per game).');
   if(Number.isFinite(Number(form.wins))&&Number.isFinite(Number(oppForm.wins))&&Number(form.wins)>Number(oppForm.wins))
-    notes.push('They've won more of their last five games ('+form.wins+' vs '+oppForm.wins+').');
+    notes.push('They have won more of their last five games ('+form.wins+' vs '+oppForm.wins+').');
   if(!notes.length)notes.push('The model gives '+esc(p.predicted_winner)+' a small edge when we put the matchup together.');
   const marginNote=Math.abs(margin)<3?'This one looks tight. A single big play could swing it.':'Our projected margin is '+Math.abs(margin).toFixed(1)+' points.';
   const names={ARI:'Cardinals',ATL:'Falcons',BAL:'Ravens',BUF:'Bills',CAR:'Panthers',CHI:'Bears',CIN:'Bengals',CLE:'Browns',DAL:'Cowboys',DEN:'Broncos',DET:'Lions',GB:'Packers',HOU:'Texans',IND:'Colts',JAC:'Jaguars',JAX:'Jaguars',KC:'Chiefs',LAC:'Chargers',LA:'Rams',LAR:'Rams',LV:'Raiders',MIA:'Dolphins',MIN:'Vikings',NE:'Patriots',NO:'Saints',NYG:'Giants',NYJ:'Jets',PHI:'Eagles',PIT:'Steelers',SEA:'Seahawks',SF:'49ers',TB:'Buccaneers',TEN:'Titans',WAS:'Commanders',WSH:'Commanders'};
@@ -503,13 +503,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const card=(emoji,heading,summary,details)=>'<div class="fd-explain-card"><div class="fd-explain-heading"><span aria-hidden="true">'+emoji+'</span><strong>'+heading+'</strong></div><p>'+summary+'</p>'+(details?'<details class="fd-explain-more"><summary>See the numbers</summary><p>'+details+'</p></details>':'')+'</div>';
   const offenseRank=num(chosen?.offense_rank),otherOffenseRank=num(rival?.offense_rank);
   const defenseRank=num(chosen?.defense_rank),otherDefenseRank=num(rival?.defense_rank);
-  const offenseSummary=offenseRank!==null&&otherOffenseRank!==null?(offenseRank<otherOffenseRank?pick+' have the better offensive ranking heading into this game.':offenseRank>otherOffenseRank?opponent+' have the better offensive ranking heading into this game.':'Neither offense has a ranking advantage.'):'We don't have a complete offensive ranking comparison for this matchup.';
-  const defenseSummary=defenseRank!==null&&otherDefenseRank!==null?(defenseRank<otherDefenseRank?pick+' have the better defensive ranking heading into this game.':defenseRank>otherDefenseRank?opponent+' have the better defensive ranking heading into this game.':'Neither defense has a ranking advantage.'):'We don't have a complete defensive ranking comparison for this matchup.';
+  const offenseSummary=offenseRank!==null&&otherOffenseRank!==null?(offenseRank<otherOffenseRank?pick+' have the better offensive ranking heading into this game.':offenseRank>otherOffenseRank?opponent+' have the better offensive ranking heading into this game.':'Neither offense has a ranking advantage.'):'We do not have a complete offensive ranking comparison for this matchup.';
+  const defenseSummary=defenseRank!==null&&otherDefenseRank!==null?(defenseRank<otherDefenseRank?pick+' have the better defensive ranking heading into this game.':defenseRank>otherDefenseRank?opponent+' have the better defensive ranking heading into this game.':'Neither defense has a ranking advantage.'):'We do not have a complete defensive ranking comparison for this matchup.';
   const scored=num(form.avg_points_for),otherScored=num(oppForm.avg_points_for);
   const allowed=num(form.avg_points_against),otherAllowed=num(oppForm.avg_points_against);
   const recentSummary=scored!==null&&otherScored!==null?(scored>otherScored?'Lately, the scoring numbers favor '+pick+'.':scored<otherScored?'Lately, the scoring numbers favor '+opponent+'.':'Both teams have scored about the same recently.'):'Recent scoring averages are not available for both teams.';
   const injuriesKnown=p.injury_adjustments&&Object.values(p.injury_adjustments).some(v=>num(v?.points)!==null&&num(v.points)!==0);
-  const injuriesSummary=injuriesKnown?'The published model includes a recorded injury adjustment.':'We haven't applied a verified injury-related point adjustment here.';
+  const injuriesSummary=injuriesKnown?'The published model includes a recorded injury adjustment.':'We have not applied a verified injury-related point adjustment here.';
   const injuryTeams=[canon(g.away.abbr),canon(g.home.abbr)];
   const injuryCounts=injuryTeams.map(t=>({team:t,feed:injuryData?.teams?.[t],adjust:p.injury_adjustments?.[t]}));
   const injuryDetails=injuryCounts.map(x=>{
@@ -580,16 +580,16 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const availabilityNote=availabilityRows.length
     ?availabilityRows.slice(0,6).map(row=>row.team+' '+row.player+(row.position?' ('+row.position+')':'')+' — '+row.status+(row.detail?' / '+row.detail:'')).join('; ')+'.'
     :'';
-  const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Here's how the matchup stacks up</strong><h4>'+headline+'</h4>'
+  const why='<article class="fd-explain-top fd-analysis-copy"><strong class="fd-analysis-kicker">Here is how the matchup stacks up</strong><h4>'+headline+'</h4>'
     +'<ul class="fd-metric-notes">'
     +metricNote(homeName+' offense vs '+awayName+' defense',homeOffenseNote)
     +metricNote(awayName+' offense vs '+homeName+' defense',awayOffenseNote)
-    +metricNote('How they've played lately',recentNote)
+    +metricNote('How they have played lately',recentNote)
     +metricNote('What the forecast is telling us',forecastNote)
     +(restNote?metricNote('Rest and scheduling',restNote):'')
-    +(availabilityNote?metricNote('Who's available',availabilityNote):'')
-    +'</ul></article><p class="fd-explain-disclaimer">These notes use the saved pregame numbers and available team updates. They're context for the pick, not a promise about the outcome.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+fdTopModelSignals(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why we're leaning this way</summary>'+why+'</details></div>';
+    +(availabilityNote?metricNote('Who is available',availabilityNote):'')
+    +'</ul></article><p class="fd-explain-disclaimer">These notes use the saved pregame numbers and available team updates. They are context for the pick, not a promise about the outcome.</p>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+fdTopModelSignals(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Why we are leaning this way</summary>'+why+'</details></div>';
  }
 
  function renderRecap(raw){
