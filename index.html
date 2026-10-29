@@ -402,21 +402,29 @@ function fdOpenMatchup(g){
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const propExplanation=(x,line,edge)=>{
    const d=x.opponent_defense_context,parts=[];
-   if(d){
-     parts.push('<strong>'+esc(x.opponent)+' defensive matchup:</strong> '+esc(d.rank)+' of '+esc(d.ranked_teams)+' in '+esc(x.market.toLowerCase())+' allowed (1 = fewest), '+esc(d.season_allowed_per_game)+' team yards/game this season and '+esc(d.last_3_allowed_per_game)+' over the last '+esc(d.last_3_games)+' games.');
-     if(x.opponent_position_context)parts.push('<small>Position-specific opponent allowance: '+esc(x.opponent_position_context.last_5_allowed_per_game)+' yards/game to '+esc(x.position)+'s over '+esc(x.opponent_position_context.games)+' recent games. Descriptive only.</small>');
-     if(x.stat_key==='rushing_yards')parts.push('<small>Team rushing yards include QB and RB carries; this is not an RB-only defensive ranking.</small>');
-     if(x.stat_key==='receiving_yards')parts.push('<small>Receiving totals include all positions, not just this player’s position.</small>');
-   }else parts.push('Opponent defensive ranking unavailable for this forecast.');
-   const adj=Number(x.opponent_adjustment);
-   if(Number.isFinite(adj)&&x.opponent_adjustment!=null)parts.push('Opponent adjustment in model: '+(100*(adj-1)>=0?'+':'')+(100*(adj-1)).toFixed(1)+'%.');
-   const vol=Number(x.expected_opportunities),avg=Number(x.last_5_opportunities_avg);
-   if(Number.isFinite(vol)&&x.expected_opportunities!=null&&Number.isFinite(avg)&&x.last_5_opportunities_avg!=null)parts.push('Expected '+esc(x.opportunity_type||'opportunities')+': '+vol.toFixed(1)+' vs '+avg.toFixed(1)+' per game over the last five.');
-   if(x.game_script_adjustment!=null)parts.push('Game-script adjustment: '+((Number(x.game_script_adjustment)-1)*100>=0?'+':'')+((Number(x.game_script_adjustment)-1)*100).toFixed(1)+'%.');
-   if(x.last_3_avg!=null&&x.last_5_avg!=null)parts.push('Player form: '+num(x.last_3_avg)+' yards/game over the last three; '+num(x.last_5_avg)+' over the last five.');
-   if(edge!=null)parts.push('Model projects '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'at')+' the displayed DK line. This is a directional comparison, not a validated betting advantage.');
-   if(x.sample_warning)parts.push(esc(x.sample_warning));
-   return '<details class="fd-prop-why"><summary>Why '+(edge>0?'model leans OVER':edge<0?'model leans UNDER':'this projection')+'? · Matchup & trends</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
+   const n=v=>v===null||v===undefined||v===''||!Number.isFinite(Number(v))?null:Number(v);
+   const player=esc(String(x.player||'This player').split(' ').slice(-1)[0]);
+   const opponent=esc(x.opponent||'the opponent');
+   const market=String(x.stat_key||'');
+   const kind=market==='passing_yards'?'passing':market==='rushing_yards'?'rushing':'receiving';
+   const rank=n(d?.rank),teams=n(d?.ranked_teams),allowed=n(d?.season_allowed_per_game),recentAllowed=n(d?.last_3_allowed_per_game);
+   if(d&&rank!==null&&teams!==null){
+     const defenseLabel=rank<=Math.ceil(teams/3)?'one of the tougher':rank>=Math.floor(teams*2/3)?'one of the more generous':'around the middle of the pack among';
+     parts.push(opponent+' has been '+defenseLabel+' defenses against '+kind+' yards, ranking '+rank+' of '+teams+' in yards allowed'+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, that number is '+recentAllowed.toFixed(1):'')+'.');
+   }else parts.push('We do not have a complete defensive ranking for '+opponent+' yet.');
+   const position=x.opponent_position_context,positionAllowed=n(position?.last_5_allowed_per_game);
+   if(positionAllowed!==null)parts.push('Looking specifically at '+esc(x.position||'this position')+'s, '+opponent+' has allowed about '+positionAllowed.toFixed(1)+' yards per game over '+esc(position.games||'the recent sample')+' games. That gives us some matchup context, but it does not determine this projection by itself.');
+   const adj=n(x.opponent_adjustment);
+   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The defensive matchup '+(adj>1?'nudges':'pulls')+' our projection '+(adj>1?'up':'down')+' by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
+   const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
+   if(vol!==null&&avg!==null)parts.push('We expect '+player+' to get about '+vol.toFixed(1)+' '+esc(x.opportunity_type||'opportunities')+' here, compared with '+avg.toFixed(1)+' per game over the last five. '+(vol>avg+0.5?'That points to a little more work than usual.':vol<avg-0.5?'That is a slightly lighter workload than usual.':'That is pretty close to the recent workload.'));
+   const script=n(x.game_script_adjustment);
+   if(script!==null&&Math.abs(script-1)>=0.0005)parts.push('The expected flow of the game also '+(script>1?'adds':'takes away')+' about '+Math.abs((script-1)*100).toFixed(1)+'% from the projection.');
+   const last3=n(x.last_3_avg),last5=n(x.last_5_avg);
+   if(last3!==null&&last5!==null)parts.push('As for recent form, '+player+' has averaged '+last3.toFixed(1)+' yards in the last three games and '+last5.toFixed(1)+' across the last five. '+(last3>last5+2?'The shorter-term trend has been stronger.':last3<last5-2?'The most recent stretch has been a little quieter.':'Those numbers have been fairly steady.'));
+   if(edge!==null)parts.push('Putting it together, we have '+player+' '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'right at')+' the saved DraftKings line. '+(Math.abs(edge)<10?'That is a pretty small gap, so it is not enough on its own to call a strong play.':'It is worth watching, but the difference alone does not establish a betting edge.'));
+   if(x.sample_warning)parts.push('<small>'+esc(x.sample_warning)+'</small>');
+   return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
  const propOrder=['Passing','Rushing','Receiving','Other'];
  const propCards=propOrder.map(group=>{
