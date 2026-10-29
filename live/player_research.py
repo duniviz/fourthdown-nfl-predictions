@@ -378,6 +378,22 @@ def generate():
                     # establish a stable market-level direction.
                     calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0)*learned_weights.get(metric,0.0) if calibration_n>=40 else 0.0
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
+                    # V4 research-selected workload/matchup adjustment for yardage only.
+                    # Coefficients frozen from 2024 tuning and evaluated on 2025/2026;
+                    # other markets and QB passing forecasts remain unchanged.
+                    # This operates after production game-script/calibration adjustments,
+                    # so research MAE gains are not guaranteed in the live pipeline.
+                    if metric in ("rushing_yards", "receiving_yards") and len(stats)>=3:
+                        volumes=[max(0.0,num(x.get(volume))) for x in stats[-8:]]
+                        recent_volume=sum(volumes[-3:])/len(volumes[-3:])
+                        historical_volume=sum(volumes)/len(volumes)
+                        usage_signal=clamp(recent_volume/max(1.0,historical_volume)-1.0,-0.35,0.35)
+                        defense_signal=clamp(ratio-1.0,-0.35,0.35)*def_games/(def_games+6)
+                        if metric=="rushing_yards":
+                            factor=1-0.15*usage_signal+0.30*defense_signal+0.80*usage_signal*defense_signal-0.50*usage_signal*abs(usage_signal)
+                        else:
+                            factor=1-0.50*usage_signal-0.15*defense_signal
+                        baseline=round(max(0.0,baseline*clamp(factor,0.70,1.30)),1)
                     # Explicit RB workload scenarios when a listed starting RB
                     # is questionable. Never treat "questionable" as "out".
                     scenario=None
