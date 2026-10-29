@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-10-28T14:52:23.513978+00:00",
+  "generated_at_utc": "2026-10-29T18:34:38.317445+00:00",
   "season": 2026,
   "week": 8,
   "status": "research_uncalibrated",
@@ -131,6 +131,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 6,
+              "value": 26.5
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 20.71
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 20.57
+            },
+            "away_defense": {
+              "rank": 27,
+              "value": 27.67
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 9,
+              "value": 5.86
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 4.94
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 5.48
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 5.44
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 9,
+              "value": 0.06
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": -0.0
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 15,
+              "value": 0.09
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": -0.04
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.12
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 0.0
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 9,
+              "value": 0.02
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": -0.07
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": -0.26
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 25,
+              "value": 2.83
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 2.29
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 2.0
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 1.83
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 15,
+              "value": 1.0
+            },
+            "home_defense": {
+              "rank": 1,
+              "value": 1.86
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 1.14
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 13,
+              "value": 42.3
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 46.7
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 35.6
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 45.7
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 27,
+              "value": 36.4
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 40.0
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 66.7
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": 36.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 7,
+              "value": 68.2
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 60.7
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 48.0
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 76.5
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 1.43,
@@ -270,6 +482,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 12,
+              "value": 24.14
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 28.5
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 32.83
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 23.86
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 6,
+              "value": 6.04
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 5.66
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 6.6
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 5.27
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 8,
+              "value": 0.08
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 0.13
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 0.2
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 0.01
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 6,
+              "value": 0.19
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 0.21
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.25
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 0.08
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 14,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": -0.01
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 0.16
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": -0.08
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 21,
+              "value": 2.57
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 1.83
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 2.0
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 2.29
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 7,
+              "value": 0.71
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 1.5
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 0.86
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 11,
+              "value": 42.7
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 45.6
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 50.8
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 41.3
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 30,
+              "value": 28.6
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 88.9
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 75.0
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 55.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 14,
+              "value": 62.5
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 69.2
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 66.7
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 64.0
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 4.9,
@@ -409,6 +833,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 15.43
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": 20.33
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 27.17
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 22.29
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 30,
+              "value": 4.59
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 5.72
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 5.78
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 5.66
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 31,
+              "value": -0.13
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": -0.04
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 0.11
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 0.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 30,
+              "value": -0.17
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": -0.03
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 0.2
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 0.14
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 23,
+              "value": -0.09
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": -0.05
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": -0.03
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 7,
+              "value": 1.57
+            },
+            "home_defense": {
+              "rank": 1,
+              "value": 3.5
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 1.67
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 2.43
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 19,
+              "value": 1.14
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 1.5
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.83
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 29,
+              "value": 35.4
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 49.4
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 53.2
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 41.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 26,
+              "value": 37.5
+            },
+            "home_defense": {
+              "rank": 1,
+              "value": 14.3
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 75.0
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 71.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 29,
+              "value": 47.4
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": 33.3
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 63.6
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 58.3
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 4.92,
@@ -548,6 +1184,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 26,
+              "value": 20.29
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 25.71
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 27.0
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 29.71
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 29,
+              "value": 4.64
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 6.06
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 5.58
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 6.12
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 19,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 0.14
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 0.11
+            },
+            "away_defense": {
+              "rank": 27,
+              "value": 0.1
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 21,
+              "value": -0.02
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 0.26
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 0.16
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 0.24
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 19,
+              "value": -0.05
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 0.04
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": -0.07
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 16,
+              "value": 2.14
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 1.0
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 2.14
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 11,
+              "value": 0.86
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.57
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 0.86
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 24,
+              "value": 38.1
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 54.1
+            },
+            "home_offense": {
+              "rank": 3,
+              "value": 50.6
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 41.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 9,
+              "value": 72.7
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 42.9
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 55.6
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 41.7
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 27,
+              "value": 48.1
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 71.4
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 71.4
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 70.8
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 4.89,
@@ -687,6 +1535,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 23,
+              "value": 20.83
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 27.5
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 30.67
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 12.33
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 24,
+              "value": 4.84
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 5.61
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 6.04
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 4.47
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 29,
+              "value": -0.1
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 0.13
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.14
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": -0.19
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 25,
+              "value": -0.07
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 0.21
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 0.3
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": -0.25
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 28,
+              "value": -0.12
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": -0.01
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": -0.09
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": -0.11
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 27,
+              "value": 3.0
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": 3.5
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 2.0
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 3.5
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.67
+            },
+            "home_defense": {
+              "rank": 19,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 3,
+              "value": 0.5
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 1.67
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 17,
+              "value": 40.2
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 48.2
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": 39.1
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 29.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 2,
+              "value": 80.0
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 83.3
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 61.5
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 45.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 23,
+              "value": 53.3
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 68.0
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 70.4
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 23.1
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.22,
@@ -824,6 +1884,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 20,
+              "value": 22.0
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": 17.33
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 25.67
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 25.71
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 31,
+              "value": 4.58
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 5.87
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 5.89
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 5.97
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 27,
+              "value": -0.07
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": -0.04
+            },
+            "home_offense": {
+              "rank": 3,
+              "value": 0.16
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 29,
+              "value": -0.16
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 0.02
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 0.28
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 6,
+              "value": 0.05
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": -0.14
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 0.01
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 0.04
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 24,
+              "value": 2.71
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 1.83
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 1.67
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": 1.86
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 29,
+              "value": 1.71
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 1.5
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.67
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 0.43
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 15,
+              "value": 41.2
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 38.2
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 48.6
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 30.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 10,
+              "value": 66.7
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 37.5
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 40.0
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 50.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 15,
+              "value": 60.0
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 40.0
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 63.2
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 60.0
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 3.54,
@@ -963,6 +2235,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 7,
+              "value": 26.14
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": 21.43
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 19.57
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 28.14
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 16,
+              "value": 5.45
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 5.02
+            },
+            "home_offense": {
+              "rank": 19,
+              "value": 5.3
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 6.1
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 17,
+              "value": -0.01
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": -0.0
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 0.01
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 9,
+              "value": 0.14
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 0.11
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 0.13
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 31,
+              "value": -0.25
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": -0.08
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": -0.11
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 5,
+              "value": 1.43
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": 2.71
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": 3.0
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 2.29
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 12,
+              "value": 0.86
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 0.71
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 1.71
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 16,
+              "value": 41.1
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 38.6
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 39.3
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 45.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 22,
+              "value": 46.2
+            },
+            "home_defense": {
+              "rank": 17,
+              "value": 53.8
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 62.5
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 50.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 30,
+              "value": 45.2
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": 58.3
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": 44.4
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 78.6
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 2.56,
@@ -1102,6 +2586,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 28,
+              "value": 19.0
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 19.71
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 21.86
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 20.86
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 23,
+              "value": 5.07
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 5.04
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 5.22
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": 5.1
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 26,
+              "value": -0.05
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": -0.04
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": -0.05
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 22,
+              "value": -0.02
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": -0.03
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": -0.11
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": -0.03
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 21,
+              "value": -0.09
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.07
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": -0.05
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 32,
+              "value": 3.57
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 2.57
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 3.14
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 2.86
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 18,
+              "value": 1.14
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 1.0
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 1.29
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 30,
+              "value": 32.6
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 35.9
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 39.6
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 40.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 23,
+              "value": 44.4
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 72.7
+            },
+            "home_offense": {
+              "rank": 19,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 28.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 19,
+              "value": 56.2
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 46.2
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": 45.0
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 47.4
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -0.97,
@@ -1241,6 +2937,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 10,
+              "value": 24.43
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": 21.57
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 23.14
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 24.71
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 11,
+              "value": 5.68
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 5.13
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": 4.82
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 5.27
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 23,
+              "value": -0.04
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": -0.11
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": -0.08
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": -0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 24,
+              "value": -0.07
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": -0.12
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": -0.21
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 12,
+              "value": -0.01
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": -0.09
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 0.06
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 18,
+              "value": 2.29
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": 2.29
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": 3.14
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 2.43
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 22,
+              "value": 1.43
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 1.57
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 1.29
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 20,
+              "value": 39.8
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 38.6
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 41.4
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": 43.3
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 32,
+              "value": 16.7
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 44.4
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": 30.0
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 60.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 9,
+              "value": 66.7
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 52.6
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 54.5
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 66.7
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.75,
@@ -1378,6 +3286,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 32,
+              "value": 15.0
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 22.71
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 24.29
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 25.17
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 28,
+              "value": 4.66
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 4.9
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 5.97
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 5.6
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 32,
+              "value": -0.22
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.06
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 32,
+              "value": -0.27
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 0.08
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 0.0
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 30,
+              "value": -0.17
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": -0.05
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.02
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": -0.08
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 3.5
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 1.57
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 1.83
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 32,
+              "value": 2.33
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.86
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 1.57
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 27,
+              "value": 36.6
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 32.2
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 49.4
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 31.9
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 31,
+              "value": 27.3
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 36.4
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 66.7
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 22,
+              "value": 53.3
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 44.4
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 69.0
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 50.0
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -0.39,
@@ -1517,6 +3637,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 14,
+              "value": 23.83
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 20.14
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 20.57
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 17.17
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 3,
+              "value": 6.47
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 5.12
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 4.81
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 5.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.12
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": -0.05
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": -0.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 11,
+              "value": 0.11
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": -0.11
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": -0.05
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": -0.03
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 2,
+              "value": 0.13
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 0.03
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": -0.03
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": -0.08
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 3,
+              "value": 1.17
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 3.0
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 1.29
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 1.33
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 6,
+              "value": 0.67
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 0.71
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 19,
+              "value": 40.0
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 43.4
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": 32.6
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 43.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 12,
+              "value": 63.6
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 58.3
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 75.0
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 46.2
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 18,
+              "value": 56.5
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 45.5
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 63.2
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 31.2
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.18,
@@ -1656,6 +3988,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 19,
+              "value": 22.86
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 26.17
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 16.33
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": 20.43
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 4,
+              "value": 6.15
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 5.96
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 5.25
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 5.41
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 11,
+              "value": 0.06
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.13
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 8,
+              "value": 0.15
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 0.31
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": -0.13
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": 0.07
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 20,
+              "value": -0.06
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": -0.07
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 0.04
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": -0.06
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 10,
+              "value": 1.86
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": 2.67
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 2.43
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 2.0
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 0.83
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 1.33
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 10,
+              "value": 42.9
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 55.1
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 42.7
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 36.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 8,
+              "value": 72.7
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 80.0
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 55.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 24,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 65.4
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 60.0
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": 50.0
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 1.21,
@@ -1795,6 +4339,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 29,
+              "value": 18.14
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 28.67
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 22.0
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": 25.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 32,
+              "value": 4.53
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 5.67
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 5.19
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 5.56
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 30,
+              "value": -0.12
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": -0.01
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 0.11
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 27,
+              "value": -0.12
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 0.0
+            },
+            "away_defense": {
+              "rank": 27,
+              "value": 0.15
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 25,
+              "value": -0.11
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.06
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": -0.03
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 0.07
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 22,
+              "value": 2.57
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 1.83
+            },
+            "home_offense": {
+              "rank": 19,
+              "value": 2.33
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 1.14
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 13,
+              "value": 0.86
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 1.33
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 0.33
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 0.43
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 25,
+              "value": 37.9
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 46.2
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": 30.9
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 42.7
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 28,
+              "value": 30.8
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 83.3
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 71.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 6,
+              "value": 68.4
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 81.8
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 59.3
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 2.47,
@@ -1934,6 +4690,218 @@
             ]
           }
         },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 8,
+              "value": 25.71
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 17.86
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 24.0
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": 20.43
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 14,
+              "value": 5.52
+            },
+            "home_defense": {
+              "rank": 1,
+              "value": 4.05
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 5.42
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 6.27
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 12,
+              "value": 0.05
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": -0.13
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": -0.0
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 13,
+              "value": 0.11
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": -0.14
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 0.06
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 13,
+              "value": -0.02
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": -0.12
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": -0.15
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 20,
+              "value": 2.57
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 2.43
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 2.29
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 2.71
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 26,
+              "value": 1.57
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": 1.43
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 1.86
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 7,
+              "value": 44.0
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 32.3
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": 40.0
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 26.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 15,
+              "value": 58.8
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 90.0
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 50.0
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 22.2
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 25,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 84.6
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 54.5
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 68.8
+            }
+          }
+        ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.33,

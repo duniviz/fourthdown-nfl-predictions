@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-10-28T14:52:26.391399+00:00",
+  "generated_at_utc": "2026-10-29T18:34:41.010268+00:00",
   "players_checked": 1863,
   "summary": {
     "error": 0,
-    "warning": 3,
+    "warning": 2,
     "info": 145
   },
   "flags": [
@@ -854,14 +854,6 @@
       "stat_key": "passing_yards",
       "game_id": "2026_08_LV_NYJ",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "warning",
-      "code": "large_history_deviation",
-      "player": "Isaiah Williams",
-      "stat_key": "receiving_yards",
-      "game_id": "2026_08_LV_NYJ",
-      "reason": "Projection 8.1 vs last-five 22.0; role/injury changes may explain this"
     },
     {
       "severity": "info",
