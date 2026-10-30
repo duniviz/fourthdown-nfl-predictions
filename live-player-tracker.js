@@ -1,38 +1,56 @@
-/* FOURTHDOWN live stats display. Requires a verified, timestamped data/live-player-stats.json feed.
-   This viewer never edits pregame predictions or archived DraftKings quotes. */
+/* FOURTHDOWN ESPN live box scores: unofficial ESPN endpoints; read-only.
+   Stats are actual box-score totals, NOT projections or betting recommendations. */
 (function(){
 'use strict';
 const root=document.getElementById('fd-live-prop-tracker');if(!root)return;
-const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','"':'&quot;',"'":'&#39;'}[c]));
-const norm=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
-let last=null;
-root.innerHTML='<div class="fd-live-head"><strong>Live player stats</strong><small id="fd-live-stamp">Waiting for verified stats</small></div><div id="fd-live-rows">Live player box scores are not connected yet.</div>';
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
+const categories={passing:'passing_yards',rushing:'rushing_yards',receiving:'receiving_yards'};
+const labels={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
+const state={game:'all',market:'all',rows:[],games:[],updated:null};
+root.innerHTML='<div class="fd-live-head"><strong>ESPN player box scores</strong><small id="fd-live-stamp">Checking ESPN…</small></div><div id="fd-live-rows">Loading live game statistics…</div>';
+const get=async path=>{const c=new AbortController();const timer=setTimeout(()=>c.abort(),9000);try{const r=await fetch(url+path,{cache:'no-store',signal:c.signal});if(!r.ok)throw Error('ESPN '+r.status);return await r.json();}finally{clearTimeout(timer);}};
+function readPlayers(summary,event){
+ const output=[],groups=summary?.boxscore?.players||[];
+ const teams=event.competitions?.[0]?.competitors||[];
+ const matchup=event.shortName||event.name||event.id;
+ for(const group of groups){
+  const team=group.team?.abbreviation||teams.find(t=>String(t.team?.id)===String(group.team?.id))?.team?.abbreviation||'';
+  for(const section of group.statistics||[]){
+   const market=categories[String(section.name||section.type||'').toLowerCase()];
+   if(!market)continue;
+   const idx=(section.labels||[]).findIndex(x=>String(x).toUpperCase()==='YDS');
+   if(idx<0)continue;
+   for(const row of section.athletes||[]){
+    const athlete=row.athlete||{},values=row.stats||[];
+    const value=Number(values[idx]);
+    if(!Number.isFinite(value))continue;
+    output.push({game_id:String(event.id),matchup,team,player:athlete.displayName||athlete.fullName||athlete.shortName,player_id:String(athlete.id||''),market,actual:value,game_status:event.status?.type?.shortDetail||event.status?.type?.description||event.status?.displayClock||''});
+   }
+  }
+ }
+ return output.filter(p=>p.player);
+}
+function display(){
+ const games=state.games,rows=state.rows.filter(p=>(state.game==='all'||p.game_id===state.game)&&(state.market==='all'||p.market===state.market));
+ const filters='<div class="fd-live-filters"><label>Game <select id="fd-live-game-filter"><option value="all">All live games</option>'+games.map(g=>'<option value="'+esc(g.id)+'" '+(state.game===g.id?'selected':'')+'>'+esc(g.name)+'</option>').join('')+'</select></label><label>Stat <select id="fd-live-market-filter">'+[['all','All'],['passing_yards','Passing'],['rushing_yards','Rushing'],['receiving_yards','Receiving']].map(([id,name])=>'<option value="'+id+'" '+(state.market===id?'selected':'')+'>'+name+'</option>').join('')+'</select></label></div>';
+ document.getElementById('fd-live-rows').innerHTML=filters+(rows.length?rows.slice(0,120).map(p=>'<div class="fd-live-row"><div><strong>'+esc(p.player)+'</strong><small>'+esc(p.team)+' · '+esc(p.matchup)+' · '+labels[p.market]+' · '+esc(p.game_status)+'</small></div><div><b>'+p.actual+'</b><small>ESPN actual</small></div><div><b>—</b><small>Pregame model*</small></div><div><b>—</b><small>Pregame DK*</small></div></div>').join(''):'<p>No player box-score totals available for the selected live games yet.</p>')+'<small>*Pregame forecasts and DraftKings prices are not linked to ESPN player IDs yet. They are deliberately withheld rather than guessed.</small>';
+ root.querySelector('#fd-live-game-filter').addEventListener('change',e=>{state.game=e.target.value;display();});
+ root.querySelector('#fd-live-market-filter').addEventListener('change',e=>{state.market=e.target.value;display();});
+}
 async function refresh(){
  try{
-  const r=await fetch('data/live-player-stats.json?t='+Date.now(),{cache:'no-store'});
-  if(!r.ok)throw Error('not published');
-  const d=await r.json(),updated=Date.parse(d.updated_at_utc||''),age=(Date.now()-updated)/60000;
-  if(!Number.isFinite(updated)||age< -5||age>10||!Array.isArray(d.players))throw Error('stale or invalid feed');
-  last=d;
-  const game=document.querySelector('#fd-live-game-filter')?.value||'all';
-  const market=document.querySelector('#fd-live-market-filter')?.value||'all';
-  const rows=d.players.filter(p=>p&&p.player&&p.game_id&&['passing_yards','rushing_yards','receiving_yards'].includes(p.market)&&Number.isFinite(Number(p.actual))&&(game==='all'||String(p.game_id)===game)&&(market==='all'||p.market===market));
-  const names={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
-  document.getElementById('fd-live-stamp').textContent='Updated '+new Date(updated).toLocaleTimeString()+' · '+(d.source||'Verified feed');
-  const games=[...new Map(d.players.filter(p=>p.game_id).map(p=>[String(p.game_id),String(p.matchup||p.game_id)])).entries()];
-  const filters='<label>Game <select id="fd-live-game-filter"><option value="all">All games</option>'+games.map(([id,name])=>'<option value="'+esc(id)+'" '+(game===id?'selected':'')+'>'+esc(name)+'</option>').join('')+'</select></label> <label>Stat <select id="fd-live-market-filter">'+[['all','All'],['passing_yards','Passing'],['rushing_yards','Rushing'],['receiving_yards','Receiving']].map(([id,name])=>'<option value="'+id+'" '+(market===id?'selected':'')+'>'+name+'</option>').join('')+'</select></label>';
-  document.getElementById('fd-live-rows').innerHTML='<div class="fd-live-filters">'+filters+'</div>'+(rows.length?rows.slice(0,100).map(p=>{
-   const actual=Number(p.actual),projection=Number(p.pregame_projection),line=Number(p.dk_pregame_line);
-   const hasProjection=p.pregame_projection!==null&&p.pregame_projection!==undefined&&Number.isFinite(projection);
-   const hasLine=p.dk_pregame_line!==null&&p.dk_pregame_line!==undefined&&Number.isFinite(line);
-   return '<div class="fd-live-row"><div><strong>'+esc(p.player)+'</strong><small>'+esc(p.team)+' · '+esc(p.matchup||'')+' · '+names[p.market]+' · '+esc(p.game_status||'')+'</small></div><div><b>'+actual.toFixed(0)+'</b><small>Actual</small></div><div><b>'+(hasProjection?projection.toFixed(1):'—')+'</b><small>Pregame model</small></div><div><b>'+(hasLine?line.toFixed(1):'—')+'</b><small>Pregame DK</small></div></div>';
-  }).join(''):'<p>No verified player statistics for this selection yet.</p>');
-  root.querySelectorAll('select').forEach(s=>s.addEventListener('change',refreshDisplay));
- }catch(e){
-  document.getElementById('fd-live-stamp').textContent='Feed unavailable';
-  document.getElementById('fd-live-rows').textContent='Live stats are unavailable or delayed. Pregame projections remain unchanged.';
- }
+  const board=await get('scoreboard?limit=30');
+  const live=(board.events||[]).filter(e=>e.status?.type?.state==='in');
+  state.games=live.map(e=>({id:String(e.id),name:e.shortName||e.name||String(e.id)}));
+  const settled=await Promise.allSettled(live.map(async e=>readPlayers(await get('summary?event='+encodeURIComponent(e.id)),e)));
+  state.rows=settled.flatMap(x=>x.status==='fulfilled'?x.value:[]);
+  state.updated=new Date();
+  document.getElementById('fd-live-stamp').textContent=live.length?'ESPN checked '+state.updated.toLocaleTimeString()+' · '+live.length+' live game(s)':'ESPN checked '+state.updated.toLocaleTimeString()+' · No live games';
+  if(!live.length){document.getElementById('fd-live-rows').textContent='No NFL games are currently in progress. Live box scores will appear during games.';return;}
+  if(settled.every(x=>x.status==='rejected'))throw Error('box scores unavailable');
+  display();
+ }catch(e){document.getElementById('fd-live-stamp').textContent='ESPN feed unavailable';document.getElementById('fd-live-rows').textContent='Unable to retrieve ESPN live box scores. No statistics are inferred or substituted.';}
 }
-function refreshDisplay(){if(last){const game=root.querySelector('#fd-live-game-filter')?.value||'all',market=root.querySelector('#fd-live-market-filter')?.value||'all';root.dataset.game=game;root.dataset.market=market;}refresh();}
 refresh();setInterval(refresh,60000);
 })();
