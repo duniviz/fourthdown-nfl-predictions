@@ -208,6 +208,44 @@ h1 span,h1 em{color:#baff25!important}
 .fd-spotlight-scale span{display:block;background:#baff25;height:100%;border-radius:20px}
 .fd-spotlight-scale i{position:absolute;top:-4px;height:17px;width:2px;background:#fff}
 @media(max-width:480px){.fd-experience{padding:11px}.fd-adv-grid{grid-template-columns:1fr}.fd-spotlight-metrics{gap:7px}}
+</style><style id="fd-blackout-2-premium">
+/* BLACKOUT 2.0: presentation only. No forecast or market logic changes. */
+:root{--fd-glow:#baff25;--fd-ice:#73cfff;--fd-surface:#121719;--fd-border:#303b3f}
+body{background:radial-gradient(ellipse at 50% -240px,#26351b 0,transparent 52%),#07090b!important}
+.top{box-shadow:0 8px 32px #000b!important}
+.logo{letter-spacing:-.065em!important}
+.card,.scorecard,.bet-card,.fd-experience,.fd-modal-section{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+@media(hover:hover) and (pointer:fine){.scorecard:hover,.bet-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px #0009!important;border-color:#9ac53b!important}}
+:focus-visible{outline:2px solid #baff25!important;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(max-width:600px){button,a,summary{touch-action:manipulation}.wrap{padding-left:14px!important;padding-right:14px!important}}
+
+.fd-command{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0%,#273f23 0%,transparent 52%),linear-gradient(140deg,#11191a,#080c0e)!important;border:1px solid #39463c!important;box-shadow:0 22px 55px #0008!important}
+.fd-command:after{content:"";position:absolute;right:-55px;bottom:-115px;width:260px;height:260px;border:1px solid #baff2522;border-radius:50%;box-shadow:0 0 0 36px #baff2508,0 0 0 75px #baff2505;pointer-events:none}
+.fd-command-main{position:relative;z-index:1}.fd-command h1{line-height:1.04!important}
+.fd-command-stat{border-left:3px solid #baff2555!important}
+.scorecard{overflow:hidden;background:linear-gradient(150deg,#181f20,#0d1112)!important;border:1px solid #354044!important;box-shadow:0 12px 28px #0007!important}
+.scorecard:before{height:4px!important;background:linear-gradient(90deg,#baff25,#75d9ef)!important}
+.scorecard .score{font-variant-numeric:tabular-nums;font-weight:950!important}
+.scorecard .score-team img{filter:drop-shadow(0 5px 10px #0009)}
+.projection-panel{background:linear-gradient(140deg,#17241b,#102022)!important;border:1px solid #425b40!important}
+.fd-modal-inner{box-shadow:0 24px 75px #000d!important}
+.fd-modal-pick{background:linear-gradient(125deg,#19321f,#10252a)!important;border-color:#577d46!important}
+.fd-experience{background:linear-gradient(140deg,#17201e,#101518)!important;border-color:#3a4b45!important;box-shadow:0 8px 22px #0005}
+.fd-experience h3{font-size:17px!important;letter-spacing:-.02em!important}
+.fd-sim-track{height:23px!important;box-shadow:inset 0 2px 8px #0008}
+.fd-sim-track span:first-child{background:linear-gradient(90deg,#a7f82b,#d2ff6b)!important}
+.fd-sim-track span+span{background:linear-gradient(90deg,#76d7ff,#348bc9)!important}
+.fd-adv-item{border-color:#3b4d48!important;background:#1a2525!important}
+.fd-adv-item strong{color:#f4f8f8}
+.fd-spotlight{background:#182223!important;border-color:#3c4b4d!important}
+.fd-spotlight-scale{height:11px!important}
+.fd-spotlight-scale span{background:linear-gradient(90deg,#82d623,#c6ff55)!important}
+.fd-spotlight-scale i{width:3px!important;box-shadow:0 0 0 2px #101719}
+.fd-mobile-prop-card{border-color:#394a4a!important;background:linear-gradient(140deg,#1a2526,#12191c)!important}
+.fd-mobile-prop-numbers>div{background:#0c1517!important}
+.fd-modal-section h3{color:#c9ff75!important}
+@media(max-width:600px){.fd-command{border-radius:19px!important}.fd-modal-inner{padding:13px!important}.fd-experience{margin:10px 0!important}.fd-spotlight-top .hybrid-avatar{flex-shrink:0}}
 </style></head><body><div class="fd-modal" id="fd-modal"><div class="fd-modal-inner" role="dialog" aria-modal="true" aria-label="NFL matchup details" id="fd-modal-body"></div></div>
 <header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="bets.html">Best Bets</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><section class="fd-command" aria-label="FOURTHDOWN game center"><div class="fd-command-main"><div class="fd-command-kicker">NFL games, explained</div><h1>See what <em>we expect.</em><br>And why.</h1><p>See our score predictions, compare them with DraftKings, and dig into the matchups that interest you.</p><div class="fd-command-actions"><a href="#scoreboard">View games</a><a href="bets.html">Open prop desk</a><button type="button" data-fd-command="picks">Show model picks</button></div></div><aside class="fd-command-side"><div class="fd-command-stat"><span>DraftKings</span><strong>Latest available <b>lines</b></strong></div><div class="fd-command-stat"><span>Injuries</span><strong>See how they <b>affect picks</b></strong></div><div class="fd-command-stat"><span>Results</span><strong>See how our <b>picks did</b></strong></div></aside></section><nav class="fd-section-tabs" aria-label="Prediction center sections"><a href="#scoreboard">Game center</a><a href="bets.html">Prop research</a><a href="#picks" data-fd-expand>Tracked picks</a><a href="#tracking" data-fd-expand>Model record</a></nav><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
