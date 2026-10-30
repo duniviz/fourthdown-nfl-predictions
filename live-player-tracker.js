@@ -13,6 +13,7 @@ function readPlayers(summary,event){
  const output=[],groups=summary?.boxscore?.players||[];
  const teams=event.competitions?.[0]?.competitors||[];
  const matchup=event.shortName||event.name||event.id;
+ const scores=Object.fromEntries(teams.map(c=>[c.team?.abbreviation,Number(c.score)]));
  for(const group of groups){
   const team=group.team?.abbreviation||teams.find(t=>String(t.team?.id)===String(group.team?.id))?.team?.abbreviation||'';
   for(const section of group.statistics||[]){
@@ -24,7 +25,7 @@ function readPlayers(summary,event){
     const athlete=row.athlete||{},values=row.stats||[];
     const value=Number(values[idx]);
     if(!Number.isFinite(value))continue;
-    output.push({game_id:String(event.id),matchup,team,player:athlete.displayName||athlete.fullName||athlete.shortName,player_id:String(athlete.id||''),market,actual:value,game_status:event.status?.type?.shortDetail||event.status?.type?.description||event.status?.displayClock||'',period:Number(event.status?.period||0),clock:event.status?.displayClock||''});
+    output.push({game_id:String(event.id),matchup,team,player:athlete.displayName||athlete.fullName||athlete.shortName,player_id:String(athlete.id||''),market,actual:value,game_status:event.status?.type?.shortDetail||event.status?.type?.description||event.status?.displayClock||'',period:Number(event.status?.period||0),clock:event.status?.displayClock||'',score_diff:(()=>{const opponent=teams.find(c=>c.team?.abbreviation!==team);const own=scores[team],other=scores[opponent?.team?.abbreviation];return Number.isFinite(own)&&Number.isFinite(other)?own-other:null;})()});
    }
   }
  }
@@ -55,7 +56,15 @@ function updateLiveBar(card,r){
   const observedRate=r.actual/elapsed;
   const boundedRate=Math.max(baselineRate*0.5,Math.min(baselineRate*1.6,observedRate));
   const trust=Math.min(0.65,elapsed/60*0.85);
-  estimate=Math.max(r.actual,r.actual+remaining*(baselineRate*(1-trust)+boundedRate*trust));
+  const baseRemaining=remaining*(baselineRate*(1-trust)+boundedRate*trust);
+  const diff=r.score_diff;
+  const late=.35+.65*(elapsed/60);
+  const margin=Number.isFinite(diff)?Math.min(Math.abs(diff),28)/14:0;
+  const direction=r.market==='rushing_yards'?(diff>0?1:-1):(diff>0?-1:1);
+  const magnitude=r.market==='passing_yards'?.12:.10;
+  const cap=r.market==='passing_yards'?.30:r.market==='rushing_yards'?.22:.25;
+  const factor=Number.isFinite(diff)&&diff!==0?1+direction*Math.min(cap,magnitude*margin)*late:1;
+  estimate=Math.max(r.actual,r.actual+baseRemaining*factor);
  }
  let line=bars.querySelector('.fd-live-final-bar');
  if(!line){line=document.createElement('div');line.className='fd-live-final-bar';bars.appendChild(line);}
