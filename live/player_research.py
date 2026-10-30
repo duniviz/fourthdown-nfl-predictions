@@ -551,6 +551,9 @@ def generate():
             "method":"Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only.",
         })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
+    # Validate before writing either the current feed or the immutable archive.
+    from live.validate_props import validate
+    validate(results)
     out={"generated_at_utc":now.isoformat(),"season":season,"week":week,"status":"research_only_no_market_odds","players":results}
     p=Path("data/player-research.json");p.parent.mkdir(exist_ok=True)
     archive_path=Path("data/player-history.json")
@@ -559,10 +562,6 @@ def generate():
         old=existing.get("players",[])
     except (OSError,ValueError,TypeError):
         old=[]
-    # Reject invalid newly generated forecasts before adding them to the immutable archive.
-    # This does not silently rewrite older snapshots.
-    from live.validate_props import validate
-    validate(results)
     # Preserve original pregame forecasts; never rewrite past predictions.
     seen={(str(x.get("game_id")),str(x.get("player_id")),str(x.get("stat_key"))) for x in old}
     for item in results:
