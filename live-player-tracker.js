@@ -37,11 +37,12 @@ const playerKey=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
 // Experimental in-game estimate: blend observed per-minute pace with pregame
 // rate for remaining regulation time. Avoid extreme extrapolation in Q1.
 function elapsedMinutes(r){
- const clock=String(r.clock||'').match(/(\\d+):(\\d+)/);
- if(!clock||r.period<1||r.period>4)return null;
+ const clock=String(r.clock||r.game_status||'').match(/(\d{1,2}):(\d{2})/);
+ const period=r.period||Number(String(r.game_status||'').match(/(?:^|\s|-)([1-4])(?:st|nd|rd|th)\b/i)?.[1]||0);
+ if(!clock||period<1||period>4)return null;
  const left=Number(clock[1])+Number(clock[2])/60;
  if(left<0||left>15)return null;
- return Math.max(0,Math.min(60,(r.period-1)*15+15-left));
+ return Math.max(0,Math.min(60,(period-1)*15+15-left));
 }
 function updateLiveBar(card,r){
  const bars=card.querySelector('.hybrid-bars');
