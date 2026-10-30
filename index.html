@@ -480,7 +480,7 @@ function fdSpotlightPanel(p,g){
   const recent=x.last_5_avg===null||x.last_5_avg===undefined?'—':Number(x.last_5_avg).toFixed(1);
   const edge=projection-line;
   return '<article class="fd-spotlight"><div class="fd-spotlight-top">'+hybridAvatar(x)+'<div><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div></div><div class="fd-spotlight-metrics"><span>Our projection <b>'+projection.toFixed(1)+'</b></span><span>DK <b>'+line.toFixed(1)+'</b></span><span>Last 5 <b>'+esc(recent)+'</b></span></div><div class="fd-spotlight-scale" aria-label="Projection compared with DraftKings line"><span style="width:'+Math.min(100,100*projection/max).toFixed(1)+'%"></span><i style="left:'+Math.min(100,100*line/max).toFixed(1)+'%"></i></div><p>Our estimate is '+Math.abs(edge).toFixed(1)+' yards '+(edge>=0?'above':'below')+' the saved DK line. The white marker shows the line.</p></article>';
- }).join('')+'</div><p>Largest projection differences shown first. A difference isn't a guaranteed edge.</p></section>';
+ }).join('')+'</div><p>Largest projection differences shown first. A difference isn\'t a guaranteed edge.</p></section>';
 }
 function fdOpenMatchup(g){
  const p=getProjection(g),away=canon(g.away.abbr),home=canon(g.home.abbr);
@@ -547,7 +547,7 @@ function fdOpenMatchup(g){
    }).join('')+'</div>';
  }).join('');
  const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
- const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don't have a saved projection to compare with this line.</p>')+'</div>';
+ const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+'</div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
    const metrics=Array.isArray(analysis.matchup_metrics)?analysis.matchup_metrics:[];
@@ -617,7 +617,7 @@ function fdOpenMatchup(g){
  const completedRows=isFinal?playerResults.filter(x=>x.game_id&&x.game_id.endsWith('_'+away+'_'+home)):[];
  const completedGroups=['Passing yards','Rushing yards','Receiving yards'].map(m=>{const rows=completedRows.filter(x=>x.market===m);return rows.length?'<h4>'+esc(m)+'</h4><div style="overflow-x:auto"><table style="width:100%;font-size:13px;text-align:left"><thead><tr><th>Player</th><th>Projection</th><th>DK line</th><th>Actual</th><th>Difference</th><th>Over/Under pick</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.player)+'</td><td>'+num(x.projection)+'</td><td>'+(hasDkLine(x)?num(x.dk_line):'—')+'</td><td>'+num(x.actual)+'</td><td>'+num(x.error)+'</td><td>'+(x.recommendation_result==='hit'?'✓ HIT':x.recommendation_result==='miss'?'✕ MISS':x.recommendation_result==='push'?'PUSH':'Not recorded')+'</td></tr>').join('')+'</tbody></table></div>':''}).join('');
  const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
- const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn't save the injury report from before this game, so we won't show today's report as if it were from then.</p></div>';
+ const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn\'t save the injury report from before this game, so we won\'t show today\'s report as if it were from then.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
  document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+fdAdvantagesPanel(p,g)+fdSpotlightPanel(p,g)+insight+stats+(isFinal?historicalInjury+completedBox:injury)+props;
  if(!isFinal)loadModalGameCardInjuries(g);
@@ -756,7 +756,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +metricNote('What the forecast is telling us',forecastNote)
     +(restNote?metricNote('Rest and scheduling',restNote):'')
     +(availabilityNote?metricNote('Who is available',availabilityNote):'')
-    +'</ul></article><p class="fd-explain-disclaimer">Here's what went into our prediction. Games can always play out differently.</p>';
+    +'</ul></article><p class="fd-explain-disclaimer">Here\'s what went into our prediction. Games can always play out differently.</p>';
   return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Matchup notes</summary>'+why+'</details></div>';
  }
 
