@@ -74,8 +74,8 @@ def main():
     remaining=[]
     for row in old:
         key=(str(row.get("game_id")),str(row.get("player_id")),str(row.get("stat_key")))
-        kickoff=utc(row.get("kickoff_utc"))
-        if key in replacements and kickoff and now<kickoff:
+        kickoff=utc(replacements[key].get("kickoff_utc")) if key in replacements else None
+        if kickoff and now<kickoff:
             continue
         remaining.append(row)
     remaining.extend(replacements.values())
