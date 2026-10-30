@@ -42,6 +42,13 @@
           },
           {
             "detail": "questionable",
+            "player": "Jeremiyah Love",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "ARI"
+          },
+          {
+            "detail": "questionable",
             "player": "Mack Wilson Sr.",
             "position": "LB",
             "status": "Questionable",
@@ -57,13 +64,6 @@
           {
             "detail": "questionable",
             "player": "Tyler Allgeier",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jeremiyah Love",
             "position": "RB",
             "status": "Questionable",
             "team": "ARI"
@@ -200,22 +200,22 @@
         "players": [
           {
             "detail": "questionable",
-            "player": "Luke Goedeke",
-            "position": "OT",
-            "status": "Questionable",
-            "team": "TB"
-          },
-          {
-            "detail": "questionable",
-            "player": "Emeka Egbuka",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "TB"
-          },
-          {
-            "detail": "questionable",
             "player": "Kenny Gainwell",
             "position": "RB",
+            "status": "Questionable",
+            "team": "TB"
+          },
+          {
+            "detail": "out",
+            "player": "Emeka Egbuka",
+            "position": "WR",
+            "status": "Out",
+            "team": "TB"
+          },
+          {
+            "detail": "questionable",
+            "player": "Luke Goedeke",
+            "position": "OT",
             "status": "Questionable",
             "team": "TB"
           },
@@ -234,24 +234,10 @@
             "team": "TB"
           },
           {
-            "detail": "questionable",
-            "player": "A.J. Terrell Jr.",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "ATL"
-          },
-          {
-            "detail": "questionable",
-            "player": "C.J. Henderson",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "ATL"
-          },
-          {
-            "detail": "questionable",
-            "player": "Kendal Daniels",
-            "position": "LB",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Brian Robinson Jr.",
+            "position": "RB",
+            "status": "Out",
             "team": "ATL"
           },
           {
@@ -265,6 +251,20 @@
             "detail": "questionable",
             "player": "Olamide Zaccheaus",
             "position": "WR",
+            "status": "Questionable",
+            "team": "ATL"
+          },
+          {
+            "detail": "questionable",
+            "player": "Charles Snowden",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "ATL"
+          },
+          {
+            "detail": "questionable",
+            "player": "Samson Ebukam",
+            "position": "DE",
             "status": "Questionable",
             "team": "ATL"
           }
@@ -392,13 +392,6 @@
         "event_id": "401873026",
         "players": [
           {
-            "detail": "Suspension",
-            "player": "C.J. Gardner-Johnson",
-            "position": "S",
-            "status": "Suspension",
-            "team": "BUF"
-          },
-          {
             "detail": "questionable",
             "player": "Dalton Kincaid",
             "position": "TE",
@@ -410,6 +403,13 @@
             "player": "DJ Moore",
             "position": "WR",
             "status": "Questionable",
+            "team": "BUF"
+          },
+          {
+            "detail": "Suspension",
+            "player": "C.J. Gardner-Johnson",
+            "position": "S",
+            "status": "Suspension",
             "team": "BUF"
           },
           {
@@ -456,8 +456,8 @@
           },
           {
             "detail": "questionable",
-            "player": "Lamar Jackson",
-            "position": "QB",
+            "player": "Jaylinn Hawkins",
+            "position": "S",
             "status": "Questionable",
             "team": "BAL"
           }
@@ -1067,13 +1067,6 @@
             "team": "IND"
           },
           {
-            "detail": "questionable",
-            "player": "Tyler Warren",
-            "position": "TE",
-            "status": "Questionable",
-            "team": "IND"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Cam Taylor-Britt",
             "position": "CB",
@@ -1084,6 +1077,13 @@
             "detail": "questionable",
             "player": "Bryce Boettcher",
             "position": "LB",
+            "status": "Questionable",
+            "team": "IND"
+          },
+          {
+            "detail": "questionable",
+            "player": "Justin Walley",
+            "position": "CB",
             "status": "Questionable",
             "team": "IND"
           }
@@ -1714,6 +1714,13 @@
         "event_id": "401873030",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Isiah Pacheco",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "DET"
+          },
+          {
             "detail": "out",
             "player": "Kerby Joseph",
             "position": "S",
@@ -1738,13 +1745,6 @@
             "detail": "Injured Reserve",
             "player": "Devin White",
             "position": "LB",
-            "status": "Injured Reserve",
-            "team": "DET"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Tom Kennedy",
-            "position": "WR",
             "status": "Injured Reserve",
             "team": "DET"
           },
@@ -1943,15 +1943,15 @@
           },
           {
             "detail": "questionable",
-            "player": "TreVeyon Henderson",
-            "position": "RB",
+            "player": "A.J. Brown",
+            "position": "WR",
             "status": "Questionable",
             "team": "NE"
           },
           {
             "detail": "questionable",
-            "player": "A.J. Brown",
-            "position": "WR",
+            "player": "TreVeyon Henderson",
+            "position": "RB",
             "status": "Questionable",
             "team": "NE"
           },
@@ -2253,13 +2253,6 @@
           },
           {
             "detail": "questionable",
-            "player": "Calvin Ridley",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
             "player": "Tyjae Spears",
             "position": "RB",
             "status": "Questionable",
@@ -2268,6 +2261,13 @@
           {
             "detail": "questionable",
             "player": "Carnell Tate",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "TEN"
+          },
+          {
+            "detail": "questionable",
+            "player": "Calvin Ridley",
             "position": "WR",
             "status": "Questionable",
             "team": "TEN"
@@ -2406,6 +2406,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-10-30T09:57:05Z",
+  "generated_at_utc": "2026-10-30T17:59:25Z",
   "schema_version": 1
 }
