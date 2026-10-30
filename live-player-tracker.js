@@ -7,7 +7,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
 const categories={passing:'passing_yards',rushing:'rushing_yards',receiving:'receiving_yards'};
 const labels={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
-const state={game:'all',market:'all',rows:[],games:[],updated:null};
+const state={game:'all',market:'all',rows:[],games:[],updated:null,feedError:false};
 root.innerHTML='<div class="fd-live-head"><strong>ESPN player box scores</strong><small id="fd-live-stamp">Checking ESPN…</small></div><div id="fd-live-rows">Loading live game statistics…</div>';
 const get=async path=>{const c=new AbortController();const timer=setTimeout(()=>c.abort(),9000);try{const r=await fetch(url+path,{cache:'no-store',signal:c.signal});if(!r.ok)throw Error('ESPN '+r.status);return await r.json();}finally{clearTimeout(timer);}};
 function readPlayers(summary,event){
@@ -43,7 +43,7 @@ function paintCards(){
    const p=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
    const matches=state.rows.filter(r=>playerKey(r.player)===p&&playerKey(r.team)===team&&r.market===market);
    let slot=card.querySelector('.fd-live-inline');
-   if(matches.length!==1){if(slot)slot.remove();return;}
+   if(matches.length!==1){if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}slot.textContent=state.feedError?'ESPN stats temporarily unavailable':state.games.length?'ESPN stats pending for this player':'ESPN live stats · Waiting for kickoff';return;}
    const r=matches[0];
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
@@ -68,12 +68,12 @@ async function refresh(){
   state.games=live.map(e=>({id:String(e.id),name:e.shortName||e.name||String(e.id)}));
   const settled=await Promise.allSettled(live.map(async e=>readPlayers(await get('summary?event='+encodeURIComponent(e.id)),e)));
   state.rows=settled.flatMap(x=>x.status==='fulfilled'?x.value:[]);
-  state.updated=new Date();
+  state.updated=new Date();state.feedError=false;
   document.getElementById('fd-live-stamp').textContent=live.length?'ESPN checked '+state.updated.toLocaleTimeString()+' · '+live.length+' live game(s)':'ESPN checked '+state.updated.toLocaleTimeString()+' · No live games';
   if(!live.length){document.getElementById('fd-live-rows').textContent='No NFL games are currently in progress. Live box scores will appear during games.';paintCards();return;}
   if(settled.every(x=>x.status==='rejected'))throw Error('box scores unavailable');
   display();paintCards();
- }catch(e){document.getElementById('fd-live-stamp').textContent='ESPN feed unavailable';document.getElementById('fd-live-rows').textContent='Unable to retrieve ESPN live box scores. No statistics are inferred or substituted.';}
+ }catch(e){state.feedError=true;paintCards();document.getElementById('fd-live-stamp').textContent='ESPN feed unavailable';document.getElementById('fd-live-rows').textContent='Unable to retrieve ESPN live box scores. No statistics are inferred or substituted.';}
 }
-refresh();setInterval(refresh,60000);
+paintCards();refresh();setInterval(refresh,60000);
 })();
