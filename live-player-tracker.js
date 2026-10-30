@@ -45,6 +45,28 @@ function elapsedMinutes(r){
  if(left<0||left>15)return null;
  return Math.max(0,Math.min(60,(period-1)*15+15-left));
 }
+
+// Observed 2023-2025 NFL pass shares, by score at snap and quarter.
+// 0 = no observation; those buckets retain the prior heuristic.
+const scriptPassRates={
+ within_6:[.575,.642,.573,.620],
+ lead_7_13:[.553,.641,.560,.421],lead_14_20:[.579,.635,.540,.358],
+ lead_21_27:[0,.662,.497,.290],lead_28_plus:[0,.508,.468,.267],
+ trail_7_13:[.590,.664,.605,.798],trail_14_20:[.598,.698,.637,.851],
+ trail_21_27:[0,.725,.691,.813],trail_28_plus:[0,.796,.694,.652]
+};
+function historicalScriptFactor(diff,period,market){
+ if(!Number.isFinite(diff)||!Number.isInteger(period)||period<1||period>4)return null;
+ const a=Math.abs(diff),side=diff>0?'lead':'trail';
+ const bucket=a<7?'within_6':side+'_'+(a<14?'7_13':a<21?'14_20':a<28?'21_27':'28_plus');
+ const rate=scriptPassRates[bucket]?.[period-1],neutral=scriptPassRates.within_6[period-1];
+ if(!rate||!neutral)return null;
+ const passing=market!=='rushing_yards';
+ const ratio=passing?rate/neutral:(1-rate)/(1-neutral);
+ // Moderate observed play-call changes; player usage and efficiency can differ.
+ return Math.max(.75,Math.min(1.25,1+.55*(ratio-1)));
+}
+
 function updateLiveBar(card,r){
  const bars=card.querySelector('.hybrid-bars');
  if(!bars)return;
@@ -63,7 +85,9 @@ function updateLiveBar(card,r){
   const direction=r.market==='rushing_yards'?(diff>0?1:-1):(diff>0?-1:1);
   const magnitude=r.market==='passing_yards'?.12:.10;
   const cap=r.market==='passing_yards'?.30:r.market==='rushing_yards'?.22:.25;
-  const factor=Number.isFinite(diff)&&diff!==0?1+direction*Math.min(cap,magnitude*margin)*late:1;
+  const heuristic=Number.isFinite(diff)&&diff!==0?1+direction*Math.min(cap,magnitude*margin)*late:1;
+  const historical=historicalScriptFactor(diff,r.period,r.market);
+  const factor=historical===null?heuristic:historical;
   estimate=Math.max(r.actual,r.actual+baseRemaining*factor);
  }
  let line=bars.querySelector('.fd-live-final-bar');
@@ -71,7 +95,7 @@ function updateLiveBar(card,r){
  const max=Math.max(1,model||0,r.actual,estimate||0)*1.08;
  const actualWidth=Math.max(0,Math.min(100,r.actual/max*100));
  const projectedWidth=estimate===null?0:Math.max(0,Math.min(100,(estimate-r.actual)/max*100));
- line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track" role="img" aria-label="Actual '+r.actual+' yards; projected additional '+(estimate===null?'unavailable':(estimate-r.actual).toFixed(1))+' yards"><span class="fd-live-actual-segment" style="width:'+actualWidth.toFixed(1)+'%"></span><span class="fd-live-projected-segment" style="width:'+projectedWidth.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Actual '+r.actual+' yards · Final estimate available after 3 minutes':'<span class="fd-live-key-actual">●</span> Actual '+r.actual+' · <span class="fd-live-key-projected">●</span> Remaining '+(estimate-r.actual).toFixed(1)+' projected yards · Regulation only')+'</small>';
+ line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track" role="img" aria-label="Actual '+r.actual+' yards; projected additional '+(estimate===null?'unavailable':(estimate-r.actual).toFixed(1))+' yards"><span class="fd-live-actual-segment" style="width:'+actualWidth.toFixed(1)+'%"></span><span class="fd-live-projected-segment" style="width:'+projectedWidth.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Actual '+r.actual+' yards · Final estimate available after 3 minutes':'<span class="fd-live-key-actual">●</span> Actual '+r.actual+' · <span class="fd-live-key-projected">●</span> Remaining '+(estimate-r.actual).toFixed(1)+' projected yards · Historical game script · Regulation only')+'</small>';
 }
 let painting=false;
 function paintCards(){
