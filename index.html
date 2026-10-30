@@ -460,14 +460,14 @@ function fdOpenMatchup(g){
      ?' The simulation gives '+esc(leaderTeam)+' a '+num(leaderTeam===home?simGame.home_win_pct:simGame.away_win_pct)+'% win rate.':'';
    const scoreStory='This is a '+num(margin)+'-point call, not a runaway: '+esc(leaderTeam)+' are projected for '+num(leaderTeam===home?p.projected_home_score:p.projected_away_score)+' points while '+esc(otherTeam)+' land at '+num(otherTeam===home?p.projected_home_score:p.projected_away_score)+'.'+simText;
    const rushStory=rush&&Number.isFinite(Number(rush[otherDef]?.rank))&&Number(rush[otherDef].rank)>=25
-     ?'The biggest opening may be on the ground. '+esc(otherTeam)+' rank #'+esc(rush[otherDef].rank)+' against the run in EPA per rush, which gives '+esc(leaderTeam)+' a chance to establish the run and stay ahead of the chains.'
+     ?'The run game stands out here. '+esc(otherTeam)+' rank #'+esc(rush[otherDef].rank)+' against the run in EPA per rush, which gives '+esc(leaderTeam)+' a chance to establish the run and stay ahead of the chains.'
      :null;
    const passStory=rushStory||(pass
-     ?'The passing matchup also matters. '+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking.'
-     :'The published matchup data points to a modest, rather than overwhelming, efficiency edge.');
+     ?'Through the air, here's the matchup. '+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking.'
+     :'Neither side has a clear efficiency mismatch in the available data.');
    const counterStory=challengerRed
      ?esc(otherTeam)+' are still very much in this game. Their red-zone offense converts '+esc(show(challengerRed[otherSide+'_offense'],'%'))+' of chances (rank #'+esc(challengerRed[otherSide+'_offense'].rank)+'), so a few clean drives can change the whole feel of it.'
-     :'The game stays close if '+esc(otherTeam)+' win the high-leverage downs and the turnover battle.';
+     :'One way to keep this close: '+esc(otherTeam)+' win the high-leverage downs and the turnover battle.';
    const injuryPreview='<p class="fd-ai-preview-injury" data-ai-injury-watch><strong>The injury wrinkle:</strong> The current ESPN game-card report is loading.</p>';
    const turnovers=metric('Turnovers / game',otherSide+'_offense',leaderSide+'_defense');
    const redZone=side=>metric('Red-zone TD rate',side+'_offense',(side==='home'?'away':'home')+'_defense');
@@ -494,7 +494,7 @@ function fdOpenMatchup(g){
     const label=e=>e.key==='EPA / rush'?'ground game':e.key==='EPA / pass'?'passing game':'red-zone offense';
     const describe=e=>{
       const mismatch=e.defense>=25&&e.offense<=16;
-      if(mismatch)return esc(opponentName)+'\\'s '+label(e)+' defense ranks #'+e.defense+', while '+esc(teamName)+' ranks #'+e.offense+' on offense. '+(e.key==='EPA / rush'?'That makes the run game an obvious place to start.':e.key==='EPA / pass'?'Look for chances to move the ball through the air.':'Turning trips inside the 20 into touchdowns could swing this.');
+      if(mismatch)return esc(opponentName)+"’s "+label(e)+' defense ranks #'+e.defense+', while '+esc(teamName)+' ranks #'+e.offense+' on offense. '+(e.key==='EPA / rush'?'That makes the run game an obvious place to start.':e.key==='EPA / pass'?'Look for chances to move the ball through the air.':'Turning trips inside the 20 into touchdowns could swing this.');
       return esc(teamName)+' has a potential edge in the '+label(e)+' (offense #'+e.offense+' against defense #'+e.defense+'). '+(e.key==='EPA / rush'?'Staying ahead of the chains would help.':e.key==='EPA / pass'?'That could create more manageable scoring chances.':'They need to make those scoring opportunities count.');
     };
     const lead=isLean
@@ -507,7 +507,7 @@ function fdOpenMatchup(g){
    };
    const winPaths='<div class="fd-win-paths">'+path(leaderSide,leaderTeam,true)+path(otherSide,otherTeam,false)+'</div>';
    const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
-   return '<div class="fd-modal-section fd-ai-insights"><h3>Why the model leans '+esc(leaderTeam)+'</h3><p class="fd-modal-muted">What the available matchup numbers suggest—not a guarantee or betting recommendation.</p><div class="fd-ai-summary"><p><strong>'+esc(leaderTeam)+' have the cleaner path, but this is not a mismatch.</strong> '+scoreStory+'</p><p>'+passStory+'</p><p>'+counterStory+'</p>'+injuryPreview+'</div><h4 style="margin:14px 0 0;color:#eafbf6">Keys to the game</h4>'+winPaths+'<p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury feed; confirm final actives before kickoff.</span></p></div>';
+   return '<div class="fd-modal-section fd-ai-insights"><h3>Why the model leans '+esc(leaderTeam)+'</h3><p class="fd-modal-muted">What the available matchup numbers suggest—not a guarantee or betting recommendation.</p><div class="fd-ai-summary"><p><strong>'+esc(leaderTeam)+' hold the projected edge, but there's still a game to play.</strong> '+scoreStory+'</p><p>'+passStory+'</p><p>'+counterStory+'</p>'+injuryPreview+'</div><h4 style="margin:14px 0 0;color:#eafbf6">Keys to the game</h4>'+winPaths+'<p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury feed; confirm final actives before kickoff.</span></p></div>';
  })():'';
  const simScore=simGame?'<div class="fd-modal-section"><h3>10,000 simulated outcomes</h3><p>'+esc(away)+' win '+num(simGame.away_win_pct)+'% · '+esc(home)+' win '+num(simGame.home_win_pct)+'% · tie '+num(simGame.tie_pct)+'%</p><p>Median '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory, uncalibrated probabilities.</p></div>':'';
  const score=p?'<div class="fd-modal-pick"><h3>FOURTHDOWN v2 · Model prediction</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+num(p.projected_away_score)+'</div><small>AT</small><div><small>'+esc(home)+'</small>'+num(p.projected_home_score)+'</div></div><p><strong>Pick: '+esc(p.predicted_winner)+' wins</strong> · edge '+num(Math.abs(Number(p.projected_home_score)-Number(p.projected_away_score)))+' pts</p><p class="fd-modal-muted">Projected total: '+num(p.projected_total)+' · '+impact+'</p>'+simScore+'</div>' :'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
