@@ -463,7 +463,7 @@ function fdOpenMatchup(g){
      ?'The run game stands out here. '+esc(otherTeam)+' rank #'+esc(rush[otherDef].rank)+' against the run in EPA per rush, which gives '+esc(leaderTeam)+' a chance to establish the run and stay ahead of the chains.'
      :null;
    const passStory=rushStory||(pass
-     ?'Through the air, here's the matchup. '+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking.'
+     ?"Through the air, here's the matchup. "+esc(leaderTeam)+' rank #'+esc(pass[leaderOff].rank)+' in EPA per pass, compared with '+esc(otherTeam)+'\'s #'+esc(pass[otherDef].rank)+' pass-defense ranking.'
      :'Neither side has a clear efficiency mismatch in the available data.');
    const counterStory=challengerRed
      ?esc(otherTeam)+' are still very much in this game. Their red-zone offense converts '+esc(show(challengerRed[otherSide+'_offense'],'%'))+' of chances (rank #'+esc(challengerRed[otherSide+'_offense'].rank)+'), so a few clean drives can change the whole feel of it.'
