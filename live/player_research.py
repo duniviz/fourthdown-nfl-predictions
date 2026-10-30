@@ -203,7 +203,9 @@ def generate():
     games.sort(key=lambda x:x[0])
     if not games: raise ValueError("No upcoming games")
     week=int(games[0][1]["week"])
-    games=[g for dt,g in games if int(g["week"])==week]
+    games=[(dt,g) for dt,g in games if int(g["week"])==week]
+    kickoff_by_game={str(g['game_id']):dt for dt,g in games}
+    games=[g for dt,g in games]
     rows=nfl.load_player_stats([season],summary_level="week").to_dicts()
     # Prior-season rows are used only for established RB return-workload
     # handling below. They never enter current-season team or defense totals.
@@ -562,13 +564,19 @@ def generate():
         old=existing.get("players",[])
     except (OSError,ValueError,TypeError):
         old=[]
-    # Preserve original pregame forecasts; never rewrite past predictions.
-    seen={(str(x.get("game_id")),str(x.get("player_id")),str(x.get("stat_key"))) for x in old}
+    # Keep the LAST successfully published forecast before each game's kickoff.
+    # Never change a forecast after kickoff, and retain games not in this run.
+    # This is a pregame projection snapshot, not a claim that DK odds were saved.
+    active_games={gid for gid,dt in kickoff_by_game.items() if now < dt}
+    old=[x for x in old if str(x.get("game_id")) not in active_games]
     for item in results:
-        key=(str(item["game_id"]),str(item["player_id"]),str(item["stat_key"]))
-        if key not in seen:
-            old.append(item)
-            seen.add(key)
+        gid=str(item["game_id"])
+        if gid not in active_games:
+            continue
+        snapshot=dict(item)
+        snapshot["forecast_captured_at_utc"]=now.isoformat()
+        snapshot["kickoff_utc"]=kickoff_by_game[gid].isoformat()
+        old.append(snapshot)
     archive_path.write_text(json.dumps({"players":old},indent=2)+"\n",encoding="utf-8")
     p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
     print(f"Published {len(results)} player baselines across {len(games)} games for week {week}")
