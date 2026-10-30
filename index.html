@@ -340,6 +340,8 @@ renderParlays();
     const j=await r.json();
     const normalize=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
     const keys={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
+    const teams={'Arizona Cardinals':'ARI','Atlanta Falcons':'ATL','Baltimore Ravens':'BAL','Buffalo Bills':'BUF','Carolina Panthers':'CAR','Chicago Bears':'CHI','Cincinnati Bengals':'CIN','Cleveland Browns':'CLE','Dallas Cowboys':'DAL','Denver Broncos':'DEN','Detroit Lions':'DET','Green Bay Packers':'GB','Houston Texans':'HOU','Indianapolis Colts':'IND','Jacksonville Jaguars':'JAC','Kansas City Chiefs':'KC','Las Vegas Raiders':'LV','Los Angeles Chargers':'LAC','Los Angeles Rams':'LAR','Miami Dolphins':'MIA','Minnesota Vikings':'MIN','New England Patriots':'NE','New Orleans Saints':'NO','New York Giants':'NYG','New York Jets':'NYJ','Philadelphia Eagles':'PHI','Pittsburgh Steelers':'PIT','San Francisco 49ers':'SF','Seattle Seahawks':'SEA','Tampa Bay Buccaneers':'TB','Tennessee Titans':'TEN','Washington Commanders':'WAS'};
+    const team=t=>canon(teams[t]||t);
     const quotes=(j.rows||[]).filter(q=>q.player&&q.market_key&&q.commence_time&&q.last_update&&q.line!==null&&q.line!==undefined&&Number.isFinite(Number(q.line))&&Number(q.line)>0&&Number.isFinite(Date.parse(q.commence_time))&&Number.isFinite(Date.parse(q.last_update))&&Date.parse(q.last_update)<=Date.parse(q.commence_time));
     for(const x of playerHistory){
      if(hasDkLine(x))continue;
@@ -348,8 +350,8 @@ renderParlays();
      if(parts.length<4)continue;
      const season=Number(parts[0]),week=Number(parts[1]),away=canon(parts[2]),home=canon(parts[3]);
      if(!Number.isInteger(season)||!Number.isInteger(week)||!keys[x.stat_key])continue;
-     const matches=quotes.filter(q=>q.market_key===keys[x.stat_key]&&normalize(q.player)===normalize(x.player)&&[canon(q.home_team),canon(q.away_team)].includes(home)&&[canon(q.home_team),canon(q.away_team)].includes(away)&&new Date(q.commence_time).getUTCFullYear()===season);
-     if(!matches.length)continue;
+     const matches=quotes.filter(q=>q.market_key===keys[x.stat_key]&&normalize(q.player)===normalize(x.player)&&team(q.home_team)===home&&team(q.away_team)===away&&new Date(q.commence_time).getUTCFullYear()===season);
+     if(!matches.length||new Set(matches.map(q=>q.commence_time)).size!==1)continue;
      const q=matches.sort((a,b)=>Date.parse(a.last_update)-Date.parse(b.last_update))[0];
      x.dk_line=Number(q.line);x.dk_quote_time=q.last_update;x.dk_line_source='Archived DraftKings quote';
     }
