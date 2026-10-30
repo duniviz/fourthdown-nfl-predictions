@@ -559,6 +559,10 @@ def generate():
         old=existing.get("players",[])
     except (OSError,ValueError,TypeError):
         old=[]
+    # Reject invalid newly generated forecasts before adding them to the immutable archive.
+    # This does not silently rewrite older snapshots.
+    from live.validate_props import validate
+    validate(results)
     # Preserve original pregame forecasts; never rewrite past predictions.
     seen={(str(x.get("game_id")),str(x.get("player_id")),str(x.get("stat_key"))) for x in old}
     for item in results:
