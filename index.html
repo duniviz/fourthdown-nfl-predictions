@@ -189,6 +189,25 @@ h1 span,h1 em{color:#baff25!important}
  .fd-explain-card p{margin:7px 0!important}
  .fd-modal-inner{padding:14px!important}
 }
+</style><style id="fd-experience-lab-css">
+.fd-experience{margin:12px 0;padding:14px;border:1px solid #35444a;border-radius:14px;background:#11191c}
+.fd-experience h3{margin:0 0 8px;color:#baff25;font-size:16px}
+.fd-experience p{color:#c2cbd0;font-size:12px;margin:7px 0}
+.fd-sim-track{display:flex;height:20px;overflow:hidden;border-radius:999px;background:#29343a}
+.fd-sim-track span{display:block;height:100%;background:#baff25}
+.fd-sim-track span+span{background:#56b9ff}
+.fd-sim-labels{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;margin:8px 0}
+.fd-adv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fd-adv-item{background:#192327;border:1px solid #303d42;border-radius:10px;padding:10px}
+.fd-adv-item strong{display:block;font-size:13px}.fd-adv-item small{display:block;color:#b9c6ca;font-size:11px}
+.fd-spotlight-list{display:grid;gap:10px}.fd-spotlight{padding:11px;border:1px solid #334148;border-radius:12px;background:#151e22}
+.fd-spotlight-top{display:flex;align-items:center;gap:9px}.fd-spotlight-top strong{display:block;font-size:14px}.fd-spotlight-top small{color:#b5c6cb;font-size:11px}
+.fd-spotlight-metrics{display:flex;gap:9px;flex-wrap:wrap;margin:9px 0;font-size:12px}
+.fd-spotlight-metrics b{color:#baff25}
+.fd-spotlight-scale{height:9px;background:#2b3a40;border-radius:20px;position:relative;margin:10px 3px}
+.fd-spotlight-scale span{display:block;background:#baff25;height:100%;border-radius:20px}
+.fd-spotlight-scale i{position:absolute;top:-4px;height:17px;width:2px;background:#fff}
+@media(max-width:480px){.fd-experience{padding:11px}.fd-adv-grid{grid-template-columns:1fr}.fd-spotlight-metrics{gap:7px}}
 </style></head><body><div class="fd-modal" id="fd-modal"><div class="fd-modal-inner" role="dialog" aria-modal="true" aria-label="NFL matchup details" id="fd-modal-body"></div></div>
 <header class="top"><div class="wrap nav"><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#scoreboard">Live Scores</a><a href="bets.html">Best Bets</a><a href="#picks">Top Picks</a><a href="#games">Games</a><a href="#props">Player Props</a><a href="#parlays">Parlays</a><a href="#tracking">Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><section class="fd-command" aria-label="FOURTHDOWN game center"><div class="fd-command-main"><div class="fd-command-kicker">NFL games, explained</div><h1>See what <em>we expect.</em><br>And why.</h1><p>See our score predictions, compare them with DraftKings, and dig into the matchups that interest you.</p><div class="fd-command-actions"><a href="#scoreboard">View games</a><a href="bets.html">Open prop desk</a><button type="button" data-fd-command="picks">Show model picks</button></div></div><aside class="fd-command-side"><div class="fd-command-stat"><span>DraftKings</span><strong>Latest available <b>lines</b></strong></div><div class="fd-command-stat"><span>Injuries</span><strong>See how they <b>affect picks</b></strong></div><div class="fd-command-stat"><span>Results</span><strong>See how our <b>picks did</b></strong></div></aside></section><nav class="fd-section-tabs" aria-label="Prediction center sections"><a href="#scoreboard">Game center</a><a href="bets.html">Prop research</a><a href="#picks" data-fd-expand>Tracked picks</a><a href="#tracking" data-fd-expand>Model record</a></nav><div class="hero"><div><div class="eyebrow">2026 season · Week 7 · All kickoff windows</div><h1>Make every <span>prediction</span> count.</h1><p class="sub">A shareable home for the complete NFL weekly schedule, available game forecasts, detailed prediction explanations, DraftKings-only player props, and transparent model tracking. Built around timestamped picks—not hindsight.</p></div><div class="notice"><strong>Historical pregame snapshot</strong><br>Seven early-window forecasts were recorded at 11:37 a.m. CT and three afternoon forecasts at 2:36 p.m. CT. Remaining matchups have schedule information only. This website is a static snapshot—not a live odds feed or automatically refreshing score service. Probabilities are preliminary, uncalibrated estimates.</div></div>
@@ -386,6 +405,45 @@ renderParlays();
 
  const hybridAvatar=x=>{const id=String(x.athlete_id||x.espn_athlete_id||'');const initials=String(x.player||'').split(/\\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase();return '<div class="hybrid-avatar">'+(/^[0-9]{3,12}$/.test(id)?'<img loading="lazy" alt="" src="https://a.espncdn.com/i/headshots/nfl/players/full/'+id+'.png" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>'+esc(initials)+'</span>':'<span>'+esc(initials)+'</span>')+'</div>';};
  const hybridBars=x=>{const p=Number(x.projection),l=Number(x.dk_line);if(x.projection==null||x.projection===''||x.dk_line==null||x.dk_line===''||!Number.isFinite(p)||!Number.isFinite(l))return '';const max=Math.max(1,p,l)*1.08;return '<div class="hybrid-bars"><div class="hybrid-label"><span>DraftKings</span><b>'+esc(x.dk_line)+'</b></div><div class="hybrid-track"><span style="width:'+Math.max(0,Math.min(100,l/max*100))+'%"></span></div><div class="hybrid-label"><span>Model</span><b>'+esc(x.projection)+'</b></div><div class="hybrid-track model"><span style="width:'+Math.max(0,Math.min(100,p/max*100))+'%"></span></div></div>';};
+// Experience panels reuse published simulations, pregame metrics, and existing player forecasts.
+// No new random results or model calculations are introduced in the browser.
+function fdSimulationPanel(p,g){
+ if(!p)return '';
+ const sim=simulationGames.find(x=>x.game_id===p.game_id);
+ const a=Number(sim?.away_win_pct),h=Number(sim?.home_win_pct);
+ if(!sim||!Number.isFinite(a)||!Number.isFinite(h)||a<0||h<0||a+h<=0)return '';
+ const total=a+h,awayPct=100*a/total,homePct=100*h/total;
+ return '<section class="fd-experience"><h3>How often does each team win?</h3><div class="fd-sim-track" role="img" aria-label="'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+' percent; '+esc(g.home.abbr)+' '+homePct.toFixed(1)+' percent"><span style="width:'+awayPct.toFixed(2)+'%"></span><span style="width:'+homePct.toFixed(2)+'%"></span></div><div class="fd-sim-labels"><span>'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+'%</span><span>'+esc(g.home.abbr)+' '+homePct.toFixed(1)+'%</span></div><p>Based on our saved game simulations. These are model estimates, not guaranteed odds.</p></section>';
+}
+function fdAdvantagesPanel(p,g){
+ const rows=p?.analysis?.matchup_metrics;
+ if(!Array.isArray(rows)||!rows.length)return '';
+ const sides=[['away_offense','home_defense',g.away.abbr,g.home.abbr],['home_offense','away_defense',g.home.abbr,g.away.abbr]];
+ const candidates=[];
+ for(const [off,def,offTeam,defTeam] of sides)for(const x of rows){
+  const a=Number(x[off]?.rank),b=Number(x[def]?.rank);
+  if(!Number.isFinite(a)||!Number.isFinite(b)||a<1||b<1)continue;
+  if(a>12||b<20)continue;
+  candidates.push({label:String(x.label||'Matchup'),offTeam,defTeam,a,b,gap:b-a});
+ }
+ candidates.sort((a,b)=>b.gap-a.gap);
+ const unique=[];const seen=new Set();
+ for(const x of candidates){const key=x.offTeam+'|'+x.label;if(seen.has(key))continue;seen.add(key);unique.push(x);if(unique.length===3)break;}
+ if(!unique.length)return '';
+ return '<section class="fd-experience"><h3>Matchup advantages</h3><div class="fd-adv-grid">'+unique.map(x=>'<div class="fd-adv-item"><strong>'+esc(x.offTeam)+' · '+esc(x.label)+'</strong><small>Offense ranks #'+x.a+'; '+esc(x.defTeam)+' defense ranks #'+x.b+'.</small></div>').join('')+'</div><p>These are ranking mismatches worth watching, not extra points added to our prediction. See Team matchup ranks below for the full comparison.</p></section>';
+}
+function fdSpotlightPanel(p,g){
+ if(!p||g.state==='post')return '';
+ const players=playerResearch.filter(x=>[canon(g.away.abbr),canon(g.home.abbr)].includes(canon(x.team))&&[canon(g.away.abbr),canon(g.home.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x)&&['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&hasDkLine(x)&&Number.isFinite(Number(x.projection)));
+ const best=players.sort((a,b)=>Math.abs(Number(b.projection)-Number(b.dk_line))-Math.abs(Number(a.projection)-Number(a.dk_line))).slice(0,3);
+ if(!best.length)return '';
+ return '<section class="fd-experience"><h3>Players to watch</h3><div class="fd-spotlight-list">'+best.map(x=>{
+  const projection=Number(x.projection),line=Number(x.dk_line),max=Math.max(1,projection,line)*1.15;
+  const recent=x.last_5_avg===null||x.last_5_avg===undefined?'—':Number(x.last_5_avg).toFixed(1);
+  const edge=projection-line;
+  return '<article class="fd-spotlight"><div class="fd-spotlight-top">'+hybridAvatar(x)+'<div><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div></div><div class="fd-spotlight-metrics"><span>Our projection <b>'+projection.toFixed(1)+'</b></span><span>DK <b>'+line.toFixed(1)+'</b></span><span>Last 5 <b>'+esc(recent)+'</b></span></div><div class="fd-spotlight-scale" aria-label="Projection compared with DraftKings line"><span style="width:'+Math.min(100,100*projection/max).toFixed(1)+'%"></span><i style="left:'+Math.min(100,100*line/max).toFixed(1)+'%"></i></div><p>Our estimate is '+Math.abs(edge).toFixed(1)+' yards '+(edge>=0?'above':'below')+' the saved DK line. The white marker shows the line.</p></article>';
+ }).join('')+'</div><p>Largest projection differences shown first. A difference isn't a guaranteed edge.</p></section>';
+}
 function fdOpenMatchup(g){
  const p=getProjection(g),away=canon(g.away.abbr),home=canon(g.home.abbr);
  const num=v=>v===null||v===undefined||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1);
@@ -523,7 +581,7 @@ function fdOpenMatchup(g){
  const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn't save the injury report from before this game, so we won't show today's report as if it were from then.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
- document.getElementById('fd-modal-body').innerHTML=header+score+market+insight+stats+(isFinal?historicalInjury+completedBox:injury)+props;
+ document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+fdAdvantagesPanel(p,g)+fdSpotlightPanel(p,g)+insight+stats+(isFinal?historicalInjury+completedBox:injury)+props;
  if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.querySelector('[data-close-matchup]').focus();
 }
