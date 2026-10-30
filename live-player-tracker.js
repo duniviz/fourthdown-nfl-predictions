@@ -31,6 +31,29 @@ function readPlayers(summary,event){
  }
  return output.filter(p=>p.player);
 }
+
+// Update only the matching player's market in the existing matchup card.
+// No guesswork: player name, team abbreviation and stat market must all agree.
+const playerKey=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+let painting=false;
+function paintCards(){
+ if(painting)return;painting=true;
+ try{
+  document.querySelectorAll('.fd-mobile-prop-card[data-fd-player]').forEach(card=>{
+   const p=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
+   const matches=state.rows.filter(r=>playerKey(r.player)===p&&playerKey(r.team)===team&&r.market===market);
+   let slot=card.querySelector('.fd-live-inline');
+   if(matches.length!==1){if(slot)slot.remove();return;}
+   const r=matches[0];
+   if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
+   slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
+   const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString():'—');slot.appendChild(sub);
+  });
+ }finally{painting=false;}
+}
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card')||n.querySelector?.('.fd-mobile-prop-card')))))paintCards();});
+observer.observe(document.body,{subtree:true,childList:true});
+
 function display(){
  const games=state.games,rows=state.rows.filter(p=>(state.game==='all'||p.game_id===state.game)&&(state.market==='all'||p.market===state.market));
  const filters='<div class="fd-live-filters"><label>Game <select id="fd-live-game-filter"><option value="all">All live games</option>'+games.map(g=>'<option value="'+esc(g.id)+'" '+(state.game===g.id?'selected':'')+'>'+esc(g.name)+'</option>').join('')+'</select></label><label>Stat <select id="fd-live-market-filter">'+[['all','All'],['passing_yards','Passing'],['rushing_yards','Rushing'],['receiving_yards','Receiving']].map(([id,name])=>'<option value="'+id+'" '+(state.market===id?'selected':'')+'>'+name+'</option>').join('')+'</select></label></div>';
@@ -47,9 +70,9 @@ async function refresh(){
   state.rows=settled.flatMap(x=>x.status==='fulfilled'?x.value:[]);
   state.updated=new Date();
   document.getElementById('fd-live-stamp').textContent=live.length?'ESPN checked '+state.updated.toLocaleTimeString()+' · '+live.length+' live game(s)':'ESPN checked '+state.updated.toLocaleTimeString()+' · No live games';
-  if(!live.length){document.getElementById('fd-live-rows').textContent='No NFL games are currently in progress. Live box scores will appear during games.';return;}
+  if(!live.length){document.getElementById('fd-live-rows').textContent='No NFL games are currently in progress. Live box scores will appear during games.';paintCards();return;}
   if(settled.every(x=>x.status==='rejected'))throw Error('box scores unavailable');
-  display();
+  display();paintCards();
  }catch(e){document.getElementById('fd-live-stamp').textContent='ESPN feed unavailable';document.getElementById('fd-live-rows').textContent='Unable to retrieve ESPN live box scores. No statistics are inferred or substituted.';}
 }
 refresh();setInterval(refresh,60000);
