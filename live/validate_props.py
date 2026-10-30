@@ -3,8 +3,8 @@ import json
 import math
 from pathlib import Path
 
-YARD_LIMITS={"passing_yards":750,"rushing_yards":350,"receiving_yards":350}
-COUNT_LIMITS={"attempts":85,"completions":65,"carries":55,"receptions":30,"passing_tds":9,"rushing_tds":6,"receiving_tds":6,"interceptions":7}
+YARD_LIMITS={"passing_yards":500,"rushing_yards":250,"receiving_yards":250}
+COUNT_LIMITS={"attempts":65,"completions":45,"carries":45,"receptions":25,"passing_tds":7,"rushing_tds":5,"receiving_tds":5,"interceptions":6}
 
 def validate(players):
     if not isinstance(players,list) or not players:
