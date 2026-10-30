@@ -59,8 +59,9 @@ function updateLiveBar(card,r){
  let line=bars.querySelector('.fd-live-final-bar');
  if(!line){line=document.createElement('div');line.className='fd-live-final-bar';bars.appendChild(line);}
  const max=Math.max(1,model||0,r.actual,estimate||0)*1.08;
- const width=Math.max(0,Math.min(100,(estimate??r.actual)/max*100));
- line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track"><span style="width:'+width.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Estimate available after 3 minutes of regulation play':'Actual '+r.actual+' yards · Blends live pace and pregame projection · Regulation only')+'</small>';
+ const actualWidth=Math.max(0,Math.min(100,r.actual/max*100));
+ const projectedWidth=estimate===null?0:Math.max(0,Math.min(100,(estimate-r.actual)/max*100));
+ line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track" role="img" aria-label="Actual '+r.actual+' yards; projected additional '+(estimate===null?'unavailable':(estimate-r.actual).toFixed(1))+' yards"><span class="fd-live-actual-segment" style="width:'+actualWidth.toFixed(1)+'%"></span><span class="fd-live-projected-segment" style="width:'+projectedWidth.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Actual '+r.actual+' yards · Final estimate available after 3 minutes':'<span class="fd-live-key-actual">●</span> Actual '+r.actual+' · <span class="fd-live-key-projected">●</span> Remaining '+(estimate-r.actual).toFixed(1)+' projected yards · Regulation only')+'</small>';
 }
 let painting=false;
 function paintCards(){
