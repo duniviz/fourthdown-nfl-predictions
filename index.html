@@ -764,15 +764,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
  function renderHybridSpotlight(){const root=document.getElementById('hybrid-spotlight');if(!root)return;root.innerHTML='<div class="hybrid-placeholder">Player projections are uncalibrated research baselines, not validated betting edges. High differences alone are not ranked as picks. Verified DraftKings lines and backtested error estimates are required before publishing an edge leaderboard.</div>';}
  function propPanel(g){
   if(g.state==='post')return '';
-  const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
+  const matches=playerResearch.filter(x=>validDkLine(x)&&verifiedYardMarket(x)&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
   if(!matches.length)return '';
-  const best=[...matches].filter(x=>!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line))).sort((a,b)=>Number(b.projection||0)-Number(a.projection||0));
+  const best=[...matches].filter(x=>!unavailablePlayer(x)&&validDkLine(x)&&verifiedYardMarket(x)).sort((a,b)=>Number(b.projection||0)-Number(a.projection||0));
   if(!best.length)return '';
   return '<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>DK LINE</small><strong>'+esc(x.dk_line??'—')+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">DK line shown only when verified and stored; — means unavailable. Statistical baselines, not sportsbook recommendations.</p></div></details>';
  }
+ function validDkLine(x){return x&&x.dk_line!==null&&x.dk_line!==undefined&&String(x.dk_line).trim()!==''&&Number.isFinite(Number(x.dk_line))&&Number(x.dk_line)>=0;}
+ function verifiedYardMarket(x){const key=String(x.stat_key||'');return ['passing_yards','rushing_yards','receiving_yards'].includes(key)&&Number.isFinite(Number(x.projection))&&Number(x.projection)>=0;}
+ function historicalDkYards(x){
+  if(!verifiedYardMarket(x))return false;
+  // Historical forecasts require their own archived line; never attach today's odds to old games.
+  return validDkLine(x);
+ }
+ 
  function completedPlayerPanel(g){
-  const rows=playerHistory.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
-  if(!rows.length)return '<div class="fd-no-projection">Player projections: not graded · No saved pregame forecasts for this matchup.</div>';
+  const rows=playerHistory.filter(x=>historicalDkYards(x)&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
+  if(!rows.length)return '<div class="fd-no-projection">No verified archived DraftKings yardage lines for this matchup.</div>';
   return '<details class="fd-props fd-player-results" data-game-id="'+esc(g.id)+'" data-home="'+esc(g.home.abbr)+'" data-away="'+esc(g.away.abbr)+'"><summary>Player projection HIT / MISS · '+rows.length+' forecasts</summary><div class="fd-props-body">Open to compare projected and actual yards.</div></details>';
  }
  function actualPlayerResults(raw,rows){
@@ -786,7 +794,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   const cards=rows.map(x=>{
    const expected=Number(x.projection),key=String(x.stat_key);
    const category=key==='passing_yards'?'pass':key==='rushing_yards'?'rush':'receiv';
-   const match=all.find(a=>clean(a.name)===clean(x.player)&&(a.category.includes(category)||a.keys.some(k=>k.includes(category))));
+   const match=all.find(a=>clean(a.name)===clean(x.player)&&a.category.includes(category));
    let actual=null;
    if(match){
     let idx=match.keys.findIndex(k=>k===key||k===key.replaceAll('_','')||k===key.replace(/_([a-z])/g,(_,v)=>v.toUpperCase()).toLowerCase());
@@ -798,14 +806,14 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    const tolerance=Math.max(5,expected*0.10);
    const outcome=!available?'NOT GRADED':Math.abs(delta)<=tolerance?'HIT':'MISS';
    if(available){graded++;totalError+=Math.abs(delta);if(outcome==='HIT')hits++;else misses++;}
-   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(expected.toFixed(1))+'</strong></div><div><small>ACTUAL</small><strong>'+(available?esc(actual):'—')+'</strong></div><span class="fd-result-badge '+(outcome==='HIT'?'fd-hit':outcome==='MISS'?'fd-miss':'fd-ungraded')+'">'+esc(outcome)+'</span></div></div>';
+   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(key==='passing_yards'?'Passing yards':key==='rushing_yards'?'Rushing yards':'Receiving yards')+' · DK '+esc(x.dk_line)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(expected.toFixed(1))+'</strong></div><div><small>ACTUAL</small><strong>'+(available?esc(actual):'—')+'</strong></div><span class="fd-result-badge '+(outcome==='HIT'?'fd-hit':outcome==='MISS'?'fd-miss':'fd-ungraded')+'">'+esc(outcome)+'</span></div></div>';
   }).join('');
   return '<div class="fd-prop-summary"><div><small>GRADED</small><strong>'+graded+' / '+rows.length+'</strong></div><div><small>HITS</small><strong class="fd-positive">'+hits+'</strong></div><div><small>MISSES</small><strong class="fd-negative">'+misses+'</strong></div><div><small>AVG ERROR</small><strong>'+(graded?(totalError/graded).toFixed(1)+' yd':'—')+'</strong></div></div><div class="fd-result-list">'+cards+'</div><p class="fd-grading-note">HIT = actual within 10% of projection (minimum 5 yards). This measures forecast accuracy, not a DraftKings bet result.</p>';
  }
  async function loadCompletedPlayerResults(el){
   const body=el.querySelector('.fd-props-body'),id=el.dataset.gameId;
   body.textContent='Loading final player statistics…';
-  const rows=playerHistory.filter(x=>[canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.team))&&[canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.opponent)));
+  const rows=playerHistory.filter(x=>historicalDkYards(x)&&[canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.team))&&[canon(el.dataset.away),canon(el.dataset.home)].includes(canon(x.opponent)));
   try{
    let raw=recapCache.get(id);
    if(!raw){const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(id));if(!response.ok)throw Error('ESPN unavailable');raw=await response.json();recapCache.set(id,raw);}
