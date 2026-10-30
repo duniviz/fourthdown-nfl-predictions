@@ -447,6 +447,19 @@ def generate():
                     # establish a stable market-level direction.
                     calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0)*learned_weights.get(metric,0.0) if calibration_n>=40 else 0.0
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
+                    # A projection can be below the absolute sanity ceiling yet still
+                    # imply an unsupported workload jump. Bound yardage to a player's
+                    # observed per-game distribution, with room for a breakout.
+                    if metric in ("passing_yards", "rushing_yards", "receiving_yards"):
+                        recent_yards=[max(0.0,num(r.get(metric))) for r in stats[-8:]]
+                        observed_mean=sum(recent_yards)/len(recent_yards)
+                        observed_peak=max(recent_yards)
+                        relative_cap=max(
+                            {"passing_yards":120.0,"rushing_yards":35.0,"receiving_yards":35.0}[metric],
+                            observed_mean*1.65,
+                            observed_peak*1.20,
+                        )
+                        baseline=min(baseline,relative_cap)
                     # V4 research-selected workload/matchup adjustment for yardage only.
                     # Coefficients frozen from 2024 tuning and evaluated on 2025/2026;
                     # other markets and QB passing forecasts remain unchanged.
