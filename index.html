@@ -332,6 +332,29 @@ renderParlays();
   try{const response=await fetch('data/game-context.json?ts='+Date.now(),{cache:'no-store'});gameContext=response.ok?await response.json():null;}catch(e){gameContext=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
+  // Match archived DraftKings quotes only to the exact historical game and market.
+  // Never apply a current quote to a completed game.
+  try{
+   const r=await fetch('data/dk-line-history.json?ts='+Date.now(),{cache:'no-store'});
+   if(r.ok){
+    const j=await r.json();
+    const normalize=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const keys={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
+    const quotes=(j.rows||[]).filter(q=>q.player&&q.market_key&&q.commence_time&&q.last_update&&q.line!==null&&q.line!==undefined&&Number.isFinite(Number(q.line))&&Number(q.line)>0&&Number.isFinite(Date.parse(q.commence_time))&&Number.isFinite(Date.parse(q.last_update))&&Date.parse(q.last_update)<=Date.parse(q.commence_time));
+    for(const x of playerHistory){
+     if(hasDkLine(x))continue;
+     const gameId=String(x.game_id||'');
+     const parts=gameId.split('_');
+     if(parts.length<4)continue;
+     const season=Number(parts[0]),week=Number(parts[1]),away=canon(parts[2]),home=canon(parts[3]);
+     if(!Number.isInteger(season)||!Number.isInteger(week)||!keys[x.stat_key])continue;
+     const matches=quotes.filter(q=>q.market_key===keys[x.stat_key]&&normalize(q.player)===normalize(x.player)&&[canon(q.home_team),canon(q.away_team)].includes(home)&&[canon(q.home_team),canon(q.away_team)].includes(away)&&new Date(q.commence_time).getUTCFullYear()===season);
+     if(!matches.length)continue;
+     const q=matches.sort((a,b)=>Date.parse(a.last_update)-Date.parse(b.last_update))[0];
+     x.dk_line=Number(q.line);x.dk_quote_time=q.last_update;x.dk_line_source='Archived DraftKings quote';
+    }
+   }
+  }catch(e){console.warn('Historical DK quotes unavailable',e);}
   // Join public DraftKings odds snapshot to research rows by player + full-game market.
   // A missing quote remains missing; never invent a line or betting edge.
   try{
