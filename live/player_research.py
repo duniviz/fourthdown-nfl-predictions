@@ -558,26 +558,8 @@ def generate():
     validate(results)
     out={"generated_at_utc":now.isoformat(),"season":season,"week":week,"status":"research_only_no_market_odds","players":results}
     p=Path("data/player-research.json");p.parent.mkdir(exist_ok=True)
-    archive_path=Path("data/player-history.json")
-    try:
-        existing=json.loads(archive_path.read_text(encoding="utf-8"))
-        old=existing.get("players",[])
-    except (OSError,ValueError,TypeError):
-        old=[]
-    # Keep the LAST successfully published forecast before each game's kickoff.
-    # Never change a forecast after kickoff, and retain games not in this run.
-    # This is a pregame projection snapshot, not a claim that DK odds were saved.
-    active_games={gid for gid,dt in kickoff_by_game.items() if now < dt}
-    old=[x for x in old if str(x.get("game_id")) not in active_games]
-    for item in results:
-        gid=str(item["game_id"])
-        if gid not in active_games:
-            continue
-        snapshot=dict(item)
-        snapshot["forecast_captured_at_utc"]=now.isoformat()
-        snapshot["kickoff_utc"]=kickoff_by_game[gid].isoformat()
-        old.append(snapshot)
-    archive_path.write_text(json.dumps({"players":old},indent=2)+"\n",encoding="utf-8")
+    # History is locked only after DK odds are matched in lock_pregame_props.
+    # Do not overwrite the last published pregame card with a research-only row.
     p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
     print(f"Published {len(results)} player baselines across {len(games)} games for week {week}")
 

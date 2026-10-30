@@ -83,6 +83,9 @@ jobs:
       - name: Archive DraftKings line movement
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.line_history
+      - name: Lock latest pregame player cards with verified DraftKings lines
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.lock_pregame_props
       - name: Grade completed-game player projections
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_results
