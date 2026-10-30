@@ -236,6 +236,7 @@ body{background:radial-gradient(ellipse at 50% -240px,#26351b 0,transparent 52%)
 .fd-sim-track{height:23px!important;box-shadow:inset 0 2px 8px #0008}
 .fd-sim-track span:first-child{background:linear-gradient(90deg,#a7f82b,#d2ff6b)!important}
 .fd-sim-track span+span{background:linear-gradient(90deg,#76d7ff,#348bc9)!important}
+.fd-sim-track span.fd-sim-ties{background:linear-gradient(90deg,#64717a,#8c989f)!important}
 .fd-adv-item{border-color:#3b4d48!important;background:#1a2525!important}
 .fd-adv-item strong{color:#f4f8f8}
 .fd-spotlight{background:#182223!important;border-color:#3c4b4d!important}
@@ -450,8 +451,10 @@ function fdSimulationPanel(p,g){
  const sim=simulationGames.find(x=>x.game_id===p.game_id);
  const a=Number(sim?.away_win_pct),h=Number(sim?.home_win_pct);
  if(!sim||!Number.isFinite(a)||!Number.isFinite(h)||a<0||h<0||a+h<=0)return '';
- const total=a+h,awayPct=100*a/total,homePct=100*h/total;
- return '<section class="fd-experience"><h3>How often does each team win?</h3><div class="fd-sim-track" role="img" aria-label="'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+' percent; '+esc(g.home.abbr)+' '+homePct.toFixed(1)+' percent"><span style="width:'+awayPct.toFixed(2)+'%"></span><span style="width:'+homePct.toFixed(2)+'%"></span></div><div class="fd-sim-labels"><span>'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+'%</span><span>'+esc(g.home.abbr)+' '+homePct.toFixed(1)+'%</span></div><p>Based on our saved game simulations. These are model estimates, not guaranteed odds.</p></section>';
+ const awayPct=Math.max(0,Math.min(100,a)),homePct=Math.max(0,Math.min(100,h));
+ const tiePct=Math.max(0,Math.min(100,Number(sim.tie_pct)||0));
+ const showTies=tiePct>0;
+ return '<section class="fd-experience"><h3>How often does each team win?</h3><div class="fd-sim-track" role="img" aria-label="'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+' percent; '+esc(g.home.abbr)+' '+homePct.toFixed(1)+' percent'+(showTies?'; ties '+tiePct.toFixed(1)+' percent':'')+'"><span style="width:'+awayPct.toFixed(2)+'%"></span><span style="width:'+homePct.toFixed(2)+'%"></span>'+(showTies?'<span class="fd-sim-ties" style="width:'+tiePct.toFixed(2)+'%"></span>':'')+'</div><div class="fd-sim-labels"><span>'+esc(g.away.abbr)+' '+awayPct.toFixed(1)+'%</span><span>'+esc(g.home.abbr)+' '+homePct.toFixed(1)+'%</span>'+(showTies?'<span>Tie '+tiePct.toFixed(1)+'%</span>':'')+'</div><p>Based on our saved game simulations, including ties. These are model estimates, not guaranteed odds.</p></section>';
 }
 function fdAdvantagesPanel(p,g){
  const rows=p?.analysis?.matchup_metrics;
