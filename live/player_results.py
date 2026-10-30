@@ -43,7 +43,7 @@ def main():
         result={"game_id":key[0],"player_id":key[1],"player":x.get("player"),
             "team":x.get("team"),"market":x.get("market"),"stat_key":key[2],
             "projection":proj,"actual":observed,"error":round(observed-proj,1),
-            "dk_line":None,"recommended_side":None,"recommendation_result":"not_available"}
+            "dk_line":float(line) if line is not None and str(line).strip() and float(line)>0 else None,"recommended_side":None,"recommendation_result":"not_available"}
         # Grade only a stored pregame line and an explicit stored recommendation.
         if line is not None and x.get("recommended_side") in ("over","under"):
             line=float(line);side=x["recommended_side"]
