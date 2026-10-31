@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-10-29T21:52:48.386721+00:00",
+  "generated_at_utc": "2026-10-31T17:48:10.298993+00:00",
   "season": 2026,
   "week": 8,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_08_CAR_GB",
-      "season": 2026,
-      "week": 8,
-      "kickoff_utc": "2026-10-30T00:15:00+00:00",
-      "home": "GB",
-      "away": "CAR",
-      "projected_home_score": 24.3,
-      "projected_away_score": 19.9,
-      "projected_margin_home": 4.36,
-      "projected_total": 44.18,
-      "predicted_winner": "GB",
-      "v2_reference": {
-        "projected_margin_home": 4.45,
-        "projected_total": 43.91
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.273,
-        "margin_from_success_and_pass_proxy": -0.088,
-        "home_features": {
-          "plays_per_game": 61.2,
-          "success_rate": 0.405,
-          "neutral_pass_proxy": 0.68
-        },
-        "away_features": {
-          "plays_per_game": 66.0,
-          "success_rate": 0.427,
-          "neutral_pass_proxy": 0.636
-        }
-      }
-    },
     {
       "game_id": "2026_08_BAL_BUF",
       "season": 2026,
