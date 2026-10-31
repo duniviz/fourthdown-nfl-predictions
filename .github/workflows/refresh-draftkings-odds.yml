@@ -2,7 +2,7 @@ name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
   schedule:
-    # Run hourly; the Central-time gate below performs API refreshes at 00, 06, 12 and 18.
+    # Run hourly; the Central-time gate below performs API refreshes at 00, 04, 08, 12, 16 and 20.
     - cron: '0 * * * *'
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           HOUR=$(TZ=America/Chicago date +%H)
-          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "00" || "$HOUR" == "06" || "$HOUR" == "12" || "$HOUR" == "18" ]]; then
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "00" || "$HOUR" == "04" || "$HOUR" == "08" || "$HOUR" == "12" || "$HOUR" == "16" || "$HOUR" == "20" ]]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
