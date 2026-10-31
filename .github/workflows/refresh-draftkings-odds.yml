@@ -2,7 +2,7 @@ name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
   schedule:
-    # Run hourly; the Central-time gate below performs API refreshes at 00, 04, 08, 12, 16 and 20.
+    # Poll hourly; local Central-time gate runs the 4-hour baseline plus pre-kickoff slate checks.
     - cron: '0 * * * *'
 permissions:
   contents: write
@@ -23,7 +23,17 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           HOUR=$(TZ=America/Chicago date +%H)
-          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "00" || "$HOUR" == "04" || "$HOUR" == "08" || "$HOUR" == "12" || "$HOUR" == "16" || "$HOUR" == "20" ]]; then
+          DAY=$(TZ=America/Chicago date +%u)  # Monday=1 ... Sunday=7
+          # Standard kickoffs (Central): Sun 12:00, 3:05/3:25, 7:20;
+          # Thu/Mon 7:15. Refresh ~1 hour before each slate. Saturday
+          # special slates use the same early/late/night windows.
+          PRE_KICKOFF=false
+          if [[ "$DAY" == "7" || "$DAY" == "6" ]]; then
+            if [[ "$HOUR" == "11" || "$HOUR" == "14" || "$HOUR" == "18" ]]; then PRE_KICKOFF=true; fi
+          elif [[ "$DAY" == "1" || "$DAY" == "4" ]]; then
+            if [[ "$HOUR" == "18" ]]; then PRE_KICKOFF=true; fi
+          fi
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$HOUR" == "00" || "$HOUR" == "04" || "$HOUR" == "08" || "$HOUR" == "12" || "$HOUR" == "16" || "$HOUR" == "20" || "$PRE_KICKOFF" == "true" ]]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
