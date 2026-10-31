@@ -7,6 +7,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "P.J. Locke",
+            "position": "S",
+            "status": "Questionable",
+            "team": "DAL"
+          },
+          {
+            "detail": "questionable",
             "player": "Kenny Clark",
             "position": "DT",
             "status": "Questionable",
@@ -31,13 +38,6 @@
             "player": "George Pickens",
             "position": "WR",
             "status": "Questionable",
-            "team": "DAL"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Jonathan Bullard",
-            "position": "DT",
-            "status": "Injured Reserve",
             "team": "DAL"
           },
           {
@@ -580,126 +580,6 @@
         }
       }
     },
-    "2026_08_CAR_GB": {
-      "availability": {
-        "source": "ESPN game summary",
-        "status": "unavailable"
-      },
-      "kickoff_utc": "2026-10-30T00:15:00+00:00",
-      "model_metrics": {
-        "away": {
-          "defense_epa_rating": 0.0227,
-          "defense_rank": 21,
-          "offense_epa_rating": 0.0084,
-          "offense_rank": 14,
-          "recent_form": {
-            "avg_margin": 3.0,
-            "avg_points_against": 21.4,
-            "avg_points_for": 24.4,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 3,
-                "points_for": 34,
-                "result": "W",
-                "week": 2
-              },
-              {
-                "points_against": 21,
-                "points_for": 18,
-                "result": "L",
-                "week": 3
-              },
-              {
-                "points_against": 26,
-                "points_for": 32,
-                "result": "W",
-                "week": 4
-              },
-              {
-                "points_against": 14,
-                "points_for": 25,
-                "result": "W",
-                "week": 6
-              },
-              {
-                "points_against": 43,
-                "points_for": 13,
-                "result": "L",
-                "week": 7
-              }
-            ],
-            "wins": 3
-          }
-        },
-        "home": {
-          "defense_epa_rating": -0.0422,
-          "defense_rank": 4,
-          "offense_epa_rating": 0.0092,
-          "offense_rank": 13,
-          "recent_form": {
-            "avg_margin": 2.6,
-            "avg_points_against": 17.8,
-            "avg_points_for": 20.4,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 35,
-                "points_for": 14,
-                "result": "L",
-                "week": 3
-              },
-              {
-                "points_against": 14,
-                "points_for": 17,
-                "result": "W",
-                "week": 4
-              },
-              {
-                "points_against": 7,
-                "points_for": 31,
-                "result": "W",
-                "week": 5
-              },
-              {
-                "points_against": 13,
-                "points_for": 23,
-                "result": "W",
-                "week": 6
-              },
-              {
-                "points_against": 20,
-                "points_for": 17,
-                "result": "L",
-                "week": 7
-              }
-            ],
-            "wins": 3
-          }
-        },
-        "scoring_edge_components": {
-          "away_offense_vs_home_defense": -1.52,
-          "home_field_points": 1.5,
-          "home_offense_vs_away_defense": 1.43
-        }
-      },
-      "rest": {
-        "away": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-10-25T17:00:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        },
-        "home": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-10-25T20:25:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        }
-      }
-    },
     "2026_08_CHI_SEA": {
       "availability": {
         "source": "ESPN game summary",
@@ -874,13 +754,6 @@
             "team": "CLE"
           },
           {
-            "detail": "questionable",
-            "player": "Tytus Howard",
-            "position": "OT",
-            "status": "Questionable",
-            "team": "CLE"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Kalia Davis",
             "position": "DT",
@@ -891,6 +764,13 @@
             "detail": "Injured Reserve",
             "player": "Teven Jenkins",
             "position": "G",
+            "status": "Injured Reserve",
+            "team": "CLE"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Raheim Sanders",
+            "position": "RB",
             "status": "Injured Reserve",
             "team": "CLE"
           }
@@ -1246,10 +1126,10 @@
             "team": "DEN"
           },
           {
-            "detail": "questionable",
+            "detail": "Injured Reserve",
             "player": "L'Jarius Sneed",
             "position": "CB",
-            "status": "Questionable",
+            "status": "Injured Reserve",
             "team": "KC"
           },
           {
@@ -1556,23 +1436,23 @@
             "team": "NYJ"
           },
           {
-            "detail": "out",
+            "detail": "questionable",
+            "player": "Jack Bech",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "LV"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Patrick Johnson",
             "position": "DE",
-            "status": "Out",
+            "status": "Injured Reserve",
             "team": "LV"
           },
           {
             "detail": "Injured Reserve",
             "player": "Carter Runyon",
             "position": "TE",
-            "status": "Injured Reserve",
-            "team": "LV"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Jack Bech",
-            "position": "WR",
             "status": "Injured Reserve",
             "team": "LV"
           },
@@ -1942,6 +1822,20 @@
             "team": "MIA"
           },
           {
+            "detail": "out",
+            "player": "TreVeyon Henderson",
+            "position": "RB",
+            "status": "Out",
+            "team": "NE"
+          },
+          {
+            "detail": "out",
+            "player": "A.J. Brown",
+            "position": "WR",
+            "status": "Out",
+            "team": "NE"
+          },
+          {
             "detail": "questionable",
             "player": "Carlton Davis III",
             "position": "CB",
@@ -1952,20 +1846,6 @@
             "detail": "questionable",
             "player": "Christian Elliss",
             "position": "LB",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "TreVeyon Henderson",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "A.J. Brown",
-            "position": "WR",
             "status": "Questionable",
             "team": "NE"
           },
@@ -2253,6 +2133,13 @@
           },
           {
             "detail": "out",
+            "player": "Carnell Tate",
+            "position": "WR",
+            "status": "Out",
+            "team": "TEN"
+          },
+          {
+            "detail": "out",
             "player": "Tommy Townsend",
             "position": "P",
             "status": "Out",
@@ -2276,13 +2163,6 @@
             "detail": "out",
             "player": "Tyjae Spears",
             "position": "RB",
-            "status": "Out",
-            "team": "TEN"
-          },
-          {
-            "detail": "out",
-            "player": "Carnell Tate",
-            "position": "WR",
             "status": "Out",
             "team": "TEN"
           }
@@ -2406,6 +2286,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-10-31T12:22:32Z",
+  "generated_at_utc": "2026-10-31T19:16:00Z",
   "schema_version": 1
 }
