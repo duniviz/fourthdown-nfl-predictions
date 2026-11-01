@@ -1263,7 +1263,7 @@ function render(){
   const q=odds.get(p.away+'|'+p.home);
   if(!q||Math.abs(Date.parse(q.commence_time)-Date.parse(p.kickoff_utc))>3600000)return;
   const home=Number(p.projected_home_score),away=Number(p.projected_away_score),margin=home-away,total=home+away;
-  const sim=simulations.find(v=>v.game_id===p.game_id);const base={game:p.away+' @ '+p.home,kickoff:p.kickoff_utc,score:p.away+' '+away.toFixed(1)+' · '+p.home+' '+home.toFixed(1),quote:q,sim};
+  const sim=simulations.find(v=>v.game_id===p.game_id);const base={game_id:p.game_id,game:p.away+' @ '+p.home,kickoff:p.kickoff_utc,score:p.away+' '+away.toFixed(1)+' · '+p.home+' '+home.toFixed(1),quote:q,sim};
   if(margin!==0&&Array.isArray(q.moneyline)&&q.moneyline.length===2&&q.moneyline.every(m=>Number.isFinite(Number(m.price))))markets.winner.push({...base,rank:Math.abs(margin),pick:margin>0?p.home:p.away,detail:'Projected winning margin '+Math.abs(margin).toFixed(1)+' pts'});
   if(q.total!==null&&q.total!==''&&Number.isFinite(Number(q.total))){const line=Number(q.total),gap=total-line;if(gap!==0)markets.total.push({...base,rank:Math.abs(gap),pick:(gap>0?'Over ':'Under ')+line.toFixed(1),detail:'Model total '+total.toFixed(1)+' · DK '+line.toFixed(1)+' · Difference '+(gap>0?'+':'')+gap.toFixed(1)});}
   if(q.home_spread!==null&&q.home_spread!==''&&Number.isFinite(Number(q.home_spread))){const line=Number(q.home_spread),edge=margin+line;if(edge!==0)markets.ats.push({...base,rank:Math.abs(edge),pick:(edge>0?p.home+' '+(line>0?'+':'')+line.toFixed(1):p.away+' '+(-line>0?'+':'')+(-line).toFixed(1)),detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts vs DK'});}
@@ -1283,19 +1283,50 @@ function render(){
   if(type==='total'&&sim&&sim.dk_total!=null&&Number(sim.dk_total)===Number(item.quote.total)){confidence=pct(item.pick.startsWith('Over')?sim.over_cover_pct:sim.under_cover_pct);}
   if(type==='ats'&&sim&&sim.dk_home_spread!=null&&Number(sim.dk_home_spread)===Number(item.quote.home_spread)){confidence=pct(item.pick.startsWith(item.quote.home+' ')?sim.home_cover_pct:sim.away_cover_pct);}
   const n=v=>Number(v).toFixed(1);
-  const projectedTotal=Number(item.detail.match(/Model total ([0-9]+(?:\\.[0-9]+)?)/)?.[1]);
-  const lineTotal=Number(item.quote.total);
+  const forecast=forecasts.find(p=>p.game_id===item.game_id);
+  const analysis=forecast?.analysis||{};
+  const recent=side=>analysis[side]?.recent_form;
+  const teamName=side=>side==='home'?item.quote.home:item.quote.away;
+  const rankSentence=(side,category)=>{
+   const row=(analysis.matchup_metrics||[]).find(x=>x.label===category);
+   const opposite=side==='home'?'away':'home';
+   const attack=row?.[side+'_offense'],defend=row?.[opposite+'_defense'];
+   const ar=Number(attack?.rank),dr=Number(defend?.rank);
+   if(!Number.isInteger(ar)||!Number.isInteger(dr)||ar<1||ar>32||dr<1||dr>32)return '';
+   const kind=category==='EPA / rush'?'running game':category==='EPA / pass'?'passing attack':'offense';
+   return teamName(side)+' bring the No. '+ar+' '+kind+' into a matchup with '+teamName(opposite)+'\'s No. '+dr+' defense in that category.';
+  };
+  const recentSentence=side=>{
+   const x=recent(side),games=Number(x?.games),wins=Number(x?.wins),pf=Number(x?.avg_points_for),pa=Number(x?.avg_points_against);
+   if(games<3||!Number.isFinite(wins)||!Number.isFinite(pf)||!Number.isFinite(pa))return '';
+   return teamName(side)+' have gone '+wins+'-'+(games-wins)+' over their last '+games+', averaging '+n(pf)+' points scored and '+n(pa)+' allowed.';
+  };
+  const relevantMismatch=()=>{
+   const rows=(analysis.matchup_metrics||[]).filter(x=>['EPA / rush','EPA / pass','Points / game'].includes(x.label));
+   const choices=[];
+   for(const row of rows)for(const side of ['home','away']){
+    const opposite=side==='home'?'away':'home',ar=Number(row[side+'_offense']?.rank),dr=Number(row[opposite+'_defense']?.rank);
+    if(Number.isInteger(ar)&&Number.isInteger(dr)&&ar>=1&&ar<=32&&dr>=1&&dr<=32)choices.push({side,label:row.label,gap:dr-ar,ar,dr});
+   }
+   choices.sort((a,b)=>b.gap-a.gap);
+   return choices.find(x=>x.gap>=10&&x.ar<=16&&x.dr>=20)||null;
+  };
   const explain=()=>{
-   if(type==='total'){
-    const gap=Math.abs(Number(item.rank));
-    const under=item.pick.startsWith('Under');
-    return 'The model sees '+(under?'a quieter game':'more scoring')+' than DraftKings does. Its projected total is '+(Number.isFinite(projectedTotal)?n(projectedTotal):'different from the market')+' against a '+n(lineTotal)+'-point line — a '+n(gap)+'-point gap. '+(under?'That gives the under some room, though a couple of explosive plays could change the picture.':'That makes the over interesting, although stalled drives or turnovers could keep the score down.');
-   }
-   if(type==='ats'){
-    const edge=n(item.rank);
-    return 'The model and DraftKings disagree on how close this game should be. After accounting for the spread, FOURTHDOWN sees about '+edge+' points of breathing room on '+item.pick+'. That is the reason this side stands out — but a late score can still swing a spread.';
-   }
-   return 'FOURTHDOWN projects '+item.pick+' to finish ahead by about '+n(item.rank)+' points. That is why this team leads the model’s winner picks, although a projected margin is not the same as a guaranteed win.';
+   const facts=[];
+   const mismatch=relevantMismatch();
+   if(mismatch)facts.push(rankSentence(mismatch.side,mismatch.label));
+   const homeRecent=recentSentence('home'),awayRecent=recentSentence('away');
+   if(homeRecent)facts.push(homeRecent);
+   if(awayRecent)facts.push(awayRecent);
+   const lead=type==='total'
+    ?'The model expects '+(item.pick.startsWith('Under')?'fewer':'more')+' points than the DraftKings total, with an '+n(item.rank)+'-point difference.'
+    :type==='ats'?'FOURTHDOWN sees a '+n(item.rank)+'-point advantage against the posted spread for '+item.pick+'.'
+    :'FOURTHDOWN projects '+item.pick+' to win by about '+n(item.rank)+' points.';
+   const caveat=type==='total'
+    ?'The biggest uncertainty is whether those recent scoring patterns carry into this matchup.'
+    :type==='ats'?'The spread can still turn on one late possession.'
+    :'A projected margin does not rule out an upset.';
+   return lead+' '+(facts.length?facts.slice(0,3).join(' '):'The available matchup feed does not provide enough verified team-ranking or recent-form context for a more specific football explanation.')+' '+caveat;
   };
   const whyText=explain();
   const hasConfidence=confidence!==null;
