@@ -6,6 +6,7 @@
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
 const categories={passing:'passing_yards',rushing:'rushing_yards',receiving:'receiving_yards'};
+const countMarkets={passing:'player_pass_completions',rushing:'player_rush_attempts',receiving:'player_receptions'};
 const labels={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
 const state={game:'all',market:'all',rows:[],games:[],updated:null,feedError:false};
 const get=async path=>{const c=new AbortController();const timer=setTimeout(()=>c.abort(),9000);try{const r=await fetch(url+path,{cache:'no-store',signal:c.signal});if(!r.ok)throw Error('ESPN '+r.status);return await r.json();}finally{clearTimeout(timer);}};
@@ -21,11 +22,17 @@ function readPlayers(summary,event){
    if(!market)continue;
    const idx=(section.labels||[]).findIndex(x=>String(x).toUpperCase()==='YDS');
    if(idx<0)continue;
+   const countIdx=(section.labels||[]).findIndex(x=>String(x).toUpperCase()===(market==='passing_yards'?'C/ATT':market==='rushing_yards'?'CAR':'REC'));
    for(const row of section.athletes||[]){
     const athlete=row.athlete||{},values=row.stats||[];
     const value=Number(values[idx]);
     if(!Number.isFinite(value))continue;
     output.push({game_id:String(event.id),matchup,team,player:athlete.displayName||athlete.fullName||athlete.shortName,player_id:String(athlete.id||''),market,actual:value,game_status:event.status?.type?.shortDetail||event.status?.type?.description||event.status?.displayClock||'',period:Number(event.status?.period||0),clock:event.status?.displayClock||'',score_diff:(()=>{const opponent=teams.find(c=>c.team?.abbreviation!==team);const own=scores[team],other=scores[opponent?.team?.abbreviation];return Number.isFinite(own)&&Number.isFinite(other)?own-other:null;})()});
+    if(countIdx>=0){
+     const raw=String(values[countIdx]??'');
+     const count=market==='passing_yards'?Number(raw.split('/')[0]):Number(raw);
+     if(raw!==''&&Number.isFinite(count)&&count>=0)output.push({game_id:String(event.id),matchup,team,player:athlete.displayName||athlete.fullName||athlete.shortName,player_id:String(athlete.id||''),market:countMarkets[String(section.name||section.type||'').toLowerCase()],actual:count,game_status:event.status?.type?.shortDetail||event.status?.type?.description||'',period:Number(event.status?.period||0),clock:event.status?.displayClock||''});
+    }
    }
   }
  }
@@ -97,6 +104,19 @@ function updateLiveBar(card,r){
  const projectedWidth=estimate===null?0:Math.max(0,Math.min(100,(estimate-r.actual)/max*100));
  line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track" role="img" aria-label="Actual '+r.actual+' yards; projected additional '+(estimate===null?'unavailable':(estimate-r.actual).toFixed(1))+' yards"><span class="fd-live-actual-segment" style="width:'+actualWidth.toFixed(1)+'%"></span><span class="fd-live-projected-segment" style="width:'+projectedWidth.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Actual '+r.actual+' yards · Final estimate available after 3 minutes':'<span class="fd-live-key-actual">●</span> Actual '+r.actual+' · <span class="fd-live-key-projected">●</span> Remaining '+(estimate-r.actual).toFixed(1)+' projected yards · Historical game script · Regulation only')+'</small>';
 }
+function paintPropRows(){
+ document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
+  const player=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
+  const found=state.rows.filter(r=>playerKey(r.player)===player&&playerKey(r.team)===team&&r.market===market);
+  let slot=card.querySelector('.fd-prop-live-actual');
+  if(!slot){slot=document.createElement('div');slot.className='fd-prop-live-actual';slot.style.cssText='margin-top:8px;padding:8px;border-radius:8px;background:#10333d;color:#b8f5e6;font-size:12px';card.appendChild(slot);}
+  if(found.length!==1){slot.textContent=state.feedError?'Live ESPN stats unavailable':state.games.length?'Live actual pending':'Live actual starts at kickoff';return;}
+  const x=found[0],line=Number(card.dataset.fdDkLine),hasLine=card.dataset.fdDkLine!==''&&Number.isFinite(line);
+  const remaining=hasLine?Math.max(0,Math.floor(line-x.actual)+1):null;
+  const unit=market.includes('yards')?'yards':market==='player_pass_completions'?'completions':market==='player_rush_attempts'?'attempts':'receptions';
+  slot.textContent='LIVE ACTUAL: '+x.actual+' '+unit+(hasLine?' / DK '+line+' · '+(remaining===0?'Over line reached':remaining+' more to go over'):'')+' · '+(x.game_status||'In progress');
+ });
+}
 let painting=false;
 function paintCards(){
  if(painting)return;painting=true;
@@ -111,9 +131,10 @@ function paintCards(){
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
    updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString():'—');slot.appendChild(sub);
   });
+  paintPropRows();
  }finally{painting=false;}
 }
-const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card')||n.querySelector?.('.fd-mobile-prop-card')))))paintCards();});
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card,.fd-result-row')||n.querySelector?.('.fd-mobile-prop-card,.fd-result-row')))))paintCards();});
 observer.observe(document.body,{subtree:true,childList:true});
 
 async function refresh(){
