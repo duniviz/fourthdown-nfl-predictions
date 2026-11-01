@@ -118,8 +118,9 @@ function paintModalTotals(){
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
  body.innerHTML='<div class="fd-result-list">'+sorted.map(x=>{
   const q=lookup(x),raw=q?.dataset.fdDkLine??'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
-  const needed=valid?Math.max(0,Math.floor(line-x.actual)+1):null;
-  return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>LIVE</small><strong>'+x.actual+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>TO GO OVER</small><strong>'+(valid?(needed===0?'Reached':needed):'—')+'</strong></div></div></div>';
+  const rawProjection=q?.dataset.fdProjection??'',projection=rawProjection!==''?Number(rawProjection):NaN;
+  const validProjection=Number.isFinite(projection)&&projection>=0;
+  return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+(validProjection?projection.toFixed(1):'—')+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>';
  }).join('')+'</div><small>ESPN live box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'')+'</small>';
 }
 function paintPropRows(){
