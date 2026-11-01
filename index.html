@@ -1287,8 +1287,9 @@ function render(){
   const pct=v=>v!=null&&v!==''&&Number.isFinite(Number(v))&&Number(v)>=0&&Number(v)<=100?Number(v):null;
   let confidence=null;
   if(type==='winner'&&sim){confidence=pct(item.pick===item.quote.home?sim.home_win_pct:sim.away_win_pct);}
-  if(type==='total'&&sim){confidence=pct(item.pick.startsWith('Over')?sim.over_cover_pct:sim.under_cover_pct);}
-  if(type==='ats'&&sim){confidence=pct(item.pick.startsWith(item.quote.home+' ')?sim.home_cover_pct:sim.away_cover_pct);}
+  // A probability is only valid for the exact DK threshold used in the simulation.
+  if(type==='total'&&sim&&sim.dk_total!=null&&Number(sim.dk_total)===Number(item.quote.total)){confidence=pct(item.pick.startsWith('Over')?sim.over_cover_pct:sim.under_cover_pct);}
+  if(type==='ats'&&sim&&sim.dk_home_spread!=null&&Number(sim.dk_home_spread)===Number(item.quote.home_spread)){confidence=pct(item.pick.startsWith(item.quote.home+' ')?sim.home_cover_pct:sim.away_cover_pct);}
   const hasConfidence=confidence!==null;
   const confidenceLabel=hasConfidence?confidence.toFixed(1)+'%':'Not available';
   const confidenceBar=hasConfidence?'<div class="fd-signal-track" role="img" aria-label="Published simulation probability '+confidenceLabel+'"><span style="width:'+confidence.toFixed(1)+'%"></span></div><small>Simulation probability · not a guaranteed outcome</small>':'<div class="fd-signal-track" role="img" aria-label="Simulation probability unavailable"><span style="width:0%"></span></div><small>Simulation probability unavailable for this market</small>';
