@@ -1333,10 +1333,37 @@ function renderMatchupCards(games){
    // Request the same NFL week as our published forecasts; ESPN's default
    // scoreboard window can lag behind the upcoming forecast week.
    const target=forecasts.find(g=>Number.isInteger(Number(g.week))&&Number.isInteger(Number(g.season)));
-   const scoreboardUrl='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+new Date().getUTCFullYear()+'&limit=400';
-   const response=await fetch(scoreboardUrl,{cache:'no-store'});
-   if(!response.ok)throw new Error('Live score provider unavailable ('+response.status+')');
-   const raw=await response.json();
+   // Prefer the current ESPN scoreboard window; retry with the season-wide endpoint.
+   // A saved successful response is the final fallback and is explicitly labeled stale.
+   const espnBase='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+   const season=new Date().getUTCFullYear();
+   const urls=[espnBase+'?limit=100',espnBase+'?dates='+season+'&limit=400'];
+   let raw=null,scoreSource='ESPN',lastError=null;
+   for(const url of urls){
+     try{
+       const controller=new AbortController();
+       const timeout=setTimeout(()=>controller.abort(),9000);
+       let response;
+       try{response=await fetch(url,{cache:'no-store',signal:controller.signal});}
+       finally{clearTimeout(timeout);}
+       if(!response.ok)throw new Error('HTTP '+response.status);
+       const candidate=await response.json();
+       if(!Array.isArray(candidate.events)||!candidate.events.length)throw new Error('Empty ESPN events');
+       raw=candidate;
+       try{localStorage.setItem('fd_espn_scoreboard_backup',JSON.stringify({savedAt:Date.now(),payload:candidate}));}catch(_){}
+       break;
+     }catch(err){lastError=err;}
+   }
+   if(!raw){
+     try{
+       const saved=JSON.parse(localStorage.getItem('fd_espn_scoreboard_backup')||'null');
+       if(saved&&Array.isArray(saved.payload?.events)&&saved.payload.events.length&&Date.now()-saved.savedAt<86400000){
+         raw=saved.payload;
+         scoreSource='Cached ESPN scores · last saved '+new Date(saved.savedAt).toLocaleTimeString()+' (not live)';
+       }
+     }catch(_){}
+   }
+   if(!raw)throw new Error('ESPN primary and backup unavailable: '+(lastError?.message||'unknown error'));
    const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
      const comp=(event.competitions||[])[0]||{};
      const teams=comp.competitors||[];
@@ -1353,6 +1380,7 @@ function renderMatchupCards(games){
    }).filter(g=>g.home.abbr&&g.away.abbr)};
    // Keep ESPN's real scoreboard games, even when the published forecast week
    // differs. Forecast-only placeholders may be added but must never replace live scores.
+   if(scoreSource!=='ESPN')label.textContent=scoreSource;
    const realGames=data.games;
    const missingForecasts=forecasts.filter(p=>!realGames.some(g=>
      canon(g.home.abbr)===canon(p.home)&&canon(g.away.abbr)===canon(p.away)
