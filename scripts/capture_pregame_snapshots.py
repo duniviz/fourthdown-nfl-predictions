@@ -74,13 +74,23 @@ def main():
  source=read("count-projections.json")
  generated=source.get("generated_at_utc")
  projections=[dict(p,generated_at_utc=generated) for p in source.get("players",[])]
+ # Fail loudly on stale model feeds instead of silently publishing zero records.
+ if not generated or not dt(generated) or (now-dt(generated)).total_seconds()>36*3600:
+  raise RuntimeError("Projection feed is missing or older than 36 hours; refresh the model first")
+ if not projections: raise RuntimeError("Projection feed has no players")
+
  odds=read("dk-odds.json")
  quotes=list(odds.get("rows",[]))
  archive=read("dk-line-history.json")
  quotes+=archive.get("rows",[])
+ if not quotes: print("WARNING: No timestamped DK quotes available; DK lines will remain unavailable")
+
  dest=DATA/"pregame-snapshots.json"
  old=read("pregame-snapshots.json").get("records",[])
  rows=capture(old,projections,quotes,games,now)
+ if not games: raise RuntimeError("No schedule data returned")
+ if not rows and not old: raise RuntimeError("No pre-kickoff records captured; verify schedule and model feed")
+
  if len(rows)<len(old): raise RuntimeError("Refusing to lose existing snapshots")
  payload={"schema_version":1,"description":"Immutable last available pre-kickoff snapshots; missing lines are null","records":rows}
  dest.write_text(json.dumps(payload,indent=2)+"\n")
