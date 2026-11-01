@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/capture_pregame_snapshots.py'
       - 'tests/test_capture_pregame_snapshots.py'
+      - 'tests/test_gb_car_pregame.py'
       - '.github/workflows/test-pregame-capture.yml'
   workflow_dispatch:
 permissions:
@@ -20,5 +21,7 @@ jobs:
           python-version: '3.12'
       - name: Run snapshot unit tests
         run: python -m unittest discover -s tests -p 'test_capture_pregame_snapshots.py' -v
+      - name: Test real GB-CAR historical regression
+        run: python -m unittest discover -s tests -p 'test_gb_car_pregame.py' -v
       - name: Validate Python syntax
         run: python -m py_compile scripts/capture_pregame_snapshots.py
