@@ -41,5 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: count-props-walkforward-results
-          path: /tmp/fourthdown-count-props/count-props-results.json
+          path: |
+            /tmp/fourthdown-count-props/count-props-results.json
+            /tmp/fourthdown-count-props/count-props-challenger-results.json
           if-no-files-found: warn
