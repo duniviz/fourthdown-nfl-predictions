@@ -154,9 +154,9 @@ function paintCards(){
   paintPropRows();paintModalTotals();
  }finally{painting=false;}
 }
-const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(!n.closest?.('.fd-live-player-body')&&(n.matches?.('.fd-mobile-prop-card,.fd-live-player-stats')||n.querySelector?.('.fd-mobile-prop-card,.fd-live-player-stats'))))))paintCards();});
-observer.observe(document.body,{subtree:true,childList:true});
-
+// Avoid a document-wide MutationObserver: rebuilding hundreds of player rows
+// during modal rendering can lock up mobile browsers.
+document.addEventListener('fd-matchup-opened',()=>{requestAnimationFrame(paintCards);});
 async function refresh(){
  try{
   const board=await get('scoreboard?limit=30');
@@ -170,5 +170,5 @@ async function refresh(){
   paintCards();
  }catch(e){state.feedError=true;paintCards();}
 }
-paintCards();refresh();setInterval(refresh,60000);setInterval(paintCards,2500);
+refresh();setInterval(refresh,60000);
 })();
