@@ -1368,7 +1368,7 @@ function renderMatchupCards(games){
    fdWireMetricFilters(container);
    // Weather is fetched only if a user expands a specific matchup.
    
-  }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';container.innerHTML='<div class="score-placeholder">Live scores cannot be retrieved right now. Open ESPN for current game scores.</div>';label.textContent='Feed unavailable';}
+  }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';const fallbackGames=forecasts.filter(p=>p.home&&p.away&&p.kickoff_utc).map(p=>({id:p.game_id,date:p.kickoff_utc,home:{abbr:p.home},away:{abbr:p.away},state:'pre',status:'Published forecast · live scores unavailable'}));window.fdVisibleGames=fallbackGames;container.innerHTML=fallbackGames.length?fallbackGames.map(g=>'<article class="scorecard"><div class="score-head"><span class="score-state">PUBLISHED MATCHUP</span><span class="caption">Live scores unavailable</span></div><div class="score-teams"><div class="score-team"><span class="name">'+esc(g.away.abbr)+'</span></div><div class="score-team"><span class="name">'+esc(g.home.abbr)+'</span></div></div>'+projectionHtml(g)+'<button type="button" class="fd-modal-open" data-matchup-id="'+esc(g.id)+'">View full matchup →</button></article>').join(''):'<div class="score-placeholder">Live scores unavailable and no published matchups found. Try Refresh Scores.</div>';label.textContent='Live feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
  container.addEventListener('click',e=>{
