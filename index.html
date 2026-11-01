@@ -684,7 +684,59 @@ function fdOpenMatchup(g){
    };
    const winPaths='<div class="fd-win-paths">'+path(leaderSide,leaderTeam,true)+path(otherSide,otherTeam,false)+'</div>';
    const official=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/')?'<a href="'+esc(g.link)+'" target="_blank" rel="noopener noreferrer">ESPN game details</a> · ':'';
-   return '<div class="fd-modal-section fd-ai-insights"><h3>Why the model leans '+esc(leaderTeam)+'</h3><p class="fd-modal-muted">What the available matchup numbers suggest—not a guarantee or betting recommendation.</p><div class="fd-ai-summary"><p><strong>'+esc(leaderTeam)+' hold the projected edge, but the other side has a path to win.</strong> '+scoreStory+'</p><p>'+passStory+'</p><p>'+counterStory+'</p>'+recentStory+historyStory+restStory+injuryPreview+'</div><h4 style="margin:14px 0 0;color:#eafbf6">Keys to the game</h4>'+winPaths+'<p class="fd-ai-sources">Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>ESPN injury feed; confirm final actives before kickoff.</span></p></div>';
+   // Select the game's strongest verified storylines before composing the preview.
+   // No fixed paragraph order, fabricated player impact or forced "keys" checklist.
+   const stories=[];
+   const add=(score,kind,body)=>{if(Number.isFinite(score)&&body)stories.push({score,kind,body});};
+   const sideName=side=>side==='home'?home:away;
+   for(const row of metrics){
+    if(!['EPA / pass','EPA / rush','Points / game','Red-zone TD rate','Turnovers / game'].includes(row.label))continue;
+    for(const side of ['home','away']){
+     const opponent=side==='home'?'away':'home',off=row[side+'_offense'],def=row[opponent+'_defense'];
+     const or=Number(off?.rank),dr=Number(def?.rank),ov=Number(off?.value);
+     if(!Number.isInteger(or)||!Number.isInteger(dr)||or<1||or>32||dr<1||dr>32)continue;
+     const team=esc(sideName(side)),foe=esc(sideName(opponent)),adv=dr-or;
+     if(row.label==='EPA / pass'&&adv>=9&&or<=17&&dr>=19)
+      add(adv+5,'passing',team+' have a real opportunity throwing the ball. They rank '+or+' in passing efficiency, and '+foe+' are '+dr+' defending the pass. That is the matchup I would watch when '+team+' need to move the chains.');
+     if(row.label==='EPA / rush'&&adv>=9&&or<=17&&dr>=19)
+      add(adv+5,'rushing',team+' may be able to lean on the ground game. Their rushing efficiency ranks '+or+', compared with '+foe+' at '+dr+' against the run. If that holds up, it could keep '+team+' out of obvious passing situations.');
+     if(row.label==='Points / game'&&adv>=12&&or<=15&&dr>=22)
+      add(adv,'scoring',team+' have been one of the more productive scoring offenses (rank '+or+'), and '+foe+' have struggled to prevent points (rank '+dr+'). That combination makes sustained scoring drives a real concern for '+foe+'.');
+     if(row.label==='Red-zone TD rate'&&Number.isFinite(ov)&&or<=12)
+      add(9+(13-or)/2,'redzone',team+' are converting '+ov.toFixed(1)+'% of red-zone trips into touchdowns (rank '+or+'). In a game where the projected margin is '+num(margin)+', those finishes could matter more than total yardage.');
+    }
+   }
+   const rec=gameContext?.games?.[p.game_id]?.recent||{};
+   for(const side of ['home','away']){
+    const x=rec[side],team=esc(sideName(side));
+    if(x?.status!=='verified'||!Array.isArray(x.games)||x.games.length<3)continue;
+    const nGames=x.games.length,w=Number(x.wins),pf=Number(x.avg_points_for),pa=Number(x.avg_points_against);
+    if(!Number.isFinite(w)||!Number.isFinite(pf)||!Number.isFinite(pa))continue;
+    if(w<=1&&nGames>=4)add(12,'form',team+' have won only '+w+' of their last '+nGames+' games, scoring '+pf.toFixed(1)+' points a game while allowing '+pa.toFixed(1)+'. That recent form is a reason to be cautious about relying on '+team+' to control the matchup.');
+    else if(w>=nGames-1&&nGames>=4)add(10,'form',team+' have won '+w+' of their last '+nGames+', averaging '+pf.toFixed(1)+' points scored and '+pa.toFixed(1)+' allowed. That run of results gives some context for the model, though it does not guarantee the next game.');
+    else if(pf-pa>=8)add(9,'form',team+' have outscored opponents by '+(pf-pa).toFixed(1)+' points per game across their last '+nGames+' contests ('+pf.toFixed(1)+' for, '+pa.toFixed(1)+' against). That recent scoring gap is worth paying attention to.');
+   }
+   const hRest=Number(homeRest?.days_since_last_game),aRest=Number(awayRest?.days_since_last_game);
+   if(homeRest?.status==='verified'&&awayRest?.status==='verified'&&Number.isFinite(hRest)&&Number.isFinite(aRest)&&Math.abs(hRest-aRest)>=5){
+    const better=hRest>aRest?home:away;
+    add(7,'rest',esc(better)+' have had '+Math.abs(hRest-aRest)+' more days between games. Extra preparation and recovery may help, but I would not make a pick based on rest alone.');
+   }
+   stories.sort((a,b)=>b.score-a.score);
+   const chosen=[];const used=new Set();
+   for(const story of stories){if(used.has(story.kind))continue;chosen.push(story);used.add(story.kind);if(chosen.length===3)break;}
+   const projectedWinnerPoints=leaderSide==='home'?Number(p.projected_home_score):Number(p.projected_away_score);
+   const projectedOtherPoints=leaderSide==='home'?Number(p.projected_away_score):Number(p.projected_home_score);
+   const winRate=simGame?Number(leaderSide==='home'?simGame.home_win_pct:simGame.away_win_pct):NaN;
+   const probability=Number.isFinite(winRate)?' They win '+winRate.toFixed(1)+'% of the published simulations.':'';
+   const intro=chosen.length
+    ?chosen[0].body+' The model still has '+esc(leaderTeam)+' ahead '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+'.'+probability
+    :'The model has '+esc(leaderTeam)+' winning '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+'.'+probability+' The available matchup data do not point to one dominant statistical mismatch, so I would treat this as a projection rather than a strong matchup-based endorsement.';
+   const extra=chosen.slice(1).map(x=>'<p>'+x.body+'</p>').join('');
+   const close=margin<=3.5
+    ?'My read: this is close enough that one possession could change the result. '+esc(leaderTeam)+' are the projected winner, but that alone does not tell us whether the spread or moneyline offers value.'
+    :margin>=10?'My read: the model sees a meaningful gap in expected scoring, but the DraftKings number still needs to be compared separately before calling it a worthwhile bet.'
+    :'My read: '+esc(leaderTeam)+' have the projected edge, although the final margin could look very different if the matchup advantages above do not materialize.';
+   return '<div class="fd-modal-section fd-ai-insights"><h3>'+esc(away)+' at '+esc(home)+': what stands out</h3><div class="fd-ai-summary"><p>'+intro+'</p>'+extra+'<p>'+close+'</p></div><p class="fd-ai-sources">Specific verified matchup and recent-game data where available. Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>Check the separate injuries section for availability; confirm final inactives before kickoff.</span></p></div>';
  })():'';
  const simScore=simGame?(()=>{const valid=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))&&Number(x)>=0&&Number(x)<=100;const av=valid(simGame.away_win_pct)?Number(simGame.away_win_pct):null,hv=valid(simGame.home_win_pct)?Number(simGame.home_win_pct):null,tv=valid(simGame.tie_pct)?Number(simGame.tie_pct):null;const usable=av!==null&&hv!==null&&Math.abs(av+hv+(tv??0)-100)<3;const pct=x=>x===null?'—':x.toFixed(1)+'%';const bars=usable?'<div class="fd-win-viz"><div class="fd-win-labels"><strong>'+esc(away)+' '+pct(av)+'</strong><strong>'+esc(home)+' '+pct(hv)+'</strong></div><div class="fd-win-track" role="img" aria-label="Simulated outcomes: '+esc(away)+' '+pct(av)+', '+esc(home)+' '+pct(hv)+(tv===null?'':', ties '+pct(tv))+'"><span style="width:'+av+'%"></span><span style="width:'+hv+'%"></span>'+(tv!==null?'<span style="width:'+tv+'%"></span>':'')+'</div>'+(tv!==null?'<small>Ties: '+pct(tv)+'</small>':'')+'</div>':'<p class="fd-modal-muted">Simulation percentages are not available for this matchup.</p>';return '<div class="fd-modal-section fd-win-section"><h3>Simulated game outcomes</h3>'+bars+'<p>Median score: '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory simulations, not calibrated betting probabilities.</p></div>';})():'';
  const score=p?(()=>{const av=Number(p.projected_away_score),hv=Number(p.projected_home_score),total=av+hv,valid=Number.isFinite(total)&&total>0,ap=valid?Math.max(0,Math.min(100,av/total*100)):50,hp=100-ap,winner=canon(p.predicted_winner),edge=Math.abs(hv-av);return '<div class="fd-modal-pick fd-score-hero"><div class="fd-hero-kicker">FOURTHDOWN · PROJECTED SCORE</div><div class="fd-hero-scoreline"><div><span>'+esc(away)+'</span><strong>'+num(p.projected_away_score)+'</strong></div><small>VS</small><div><span>'+esc(home)+'</span><strong>'+num(p.projected_home_score)+'</strong></div></div><div class="fd-hero-chart" role="img" aria-label="Projected points: '+esc(away)+' '+num(av)+', '+esc(home)+' '+num(hv)+'"><span style="width:'+ap.toFixed(2)+'%"></span><span style="width:'+hp.toFixed(2)+'%"></span></div><div class="fd-hero-footer"><span>Projected total <b>'+num(p.projected_total)+'</b></span><strong>'+esc(winner)+' by '+num(edge)+'</strong></div></div>'})():'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
