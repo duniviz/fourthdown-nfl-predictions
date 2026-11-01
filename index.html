@@ -1345,7 +1345,7 @@ function renderMatchupCards(games){
    const final=data.games.filter(g=>g.state==='post');
    const upcoming=data.games.filter(g=>g.state!=='in'&&g.state!=='post');
    try{renderHybridSpotlight();}catch(widgetError){console.warn('Optional player spotlight unavailable',widgetError);}
-   window.fdAllGames=data.games;const sorted=[...live,...upcoming,...final].filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(data.games);
+   window.fdAllGames=data.games;const sorted=[...live,...upcoming].filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump([...live,...upcoming]);
    status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString()+(age>45?' · DELAYED DATA':'');
    label.textContent=age<1?'Updated just now':'Updated '+age+'m ago';
    window.fdVisibleGames=sorted;
