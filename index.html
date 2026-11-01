@@ -1294,7 +1294,7 @@ function renderMatchupCards(games){
    // Request the same NFL week as our published forecasts; ESPN's default
    // scoreboard window can lag behind the upcoming forecast week.
    const target=forecasts.find(g=>Number.isInteger(Number(g.week))&&Number.isInteger(Number(g.season)));
-   const scoreboardUrl='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+new Date().getUTCFullYear()+'&limit=100';
+   const scoreboardUrl='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+new Date().getUTCFullYear()+'&limit=400';
    const response=await fetch(scoreboardUrl,{cache:'no-store'});
    if(!response.ok)throw new Error('Live score provider unavailable ('+response.status+')');
    const raw=await response.json();
