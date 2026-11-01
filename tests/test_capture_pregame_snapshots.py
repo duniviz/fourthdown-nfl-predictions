@@ -21,4 +21,15 @@ class CaptureTests(unittest.TestCase):
  def test_existing_snapshot_preserved_after_kickoff(self):
   old=m.capture([],[self.p],[self.q],self.games,date(17))
   self.assertEqual(m.capture(old,[self.p],[],self.games,date(19)),old)
+ def test_newer_quote_updates_without_new_projection(self):
+  old=m.capture([],[self.p],[self.q],self.games,date(17))
+  later=dict(self.q,line=79.5,captured_at=date(17).isoformat())
+  updated=m.capture(old,[self.p],[later],self.games,date(17))
+  self.assertEqual(updated[0]["projection"],82)
+  self.assertEqual(updated[0]["dk_line"],79.5)
+ def test_stale_quote_does_not_replace_newer(self):
+  newer=dict(self.q,line=79.5,captured_at=date(17).isoformat())
+  old=m.capture([],[self.p],[newer],self.games,date(17))
+  updated=m.capture(old,[self.p],[self.q],self.games,date(17))
+  self.assertEqual(updated[0]["dk_line"],79.5)
 if __name__=="__main__":unittest.main()
