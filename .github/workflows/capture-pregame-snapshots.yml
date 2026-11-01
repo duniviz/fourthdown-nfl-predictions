@@ -1,0 +1,32 @@
+name: Capture last pregame projections and DK lines
+on:
+  schedule:
+    - cron: '*/15 * * * 0,1,4'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: capture-pregame-snapshots
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Capture available pregame source records
+        run: python scripts/capture_pregame_snapshots.py
+      - name: Commit snapshot updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pregame-snapshots.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: preserve latest pre-kickoff projections and DK lines"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

@@ -1,0 +1,29 @@
+name: Test pregame capture
+on:
+  push:
+    branches: [feature/last-pregame-capture]
+  pull_request:
+    paths:
+      - 'scripts/capture_pregame_snapshots.py'
+      - 'tests/test_capture_pregame_snapshots.py'
+      - 'tests/test_gb_car_pregame.py'
+      - '.github/workflows/test-pregame-capture.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run snapshot unit tests
+        run: python -m unittest discover -s tests -p 'test_capture_pregame_snapshots.py' -v
+      - name: Test real GB-CAR historical regression
+        run: python -m unittest discover -s tests -p 'test_gb_car_pregame.py' -v
+      - name: Audit Week 7 and Week 8 completed games
+        run: python scripts/audit_completed_games.py
+      - name: Validate Python syntax
+        run: python -m py_compile scripts/capture_pregame_snapshots.py
