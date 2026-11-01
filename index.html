@@ -1245,9 +1245,7 @@ function renderMatchupCards(games){
    // Request the same NFL week as our published forecasts; ESPN's default
    // scoreboard window can lag behind the upcoming forecast week.
    const target=forecasts.find(g=>Number.isInteger(Number(g.week))&&Number.isInteger(Number(g.season)));
-   const scoreboardUrl=target
-     ? 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+encodeURIComponent(target.season)+'&seasontype=2&week='+encodeURIComponent(target.week)
-     : 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+   const scoreboardUrl='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
    const response=await fetch(scoreboardUrl,{cache:'no-store'});
    if(!response.ok)throw new Error('Live score provider unavailable ('+response.status+')');
    const raw=await response.json();
@@ -1265,19 +1263,17 @@ function renderMatchupCards(games){
        broadcast:(comp.broadcasts||[]).flatMap(x=>x.names||[]).slice(0,2).join(', '),
        link:'https://www.espn.com/nfl/game/_/gameId/'+String(event.id||'')};
    }).filter(g=>g.home.abbr&&g.away.abbr)};
-   // Published forecasts define the active week. ESPN can return the previous
-   // week's scores even when explicitly asked for a future week.
-   if(forecasts.length){
-     const matched=data.games;
-     data.games=forecasts.map(p=>{
-       const found=matched.find(g=>canon(g.home.abbr)===canon(p.home)&&canon(g.away.abbr)===canon(p.away)
-         &&Math.abs(new Date(g.date).getTime()-new Date(p.kickoff_utc).getTime())<12*3600000);
-       if(found)return found;
-       const team=abbr=>({abbr,name:abbr,logo:'',score:null,record:''});
-       return {id:p.game_id,date:p.kickoff_utc,home:team(p.home),away:team(p.away),
-         state:'pre',status:'Scheduled · Week '+p.week,broadcast:'NFL',link:null};
-     });
-   }
+   // Keep ESPN's real scoreboard games, even when the published forecast week
+   // differs. Forecast-only placeholders may be added but must never replace live scores.
+   const realGames=data.games;
+   const missingForecasts=forecasts.filter(p=>!realGames.some(g=>
+     canon(g.home.abbr)===canon(p.home)&&canon(g.away.abbr)===canon(p.away)
+     &&Math.abs(new Date(g.date).getTime()-new Date(p.kickoff_utc).getTime())<12*3600000));
+   const team=abbr=>({abbr,name:abbr,logo:'',score:null,record:''});
+   data.games=[...realGames,...missingForecasts.map(p=>({
+     id:p.game_id,date:p.kickoff_utc,home:team(p.home),away:team(p.away),
+     state:'pre',status:'Scheduled · Week '+p.week,broadcast:'NFL',link:null
+   }))];
    if(!Array.isArray(data.games)||!data.games.length)throw new Error('Empty scoreboard');
    const updated=new Date(data.updated_at_utc);
    const age=Math.round((Date.now()-updated.getTime())/60000);
@@ -1314,7 +1310,11 @@ function renderMatchupCards(games){
      const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
-     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="hybrid-teamlogos">'+(g.away.logo?'<img src="'+esc(g.away.logo)+'" alt="">':'')+'<span>'+esc(g.away.abbr)+' vs '+esc(g.home.abbr)+'</span>'+(g.home.logo?'<img src="'+esc(g.home.logo)+'" alt="">':'')+'</div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+safeScoreWidget(()=>propPanel(g))+(isFinal?safeScoreWidget(()=>completedPlayerPanel(g)):'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+fdScorecardMatchupSummary(g)+'<button type="button" class="fd-modal-open" data-matchup-id="'+esc(g.id)+'">View full matchup →</button><div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
+     const awayPoints=Number(g.away.score),homePoints=Number(g.home.score);
+     const scored=(active||isFinal)&&g.away.score!==null&&g.home.score!==null&&Number.isFinite(awayPoints)&&Number.isFinite(homePoints);
+     const currentTotal=scored?awayPoints+homePoints:null;
+     const totalDisplay=scored?'<div class="fd-live-inline"><strong>'+(active?'Live':'Final')+' combined total: '+currentTotal+' points</strong><small>'+esc(g.away.abbr)+' '+awayPoints+' + '+esc(g.home.abbr)+' '+homePoints+' · '+esc(display)+'</small></div>':'';
+     return '<article class="scorecard'+(active?' live-game':'')+'"><div class="score-head"><span class="score-state">'+(active?'<span class="live-dot pulse" style="margin-right:8px"></span>':'')+title+'</span><span class="caption">'+esc(display)+'</span></div><div class="hybrid-teamlogos">'+(g.away.logo?'<img src="'+esc(g.away.logo)+'" alt="">':'')+'<span>'+esc(g.away.abbr)+' vs '+esc(g.home.abbr)+'</span>'+(g.home.logo?'<img src="'+esc(g.home.logo)+'" alt="">':'')+'</div><div class="score-teams">'+team(g.away||{})+team(g.home||{})+'</div>'+totalDisplay+safeScoreWidget(()=>propPanel(g))+(isFinal?safeScoreWidget(()=>completedPlayerPanel(g)):'')+(isFinal?'<details class="fd-recap" data-game-id="'+esc(g.id)+'"><summary>Game recap · Stats & highlights</summary><div class="fd-recap-body">Tap to load recap.</div></details>':'')+(g.home.record||g.away.record?'<div class="fd-team-record">Season records · '+esc(g.away.abbr)+' '+esc(g.away.record||'n/a')+' · '+esc(g.home.abbr)+' '+esc(g.home.record||'n/a')+'</div>':'')+projectionHtml(g)+fdScorecardMatchupSummary(g)+'<button type="button" class="fd-modal-open" data-matchup-id="'+esc(g.id)+'">View full matchup →</button><div class="score-footer"><span>'+esc(g.broadcast||'NFL')+'</span>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">Game details ↗</a>':'')+'</div></article>';
    }).join(''):'<div class="score-placeholder">No games match this filter.</div>';
    fdWireMetricFilters(container);
    // Weather is fetched only if a user expands a specific matchup.
