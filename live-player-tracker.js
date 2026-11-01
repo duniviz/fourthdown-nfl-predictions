@@ -8,7 +8,7 @@ const url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
 const categories={passing:'passing_yards',rushing:'rushing_yards',receiving:'receiving_yards'};
 const countMarkets={passing:'player_pass_completions',rushing:'player_rush_attempts',receiving:'player_receptions'};
 const labels={passing_yards:'Passing',rushing_yards:'Rushing',receiving_yards:'Receiving'};
-const state={game:'all',market:'all',rows:[],games:[],updated:null,feedError:false};
+const state={game:'all',market:'all',rows:[],games:[],updated:null,feedError:false,finalIds:new Set()};
 const get=async path=>{const c=new AbortController();const timer=setTimeout(()=>c.abort(),9000);try{const r=await fetch(url+path,{cache:'no-store',signal:c.signal});if(!r.ok)throw Error('ESPN '+r.status);return await r.json();}finally{clearTimeout(timer);}};
 function readPlayers(summary,event){
  const output=[],groups=summary?.boxscore?.players||[];
@@ -133,7 +133,10 @@ function paintModalTotals(){
  const format=v=>v===null?'—':Number(v).toFixed(1);
  const markup=sortedRows.map(x=>{
   const valid=x.line!==null,progress=valid?Math.min(100,Math.max(0,x.actual/x.line*100)):null;
-  const stateLabel=valid?(x.actual>x.line?'OVER PREGAME LINE':'TRACKING'):'NO SAVED LINE';
+  const gameFinal=state.finalIds?.has(gameId)||false;
+  const pick=x.projection===null||!valid||x.projection===x.line?null:(x.projection>x.line?'OVER':'UNDER');
+  const graded=gameFinal&&pick?(x.actual===x.line?'PUSH':((pick==='OVER'&&x.actual>x.line)||(pick==='UNDER'&&x.actual<x.line)?'HIT':'MISS')):null;
+  const stateLabel=graded?(graded+' · '+pick+' '+format(x.line)):pick?(pick+' '+format(x.line)+' · LIVE'):'NO VERIFIED PICK';
   return '<div class="fd-live-prop-row"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
  const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
@@ -175,7 +178,8 @@ document.addEventListener('fd-matchup-opened',()=>{requestAnimationFrame(paintCa
 async function refresh(){
  try{
   const board=await get('scoreboard?limit=30');
-  const live=(board.events||[]).filter(e=>e.status?.type?.state==='in');
+  const live=(board.events||[]).filter(e=>['in','post'].includes(e.status?.type?.state));
+  state.finalIds=new Set(live.filter(e=>e.status?.type?.state==='post').map(e=>String(e.id)));
   state.games=live.map(e=>({id:String(e.id),name:e.shortName||e.name||String(e.id)}));
   const settled=await Promise.allSettled(live.map(async e=>readPlayers(await get('summary?event='+encodeURIComponent(e.id)),e)));
   state.rows=settled.flatMap(x=>x.status==='fulfilled'?x.value:[]);
