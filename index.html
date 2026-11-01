@@ -1207,27 +1207,30 @@ async function fdLoadGameOdds(){try{
  if(history.ok){const j=await history.json();fdGameLineHistory=j.games&&typeof j.games==='object'?j.games:{};}
 }catch(e){console.warn('DK game odds unavailable',e);}}
 function fdGameLineComparison(p){
- const match=(rows)=>Object.values(rows||{}).find(x=>canon(x.home)===canon(p.home)&&canon(x.away)===canon(p.away)&&(!x.commence_time||Math.abs(Date.parse(x.commence_time)-Date.parse(p.kickoff_utc))<12*3600000));
- const o=fdGameOdds[p.game_id]||match(fdGameOdds),opening=match(fdOpeningGameOdds),history=Object.entries(fdGameLineHistory).filter(([key,rows])=>Array.isArray(rows)&&key.startsWith(p.home+'|'+p.away+'|')&&Math.abs(Date.parse(key.split('|')[2])-Date.parse(p.kickoff_utc))<12*3600000).flatMap(([key,rows])=>rows),m=Number(p.projected_home_score)-Number(p.projected_away_score),t=Number(p.projected_home_score)+Number(p.projected_away_score);
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
- const sp=valid(o?.home_spread)?Number(o.home_spread):null,tot=valid(o?.total)?Number(o.total):null;
- const openSp=valid(opening?.home_spread)?Number(opening.home_spread):null,openTot=valid(opening?.total)?Number(opening.total):null;
- const tm=m>=0?p.home:p.away,modelSpread=tm+' '+(m>=0?'-':'+')+Math.abs(m).toFixed(1);
- const dkSpread=sp===null?'Not available':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
- const updated=o?.updated_at_utc?Date.parse(o.updated_at_utc):NaN,age=Date.now()-updated;
- const state=!o?'DK lines unavailable':Number.isFinite(updated)&&age>=0&&age<15*3600000?'DK quote snapshot':'DK quote stale · verify before use';
- const signed=n=>(n>0?'+':'')+n.toFixed(1);
- const spreadTrend=openSp===null||sp===null?'Spread: opening unavailable':'Spread (home): '+signed(openSp)+' → '+signed(sp)+' · '+(Math.abs(sp-openSp)<0.05?'No move':signed(sp-openSp)+' pts');
- const totalTrend=openTot===null||tot===null?'Total: opening unavailable':'Total: '+openTot.toFixed(1)+' → '+tot.toFixed(1)+' · '+(Math.abs(tot-openTot)<0.05?'No move':signed(tot-openTot)+' pts');
- const formatTime=x=>{const d=new Date(x);return Number.isFinite(d.getTime())?d.toLocaleString(): 'Unknown';};
- const historyRows=history.slice().sort((a,b)=>Date.parse(a.captured_at_utc)-Date.parse(b.captured_at_utc));
- const timeline=historyRows.length?'<div style="margin-top:10px"><strong>Observed changes ('+historyRows.length+')</strong><div style="max-height:160px;overflow:auto">'+historyRows.map((x,i)=>'<div style="padding:3px 0">'+esc(formatTime(x.captured_at_utc))+' · Home spread '+esc(valid(x.home_spread)?signed(Number(x.home_spread)):'—')+' · Total '+esc(valid(x.total)?Number(x.total).toFixed(1):'—')+'</div>').join('')+'</div></div>':'<div style="margin-top:8px;opacity:.8">Change history begins with the next successful odds refresh.</div>';
- const firstCaptured=opening?.opening_captured_at_utc||historyRows[0]?.captured_at_utc;
- const chart=(field,title)=>{const points=historyRows.map(x=>({v:Number(x[field]),time:x.captured_at_utc})).filter(x=>Number.isFinite(x.v)&&x.time);if(points.length<2)return '<p class="fd-viz-note">At least two recorded observations are needed for a chart.</p>';const vals=points.map(x=>x.v),lo=Math.min(...vals)-0.5,hi=Math.max(...vals)+0.5,range=hi-lo||1;const coords=points.map((x,i)=>[18+(i/(points.length-1))*304,96-(x.v-lo)/range*75]);const line=coords.map((xy,i)=>(i?'L':'M')+xy[0].toFixed(1)+' '+xy[1].toFixed(1)).join(' ');return '<svg viewBox="0 0 340 120" role="img" aria-label="'+esc(title)+' observed line history" style="display:block;width:100%;max-height:170px"><path d="'+line+'" stroke="#baff25" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+coords.map((xy,i)=>'<circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="4" fill="#4adfd1"><title>'+esc(formatTime(points[i].time))+' · '+points[i].v+'</title></circle>').join('')+'<text x="18" y="115" font-size="10" fill="#b7c8c5">First saved</text><text x="322" y="115" font-size="10" text-anchor="end" fill="#b7c8c5">Latest</text></svg>';};
- const historyCharts='<details class="fd-odds-chart"><summary style="cursor:pointer;font-weight:750;color:#baff25">View line movement chart</summary><div class="fd-chart-tabs" role="group" aria-label="Line chart market"><button type="button" class="fd-chart-choice" data-field="home_spread" aria-pressed="true">Spread</button><button type="button" class="fd-chart-choice" data-field="total" aria-pressed="false">Total</button></div><div class="fd-chart-pane" data-spread="'+encodeURIComponent(chart('home_spread','Spread'))+'" data-total="'+encodeURIComponent(chart('total','Total'))+'">'+chart('home_spread','Spread')+'</div></details>';
- const trendHtml='<div class="fd-dk-movement" style="margin-top:10px;padding:10px 12px;border:1px solid rgba(150,160,175,.28);border-radius:9px;font-size:12px;line-height:1.65"><strong>DK LINE MOVEMENT · First captured → Latest</strong><div>First saved: '+esc(firstCaptured?formatTime(firstCaptured):'Unavailable')+' · Latest: '+esc(Number.isFinite(updated)?formatTime(updated):'Unavailable')+'</div><div>'+esc(spreadTrend)+'</div><div>'+esc(totalTrend)+'</div><small style="opacity:.75">Spread is from the home team’s perspective. First captured may differ from the sportsbook’s original opener.</small>'+timeline+'</div>';
-
- return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings</b><div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div><div><small>DK SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div><div><small>DK O/U</small><strong>'+(tot===null?'Not available':tot.toFixed(1))+'</strong></div></div>'+trendHtml+'<p>'+(sp===null?'Spread comparison unavailable. ':'Model home margin minus DK-implied home margin: '+(m+sp).toFixed(1)+' points. ')+(tot===null?'Total comparison unavailable. ':'Model total vs DK: '+(t-tot>0?'+':'')+(t-tot).toFixed(1)+' points. ')+state+(Number.isFinite(updated)?' · '+esc(new Date(updated).toLocaleString()):'')+'. Market lines are for comparison only.</p></div>';
+ const kickoff=Date.parse(p.kickoff_utc);
+ const history=Object.entries(fdGameLineHistory).filter(([key,rows])=>{
+   if(!Array.isArray(rows))return false;
+   const parts=key.split('|');
+   return parts.length>=3&&canon(parts[0])===canon(p.home)&&canon(parts[1])===canon(p.away)&&Number.isFinite(kickoff)&&Math.abs(Date.parse(parts[2])-kickoff)<12*3600000;
+ }).flatMap(([,rows])=>rows).filter(x=>Number.isFinite(Date.parse(x.captured_at_utc))&&Date.parse(x.captured_at_utc)<kickoff).sort((a,b)=>Date.parse(b.captured_at_utc)-Date.parse(a.captured_at_utc));
+ const latest=history[0]||null;
+ const m=Number(p.projected_home_score)-Number(p.projected_away_score);
+ const t=Number(p.projected_home_score)+Number(p.projected_away_score);
+ const sp=valid(latest?.home_spread)?Number(latest.home_spread):null;
+ const tot=valid(latest?.total)?Number(latest.total):null;
+ const modelFavorite=m>=0?p.home:p.away;
+ const modelSpread=modelFavorite+' '+(m>=0?'-':'+')+Math.abs(m).toFixed(1);
+ const dkSpread=sp===null?'Not captured':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
+ const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString():'No verified pregame quote';
+ return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings · Pregame</b>'+
+   '<div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div>'+
+   '<div><small>DK PREGAME SPREAD</small><strong>'+esc(dkSpread)+'</strong></div>'+
+   '<div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div>'+
+   '<div><small>DK PREGAME O/U</small><strong>'+(tot===null?'Not captured':tot.toFixed(1))+'</strong></div></div>'+
+   '<p class="fd-pregame-quote">Last saved before kickoff: '+esc(captured)+'. Lines are frozen pregame snapshots, never live odds.</p>'+
+   (sp===null||tot===null?'<p>Missing pregame markets were not captured and cannot be reconstructed after kickoff.</p>':'')+
+   '</div>';
 }
 
 function fdTopModelSignals(p){
