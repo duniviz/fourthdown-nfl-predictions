@@ -2,7 +2,7 @@
 """Persist latest strictly pre-kickoff player projections and verified DK quotes.
 Uses only published source timestamps; never backfills post-kickoff estimates.
 """
-import json, os, pathlib, datetime, urllib.request
+import json, pathlib, datetime, urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
 def read(name):
@@ -48,7 +48,7 @@ def capture(existing,projections,quotes,games,now):
   except (TypeError,ValueError):line=None
   key=(str(p["game_id"]),str(p["player_id"]),str(market))
   previous=records.get(key)
-  if previous and dt(previous.get("captured_at")) and dt(previous["captured_at"])>=generated:continue
+  # Never regress a captured projection, even when the feed is stale.\n  if previous and dt(previous.get("captured_at")) and dt(previous["captured_at"])>=generated:continue
   records[key]={"game_id":p["game_id"],"player_id":p["player_id"],"player":p.get("player"),
     "team":team,"market":market,"projection":projection,"dk_line":line,
     "captured_at":generated.isoformat(),"dk_captured_at":(matching[0][0].isoformat() if matching else None),
