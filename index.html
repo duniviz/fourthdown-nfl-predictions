@@ -370,6 +370,8 @@ renderParlays();
  const weatherCache=new Map();
  const recapCache=new Map();
  let playerResearch=[];
+ let countProps=[];
+ let countDkQuotes=[];
  let simulationGames=[];
  let simulationPlayers=[];
  let playerHistory=[];
@@ -408,6 +410,8 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
+  try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
+  try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=Array.isArray(j.rows)?j.rows:[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
@@ -1093,11 +1097,23 @@ function fdGamePreview(g,p){
  const score=as!==null&&hs!==null?'Prediction: '+away+' '+Math.round(as)+', '+home+' '+Math.round(hs)+'.':'';
  return '<details class="fd-game-preview" style="margin:12px 0;padding:12px;border:1px solid #3a5157;border-radius:12px;background:#101d25"><summary style="cursor:pointer;font-weight:800;color:#baff25">Game preview · How we see it</summary><p style="font-size:13px;line-height:1.6;margin:10px 0 0">'+esc(form(a,away)+form(h,home)+context+outlook+score)+'</p><small style="display:block;color:#aab9c3;margin-top:8px">Based on saved pregame team metrics and model scores. Unverified head-to-head or ATS trends are excluded.</small></details>';
 }
+function fdCountPropsForGame(g){
+ const away=canon(g.away.abbr),home=canon(g.home.abbr);
+ const markets={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
+ const normName=x=>String(x||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+ const rows=countProps.filter(p=>[away,home].includes(canon(p.team))&&[away,home].includes(canon(p.opponent))&&canon(p.team)!==canon(p.opponent)&&markets[p.market_key]&&countDkQuotes.some(q=>q.market_key===p.market_key&&normName(q.player)===normName(p.player)&&Number.isFinite(Number(q.line))&&q.line!==null&&q.line!==''&&q.home_team&&q.away_team));
+ if(!rows.length)return '';
+ const byMarket=Object.keys(markets).map(k=>{
+  const values=rows.filter(p=>p.market_key===k).sort((a,b)=>Number(b.projection)-Number(a.projection)).slice(0,3);
+  return values.length?'<div><strong>'+markets[k]+'</strong><p>'+values.map(p=>esc(p.player)+' '+Number(p.projection).toFixed(1)).join(' · ')+'</p></div>':'';
+ }).join('');
+ return '<details class="fd-extras" style="margin-top:12px"><summary>Player count projections ('+rows.length+')</summary><div class="fd-matchup-metrics">'+byMarket+'</div><small>Pregame model estimates · DK lines shown separately when available · <a href="bets.html#fd-extra-markets">Full prop board</a></small></details>';
+}
 function renderMatchupCards(games){
   const root=document.getElementById('fd-matchup-grid');if(!root)return;
   const rows=games.filter(g=>g.state!=='post').map(g=>({g,p:getProjection(g)})).filter(x=>x.p);
   if(!rows.length){root.innerHTML='<div class="score-placeholder">No published pregame matchup forecasts are available for the current scoreboard.</div>';return;}
-  root.innerHTML=rows.map(({g,p})=>{const a=p.analysis?.away||{},h=p.analysis?.home||{};const inj=(p.injury_adjustments?.[g.away.abbr]?.reported_out||0)+(p.injury_adjustments?.[g.home.abbr]?.reported_out||0);return '<article class="fd-matchup-card"><div class="fd-matchup-top"><div><div class="fd-matchup-tag">Model matchup</div><h3>'+esc(g.away.abbr)+' @ '+esc(g.home.abbr)+'</h3></div><span class="fd-matchup-tag">Total '+Number(p.projected_total).toFixed(1)+'</span></div><div class="fd-matchup-score"><div><strong>'+esc(g.away.abbr)+' '+Number(p.projected_away_score).toFixed(1)+'</strong><small>projected</small></div><b>—</b><div><strong>'+esc(g.home.abbr)+' '+Number(p.projected_home_score).toFixed(1)+'</strong><small>projected</small></div></div>'+fdGameLineComparison(p)+fdGamePreview(g,p)+'<div class="fd-matchup-metrics"><div><span>'+esc(g.away.abbr)+' ranks</span><strong>Off '+esc(a.offense_rank??'—')+' · Def '+esc(a.defense_rank??'—')+'</strong></div><div><span>'+esc(g.home.abbr)+' ranks</span><strong>Off '+esc(h.offense_rank??'—')+' · Def '+esc(h.defense_rank??'—')+'</strong></div><div><span>Last five</span><strong>'+esc(g.away.abbr)+' '+esc(a.recent_form?.wins??'—')+'-'+Math.max(0,Number(a.recent_form?.games||0)-Number(a.recent_form?.wins||0))+'</strong></div><div><span>Reported out</span><strong>'+inj+' · verify inactives</strong></div></div><div class="fd-matchup-foot"><span>Winner forecast: '+esc(p.predicted_winner||'—')+'</span><button type="button" data-fd-card="'+esc(g.id)+'">Full matchup →</button></div></article>';}).join('');
+  root.innerHTML=rows.map(({g,p})=>{const a=p.analysis?.away||{},h=p.analysis?.home||{};const inj=(p.injury_adjustments?.[g.away.abbr]?.reported_out||0)+(p.injury_adjustments?.[g.home.abbr]?.reported_out||0);return '<article class="fd-matchup-card"><div class="fd-matchup-top"><div><div class="fd-matchup-tag">Model matchup</div><h3>'+esc(g.away.abbr)+' @ '+esc(g.home.abbr)+'</h3></div><span class="fd-matchup-tag">Total '+Number(p.projected_total).toFixed(1)+'</span></div><div class="fd-matchup-score"><div><strong>'+esc(g.away.abbr)+' '+Number(p.projected_away_score).toFixed(1)+'</strong><small>projected</small></div><b>—</b><div><strong>'+esc(g.home.abbr)+' '+Number(p.projected_home_score).toFixed(1)+'</strong><small>projected</small></div></div>'+fdGameLineComparison(p)+fdGamePreview(g,p)+fdCountPropsForGame(g)+'<div class="fd-matchup-metrics"><div><span>'+esc(g.away.abbr)+' ranks</span><strong>Off '+esc(a.offense_rank??'—')+' · Def '+esc(a.defense_rank??'—')+'</strong></div><div><span>'+esc(g.home.abbr)+' ranks</span><strong>Off '+esc(h.offense_rank??'—')+' · Def '+esc(h.defense_rank??'—')+'</strong></div><div><span>Last five</span><strong>'+esc(g.away.abbr)+' '+esc(a.recent_form?.wins??'—')+'-'+Math.max(0,Number(a.recent_form?.games||0)-Number(a.recent_form?.wins||0))+'</strong></div><div><span>Reported out</span><strong>'+inj+' · verify inactives</strong></div></div><div class="fd-matchup-foot"><span>Winner forecast: '+esc(p.predicted_winner||'—')+'</span><button type="button" data-fd-card="'+esc(g.id)+'">Full matchup →</button></div></article>';}).join('');
   root.querySelectorAll('[data-fd-card]').forEach(b=>b.addEventListener('click',()=>{const g=games.find(x=>String(x.id)===b.dataset.fdCard);if(g)fdOpenMatchup(g);}));
  }
  function renderConfidencePool(games){
