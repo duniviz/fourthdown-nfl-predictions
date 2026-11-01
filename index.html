@@ -1355,9 +1355,14 @@ function renderMatchupCards(games){
    const localDate=Object.fromEntries(dateParts.filter(p=>p.type!=='literal').map(p=>[p.type,Number(p.value)]));
    const dayIndex={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[weekday]??0;
    const daysSinceThursday=(dayIndex+7-4)%7;
-   const slateStart=Date.UTC(localDate.year,localDate.month-1,localDate.day-daysSinceThursday);
-   const currentSlateFinal=retainFinal?final.filter(g=>{const kickoff=Date.parse(g.date);return Number.isFinite(kickoff)&&kickoff>=slateStart;}):[];
-   const visibleGames=[...live,...upcoming,...currentSlateFinal];
+   // NFL slate begins Thursday and ends at Tuesday 8 AM Central.
+   // Tuesday after 8 AM through Wednesday previews the next Thursday-Monday slate.
+   const rollover=(dayIndex===2&&hour>=8)||dayIndex===3;
+   const startOffset=rollover?(dayIndex===2?2:1):-daysSinceThursday;
+   const slateStart=Date.UTC(localDate.year,localDate.month-1,localDate.day+startOffset,6);
+   const slateEnd=slateStart+5*86400000+8*3600000;
+   const inSlate=g=>{const kickoff=Date.parse(g.date);return Number.isFinite(kickoff)&&kickoff>=slateStart&&kickoff<slateEnd;};
+   const visibleGames=[...live.filter(inSlate),...upcoming.filter(inSlate),...(retainFinal?final.filter(inSlate):[])];
    window.fdAllGames=data.games;const sorted=visibleGames.filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(visibleGames);
    status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString()+(age>45?' · DELAYED DATA':'');
    label.textContent=age<1?'Updated just now':'Updated '+age+'m ago';
