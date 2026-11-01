@@ -247,6 +247,11 @@ const frozen=(archive.players||[]).filter(x=>{
 const frozenKeys=new Set(frozen.map(x=>String(x.game_id)+'|'+norm(x.player)+'|'+x.stat_key));
 const kickoffFor=new Map();
 for(const x of frozen)kickoffFor.set(String(x.game_id),Date.parse(x.kickoff_utc));
+for(const x of latestResearch){
+ if(kickoffFor.has(String(x.game_id)))continue;
+ const same=[...(o.rows||[]),...(locked.rows||[])].find(q=>norm(q.player)===norm(x.player)&&q.market_key===(x.market_key||mk[x.market])&&Number.isFinite(Date.parse(q.commence_time)));
+ if(same)kickoffFor.set(String(x.game_id),Date.parse(same.commence_time));
+}
 const latestResearch=p.players||[];
 const current=latestResearch.filter(x=>{
  const t=kickoffFor.get(String(x.game_id));
