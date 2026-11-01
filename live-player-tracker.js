@@ -104,6 +104,24 @@ function updateLiveBar(card,r){
  const projectedWidth=estimate===null?0:Math.max(0,Math.min(100,(estimate-r.actual)/max*100));
  line.innerHTML='<div class="hybrid-label"><span>Live final estimate <small style="opacity:.8">(experimental)</small></span><b>'+(estimate===null?'—':estimate.toFixed(1))+'</b></div><div class="hybrid-track fd-live-estimate-track" role="img" aria-label="Actual '+r.actual+' yards; projected additional '+(estimate===null?'unavailable':(estimate-r.actual).toFixed(1))+' yards"><span class="fd-live-actual-segment" style="width:'+actualWidth.toFixed(1)+'%"></span><span class="fd-live-projected-segment" style="width:'+projectedWidth.toFixed(1)+'%"></span></div><small class="fd-live-estimate-note">'+(estimate===null?'Actual '+r.actual+' yards · Final estimate available after 3 minutes':'<span class="fd-live-key-actual">●</span> Actual '+r.actual+' · <span class="fd-live-key-projected">●</span> Remaining '+(estimate-r.actual).toFixed(1)+' projected yards · Historical game script · Regulation only')+'</small>';
 }
+function paintModalTotals(){
+ const panel=document.querySelector('.fd-live-player-stats[data-fd-live-game-id]');
+ if(!panel)return;
+ const body=panel.querySelector('.fd-live-player-body');if(!body)return;
+ const gameId=String(panel.dataset.fdLiveGameId||'');
+ const home=playerKey(panel.dataset.fdLiveHome),away=playerKey(panel.dataset.fdLiveAway);
+ const rows=state.rows.filter(x=>String(x.game_id)===gameId&&[home,away].includes(playerKey(x.team)));
+ if(!rows.length){body.innerHTML='<p class="fd-modal-muted">'+(state.feedError?'ESPN live stats are temporarily unavailable.':state.games.some(x=>x.id===gameId)?'Waiting for player box-score stats.':'No live player totals for this game right now. Stats appear when ESPN reports the game in progress.')+'</p>';return;}
+ const quotes=[...document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]')].filter(el=>el.closest('.scorecard')||el.closest('.fd-modal'));
+ const markets={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
+ const lookup=x=>quotes.find(el=>playerKey(el.dataset.fdPlayer)===playerKey(x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
+ const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
+ body.innerHTML='<div class="fd-result-list">'+sorted.map(x=>{
+  const q=lookup(x),raw=q?.dataset.fdDkLine??'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
+  const needed=valid?Math.max(0,Math.floor(line-x.actual)+1):null;
+  return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>LIVE</small><strong>'+x.actual+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>TO GO OVER</small><strong>'+(valid?(needed===0?'Reached':needed):'—')+'</strong></div></div></div>';
+ }).join('')+'</div><small>ESPN live box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'')+'</small>';
+}
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
   const player=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
@@ -131,10 +149,10 @@ function paintCards(){
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
    updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString():'—');slot.appendChild(sub);
   });
-  paintPropRows();
+  paintPropRows();paintModalTotals();
  }finally{painting=false;}
 }
-const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card,.fd-result-row')||n.querySelector?.('.fd-mobile-prop-card,.fd-result-row')))))paintCards();});
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card,.fd-result-row,.fd-live-player-stats')||n.querySelector?.('.fd-mobile-prop-card,.fd-result-row,.fd-live-player-stats')))))paintCards();});
 observer.observe(document.body,{subtree:true,childList:true});
 
 async function refresh(){
