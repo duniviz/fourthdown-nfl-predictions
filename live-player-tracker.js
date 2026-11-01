@@ -118,20 +118,25 @@ function paintModalTotals(){
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
  const dataset=window.fdLiveMatchupData?.gameId===gameId?window.fdLiveMatchupData:null;
  const sortedRows=sorted.map(x=>{
-  const q=lookup(x);
   const stored=(dataset?.projections||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
-  const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&(!p.team||playerKey(p.team)===playerKey(x.team))&&p.market===x.market);
-  const raw=quote?.pregame?quote.line:(q?.dataset.fdDkLine||stored?.dk_line||quote?.line||''),line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
-  const rawProjection=q?.dataset.fdProjection||stored?.projection||'',projection=rawProjection!==''?Number(rawProjection):NaN;
-  return {...x,line:valid?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
- });
+  const marketMap={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
+  const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&p.market===(marketMap[x.market]||x.market));
+  const raw=stored?.dk_line??quote?.line;
+  const line=raw!==null&&raw!==undefined&&raw!==''?Number(raw):NaN;
+  const projection=stored?.projection!==null&&stored?.projection!==undefined?Number(stored.projection):NaN;
+  return {...x,line:Number.isFinite(line)&&line>0?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
+ }).filter(x=>x.line!==null||x.projection!==null);
+ if(!sortedRows.length){
+  body.innerHTML='<p class="fd-modal-muted">No verified pregame projection or DraftKings line was archived for these players. Live stats are available, but FOURTHDOWN will not substitute in-game odds or revised forecasts.</p>';
+  return;
+ }
  const format=v=>v===null?'—':Number(v).toFixed(1);
  const markup=sortedRows.map(x=>{
   const valid=x.line!==null,progress=valid?Math.min(100,Math.max(0,x.actual/x.line*100)):null;
-  const stateLabel=valid?(x.actual>x.line?'OVER LINE':'TRACKING'):'NO DK LINE';
-  return '<div class="fd-live-prop-row"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No verified DK line for this player and market</div>')+'</div>';
+  const stateLabel=valid?(x.actual>x.line?'OVER PREGAME LINE':'TRACKING'):'NO SAVED LINE';
+  return '<div class="fd-live-prop-row"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
- const nextHtml='<div class="fd-live-prop-toolbar"><strong>Live player props</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · DK lines are saved quotes, not live prices.</div>';
+ const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
 }
 function paintPropRows(){
