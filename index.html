@@ -1283,7 +1283,6 @@ function render(){
   if(type==='total'&&sim&&sim.dk_total!=null&&Number(sim.dk_total)===Number(item.quote.total)){confidence=pct(item.pick.startsWith('Over')?sim.over_cover_pct:sim.under_cover_pct);}
   if(type==='ats'&&sim&&sim.dk_home_spread!=null&&Number(sim.dk_home_spread)===Number(item.quote.home_spread)){confidence=pct(item.pick.startsWith(item.quote.home+' ')?sim.home_cover_pct:sim.away_cover_pct);}
   const n=v=>Number(v).toFixed(1);
-  const projectedHome=Number(item.score.match(/ · [^·]+ ([0-9]+(?:\\.[0-9]+)?)$/)?.[1]);
   const projectedTotal=Number(item.detail.match(/Model total ([0-9]+(?:\\.[0-9]+)?)/)?.[1]);
   const lineTotal=Number(item.quote.total);
   const explain=()=>{
