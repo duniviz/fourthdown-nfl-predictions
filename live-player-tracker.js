@@ -116,16 +116,22 @@ function paintModalTotals(){
  const markets={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
  const lookup=x=>quotes.find(el=>playerKey(el.dataset.fdPlayer)===playerKey(x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
- const nextHtml='<div class="fd-result-list">'+sorted.map(x=>{
+ const dataset=window.fdLiveMatchupData?.gameId===gameId?window.fdLiveMatchupData:null;
+ const sortedRows=sorted.map(x=>{
   const q=lookup(x);
-  const dataset=window.fdLiveMatchupData?.gameId===gameId?window.fdLiveMatchupData:null;
   const stored=(dataset?.projections||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
   const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
   const raw=q?.dataset.fdDkLine||stored?.dk_line||quote?.line||'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
   const rawProjection=q?.dataset.fdProjection||stored?.projection||'',projection=rawProjection!==''?Number(rawProjection):NaN;
-  const validProjection=Number.isFinite(projection)&&projection>=0;
-  return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+(validProjection?projection.toFixed(1):'—')+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>';
- }).join('')+'</div><small>ESPN live box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'')+'</small>';
+  return {...x,line:valid?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
+ });
+ const format=v=>v===null?'—':Number(v).toFixed(1);
+ const markup=sortedRows.map(x=>{
+  const valid=x.line!==null,progress=valid?Math.min(100,Math.max(0,x.actual/x.line*100)):null;
+  const stateLabel=valid?(x.actual>x.line?'OVER LINE':'TRACKING'):'NO DK LINE';
+  return '<div class="fd-live-prop-row"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No verified DK line for this player and market</div>')+'</div>';
+ }).join('');
+ const nextHtml='<div class="fd-live-prop-toolbar"><strong>Live player props</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · DK lines are saved quotes, not live prices.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
 }
 function paintPropRows(){
