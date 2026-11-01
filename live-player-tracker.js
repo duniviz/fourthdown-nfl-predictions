@@ -120,8 +120,8 @@ function paintModalTotals(){
  const sortedRows=sorted.map(x=>{
   const q=lookup(x);
   const stored=(dataset?.projections||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
-  const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
-  const raw=q?.dataset.fdDkLine||stored?.dk_line||quote?.line||'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
+  const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&(!p.team||playerKey(p.team)===playerKey(x.team))&&p.market===x.market);
+  const raw=quote?.pregame?quote.line:(q?.dataset.fdDkLine||stored?.dk_line||quote?.line||''),line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
   const rawProjection=q?.dataset.fdProjection||stored?.projection||'',projection=rawProjection!==''?Number(rawProjection):NaN;
   return {...x,line:valid?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
  });
