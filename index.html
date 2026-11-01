@@ -1222,16 +1222,15 @@ function fdGameLineComparison(p){
  const sp=valid(latest?.home_spread)?Number(latest.home_spread):null;
  const tot=valid(latest?.total)?Number(latest.total):null;
  const modelFavorite=m>=0?p.home:p.away;
- const modelSpread=modelFavorite+' '+(m>=0?'-':'+')+Math.abs(m).toFixed(1);
- const dkSpread=sp===null?'Not captured':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
+ const modelSpread=modelFavorite+' -'+Math.abs(m).toFixed(1);
+ const dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
  const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString():'No verified pregame quote';
  return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings · Pregame</b>'+
    '<div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div>'+
    '<div><small>DK PREGAME SPREAD</small><strong>'+esc(dkSpread)+'</strong></div>'+
    '<div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div>'+
-   '<div><small>DK PREGAME O/U</small><strong>'+(tot===null?'Not captured':tot.toFixed(1))+'</strong></div></div>'+
-   '<p class="fd-pregame-quote">Last saved before kickoff: '+esc(captured)+'. Lines are frozen pregame snapshots, never live odds.</p>'+
-   (sp===null||tot===null?'<p>Missing pregame markets were not captured and cannot be reconstructed after kickoff.</p>':'')+
+   '<div><small>DK PREGAME O/U</small><strong>'+(tot===null?'Unavailable':tot.toFixed(1))+'</strong></div></div>'+
+   '<p class="fd-pregame-quote">'+(latest?.captured_at_utc?'Pregame snapshot: '+esc(captured):'DK pregame line unavailable')+'</p>'+
    '</div>';
 }
 
