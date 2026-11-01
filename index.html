@@ -371,6 +371,7 @@ renderParlays();
  const recapCache=new Map();
  let playerResearch=[];
  let countProps=[];
+ let countDkQuotes=[];
  let simulationGames=[];
  let simulationPlayers=[];
  let playerHistory=[];
@@ -410,6 +411,7 @@ renderParlays();
  let archived=[];
  async function loadForecasts(){
   try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
+  try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=Array.isArray(j.rows)?j.rows:[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
@@ -1098,7 +1100,8 @@ function fdGamePreview(g,p){
 function fdCountPropsForGame(g){
  const away=canon(g.away.abbr),home=canon(g.home.abbr);
  const markets={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
- const rows=countProps.filter(p=>[away,home].includes(canon(p.team))&&[away,home].includes(canon(p.opponent))&&canon(p.team)!==canon(p.opponent)&&markets[p.market_key]);
+ const normName=x=>String(x||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+ const rows=countProps.filter(p=>[away,home].includes(canon(p.team))&&[away,home].includes(canon(p.opponent))&&canon(p.team)!==canon(p.opponent)&&markets[p.market_key]&&countDkQuotes.some(q=>q.market_key===p.market_key&&normName(q.player)===normName(p.player)&&Number.isFinite(Number(q.line))&&q.line!==null&&q.line!==''&&q.home_team&&q.away_team));
  if(!rows.length)return '';
  const byMarket=Object.keys(markets).map(k=>{
   const values=rows.filter(p=>p.market_key===k).sort((a,b)=>Number(b.projection)-Number(a.projection)).slice(0,3);
