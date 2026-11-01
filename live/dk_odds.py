@@ -4,7 +4,6 @@ import os
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
-from collections import defaultdict
 from pathlib import Path
 
 BASE = "https://parlay-api.com/v1/sports/americanfootball_nfl"
@@ -97,7 +96,7 @@ def fetch():
         "description": "Latest observed quote strictly before scheduled kickoff, not necessarily closing line",
         "generated_at_utc": now.isoformat(),
         "rows": sorted(by_key.values(), key=lambda x: (str(x.get("commence_time")), str(x.get("player")), str(x.get("market_key"))))
-    }, indent=2) + "\\n", encoding="utf-8")
+    }, indent=2) + "\n", encoding="utf-8")
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps({
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
