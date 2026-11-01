@@ -29,7 +29,7 @@ def capture(existing,projections,quotes,games,now):
   team=p.get("team","");opp=p.get("opponent","")
   kickoff=games.get((team,opp))
   generated=dt(p.get("generated_at_utc"))
-  if not kickoff or not generated or generated>=kickoff or now>=kickoff:continue
+  if not kickoff or not generated or generated>=kickoff or now>=kickoff or generated>now:continue
   market=p.get("market_key") or p.get("market")
   if not p.get("game_id") or not p.get("player_id") or not market:continue
   try: projection=float(p["projection"])
