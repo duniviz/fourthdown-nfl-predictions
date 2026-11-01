@@ -48,7 +48,8 @@ def capture(existing,projections,quotes,games,now):
   except (TypeError,ValueError):line=None
   key=(str(p["game_id"]),str(p["player_id"]),str(market))
   previous=records.get(key)
-  # Never regress a captured projection, even when the feed is stale.\n  if previous:
+  # Never regress a captured projection, even when the feed is stale.
+  if previous:
    prev_time=dt(previous.get("captured_at"))
    prev_dk_time=dt(previous.get("dk_captured_at"))
    next_dk_time=matching[0][0] if matching else None
@@ -74,7 +75,7 @@ def main():
  generated=source.get("generated_at_utc")
  projections=[dict(p,generated_at_utc=generated) for p in source.get("players",[])]
  odds=read("dk-odds.json")
- quotes=odds.get("rows",[])
+ quotes=list(odds.get("rows",[]))
  archive=read("dk-line-history.json")
  quotes+=archive.get("rows",[])
  dest=DATA/"pregame-snapshots.json"
