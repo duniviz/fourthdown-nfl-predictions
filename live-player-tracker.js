@@ -116,12 +116,13 @@ function paintModalTotals(){
  const markets={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
  const lookup=x=>quotes.find(el=>playerKey(el.dataset.fdPlayer)===playerKey(x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
- body.innerHTML='<div class="fd-result-list">'+sorted.map(x=>{
+ const nextHtml='<div class="fd-result-list">'+sorted.map(x=>{
   const q=lookup(x),raw=q?.dataset.fdDkLine??'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
   const rawProjection=q?.dataset.fdProjection??'',projection=rawProjection!==''?Number(rawProjection):NaN;
   const validProjection=Number.isFinite(projection)&&projection>=0;
   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+(validProjection?projection.toFixed(1):'—')+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>';
  }).join('')+'</div><small>ESPN live box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'')+'</small>';
+ if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
 }
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
@@ -153,7 +154,7 @@ function paintCards(){
   paintPropRows();paintModalTotals();
  }finally{painting=false;}
 }
-const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.fd-mobile-prop-card,.fd-result-row,.fd-live-player-stats')||n.querySelector?.('.fd-mobile-prop-card,.fd-result-row,.fd-live-player-stats')))))paintCards();});
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(!n.closest?.('.fd-live-player-body')&&(n.matches?.('.fd-mobile-prop-card,.fd-live-player-stats')||n.querySelector?.('.fd-mobile-prop-card,.fd-live-player-stats'))))))paintCards();});
 observer.observe(document.body,{subtree:true,childList:true});
 
 async function refresh(){
