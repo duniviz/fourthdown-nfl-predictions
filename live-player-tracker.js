@@ -117,8 +117,12 @@ function paintModalTotals(){
  const lookup=x=>quotes.find(el=>playerKey(el.dataset.fdPlayer)===playerKey(x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
  const nextHtml='<div class="fd-result-list">'+sorted.map(x=>{
-  const q=lookup(x),raw=q?.dataset.fdDkLine??'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
-  const rawProjection=q?.dataset.fdProjection??'',projection=rawProjection!==''?Number(rawProjection):NaN;
+  const q=lookup(x);
+  const dataset=window.fdLiveMatchupData?.gameId===gameId?window.fdLiveMatchupData:null;
+  const stored=(dataset?.projections||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
+  const quote=(dataset?.quotes||[]).find(p=>playerKey(p.player)===playerKey(x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
+  const raw=q?.dataset.fdDkLine||stored?.dk_line||quote?.line||'',line=raw!==''?Number(raw):NaN,valid=Number.isFinite(line)&&line>0;
+  const rawProjection=q?.dataset.fdProjection||stored?.projection||'',projection=rawProjection!==''?Number(rawProjection):NaN;
   const validProjection=Number.isFinite(projection)&&projection>=0;
   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(markets[x.market])+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+(validProjection?projection.toFixed(1):'—')+'</strong></div><div><small>DK LINE</small><strong>'+(valid?line:'—')+'</strong></div><div><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>';
  }).join('')+'</div><small>ESPN live box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'')+'</small>';
