@@ -283,15 +283,15 @@ const frozen=(archive.players||[]).filter(x=>{
 const frozenKeys=new Set(frozen.map(x=>String(x.game_id)+'|'+norm(x.player)+'|'+x.stat_key));
 const kickoffFor=new Map();
 for(const x of frozen)kickoffFor.set(String(x.game_id),Date.parse(x.kickoff_utc));
+const latestResearch=p.players||[];
 for(const x of latestResearch){
  if(kickoffFor.has(String(x.game_id)))continue;
  const same=[...(o.rows||[]),...(locked.rows||[])].find(q=>norm(q.player)===norm(x.player)&&q.market_key===(x.market_key||mk[x.market])&&Number.isFinite(Date.parse(q.commence_time)));
  if(same)kickoffFor.set(String(x.game_id),Date.parse(same.commence_time));
 }
-const latestResearch=p.players||[];
 const current=latestResearch.filter(x=>{
  const t=kickoffFor.get(String(x.game_id));
- return t===undefined||Date.now()<t;
+ return Number.isFinite(t)&&Date.now()<t;
 });
 const archived=frozen.filter(x=>!current.some(y=>String(y.game_id)===String(x.game_id)&&norm(y.player)===norm(x.player)&&y.stat_key===x.stat_key));
 players=[...new Map([...current,...archived].map(x=>[norm(x.player)+'|'+x.team+'|'+x.game_id+'|'+(x.market_key||x.stat_key||x.market),x])).values()];const hasAnytimeTd=players.some(x=>x.market==='Anytime TD'&&Number.isFinite(Number(x.projection)));tdOption.disabled=!hasAnytimeTd;tdOption.textContent=hasAnytimeTd?'Anytime TD':'Anytime TD — unavailable';if(!hasAnytimeTd&&$('bet-market').value==='Anytime TD')$('bet-market').value='all';sims=new Map((s.players||[]).map(x=>[key(x),x]));results=res.rows||[];injuries=Object.fromEntries(Object.entries(inj.teams||{}).map(([k,v])=>[k,v.players||[]]));lines=new Map();const latest=Date.parse(o.generated_at_utc);oddsTime=Number.isFinite(latest)?latest:null;for(const q of [...(o.rows||[]),...(locked.rows||[])]){if(q.player&&q.market_key&&Number.isFinite(Number(q.line))){const timestamp=Date.parse(q.last_update);const id=norm(q.player)+'|'+q.market_key;const candidates=lines.get(id)||[];const kick=Date.parse(q.commence_time);if(!Number.isFinite(kick)||!Number.isFinite(timestamp)||timestamp>=kick||timestamp>Date.now())continue;candidates.push({...q,line:Number(q.line),last_update:timestamp});lines.set(id,candidates);}}try{fdUpdateGameOptions();render();renderSlip();renderExtraMarkets();fdRefreshActuals();}catch(error){console.error('Prop research rendering failed',error);$('bet-freshness').textContent='Research board error';$('bet-cards').innerHTML='<p class="bet-sub">Could not display player forecasts. Refresh or check the published research feed.</p>';}}
