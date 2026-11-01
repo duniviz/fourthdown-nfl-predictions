@@ -81,6 +81,7 @@ def main():
  dest=DATA/"pregame-snapshots.json"
  old=read("pregame-snapshots.json").get("records",[])
  rows=capture(old,projections,quotes,games,now)
+ if len(rows)<len(old): raise RuntimeError("Refusing to lose existing snapshots")
  payload={"schema_version":1,"description":"Immutable last available pre-kickoff snapshots; missing lines are null","records":rows}
  dest.write_text(json.dumps(payload,indent=2)+"\n")
  print(f"Snapshots: {len(rows)} (previous {len(old)})")
