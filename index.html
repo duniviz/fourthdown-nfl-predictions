@@ -1088,7 +1088,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    return (group.athletes||[]).map(a=>({name:String(a.athlete?.displayName||''),labels,keys,stats:a.stats||[],category:String(group.name||'').toLowerCase()}));
   }));
   const clean=x=>String(x||'').toLowerCase().replace(/[^a-z]/g,'');
-  let hits=0,misses=0,graded=0,totalError=0;
+  let hits=0,misses=0,graded=0,totalError=0,errorCount=0;
   const cards=rows.map(x=>{
    const expected=Number(x.projection),key=String(x.stat_key);
    const category=key==='passing_yards'?'pass':key==='rushing_yards'?'rush':'receiv';
@@ -1101,12 +1101,16 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    }
    const available=actual!==null&&Number.isFinite(expected);
    const delta=available?actual-expected:null;
-   const tolerance=Math.max(5,expected*0.10);
-   const outcome=!available?'NOT GRADED':Math.abs(delta)<=tolerance?'HIT':'MISS';
-   if(available){graded++;totalError+=Math.abs(delta);if(outcome==='HIT')hits++;else misses++;}
-   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(key==='passing_yards'?'Passing yards':key==='rushing_yards'?'Rushing yards':'Receiving yards')+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(expected.toFixed(1))+'</strong></div><div><small>DK LINE</small><strong>'+(hasDkLine(x)?esc(Number(x.dk_line).toFixed(1)):'—')+'</strong></div><div><small>ACTUAL</small><strong>'+(available?esc(actual):'—')+'</strong></div><span class="fd-result-badge '+(outcome==='HIT'?'fd-hit':outcome==='MISS'?'fd-miss':'fd-ungraded')+'">'+esc(outcome)+'</span></div></div>';
+   const dkLine=Number(x.dk_line);
+   const validLine=hasDkLine(x)&&Number.isFinite(dkLine);
+   const pick=validLine&&Number.isFinite(expected)&&expected!==dkLine?(expected>dkLine?'OVER':'UNDER'):null;
+   const outcome=!available||!pick?'NOT GRADED':actual===dkLine?'PUSH':((pick==='OVER'&&actual>dkLine)||(pick==='UNDER'&&actual<dkLine))?'HIT':'MISS';
+   if(available){totalError+=Math.abs(delta);errorCount++;}
+   if(outcome==='HIT'){graded++;hits++;}
+   else if(outcome==='MISS'){graded++;misses++;}
+   return '<div class="fd-result-row"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(key==='passing_yards'?'Passing yards':key==='rushing_yards'?'Rushing yards':'Receiving yards')+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(expected.toFixed(1))+'</strong></div><div><small>DK LINE</small><strong>'+(hasDkLine(x)?esc(Number(x.dk_line).toFixed(1)):'—')+'</strong></div><div><small>ACTUAL</small><strong>'+(available?esc(actual):'—')+'</strong></div><span class="fd-result-badge '+(outcome==='HIT'?'fd-hit':outcome==='MISS'?'fd-miss':'fd-ungraded')+'">'+esc(pick?pick+' · '+outcome:outcome)+'</span></div></div>';
   }).join('');
-  return '<div class="fd-prop-summary"><div><small>GRADED</small><strong>'+graded+' / '+rows.length+'</strong></div><div><small>HITS</small><strong class="fd-positive">'+hits+'</strong></div><div><small>MISSES</small><strong class="fd-negative">'+misses+'</strong></div><div><small>AVG ERROR</small><strong>'+(graded?(totalError/graded).toFixed(1)+' yd':'—')+'</strong></div></div><div class="fd-result-list">'+cards+'</div><p class="fd-grading-note">HIT = actual within 10% of projection (minimum 5 yards). Only plausible archived yardage forecasts are included, even without a saved DK quote. HIT/MISS here measures forecast error, not a DK bet result. This measures forecast accuracy, not a DraftKings bet result.</p>';
+  return '<div class="fd-prop-summary"><div><small>GRADED</small><strong>'+graded+' / '+rows.length+'</strong></div><div><small>HITS</small><strong class="fd-positive">'+hits+'</strong></div><div><small>MISSES</small><strong class="fd-negative">'+misses+'</strong></div><div><small>AVG ERROR</small><strong>'+(errorCount?(totalError/errorCount).toFixed(1)+' yd':'—')+'</strong></div></div><div class="fd-result-list">'+cards+'</div><p class="fd-grading-note">HIT means the model correctly picked OVER or UNDER the saved pregame DraftKings line. A tie is a PUSH and does not count as a hit or miss. Average error measures how far the yardage forecast was from the actual result.</p>';
  }
  async function loadCompletedPlayerResults(el){
   const body=el.querySelector('.fd-props-body'),id=el.dataset.gameId;
