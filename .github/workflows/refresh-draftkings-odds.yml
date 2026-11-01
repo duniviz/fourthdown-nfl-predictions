@@ -49,10 +49,10 @@ jobs:
       - name: Commit refreshed snapshot
         if: steps.clock.outputs.run == 'true'
         run: |
-          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json)" ]]; then
+          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json
+            git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json
             git commit -m "data: refresh DraftKings NFL odds"
             git push
           fi

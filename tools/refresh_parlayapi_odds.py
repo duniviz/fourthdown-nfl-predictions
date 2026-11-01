@@ -66,6 +66,25 @@ def capture_openings(game_rows, prop_rows, now):
     opening["updated_at_utc"] = now
     return opening
 
+def capture_game_history(game_rows, now):
+    """Append observed line changes without spending additional API calls."""
+    history = load("dk-game-line-history.json", {"schema_version": 1, "games": {}})
+    games = history.setdefault("games", {})
+    for row in game_rows:
+        key = opening_key(row, ("home", "away", "commence_time"))
+        if not key:
+            continue
+        entries = games.setdefault(key, [])
+        quote = {"captured_at_utc": now, "home_spread": row.get("home_spread"), "total": row.get("total")}
+        if not entries or any(entries[-1].get(k) != quote[k] for k in ("home_spread", "total")):
+            entries.append(quote)
+        # Bound repository growth while retaining the initial observation.
+        if len(entries) > 100:
+            games[key] = [entries[0]] + entries[-99:]
+    history["schema_version"] = 1
+    history["updated_at_utc"] = now
+    return history
+
 def main():
     if not KEY:
         raise SystemExit("PARLAY_API_KEY GitHub Actions secret required")
@@ -108,6 +127,7 @@ def main():
     save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
     save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
     save("dk-opening-odds.json", capture_openings(game_rows, prop_rows, now))
+    save("dk-game-line-history.json", capture_game_history(game_rows, now))
     print(f"ParlayAPI refreshed {len(game_rows)} games, {len(prop_rows)} player quotes")
 
 if __name__ == "__main__":
