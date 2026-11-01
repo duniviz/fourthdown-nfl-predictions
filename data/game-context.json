@@ -235,6 +235,13 @@
           },
           {
             "detail": "out",
+            "player": "Billy Bowman Jr.",
+            "position": "CB",
+            "status": "Out",
+            "team": "ATL"
+          },
+          {
+            "detail": "out",
             "player": "Anterio Thompson",
             "position": "DT",
             "status": "Out",
@@ -248,10 +255,10 @@
             "team": "ATL"
           },
           {
-            "detail": "questionable",
+            "detail": "out",
             "player": "Divine Deablo",
             "position": "LB",
-            "status": "Questionable",
+            "status": "Out",
             "team": "ATL"
           },
           {
@@ -259,13 +266,6 @@
             "player": "Olamide Zaccheaus",
             "position": "WR",
             "status": "Questionable",
-            "team": "ATL"
-          },
-          {
-            "detail": "out",
-            "player": "Brian Robinson Jr.",
-            "position": "RB",
-            "status": "Out",
             "team": "ATL"
           }
         ],
@@ -427,6 +427,13 @@
             "team": "BUF"
           },
           {
+            "detail": "questionable",
+            "player": "T.J. Tampa",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "BAL"
+          },
+          {
             "detail": "out",
             "player": "Olaivavega Ioane",
             "position": "G",
@@ -445,13 +452,6 @@
             "player": "Jaylinn Hawkins",
             "position": "S",
             "status": "Out",
-            "team": "BAL"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "T.J. Tampa",
-            "position": "CB",
-            "status": "Injured Reserve",
             "team": "BAL"
           },
           {
@@ -1091,6 +1091,13 @@
         "event_id": "401873033",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "RJ Harvey",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "DEN"
+          },
+          {
             "detail": "questionable",
             "player": "Zach Allen",
             "position": "DE",
@@ -1112,13 +1119,6 @@
             "team": "DEN"
           },
           {
-            "detail": "out",
-            "player": "RJ Harvey",
-            "position": "RB",
-            "status": "Out",
-            "team": "DEN"
-          },
-          {
             "detail": "questionable",
             "player": "Jaylen Waddle",
             "position": "WR",
@@ -1126,24 +1126,17 @@
             "team": "DEN"
           },
           {
+            "detail": "out",
+            "player": "Mansoor Delane",
+            "position": "CB",
+            "status": "Out",
+            "team": "KC"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "L'Jarius Sneed",
             "position": "CB",
             "status": "Injured Reserve",
-            "team": "KC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Mansoor Delane",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "KC"
-          },
-          {
-            "detail": "questionable",
-            "player": "R Mason Thomas",
-            "position": "DE",
-            "status": "Questionable",
             "team": "KC"
           },
           {
@@ -1157,6 +1150,13 @@
             "detail": "Injured Reserve",
             "player": "Brashard Smith",
             "position": "RB",
+            "status": "Injured Reserve",
+            "team": "KC"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Josh Simmons",
+            "position": "OT",
             "status": "Injured Reserve",
             "team": "KC"
           }
@@ -1401,6 +1401,13 @@
         "event_id": "401873029",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "T'Vondre Sweat",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "NYJ"
+          },
+          {
             "detail": "out",
             "player": "Max Mitchell",
             "position": "OT",
@@ -1416,13 +1423,6 @@
           },
           {
             "detail": "out",
-            "player": "T'Vondre Sweat",
-            "position": "DT",
-            "status": "Out",
-            "team": "NYJ"
-          },
-          {
-            "detail": "out",
             "player": "Joseph Ossai",
             "position": "DE",
             "status": "Out",
@@ -1434,13 +1434,6 @@
             "position": "RB",
             "status": "Questionable",
             "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jack Bech",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "LV"
           },
           {
             "detail": "Injured Reserve",
@@ -1467,6 +1460,13 @@
             "detail": "Injured Reserve",
             "player": "Keyron Crawford",
             "position": "DE",
+            "status": "Injured Reserve",
+            "team": "LV"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Chigozie Anusiem",
+            "position": "CB",
             "status": "Injured Reserve",
             "team": "LV"
           }
@@ -2286,6 +2286,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-10-31T19:16:00Z",
+  "generated_at_utc": "2026-11-01T00:06:39Z",
   "schema_version": 1
 }
