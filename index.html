@@ -1236,7 +1236,7 @@ function draw(){
  a.onclick=()=>show(true);b.onclick=()=>show(false);show(true);
 }
 async function refresh(){
- try{const r=await fetch('data/game-projections.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('unavailable');const j=await r.json();current=Array.isArray(j.games)?j.games:[];}catch(e){current=[];}draw();
+ try{const r=await fetch('data/live-v2.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('unavailable');const j=await r.json();const stamp=Date.parse(j.generated_at_utc);current=Number.isFinite(stamp)&&Date.now()-stamp<120*3600000&&Array.isArray(j.games)?j.games:[];}catch(e){current=[];}draw();
 }
 refresh();setInterval(refresh,300000);
 })();</script></body></html>
