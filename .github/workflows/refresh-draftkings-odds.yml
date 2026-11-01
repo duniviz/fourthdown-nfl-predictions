@@ -43,16 +43,19 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python tools/refresh_parlayapi_odds.py
+      - name: Refresh simulation cover probabilities using latest DK lines
+        if: steps.clock.outputs.run == 'true'
+        run: python -m live.simulate
       - name: Audit published data feeds
         if: steps.clock.outputs.run == 'true'
         run: python tools/audit_published_data.py
       - name: Commit refreshed snapshot
         if: steps.clock.outputs.run == 'true'
         run: |
-          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json)" ]]; then
+          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json data/simulations.json)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json
+            git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json data/simulations.json
             git commit -m "data: refresh DraftKings NFL odds"
             git push
           fi
