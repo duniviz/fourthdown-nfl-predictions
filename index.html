@@ -1252,7 +1252,7 @@ function fdTopModelSignals(p){
   candidates.push({score:Math.abs(gap)/3,title:'Total · '+side+' '+line.toFixed(1),detail:'Model total: '+modelTotal.toFixed(1)+'; DraftKings total: '+line.toFixed(1)+'; difference: '+(gap>=0?'+':'')+gap.toFixed(1)+' points.'});
  }
  const yardKeys=new Set(['passing_yards','rushing_yards','receiving_yards']);
- for(const row of playerResearch.filter(x=>String(x.game_id)===String(p.game_id)&&yardKeys.has(x.stat_key)&&valid(x.projection)&&valid(x.dk_line)&&!x.dk_quote_stale)){
+ for(const row of playerResearch.filter(x=>String(x.game_id)===String(p.game_id)&&yardKeys.has(x.stat_key)&&valid(x.projection)&&valid(x.dk_line)&&!x.dk_quote_stale&&Number.isFinite(Date.parse(x.dk_quote_time||x.dk_last_update||x.last_update))&&Date.parse(x.dk_quote_time||x.dk_last_update||x.last_update)<kickoff)){
   const diff=Number(row.projection)-Number(row.dk_line),scale=Math.max(10,Number(row.uncertainty_yards)||({passing_yards:35,rushing_yards:22,receiving_yards:25}[row.stat_key]||25));
   const side=diff>=0?'Over':'Under';
   let detail='Model: '+Number(row.projection).toFixed(1)+'; DraftKings: '+Number(row.dk_line).toFixed(1)+'; difference: '+(diff>=0?'+':'')+diff.toFixed(1)+'.';
