@@ -122,6 +122,67 @@ def injury_context(event: dict[str, Any] | None, away: str, home: str) -> dict[s
     }
 
 
+def recent_results(team: str, kickoff: dt.datetime, limit: int = 5) -> dict[str, Any]:
+    """Verified completed games strictly before kickoff, never future outcomes."""
+    schedule = fetch_json(f"{ESPN}/teams/{team.lower()}/schedule?limit=1000") or {}
+    rows: list[dict[str, Any]] = []
+    for event in schedule.get("events", []):
+        when = parse_time(event.get("date"))
+        if not when or when >= kickoff:
+            continue
+        competition = (event.get("competitions") or [{}])[0]
+        status = competition.get("status", {}).get("type", {})
+        if not status.get("completed"):
+            continue
+        competitors = competition.get("competitors") or []
+        own = next((x for x in competitors if team_code(x.get("team", {}).get("abbreviation")) == team), None)
+        opp = next((x for x in competitors if x is not own), None)
+        if not own or not opp:
+            continue
+        try:
+            scored, allowed = int(own["score"]), int(opp["score"])
+        except (ValueError, TypeError, KeyError):
+            continue
+        rows.append({"date_utc": when.isoformat(), "opponent": team_code(opp.get("team", {}).get("abbreviation")),
+                     "points_for": scored, "points_against": allowed, "result": "W" if scored > allowed else "L" if scored < allowed else "T"})
+    rows.sort(key=lambda x: x["date_utc"], reverse=True)
+    rows = rows[:limit]
+    if not rows:
+        return {"status": "unavailable", "source": "ESPN team schedule"}
+    return {"status": "verified", "source": "ESPN team schedule", "games": rows,
+            "wins": sum(x["result"] == "W" for x in rows),
+            "losses": sum(x["result"] == "L" for x in rows),
+            "ties": sum(x["result"] == "T" for x in rows),
+            "avg_points_for": round(sum(x["points_for"] for x in rows) / len(rows), 1),
+            "avg_points_against": round(sum(x["points_against"] for x in rows) / len(rows), 1)}
+
+
+def prior_meetings(away: str, home: str, kickoff: dt.datetime, limit: int = 5) -> dict[str, Any]:
+    """Prior head-to-head results, only if ESPN supplies verified final scores."""
+    schedule = fetch_json(f"{ESPN}/teams/{home.lower()}/schedule?limit=1000") or {}
+    rows = []
+    for event in schedule.get("events", []):
+        when = parse_time(event.get("date"))
+        if not when or when >= kickoff:
+            continue
+        competition = (event.get("competitions") or [{}])[0]
+        if not competition.get("status", {}).get("type", {}).get("completed"):
+            continue
+        competitors = competition.get("competitors") or []
+        codes = {team_code(x.get("team", {}).get("abbreviation")) for x in competitors}
+        if codes != {away, home}:
+            continue
+        scores = {}
+        for x in competitors:
+            try:
+                scores[team_code(x.get("team", {}).get("abbreviation"))] = int(x["score"])
+            except (KeyError, TypeError, ValueError):
+                pass
+        if len(scores) == 2:
+            rows.append({"date_utc": when.isoformat(), "away_team_points": scores[away], "home_team_points": scores[home]})
+    rows.sort(key=lambda x: x["date_utc"], reverse=True)
+    return {"status": "verified" if rows else "unavailable", "source": "ESPN team schedule", "games": rows[:limit]}
+
 def model_metrics(game: dict[str, Any]) -> dict[str, Any]:
     analysis = game.get("analysis") or {}
     home, away = analysis.get("home") or {}, analysis.get("away") or {}
@@ -150,6 +211,8 @@ def build(source: pathlib.Path, output: pathlib.Path) -> None:
         result["games"][game_id] = {
             "kickoff_utc": game.get("kickoff_utc"),
             "rest": {"away": rest_context(away, kickoff), "home": rest_context(home, kickoff)},
+            "recent": {"away": recent_results(away, kickoff), "home": recent_results(home, kickoff)},
+            "head_to_head": prior_meetings(away, home, kickoff),
             "availability": injury_context(event, away, home),
             "model_metrics": model_metrics(game),
         }
