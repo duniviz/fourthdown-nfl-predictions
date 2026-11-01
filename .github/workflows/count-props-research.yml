@@ -29,6 +29,13 @@ jobs:
             --seasons 2024 2025 2026 \
             --through-week 18 \
             --output /tmp/fourthdown-count-props/count-props-results.json
+      - name: Test position defense and role-share challengers
+        run: |
+          python tools/backtest_count_props_matchup_challenger.py \
+            --weekly-csv /tmp/fourthdown-count-props/player_stats.csv \
+            --seasons 2024 2025 2026 \
+            --through-week 18 \
+            --output /tmp/fourthdown-count-props/count-props-challenger-results.json
       - name: Upload research results
         if: always()
         uses: actions/upload-artifact@v4
