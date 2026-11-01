@@ -1235,7 +1235,12 @@ function fdGameLineComparison(p){
 
 function fdTopModelSignals(p){
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
- const match=Object.values(fdGameOdds||{}).find(x=>canon(x.home)===canon(p.home)&&canon(x.away)===canon(p.away)&&(!x.commence_time||Math.abs(Date.parse(x.commence_time)-Date.parse(p.kickoff_utc))<12*3600000));
+ const kickoff=Date.parse(p.kickoff_utc);
+ const quote=Object.entries(fdGameLineHistory).filter(([key,rows])=>{
+   const parts=key.split('|');
+   return Array.isArray(rows)&&parts.length>=3&&canon(parts[0])===canon(p.home)&&canon(parts[1])===canon(p.away)&&Number.isFinite(kickoff)&&Math.abs(Date.parse(parts[2])-kickoff)<12*3600000;
+ }).flatMap(([,rows])=>rows).filter(x=>Number.isFinite(Date.parse(x.captured_at_utc))&&Date.parse(x.captured_at_utc)<kickoff).sort((a,b)=>Date.parse(b.captured_at_utc)-Date.parse(a.captured_at_utc))[0]||null;
+ const match=quote;
  const candidates=[],homeMargin=Number(p.projected_home_score)-Number(p.projected_away_score),modelTotal=Number(p.projected_home_score)+Number(p.projected_away_score);
  if(valid(match?.home_spread)){
   const line=Number(match.home_spread),gap=homeMargin+line;
