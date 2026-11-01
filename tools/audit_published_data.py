@@ -44,6 +44,27 @@ for game in rows:
     if game.get("total") is not None and not 15 <= game["total"] <= 90:
         warnings.append(f"game odds {game.get('game_id')}: extreme total")
 
+# Check the current forecast feed without altering or promoting any model.
+forecast = load("live-v2.json")
+age("game forecasts", forecast.get("generated_at_utc"), 120)
+seen_forecasts = set()
+for game in forecast.get("games", []):
+    key = (game.get("away"), game.get("home"), game.get("kickoff_utc"))
+    if key in seen_forecasts:
+        warnings.append(f"duplicate game forecast: {key}")
+    seen_forecasts.add(key)
+    for field in ("projected_home_score", "projected_away_score"):
+        value = game.get(field)
+        if not isinstance(value, (int, float)) or not 0 <= value <= 90:
+            warnings.append(f"invalid forecast score {field}: {key}")
+
+seen_odds = set()
+for game in rows:
+    key = (game.get("away"), game.get("home"), game.get("commence_time"))
+    if key in seen_odds:
+        warnings.append(f"duplicate DK game quote: {key}")
+    seen_odds.add(key)
+
 props = load("dk-odds.json")
 age("player odds", props.get("generated_at_utc"))
 if not props.get("rows"):
