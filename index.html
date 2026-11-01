@@ -1336,21 +1336,49 @@ function render(){
    return choices.find(x=>x.gap>=10&&x.ar<=16&&x.dr>=20)||null;
   };
   const explain=()=>{
-   const facts=[];
    const mismatch=relevantMismatch();
-   if(mismatch)facts.push(rankSentence(mismatch.side,mismatch.label));
-   const homeRecent=recentSentence('home'),awayRecent=recentSentence('away');
-   if(homeRecent)facts.push(homeRecent);
-   if(awayRecent)facts.push(awayRecent);
-   const lead=type==='total'
-    ?'The model expects '+(item.pick.startsWith('Under')?'fewer':'more')+' points than the DraftKings total, with an '+n(item.rank)+'-point difference.'
-    :type==='ats'?'FOURTHDOWN sees a '+n(item.rank)+'-point advantage against the posted spread for '+item.pick+'.'
-    :'FOURTHDOWN projects '+item.pick+' to win by about '+n(item.rank)+' points.';
-   const caveat=type==='total'
-    ?'The biggest uncertainty is whether those recent scoring patterns carry into this matchup.'
-    :type==='ats'?'The spread can still turn on one late possession.'
-    :'A projected margin does not rule out an upset.';
-   return lead+' '+(facts.length?facts.slice(0,3).join(' '):'The available matchup feed does not provide enough verified team-ranking or recent-form context for a more specific football explanation.')+' '+caveat;
+   const pickSide=type==='ats'?(item.pick.startsWith(item.quote.home+' ')?'home':'away'):null;
+   const nMargin=Math.abs(Number(forecast?.projected_home_score)-Number(forecast?.projected_away_score));
+   const favorite=Number(forecast?.projected_home_score)>Number(forecast?.projected_away_score)?item.quote.home:item.quote.away;
+   const under=type==='total'&&item.pick.startsWith('Under');
+   const context=[];
+   const risks=[];
+   if(mismatch){
+    const sentence=rankSentence(mismatch.side,mismatch.label);
+    if(type==='ats'&&mismatch.side!==pickSide)risks.push(sentence);
+    else if(type==='total')risks.push('A key matchup to watch: '+sentence);
+    else context.push(sentence);
+   }
+   for(const side of ['home','away']){
+    const form=recentSentence(side);
+    if(!form)continue;
+    if(type==='ats'&&side!==pickSide)risks.push(form);
+    else if(type==='ats')context.push(form);
+    else if(type==='winner'&&teamName(side)!==item.pick)risks.push(form);
+    else if(type==='total')context.push(form);
+    else context.push(form);
+   }
+   let lead='',bottom='';
+   if(type==='ats'){
+    const pickTeam=teamName(pickSide),oppTeam=teamName(pickSide==='home'?'away':'home');
+    const projectedPick=pickSide==='home'?Number(forecast?.projected_home_score):Number(forecast?.projected_away_score);
+    const projectedOpp=pickSide==='home'?Number(forecast?.projected_away_score):Number(forecast?.projected_home_score);
+    const projectedMargin=projectedOpp-projectedPick;
+    const line=pickSide==='home'?Number(item.quote.home_spread):-Number(item.quote.home_spread);
+    const cushion=line-projectedMargin;
+    lead='Why '+item.pick+'? The model projects '+oppTeam+' '+n(projectedOpp)+' to '+pickTeam+' '+n(projectedPick)+', a '+(projectedMargin>0?n(projectedMargin)+'-point '+oppTeam+' win':projectedMargin<0?n(-projectedMargin)+'-point '+pickTeam+' win':'tie')+'. With '+pickTeam+' '+(line>=0?'+':'')+n(line)+', that leaves a '+n(cushion)+'-point difference in favor of this side versus the DK spread. ';
+    bottom='Bottom line: This pick is about '+pickTeam+' beating the spread, not necessarily winning outright.';
+   }else if(type==='total'){
+    const modelTotal=Number(forecast?.projected_home_score)+Number(forecast?.projected_away_score);
+    lead='Why '+item.pick+'? FOURTHDOWN projects '+n(modelTotal)+' combined points versus the DK total of '+n(item.quote.total)+'. That is a '+n(Math.abs(modelTotal-Number(item.quote.total)))+'-point difference '+(under?'below':'above')+' the line. ';
+    bottom='Bottom line: The pick needs the actual combined score to finish '+(under?'below':'above')+' '+n(item.quote.total)+'.';
+   }else{
+    lead='Why '+item.pick+'? FOURTHDOWN projects '+item.pick+' to win by about '+n(nMargin)+' points. ';
+    bottom='Bottom line: The model favors '+item.pick+', but the outcome is uncertain.';
+   }
+   const support=context.length?'Supporting context: '+context.slice(0,2).join(' ')+' ':'';
+   const concern=risks.length?'What could go wrong: '+risks.slice(0,2).join(' ')+' ':'What could go wrong: The game could unfold differently than the model forecast. ';
+   return lead+support+concern+bottom;
   };
   const whyText=explain();
   const hasConfidence=confidence!==null;
