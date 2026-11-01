@@ -139,7 +139,7 @@ let players=[],sims=new Map(),slip=[],oddsTime=null,lines=new Map(),results=[],i
 const key=p=>p.game_id+'|'+p.player_id+'|'+p.stat_key;
 const money=n=>n>0?'+'+n:String(n);
 const americanDecimal=n=>n>0?1+n/100:1+100/Math.abs(n);
-const activeLine=x=>x&&Number.isFinite(x.line)&&Number.isFinite(x.last_update)&&Date.now()-x.last_update<3*3600000&&Date.now()>=x.last_update-300000;
+const activeLine=x=>x&&Number.isFinite(x.line)&&Number.isFinite(x.last_update)&&Date.now()-x.last_update<5*3600000&&Date.now()>=x.last_update-300000;
 function findLine(p){
  const candidates=lines.get(norm(p.player)+'|'+(p.market_key||mk[p.market]))||[];
  const aliases={'ARI':'Arizona Cardinals','ATL':'Atlanta Falcons','BAL':'Baltimore Ravens','BUF':'Buffalo Bills','CAR':'Carolina Panthers','CHI':'Chicago Bears','CIN':'Cincinnati Bengals','CLE':'Cleveland Browns','DAL':'Dallas Cowboys','DEN':'Denver Broncos','DET':'Detroit Lions','GB':'Green Bay Packers','HOU':'Houston Texans','IND':'Indianapolis Colts','JAX':'Jacksonville Jaguars','JAC':'Jacksonville Jaguars','KC':'Kansas City Chiefs','LV':'Las Vegas Raiders','LAC':'Los Angeles Chargers','LA':'Los Angeles Rams','LAR':'Los Angeles Rams','MIA':'Miami Dolphins','MIN':'Minnesota Vikings','NE':'New England Patriots','NO':'New Orleans Saints','NYG':'New York Giants','NYJ':'New York Jets','PHI':'Philadelphia Eagles','PIT':'Pittsburgh Steelers','SF':'San Francisco 49ers','SEA':'Seattle Seahawks','TB':'Tampa Bay Buccaneers','TEN':'Tennessee Titans','WAS':'Washington Commanders'};
