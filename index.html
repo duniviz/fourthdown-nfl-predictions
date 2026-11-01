@@ -613,16 +613,16 @@ function fdOpenMatchup(g){
   gameId:String(g.id),home,away,
   gameKey:p?.game_id||'',
   projections:[
-   ...playerResearch.filter(x=>[home,away].includes(canon(x.team))&&[home,away].includes(canon(x.opponent))).map(x=>({
+   ...playerResearch.filter(x=>[home,away].includes(canon(x.team))&&[home,away].includes(canon(x.opponent))&&(!p?.game_id||x.game_id===p.game_id)).map(x=>({
     player:x.player,team:canon(x.team),market:x.stat_key,
     projection:x.projection,dk_line:hasDkLine(x)?x.dk_line:null,game_id:x.game_id
    })),
-   ...countProps.filter(x=>[home,away].includes(canon(x.team))&&[home,away].includes(canon(x.opponent))).map(x=>({
+   ...countProps.filter(x=>[home,away].includes(canon(x.team))&&[home,away].includes(canon(x.opponent))&&(!p?.game_id||x.game_id===p.game_id)).map(x=>({
     player:x.player,team:canon(x.team),market:x.market_key,
     projection:x.projection,dk_line:null,game_id:x.game_id
    }))
   ],
-  quotes:countDkQuotes.filter(x=>[home,away].includes(canon(x.team||''))&&[home,away].includes(canon(x.opponent||'')))
+  quotes:fdCountPropRows(g).map(x=>({player:x.player,team:x.team,market:x.market_key,line:x.line}))
  };
  const liveStats='<div class="fd-modal-section fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Live player totals · DraftKings</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. DraftKings lines are saved quotes and may be stale.</p></div>';
  const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
