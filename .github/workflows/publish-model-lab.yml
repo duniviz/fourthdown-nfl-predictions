@@ -58,7 +58,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/model-lab-results.json data/model-lab-readiness.json 2>/dev/null || true
+          git add -A -- data/model-lab-results.json data/model-lab-readiness.json 2>/dev/null || git add -A -- data/
           if ! git diff --cached --quiet; then
             git commit -m "Publish latest validated Model Lab research results"
             git push
