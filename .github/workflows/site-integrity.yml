@@ -36,6 +36,7 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
+          errors = []
           for path in Path("data").glob("*.json"):
               if path.stat().st_size == 0:
                   print(f"WARNING: empty optional feed: {path}")
@@ -43,7 +44,9 @@ jobs:
               try:
                   json.loads(path.read_text(encoding="utf-8"))
               except (ValueError, UnicodeDecodeError) as exc:
-                  raise SystemExit(f"Invalid JSON: {path}: {exc}")
+                  errors.append(f"Invalid JSON: {path}: {exc}")
+          if errors:
+              raise SystemExit("\\n".join(errors))
           print("Published nonempty JSON feeds parse successfully")
           PY
       - name: Check required pages and assets
