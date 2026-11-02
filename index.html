@@ -951,7 +951,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +(restNote?metricNote('Rest and scheduling',restNote):'')
     +(availabilityNote?metricNote('Who is available',availabilityNote):'')
     +'</ul></article><p class="fd-explain-disclaimer">Here\'s what went into our prediction. Games can always play out differently.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div><div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Matchup notes</summary>'+why+'</details></div>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div>'+fdMarketPickLines(p)+'<div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Matchup notes</summary>'+why+'</details></div>';
  }
 
  function renderRecap(raw){
@@ -1209,15 +1209,44 @@ async function fdLoadGameOdds(){try{
  if(opening.ok){const j=await opening.json();fdOpeningGameOdds=j.games&&typeof j.games==='object'?j.games:{};}
  if(history.ok){const j=await history.json();fdGameLineHistory=j.games&&typeof j.games==='object'?j.games:{};}
 }catch(e){console.warn('DK game odds unavailable',e);}}
-function fdGameLineComparison(p){
- const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
+function fdLatestPregameGameLine(p){
  const kickoff=Date.parse(p.kickoff_utc);
  const history=Object.entries(fdGameLineHistory).filter(([key,rows])=>{
    if(!Array.isArray(rows))return false;
    const parts=key.split('|');
    return parts.length>=3&&canon(parts[0])===canon(p.home)&&canon(parts[1])===canon(p.away)&&Number.isFinite(kickoff)&&Math.abs(Date.parse(parts[2])-kickoff)<12*3600000;
  }).flatMap(([,rows])=>rows).filter(x=>Number.isFinite(Date.parse(x.captured_at_utc))&&Date.parse(x.captured_at_utc)<kickoff).sort((a,b)=>Date.parse(b.captured_at_utc)-Date.parse(a.captured_at_utc));
- const latest=history[0]||null;
+ return history[0]||null;
+}
+function fdMarketPickLines(p){
+ const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
+ const line=fdLatestPregameGameLine(p);
+ const margin=Number(p.projected_home_score)-Number(p.projected_away_score);
+ const total=Number(p.projected_home_score)+Number(p.projected_away_score);
+ const sp=valid(line?.home_spread)?Number(line.home_spread):null;
+ const dkTotal=valid(line?.total)?Number(line.total):null;
+ let ats='ATS pick unavailable · no verified DK spread';
+ if(sp!==null&&Number.isFinite(margin)){
+   const edge=margin+sp;
+   if(Math.abs(edge)<0.05)ats='ATS pick: No edge · model matches the spread';
+   else{
+     const team=edge>0?p.home:p.away;
+     const teamLine=team===p.home?sp:-sp;
+     ats='ATS pick: '+team+' '+(teamLine>0?'+':'')+teamLine.toFixed(1)+' · model edge '+Math.abs(edge).toFixed(1)+' pts';
+   }
+ }
+ let ou='O/U pick unavailable · no verified DK total';
+ if(dkTotal!==null&&Number.isFinite(total)){
+   const edge=total-dkTotal;
+   if(Math.abs(edge)<0.05)ou='O/U pick: No edge · model matches the total';
+   else ou='O/U pick: '+(edge<0?'UNDER':'OVER')+' '+dkTotal.toFixed(1)+' · model '+Math.abs(edge).toFixed(1)+' pts '+(edge<0?'below':'above');
+ }
+ return '<div class="fd-market-picks" style="font-size:12px;line-height:1.5;margin-top:6px;color:#b9d5dc"><div>'+esc(ats)+'</div><div>'+esc(ou)+'</div></div>';
+}
+
+function fdGameLineComparison(p){
+ const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
+ const latest=fdLatestPregameGameLine(p);
  const m=Number(p.projected_home_score)-Number(p.projected_away_score);
  const t=Number(p.projected_home_score)+Number(p.projected_away_score);
  const sp=valid(latest?.home_spread)?Number(latest.home_spread):null;
