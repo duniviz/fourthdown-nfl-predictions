@@ -85,7 +85,7 @@ jobs:
         run: |
           if [ -f readiness-gate/data/weekly-shadow-forecasts.json ]; then
             python readiness-gate/research/grade_weekly_shadow_models.py
-            cat readiness-gate/research/weekly-shadow-results/\n            readiness-gate/research/yardage-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+            cat readiness-gate/research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "STATUS: WAITING_FOR_PREGAME_CAPTURE — no frozen shadow forecasts yet. This run does not verify weekly same-slate comparisons." >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -115,5 +115,5 @@ jobs:
             research/v3-results/
             research/position-matchup/
             research/auto-promotion/
-            research/same-slate/\n            readiness-gate/research/weekly-shadow-results/
+            research/same-slate/\n            readiness-gate/research/weekly-shadow-results/\n            readiness-gate/research/yardage-game-results/
           if-no-files-found: warn
