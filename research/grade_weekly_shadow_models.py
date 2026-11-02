@@ -18,7 +18,8 @@ def main():
   key=(str(r["game_id"]),str(r["player_id"]),norm(r["stat_key"]))
   if key in actuals:rows.append(dict(r,actual=actuals[key]))
  # Require identical candidate coverage for each graded player/game/market.
- from collections import defaultdict\n from itertools import product
+ from collections import defaultdict
+ from itertools import product
  grouped=defaultdict(list)
  for row in rows:
   grouped[(row["game_id"],row["player_id"],norm(row["stat_key"]))].append(row)
