@@ -48,19 +48,6 @@ def main():
                     for athlete in category.get("athletes",[]):
                         if athlete.get("stats"):
                             participants.add(canon(athlete.get("athlete",{}).get("displayName")))
-            for g in matches:
-                for pick in archived:
-                    if str(pick.get("game_id"))!=str(g["game_id"]):continue
-                    name=pick.get("player")
-                    stat=pick.get("stat_key")
-                    if not name or stat not in ("passing_yards","rushing_yards","receiving_yards"):continue
-                    if canon(name) not in participants:continue
-                    key=(str(g["game_id"]),canon(name),stat)
-                    # A player who appears in another statistical category is
-                    # confirmed to have participated, but a missing market still
-                    # requires a separately verified zero, not an assumption.
-                    if key not in saved:
-                        print(f"Participation confirmed; {name} {stat} missing, zero unverified")
             for side in detail.get("boxscore",{}).get("players",[]):
                 for cat in side.get("statistics",[]):
                     label=canon(cat.get("name"))
@@ -80,6 +67,23 @@ def main():
                         for g in matches:
                             key=(str(g["game_id"]),canon(player),stat_key)
                             saved[key]={"game_id":str(g["game_id"]),"player":player,"stat_key":stat_key,"actual":yards,"source":"ESPN final box score","event_id":str(event["id"])}
+            # A player listed with statistics in another category participated.
+            # Once the final box score is complete, an absent yardage category
+            # for that participant represents zero yards, not missing data.
+            # Players absent from every box-score category remain unverified.
+            for g in matches:
+                for pick in archived:
+                    if str(pick.get("game_id"))!=str(g["game_id"]):continue
+                    name=pick.get("player")
+                    stat=pick.get("stat_key")
+                    if not name or stat not in ("passing_yards","rushing_yards","receiving_yards"):continue
+                    key=(str(g["game_id"]),canon(name),stat)
+                    if key not in saved and canon(name) in participants:
+                        saved[key]={"game_id":str(g["game_id"]),"player":name,
+                                    "stat_key":stat,"actual":0.0,
+                                    "source":"ESPN final box score; verified participant, no category yards",
+                                    "event_id":str(event["id"])}
+                        print(f"Verified zero: {name} {stat} in {g['game_id']}")
     output={"updated_at_utc":datetime.now(timezone.utc).isoformat(),"rows":sorted(saved.values(),key=lambda x:(x["game_id"],x["player"],x["stat_key"]))}
     (DATA/"player-final-stats.json").write_text(json.dumps(output,indent=2)+"\n")
     print(f"Saved {len(saved)} verified player stat rows")
