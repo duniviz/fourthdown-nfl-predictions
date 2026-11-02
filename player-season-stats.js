@@ -7,16 +7,20 @@ let dataPromise,oddsPromise,projectionPromise;
 const loadOdds=()=>oddsPromise||(oddsPromise=fetch('data/dk-odds.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})));
 const loadProjections=()=>projectionPromise||(projectionPromise=Promise.all([
  fetch('data/count-projections.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})),
- fetch('data/player-research.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
+ fetch('data/research-prop-desk.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))
 ]).then(([count,research])=>({count,research})));
 const playerProjection=(source,name,market,kickoff)=>{
- const rows=Array.isArray(source?.players)?source.players:[];
+ const research=Array.isArray(source?.comparisons);
+ const rows=research?source.comparisons:(Array.isArray(source?.players)?source.players:[]);
  const captured=Date.parse(source?.generated_at_utc);
  const start=Date.parse(kickoff);
  if(Number.isFinite(captured)&&Number.isFinite(start)&&captured>=start)return null;
- const matches=rows.filter(x=>norm(x.player)===norm(name)&&(x.market_key||x.stat_key)===market&&x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(Number(x.projection)));
+ const researchMarkets={player_pass_yds:'passing_yards',player_rush_yds:'rushing_yards',player_rec_yds:'receiving_yards'};
+ const expectedMarket=research?(researchMarkets[market]||market):market;
+ const matches=rows.filter(x=>norm(research?x.player_name:x.player)===norm(name)&&(research?x.market:(x.market_key||x.stat_key))===expectedMarket&&
+   (research?(x.projected_yards!==null&&x.projected_yards!==undefined&&Number.isFinite(Number(x.projected_yards))):(x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(Number(x.projection)))));
  if(matches.length!==1)return null;
- return {value:Number(matches[0].projection),kind:source.status==='model_projections_not_betting_recommendations'?'Model projection':'Research estimate'};
+ return {value:Number(research?matches[0].projected_yards:matches[0].projection),kind:research?'Research estimate':'Model projection'};
 };
 const findPlayerProjection=(sources,name,market,kickoff)=>{
  const model=playerProjection(sources.count,name,market,kickoff);
