@@ -565,7 +565,7 @@ def generate():
                         "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
                         "opponent_adjustment":round(adjustment,3),
                         "opponent_defense_context":defense_context.get((opp,metric)),
-                        "opponent_position_context":({"games":len(position_defense.get((opp,position,metric),[])),"last_5_allowed_per_game":round(sum(position_defense[(opp,position,metric)])/len(position_defense[(opp,position,metric)]),1)} if (position,metric) in position_markets and position_defense.get((opp,position,metric)) else None),
+                        "opponent_position_context":position_context.get((opp,position,metric)),
                         "game_script_adjustment":script_multiplier,
                         "calibration_bias_yards":round(calibration_bias,2),
                         "learned_bias_weight":learned_weights.get(metric,0.0),
