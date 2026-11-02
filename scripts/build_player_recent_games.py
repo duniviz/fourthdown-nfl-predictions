@@ -44,6 +44,7 @@ def main():
  week=int(projections.get("week",1))
  targets={norm(p.get("player")) for p in players}
  history={}
+ espn_ids={}
  for w in range(1,week):
   try:board=get(f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&seasontype=2&week={w}&limit=100")
   except Exception as e:print("Scoreboard unavailable",w,e);continue
@@ -57,6 +58,7 @@ def main():
       person=athlete.get("athlete",{})
       key=norm(person.get("displayName"))
       if key not in targets:continue
+      if str(person.get("id") or "").isdigit():espn_ids[key]=str(person["id"])
       for market,value in parse(category,athlete).items():
        history.setdefault((key,market),[]).append({"week":w,"actual":value,"opponent":None})
  out={}
@@ -68,7 +70,7 @@ def main():
   key=(norm(p.get("player")),p.get("market_key"))
   rows=sorted(history.get(key,[]),key=lambda x:x["week"])[-5:]
   if rows:out[str(p.get("player_id"))+"|"+str(p.get("market_key"))]={"games":rows,"sample_size":len(rows)}
- ids={norm(p.get("player")):str(p.get("player_id")) for p in players if p.get("player") and str(p.get("player_id") or "").isdigit()}
+ ids=espn_ids
  for key,record in by_name.items():
   athlete_id=ids.get(key.split("|")[0])
   if athlete_id:record["athlete_id"]=athlete_id
