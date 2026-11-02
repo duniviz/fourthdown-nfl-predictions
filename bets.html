@@ -230,19 +230,25 @@ function renderExtraMarkets(){
    if(p){const id=norm(p.player)+'|'+p.market_key+'|'+p.game_id;entries.set(id,{p,q});}
    // Suppress unmatched quotes and projections on the count-prop board.
  }
- const rows=[...entries.values()].filter(({p,q})=>p&&q&&Number.isFinite(q.line)).filter(({p,q})=>{
+ // Display verified model projections even when no pregame DK quote was captured.
+ // Never substitute a post-kickoff quote or imply that an unavailable line was bettable.
+ for(const p of new Set(countProjections.values())){
+   const id=norm(p.player)+'|'+p.market_key+'|'+p.game_id;
+   if(!entries.has(id))entries.set(id,{p,q:null});
+ }
+ const rows=[...entries.values()].filter(({p})=>!!p).filter(({p,q})=>{
    const market=p?.market_key||q?.market_key;
    return names[market]&&(type==='all'||type===market)&&(game==='all'||fdGameId(p)===game)&&(!search||String((p?.player||q?.player)+' '+(p?.team||'')+' '+(p?.opponent||'')+' '+(q?.home_team||'')+' '+(q?.away_team||'')).toLowerCase().includes(search));
  }).sort((a,b)=>Number(!!b.p)-Number(!!a.p)||Number(activeLine(b.q))-Number(activeLine(a.q))||String(a.p?.player||a.q?.player).localeCompare(String(b.p?.player||b.q?.player)));
- count.textContent=rows.length+' markets · '+rows.filter(x=>x.p).length+' with model projections · '+rows.filter(x=>activeLine(x.q)).length+' fresh DK quotes';
+ count.textContent=rows.length+' model projections · '+rows.filter(x=>x.q&&Number.isFinite(x.q.line)).length+' with saved pregame DK lines';
  list.innerHTML=rows.length?rows.map(({p,q})=>{
    const proj=p?Number(p.projection):null,hasLine=q&&Number.isFinite(q.line),difference=p&&hasLine?proj-q.line:null;
-   const stat=p?.market_key||q.market_key,player=p?.player||q.player;
+   const stat=p?.market_key||q?.market_key,player=p?.player||q?.player;
    return '<article class="bet-card"><h3>'+escape(player)+'</h3><p class="bet-sub">'+escape(names[stat])+' · '+escape(p?p.team+' vs '+p.opponent:(q.away_team||'')+' vs '+(q.home_team||''))+'</p><div class="bet-metrics"><div><small>Model</small><strong>'+(p?proj.toFixed(1):'—')+'</strong></div><div><small>DK line</small><strong>'+(hasLine?q.line.toFixed(1):'—')+'</strong></div><div><small>Difference</small><strong>'+(difference===null?'—':(difference>=0?'+':'')+difference.toFixed(1))+'</strong></div></div>'+
    (p?fdLastFiveVisual(p,q):'')+
    (p?'<p class="bet-reason">Last five: '+escape(p.recent_5_avg??'—')+' · Opponent factor: '+escape(p.defense_factor)+'× · Workload factor: '+escape(p.workload_factor)+'×. Model estimate, not a recommended bet.</p>':'<p class="bet-note">DK quote only; no matching model projection.</p>')+
-   '<p class="bet-note">'+(hasLine?'DK quote '+(activeLine(q)?'fresh':'stale · verify')+' · Over '+escape(q.over_price==null?'—':money(Number(q.over_price)))+' / Under '+escape(q.under_price==null?'—':money(Number(q.under_price))):'No saved DK quote for this player and matchup')+'</p></article>';
- }).join(''):'<p class="bet-sub">No matching DraftKings line and model projection for this category right now. Try another category or game.</p>';
+   '<p class="bet-note">'+(hasLine?'DK quote '+(activeLine(q)?'fresh':'stale · verify')+' · Over '+escape(q.over_price==null?'—':money(Number(q.over_price)))+' / Under '+escape(q.under_price==null?'—':money(Number(q.under_price))):'No verified pregame DK line · projection shown for research only')+'</p></article>';
+ }).join(''):'<p class="bet-sub">No model projections match this category and game.</p>';
 }
 let fdRecentGames={},fdRecentGamesByName={};
 function fdLastFiveVisual(p,q){
@@ -250,10 +256,10 @@ function fdLastFiveVisual(p,q){
  const verified=fdRecentGames[String(p.player_id)+'|'+String(market)]||fdRecentGamesByName[norm(p.player)+'|'+market];
  const raw=verified?.games||p.last_five_games||p.recent_game_values||p.last_5_actuals;
  const values=Array.isArray(raw)?raw.map(v=>typeof v==='object'?Number(v.actual??v.value):Number(v)).filter(Number.isFinite).slice(-5):[];
- const line=Number(q?.line);
- if(!values.length||!Number.isFinite(line))return '<p class="bet-note">Verified recent game totals unavailable for this player and market.</p>';
- const max=Math.max(1,line,...values)*1.1;
- return '<div class="fd-lastfive"><strong>Previous '+values.length+' game'+(values.length===1?'':'s')+' vs DK line '+escape(line.toFixed(1))+'</strong><div class="fd-fivebars">'+values.map((v,i)=>'<div class="fd-fivecol"><span>'+escape(v.toFixed(1))+'</span><div class="fd-fivebar" style="height:'+Math.max(5,Math.round(v/max*90))+'px;background:'+(v>=line?'#46dfc1':'#6db9ff')+'"></div><small>G'+(i+1)+'</small></div>').join('')+'</div><small>Green = at/above current DK line; blue = below. Games oldest to newest.</small></div>';
+ const line=q&&Number.isFinite(Number(q.line))?Number(q.line):null;
+ if(!values.length)return '<p class="bet-note">Verified recent game totals unavailable for this player and market.</p>';
+ const max=Math.max(1,...(line===null?[]:[line]),...values)*1.1;
+ return '<div class="fd-lastfive"><strong>Previous '+values.length+' game'+(values.length===1?'':'s')+(line===null?' (actual totals)':' vs DK line '+escape(line.toFixed(1)))+'</strong><div class="fd-fivebars">'+values.map((v,i)=>'<div class="fd-fivecol"><span>'+escape(v.toFixed(1))+'</span><div class="fd-fivebar" style="height:'+Math.max(5,Math.round(v/max*90))+'px;background:'+(line===null?'#6db9ff':v>=line?'#46dfc1':'#6db9ff')+'"></div><small>G'+(i+1)+'</small></div>').join('')+'</div><small>Green = at/above current DK line; blue = below. Games oldest to newest.</small></div>';
 }
 const fdEspnActuals=new Map();
 async function fdRefreshActuals(){
