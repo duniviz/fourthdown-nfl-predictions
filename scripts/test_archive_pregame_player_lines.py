@@ -15,7 +15,7 @@ class ArchiveTest(unittest.TestCase):
     def test_all_markets_and_postkickoff_lock(self):
         original=archive.ROOT
         now=dt.datetime.now(dt.timezone.utc)
-        kickoff=(now+dt.timedelta(hours=3)).isoformat()
+        kickoff=(now+dt.timedelta(minutes=15)).isoformat()
         quote=(now-dt.timedelta(minutes=4)).isoformat()
         forecast=(now-dt.timedelta(minutes=9)).isoformat()
         markets=[("player_passing_yards",265.0,250.5),("player_rushing_yards",82.0,90.5),
