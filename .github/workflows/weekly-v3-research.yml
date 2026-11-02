@@ -85,9 +85,18 @@ jobs:
         run: |
           if [ -f readiness-gate/data/weekly-shadow-forecasts.json ]; then
             python readiness-gate/research/grade_weekly_shadow_models.py
-            cat readiness-gate/research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+            cat readiness-gate/research/weekly-shadow-results/\n            readiness-gate/research/yardage-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "STATUS: WAITING_FOR_PREGAME_CAPTURE — no frozen shadow forecasts yet. This run does not verify weekly same-slate comparisons." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Grade yardage and game models on the same slate
+        if: always()
+        run: |
+          if [ -f readiness-gate/data/weekly-shadow-forecasts.json ]; then
+            python readiness-gate/research/grade_yardage_game_models.py
+            cat readiness-gate/research/yardage-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Yardage/game comparison pending frozen pregame forecasts." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Show weekly learner summary
         if: always()
