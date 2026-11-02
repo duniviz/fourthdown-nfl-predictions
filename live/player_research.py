@@ -563,7 +563,7 @@ def generate():
                         "qb_full_game_workload":round(qb_full_game_volume,1) if qb_full_game_volume is not None else None,
                         "qb_raw_team_share":round(raw_role_share,3) if qb_full_game_volume is not None else None,
                         "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
-                        "opponent_adjustment":round(adjustment,3),
+                        "opponent_adjustment":round(adjustment,3),\n                        "opponent_adjustment_basis":"position_market" if (position,metric) in position_markets else "team_market",
                         "opponent_defense_context":defense_context.get((opp,metric)),
                         "opponent_position_context":position_context.get((opp,position,metric)),
                         "game_script_adjustment":script_multiplier,
