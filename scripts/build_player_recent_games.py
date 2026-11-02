@@ -68,6 +68,10 @@ def main():
   key=(norm(p.get("player")),p.get("market_key"))
   rows=sorted(history.get(key,[]),key=lambda x:x["week"])[-5:]
   if rows:out[str(p.get("player_id"))+"|"+str(p.get("market_key"))]={"games":rows,"sample_size":len(rows)}
+ ids={norm(p.get("player")):str(p.get("player_id")) for p in players if p.get("player") and str(p.get("player_id") or "").isdigit()}
+ for key,record in by_name.items():
+  athlete_id=ids.get(key.split("|")[0])
+  if athlete_id:record["athlete_id"]=athlete_id
  payload={"source":"ESPN final box scores","season":season,"through_week":week-1,"updated_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),"players":out,"by_name":by_name}
  (DATA/"player-recent-games.json").write_text(json.dumps(payload,indent=2)+"\n")
  print("Players with verified recent games:",len(out))
