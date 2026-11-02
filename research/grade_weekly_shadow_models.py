@@ -17,12 +17,13 @@ def main():
  for r in archive:
   key=(str(r["game_id"]),str(r["player_id"]),norm(r["stat_key"]))
   if key in actuals:rows.append(dict(r,actual=actuals[key]))
- # Require identical ten-model coverage for each graded player/game/market.
- from collections import defaultdict
+ # Require identical candidate coverage for each graded player/game/market.
+ from collections import defaultdict\n from itertools import product
  grouped=defaultdict(list)
  for row in rows:
   grouped[(row["game_id"],row["player_id"],norm(row["stat_key"]))].append(row)
  expected={"live","baseline","workload","matchup","recent_form","baseline_workload_blend","workload_matchup_blend","baseline_matchup_blend","recent_matchup_blend","four_way_blend"}
+ expected.update("mix_"+''.join(map(str,w)) for w in product(range(5),repeat=4) if sum(w)==4)
  complete=[r for group in grouped.values() if len(group)==len(expected) and {r["model"] for r in group}==expected for r in group]
  report=compare(complete)
  report["coverage"]={"frozen_forecasts":len(archive),"verified_forecasts":len(rows),"complete_player_game_markets":len(complete)//len(expected),"incomplete_player_game_markets":len(grouped)-len(complete)//len(expected)}
