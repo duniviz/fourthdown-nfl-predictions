@@ -40,6 +40,27 @@ def main():
             try: detail=fetch(f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={event['id']}")
             except Exception as e:
                 print(f"Box score unavailable {event['id']}: {e}");continue
+            # Participation evidence is separate from yardage rows. Never infer a
+            # zero merely because ESPN omitted a player from a stat category.
+            participants=set()
+            for side in detail.get("boxscore",{}).get("players",[]):
+                for category in side.get("statistics",[]):
+                    for athlete in category.get("athletes",[]):
+                        if athlete.get("stats"):
+                            participants.add(canon(athlete.get("athlete",{}).get("displayName")))
+            for g in matches:
+                for pick in archived:
+                    if str(pick.get("game_id"))!=str(g["game_id"]):continue
+                    name=pick.get("player")
+                    stat=pick.get("stat_key")
+                    if not name or stat not in ("passing_yards","rushing_yards","receiving_yards"):continue
+                    if canon(name) not in participants:continue
+                    key=(str(g["game_id"]),canon(name),stat)
+                    # A player who appears in another statistical category is
+                    # confirmed to have participated, but a missing market still
+                    # requires a separately verified zero, not an assumption.
+                    if key not in saved:
+                        print(f"Participation confirmed; {name} {stat} missing, zero unverified")
             for side in detail.get("boxscore",{}).get("players",[]):
                 for cat in side.get("statistics",[]):
                     label=canon(cat.get("name"))
