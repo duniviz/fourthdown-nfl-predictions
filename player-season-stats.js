@@ -86,10 +86,10 @@ async function openPlayer(name){
  try{const [data,odds,projections]=await Promise.all([load(),loadOdds(),loadProjections()]);if(!overlay.isConnected)return;const key=norm(name),matches=Object.entries(data.by_name||{}).filter(([k])=>k.startsWith(key+'|'));if(!matches.length){body.innerHTML='<p>No verified completed-game statistics are available for this player in the published feed.</p>';return}
  const athleteId=matches.map(([,v])=>v.athlete_id).find(id=>/^[0-9]+$/.test(String(id||'')));
  if(athleteId){const h=overlay.querySelector('.fd-stat-identity');const img=document.createElement('img');img.className='fd-stat-headshot';img.alt=name+' headshot';img.loading='lazy';img.referrerPolicy='no-referrer';img.src='https://a.espncdn.com/i/headshots/nfl/players/full/'+athleteId+'.png';img.onerror=()=>{img.style.display='none'};h.prepend(img)}
- const order=['player_pass_yds','player_pass_completions','player_pass_attempts','player_rush_yds','player_rush_attempts','player_rec_yds','player_receptions'];
+ const order=['player_rush_attempts','player_rush_yds','player_receptions','player_rec_yds','player_pass_yds','player_pass_completions','player_pass_attempts'];
  const cols=matches.map(([k,v])=>({market:k.slice(key.length+1),games:(v.games||[]).filter(g=>g.actual!==null&&Number.isFinite(Number(g.actual)))})).filter(x=>x.games.length).sort((a,b)=>order.indexOf(a.market)-order.indexOf(b.market));
  const weeks=[...new Set(cols.flatMap(x=>x.games.map(g=>Number(g.week))))].sort((a,b)=>a-b);
- const short={player_pass_yds:'Pass',player_pass_completions:'Cmp',player_pass_attempts:'Att',player_rush_yds:'Rush',player_rush_attempts:'Car',player_rec_yds:'RecY',player_receptions:'Rec'};
+ const short={player_pass_yds:'PASS YDS',player_pass_completions:'CMP',player_pass_attempts:'ATT',player_rush_yds:'RUSH YDS',player_rush_attempts:'CAR',player_rec_yds:'REC YDS',player_receptions:'REC'};
  const row=(label,fn)=>'<tr'+(['Total','Avg','Last 5'].includes(label)?' class="fd-stat-summary fd-stat-'+(label==='Last 5'?'last-5':label.toLowerCase())+'"':'')+'><th>'+esc(label)+'</th>'+cols.map(x=>'<td>'+esc(fn(x))+'</td>').join('')+'</tr>';
  const average=gs=>gs.length?(gs.reduce((a,g)=>a+Number(g.actual),0)/gs.length).toFixed(1):'—';
  const quotes=cols.map(x=>({market:x.market,q:currentQuote(odds.rows,name,x.market)})).filter(x=>x.q);
