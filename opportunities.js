@@ -46,8 +46,8 @@
     const market=yardMarket[x.market];if(!market||!Number.isFinite(Number(x.projected_yards))||x.projected_yards===null)continue;
     const found=quotes.get(norm(x.player_name)+'|'+market);if(!found)continue;
     const q=found.q;
-    const teams=norm(q.home_team)+' '+norm(q.away_team);
-    if(!teams.includes(norm(x.team))&&!(x.team==='SEA'&&teams.includes('seahawks'))&&!(x.team==='CHI'&&teams.includes('bears')))continue;
+    const teamNames={CHI:'bears',SEA:'seahawks',GB:'packers',KC:'chiefs',DEN:'broncos',NE:'patriots',MIA:'dolphins',DAL:'cowboys',ARI:'cardinals',PIT:'steelers',CLE:'browns',BAL:'ravens',BUF:'bills',PHI:'eagles',WAS:'commanders',LV:'raiders',NYJ:'jets',IND:'colts',JAX:'jaguars',TEN:'titans',CIN:'bengals',ATL:'falcons',TB:'buccaneers',MIN:'vikings',DET:'lions',LAC:'chargers',LA:'rams'};
+    if(teamNames[x.team]&&!((q.home_team||'').toLowerCase().includes(teamNames[x.team])||(q.away_team||'').toLowerCase().includes(teamNames[x.team])))continue;
     const line=Number(q.line),projection=Number(x.projected_yards),gap=projection-line;
     if(Math.abs(gap)<0.01)continue;
     rows.push({x:{player:x.player_name,team:x.team,recent_5_avg:null},q,line,projection,gap,market,updated:found.updated,provisional:x.ranking_status!=='eligible'});
