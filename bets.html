@@ -215,14 +215,17 @@ $('fd-tab-yards').onclick=()=>fdSetProjectionTab('yards');$('fd-tab-td').onclick
 function renderExtraMarkets(){
  const list=$('fd-extra-list'),count=$('fd-extra-count');if(!list||!count)return;
  const names={player_pass_completions:'QB pass completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
+ const canonicalMarket=m=>({player_passing_completions:'player_pass_completions',player_rushing_attempts:'player_rush_attempts',player_passing_attempts:'player_pass_attempts'}[m]||m);
+ const teamName=t=>norm(({ARI:'Arizona Cardinals',ATL:'Atlanta Falcons',BAL:'Baltimore Ravens',BUF:'Buffalo Bills',CAR:'Carolina Panthers',CHI:'Chicago Bears',CIN:'Cincinnati Bengals',CLE:'Cleveland Browns',DAL:'Dallas Cowboys',DEN:'Denver Broncos',DET:'Detroit Lions',GB:'Green Bay Packers',HOU:'Houston Texans',IND:'Indianapolis Colts',JAX:'Jacksonville Jaguars',KC:'Kansas City Chiefs',LV:'Las Vegas Raiders',LAC:'Los Angeles Chargers',LA:'Los Angeles Rams',MIA:'Miami Dolphins',MIN:'Minnesota Vikings',NE:'New England Patriots',NO:'New Orleans Saints',NYG:'New York Giants',NYJ:'New York Jets',PHI:'Philadelphia Eagles',PIT:'Pittsburgh Steelers',SF:'San Francisco 49ers',SEA:'Seattle Seahawks',TB:'Tampa Bay Buccaneers',TEN:'Tennessee Titans',WAS:'Washington Commanders'})[String(t||'').toUpperCase()]||t);
  const type=$('fd-extra-type').value,search=String($('fd-extra-search').value||'').trim().toLowerCase(),game=$('bet-game').value;
- const quotes=[...lines.values()].flat().filter(x=>names[x.market_key]&&Number.isFinite(x.line)&&x.line>=0);
+ const quotes=[...lines.values()].flat().filter(x=>names[canonicalMarket(x.market_key)]&&Number.isFinite(x.line)&&x.line>=0);
  const uniqueQuotes=new Map();
- for(const x of quotes){const id=norm(x.player)+'|'+x.market_key+'|'+norm(x.home_team)+'|'+norm(x.away_team),old=uniqueQuotes.get(id);if(!old||x.last_update>old.last_update)uniqueQuotes.set(id,x);}
+ for(const x of quotes){const id=norm(x.player)+'|'+canonicalMarket(x.market_key)+'|'+teamName(x.home_team)+'|'+teamName(x.away_team),old=uniqueQuotes.get(id);if(!old||x.last_update>old.last_update)uniqueQuotes.set(id,x);}
  const entries=new Map();
  // Only show projections when a real saved DraftKings quote matches the player and game.
  for(const q of uniqueQuotes.values()){
-   const p=countProjections.get(norm(q.player)+'|'+q.market_key+'|'+norm(q.home_team)+'|'+norm(q.away_team));
+   const market=canonicalMarket(q.market_key);
+   const p=countProjections.get(norm(q.player)+'|'+market+'|'+teamName(q.home_team)+'|'+teamName(q.away_team));
    if(p){const id=norm(p.player)+'|'+p.market_key+'|'+p.game_id;entries.set(id,{p,q});}
    // Suppress unmatched quotes and projections on the count-prop board.
  }
