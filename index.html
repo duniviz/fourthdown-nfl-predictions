@@ -636,9 +636,9 @@ function fdOpenMatchup(g){
    const positionFromFewest=positionRank,positionFromMost=positionTeams!==null&&positionRank!==null?positionTeams-positionRank+1:null;
    const rankDirection=positionFromMost!==null&&positionFromMost<positionFromFewest?'most':'fewest';
    const relativeRank=rankDirection==='most'?positionFromMost:positionFromFewest;
-   const rankDescription=positionTies>1
-     ? (positionTies>1?'tied for '+(relativeRank===1?'the '+rankDirection:ordinal(relativeRank)+'-'+rankDirection):'')
-     : ordinal(relativeRank)+'-'+rankDirection;
+   const rankDescription=positionRank!==null&&positionTeams!==null
+     ? (positionTies>1?'tied for '+(relativeRank===1?'the '+rankDirection:ordinal(relativeRank)+'-'+rankDirection):ordinal(relativeRank)+'-'+rankDirection)
+     : '';
    if(positionRank!==null&&positionTeams!==null&&positionSeason!==null){
      const rankSentence=positionTies>1
        ? opponent+' allowed '+positionSeason.toFixed(1)+' '+marketLabel+' to '+positionPlural+' per game, '+rankDescription+' among '+positionTeams+' teams'
