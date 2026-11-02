@@ -285,8 +285,7 @@ def generate():
     context_markets={
         ("QB","passing_yards"),("QB","rushing_yards"),
         ("RB","rushing_yards"),("RB","receiving_yards"),
-        ("WR","rushing_yards"),("WR","receiving_yards"),
-        ("TE","receiving_yards"),("FB","rushing_yards"),("FB","receiving_yards"),
+        ("WR","receiving_yards"),("TE","receiving_yards"),
     }
     context_allowed=defaultdict(lambda:defaultdict(float))
     for (team,player),records in history.items():
@@ -317,13 +316,17 @@ def generate():
             samples=[(w,context_allowed[(defense,w,pos)][metric]) for w in sorted(played_weeks)]
             if len(samples)>=3:
                 by_team[defense]=samples
-        ranked=sorted(by_team,key=lambda defense:(sum(v for _,v in by_team[defense])/len(by_team[defense]),defense))
-        for rank,defense in enumerate(ranked,1):
-            samples=by_team[defense]
+        averages={team:sum(value for _,value in samples)/len(samples) for team,samples in by_team.items()}
+        for defense,samples in by_team.items():
+            average=averages[defense]
+            rank=1+sum(value<average-1e-9 for value in averages.values())
+            tie_count=sum(abs(value-average)<=1e-9 for value in averages.values())
             recent=samples[-5:]
+            ranked_teams=len(averages)
             position_context[(defense,pos,metric)]={
-                "rank":rank,"ranked_teams":len(ranked),"position":pos,"stat_key":metric,
-                "season_allowed_per_game":round(sum(v for _,v in samples)/len(samples),1),
+                "rank":rank,"ranked_teams":ranked_teams,"tie_count":tie_count,
+                "position":pos,"stat_key":metric,
+                "season_allowed_per_game":round(average,1),
                 "last_5_allowed_per_game":round(sum(v for _,v in recent)/len(recent),1),
                 "games":len(samples),"last_5_games":len(recent),
                 "basis":"completed regular-season game logs by opponent, position, and market; rank 1 allows fewest"
