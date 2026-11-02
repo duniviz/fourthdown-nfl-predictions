@@ -4,7 +4,7 @@
 These are live-input shadow variants, NOT an exact replay of historical V3.
 Only model-input fields available before kickoff are used.
 """
-import json,datetime as dt,math,pathlib
+import json,datetime as dt,math,pathlib\nfrom itertools import product
 ROOT=pathlib.Path(__file__).resolve().parents[1];DATA=ROOT/"data"
 WEIGHTS={
  "live":(0,0,0,0),"baseline":(1,0,0,0),"workload":(0,1,0,0),
@@ -14,6 +14,9 @@ WEIGHTS={
  "baseline_matchup_blend":(.5,0,.5,0),
  "recent_matchup_blend":(0,0,.5,.5),
  "four_way_blend":(.25,.25,.25,.25)}
+# Same candidate family on every eligible prop: all 25%-increment blends.
+WEIGHTS.update({"mix_"+''.join(map(str,w)):tuple(v/4 for v in w)
+                for w in product(range(5),repeat=4) if sum(w)==4})
 def finite(x):
  try:
   n=float(x);return n if math.isfinite(n) else None
@@ -30,7 +33,7 @@ def build(source,snapshots,existing):
    kickoff=dt.datetime.fromisoformat(snap["kickoff"].replace("Z","+00:00"))
    captured=dt.datetime.fromisoformat(snap["captured_at"].replace("Z","+00:00"))
    generated=dt.datetime.fromisoformat(source["generated_at_utc"].replace("Z","+00:00"))
-   if not (generated==captured<kickoff):continue
+   if not (generated<=captured<kickoff):continue
   except (KeyError,ValueError,TypeError):continue
   live=finite(snap.get("projection"));base=finite(p.get("base_projection"))
   defense=finite(p.get("defense_factor"));workload=finite(p.get("workload_factor"))
