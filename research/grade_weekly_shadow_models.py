@@ -17,10 +17,19 @@ def main():
  for r in archive:
   key=(str(r["game_id"]),str(r["player_id"]),norm(r["stat_key"]))
   if key in actuals:rows.append(dict(r,actual=actuals[key]))
- report=compare(rows)
+ # Require identical ten-model coverage for each graded player/game/market.
+ from collections import defaultdict
+ grouped=defaultdict(list)
+ for row in rows:
+  grouped[(row["game_id"],row["player_id"],norm(row["stat_key"]))].append(row)
+ expected={"live","baseline","workload","matchup","recent_form","baseline_workload_blend","workload_matchup_blend","baseline_matchup_blend","recent_matchup_blend","four_way_blend"}
+ complete=[r for group in grouped.values() if len(group)==len(expected) and {r["model"] for r in group}==expected for r in group]
+ report=compare(complete)
+ report["coverage"]={"frozen_forecasts":len(archive),"verified_forecasts":len(rows),"complete_player_game_markets":len(complete)//len(expected),"incomplete_player_game_markets":len(grouped)-len(complete)//len(expected)}
+ report["status"]="COMPLETE" if report["matched_slate_records"] else ("WAITING_FOR_FINAL_STATS" if archive else "WAITING_FOR_PREGAME_CAPTURE")
  out=ROOT/"research"/"weekly-shadow-results";out.mkdir(parents=True,exist_ok=True)
  (out/"leaderboard.json").write_text(json.dumps(report,indent=2)+"\n")
- lines=["# Weekly shadow model comparison","",f"Matched player-game-markets: {report['matched_slate_records']}","",
+ lines=["# Weekly shadow model comparison","",f"Status: {report['status']}","",f"Matched player-game-markets: {report['matched_slate_records']}","",
  "| Market | Model | Samples | MAE | RMSE | DK sample | DK hit % |","|---|---|---:|---:|---:|---:|---:|"]
  for r in report["metrics"]:
   rate="—" if r["dk_hit_rate"] is None else f'{r["dk_hit_rate"]*100:.1f}%'
