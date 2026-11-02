@@ -4,6 +4,7 @@ import datetime as dt
 import json
 import pathlib
 import re
+import math
 
 ROOT=pathlib.Path("data")
 def read(name,default):
@@ -16,12 +17,14 @@ def norm(value): return re.sub(r"[^a-z0-9]","",str(value or "").lower())
 def main():
     now=dt.datetime.now(dt.timezone.utc)
     odds=read("dk-odds.json",{})
-    projections=read("count-projections.json",{})
+    sources=[("count-projections.json",read("count-projections.json",{})),
+             ("yardage-projections.json",read("yardage-projections.json",{}))]
     history=read("player-history.json",{"schema_version":1,"players":[]})
     if not isinstance(history.get("players"),list): history={"schema_version":1,"players":[]}
     if odds.get("bookmaker","").lower()!="draftkings": raise SystemExit("Not DraftKings odds")
-    created=time(projections.get("generated_at_utc"))
-    if not created or created>now: raise SystemExit("Invalid projection timestamp")
+    # Only independently timestamped pregame forecasts are eligible; postgame
+    # player-results.json must never be used as a forecast source.
+    if not isinstance(odds.get("rows"),list): raise SystemExit("Invalid DK odds rows")
     # Count prop market aliases used by the current projection generator.
     aliases={"player_pass_completions":"player_passing_completions","player_pass_attempts":"player_passing_attempts",
              "player_rush_attempts":"player_rushing_attempts","player_receptions":"player_receptions",
@@ -29,25 +32,43 @@ def main():
              "player_receiving_yards":"player_receiving_yards"}
     existing={(str(x.get("game_id")),norm(x.get("player")),x.get("stat_key"),str(x.get("dk_line")),str(x.get("dk_quote_time"))) for x in history["players"]}
     added=0
-    for p in projections.get("players",[]):
+    for source_name, projections in sources:
+      created=time(projections.get("generated_at_utc"))
+      if not created or created>now or not isinstance(projections.get("players"),list):
+        continue
+      for p in projections.get("players",[]):
         market=aliases.get(p.get("market_key"))
         if not market: continue
+        if source_name=="yardage-projections.json" and market not in ("player_passing_yards","player_rushing_yards","player_receiving_yards"): continue
         projection=p.get("projection")
-        if not isinstance(projection,(float,int)): continue
-        for q in odds.get("rows",[]):
+        game_id=str(p.get("game_id") or "")
+        if not game_id or not isinstance(projection,(float,int)) or isinstance(projection,bool) or not math.isfinite(projection): continue
+        # Game IDs contain away and home team abbreviations; match both teams,
+        # not merely a player name that could be reused in another game.
+        parts=game_id.split("_")
+        if len(parts)<4: continue
+        for q in odds["rows"]:
             if norm(q.get("player"))!=norm(p.get("player")) or q.get("market_key")!=market: continue
             kickoff=time(q.get("commence_time")); quoted=time(q.get("last_update"))
             line=q.get("line")
-            if not kickoff or not quoted or not isinstance(line,(int,float)): continue
+            if not kickoff or not quoted or not isinstance(line,(int,float)) or isinstance(line,bool) or not math.isfinite(line): continue
             if not (created<kickoff and quoted<kickoff and now<kickoff and quoted<=now): continue
-            key=(str(p.get("game_id")),norm(p.get("player")),market,str(line),str(q.get("last_update")))
+            if not (q.get("home_team") and q.get("away_team")): continue
+            # Require an explicit game ID in odds when available, or verified
+            # team abbreviations in projection feed (do not guess from names).
+            if q.get("game_id") and str(q["game_id"])!=game_id: continue
+            if not q.get("game_id"):
+                # Without a reliable cross-feed game identifier, don't pair
+                # quotes by player name alone.
+                continue
+            key=(game_id,norm(p.get("player")),market,str(line),str(q.get("last_update")))
             if key in existing: continue
-            history["players"].append({"game_id":p.get("game_id"),"player":p.get("player"),
+            history["players"].append({"game_id":game_id,"player":p.get("player"),
                 "team":p.get("team"),"stat_key":market,"projection":projection,
                 "dk_line":line,"recommended_side":"OVER" if projection>line else "UNDER" if projection<line else "NO_PICK",
                 "kickoff_utc":q["commence_time"],"forecast_captured_at_utc":projections["generated_at_utc"],
                 "dk_quote_time":q["last_update"],"saved_at_utc":now.isoformat(),"bookmaker":"draftkings",
-                "source":odds.get("source","ParlayAPI")})
+                "source":odds.get("source","ParlayAPI"),"projection_source":source_name})
             existing.add(key);added+=1
     history["players"].sort(key=lambda x:(str(x.get("kickoff_utc")),str(x.get("player")),str(x.get("stat_key")),str(x.get("dk_quote_time"))))
     ROOT.joinpath("player-history.json").write_text(json.dumps(history,indent=2)+"\n")
