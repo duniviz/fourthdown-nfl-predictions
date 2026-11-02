@@ -44,7 +44,7 @@ def main():
  week=int(projections.get("week",1))
  targets={norm(p.get("player")) for p in players}
  history={}
- for w in range(max(1,week-9),week):
+ for w in range(1,week):
   try:board=get(f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&seasontype=2&week={w}&limit=100")
   except Exception as e:print("Scoreboard unavailable",w,e);continue
   for event in board.get("events",[]):
@@ -62,7 +62,7 @@ def main():
  out={}
  by_name={}
  for (name,market),games in history.items():
-  rows=sorted(games,key=lambda x:x["week"])[-5:]
+  rows=sorted(games,key=lambda x:x["week"])
   if rows:by_name[name+"|"+market]={"games":rows,"sample_size":len(rows)}
  for p in players:
   key=(norm(p.get("player")),p.get("market_key"))
