@@ -1,0 +1,31 @@
+name: Populate recent NFL player prop game logs
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 13 * * 2,3,4,5,6'
+permissions:
+  contents: write
+concurrency:
+  group: player-recent-game-logs
+  cancel-in-progress: false
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect verified ESPN final box scores
+        run: python scripts/build_player_recent_games.py
+      - name: Publish game log feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/player-recent-games.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh verified player recent games [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
