@@ -15,7 +15,7 @@ async function openPlayer(name){
  document.body.appendChild(overlay);const close=()=>{overlay.remove();document.removeEventListener('keydown',onKey)};const onKey=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',onKey);overlay.querySelector('button').focus();overlay.querySelector('button').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
  const body=overlay.querySelector('.fd-stat-content');
  try{const [data,odds]=await Promise.all([load(),loadOdds()]);if(!overlay.isConnected)return;const key=norm(name),matches=Object.entries(data.by_name||{}).filter(([k])=>k.startsWith(key+'|'));if(!matches.length){body.innerHTML='<p>No verified completed-game statistics are available for this player in the published feed.</p>';return}
- const athleteId=matches.map(([,v])=>v.athlete_id).find(id=>/^\\d+$/.test(String(id||'')));
+ const athleteId=matches.map(([,v])=>v.athlete_id).find(id=>/^[0-9]+$/.test(String(id||'')));
  if(athleteId){const h=overlay.querySelector('header > div');h.classList.add('fd-stat-identity');const img=document.createElement('img');img.className='fd-stat-headshot';img.alt=name+' headshot';img.loading='lazy';img.referrerPolicy='no-referrer';img.src='https://a.espncdn.com/i/headshots/nfl/players/full/'+athleteId+'.png';img.onerror=()=>{img.style.display='none'};h.prepend(img)}
  const order=['player_pass_yds','player_pass_completions','player_pass_attempts','player_rush_yds','player_rush_attempts','player_rec_yds','player_receptions'];
  const cols=matches.map(([k,v])=>({market:k.slice(key.length+1),games:(v.games||[]).filter(g=>g.actual!==null&&Number.isFinite(Number(g.actual)))})).filter(x=>x.games.length).sort((a,b)=>order.indexOf(a.market)-order.indexOf(b.market));
