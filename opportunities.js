@@ -5,7 +5,7 @@
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const norm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
  const names={'player_pass_completions':'Completions','player_pass_attempts':'Pass attempts','player_rush_attempts':'Rush attempts','player_receptions':'Receptions'};
- const categoryOf=m=>m.includes('pass')?'passing':m.includes('rush')?'rushing':m.includes('recep')?'receiving':'count';
+ const categoryOf=m=>m==='player_receptions'?'receiving':m.includes('rush')?'rushing':m.includes('pass')?'passing':'count';
  const validTime=s=>{const t=Date.parse(s||'');return Number.isFinite(t)?t:null};
  try{
   const [pr,od]=await Promise.all(['data/count-projections.json','data/dk-odds.json'].map(u=>fetch(u+'?t='+Date.now(),{cache:'no-store'})));
@@ -28,7 +28,7 @@
    const found=quotes.get(norm(x.player)+'|'+market);if(!found)continue;
    const q=found.q,line=Number(q.line),projection=Number(x.projection);
    const gap=projection-line;if(Math.abs(gap)<0.01)continue;
-   const teamName=String(x.team||'');
+   
    // Quote must correspond to the player's team and the same game.
    const gameId=String(x.game_id||'');
    if(!gameId||!gameId.split('_').slice(2).length)continue;
@@ -37,7 +37,7 @@
   }
   // Deduplicate player/market; rank relative gaps within the market, not as probabilities.
   const seen=new Set(),best=rows.sort((a,b)=>Math.abs(b.gap)/Math.max(1,b.line)-Math.abs(a.gap)/Math.max(1,a.line)).filter(r=>{const k=norm(r.x.player)+'|'+r.market;if(seen.has(k))return false;seen.add(k);return true});
-  const render=()=>{const selected=category?.value||'all';const filtered=best.filter(r=>selected==='all'||selected==='count'||categoryOf(r.market)===selected).slice(0,5);
+  const render=()=>{const selected=category?.value||'all';const filtered=best.filter(r=>selected==='all'||(selected==='count'?true:categoryOf(r.market)===selected)).slice(0,5);
   if(!filtered.length){root.innerHTML='<p class="caption">No matching upcoming DK player lines are available right now. Check the Prop Desk for the full slate.</p>';return;}
   root.innerHTML=filtered.map(r=>'<article class="fd-matchup-card" style="padding:15px"><div class="fd-matchup-top"><div><div class="fd-matchup-tag">'+esc(r.x.team)+' · '+esc(names[r.market])+'</div><h3>'+esc(r.x.player)+'</h3></div><span class="fd-matchup-tag">'+(r.gap>0?'OVER':'UNDER')+' '+esc(r.line.toFixed(1))+'</span></div><p style="margin:8px 0">Model <strong>'+esc(r.projection.toFixed(1))+'</strong> · DK <strong>'+esc(r.line.toFixed(1))+'</strong> · Gap <strong>'+esc((r.gap>0?'+':'')+r.gap.toFixed(1))+'</strong></p><small class="caption">Recent five-game avg: '+(Number.isFinite(Number(r.x.recent_5_avg))?esc(Number(r.x.recent_5_avg).toFixed(1)):'unavailable')+' · DK quote '+esc(new Date(r.updated).toLocaleString('en-US',{timeZone:'America/Chicago',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))+' CT</small></article>').join('');
   };
