@@ -19,7 +19,7 @@ def finite(x):
   n=float(x);return n if math.isfinite(n) else None
  except (ValueError,TypeError):return None
 def build(source,snapshots,existing):
- indexed={(str(r.get("game_id")),str(r.get("player_id")),str(r.get("market"))):r for r in source.get("players",[])}
+ indexed={(str(r.get("game_id")),str(r.get("player_id")),str(r.get("market_key") or r.get("market"))):r for r in source.get("players",[])}
  # Keep all previously frozen forecasts; never recalculate or overwrite a model/game/player/market.
  out={(str(r.get("game_id")),str(r.get("player_id")),str(r.get("stat_key")),str(r.get("model"))):r for r in existing}
  for snap in snapshots:
@@ -30,7 +30,7 @@ def build(source,snapshots,existing):
    kickoff=dt.datetime.fromisoformat(snap["kickoff"].replace("Z","+00:00"))
    captured=dt.datetime.fromisoformat(snap["captured_at"].replace("Z","+00:00"))
    generated=dt.datetime.fromisoformat(source["generated_at_utc"].replace("Z","+00:00"))
-   if not (generated<=captured<kickoff):continue
+   if not (generated==captured<kickoff):continue
   except (KeyError,ValueError,TypeError):continue
   live=finite(snap.get("projection"));base=finite(p.get("base_projection"))
   defense=finite(p.get("defense_factor"));workload=finite(p.get("workload_factor"))
