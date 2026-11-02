@@ -9,10 +9,22 @@ from pathlib import Path
 from research.walkforward_2024_2025 import run, MARKETS
 import nflreadpy as nfl
 
-CANDIDATES=('baseline','workload','matchup','injury','baseline_workload_blend')
+CANDIDATES=('baseline','workload','matchup','injury','baseline_workload_blend',
+            'workload_matchup_blend','workload_injury_blend','matchup_injury_blend',
+            'three_way_blend','four_way_blend')
 def estimate(row, candidate):
     if candidate=='baseline_workload_blend':
         return .5*row['baseline']+.5*row['workload']
+    blends={
+        'workload_matchup_blend':('workload','matchup'),
+        'workload_injury_blend':('workload','injury'),
+        'matchup_injury_blend':('matchup','injury'),
+        'three_way_blend':('workload','matchup','injury'),
+        'four_way_blend':('baseline','workload','matchup','injury'),
+    }
+    if candidate in blends:
+        keys=blends[candidate]
+        return sum(row[k] for k in keys)/len(keys)
     return row[candidate]
 
 def score(rows, candidate):
@@ -33,7 +45,11 @@ def evaluate(records):
         selected=min(CANDIDATES,key=lambda name:score(train,name))
         base=score(test,'baseline')
         challenger=score(test,selected)
+        ranking=sorted(({'model':name,'mae':round(score(test,name),4)} for name in CANDIDATES),
+                       key=lambda item:item['mae'])
         results[market]={
+            'same_slate_2025_all_candidates':ranking,
+            'candidate_count':len(CANDIDATES),
             'selected_on_2024':selected,
             'selection_2024_mae':round(score(train,selected),4),
             'test_2025_n':len(test),
@@ -55,6 +71,10 @@ def main():
     lines=['# FOURTHDOWN V3 challenger — first holdout gate','','**Live V2 remains unchanged.**','','Candidates selected using 2024 MAE; evaluated on untouched 2025. This is a preliminary model-selection gate, not a final V3 or full production V2 comparison.','','| Market | Selected using 2024 | 2025 N | Baseline MAE | Challenger MAE | Delta | Pass |','|---|---|---:|---:|---:|---:|---|']
     for market,r in results.items():
         lines.append(f"| {market.replace('_',' ')} | {r['selected_on_2024']} | {r['test_2025_n']} | {r['baseline_2025_mae']:.2f} | {r['challenger_2025_mae']:.2f} | {r['change_2025_mae']:+.2f} | {'Yes' if r['passes_holdout'] else 'No'} |")
+    lines+=['','## Same-slate 2025 model combination leaderboard','','All candidates forecast the identical eligible player/game/market records. Model selection uses 2024 only; the 2025 ranking is diagnostic, not a retroactive selection.','','| Market | 2025 rank | Candidate | MAE |','|---|---:|---|---:|']
+    for market,r in results.items():
+        for rank,entry in enumerate(r['same_slate_2025_all_candidates'],1):
+            lines.append(f"| {market.replace('_',' ')} | {rank} | {entry['model']} | {entry['mae']:.2f} |")
     lines+=['','## Limitations','','- The candidate family is limited to the existing research formulas; gradient boosting and regression are **not implemented yet**.','- 2024 is used for candidate selection and 2025 is held out; neither is used for a final production decision without additional chronological folds.','- Historical injury data here is a lagged proxy; same-week kickoff-verified injury reconstruction is pending.','- This baseline is not an exact replay of live V2.','- No DraftKings lines or calibrated Over/Under probabilities are evaluated yet.','- Do not promote any model automatically.']
     (dest/'RESULTS.md').write_text('\n'.join(lines)+'\n')
     print('\n'.join(lines))
