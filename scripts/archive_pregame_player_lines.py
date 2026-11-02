@@ -70,5 +70,5 @@ def main():
             existing.add(key);added+=1
     history["players"].sort(key=lambda x:(str(x.get("kickoff_utc")),str(x.get("player")),str(x.get("stat_key")),str(x.get("dk_quote_time"))))
     ROOT.joinpath("player-history.json").write_text(json.dumps(history,indent=2)+"\n")
-    print("New verified pregame snapshots:",added,"total:",len(history["players"]))
+    print("New verified pregame snapshots:",added,"total:",len(history["players"]))\n    if not read("yardage-projections.json",{}).get("players"):\n        print("WARNING: yardage-projections.json missing or empty; passing/rushing/receiving yard forecasts NOT being archived")
 if __name__=="__main__":main()
