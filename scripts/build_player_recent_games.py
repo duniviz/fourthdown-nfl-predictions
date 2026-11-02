@@ -33,6 +33,12 @@ def main():
  players=projections.get("players",[])
  research=read("player-research.json")
  players+=research.get("players",[])
+ desk=read("research-prop-desk.json")
+ yard_markets={"passing_yards":"player_pass_yds","rushing_yards":"player_rush_yds","receiving_yards":"player_rec_yds"}
+ for item in desk.get("comparisons",[]):
+  market=yard_markets.get(item.get("market"))
+  if market and item.get("player_name") and item.get("player_id"):
+   players.append({"player":item["player_name"],"player_id":item["player_id"],"market_key":market})
  if not players:raise SystemExit("No player projections")
  season=int(projections.get("season",dt.datetime.now().year))
  week=int(projections.get("week",1))
