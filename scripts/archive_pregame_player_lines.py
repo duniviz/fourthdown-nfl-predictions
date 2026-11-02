@@ -14,6 +14,9 @@ def time(value):
     try: return dt.datetime.fromisoformat(str(value).replace("Z","+00:00"))
     except (ValueError,TypeError): return None
 def norm(value): return re.sub(r"[^a-z0-9]","",str(value or "").lower())
+NICKNAMES={"cardinals":"ARI","falcons":"ATL","ravens":"BAL","bills":"BUF","panthers":"CAR","bears":"CHI","bengals":"CIN","browns":"CLE","cowboys":"DAL","broncos":"DEN","lions":"DET","packers":"GB","texans":"HOU","colts":"IND","jaguars":"JAX","chiefs":"KC","raiders":"LV","chargers":"LAC","rams":"LA","dolphins":"MIA","vikings":"MIN","patriots":"NE","saints":"NO","giants":"NYG","jets":"NYJ","eagles":"PHI","steelers":"PIT","49ers":"SF","seahawks":"SEA","buccaneers":"TB","titans":"TEN","commanders":"WAS"}
+def team_code(value):
+    return NICKNAMES.get(str(value or '').lower().split()[-1], '')
 def main():
     now=dt.datetime.now(dt.timezone.utc)
     odds=read("dk-odds.json",{})
@@ -54,13 +57,8 @@ def main():
             if not kickoff or not quoted or not isinstance(line,(int,float)) or isinstance(line,bool) or not math.isfinite(line): continue
             if not (created<kickoff and quoted<kickoff and now<kickoff and quoted<=now): continue
             if not (q.get("home_team") and q.get("away_team")): continue
-            # Require an explicit game ID in odds when available, or verified
-            # team abbreviations in projection feed (do not guess from names).
-            if q.get("game_id") and str(q["game_id"])!=game_id: continue
-            if not q.get("game_id"):
-                # Without a reliable cross-feed game identifier, don't pair
-                # quotes by player name alone.
-                continue
+            if q.get('game_id') and str(q['game_id'])!=game_id: continue
+            if team_code(q['away_team'])!=parts[2] or team_code(q['home_team'])!=parts[3]: continue
             key=(game_id,norm(p.get("player")),market,str(line),str(q.get("last_update")))
             if key in existing: continue
             history["players"].append({"game_id":game_id,"player":p.get("player"),
