@@ -279,6 +279,58 @@ def generate():
         for opponent in {k[0] for k in position_allowed}:
             samples=[v[metric] for (opp,w,p),v in sorted(position_allowed.items(),key=lambda item:item[0][1]) if opp==opponent and p==pos]
             position_defense[(opponent,pos,metric)]=samples[-5:] if samples else []
+
+    # Descriptive position-by-market opponent ranks for explanations only.
+    # These values never feed projection adjustments or recommendations.
+    context_markets={
+        ("QB","passing_yards"),("QB","rushing_yards"),
+        ("RB","rushing_yards"),("RB","receiving_yards"),
+        ("WR","receiving_yards"),("TE","receiving_yards"),
+    }
+    context_allowed=defaultdict(lambda:defaultdict(float))
+    for (team,player),records in history.items():
+        for record in records:
+            position=str(record.get("position") or "").upper()
+            opponent=str(record.get("opponent_team") or "")
+            if not opponent: continue
+            try: game_week=int(record["week"])
+            except (KeyError,TypeError,ValueError): continue
+            for pos,metric in context_markets:
+                if position==pos:
+                    context_allowed[(opponent,game_week,pos)][metric]+=max(0,num(record.get(metric)))
+    completed_games=defaultdict(set)
+    for scheduled in schedule:
+        if str(scheduled.get("game_type") or "REG").upper()!="REG": continue
+        try: game_week=int(scheduled.get("week"))
+        except (TypeError,ValueError): continue
+        if game_week>=week: continue
+        home=str(scheduled.get("home_team") or "")
+        away=str(scheduled.get("away_team") or "")
+        if home and away:
+            completed_games[home].add(game_week)
+            completed_games[away].add(game_week)
+    position_context={}
+    for pos,metric in sorted(context_markets):
+        by_team={}
+        for defense,played_weeks in completed_games.items():
+            samples=[(w,context_allowed[(defense,w,pos)][metric]) for w in sorted(played_weeks)]
+            if len(samples)>=3:
+                by_team[defense]=samples
+        averages={team:sum(value for _,value in samples)/len(samples) for team,samples in by_team.items()}
+        for defense,samples in by_team.items():
+            average=averages[defense]
+            rank=1+sum(value<average-1e-9 for value in averages.values())
+            tie_count=sum(abs(value-average)<=1e-9 for value in averages.values())
+            recent=samples[-5:]
+            ranked_teams=len(averages)
+            position_context[(defense,pos,metric)]={
+                "rank":rank,"ranked_teams":ranked_teams,"tie_count":tie_count,
+                "position":pos,"stat_key":metric,
+                "season_allowed_per_game":round(average,1),
+                "last_5_allowed_per_game":round(sum(v for _,v in recent)/len(recent),1),
+                "games":len(samples),"last_5_games":len(recent),
+                "basis":"completed regular-season game logs by opponent, position, and market; rank 1 allows fewest"
+            }
     league_mean={}
     defense_mean={}
     for metric,_,_ in METRICS:
@@ -515,8 +567,9 @@ def generate():
                         "qb_raw_team_share":round(raw_role_share,3) if qb_full_game_volume is not None else None,
                         "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
                         "opponent_adjustment":round(adjustment,3),
+                        "opponent_adjustment_basis":"position_market" if (position,metric) in position_markets else "team_market",
                         "opponent_defense_context":defense_context.get((opp,metric)),
-                        "opponent_position_context":({"games":len(position_defense.get((opp,position,metric),[])),"last_5_allowed_per_game":round(sum(position_defense[(opp,position,metric)])/len(position_defense[(opp,position,metric)]),1)} if (position,metric) in position_markets and position_defense.get((opp,position,metric)) else None),
+                        "opponent_position_context":position_context.get((opp,position,metric)),
                         "game_script_adjustment":script_multiplier,
                         "calibration_bias_yards":round(calibration_bias,2),
                         "learned_bias_weight":learned_weights.get(metric,0.0),
