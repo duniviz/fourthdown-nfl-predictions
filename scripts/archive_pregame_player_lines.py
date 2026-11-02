@@ -58,7 +58,8 @@ def main():
             kickoff=time(q.get("commence_time")); quoted=time(q.get("last_update"))
             line=q.get("line")
             if not kickoff or not quoted or not isinstance(line,(int,float)) or isinstance(line,bool) or not math.isfinite(line): continue
-            if not (created<kickoff and quoted<kickoff and now<kickoff and quoted<=now): continue\n            if not (dt.timedelta(minutes=25)<=kickoff-now<=dt.timedelta(minutes=35)): continue
+            if not (created<kickoff and quoted<kickoff and now<kickoff and quoted<=now): continue
+            if not (dt.timedelta(minutes=25)<=kickoff-now<=dt.timedelta(minutes=35)): continue
             if not (q.get("home_team") and q.get("away_team")): continue
             if q.get('game_id') and str(q['game_id'])!=game_id: continue
             if team_code(q['away_team'])!=parts[2] or team_code(q['home_team'])!=parts[3]: continue
