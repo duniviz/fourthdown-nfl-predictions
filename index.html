@@ -1747,4 +1747,38 @@ document.addEventListener('click',function(e){
 .fd-live-prop-missing{margin-top:10px;color:#8da5b7}
 .fd-live-prop-footer{margin-top:12px;color:#91a7b7;font-size:11px;line-height:1.5}
 @media(max-width:420px){.fd-live-player-stats{padding:12px!important}.fd-live-prop-row{padding:13px 10px}.fd-live-prop-head{grid-template-columns:minmax(0,1fr) minmax(160px,1.65fr);gap:6px}.fd-live-prop-player strong{font-size:13px}.fd-live-prop-player span{font-size:11px}.fd-live-prop-metrics strong{font-size:17px}.fd-live-prop-metrics small{font-size:9px}}
-.fd-matchup-detail{margin:12px 0;border-top:1px solid #29435a;padding-top:10px}.fd-matchup-detail summary{cursor:pointer;color:#b9e7f5;font-weight:700;padding:8px 0}</style><script>(function(){const board=document.getElementById("research-dk-board");if(!board)return;board.open=true;const summary=board.querySelector("summary"),heading=board.querySelector("h3");if(summary)summary.textContent="Current research comparisons · saved DraftKings lines";if(heading)heading.textContent="Research comparisons";})();</script><script defer src="pregame-snapshots.js?v=20261101"></script><script defer src="opportunities.js?v=275"></script><script defer src="player-season-stats.js?v=4"></script><style>.fd-opp-identity{display:flex;align-items:center;gap:11px}.fd-opp-avatar{width:52px;height:52px;object-fit:contain;border-radius:50%;background:#20384d;flex-shrink:0}.fd-opp-identity h3{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}</style></body></html>
+.fd-matchup-detail{margin:12px 0;border-top:1px solid #29435a;padding-top:10px}.fd-matchup-detail summary{cursor:pointer;color:#b9e7f5;font-weight:700;padding:8px 0}</style><script>(function(){const board=document.getElementById("research-dk-board");if(!board)return;board.open=true;const summary=board.querySelector("summary"),heading=board.querySelector("h3");if(summary)summary.textContent="Current research comparisons · saved DraftKings lines";if(heading)heading.textContent="Research comparisons";})();</script><script defer src="pregame-snapshots.js?v=20261101"></script><script defer src="opportunities.js?v=275"></script><script defer src="player-season-stats.js?v=4"></script><style>.fd-opp-identity{display:flex;align-items:center;gap:11px}.fd-opp-avatar{width:52px;height:52px;object-fit:contain;border-radius:50%;background:#20384d;flex-shrink:0}.fd-opp-identity h3{cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}</style>
+<style id="fd-dimers-matchup-cards">
+/* Matchup cards: quick scan hierarchy inspired by Dimers' compact NFL game grid. */
+#scoreboard-cards.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+#scoreboard-cards>.scorecard{display:flex;flex-direction:column;min-width:0;padding:17px;border-radius:15px;background:linear-gradient(155deg,#12263a 0%,#0b1724 74%);border:1px solid #2b4961;box-shadow:0 8px 22px #0003}
+#scoreboard-cards>.scorecard:before{height:3px;background:linear-gradient(90deg,#baff25,#58baff);opacity:.9}
+#scoreboard-cards>.scorecard.live-game{border-color:#a34a5a;background:linear-gradient(155deg,#292136 0%,#111624 76%)}
+#scoreboard-cards .score-head{margin:0 0 13px;padding-bottom:10px;border-bottom:1px solid #294258}
+#scoreboard-cards .score-state{font-size:11px;letter-spacing:.075em;text-transform:uppercase;color:#b8d8ec}
+#scoreboard-cards .score-head .caption{font-variant-numeric:tabular-nums;text-align:right}
+#scoreboard-cards .hybrid-teamlogos{display:flex;align-items:center;gap:7px;margin:0 0 10px;color:#a9c3d7;font-size:12px;font-weight:750}
+#scoreboard-cards .hybrid-teamlogos img{width:20px;height:20px;object-fit:contain}
+#scoreboard-cards .score-teams{gap:7px}
+#scoreboard-cards .score-team{min-height:34px;gap:10px;padding:3px 0}
+#scoreboard-cards .score-team img{width:30px;height:30px}
+#scoreboard-cards .score-team .name{font-size:16px;line-height:1.2}
+#scoreboard-cards .score-team .points{font-size:21px}
+#scoreboard-cards .projection-panel{margin-top:11px;padding:12px;border-radius:12px;background:linear-gradient(140deg,#102d2c,#102332)!important;border:1px solid #38675d!important}
+#scoreboard-cards .projection-label{margin-bottom:7px;font-size:10px;letter-spacing:.08em}
+#scoreboard-cards .fd-pick-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#scoreboard-cards .fd-pick-head strong{font-size:16px;line-height:1.25}
+#scoreboard-cards .fd-pick-head span{font-size:11px;text-align:right}
+#scoreboard-cards .fd-forecast-score{margin-top:8px;font-size:13px;font-weight:800}
+#scoreboard-cards .fd-market-picks{margin-top:9px}
+#scoreboard-cards .fd-market-pick{padding:8px 9px}
+#scoreboard-cards .fd-matchup-score{gap:8px}
+#scoreboard-cards .fd-matchup-score strong{font-size:14px}
+#scoreboard-cards .fd-matchup-detail{margin:10px 0 0}
+#scoreboard-cards .fd-modal-open{margin-top:11px;padding:10px;background:#15344b;border-color:#37627c}
+#scoreboard-cards .score-footer{margin-top:auto;padding-top:11px}
+@media(max-width:1050px){#scoreboard-cards.scoreboard{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}}
+@media(max-width:640px){#scoreboard-cards.scoreboard{grid-template-columns:minmax(0,1fr);gap:12px}#scoreboard-cards>.scorecard{padding:15px;border-radius:14px}#scoreboard-cards .score-head{margin-bottom:10px}#scoreboard-cards .score-team .name{font-size:18px}#scoreboard-cards .fd-pick-head strong{font-size:15px}#scoreboard-cards .fd-pick-head span{max-width:100px}}
+@media(hover:hover) and (pointer:fine){#scoreboard-cards>.scorecard:hover{transform:translateY(-2px);border-color:#4f8196;box-shadow:0 12px 28px #0005}}
+@media(prefers-reduced-motion:reduce){#scoreboard-cards>.scorecard{transition:none}}
+</style></body></html>
