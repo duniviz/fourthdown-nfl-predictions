@@ -294,7 +294,27 @@ const current=latestResearch.filter(x=>{
  return Number.isFinite(t)&&Date.now()<t;
 });
 const archived=frozen.filter(x=>!current.some(y=>String(y.game_id)===String(x.game_id)&&norm(y.player)===norm(x.player)&&y.stat_key===x.stat_key));
-players=[...new Map([...current,...archived].map(x=>[norm(x.player)+'|'+x.team+'|'+x.game_id+'|'+(x.market_key||x.stat_key||x.market),x])).values()];const hasAnytimeTd=players.some(x=>x.market==='Anytime TD'&&Number.isFinite(Number(x.projection)));tdOption.disabled=!hasAnytimeTd;tdOption.textContent=hasAnytimeTd?'Anytime TD':'Anytime TD — unavailable';if(!hasAnytimeTd&&$('bet-market').value==='Anytime TD')$('bet-market').value='all';sims=new Map((s.players||[]).map(x=>[key(x),x]));results=res.rows||[];injuries=Object.fromEntries(Object.entries(inj.teams||{}).map(([k,v])=>[k,v.players||[]]));lines=new Map();const latest=Date.parse(o.generated_at_utc);oddsTime=Number.isFinite(latest)?latest:null;for(const q of [...(o.rows||[]),...(locked.rows||[])]){if(q.player&&q.market_key&&Number.isFinite(Number(q.line))){const timestamp=Date.parse(q.last_update);const id=norm(q.player)+'|'+q.market_key;const candidates=lines.get(id)||[];const kick=Date.parse(q.commence_time);if(!Number.isFinite(kick)||!Number.isFinite(timestamp)||timestamp>=kick||timestamp>Date.now())continue;candidates.push({...q,line:Number(q.line),last_update:timestamp});lines.set(id,candidates);}}try{fdUpdateGameOptions();render();renderSlip();renderExtraMarkets();fdRefreshActuals();}catch(error){console.error('Prop research rendering failed',error);$('bet-freshness').textContent='Research board error';$('bet-cards').innerHTML='<p class="bet-sub">Could not display player forecasts. Refresh or check the published research feed.</p>';}}
+players=[...new Map([...current,...archived].map(x=>[norm(x.player)+'|'+x.team+'|'+x.game_id+'|'+(x.market_key||x.stat_key||x.market),x])).values()];const hasAnytimeTd=players.some(x=>x.market==='Anytime TD'&&Number.isFinite(Number(x.projection)));tdOption.disabled=!hasAnytimeTd;tdOption.textContent=hasAnytimeTd?'Anytime TD':'Anytime TD — unavailable';if(!hasAnytimeTd&&$('bet-market').value==='Anytime TD')$('bet-market').value='all';sims=new Map((s.players||[]).map(x=>[key(x),x]));results=res.rows||[];injuries=Object.fromEntries(Object.entries(inj.teams||{}).map(([k,v])=>[k,v.players||[]]));try{
+ const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries',{cache:'no-store'});
+ if(response.ok){
+  const feed=await response.json();
+  const groups=Array.isArray(feed.injuries)?feed.injuries:Array.isArray(feed.items)?feed.items:[];
+  for(const group of groups){
+   const team=String(group.team?.abbreviation||group.abbreviation||'').toUpperCase();
+   if(!team)continue;
+   const entries=Array.isArray(group.injuries)?group.injuries:Array.isArray(group.players)?group.players:[];
+   for(const entry of entries){
+    const name=entry.athlete?.displayName||entry.athlete?.fullName||entry.player?.displayName||entry.player?.fullName||entry.displayName;
+    const status=entry.status?.type?.name||entry.status?.name||entry.status||entry.type?.name||'';
+    if(name&&typeof status==='string'){
+     if(!injuries[team])injuries[team]=[];
+     injuries[team].push({player:name,status});
+    }
+   }
+  }
+ }
+}catch(error){console.warn('Live ESPN injuries unavailable; using saved injury report',error);}
+lines=new Map();const latest=Date.parse(o.generated_at_utc);oddsTime=Number.isFinite(latest)?latest:null;for(const q of [...(o.rows||[]),...(locked.rows||[])]){if(q.player&&q.market_key&&Number.isFinite(Number(q.line))){const timestamp=Date.parse(q.last_update);const id=norm(q.player)+'|'+q.market_key;const candidates=lines.get(id)||[];const kick=Date.parse(q.commence_time);if(!Number.isFinite(kick)||!Number.isFinite(timestamp)||timestamp>=kick||timestamp>Date.now())continue;candidates.push({...q,line:Number(q.line),last_update:timestamp});lines.set(id,candidates);}}try{fdUpdateGameOptions();render();renderSlip();renderExtraMarkets();fdRefreshActuals();}catch(error){console.error('Prop research rendering failed',error);$('bet-freshness').textContent='Research board error';$('bet-cards').innerHTML='<p class="bet-sub">Could not display player forecasts. Refresh or check the published research feed.</p>';}}
 
 fetch('data/projection-audit.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(a=>{if(!a)return;const s=a.summary||{};const n=Number(s.warning||0);const e=Number(s.error||0);const el=document.getElementById('projection-audit-summary');if(el)el.textContent='Projection quality audit: '+a.players_checked+' markets checked · '+n+' workload warnings · '+e+' structural errors. Warnings are research flags, not confirmed errors.';}).catch(()=>{});
 fetch('data/player-calibration.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(c=>{calibration=Object.fromEntries((c.markets||[]).map(x=>[x.stat_key,x]));render();}).catch(()=>{});
