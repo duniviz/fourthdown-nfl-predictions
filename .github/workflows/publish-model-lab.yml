@@ -53,12 +53,21 @@ jobs:
                   if not isinstance(obj.get('markets'),dict): raise ValueError('Research markets missing')
                   obj['generated_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
               pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\n')
+          for source,target in [('research/yardage-game-results/leaderboard.json','data/model-lab-yardage-game.json'),('research/weekly-shadow-results/leaderboard.json','data/model-lab-weekly-shadow.json')]:
+              matches=[n for n in z.namelist() if n.endswith(source)]
+              if not matches:
+                  print('Missing',source,'— keeping existing published file')
+                  continue
+              obj=json.loads(z.read(matches[0]))
+              if not isinstance(obj,dict):raise ValueError('Invalid leaderboard')
+              obj['published_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\\n')
           PY
       - name: Commit published research data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- data/model-lab-results.json data/model-lab-readiness.json 2>/dev/null || git add -A -- data/
+          git add -A -- data/model-lab-results.json data/model-lab-readiness.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json 2>/dev/null || git add -A -- data/
           if ! git diff --cached --quiet; then
             git commit -m "Publish latest validated Model Lab research results"
             git push
