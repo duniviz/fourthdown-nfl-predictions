@@ -18,9 +18,14 @@ jobs:
           python-version: '3.11'
       - name: Install historical data dependencies
         run: python -m pip install -r requirements-backtest.txt
+      - name: Check out current production archive
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: production-archive
       - name: Use current production archive for weekly learner comparison
         run: |
-          git show origin/main:data/player-results.json > data/player-results.json
+          cp production-archive/data/player-results.json data/player-results.json
           python - <<'PY'
           import json
           rows=json.load(open('data/player-results.json')).get('rows',[])
