@@ -1416,10 +1416,10 @@ function renderMatchupCards(games){
      return {correct:canon(p.predicted_winner)===(h>a?canon(g.home.abbr):canon(g.away.abbr)),error:(Math.abs(Number(p.projected_home_score)-h)+Math.abs(Number(p.projected_away_score)-a))/2};
    }).filter(Boolean);
    const correct=graded.filter(x=>x.correct).length;
-   document.getElementById('fd-record').textContent=graded.length?correct+' / '+graded.length:'—';
-   document.getElementById('fd-accuracy').textContent=graded.length?(100*correct/graded.length).toFixed(1)+'%':'—';
-   document.getElementById('fd-error').textContent=graded.length?(graded.reduce((a,x)=>a+x.error,0)/graded.length).toFixed(1)+' pts':'—';
-   document.getElementById('fd-grade-status').textContent=graded.length?'Graded '+graded.length+' completed games in the currently loaded scoreboard window. Older weeks will require historical results integration.':'No completed games with eligible archived pregame v2 forecasts in the current scoreboard window yet. The first saved archive will be published by the next successful v2 workflow run.';
+   if(document.getElementById('fd-record'))document.getElementById('fd-record').textContent=graded.length?correct+' / '+graded.length:'—';
+   if(document.getElementById('fd-accuracy'))document.getElementById('fd-accuracy').textContent=graded.length?(100*correct/graded.length).toFixed(1)+'%':'—';
+   if(document.getElementById('fd-error'))document.getElementById('fd-error').textContent=graded.length?(graded.reduce((a,x)=>a+x.error,0)/graded.length).toFixed(1)+' pts':'—';
+   if(document.getElementById('fd-grade-status'))document.getElementById('fd-grade-status').textContent=graded.length?'Graded '+graded.length+' completed games in the currently loaded scoreboard window. Older weeks will require historical results integration.':'No completed games with eligible archived pregame v2 forecasts in the current scoreboard window yet. The first saved archive will be published by the next successful v2 workflow run.';
    const live=data.games.filter(g=>g.state==='in');
    const final=data.games.filter(g=>g.state==='post');
    const upcoming=data.games.filter(g=>g.state!=='in'&&g.state!=='post');
