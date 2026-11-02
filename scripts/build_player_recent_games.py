@@ -7,7 +7,7 @@ import re
 import urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
-MARKETS={"passing":{"player_pass_completions":("C/ATT",0),"player_pass_attempts":("C/ATT",1)},"rushing":{"player_rush_attempts":("CAR",0)},"receiving":{"player_receptions":("REC",0)}}
+MARKETS={"passing":{"player_pass_completions":("C/ATT",0),"player_pass_attempts":("C/ATT",1),"player_pass_yds":("YDS",0)},"rushing":{"player_rush_attempts":("CAR",0),"player_rush_yds":("YDS",0)},"receiving":{"player_receptions":("REC",0),"player_rec_yds":("YDS",0)}}
 def get(url):
  req=urllib.request.Request(url,headers={"User-Agent":"FOURTHDOWN-trends/1.0"})
  with urllib.request.urlopen(req,timeout=25) as r:return json.load(r)
@@ -31,7 +31,9 @@ def parse(category,athlete):
 def main():
  projections=read("count-projections.json")
  players=projections.get("players",[])
- if not players:raise SystemExit("No count projections")
+ research=read("player-research.json")
+ players+=research.get("players",[])
+ if not players:raise SystemExit("No player projections")
  season=int(projections.get("season",dt.datetime.now().year))
  week=int(projections.get("week",1))
  targets={norm(p.get("player")) for p in players}
@@ -52,11 +54,15 @@ def main():
       for market,value in parse(category,athlete).items():
        history.setdefault((key,market),[]).append({"week":w,"actual":value,"opponent":None})
  out={}
+ by_name={}
+ for (name,market),games in history.items():
+  rows=sorted(games,key=lambda x:x["week"])[-5:]
+  if rows:by_name[name+"|"+market]={"games":rows,"sample_size":len(rows)}
  for p in players:
   key=(norm(p.get("player")),p.get("market_key"))
   rows=sorted(history.get(key,[]),key=lambda x:x["week"])[-5:]
   if rows:out[str(p.get("player_id"))+"|"+str(p.get("market_key"))]={"games":rows,"sample_size":len(rows)}
- payload={"source":"ESPN final box scores","season":season,"through_week":week-1,"updated_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),"players":out}
+ payload={"source":"ESPN final box scores","season":season,"through_week":week-1,"updated_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),"players":out,"by_name":by_name}
  (DATA/"player-recent-games.json").write_text(json.dumps(payload,indent=2)+"\n")
  print("Players with verified recent games:",len(out))
 if __name__=="__main__":main()
