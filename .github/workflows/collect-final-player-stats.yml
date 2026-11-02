@@ -1,0 +1,31 @@
+name: Collect final NFL player stats
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15,45 0-8 * * 0,1,2'
+    - cron: '30 12 * * 1,2'
+permissions:
+  contents: write
+concurrency:
+  group: nfl-final-player-stats
+  cancel-in-progress: false
+jobs:
+  finals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retrieve verified final player statistics
+        run: python scripts/collect_final_player_stats.py
+      - name: Save final statistics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/player-final-stats.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: update final NFL player box scores"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
