@@ -78,7 +78,7 @@ jobs:
               --output research/same-slate
             cat research/same-slate/LEADERBOARD.md >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Same-slate leaderboard pending: no completed-game finals overlap timestamped frozen snapshots." >> "$GITHUB_STEP_SUMMARY"
+            echo "STATUS: WAITING_FOR_MATCHED_FINALS — same-slate comparison was not generated. Historical tests may still pass." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Grade automatically frozen weekly shadow models
         if: always()
@@ -87,7 +87,7 @@ jobs:
             python readiness-gate/research/grade_weekly_shadow_models.py
             cat readiness-gate/research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Shadow forecasts pending first pregame capture." >> "$GITHUB_STEP_SUMMARY"
+            echo "STATUS: WAITING_FOR_PREGAME_CAPTURE — no frozen shadow forecasts yet. This run does not verify weekly same-slate comparisons." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Show weekly learner summary
         if: always()
