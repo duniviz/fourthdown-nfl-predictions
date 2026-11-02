@@ -623,9 +623,9 @@ function fdOpenMatchup(g){
    const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\\.?|SR\\.?)$/i.test(part)).slice(-1)[0]||'This player');
    const opponent=esc(x.opponent||'the opponent');
    const market=String(x.stat_key||'');
-   const marketLabel=market==='passing_yards'?'passing yards':market==='rushing_yards'?'rushing yards':market==='receiving_yards'?'receiving yards':String(x.market||'player prop').toLowerCase();
+   const marketLabel=esc(market==='passing_yards'?'passing yards':market==='rushing_yards'?'rushing yards':market==='receiving_yards'?'receiving yards':String(x.market||'player prop').toLowerCase());
    const position=String(x.position||'').trim().toUpperCase();
-   const positionLabel=({QB:'quarterback',RB:'running back',WR:'wide receiver',TE:'tight end',FB:'fullback'})[position]||position.toLowerCase();
+   const positionLabel=esc(({QB:'quarterback',RB:'running back',WR:'wide receiver',TE:'tight end',FB:'fullback'})[position]||position.toLowerCase());
    const target=[positionLabel,marketLabel].filter(Boolean).join(' ').trim()||marketLabel;
    const rank=n(d?.rank),teams=n(d?.ranked_teams),allowed=n(d?.season_allowed_per_game),recentAllowed=n(d?.last_3_allowed_per_game);
    const teamStat=market==='rushing_yards'?'team rushing yards allowed':'team passing yards allowed';
@@ -652,7 +652,7 @@ function fdOpenMatchup(g){
    if(last3!==null&&last5!==null)parts.push('For '+target+', '+player+' has averaged '+last3.toFixed(1)+' yards over the last three games and '+last5.toFixed(1)+' over the last five. '+(last3>last5+2?'The shorter-term trend has been stronger.':last3<last5-2?'The shorter-term trend has cooled.':'Those averages have been fairly steady.'));
    if(edge!==null)parts.push('Putting it together, our '+target+' projection is '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'right at')+' the saved DraftKings line. '+(Math.abs(edge)<10?'That gap alone is not enough to establish a betting edge.':'The projection difference is worth reviewing, but it does not establish a betting edge by itself.'));
    if(x.sample_warning)parts.push('<small>'+esc(x.sample_warning)+'</small>');
-   return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+esc(target)+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
+   return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+target+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
  const propOrder=['Passing','Rushing','Receiving','Other'];
  const propCards=propOrder.map(group=>{
