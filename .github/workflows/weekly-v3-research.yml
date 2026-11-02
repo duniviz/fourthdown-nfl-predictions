@@ -44,13 +44,20 @@ jobs:
       - name: Evaluate guarded auto-promotion readiness
         if: always()
         run: python readiness-gate/research/auto_promotion_gate.py
-      - name: Build chronological same-slate challengers from production archive
+      - name: Join frozen pregame projections to verified final results
         if: always()
         run: |
-          if [ -f readiness-gate/data/player-results.json ]; then
+          python readiness-gate/research/join_frozen_pregame_results.py \\
+            --snapshots readiness-gate/data/pregame-snapshots.json \\
+            --results readiness-gate/data/player-results.json \\
+            --output research/same-slate/verified-input.json || echo "Waiting for final stats that match frozen pregame snapshots." >> "$GITHUB_STEP_SUMMARY"
+      - name: Build chronological same-slate challengers
+        if: always()
+        run: |
+          if [ -f research/same-slate/verified-input.json ]; then
             python readiness-gate/research/build_same_slate_challengers.py \\
-              --input readiness-gate/data/player-results.json \\
-              --output research/same-slate/pregame-forecasts.json || echo "Same-slate challenger generation pending verified pregame timestamps." >> "$GITHUB_STEP_SUMMARY"
+              --input research/same-slate/verified-input.json \\
+              --output research/same-slate/pregame-forecasts.json
           fi
       - name: Run same-slate challenger leaderboard when pregame archive exists
         if: always()
