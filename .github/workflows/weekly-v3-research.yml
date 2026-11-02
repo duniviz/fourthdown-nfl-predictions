@@ -44,31 +44,36 @@ jobs:
       - name: Evaluate guarded auto-promotion readiness
         if: always()
         run: python readiness-gate/research/auto_promotion_gate.py
+      - name: Ensure same-slate output directory is clean
+        if: always()
+        run: |
+          mkdir -p research/same-slate
+          rm -f research/same-slate/verified-input.json research/same-slate/pregame-forecasts.json research/same-slate/leaderboard.json research/same-slate/LEADERBOARD.md
       - name: Join frozen pregame projections to verified final results
         if: always()
         run: |
-          python readiness-gate/research/join_frozen_pregame_results.py \\
-            --snapshots readiness-gate/data/pregame-snapshots.json \\
-            --results readiness-gate/data/player-results.json \\
+          python readiness-gate/research/join_frozen_pregame_results.py \
+            --snapshots readiness-gate/data/pregame-snapshots.json \
+            --results readiness-gate/data/player-results.json \
             --output research/same-slate/verified-input.json || echo "Waiting for final stats that match frozen pregame snapshots." >> "$GITHUB_STEP_SUMMARY"
       - name: Build chronological same-slate challengers
         if: always()
         run: |
           if [ -f research/same-slate/verified-input.json ]; then
-            python readiness-gate/research/build_same_slate_challengers.py \\
-              --input research/same-slate/verified-input.json \\
+            python readiness-gate/research/build_same_slate_challengers.py \
+              --input research/same-slate/verified-input.json \
               --output research/same-slate/pregame-forecasts.json
           fi
       - name: Run same-slate challenger leaderboard when pregame archive exists
         if: always()
         run: |
           if [ -f research/same-slate/pregame-forecasts.json ]; then
-            python readiness-gate/research/same_slate_leaderboard.py \\
-              --input research/same-slate/pregame-forecasts.json \\
+            python readiness-gate/research/same_slate_leaderboard.py \
+              --input research/same-slate/pregame-forecasts.json \
               --output research/same-slate
             cat research/same-slate/LEADERBOARD.md >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Same-slate leaderboard pending: no timestamped multi-model pregame archive on main." >> "$GITHUB_STEP_SUMMARY"
+            echo "Same-slate leaderboard pending: no completed-game finals overlap timestamped frozen snapshots." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Show weekly learner summary
         if: always()
