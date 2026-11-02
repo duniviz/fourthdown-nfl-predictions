@@ -1362,6 +1362,19 @@ function renderMatchupCards(games){
        }
      }catch(_){}
    }
+   if(!raw){
+     try{
+       const backupResponse=await fetch('./data/espn-scoreboard-backup.json?ts='+Date.now(),{cache:'no-store'});
+       if(backupResponse.ok){
+         const backup=await backupResponse.json();
+         const backupAge=Date.now()-Date.parse(backup.updated_at_utc);
+         if(Array.isArray(backup.events)&&backup.events.length&&backupAge>=0&&backupAge<86400000){
+           raw=backup;
+           scoreSource='Published ESPN backup · updated '+new Date(backup.updated_at_utc).toLocaleTimeString()+(backupAge>600000?' (delayed)':'');
+         }
+       }
+     }catch(backupError){console.warn('Published scoreboard backup unavailable',backupError);}
+   }
    if(!raw)throw new Error('ESPN primary and backup unavailable: '+(lastError?.message||'unknown error'));
    const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
      const comp=(event.competitions||[])[0]||{};
