@@ -12,9 +12,9 @@
  const matchesGame=(q,gameId,team)=>{const parts=String(gameId||'').split('_');if(parts.length!==4||!teams[parts[2]]||!teams[parts[3]]||!teams[team])return false;const away=String(q.away_team||'').toLowerCase(),home=String(q.home_team||'').toLowerCase();return away.includes(teams[parts[2]])&&home.includes(teams[parts[3]])&&(team===parts[2]||team===parts[3]);};
  const validTime=s=>{const t=Date.parse(s||'');return Number.isFinite(t)?t:null};
  try{
-  const [pr,od,yr]=await Promise.all(['data/count-projections.json','data/dk-odds.json','data/research-prop-desk.json'].map(u=>fetch(u+'?t='+Date.now(),{cache:'no-store'})));
+  const [pr,od,yr,recent]=await Promise.all(['data/count-projections.json','data/dk-odds.json','data/research-prop-desk.json','data/player-recent-games.json'].map(u=>fetch(u+'?t='+Date.now(),{cache:'no-store'})));
   if(!pr.ok||!od.ok)throw Error('Data feed unavailable');
-  const p=await pr.json(),d=await od.json(),y=yr.ok?await yr.json():{},now=Date.now();
+  const p=await pr.json(),d=await od.json(),y=yr.ok?await yr.json():{},trends=recent.ok?await recent.json():{},now=Date.now();
   const generated=validTime(p.generated_at_utc),quoted=validTime(d.generated_at_utc);
   if(!generated||now-generated>36*3600000||!quoted||now-quoted>36*3600000)throw Error('Current projections or DK lines are stale');
   const quotes=new Map();
@@ -47,7 +47,10 @@
     const q=found.q;
     const line=Number(q.line),projection=Number(x.projected_yards),gap=projection-line;
     if(Math.abs(gap)<0.01)continue;
-    rows.push({x:{player:x.player_name,team:x.team,recent_5_avg:null},q,line,projection,gap,market,updated:found.updated,provisional:x.ranking_status!=='eligible'});
+    const history=trends.players?.[String(x.player_id)+'|'+market]?.games||trends.by_name?.[norm(x.player_name)+'|'+market]?.games||[];
+    const values=history.slice(-5).map(g=>Number(g.actual)).filter(Number.isFinite);
+    const recentAvg=values.length?values.reduce((a,b)=>a+b,0)/values.length:null;
+    rows.push({x:{player:x.player_name,team:x.team,recent_5_avg:recentAvg,recent_games_count:values.length},q,line,projection,gap,market,updated:found.updated,provisional:x.ranking_status!=='eligible'});
    }
   }
   // Deduplicate player/market; rank relative gaps within the market, not as probabilities.
