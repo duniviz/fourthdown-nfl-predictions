@@ -35,6 +35,17 @@ jobs:
       - name: Evaluate guarded auto-promotion readiness
         if: always()
         run: python readiness-gate/research/auto_promotion_gate.py
+      - name: Run same-slate challenger leaderboard when pregame archive exists
+        if: always()
+        run: |
+          if [ -f readiness-gate/research/same-slate/pregame-forecasts.json ]; then
+            python readiness-gate/research/same_slate_leaderboard.py \\
+              --input readiness-gate/research/same-slate/pregame-forecasts.json \\
+              --output research/same-slate
+            cat research/same-slate/LEADERBOARD.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Same-slate leaderboard pending: no timestamped multi-model pregame archive on main." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Archive model readiness evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,4 +57,5 @@ jobs:
             research/v3-results/
             research/position-matchup/
             research/auto-promotion/
+            research/same-slate/
           if-no-files-found: warn
