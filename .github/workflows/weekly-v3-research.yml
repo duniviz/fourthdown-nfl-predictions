@@ -80,6 +80,15 @@ jobs:
           else
             echo "Same-slate leaderboard pending: no completed-game finals overlap timestamped frozen snapshots." >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Grade automatically frozen weekly shadow models
+        if: always()
+        run: |
+          if [ -f readiness-gate/data/weekly-shadow-forecasts.json ]; then
+            python readiness-gate/research/grade_weekly_shadow_models.py
+            cat readiness-gate/research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Shadow forecasts pending first pregame capture." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Show weekly learner summary
         if: always()
         run: |
@@ -97,5 +106,5 @@ jobs:
             research/v3-results/
             research/position-matchup/
             research/auto-promotion/
-            research/same-slate/
+            research/same-slate/\n            readiness-gate/research/weekly-shadow-results/
           if-no-files-found: warn
