@@ -1,5 +1,10 @@
 name: Collect final NFL player stats
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/collect-final-player-stats.yml'
+      - 'scripts/collect_final_player_stats.py'
   workflow_dispatch:
   schedule:
     - cron: '15,45 0-8 * * 0,1,2'
