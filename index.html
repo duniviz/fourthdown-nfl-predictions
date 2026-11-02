@@ -629,13 +629,21 @@ function fdOpenMatchup(g){
    const positionPlural=({QB:'quarterbacks',RB:'running backs',WR:'wide receivers',TE:'tight ends',FB:'fullbacks'})[position]||positionLabel+'s';
    const target=[positionLabel,marketLabel].filter(Boolean).join(' ').trim()||marketLabel;
    const positionContext=x.opponent_position_context;
-   const positionRank=n(positionContext?.rank),positionTeams=n(positionContext?.ranked_teams);
+   const positionRank=n(positionContext?.rank),positionTeams=n(positionContext?.ranked_teams),positionTies=n(positionContext?.tie_count)||1;
    const positionSeason=n(positionContext?.season_allowed_per_game),positionAllowed=n(positionContext?.last_5_allowed_per_game);
    const positionGames=n(positionContext?.games),positionRecentGames=n(positionContext?.last_5_games);
    const ordinal=value=>{const v=Math.abs(Math.trunc(value)),mod100=v%100,suffix=mod100>=11&&mod100<=13?'th':({1:'st',2:'nd',3:'rd'})[v%10]||'th';return v+suffix;};
-   const rankOrder=positionRank!==null&&positionTeams!==null?(positionRank<=positionTeams-positionRank+1?ordinal(positionRank)+'-fewest':ordinal(positionTeams-positionRank+1)+'-most'):'';
+   const positionFromFewest=positionRank,positionFromMost=positionTeams!==null&&positionRank!==null?positionTeams-positionRank+1:null;
+   const rankDirection=positionFromMost!==null&&positionFromMost<positionFromFewest?'most':'fewest';
+   const relativeRank=rankDirection==='most'?positionFromMost:positionFromFewest;
+   const rankDescription=positionTies>1
+     ? (positionTies>1?'tied for '+(relativeRank===1?'the '+rankDirection:ordinal(relativeRank)+'-'+rankDirection):'')
+     : ordinal(relativeRank)+'-'+rankDirection;
    if(positionRank!==null&&positionTeams!==null&&positionSeason!==null){
-     parts.push(opponent+' has allowed the '+rankOrder+' '+marketLabel+' to '+positionPlural+' ('+positionSeason.toFixed(1)+' per game), ranking '+positionRank+' of '+positionTeams+' teams through '+(positionGames??'the available number of')+' completed games'+(positionAllowed!==null&&positionRecentGames!==null?'. Over the most recent '+positionRecentGames+' games, that was '+positionAllowed.toFixed(1)+' per game':'')+'.');
+     const rankSentence=positionTies>1
+       ? opponent+' allowed '+positionSeason.toFixed(1)+' '+marketLabel+' to '+positionPlural+' per game, '+rankDescription+' among '+positionTeams+' teams'
+       : opponent+' has allowed the '+rankDescription+' '+marketLabel+' to '+positionPlural+' ('+positionSeason.toFixed(1)+' per game), ranking '+positionRank+' of '+positionTeams+' teams';
+     parts.push(rankSentence+' through '+(positionGames??'the available number of')+' completed games'+(positionAllowed!==null&&positionRecentGames!==null?'. Over the most recent '+positionRecentGames+' games, that was '+positionAllowed.toFixed(1)+' per game':'')+'.');
    }else if(positionAllowed!==null){
      parts.push(opponent+' has allowed about '+positionAllowed.toFixed(1)+' '+marketLabel+' per game to '+positionPlural+' over '+(positionGames??'the available number of')+' completed games; a league rank is not available yet.');
    }else if(d&&n(d.rank)!==null&&n(d.ranked_teams)!==null){
