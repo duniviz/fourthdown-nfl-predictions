@@ -32,6 +32,9 @@ jobs:
       - name: Freeze ten research-only shadow models
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/freeze_weekly_shadow_models.py
+      - name: Freeze yardage and game research models
+        if: steps.kickoff.outputs.run == 'true'
+        run: python scripts/freeze_yardage_game_shadow_models.py
       - name: Commit snapshot updates
         if: steps.kickoff.outputs.run == 'true'
         run: |
