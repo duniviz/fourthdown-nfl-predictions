@@ -600,7 +600,8 @@ function fdOpenMatchup(g){
  const propExplanation=(x,line,edge)=>{
    const d=x.opponent_defense_context,parts=[];
    const n=v=>v===null||v===undefined||v===''||!Number.isFinite(Number(v))?null:Number(v);
-   const playerParts=String(x.player||'This player').trim().split(/\s+/);\n   const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\.?|SR\.?)$/i.test(part)).slice(-1)[0]||'This player');
+   const playerParts=String(x.player||'This player').trim().split(/\s+/);
+   const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\.?|SR\.?)$/i.test(part)).slice(-1)[0]||'This player');
    const opponent=esc(x.opponent||'the opponent');
    const market=String(x.stat_key||'');
    const kind=market==='passing_yards'?'passing':market==='rushing_yards'?'rushing':'receiving';
