@@ -1,9 +1,6 @@
 name: Daily DraftKings odds refresh
 on:
   workflow_dispatch:
-  schedule:
-    # Daily at 15:40 UTC (9:40 AM CST / 10:40 AM CDT).
-    - cron: '40 15 * * *'
 permissions:
   contents: write
 concurrency:
