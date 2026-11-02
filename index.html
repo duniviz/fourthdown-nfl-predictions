@@ -645,7 +645,8 @@ function fdOpenMatchup(g){
      parts.push(opponent+' is '+defenseLabel+' by '+teamStat+', ranking '+rank+' of '+teams+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, it allowed '+recentAllowed.toFixed(1)+' per game':'')+'. This is team-wide context; a '+target+'-specific rank is not available yet.');
    }else parts.push('Opponent-specific '+target+' data are not available in the current feed.');
    const adj=n(x.opponent_adjustment);
-   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The opponent matchup adjustment '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
+   const adjDescription=x.opponent_adjustment_basis==='position_market'?'position-specific opponent adjustment':x.opponent_adjustment_basis==='team_market'?'team-wide (not position-specific) opponent adjustment':'opponent adjustment';
+   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The '+adjDescription+' '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
    const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
    if(vol!==null&&avg!==null)parts.push('We project about '+vol.toFixed(1)+' '+esc(x.opportunity_type||'opportunities')+' for '+player+' in this matchup, compared with '+avg.toFixed(1)+' per game over the last five. '+(vol>avg+0.5?'That is a higher expected workload.':vol<avg-0.5?'That is a lighter expected workload.':'That is close to the recent workload.'));
    const script=n(x.game_script_adjustment);
