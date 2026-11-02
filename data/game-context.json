@@ -141,6 +141,13 @@
         "event_id": "401873033",
         "players": [
           {
+            "detail": "out",
+            "player": "Talanoa Hufanga",
+            "position": "S",
+            "status": "Out",
+            "team": "DEN"
+          },
+          {
             "detail": "questionable",
             "player": "Brandon Jones",
             "position": "S",
@@ -155,25 +162,25 @@
             "team": "DEN"
           },
           {
-            "detail": "out",
-            "player": "Sam Ehlinger",
-            "position": "QB",
-            "status": "Out",
+            "detail": "Injured Reserve",
+            "player": "RJ Harvey",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "DEN"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Tyler Badie",
+            "position": "RB",
+            "status": "Injured Reserve",
             "team": "DEN"
           },
           {
             "detail": "out",
-            "player": "Tyler Onyedim",
-            "position": "DT",
+            "player": "Mansoor Delane",
+            "position": "CB",
             "status": "Out",
-            "team": "DEN"
-          },
-          {
-            "detail": "out",
-            "player": "Gavin Ortega",
-            "position": "OT",
-            "status": "Out",
-            "team": "DEN"
+            "team": "KC"
           },
           {
             "detail": "questionable",
@@ -183,31 +190,24 @@
             "team": "KC"
           },
           {
-            "detail": "out",
-            "player": "Garrett Nussmeier",
-            "position": "QB",
-            "status": "Out",
+            "detail": "Injured Reserve",
+            "player": "L'Jarius Sneed",
+            "position": "CB",
+            "status": "Injured Reserve",
             "team": "KC"
           },
           {
             "detail": "out",
-            "player": "Ben VanSumeren",
-            "position": "FB",
+            "player": "Omarr Norman-Lott",
+            "position": "DT",
             "status": "Out",
             "team": "KC"
           },
           {
-            "detail": "out",
-            "player": "Diego Pounds",
-            "position": "OT",
-            "status": "Out",
-            "team": "KC"
-          },
-          {
-            "detail": "out",
-            "player": "Jack Pyburn",
-            "position": "LB",
-            "status": "Out",
+            "detail": "Injured Reserve",
+            "player": "Brashard Smith",
+            "position": "RB",
+            "status": "Injured Reserve",
             "team": "KC"
           }
         ],
@@ -481,27 +481,6 @@
         "event_id": "401873034",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Malik Herring",
-            "position": "DE",
-            "status": "Questionable",
-            "team": "MIA"
-          },
-          {
-            "detail": "out",
-            "player": "Jared Wayne",
-            "position": "WR",
-            "status": "Out",
-            "team": "MIA"
-          },
-          {
-            "detail": "out",
-            "player": "Jaylin Simpson",
-            "position": "S",
-            "status": "Out",
-            "team": "MIA"
-          },
-          {
             "detail": "out",
             "player": "Kadyn Proctor",
             "position": "OT",
@@ -509,11 +488,53 @@
             "team": "MIA"
           },
           {
-            "detail": "out",
-            "player": "Christian Haynes",
-            "position": "G",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Malik Herring",
+            "position": "DE",
+            "status": "Questionable",
             "team": "MIA"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "De'Von Achane",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "MIA"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Ronnie Harrison Jr.",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "team": "MIA"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Trey Moore",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "team": "MIA"
+          },
+          {
+            "detail": "out",
+            "player": "TreVeyon Henderson",
+            "position": "RB",
+            "status": "Out",
+            "team": "NE"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Mack Hollins",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "NE"
+          },
+          {
+            "detail": "out",
+            "player": "A.J. Brown",
+            "position": "WR",
+            "status": "Out",
+            "team": "NE"
           },
           {
             "detail": "questionable",
@@ -527,27 +548,6 @@
             "player": "Gabe Jacas",
             "position": "LB",
             "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "out",
-            "player": "Behren Morton",
-            "position": "QB",
-            "status": "Out",
-            "team": "NE"
-          },
-          {
-            "detail": "out",
-            "player": "Karon Prunty",
-            "position": "CB",
-            "status": "Out",
-            "team": "NE"
-          },
-          {
-            "detail": "out",
-            "player": "TreVeyon Henderson",
-            "position": "RB",
-            "status": "Out",
             "team": "NE"
           }
         ],
@@ -817,6 +817,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-02T10:57:56Z",
+  "generated_at_utc": "2026-11-02T21:41:25Z",
   "schema_version": 1
 }
