@@ -619,29 +619,31 @@ function fdOpenMatchup(g){
  const propExplanation=(x,line,edge)=>{
    const d=x.opponent_defense_context,parts=[];
    const n=v=>v===null||v===undefined||v===''||!Number.isFinite(Number(v))?null:Number(v);
-   const playerParts=String(x.player||'This player').trim().split(/\\s+/);
-   const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\\.?|SR\\.?)$/i.test(part)).slice(-1)[0]||'This player');
+   const playerParts=String(x.player||'This player').trim().split(/\s+/);
+   const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\.?|SR\.?)$/i.test(part)).slice(-1)[0]||'This player');
    const opponent=esc(x.opponent||'the opponent');
    const market=String(x.stat_key||'');
    const marketLabel=esc(market==='passing_yards'?'passing yards':market==='rushing_yards'?'rushing yards':market==='receiving_yards'?'receiving yards':String(x.market||'player prop').toLowerCase());
    const position=String(x.position||'').trim().toUpperCase();
    const positionLabel=esc(({QB:'quarterback',RB:'running back',WR:'wide receiver',TE:'tight end',FB:'fullback'})[position]||position.toLowerCase());
+   const positionPlural=({QB:'quarterbacks',RB:'running backs',WR:'wide receivers',TE:'tight ends',FB:'fullbacks'})[position]||positionLabel+'s';
    const target=[positionLabel,marketLabel].filter(Boolean).join(' ').trim()||marketLabel;
-   const rank=n(d?.rank),teams=n(d?.ranked_teams),allowed=n(d?.season_allowed_per_game),recentAllowed=n(d?.last_3_allowed_per_game);
-   const teamStat=market==='rushing_yards'?'team rushing yards allowed':'team passing yards allowed';
-   const positionSpecific=(position==='QB'&&market==='rushing_yards')||(market==='receiving_yards'&&['WR','TE','RB'].includes(position));
-   if(d&&rank!==null&&teams!==null){
-     const defenseLabel=rank<=Math.ceil(teams/3)?'one of the tougher':rank>=Math.floor(teams*2/3)?'one of the more generous':'around the middle of the pack among';
-     parts.push(opponent+' is '+defenseLabel+' defenses by '+teamStat+', ranking '+rank+' of '+teams+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, it allowed '+recentAllowed.toFixed(1)+' per game':'')+'.'+(positionSpecific?' This is a team-wide figure, not a '+target+'-specific split.':''));
-   }else parts.push('We do not have a complete opponent '+marketLabel+' defense breakdown for '+target+' yet.');
-   const positionContext=x.opponent_position_context,positionAllowed=n(positionContext?.last_5_allowed_per_game),positionGames=positionContext?.games;
-   if(positionAllowed!==null){
-     const label=position==='QB'?'quarterbacks':position==='RB'||position==='FB'?'running backs':position==='WR'?'wide receivers':position==='TE'?'tight ends':positionLabel+'s';
-     parts.push('For '+label+' specifically, '+opponent+' has allowed about '+positionAllowed.toFixed(1)+' '+marketLabel+' per game over '+esc(positionGames||'the available sample')+' games.');
-   }else if(positionSpecific){
-     const label=position==='QB'?'quarterback':position==='WR'?'wide receiver':position==='TE'?'tight end':'running back';
-     parts.push('A recent opponent split for '+label+' '+marketLabel+' is not available, so the team-wide number above should not be read as position-specific.');
-   }
+   const positionContext=x.opponent_position_context;
+   const positionRank=n(positionContext?.rank),positionTeams=n(positionContext?.ranked_teams);
+   const positionSeason=n(positionContext?.season_allowed_per_game),positionAllowed=n(positionContext?.last_5_allowed_per_game);
+   const positionGames=n(positionContext?.games),positionRecentGames=n(positionContext?.last_5_games);
+   const ordinal=value=>{const v=Math.abs(Math.trunc(value)),mod100=v%100,suffix=mod100>=11&&mod100<=13?'th':({1:'st',2:'nd',3:'rd'})[v%10]||'th';return v+suffix;};
+   const rankOrder=positionRank!==null&&positionTeams!==null?(positionRank<=positionTeams-positionRank+1?ordinal(positionRank)+'-fewest':ordinal(positionTeams-positionRank+1)+'-most'):'';
+   if(positionRank!==null&&positionTeams!==null&&positionSeason!==null){
+     parts.push(opponent+' has allowed the '+rankOrder+' '+marketLabel+' to '+positionPlural+' ('+positionSeason.toFixed(1)+' per game), ranking '+positionRank+' of '+positionTeams+' teams through '+(positionGames??'the available number of')+' completed games'+(positionAllowed!==null&&positionRecentGames!==null?'. Over the most recent '+positionRecentGames+' games, that was '+positionAllowed.toFixed(1)+' per game':'')+'.');
+   }else if(positionAllowed!==null){
+     parts.push(opponent+' has allowed about '+positionAllowed.toFixed(1)+' '+marketLabel+' per game to '+positionPlural+' over '+(positionGames??'the available number of')+' completed games; a league rank is not available yet.');
+   }else if(d&&n(d.rank)!==null&&n(d.ranked_teams)!==null){
+     const rank=n(d.rank),teams=n(d.ranked_teams),allowed=n(d.season_allowed_per_game),recentAllowed=n(d.last_3_allowed_per_game);
+     const teamStat=market==='rushing_yards'?'team rushing yards allowed':market==='receiving_yards'?'team receiving yards allowed':'team passing yards allowed';
+     const defenseLabel=rank<=Math.ceil(teams/3)?'one of the toughest':rank>=Math.floor(teams*2/3)?'one of the most generous':'around the middle of the pack';
+     parts.push(opponent+' is '+defenseLabel+' by '+teamStat+', ranking '+rank+' of '+teams+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, it allowed '+recentAllowed.toFixed(1)+' per game':'')+'. This is team-wide context; a '+target+'-specific rank is not available yet.');
+   }else parts.push('Opponent-specific '+target+' data are not available in the current feed.');
    const adj=n(x.opponent_adjustment);
    if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The opponent matchup adjustment '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
    const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
