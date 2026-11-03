@@ -33,7 +33,7 @@ class AccuracyEngineTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/"history.csv"
             make_csv(path,[record(2024,4,1),record(2024,4,1),record(2025,4,1)])
-            with self.assertRaisesRegex(ValueError,"Duplicate historical prediction"):
+            with self.assertRaisesRegex(RuntimeError,"Duplicate historical prediction"):
                 run(path)
     def test_single_season_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
