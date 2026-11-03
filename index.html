@@ -912,6 +912,34 @@ function fdOpenMatchup(g){
     (scoreValid?'The model projects '+esc(leaderTeam)+' '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+' over '+esc(otherTeam)+'. ':'The model favors '+esc(leaderTeam)+'. ')+
     (Number.isFinite(winRate)?'They win '+winRate.toFixed(1)+'% of saved simulations. ':'')+
     (margin<=3.5?'This projects as a one-possession contest; a late scoring drive could decide it.':margin>=10?'The projected scoring gap is sizable, but it is not a guaranteed result.':'The projected margin leaves room for either team to take control.'),'fd-insight-script');
+   // Lead with a decision-useful difference between the model and the saved
+   // market, while making the quote's age and its uncertainty explicit.
+   const gameQuote=fdLatestPregameGameLine(p);
+   const quoteTime=Date.parse(gameQuote?.captured_at_utc||'');
+   const kickoffTime=Date.parse(g.date);
+   const quoteAge=Number.isFinite(quoteTime)&&Number.isFinite(kickoffTime)?(kickoffTime-quoteTime)/3600000:null;
+   const hasTotal=gameQuote?.total!==null&&gameQuote?.total!==undefined&&gameQuote?.total!==''&&Number.isFinite(Number(gameQuote.total));
+   const modelTotal=projectedWinnerPoints+projectedOtherPoints;
+   if(hasTotal&&Number.isFinite(modelTotal)){
+    const marketTotal=Number(gameQuote.total),delta=modelTotal-marketTotal;
+    insightCard('Biggest scoreboard storyline',
+     'FOURTHDOWN projects '+num(modelTotal)+' combined points against the saved DraftKings total of '+num(marketTotal)+
+     ' — a '+num(Math.abs(delta))+'-point '+(delta<0?'lower':'higher')+' scoring outlook. '+
+     (delta<0?'The key question is whether both defenses can limit explosive plays and force longer drives.':'The key question is whether offenses can sustain efficiency and finish drives with touchdowns.')+
+     ' This is a model disagreement, not a validated betting edge.'+
+     (quoteAge!==null&&quoteAge>2?' Warning: this quote was captured about '+Math.round(quoteAge)+' hours before kickoff, so it may not represent the closing line.':''),'fd-insight-edge');
+   }
+   const homeMargin=Number(p.projected_home_score)-Number(p.projected_away_score);
+   if(gameQuote?.home_spread!==null&&gameQuote?.home_spread!==undefined&&gameQuote?.home_spread!==''&&Number.isFinite(Number(gameQuote.home_spread))&&Number.isFinite(homeMargin)){
+    const spread=Number(gameQuote.home_spread),gap=homeMargin+spread;
+    if(Math.abs(gap)>=2){
+     insightCard('Spread versus the model',
+      'The model expects '+esc(home)+' to '+(homeMargin>=0?'win by ':'lose by ')+num(Math.abs(homeMargin))+
+      ', while the saved DraftKings spread is '+esc(home)+' '+(spread>0?'+':'')+num(spread)+
+      '. That is a '+num(Math.abs(gap))+'-point difference in the implied margin. '+
+      'The swing factor is whether the projected scoring advantage actually materializes; the spread comparison is not a calibrated cover probability.','fd-insight-counter');
+    }
+   }
    // Identify the best documented offense-versus-defense opportunities, including
    // the underdog's best counter, instead of repeating the model winner.
    const edgePool=[];
@@ -924,7 +952,7 @@ function fdOpenMatchup(g){
    edgePool.sort((x,y)=>y.score-x.score);
    const usedKeys=new Set();
    for(const edge of edgePool){
-    if(cards.length>=4)break;
+    if(cards.length>=5)break;
     if(usedKeys.has(edge.key))continue;
     usedKeys.add(edge.key);
     const subject=edge.key==='EPA / pass'?'Passing matchup':edge.key==='EPA / rush'?'Rushing matchup':'Red-zone matchup';
@@ -932,9 +960,9 @@ function fdOpenMatchup(g){
     const implication=edge.key==='EPA / pass'?'Watch early-down passing efficiency and whether '+esc(edge.team)+' can avoid third-and-long.':edge.key==='EPA / rush'?'Watch rushing efficiency and whether '+esc(edge.team)+' can sustain drives on the ground.':'Watch whether '+esc(edge.team)+' turn red-zone trips into touchdowns instead of field goals.';
     insightCard(subject,description+implication,edge.side===leaderSide?'fd-insight-edge':'fd-insight-counter');
    }
-   if(cards.length<3){
+   if(cards.length<4){
     for(const story of chosen){
-     if(cards.length>=4)break;
+     if(cards.length>=5)break;
      if(usedKeys.has(story.kind))continue;
      usedKeys.add(story.kind);
      const title={passing:'Passing efficiency',rushing:'Ground game',scoring:'Scoring matchup',redzone:'Red-zone execution',form:'Recent results',rest:'Rest advantage'}[story.kind]||'Matchup storyline';
