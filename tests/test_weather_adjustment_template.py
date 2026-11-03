@@ -19,6 +19,11 @@ class TemplateTests(unittest.TestCase):
     def test_missing_forecast_fail_closed(self):
         self.assertIsNone(scenario(None,25))
         self.assertIsNone(adjusted_projection("game_total",45,None))
+    def test_published_market_aliases(self):
+        w=scenario(22,25)
+        self.assertLess(adjusted_projection('player_pass_completions',20,w),20)
+        self.assertLess(adjusted_projection('player_rec_yds',80,w),80)
+        self.assertGreater(adjusted_projection('player_rush_attempts',20,w),20)
     def test_rush_yards_accounts_for_efficiency(self):
         w=scenario(30,20,True)
         self.assertAlmostEqual(adjusted_projection("rushing_yards",100,w),100*1.08*.94)
