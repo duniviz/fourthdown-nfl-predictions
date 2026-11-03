@@ -704,18 +704,38 @@ function fdOpenMatchup(g){
    if(x.sample_warning)parts.push('<small>'+esc(x.sample_warning)+'</small>');
    return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+target+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
- const propOrder=['Passing','Rushing','Receiving','Other'];
+ // Include count-based props in the same unified player cards, not a second panel.
+ // After kickoff, use only timestamped pregame snapshots with saved DK lines.
+ const countLabels={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
+ const countRows=(!isFinal&&Number.isFinite(Date.parse(g.date))&&Date.now()<Date.parse(g.date))
+  ?fdCountPropRows(g).map(x=>({...x,stat_key:x.market_key,dk_line:x.line,last_5_avg:x.last5}))
+  :playerHistory.filter(x=>{
+    const kick=Date.parse(g.date),capture=Date.parse(x.forecast_captured_at_utc),savedKick=Date.parse(x.kickoff_utc);
+    return countLabels[x.stat_key]&&[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))
+      &&Number.isFinite(kick)&&Number.isFinite(capture)&&capture<kick
+      &&Number.isFinite(savedKick)&&Math.abs(savedKick-kick)<3600000
+      &&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line))
+      &&x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(Number(x.projection));
+   }).map(x=>({...x,market:countLabels[x.stat_key]}));
+ const countKeys=new Set();
+ const extraCountCards=countRows.filter(x=>{
+  const key=String(x.player).toLowerCase()+'|'+x.stat_key;
+  if(countKeys.has(key))return false;
+  countKeys.add(key);return true;
+ });
+ const propOrder=['Passing','Rushing','Receiving','Completions','Rush attempts','Receptions','Other'];
  const propCards=propOrder.map(group=>{
-   const entries=players.filter(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&propGroup(x)===group).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
+   const entries=players.filter(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&propGroup(x)===group).concat(extraCountCards.filter(x=>countLabels[x.stat_key]===group)).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
    if(!entries.length)return '';
    return '<div class="fd-mobile-prop-group"><h4>'+group+'</h4>'+entries.map(x=>{
      const projection=Number(x.projection),line=Number(x.dk_line);
      const validProjection=x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(projection);
      const validLine=x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(line);
      const sim=simulationPlayers.find(s=>s.game_id===x.game_id&&s.player_id===x.player_id&&s.stat_key===x.stat_key);
-     const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+' yards · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+' yards</div>':'';
+     const unit=countLabels[x.stat_key]?'':' yards';
+     const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+unit+' · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+unit+'</div>':'';
      const edge=validProjection&&validLine?projection-line:null;
-     const direction=edge===null?'No verified line':Math.abs(edge)<Math.max(10,0.08*line)?'Small difference · no validated edge':edge>0?'Uncalibrated OVER lean':'Uncalibrated UNDER lean';
+     const direction=edge===null?'No verified line':Math.abs(edge)<Math.max(countLabels[x.stat_key]?1.5:10,0.08*line)?'Small difference · no validated edge':edge>0?'Uncalibrated OVER lean':'Uncalibrated UNDER lean';
      const workloadType=String(x.opportunity_type||'opportunities').replace(/_/g,' ');
      const expectedWorkload=Number(x.expected_opportunities),recentWorkload=Number(x.last_5_opportunities_avg),roleShare=Number(x.role_share);
      const hasWorkload=Number.isFinite(expectedWorkload),hasRecentWorkload=Number.isFinite(recentWorkload),hasRoleShare=Number.isFinite(roleShare);
@@ -724,7 +744,7 @@ function fdOpenMatchup(g){
        (hasRecentWorkload?'<div><small>Last 5 avg '+esc(workloadType)+'</small><b>'+recentWorkload.toFixed(1)+'</b></div>':'')+
        (hasRoleShare?'<div><small>Projected team share</small><b>'+Math.round(Math.max(0,roleShare)*100)+'%</b></div>':'')+
        '</div>':'';
-     return '<article class="fd-mobile-prop-card" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+fdProjectionReliability(x,sim)+propExplanation(x,validLine?line:null,edge)+'</article>';
+     return '<article class="fd-mobile-prop-card" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+(countLabels[x.stat_key]?'':hybridBars(x))+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+(countLabels[x.stat_key]?'<p class="fd-modal-muted">Count projection from the saved model. Compare with the DK line; this is not a calibrated hit probability.</p>':fdProjectionReliability(x,sim)+propExplanation(x,validLine?line:null,edge))+'</article>';
    }).join('')+'</div>';
  }).join('');
  // Expose only this game's stored forecast and verified quote data to the live stats display.
