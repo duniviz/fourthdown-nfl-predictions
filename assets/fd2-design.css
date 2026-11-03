@@ -159,3 +159,13 @@ body.fd2-ready .fd-modal{z-index:150!important}
 @media(max-width:650px){.fd2-insight-preview{padding:15px!important}.fd2-insight-preview .fd-insight-key-grid{grid-template-columns:1fr}.fd2-insight-preview .fd-insight-key{padding:13px}}
 
 .fd-quote-stale{display:block;color:#f4c68b;font-size:12px;line-height:1.45;margin:8px 0 0;font-weight:750}
+
+/* Natural, magazine-style game editorials, without repetitive boxed AI tiles. */
+.fd2-editorial .fd-insight-heading{margin-bottom:18px}
+.fd2-editorial .fd-insight-heading h3{font-size:clamp(21px,3.2vw,30px)!important;line-height:1.24!important}
+.fd2-editorial .fd-editorial-stories{display:block;max-width:880px}
+.fd2-editorial .fd-editorial-story{padding:15px 0 17px;border-bottom:1px solid #30424d}
+.fd2-editorial .fd-editorial-story:first-child{padding-top:0}
+.fd2-editorial .fd-editorial-story:last-child{border-bottom:0}
+.fd2-editorial .fd-editorial-story h4{color:#eaf5de!important;font-size:clamp(16px,2vw,19px)!important;line-height:1.35!important;margin:0 0 8px!important}
+.fd2-editorial .fd-editorial-story p{color:#d0dce4!important;font-size:clamp(14px,1.6vw,16px)!important;line-height:1.68!important;margin:0!important}

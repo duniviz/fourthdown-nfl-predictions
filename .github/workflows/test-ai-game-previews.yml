@@ -1,0 +1,18 @@
+name: Test AI preview grounding
+on:
+  pull_request:
+    paths:
+      - 'tools/generate_ai_game_previews.py'
+      - 'tests/test_ai_game_previews.py'
+      - '.github/workflows/test-ai-game-previews.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m py_compile tools/generate_ai_game_previews.py
+      - run: python -m unittest discover -s tests -p 'test_ai_game_previews.py'
