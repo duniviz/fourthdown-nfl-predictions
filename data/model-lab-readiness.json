@@ -1,0 +1,18 @@
+{
+  "approved_for_auto_promotion": false,
+  "reasons": [
+    "passing_yards: improvement below 2% MAE threshold",
+    "rushing_yards: improvement below 2% MAE threshold",
+    "receiving_yards: improvement below 2% MAE threshold",
+    "No exact production-model replay on independent chronological holdouts",
+    "No multiweek stability and cross-market regression checks",
+    "No verified automated deployment and rollback integration"
+  ],
+  "policy": "fail-closed",
+  "candidate_markets": [
+    "passing_yards",
+    "rushing_yards",
+    "receiving_yards",
+    "receptions"
+  ]
+}
