@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT=Path("data")
-KEYS={"Passing yards":"player_pass_yds","Rushing yards":"player_rush_yds","Receiving yards":"player_rec_yds",\n      "Completions":"player_passing_completions","Rush attempts":"player_rushing_attempts","Receptions":"player_receptions"}
+KEYS={"Passing yards":"player_pass_yds","Rushing yards":"player_rush_yds","Receiving yards":"player_rec_yds",
+      "Completions":"player_passing_completions","Rush attempts":"player_rushing_attempts","Receptions":"player_receptions"}
 TEAMS={"ARI":"Arizona Cardinals","ATL":"Atlanta Falcons","BAL":"Baltimore Ravens","BUF":"Buffalo Bills","CAR":"Carolina Panthers","CHI":"Chicago Bears","CIN":"Cincinnati Bengals","CLE":"Cleveland Browns","DAL":"Dallas Cowboys","DEN":"Denver Broncos","DET":"Detroit Lions","GB":"Green Bay Packers","HOU":"Houston Texans","IND":"Indianapolis Colts","JAC":"Jacksonville Jaguars","JAX":"Jacksonville Jaguars","KC":"Kansas City Chiefs","LV":"Las Vegas Raiders","LAC":"Los Angeles Chargers","LAR":"Los Angeles Rams","LA":"Los Angeles Rams","MIA":"Miami Dolphins","MIN":"Minnesota Vikings","NE":"New England Patriots","NO":"New Orleans Saints","NYG":"New York Giants","NYJ":"New York Jets","PHI":"Philadelphia Eagles","PIT":"Pittsburgh Steelers","SF":"San Francisco 49ers","SEA":"Seattle Seahawks","TB":"Tampa Bay Buccaneers","TEN":"Tennessee Titans","WAS":"Washington Commanders"}
 
 def norm(v):
@@ -25,7 +26,9 @@ def team(v):
     return norm(TEAMS.get(str(v).upper(),v))
 
 def match_quote(player,quotes,now):
-    mk=player.get("market_key") if player.get("market_key") in ("player_pass_completions","player_rush_attempts","player_receptions") else KEYS.get(player.get("market"))\n    if mk=="player_pass_completions": mk="player_passing_completions"\n    if mk=="player_rush_attempts": mk="player_rushing_attempts"
+    mk=player.get("market_key") if player.get("market_key") in ("player_pass_completions","player_rush_attempts","player_receptions") else KEYS.get(player.get("market"))
+    if mk=="player_pass_completions": mk="player_passing_completions"
+    if mk=="player_rush_attempts": mk="player_rushing_attempts"
     if not mk:
         return None
     matches=[]
