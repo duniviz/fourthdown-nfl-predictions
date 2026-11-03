@@ -1,5 +1,9 @@
 name: Weekly V3 research learning and readiness
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/weekly-v3-research.yml'
   workflow_dispatch:
   schedule:
     - cron: '30 15 * * 2'
