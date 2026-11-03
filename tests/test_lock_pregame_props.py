@@ -21,6 +21,23 @@ class PregameSnapshotTests(unittest.TestCase):
     def test_no_future_quote(self):
         q={**self.quote,"last_update":(self.now+timedelta(minutes=5)).isoformat()}
         self.assertIsNone(match_quote(self.player,[q],self.now))
+    def test_count_receptions_quote(self):
+        player={"player":"Josh Allen","team":"BUF","opponent":"BAL",
+                "market":"Receptions","market_key":"player_receptions"}
+        quote={**self.quote,"market_key":"player_receptions","line":3.5}
+        self.assertEqual(match_quote(player,[quote],self.now)[3],3.5)
+
+    def test_count_completions_alias(self):
+        player={"player":"Josh Allen","team":"BUF","opponent":"BAL",
+                "market":"Completions","market_key":"player_pass_completions"}
+        quote={**self.quote,"market_key":"player_passing_completions","line":22.5}
+        self.assertEqual(match_quote(player,[quote],self.now)[3],22.5)
+
+    def test_no_count_without_verified_line(self):
+        player={"player":"Josh Allen","team":"BUF","opponent":"BAL",
+                "market":"Rush attempts","market_key":"player_rush_attempts"}
+        self.assertIsNone(match_quote(player,[self.quote],self.now))
+
     def test_latest_quote_wins(self):
         older={**self.quote,"line":249.5,"last_update":(self.now-timedelta(hours=2)).isoformat()}
         self.assertEqual(match_quote(self.player,[older,self.quote],self.now)[3],252.5)

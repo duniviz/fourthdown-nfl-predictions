@@ -725,7 +725,7 @@ function fdOpenMatchup(g){
   if(countKeys.has(key))return false;
   countKeys.add(key);return true;
  });
- const propOrder=['Passing','Rushing','Receiving','Completions','Rush attempts','Receptions','Other'];
+ const countArchiveNote=(!extraCountCards.length&&Date.now()>=Date.parse(g.date))?'<p class="fd-modal-muted">Count props unavailable for this game: no verified pregame count projection and DraftKings line were archived together. Future games will save matched count props before kickoff.</p>':'';\n const propOrder=['Passing','Rushing','Receiving','Completions','Rush attempts','Receptions','Other'];
  const propCards=propOrder.map(group=>{
    const entries=players.filter(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&propGroup(x)===group).concat(extraCountCards.filter(x=>countLabels[x.stat_key]===group)).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
    if(!entries.length)return '';
@@ -785,7 +785,7 @@ function fdOpenMatchup(g){
   })()
  };
  const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
- const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
+ const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+(propCards?propCards:'<p>No verified pregame player projections with DraftKings lines are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+'</div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
