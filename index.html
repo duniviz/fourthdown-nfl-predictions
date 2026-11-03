@@ -1056,7 +1056,7 @@ function fdOpenMatchup(g){
       return '<section class="fd-modal-section fd-ai-insights fd2-insight-preview fd2-editorial">'+
        '<div class="fd-insight-heading"><span class="fd-insight-ai">GAME PREVIEW</span>'+
        '<h3>'+esc(editorial.headline||away+' at '+home)+'</h3>'+
-       '<p>Pregame reporting based on verified matchup context · '+esc(new Date(generated).toLocaleString())+'</p></div>'+
+       '<p>Pregame reporting based on verified matchup context · '+esc(new Date(generated).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'</p></div>'+
        '<div class="fd-editorial-stories">'+safeStories.map(s=>'<article class="fd-editorial-story"><h4>'+esc(s.title)+'</h4><p>'+esc(s.body)+'</p></article>').join('')+'</div>'+
        '<details class="fd-insight-sources"><summary>Evidence and limitations</summary><p>Generated from saved model projections and verified game context. Model estimates are not facts or betting probabilities. Unverified injuries, market movement and news are not included.</p>'+
        '<p>Evidence categories: '+esc([...new Set(safeStories.flatMap(s=>s.evidence_keys))].join(', '))+'</p></details></section>';
@@ -1142,7 +1142,7 @@ function fdOpenMatchup(g){
  const completedGroups=['Passing yards','Rushing yards','Receiving yards'].map(m=>{const rows=completedRows.filter(x=>x.market===m);return rows.length?'<h4>'+esc(m)+'</h4><div style="overflow-x:auto"><table style="width:100%;font-size:13px;text-align:left"><thead><tr><th>Player</th><th>Projection</th><th>DK line</th><th>Actual</th><th>Difference</th><th>Over/Under pick</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.player)+'</td><td>'+num(x.projection)+'</td><td>'+(hasDkLine(x)?num(x.dk_line):'—')+'</td><td>'+num(x.actual)+'</td><td>'+num(x.error)+'</td><td>'+(x.recommendation_result==='hit'?'✓ HIT':x.recommendation_result==='miss'?'✕ MISS':x.recommendation_result==='push'?'PUSH':'Not recorded')+'</td></tr>').join('')+'</tbody></table></div>':''}).join('');
  const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn\'t save the injury report from before this game, so we won\'t show today\'s report as if it were from then.</p></div>';
- const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
+ const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
  document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+props.replace('</h3>','</h3>'+liveStats);
  if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.getElementById('fd-modal').scrollTop=0;document.dispatchEvent(new Event('fd-matchup-opened'));document.querySelector('[data-close-matchup]').focus();
@@ -1378,7 +1378,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    if(flags.length)return '<div class="fd-injury-team"><strong>'+esc(t)+' · preliminary availability flags</strong>'+flags.map(x=>'<div class="fd-injury-row"><b>'+esc(x.player_name||x.player||'Unknown player')+'</b><span>'+esc(x.injury_flag||x.status||'Availability flag')+' · supplemental source, not an official game-day designation</span></div>').join('')+'</div>';
    return '<p><strong>'+esc(t)+':</strong> No official report published in the current feed and no supplemental availability flags (not a healthy-roster confirmation).</p>';
   }).join('');
-  return '<details class="fd-injuries" data-game-id="'+esc(g.id)+'" data-teams="'+esc(teams.join(','))+'"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString())+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'<div class="fd-injury-team" data-game-card-injuries>Open this panel to load ESPN’s game-card report.</div></div></details>';
+  return '<details class="fd-injuries" data-game-id="'+esc(g.id)+'" data-teams="'+esc(teams.join(','))+'"><summary>Injury report · Both teams <span class="fd-injury-caution">QB adjustments experimental; verify forecast timestamp</span></summary><div class="fd-injury-body"><p>Source: ESPN team injury feed · updated '+esc(new Date(injuryData.generated_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'. Confirm game-day inactives and starting QB before relying on this forecast.</p>'+panels+'<div class="fd-injury-team" data-game-card-injuries>Open this panel to load ESPN’s game-card report.</div></div></details>';
  }
  function unavailablePlayer(x){
   // Do not show historical averages as a game projection for a known absentee.
@@ -1604,7 +1604,7 @@ function fdGameLineComparison(p){
  const modelFavorite=m>=0?p.home:p.away;
  const modelSpread=modelFavorite+' -'+Math.abs(m).toFixed(1);
  const dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
- const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString():'No verified pregame quote';
+ const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago'}):'No verified pregame quote';
  const kickoff=Date.parse(p.kickoff_utc),quoteAt=Date.parse(latest?.captured_at_utc||'');
  const ageHours=Number.isFinite(kickoff)&&Number.isFinite(quoteAt)?(kickoff-quoteAt)/3600000:null;
  const staleNote=ageHours!==null&&ageHours>2?'<strong class="fd-quote-stale">Older quote · '+Math.round(ageHours)+' hours before kickoff. Not a verified closing line.</strong>':'';
@@ -1736,7 +1736,7 @@ function renderMatchupCards(games){
        const saved=JSON.parse(localStorage.getItem('fd_espn_scoreboard_backup')||'null');
        if(saved&&Array.isArray(saved.payload?.events)&&saved.payload.events.length&&Date.now()-saved.savedAt<86400000){
          raw=saved.payload;
-         scoreSource='Cached ESPN scores · last saved '+new Date(saved.savedAt).toLocaleTimeString()+' (not live)';
+         scoreSource='Cached ESPN scores · last saved '+new Date(saved.savedAt).toLocaleTimeString('en-US',{timeZone:'America/Chicago'})+' (not live)';
        }
      }catch(_){}
    }
@@ -1748,7 +1748,7 @@ function renderMatchupCards(games){
          const backupAge=Date.now()-Date.parse(backup.updated_at_utc);
          if(Array.isArray(backup.events)&&backup.events.length&&backupAge>=0&&backupAge<86400000){
            raw=backup;
-           scoreSource='Published ESPN backup · updated '+new Date(backup.updated_at_utc).toLocaleTimeString()+(backupAge>600000?' (delayed)':'');
+           scoreSource='Published ESPN backup · updated '+new Date(backup.updated_at_utc).toLocaleTimeString('en-US',{timeZone:'America/Chicago'})+(backupAge>600000?' (delayed)':'');
          }
        }
      }catch(backupError){console.warn('Published scoreboard backup unavailable',backupError);}
@@ -1821,7 +1821,7 @@ function renderMatchupCards(games){
    const inSlate=g=>{const kickoff=Date.parse(g.date);return Number.isFinite(kickoff)&&kickoff>=slateStart&&kickoff<slateEnd;};
    const visibleGames=[...live.filter(inSlate),...upcoming.filter(inSlate),...(retainFinal?final.filter(inSlate):[])];
    window.fdAllGames=data.games;const sorted=visibleGames.filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(visibleGames);
-   status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString()+(age>45?' · DELAYED DATA':'');
+   status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString('en-US',{timeZone:'America/Chicago'})+(age>45?' · DELAYED DATA':'');
    label.textContent=age<1?'Updated just now':'Updated '+age+'m ago';
    window.fdVisibleGames=sorted;
    await fdLoadGameOdds();
@@ -1830,7 +1830,7 @@ function renderMatchupCards(games){
      const active=g.state==='in',isFinal=g.state==='post';
      const kickoff=new Date(g.date);
      const title=active?'IN PROGRESS':isFinal?'FINAL':'UPCOMING';
-     const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
+     const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
      const awayPoints=Number(g.away.score),homePoints=Number(g.home.score);
@@ -1996,11 +1996,11 @@ function render(){
   const hasConfidence=confidence!==null;
   const confidenceLabel=hasConfidence?confidence.toFixed(1)+'%':'Not available';
   const drawCount=Number(sim?.simulations);
-  const sample=Number.isInteger(drawCount)&&drawCount>0?drawCount.toLocaleString():'10,000';
+  const sample=Number.isInteger(drawCount)&&drawCount>0?drawCount.toLocaleString('en-US',{timeZone:'America/Chicago'}):'10,000';
   const confidenceBar=hasConfidence?'<div class="fd-signal-track" role="img" aria-label="Simulated hit rate '+confidenceLabel+'"><span style="width:'+confidence.toFixed(1)+'%"></span></div><small>'+confidenceLabel+' of '+sample+' simulated games won this pick (pushes excluded). Model-based estimate, not a guarantee.</small>':'<div class="fd-signal-track" role="img" aria-label="Simulation hit rate unavailable"><span style="width:0%"></span></div><small>No verified simulation rate for this exact DK line yet. Awaiting updated simulation results.</small>';
   return '<a class="fd-watch-card" href="#scoreboard"><span class="fd-kicker">'+labels[type]+' · '+(mode==='strong'?'Largest model signal':'Smallest model signal')+'</span><h3 style="font-size:22px;margin:9px 0 5px;color:#baff25">'+safe(item.pick)+'</h3><strong>'+safe(item.game)+'</strong><p style="margin:7px 0 5px">'+safe(item.detail)+'</p><small>Projected score: '+safe(item.score)+'</small><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px"><strong style="font-size:13px">Simulation hit rate</strong><strong style="font-size:19px;color:#baff25">'+confidenceLabel+'</strong></div>'+confidenceBar+'<details class="fd-pick-reason" onclick="event.stopPropagation()"><summary>Why this pick?</summary><p>'+safe(whyText)+'</p><small>Based on the current FOURTHDOWN projection and matched DraftKings line, not a calibrated guarantee.</small></details></a>';
  });
- node.innerHTML='<div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="fd-chart-choice" id="watch-strong" aria-pressed="'+(mode==='strong')+'">Strongest signals</button><button type="button" class="fd-chart-choice" id="watch-close" aria-pressed="'+(mode==='weak')+'">Least decisive</button></div>'+all.join('')+'<p class="fd-watch-freshness" style="grid-column:1/-1">Forecast: '+(forecastAt?new Date(forecastAt).toLocaleString():'unavailable')+' · DK lines: '+(quoteAt?new Date(quoteAt).toLocaleString():'unavailable')+'</p><p class="caption" style="grid-column:1/-1">Simulation hit rates count winning outcomes across 10,000 draws for the exact matched DraftKings line. Pushes are not wins. If the line changed since simulation, the rate waits for a refreshed run. These are exploratory model rates, not calibrated real-world probabilities.</p>';
+ node.innerHTML='<div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="fd-chart-choice" id="watch-strong" aria-pressed="'+(mode==='strong')+'">Strongest signals</button><button type="button" class="fd-chart-choice" id="watch-close" aria-pressed="'+(mode==='weak')+'">Least decisive</button></div>'+all.join('')+'<p class="fd-watch-freshness" style="grid-column:1/-1">Forecast: '+(forecastAt?new Date(forecastAt).toLocaleString('en-US',{timeZone:'America/Chicago'}):'unavailable')+' · DK lines: '+(quoteAt?new Date(quoteAt).toLocaleString('en-US',{timeZone:'America/Chicago'}):'unavailable')+'</p><p class="caption" style="grid-column:1/-1">Simulation hit rates count winning outcomes across 10,000 draws for the exact matched DraftKings line. Pushes are not wins. If the line changed since simulation, the rate waits for a refreshed run. These are exploratory model rates, not calibrated real-world probabilities.</p>';
  node.querySelector('#watch-strong').onclick=()=>{mode='strong';render();};
  node.querySelector('#watch-close').onclick=()=>{mode='weak';render();};
 }
