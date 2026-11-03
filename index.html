@@ -725,7 +725,7 @@ function fdOpenMatchup(g){
   if(countKeys.has(key))return false;
   countKeys.add(key);return true;
  });
- const propOrder=['Passing','Rushing','Receiving','Completions','Rush attempts','Receptions','Other'];
+ const countArchiveNote=(!extraCountCards.length&&Date.now()>=Date.parse(g.date))?'<p class="fd-modal-muted">Count props unavailable for this game: no verified pregame count projection and DraftKings line were archived together. Future games will save matched count props before kickoff.</p>':'';\n const propOrder=['Passing','Rushing','Receiving','Completions','Rush attempts','Receptions','Other'];
  const propCards=propOrder.map(group=>{
    const entries=players.filter(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key))&&propGroup(x)===group).concat(extraCountCards.filter(x=>countLabels[x.stat_key]===group)).sort((a,b)=>String(a.player).localeCompare(String(b.player)));
    if(!entries.length)return '';
