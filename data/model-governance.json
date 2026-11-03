@@ -1,0 +1,47 @@
+{
+  "generated_at_utc": "2026-11-03T20:48:20.447827+00:00",
+  "decisions": {
+    "passing_yards": {
+      "champion": "existing_live_model",
+      "best_challenger": "ridge",
+      "holdout_samples": 395,
+      "improvement_pct": 4.3,
+      "research_candidate": true,
+      "decision": "candidate_needs_live_equivalence_and_independent_forward_test",
+      "production_changed": false
+    },
+    "receiving_yards": {
+      "champion": "existing_live_model",
+      "best_challenger": "random_forest",
+      "holdout_samples": 1852,
+      "improvement_pct": -2.04,
+      "research_candidate": false,
+      "decision": "retain_champion",
+      "production_changed": false
+    },
+    "rushing_yards": {
+      "champion": "existing_live_model",
+      "best_challenger": "ridge",
+      "holdout_samples": 873,
+      "improvement_pct": 0.08,
+      "research_candidate": false,
+      "decision": "retain_champion",
+      "production_changed": false
+    }
+  },
+  "weather_status": "awaiting_frozen_weather_and_verified_outcomes",
+  "automatic_promotion_enabled": false,
+  "live_weights_changed": false,
+  "blockers": [
+    "No verified equivalence between historical challenger features and production inputs",
+    "No independent forward shadow comparison against frozen live projections",
+    "No deployed model artifact and atomic rollback mechanism"
+  ],
+  "policy": {
+    "min_holdout_samples": 300,
+    "min_relative_mae_improvement": 0.02,
+    "require_forward_shadow_validation": true,
+    "require_atomic_rollback": true
+  },
+  "note": "Automated research selection only. Never modify production based on retrospective scores alone."
+}

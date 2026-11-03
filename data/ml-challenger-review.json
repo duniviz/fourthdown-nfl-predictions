@@ -1,0 +1,84 @@
+{
+  "status": "evaluated",
+  "holdout_season": 2025,
+  "training_seasons": [
+    2024
+  ],
+  "markets": {
+    "passing_yards": {
+      "status": "evaluated",
+      "train": 398,
+      "holdout": 395,
+      "baseline_mae": 65.139,
+      "challengers": {
+        "ridge": {
+          "mae": 62.341,
+          "improvement_vs_baseline": 2.798,
+          "beats_baseline": true
+        },
+        "random_forest": {
+          "mae": 63.469,
+          "improvement_vs_baseline": 1.67,
+          "beats_baseline": true
+        },
+        "gradient_boosting": {
+          "mae": 66.543,
+          "improvement_vs_baseline": -1.404,
+          "beats_baseline": false
+        }
+      }
+    },
+    "receiving_yards": {
+      "status": "evaluated",
+      "train": 1927,
+      "holdout": 1852,
+      "baseline_mae": 22.612,
+      "challengers": {
+        "ridge": {
+          "mae": 23.108,
+          "improvement_vs_baseline": -0.495,
+          "beats_baseline": false
+        },
+        "random_forest": {
+          "mae": 23.074,
+          "improvement_vs_baseline": -0.462,
+          "beats_baseline": false
+        },
+        "gradient_boosting": {
+          "mae": 23.239,
+          "improvement_vs_baseline": -0.627,
+          "beats_baseline": false
+        }
+      }
+    },
+    "rushing_yards": {
+      "status": "evaluated",
+      "train": 883,
+      "holdout": 873,
+      "baseline_mae": 23.929,
+      "challengers": {
+        "ridge": {
+          "mae": 23.91,
+          "improvement_vs_baseline": 0.02,
+          "beats_baseline": true
+        },
+        "random_forest": {
+          "mae": 24.423,
+          "improvement_vs_baseline": -0.493,
+          "beats_baseline": false
+        },
+        "gradient_boosting": {
+          "mae": 25.18,
+          "improvement_vs_baseline": -1.251,
+          "beats_baseline": false
+        }
+      }
+    }
+  },
+  "generated_at_utc": "2026-11-03T20:48:20.268955+00:00",
+  "research_only": true,
+  "production_changed": false,
+  "automatic_promotion": false,
+  "feature_policy": "frozen pregame model values + week only; no outcomes as features",
+  "limitation": "Only player markets with historical frozen projections; no ATS, winners, weather or DK lines in source."
+}

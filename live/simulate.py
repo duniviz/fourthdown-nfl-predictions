@@ -54,7 +54,34 @@ def quantile(values,p):
     v=sorted(values)
     return round(v[min(len(v)-1,max(0,int(p*(len(v)-1))))],1)
 
-def simulate_games(games):
+def game_quote(game, odds):
+    """Find the same matchup and kickoff; never borrow another game's line."""
+    kickoff=game.get("kickoff_utc")
+    try:
+        target=datetime.fromisoformat(str(kickoff).replace("Z","+00:00"))
+    except (TypeError,ValueError):
+        return None
+    matches=[]
+    for q in odds:
+        if q.get("bookmaker")!="draftkings" or q.get("home")!=game.get("home") or q.get("away")!=game.get("away"):
+            continue
+        try:
+            start=datetime.fromisoformat(str(q.get("commence_time")).replace("Z","+00:00"))
+        except (TypeError,ValueError):
+            continue
+        if abs((start-target).total_seconds())<=3600:
+            matches.append(q)
+    return max(matches,key=lambda q:str(q.get("updated_at_utc") or "")) if matches else None
+
+def valid_line(value):
+    try:
+        if value is None or value=="": return None
+        v=float(value)
+        return v if math.isfinite(v) else None
+    except (ValueError,TypeError):
+        return None
+
+def simulate_games(games, odds=()):
     output=[]
     for game in games:
         home=float(game["projected_home_score"])
@@ -71,6 +98,22 @@ def simulate_games(games):
             home_scores.append(h);away_scores.append(a);totals.append(h+a);margins.append(h-a)
             wins+=h>a
             ties+=h==a
+        quote=game_quote(game,odds)
+        market={}
+        if quote:
+            total_line=valid_line(quote.get("total"))
+            home_spread=valid_line(quote.get("home_spread"))
+            if total_line is not None:
+                market.update(dk_total=total_line,
+                    over_cover_pct=round(100*sum(v>total_line for v in totals)/DRAWS,1),
+                    under_cover_pct=round(100*sum(v<total_line for v in totals)/DRAWS,1),
+                    total_push_pct=round(100*sum(v==total_line for v in totals)/DRAWS,1))
+            if home_spread is not None:
+                market.update(dk_home_spread=home_spread,
+                    home_cover_pct=round(100*sum(v+home_spread>0 for v in margins)/DRAWS,1),
+                    away_cover_pct=round(100*sum(v+home_spread<0 for v in margins)/DRAWS,1),
+                    spread_push_pct=round(100*sum(v+home_spread==0 for v in margins)/DRAWS,1))
+            market["dk_quote_updated_at_utc"]=quote.get("updated_at_utc")
         output.append(dict(game_id=game["game_id"],home=game["home"],away=game["away"],
             simulations=DRAWS,home_win_pct=round(wins/DRAWS*100,1),
             away_win_pct=round((DRAWS-wins-ties)/DRAWS*100,1),
@@ -78,7 +121,7 @@ def simulate_games(games):
             home_score_median=quantile(home_scores,.5),away_score_median=quantile(away_scores,.5),
             total_median=quantile(totals,.5),total_p10=quantile(totals,.1),
             total_p90=quantile(totals,.9),margin_home_p10=quantile(margins,.1),
-            margin_home_p90=quantile(margins,.9)))
+            margin_home_p90=quantile(margins,.9),**market))
     return output
 
 def simulate_players(players):
@@ -117,9 +160,13 @@ def simulate_players(players):
 def main():
     games=json.loads(Path("data/live-v2.json").read_text())["games"]
     players=json.loads(Path("data/player-research.json").read_text())["players"]
+    try:
+        odds=json.loads(Path("data/dk-game-odds.json").read_text()).get("games",[])
+    except (OSError,ValueError):
+        odds=[]
     result=dict(generated_at_utc=datetime.now(timezone.utc).isoformat(),simulations=DRAWS,
         status="exploratory_uncalibrated",distribution_note="Correlated Gaussian game scores, gamma yardage, discrete count and Poisson TD/INT simulations; historical calibration pending",
-        games=simulate_games(games),players=simulate_players(players))
+        games=simulate_games(games,odds),players=simulate_players(players))
     Path("data/simulations.json").write_text(json.dumps(result,separators=(",",":"))+"\n")
     print(f"Simulated {len(result['games'])} games and {len(result['players'])} player markets {DRAWS} times each")
 if __name__=="__main__": main()

@@ -1,0 +1,74 @@
+name: Publish Model Lab research results
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Weekly V3 research learning and readiness"]
+    types: [completed]
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Download latest successful research artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SOURCE_RUN: ${{ github.event.workflow_run.id }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess, sys
+          repo=os.environ['REPO']
+          run=os.environ.get('SOURCE_RUN') or ''
+          if not run:
+              runs=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/workflows/weekly-v3-research.yml/runs?status=success&per_page=1']))['workflow_runs']
+              if not runs: sys.exit('No successful research workflow run found')
+              run=str(runs[0]['id'])
+          artifacts=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{run}/artifacts']))['artifacts']
+          matches=[a for a in artifacts if a['name']=='fourtdown-weekly-model-readiness' and not a.get('expired')]
+          if not matches: sys.exit('No usable model readiness artifact')
+          os.makedirs('/tmp/model-artifact',exist_ok=True)
+          with open('/tmp/model-artifact/research.zip','wb') as f:
+              subprocess.run(['gh','api',f"repos/{repo}/actions/artifacts/{matches[0]['id']}/zip"],stdout=f,check=True)
+          print('Downloaded research artifact from run',run)
+          PY
+      - name: Publish validated research JSON
+        run: |
+          python - <<'PY'
+          import json,zipfile,pathlib,datetime
+          z=zipfile.ZipFile('/tmp/model-artifact/research.zip')
+          for source,target in [('research/v3-results/results.json','data/model-lab-results.json'),('research/auto-promotion/readiness.json','data/model-lab-readiness.json')]:
+              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
+              if not matches:
+                  print('Missing',source,'— keeping existing published file')
+                  continue
+              obj=json.loads(z.read(matches[0]))
+              if not isinstance(obj,dict): raise ValueError('Invalid research data')
+              if source.endswith('results.json'):
+                  if not isinstance(obj.get('markets'),dict): raise ValueError('Research markets missing')
+                  obj['generated_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\n')
+          for source,target in [('research/yardage-game-results/leaderboard.json','data/model-lab-yardage-game.json'),('research/weekly-shadow-results/leaderboard.json','data/model-lab-weekly-shadow.json')]:
+              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
+              if not matches:
+                  print('Missing',source,'— keeping existing published file')
+                  continue
+              obj=json.loads(z.read(matches[0]))
+              if not isinstance(obj,dict):raise ValueError('Invalid leaderboard')
+              obj['published_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\\n')
+          PY
+      - name: Commit published research data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- data/model-lab-results.json data/model-lab-readiness.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json 2>/dev/null || git add -A -- data/
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish latest validated Model Lab research results"
+            git push
+          fi

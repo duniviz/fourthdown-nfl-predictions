@@ -13,7 +13,104 @@ def number(x):
     except (ValueError, TypeError):
         return None
 
-def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None):
+
+def build_team_matchup_metrics(schedules, plays, season, target_week):
+    """Build descriptive pregame team ranks; these values do not affect v2 scoring."""
+    stats=defaultdict(lambda:defaultdict(float))
+    completed=[]
+    for game in schedules:
+        try:
+            week=int(game.get("week",0))
+        except (TypeError,ValueError):
+            continue
+        home,away=game.get("home_team"),game.get("away_team")
+        hs,ass=number(game.get("home_score")),number(game.get("away_score"))
+        if int(game.get("season",0))==season and week<target_week and home and away and hs is not None and ass is not None:
+            completed.append(game)
+            for team,pf,pa in ((home,hs,ass),(away,ass,hs)):
+                stats[team]["games"]+=1
+                stats[team]["points_for"]+=pf
+                stats[team]["points_against"]+=pa
+    red_zone_drives={}
+    for row in plays or []:
+        try:
+            if int(row.get("season",0))!=season or int(row.get("week",0))>=target_week: continue
+        except (TypeError,ValueError):
+            continue
+        off,defn=row.get("posteam"),row.get("defteam")
+        if not off or not defn or row.get("play_type") not in ("pass","run"): continue
+        yards=number(row.get("yards_gained")) or 0.0
+        epa=number(row.get("epa"))
+        stats[off]["plays"]+=1; stats[off]["yards"]+=yards
+        stats[defn]["plays_allowed"]+=1; stats[defn]["yards_allowed"]+=yards
+        if epa is not None:
+            stats[off]["epa"]+=epa; stats[off]["epa_plays"]+=1
+            stats[defn]["epa_allowed"]+=epa; stats[defn]["epa_allowed_plays"]+=1
+        phase="pass" if row.get("play_type")=="pass" else "rush"
+        if epa is not None:
+            stats[off][phase+"_epa"]+=epa; stats[off][phase+"_plays"]+=1
+            stats[defn][phase+"_epa_allowed"]+=epa; stats[defn][phase+"_allowed_plays"]+=1
+        if number(row.get("sack"))==1:
+            stats[off]["sacks_allowed"]+=1; stats[defn]["sacks"]+=1
+        if number(row.get("interception"))==1 or number(row.get("fumble_lost"))==1:
+            stats[off]["giveaways"]+=1; stats[defn]["takeaways"]+=1
+        down=number(row.get("down"))
+        converted=number(row.get("first_down"))==1 or number(row.get("touchdown"))==1
+        if down in (3,4):
+            key="third" if down==3 else "fourth"
+            stats[off][key+"_attempts"]+=1; stats[defn][key+"_allowed_attempts"]+=1
+            if converted:
+                stats[off][key+"_conversions"]+=1; stats[defn][key+"_allowed_conversions"]+=1
+        yardline=number(row.get("yardline_100"))
+        drive=row.get("drive")
+        if yardline is not None and yardline<=20 and drive is not None:
+            key=(str(row.get("game_id","")),off,str(drive))
+            red_zone_drives.setdefault(key,{"team":off,"defense":defn,"td":False})
+            if number(row.get("touchdown"))==1: red_zone_drives[key]["td"]=True
+    for drive in red_zone_drives.values():
+        stats[drive["team"]]["red_zone_drives"]+=1
+        stats[drive["defense"]]["red_zone_drives_allowed"]+=1
+        if drive["td"]:
+            stats[drive["team"]]["red_zone_tds"]+=1
+            stats[drive["defense"]]["red_zone_tds_allowed"]+=1
+    def ratio(num,den):
+        return None if not den else num/den
+    values={}
+    for team,row in stats.items():
+        games=row["games"]
+        if not games: continue
+        values[team]={
+            "points":(ratio(row["points_for"],games),ratio(row["points_against"],games),"pts/g"),
+            "yards_per_play":(ratio(row["yards"],row["plays"]),ratio(row["yards_allowed"],row["plays_allowed"]),"yds/play"),
+            "epa_per_play":(ratio(row["epa"],row["epa_plays"]),ratio(row["epa_allowed"],row["epa_allowed_plays"]),"EPA/play"),
+            "pass_epa":(ratio(row["pass_epa"],row["pass_plays"]),ratio(row["pass_epa_allowed"],row["pass_allowed_plays"]),"EPA/pass"),
+            "rush_epa":(ratio(row["rush_epa"],row["rush_plays"]),ratio(row["rush_epa_allowed"],row["rush_allowed_plays"]),"EPA/rush"),
+            "sacks":(ratio(row["sacks_allowed"],games),ratio(row["sacks"],games),"sacks/g"),
+            "turnovers":(ratio(row["giveaways"],games),ratio(row["takeaways"],games),"TO/g"),
+            "third_down":(ratio(row["third_conversions"],row["third_attempts"]),ratio(row["third_allowed_conversions"],row["third_allowed_attempts"]),"%"),
+            "fourth_down":(ratio(row["fourth_conversions"],row["fourth_attempts"]),ratio(row["fourth_allowed_conversions"],row["fourth_allowed_attempts"]),"%"),
+            "red_zone_td":(ratio(row["red_zone_tds"],row["red_zone_drives"]),ratio(row["red_zone_tds_allowed"],row["red_zone_drives_allowed"]),"%"),
+        }
+    definitions=[
+        ("total","Points / game","points",True,False),
+        ("total","Yards / play","yards_per_play",True,False),
+        ("epa","EPA / play","epa_per_play",True,False),
+        ("epa","EPA / pass","pass_epa",True,False),
+        ("epa","EPA / rush","rush_epa",True,False),
+        ("negative","Sacks / game","sacks",False,True),
+        ("negative","Turnovers / game","turnovers",False,True),
+        ("conversion","3rd down conversion","third_down",True,False),
+        ("conversion","4th down conversion","fourth_down",True,False),
+        ("conversion","Red-zone TD rate","red_zone_td",True,False),
+    ]
+    rankings={}
+    for _,_,key,off_high,def_high in definitions:
+        offense=sorted(((team,data[key][0]) for team,data in values.items() if data[key][0] is not None),key=lambda item:item[1],reverse=off_high)
+        defense=sorted(((team,data[key][1]) for team,data in values.items() if data[key][1] is not None),key=lambda item:item[1],reverse=def_high)
+        rankings[key]={"offense":{team:i+1 for i,(team,_) in enumerate(offense)},"defense":{team:i+1 for i,(team,_) in enumerate(defense)}}
+    return values,rankings,definitions
+
+def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None: raise ValueError("now must be timezone-aware")
     season=now.year if now.month>=3 else now.year-1
@@ -99,6 +196,24 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
     defensive_order=sorted(eligible,key=lambda t:eligible[t][1])
     offense_rank={t:i+1 for i,t in enumerate(offensive_order)}
     defense_rank={t:i+1 for i,t in enumerate(defensive_order)}
+    metric_values,metric_rankings,metric_definitions=build_team_matchup_metrics(games,team_metric_rows,season,target_week)
+    def matchup_metrics(away,home):
+        rows=[]
+        for category,label,key,_,_ in metric_definitions:
+            av=metric_values.get(away,{}).get(key); hv=metric_values.get(home,{}).get(key)
+            if not av or not hv: continue
+            ar=metric_rankings.get(key,{}).get("offense",{}).get(away)
+            hd=metric_rankings.get(key,{}).get("defense",{}).get(home)
+            hr=metric_rankings.get(key,{}).get("offense",{}).get(home)
+            ad=metric_rankings.get(key,{}).get("defense",{}).get(away)
+            if None in (ar,hd,hr,ad): continue
+            unit=av[2]
+            rows.append({"category":category,"label":label,"unit":unit,
+                "away_offense":{"rank":ar,"value":round(av[0]*100,1) if unit=="%" else round(av[0],2)},
+                "home_defense":{"rank":hd,"value":round(hv[1]*100,1) if unit=="%" else round(hv[1],2)},
+                "home_offense":{"rank":hr,"value":round(hv[0]*100,1) if unit=="%" else round(hv[0],2)},
+                "away_defense":{"rank":ad,"value":round(av[1]*100,1) if unit=="%" else round(av[1],2)}})
+        return rows
     results=[]
     injury_reports=injury_reports or {}
     player_weekly=player_weekly or []
@@ -132,6 +247,7 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
             "injury_adjustments":adjustments,
             "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"offense_rank":offense_rank.get(g["home_team"]),"defense_rank":defense_rank.get(g["home_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["home_team"])},
                         "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
+                        "matchup_metrics":matchup_metrics(g["away_team"],g["home_team"]),
                         "estimated_home_advantage_points":1.5,
                         "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5},
                         "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."}})
@@ -150,6 +266,8 @@ def main():
     pbp=nfl.load_pbp([season])
     needed={"season","week","game_id","posteam","defteam","epa","play_type"}
     if needed-set(pbp.columns): raise ValueError("Missing required PBP columns")
+    metric_columns=[c for c in ("season","week","game_id","posteam","defteam","play_type","yards_gained","epa","sack","interception","fumble_lost","down","first_down","touchdown","yardline_100","drive") if c in pbp.columns]
+    team_metric_rows=pbp.select(metric_columns).to_dicts()
     base=pbp.filter(pl.col("play_type").is_in(["pass","run"]) &
                     pl.col("epa").is_not_null() &
                     pl.col("posteam").is_not_null() &
@@ -168,7 +286,7 @@ def main():
         except (ValueError,KeyError,TypeError):
             pass
     weekly=nfl.load_player_stats([season],summary_level="week").to_dicts() if injury_reports else []
-    data=forecast(schedules,epa,now,injury_reports,weekly)
+    data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows)
     dest=Path("data/live-v2.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
     # Keep immutable first-published predictions for transparent future grading.

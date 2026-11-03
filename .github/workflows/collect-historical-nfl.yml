@@ -1,0 +1,42 @@
+name: Collect historical NFL training data
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/collect_historical_nfl.py'
+      - 'tools/validate_historical_nfl.py'
+      - 'tools/game_ml_challengers.py'
+      - 'tests/test_game_ml_challengers.py'
+      - '.github/workflows/collect-historical-nfl.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '15 12 * * 2'
+permissions:
+  contents: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install official nflverse Python reader
+        run: python -m pip install 'nflreadpy>=0.1' 'polars>=1.0' numpy scikit-learn
+      - name: Download 2022 onward schedules player and team statistics
+        run: python tools/collect_historical_nfl.py --start 2022
+      - name: Validate historical tables and provenance
+        run: python tools/validate_historical_nfl.py
+      - name: Verify no current-week feature leakage
+        run: python -m unittest discover -s tests -p 'test_game_ml_challengers.py' -v
+      - name: Train game ML challengers on chronological holdout
+        run: python tools/game_ml_challengers.py
+      - name: Upload historical data as reusable workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-nfl-training-data
+          path: data/training/
+          retention-days: 90
+          if-no-files-found: warn

@@ -1,0 +1,47 @@
+name: Research count-prop walk-forward backtest
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/count-props-research.yml'
+permissions:
+  contents: read
+jobs:
+  count-props:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download nflverse historical weekly player stats
+        run: |
+          mkdir -p /tmp/fourthdown-count-props
+          curl --fail --location --retry 3 --retry-delay 3 \
+            'https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv' \
+            -o /tmp/fourthdown-count-props/player_stats.csv
+          test -s /tmp/fourthdown-count-props/player_stats.csv
+      - name: Run strict historical walk-forward tests
+        run: |
+          python tools/backtest_count_props_walkforward.py \
+            --weekly-csv /tmp/fourthdown-count-props/player_stats.csv \
+            --seasons 2024 2025 2026 \
+            --through-week 18 \
+            --output /tmp/fourthdown-count-props/count-props-results.json
+      - name: Test position defense and role-share challengers
+        run: |
+          python tools/backtest_count_props_matchup_challenger.py \
+            --weekly-csv /tmp/fourthdown-count-props/player_stats.csv \
+            --seasons 2024 2025 2026 \
+            --through-week 18 \
+            --output /tmp/fourthdown-count-props/count-props-challenger-results.json
+      - name: Upload research results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: count-props-walkforward-results
+          path: |
+            /tmp/fourthdown-count-props/count-props-results.json
+            /tmp/fourthdown-count-props/count-props-challenger-results.json
+          if-no-files-found: warn

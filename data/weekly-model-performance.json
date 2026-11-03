@@ -1,0 +1,117 @@
+{
+  "status": "timestamped_pregame_accuracy_only",
+  "generated_at_utc": "2026-11-03T20:14:54.896780+00:00",
+  "graded_weeks": 1,
+  "weekly_reports": [
+    {
+      "season": 2026,
+      "week": 8,
+      "locked_at_utc": "2026-10-28T04:03:59.546852+00:00",
+      "status": "graded_observed_only",
+      "completed_games": 14,
+      "game_metrics": {
+        "home_margin": {
+          "samples": 14,
+          "mae": 11.46,
+          "rmse": 14.08,
+          "bias": -6.03
+        },
+        "total": {
+          "samples": 14,
+          "mae": 12.26,
+          "rmse": 15.91,
+          "bias": -0.77
+        }
+      },
+      "player_metrics": {
+        "passing_yards": {
+          "samples": 28,
+          "mae": 86.89,
+          "rmse": 105.02,
+          "bias": 26.22
+        },
+        "rushing_yards": {
+          "samples": 49,
+          "mae": 31.47,
+          "rmse": 40.42,
+          "bias": -2.82
+        },
+        "receiving_yards": {
+          "samples": 64,
+          "mae": 27.9,
+          "rmse": 37.33,
+          "bias": 2.43
+        }
+      },
+      "market_diagnostics": {
+        "spread_lines_present_not_graded": 14,
+        "total_lines_present": 14,
+        "total_side_correct": 8,
+        "total_side_incorrect": 6
+      },
+      "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
+    },
+    {
+      "season": 2026,
+      "week": 9,
+      "locked_at_utc": "2026-11-03T20:14:54.896780+00:00",
+      "status": "awaiting_completed_games",
+      "completed_games": 0,
+      "game_metrics": {},
+      "player_metrics": {
+        "passing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "rushing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "receiving_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "market_diagnostics": {},
+      "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
+    }
+  ],
+  "season_to_date": {
+    "player_metrics": {
+      "passing_yards": {
+        "samples": 28,
+        "mae": 86.89,
+        "rmse": 105.02
+      },
+      "rushing_yards": {
+        "samples": 49,
+        "mae": 31.47,
+        "rmse": 40.42
+      },
+      "receiving_yards": {
+        "samples": 64,
+        "mae": 27.9,
+        "rmse": 37.33
+      }
+    },
+    "game_metrics": {
+      "home_margin": {
+        "samples": 14,
+        "mae": 11.46,
+        "rmse": 14.08
+      },
+      "total": {
+        "samples": 14,
+        "mae": 12.26,
+        "rmse": 15.91
+      }
+    }
+  },
+  "note": "Aggregated errors are rounded from weekly metrics. No historical backfill is treated as a locked pregame prediction."
+}

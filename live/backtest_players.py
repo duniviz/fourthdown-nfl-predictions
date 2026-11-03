@@ -8,7 +8,7 @@ import math
 from collections import defaultdict
 from pathlib import Path
 import nflreadpy as nfl
-from live.player_research import METRICS, num, project_yards
+from live.player_research import METRICS, established_return_workload, num, project_yards
 
 def old_model(stats, metric):
     vals=[max(0,num(r.get(metric))) for r in stats[-5:]]
@@ -89,6 +89,57 @@ def summarize(rows):
             new=sum(r["new_abs_error"] for r in subset)/len(subset)
             result.append(dict(season=season,market=metric,samples=len(subset),old_mae=round(old,2),new_mae=round(new,2),improvement_pct=round((old-new)/old*100,2) if old else None,better="new" if new<old else "old"))
     return result
+
+
+def backtest_established_returns(seasons=(2024,2025)):
+    """Strict walk-forward test of the limited-sample established-RB path.
+
+    Each prediction sees only earlier weeks in its target season plus the
+    preceding completed season.  It compares the existing 120%-of-observed
+    workload cap to the candidate blended return workload on the same cohort.
+    """
+    rows=[]
+    for season in seasons:
+        prior=defaultdict(list)
+        for record in nfl.load_player_stats([season-1],summary_level="week").to_dicts():
+            if str(record.get("season_type","REG")).upper() in ("REG","2") and record.get("player_id"):
+                prior[str(record["player_id"])].append(record)
+        weeks=defaultdict(list)
+        for record in nfl.load_player_stats([season],summary_level="week").to_dicts():
+            try: week=int(record["week"])
+            except (KeyError,ValueError,TypeError): continue
+            if str(record.get("season_type","REG")).upper() in ("REG","2") and record.get("player_id") and record.get("team"):
+                weeks[week].append(record)
+        history=defaultdict(list)
+        for week in sorted(weeks):
+            for actual in weeks[week]:
+                if str(actual.get("position") or "").upper()!="RB": continue
+                team,pid=str(actual["team"]),str(actual["player_id"])
+                past=history[(team,pid)]
+                candidate=established_return_workload(past,prior.get(pid,[]),"carries")
+                if candidate is None: continue
+                _,_,_,rate=project_yards(past,"rushing_yards","carries")
+                observed=sum(max(0,num(x.get("carries"))) for x in past)/len(past)
+                capped_carries=observed*1.20
+                actual_carries=max(0,num(actual.get("carries")))
+                actual_yards=max(0,num(actual.get("rushing_yards")))
+                rows.append({"season":season,"week":week,"player_id":pid,
+                    "capped_carries":capped_carries,"return_carries":candidate["blended_carries"],
+                    "actual_carries":actual_carries,"capped_yards":capped_carries*rate,
+                    "return_yards":candidate["blended_carries"]*rate,"actual_yards":actual_yards})
+            for record in weeks[week]:
+                history[(str(record["team"]),str(record["player_id"]))].append(record)
+    def summary(subset):
+        if not subset: return {"samples":0}
+        def mae(pred,actual): return sum(abs(r[pred]-r[actual]) for r in subset)/len(subset)
+        capped=mae("capped_yards","actual_yards")
+        returned=mae("return_yards","actual_yards")
+        return {"samples":len(subset),"capped_rush_yards_mae":round(capped,2),
+            "return_rush_yards_mae":round(returned,2),
+            "yard_mae_change_pct":round((capped-returned)/capped*100,2) if capped else None,
+            "capped_carries_mae":round(mae("capped_carries","actual_carries"),2),
+            "return_carries_mae":round(mae("return_carries","actual_carries"),2)}
+    return {"method":"walk-forward; prior completed season plus target-season weeks strictly before each game; identical established-RB return cohort","overall":summary(rows),"by_season":{str(s):summary([r for r in rows if r["season"]==s]) for s in seasons}}
 
 def main():
     rows=backtest()

@@ -1,15 +1,19 @@
 name: Publish weekly v2 forecasts
-on:
-  workflow_dispatch:
+'on':
+  workflow_dispatch: {}
   push:
     paths:
       - '.github/forecast-refresh.txt'
   schedule:
-    # Tuesday at noon America/Chicago, using UTC schedules plus a local-time guard.
-    # Both UTC hours are needed because Central Time observes daylight saving.
-    - cron: '0 17,18 * * 2'
+    # Run the primary weekly refresh at 7 AM America/Chicago, then retry noon through 5 PM.
+    # upstream schedule/data feeds can publish the new slate after noon; a
+    # single Tuesday attempt would otherwise leave forecasts stale until Thursday.
+    # UTC hours span CST and CDT; the local-time guard selects the intended runs.
+    - cron: '0 12,13,17,18,19,20,21,22,23 * * 2'
     # Keep Thursday, Saturday and Sunday morning refreshes.
     - cron: '15 13 * * 4,6,0'
+    # Monday Night Football: UTC Tuesday covers Monday evening in Central Time.
+    - cron: '0,30 0,1,2 * * 2'
 permissions:
   contents: write
 concurrency:
@@ -20,21 +24,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Check Tuesday Central Time schedule
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18 * * 2" ]]; then
-            if [[ "$(TZ=America/Chicago date +%H)" != "12" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18,19,20,21,22,23 * * 2" ]]; then
+            if ! [[ "$(TZ=America/Chicago date +%H)" =~ ^(7|12|13|14|15|16|17)$ ]]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0,30 0,1,2 * * 2" ]]; then
+            if ! python scripts/check_mnf_forecast_window.py; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
           fi
           echo "run=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        if: steps.schedule_guard.outputs.run == 'true'
-        with:
-          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -44,15 +53,45 @@ jobs:
       - name: Validate pipeline
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      # Grade the completed slate before building the next one, so player
+      # research can consume the latest validated residual evidence.
+      - name: Grade completed-game player projections
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.player_results
+      - name: Learn validated player correction weights for next forecast
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.player_weight_learning
       - name: Refresh NFL injury reports
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.injuries
       - name: Generate current-season v2 forecasts
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.generate
+      - name: Learn from completed games and validate before applying corrections
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.weekly_learning
       - name: Generate player research baselines
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_research
+      - name: Diagnose QB passing yard forecasts and saved snapshot
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('data/player-research.json').read_text())
+          print('PLAYER_FORECAST_GENERATED_AT:',j.get('generated_at_utc'))
+          print('PLAYER_FORECAST_WEEK:',j.get('week'))
+          for p in j.get('players',[]):
+              if p.get('stat_key')=='passing_yards' and any(n in str(p.get('player','')).lower() for n in ('mayfield','cousins')):
+                  print('QB_FORECAST_DIAGNOSTIC:',json.dumps({k:p.get(k) for k in ('player','game_id','projection','expected_opportunities','last_5_opportunities_avg','last_5_avg','expected_yards_per_opportunity','role_share','availability_status','opponent_adjustment','game_script_adjustment')}))
+          PY
+      - name: Validate player projection units and plausible ranges
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.validate_props
+      - name: Audit player projections and flag suspicious workloads
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.projection_audit
       - name: Fetch DraftKings NFL props from ParlayAPI
         if: steps.schedule_guard.outputs.run == 'true'
         env:
@@ -61,25 +100,37 @@ jobs:
       - name: Archive DraftKings line movement
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.line_history
-      - name: Grade completed-game player projections
+      - name: Lock latest pregame player cards with verified DraftKings lines
         if: steps.schedule_guard.outputs.run == 'true'
-        run: python -m live.player_results
+        run: python -m live.lock_pregame_props
       - name: Simulate game scores and player yardage 10000 times
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
+      - name: Verify player projections match simulation data
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.validate_published
       - name: Refresh stadium weather forecasts
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.weather
+      - name: Generate research-only V3 feature shadow
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: |
+          python -m live.free_feature_research
+          python tools/v3_score_shadow.py --v2 data/live-v2.json --features data/free-feature-research.json --output data/v3-score-shadow.json --history data/v3-score-shadow-history.json
       - name: Publish forecast and player research JSON
         if: steps.schedule_guard.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json
+          git add -f data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
             git commit -m "Update current-week v2 predictions [skip ci]"
+            # Generated staging files are intentionally not published; clear them
+            # before rebasing the committed production feeds onto the latest main.
+            git reset --hard HEAD
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+

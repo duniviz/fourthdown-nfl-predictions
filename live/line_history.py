@@ -14,7 +14,7 @@ def main():
         if not r.get("last_update") or r.get("line") is None:continue
         key=(r.get("player"),r.get("market_key"),r.get("commence_time"),r.get("last_update"),r.get("line"))
         if key not in seen:
-            old.append({k:r.get(k) for k in ("player","market_key","commence_time","last_update","line","over_price","under_price")})
+            old.append({k:r.get(k) for k in ("player","market_key","commence_time","last_update","line","over_price","under_price","home_team","away_team")})
             seen.add(key)
     old=old[-25000:]
     target.write_text(json.dumps({"updated_at_utc":datetime.now(timezone.utc).isoformat(),"rows":old},indent=2)+"\n")

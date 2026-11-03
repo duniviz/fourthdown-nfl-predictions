@@ -1,0 +1,325 @@
+{
+  "research_only": true,
+  "production_changed": false,
+  "automatic_promotion": false,
+  "production_equivalence_verified": false,
+  "historical_train_seasons": [
+    2024
+  ],
+  "holdout_season": 2025,
+  "markets": {
+    "passing_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 398,
+      "holdout_n": 395,
+      "frozen_offset": 7.015,
+      "historical_new_mae": 65.139,
+      "bias_challenger_mae": 64.931,
+      "mae_delta": 0.208,
+      "holdout_weeks": 15,
+      "weeks_improved": 7,
+      "weekly_diagnostics": [
+        {
+          "week": 4,
+          "samples": 27,
+          "reference_mae": 70.019,
+          "challenger_mae": 70.798
+        },
+        {
+          "week": 5,
+          "samples": 22,
+          "reference_mae": 59.982,
+          "challenger_mae": 56.248
+        },
+        {
+          "week": 6,
+          "samples": 26,
+          "reference_mae": 42.896,
+          "challenger_mae": 42.218
+        },
+        {
+          "week": 7,
+          "samples": 29,
+          "reference_mae": 72.61,
+          "challenger_mae": 72.368
+        },
+        {
+          "week": 8,
+          "samples": 22,
+          "reference_mae": 62.477,
+          "challenger_mae": 61.712
+        },
+        {
+          "week": 9,
+          "samples": 25,
+          "reference_mae": 50.708,
+          "challenger_mae": 50.171
+        },
+        {
+          "week": 10,
+          "samples": 27,
+          "reference_mae": 60.948,
+          "challenger_mae": 62.21
+        },
+        {
+          "week": 11,
+          "samples": 29,
+          "reference_mae": 86.369,
+          "challenger_mae": 87.69
+        },
+        {
+          "week": 12,
+          "samples": 23,
+          "reference_mae": 61.422,
+          "challenger_mae": 60.185
+        },
+        {
+          "week": 13,
+          "samples": 29,
+          "reference_mae": 54.307,
+          "challenger_mae": 54.441
+        },
+        {
+          "week": 14,
+          "samples": 28,
+          "reference_mae": 76.036,
+          "challenger_mae": 76.036
+        },
+        {
+          "week": 15,
+          "samples": 29,
+          "reference_mae": 67.562,
+          "challenger_mae": 64.901
+        },
+        {
+          "week": 16,
+          "samples": 28,
+          "reference_mae": 70.893,
+          "challenger_mae": 70.893
+        },
+        {
+          "week": 17,
+          "samples": 26,
+          "reference_mae": 69.408,
+          "challenger_mae": 69.408
+        },
+        {
+          "week": 18,
+          "samples": 25,
+          "reference_mae": 65.632,
+          "challenger_mae": 68.157
+        }
+      ],
+      "eligible_for_promotion": false
+    },
+    "receiving_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 1927,
+      "holdout_n": 1852,
+      "frozen_offset": 1.593,
+      "historical_new_mae": 22.612,
+      "bias_challenger_mae": 22.926,
+      "mae_delta": -0.313,
+      "holdout_weeks": 15,
+      "weeks_improved": 0,
+      "weekly_diagnostics": [
+        {
+          "week": 4,
+          "samples": 118,
+          "reference_mae": 21.625,
+          "challenger_mae": 22.092
+        },
+        {
+          "week": 5,
+          "samples": 106,
+          "reference_mae": 25.009,
+          "challenger_mae": 25.1
+        },
+        {
+          "week": 6,
+          "samples": 110,
+          "reference_mae": 25.934,
+          "challenger_mae": 26.225
+        },
+        {
+          "week": 7,
+          "samples": 124,
+          "reference_mae": 24.804,
+          "challenger_mae": 25.04
+        },
+        {
+          "week": 8,
+          "samples": 113,
+          "reference_mae": 21.888,
+          "challenger_mae": 22.351
+        },
+        {
+          "week": 9,
+          "samples": 122,
+          "reference_mae": 20.798,
+          "challenger_mae": 21.132
+        },
+        {
+          "week": 10,
+          "samples": 112,
+          "reference_mae": 22.86,
+          "challenger_mae": 23.114
+        },
+        {
+          "week": 11,
+          "samples": 129,
+          "reference_mae": 22.011,
+          "challenger_mae": 22.208
+        },
+        {
+          "week": 12,
+          "samples": 113,
+          "reference_mae": 22.888,
+          "challenger_mae": 23.171
+        },
+        {
+          "week": 13,
+          "samples": 140,
+          "reference_mae": 21.446,
+          "challenger_mae": 21.918
+        },
+        {
+          "week": 14,
+          "samples": 124,
+          "reference_mae": 23.632,
+          "challenger_mae": 24.138
+        },
+        {
+          "week": 15,
+          "samples": 138,
+          "reference_mae": 23.024,
+          "challenger_mae": 23.108
+        },
+        {
+          "week": 16,
+          "samples": 146,
+          "reference_mae": 21.804,
+          "challenger_mae": 22.047
+        },
+        {
+          "week": 17,
+          "samples": 142,
+          "reference_mae": 22.299,
+          "challenger_mae": 22.626
+        },
+        {
+          "week": 18,
+          "samples": 115,
+          "reference_mae": 19.915,
+          "challenger_mae": 20.375
+        }
+      ],
+      "eligible_for_promotion": false
+    },
+    "rushing_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 883,
+      "holdout_n": 873,
+      "frozen_offset": -0.056,
+      "historical_new_mae": 23.929,
+      "bias_challenger_mae": 23.924,
+      "mae_delta": 0.005,
+      "holdout_weeks": 15,
+      "weeks_improved": 11,
+      "weekly_diagnostics": [
+        {
+          "week": 4,
+          "samples": 56,
+          "reference_mae": 21.512,
+          "challenger_mae": 21.512
+        },
+        {
+          "week": 5,
+          "samples": 51,
+          "reference_mae": 24.314,
+          "challenger_mae": 24.304
+        },
+        {
+          "week": 6,
+          "samples": 54,
+          "reference_mae": 23.791,
+          "challenger_mae": 23.774
+        },
+        {
+          "week": 7,
+          "samples": 56,
+          "reference_mae": 25.664,
+          "challenger_mae": 25.652
+        },
+        {
+          "week": 8,
+          "samples": 53,
+          "reference_mae": 29.613,
+          "challenger_mae": 29.606
+        },
+        {
+          "week": 9,
+          "samples": 53,
+          "reference_mae": 24.313,
+          "challenger_mae": 24.299
+        },
+        {
+          "week": 10,
+          "samples": 57,
+          "reference_mae": 25.444,
+          "challenger_mae": 25.455
+        },
+        {
+          "week": 11,
+          "samples": 60,
+          "reference_mae": 22.145,
+          "challenger_mae": 22.139
+        },
+        {
+          "week": 12,
+          "samples": 53,
+          "reference_mae": 21.817,
+          "challenger_mae": 21.803
+        },
+        {
+          "week": 13,
+          "samples": 61,
+          "reference_mae": 21.974,
+          "challenger_mae": 21.973
+        },
+        {
+          "week": 14,
+          "samples": 60,
+          "reference_mae": 24.27,
+          "challenger_mae": 24.264
+        },
+        {
+          "week": 15,
+          "samples": 65,
+          "reference_mae": 22.191,
+          "challenger_mae": 22.185
+        },
+        {
+          "week": 16,
+          "samples": 68,
+          "reference_mae": 24.612,
+          "challenger_mae": 24.615
+        },
+        {
+          "week": 17,
+          "samples": 66,
+          "reference_mae": 23.405,
+          "challenger_mae": 23.401
+        },
+        {
+          "week": 18,
+          "samples": 60,
+          "reference_mae": 24.55,
+          "challenger_mae": 24.552
+        }
+      ],
+      "eligible_for_promotion": false
+    }
+  },
+  "warning": "Historical new is not verified as current production. This is a single frozen holdout, not a live-model promotion test."
+}

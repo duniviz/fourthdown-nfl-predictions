@@ -1,0 +1,54 @@
+{
+  "status": "feature_availability_audit",
+  "research_only": true,
+  "production_changed": false,
+  "trained_model": false,
+  "postgame_workload_used_as_pregame": false,
+  "source": "data/backtests/player-predictions.csv",
+  "markets": {
+    "receiving_yards": {
+      "historical_rows": 3779,
+      "candidate_features": [
+        "expected_targets",
+        "projected_targets",
+        "expected_routes",
+        "projected_routes",
+        "expected_catch_rate",
+        "expected_yards_per_catch"
+      ],
+      "present_columns": [],
+      "nonempty_feature_rows": {},
+      "pregame_timestamp_verified_rows": 0,
+      "complete_feature_columns": false,
+      "eligible_for_opportunity_training": false
+    },
+    "rushing_yards": {
+      "historical_rows": 1756,
+      "candidate_features": [
+        "expected_carries",
+        "projected_carries",
+        "expected_yards_per_carry",
+        "projected_snap_share"
+      ],
+      "present_columns": [],
+      "nonempty_feature_rows": {},
+      "pregame_timestamp_verified_rows": 0,
+      "complete_feature_columns": false,
+      "eligible_for_opportunity_training": false
+    },
+    "passing_yards": {
+      "historical_rows": 793,
+      "candidate_features": [
+        "expected_pass_attempts",
+        "projected_pass_attempts",
+        "expected_yards_per_attempt"
+      ],
+      "present_columns": [],
+      "nonempty_feature_rows": {},
+      "pregame_timestamp_verified_rows": 0,
+      "complete_feature_columns": false,
+      "eligible_for_opportunity_training": false
+    }
+  },
+  "next_step": "Collect timestamped pregame opportunity features and freeze them before kickoff; validate same-slate joins before training."
+}

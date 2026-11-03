@@ -1,0 +1,280 @@
+name: Free NFL research forecast refresh
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: Season to research
+        required: false
+        type: string
+      week:
+        description: Target week (strict pre-week cutoff)
+        required: false
+        type: string
+  schedule:
+    - cron: '35 13 * * 2,4,6'
+    - cron: '35 14 * * 0'
+permissions:
+  contents: write
+concurrency:
+  group: research-forecast-refresh
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch public NFL snapshots and compute research-only forecasts
+        env:
+          INPUT_SEASON: ${{ inputs.season }}
+          INPUT_WEEK: ${{ inputs.week }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p staging
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
+            https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv \
+            -o staging/games.csv
+          python -m pip install --disable-pip-version-check polars
+          python tools/download_current_player_stats.py --season "${INPUT_SEASON:-2026}" \
+            --output staging/player_stats.csv
+          TARGET=$(python -c 'import sys; from pathlib import Path; sys.path.insert(0,"tools"); from run_research_refresh import season_week; a,b=season_week(Path("staging/games.csv"),__import__("os").environ.get("INPUT_SEASON",""),__import__("os").environ.get("INPUT_WEEK","")); print(f"{a} {b}")')
+          read -r TARGET_SEASON TARGET_WEEK <<< "$TARGET"
+          if curl --fail --location --retry 2 --max-time 60 --silent --show-error \
+            "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${TARGET_SEASON}.csv" \
+            -o staging/injuries.csv; then
+            python -c 'import csv; f=open("staging/injuries.csv",encoding="utf-8-sig"); print("INJURY SOURCE HEADERS:",csv.DictReader(f).fieldnames)'
+            if ! python tools/normalize_nflverse_injuries.py --input staging/injuries.csv \
+              --season "${TARGET_SEASON}" --week "${TARGET_WEEK}" \
+              --output staging/injury-status.csv; then
+              rm -f staging/injury-status.csv
+              echo "WARNING: Injury schema incompatible; availability remains unverified"
+            fi
+          else
+            echo "Injury source unavailable; all players remain unverified"
+          fi
+          python tools/run_research_refresh.py --schedule-csv staging/games.csv \
+            --weekly-csv staging/player_stats.csv --season "${INPUT_SEASON:-}" \
+            --week "${INPUT_WEEK:-}" --injury-csv staging/injury-status.csv --output-dir staging/results
+      - name: Archive pregame projections and grade completed games
+        if: success() && github.ref == 'refs/heads/main' && inputs.season == '' && inputs.week == ''
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_weekly_performance.py' -v
+          python tools/track_weekly_performance.py --schedule-csv staging/games.csv --stats-csv staging/player_stats.csv --games-json staging/results/game-projections.json --players-json staging/results/player-projections.json --archive-dir data/pregame-archives --report staging/results/weekly-model-performance.json
+          cp staging/results/weekly-model-performance.json data/weekly-model-performance.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pregame-archives/ data/weekly-model-performance.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Archive immutable pregame projections and weekly performance"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Run walk-forward player yards backtest (completed weeks only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_player_walkforward_backtest.py' -v
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          projections=json.loads(Path("staging/results/player-projections.json").read_text())
+          season=int(projections["season"])
+          target_week=int(projections["week"])
+          through_week=target_week-1
+          with Path("staging/player_stats.csv").open(newline="",encoding="utf-8-sig") as handle:
+              completed_weeks=sorted({int(r["week"]) for r in csv.DictReader(handle) if r.get("season")==str(season) and r.get("week","").isdigit() and int(r["week"])<target_week})
+          if completed_weeks and through_week>max(completed_weeks):
+              through_week=max(completed_weeks)
+          Path("staging/backtest-target.json").write_text(json.dumps({"season":season,"through_week":through_week}))
+          print("Backtest cutoff:",season,through_week,"target week:",target_week)
+          PY
+          python - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          target=json.loads(Path("staging/backtest-target.json").read_text())
+          if target["through_week"]<4:
+              output={"status":"insufficient_completed_weeks","season":target["season"],"through_week":target["through_week"],"markets":{},"note":"At least four completed weeks required; no metrics fabricated."}
+              Path("staging/results/player-walkforward-backtest.json").write_text(json.dumps(output,indent=2)+"\\n")
+              print("Backtest skipped: insufficient completed weeks")
+          else:
+              subprocess.run([sys.executable,"tools/backtest_player_yards_walkforward.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output","staging/results/player-walkforward-backtest.json"],check=True)
+              result=json.loads(Path("staging/results/player-walkforward-backtest.json").read_text())
+              if not result.get("markets"):
+                  raise SystemExit("Backtest returned no evaluated markets; refusing empty success")
+          PY
+      - name: Compare experimental passing yards models against chronological holdout
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_passing_yards_model_lab.py' -v
+          python - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          target=json.loads(Path("staging/backtest-target.json").read_text())
+          output=Path("staging/results/passing-yards-model-lab.json")
+          if target["through_week"]<6:
+              output.write_text(json.dumps({"status":"insufficient_history","production_change_approved":False,"results":{}},indent=2)+"\\n")
+          else:
+              subprocess.run([sys.executable,"tools/passing_yards_model_lab.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--holdout-weeks","2","--output",str(output)],check=True)
+              result=json.loads(output.read_text())
+              if result.get("production_change_approved") is not False:raise SystemExit("Model lab must not auto-promote")
+          PY
+      - name: Multi-season passing yards model championship
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_multiseason_passing_championship.py' -v
+          python tools/download_current_player_stats.py --season 2024 --output staging/player_stats_2024.csv
+          python tools/download_current_player_stats.py --season 2025 --output staging/player_stats_2025.csv
+          python tools/multiseason_passing_championship.py --season-csv staging/player_stats_2024.csv --season-csv staging/player_stats_2025.csv --season-csv staging/player_stats.csv --holdout-weeks 4 --output staging/results/multiseason-passing-championship.json
+      - name: Backtest game scores totals and margins (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_game_score_model_lab.py' -v
+          for season in 2024 2025 2026; do
+            python tools/game_score_model_lab.py --schedule-csv staging/games.csv --season "$season" --output "staging/results/game-score-model-lab-${season}.json"
+          done
+      - name: Three-factor QB and receiver prop research championship
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_three_factor_prop_lab.py' -v
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2024.csv --schedule-csv staging/games.csv --season 2024 --output staging/results/three-factor-prop-lab-2024.json
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats_2025.csv --schedule-csv staging/games.csv --season 2025 --output staging/results/three-factor-prop-lab-2025.json
+          python tools/three_factor_prop_lab.py --weekly-csv staging/player_stats.csv --schedule-csv staging/games.csv --season 2026 --output staging/results/three-factor-prop-lab-2026.json
+      - name: NFL Savant-style feature research and coverage audit
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_nfl_savant_feature_lab.py' -v
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2024.csv --season 2024 --output staging/results/nfl-savant-feature-lab-2024.json
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats_2025.csv --season 2025 --output staging/results/nfl-savant-feature-lab-2025.json
+          python tools/nfl_savant_feature_lab.py --weekly-csv staging/player_stats.csv --season 2026 --output staging/results/nfl-savant-feature-lab-2026.json
+      - name: Mix-and-match player yard challengers (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_mix_match_challenger_lab.py' -v
+          for season in 2024 2025 2026; do
+            if [ "$season" = 2026 ]; then input=staging/player_stats.csv; else input="staging/player_stats_${season}.csv"; fi
+            python tools/mix_match_challenger_lab.py --weekly-csv "$input" --season "$season" --output "staging/results/mix-match-challenger-${season}.json"
+          done
+      - name: Head-to-head yardage challenger comparison (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python tools/prop_desk_head_to_head.py \
+            --report staging/results/mix-match-challenger-2024.json \
+            --report staging/results/mix-match-challenger-2025.json \
+            --report staging/results/mix-match-challenger-2026.json \
+            --output staging/results/prop-desk-head-to-head.json
+      - name: Track advanced metric challengers and validation gaps
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_challenger_registry.py' -v
+          python tools/challenger_registry.py --reports staging/results/nfl-savant-feature-lab-2024.json staging/results/nfl-savant-feature-lab-2025.json staging/results/nfl-savant-feature-lab-2026.json staging/results/three-factor-prop-lab-2024.json staging/results/three-factor-prop-lab-2025.json staging/results/three-factor-prop-lab-2026.json --output staging/results/challenger-registry.json
+      - name: Validate historical player uncertainty (research only)
+        if: success()
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_player_residual_calibration.py' -v
+          python -m unittest discover -s tests -p 'test_provisional_availability.py' -v
+          python -m unittest discover -s tests -p 'test_publish_prop_desk.py' -v
+          python - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          target=json.loads(Path("staging/backtest-target.json").read_text())
+          output=Path("staging/results/player-residual-calibration.json")
+          if target["through_week"]<5:
+              output.write_text(json.dumps({"status":"insufficient_history","markets":{}})+"\\n")
+          else:
+              subprocess.run([sys.executable,"tools/calibrate_player_residuals.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output",str(output)],check=True)
+          PY
+      - name: Monitor configured official NFL inactive report pages (research only)
+        if: success()
+        continue-on-error: true
+        run: |
+          python tools/fetch_official_inactive_sources.py \
+            --urls-json data/official-inactive-report-urls.json \
+            --output staging/results/official-inactive-source-evidence.json
+      - name: Fetch supplemental Sleeper injury flags (research only)
+        if: success()
+        continue-on-error: true
+        run: |
+          python tools/research_sleeper_injuries.py \
+            --players-json staging/results/player-projections.json \
+            --output staging/results/sleeper-injury-flags.json
+      - name: Compare research player yards to existing DraftKings odds snapshot
+        if: success()
+        run: |
+          if [ -f data/dk-odds.json ] && [ -f staging/results/player-projections.json ]; then
+            python tools/match_dk_player_lines.py --players-json staging/results/player-projections.json \
+              --odds-json data/dk-odds.json --output staging/results/dk-player-comparisons.json
+          else
+            echo "DraftKings odds or player projections unavailable; no comparisons fabricated"
+          fi
+      - name: Evaluate prop research ranking prerequisites
+        if: success()
+        run: |
+          if [ -f staging/results/dk-player-comparisons.json ]; then
+            python tools/rank_prop_research.py \
+              --comparisons-json staging/results/dk-player-comparisons.json \
+              --calibration-json staging/results/player-residual-calibration.json \
+              --output staging/results/prop-ranking-diagnostics.json
+          fi
+      - name: Publish clearly labeled research comparisons (current scheduled week only)
+        if: success() && github.ref == 'refs/heads/main' && inputs.season == '' && inputs.week == ''
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path("staging/results/dk-player-comparisons.json")
+          if not source.exists():
+              raise SystemExit("No DK comparison report; skipping publication")
+          data=json.loads(source.read_text())
+          if not data.get("comparisons") or not data.get("counts",{}).get("total"):
+              raise SystemExit("No player comparisons; skipping publication")
+          target=Path("data/research-dk-comparisons.json")
+          target.write_text(json.dumps(data,indent=2)+"\\n")
+          print("Published research-only comparison snapshot:",data["counts"])
+          PY
+          python tools/publish_prop_desk_research.py --ranking-json staging/results/prop-ranking-diagnostics.json --calibration-json staging/results/player-residual-calibration.json --output data/research-prop-desk.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -f staging/results/sleeper-injury-flags.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path("staging/results/sleeper-injury-flags.json")
+          data=json.loads(source.read_text())
+          if data.get("status")!="supplemental_research_only":
+              raise SystemExit("Unexpected injury flag status")
+          Path("data/research-injury-flags.json").write_text(json.dumps(data,indent=2)+"\\n")
+          print("Published supplemental injury flags:",data.get("flagged_markets",0))
+          PY
+          fi
+          git add data/research-dk-comparisons.json data/research-prop-desk.json
+          if [ -f data/research-injury-flags.json ]; then git add data/research-injury-flags.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Update research-only DK player comparisons"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Upload research reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-research-forecast-${{ github.run_id }}
+          path: staging/results/
+          if-no-files-found: warn
+          retention-days: 30

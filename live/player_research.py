@@ -73,6 +73,13 @@ def load_calibration():
     except (OSError, ValueError, TypeError):
         return {}
 
+def load_learned_weights():
+    try:
+        rows=json.loads(Path("data/player-weight-learning.json").read_text(encoding="utf-8")).get("weights",{})
+        return {k:clamp(float(v.get("weight",0)),0,1) for k,v in rows.items()}
+    except (OSError,ValueError,TypeError,AttributeError):
+        return {}
+
 def game_script_multiplier(metric, team_margin):
     """Small, capped volume adjustment from the team's published score forecast."""
     if not math.isfinite(team_margin):
@@ -112,6 +119,73 @@ def project_yards(stats, metric, volume):
     # Descriptive uncertainty only, not a calibrated prediction interval.
     return round(forecast,1),round(spread,1),round(expected_volume,1),round(rate,2)
 
+def starter_qb_workload(records):
+    """Estimate starter-level pass volume from full QB appearances, not relief games.
+
+    This is a workload proxy, NOT independent confirmation of the named starter.
+    Do not infer a starter from DraftKings lines.
+    """
+    ordered=sorted(records,key=lambda r:int(r["week"]))
+    full=[max(0.0,num(r.get("attempts"))) for r in ordered if num(r.get("attempts"))>=20]
+    if not full:
+        return None
+    recent=full[-5:]
+    # Blend recent and season full-game averages; exclude relief appearances.
+    return clamp(0.7*(sum(recent[-3:])/len(recent[-3:]))+0.3*(sum(full)/len(full)),15,55)
+
+
+def snap_share(record):
+    """Return a normalized offensive-snap share when the source provides one."""
+    for field in ("offense_pct", "offensive_snap_pct", "snap_pct"):
+        value=record.get(field)
+        if value not in (None, ""):
+            share=num(value)
+            return share/100 if share>1 else share
+    return None
+
+
+def established_return_workload(current_records, prior_records, volume, availability="unconfirmed"):
+    """Conservative carry estimate for an established player returning to action.
+
+    This is deliberately a workload-only adjustment.  It uses at most five
+    completed, meaningful appearances available before the target game, keeps
+    the player's efficiency estimate unchanged, and is disabled without both a
+    limited current-season sample and established prior-season involvement.
+    """
+    current=sorted(current_records,key=lambda r:int(r.get("week",0)))
+    if volume != "carries" or not current or len(current) >= 3:
+        return None
+    # A carry threshold avoids treating a one-play appearance as a full game.
+    # A material snap share is accepted when a source supplies snap data.
+    def meaningful(row):
+        share=snap_share(row)
+        return max(0.0,num(row.get(volume))) >= 6 or (share is not None and share >= .35)
+    established=[r for r in prior_records if meaningful(r)]
+    if len(established) < 3:
+        return None
+    full_games=(established+ [r for r in current if meaningful(r)])[-5:]
+    if len(full_games) < 3:
+        return None
+    full_mean=sum(max(0.0,num(r.get(volume))) for r in full_games)/len(full_games)
+    recent_mean=sum(max(0.0,num(r.get(volume))) for r in current)/len(current)
+    shares=[snap_share(r) for r in current if snap_share(r) is not None]
+    # When snap data are absent, do not manufacture a favorable snap signal.
+    # A verified injury designation selects the more conservative role case.
+    snap_factor=clamp(sum(shares)/len(shares), .45, 1.0) if shares else .75
+    injury_limited=availability in {"questionable", "doubtful"}
+    role_factor=min(snap_factor, .70 if injury_limited else .82)
+    reduced_role=min(full_mean*role_factor, max(recent_mean*1.20, full_mean*.45))
+    blended=.65*reduced_role+.35*full_mean
+    return {
+        "full_game_carries":round(full_mean,1),
+        "recent_carries":round(recent_mean,1),
+        "reduced_role_carries":round(reduced_role,1),
+        "blended_carries":round(blended,1),
+        "full_games_used":len(full_games),
+        "snap_share_signal":round(sum(shares)/len(shares),3) if shares else None,
+        "injury_limited":injury_limited,
+    }
+
 def generate():
     if nfl is None:
         raise RuntimeError("nflreadpy is required to generate player research")
@@ -129,8 +203,17 @@ def generate():
     games.sort(key=lambda x:x[0])
     if not games: raise ValueError("No upcoming games")
     week=int(games[0][1]["week"])
-    games=[g for dt,g in games if int(g["week"])==week]
+    games=[(dt,g) for dt,g in games if int(g["week"])==week]
+    kickoff_by_game={str(g['game_id']):dt for dt,g in games}
+    games=[g for dt,g in games]
     rows=nfl.load_player_stats([season],summary_level="week").to_dicts()
+    # Prior-season rows are used only for established RB return-workload
+    # handling below. They never enter current-season team or defense totals.
+    prior_rows=nfl.load_player_stats([season-1],summary_level="week").to_dicts()
+    prior_player_history=defaultdict(list)
+    for r in prior_rows:
+        if str(r.get("season_type","REG")).upper() in ("REG","2") and r.get("player_id"):
+            prior_player_history[str(r["player_id"])].append(r)
     history=defaultdict(list)
     opponents=defaultdict(lambda:defaultdict(list))
     for r in rows:
@@ -166,11 +249,88 @@ def generate():
         for record in records:
             key=(team,int(record["week"]))
             opp=str(record.get("opponent_team") or "")
-            for metric,_,volume in METRICS:
-                team_week[key][metric]+=max(0,num(record.get(metric)))
+            # Each opportunity column is counted once per player-game.
+            # Several markets share attempts/carries/targets; counting each
+            # market separately multiplies team workload and every projection.
+            for volume in {volume for _,_,volume in METRICS}:
                 team_volume_week[key][volume]+=max(0,num(record.get(volume)))
+            for metric,_,_ in METRICS:
+                team_week[key][metric]+=max(0,num(record.get(metric)))
                 if opp:
                     defense_week[(opp,int(record["week"]))][metric]+=max(0,num(record.get(metric)))
+    # Position-specific opponent totals, grouped by completed team-week.
+    # Only three markets demonstrated lower MAE in both historical seasons.
+    position_markets={("QB","passing_yards"),("RB","rushing_yards"),("RB","receiving_yards")}
+    position_allowed=defaultdict(lambda:defaultdict(float))
+    for (team,player),records in history.items():
+        for record in records:
+            pos=str(record.get("position") or "").upper()
+            opp=str(record.get("opponent_team") or "")
+            if not opp: continue
+            for eligible_pos,metric in position_markets:
+                if pos==eligible_pos:
+                    position_allowed[(opp,int(record["week"]),pos)][metric]+=max(0,num(record.get(metric)))
+    position_league={}
+    position_defense={}
+    for pos,metric in position_markets:
+        values=[v[metric] for (opp,w,p),v in position_allowed.items() if p==pos]
+        neutral=sum(values)/len(values) if values else 0
+        position_league[(pos,metric)]=neutral
+        for opponent in {k[0] for k in position_allowed}:
+            samples=[v[metric] for (opp,w,p),v in sorted(position_allowed.items(),key=lambda item:item[0][1]) if opp==opponent and p==pos]
+            position_defense[(opponent,pos,metric)]=samples[-5:] if samples else []
+
+    # Descriptive position-by-market opponent ranks for explanations only.
+    # These values never feed projection adjustments or recommendations.
+    context_markets={
+        ("QB","passing_yards"),("QB","rushing_yards"),
+        ("RB","rushing_yards"),("RB","receiving_yards"),
+        ("WR","receiving_yards"),("TE","receiving_yards"),
+    }
+    context_allowed=defaultdict(lambda:defaultdict(float))
+    for (team,player),records in history.items():
+        for record in records:
+            position=str(record.get("position") or "").upper()
+            opponent=str(record.get("opponent_team") or "")
+            if not opponent: continue
+            try: game_week=int(record["week"])
+            except (KeyError,TypeError,ValueError): continue
+            for pos,metric in context_markets:
+                if position==pos:
+                    context_allowed[(opponent,game_week,pos)][metric]+=max(0,num(record.get(metric)))
+    completed_games=defaultdict(set)
+    for scheduled in schedule:
+        if str(scheduled.get("game_type") or "REG").upper()!="REG": continue
+        try: game_week=int(scheduled.get("week"))
+        except (TypeError,ValueError): continue
+        if game_week>=week: continue
+        home=str(scheduled.get("home_team") or "")
+        away=str(scheduled.get("away_team") or "")
+        if home and away:
+            completed_games[home].add(game_week)
+            completed_games[away].add(game_week)
+    position_context={}
+    for pos,metric in sorted(context_markets):
+        by_team={}
+        for defense,played_weeks in completed_games.items():
+            samples=[(w,context_allowed[(defense,w,pos)][metric]) for w in sorted(played_weeks)]
+            if len(samples)>=3:
+                by_team[defense]=samples
+        averages={team:sum(value for _,value in samples)/len(samples) for team,samples in by_team.items()}
+        for defense,samples in by_team.items():
+            average=averages[defense]
+            rank=1+sum(value<average-1e-9 for value in averages.values())
+            tie_count=sum(abs(value-average)<=1e-9 for value in averages.values())
+            recent=samples[-5:]
+            ranked_teams=len(averages)
+            position_context[(defense,pos,metric)]={
+                "rank":rank,"ranked_teams":ranked_teams,"tie_count":tie_count,
+                "position":pos,"stat_key":metric,
+                "season_allowed_per_game":round(average,1),
+                "last_5_allowed_per_game":round(sum(v for _,v in recent)/len(recent),1),
+                "games":len(samples),"last_5_games":len(recent),
+                "basis":"completed regular-season game logs by opponent, position, and market; rank 1 allows fewest"
+            }
     league_mean={}
     defense_mean={}
     for metric,_,_ in METRICS:
@@ -179,6 +339,28 @@ def generate():
         for team in {key[0] for key in defense_week}:
             vals=[v[metric] for key,v in defense_week.items() if key[0]==team and v[metric]>0]
             defense_mean[(team,metric)]=(sum(vals)/len(vals),len(vals)) if vals else (league_mean[metric],0)
+    # Descriptive opponent rankings: rank 1 allows the FEWEST yards.
+    # Based solely on completed games preceding the forecast week.
+    defense_context={}
+    for metric in ("passing_yards","rushing_yards","receiving_yards"):
+        by_team={}
+        for defense in {k[0] for k in defense_week}:
+            games_allowed=sorted(((w,vals[metric]) for (t,w),vals in defense_week.items() if t==defense),key=lambda x:x[0])
+            if games_allowed:
+                by_team[defense]=games_allowed
+        ranking=sorted(by_team,key=lambda t:sum(v for _,v in by_team[t])/len(by_team[t]))
+        for rank,defense in enumerate(ranking,1):
+            samples=by_team[defense]
+            season_avg=sum(v for _,v in samples)/len(samples)
+            recent=samples[-3:]
+            defense_context[(defense,metric)]={
+                "rank":rank,"ranked_teams":len(ranking),
+                "season_allowed_per_game":round(season_avg,1),
+                "last_3_allowed_per_game":round(sum(v for _,v in recent)/len(recent),1),
+                "last_3_games":len(recent),
+                "basis":"opponent team total yards allowed, not position-specific"
+            }
+    learned_weights=load_learned_weights()
     # Current official statuses exclude confirmed absences. Questionable is not treated as out.
     overrides={}
     try:
@@ -223,6 +405,12 @@ def generate():
                 if series:
                     recent=series[-4:]
                     team_targets[volume]=0.65*sum(recent)/len(recent)+0.35*sum(series)/len(series)
+            # Fail closed if input aggregation or source schema creates
+            # impossible per-game team workloads. Never publish false edges.
+            hard_max={"attempts":80.0,"carries":65.0,"targets":85.0}
+            for volume,cap in hard_max.items():
+                if team_targets.get(volume,0)>cap:
+                    raise ValueError(f"Implausible {team} team {volume}: {team_targets[volume]:.1f} > {cap}; refusing player projections")
             # Each player's raw expected share is reconciled to the team total.
             allocation={}
             for metric,_,volume in METRICS:
@@ -263,6 +451,12 @@ def generate():
                     allocated=allocation.get((player,metric))
                     if allocated is None: continue
                     adjusted=0.75*allocated+0.25*expected_volume
+                    # For a QB with established full-game passing volume, avoid
+                    # splitting his starter workload with a backup's recent starts.
+                    # Preserve every eligible player's record; never drop backups.
+                    qb_full_game_volume=starter_qb_workload(stats) if str(stats[-1].get("position") or "").upper()=="QB" and volume=="attempts" else None
+                    if qb_full_game_volume is not None:
+                        adjusted=0.85*qb_full_game_volume+0.15*expected_volume
                     # A newly elevated player with fewer than three observed
                     # games cannot be assumed to absorb the entire missing
                     # teammate workload without an independently verified role.
@@ -272,17 +466,57 @@ def generate():
                     if limited_sample:
                         observed=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
                         adjusted=min(adjusted,observed*1.20)
+                    position=str(stats[-1].get("position") or "").upper()
+                    # An established RB returning with only one or two current
+                    # rows is not equivalent to a newly promoted backup. Blend
+                    # up to five earlier meaningful games with a reduced-role
+                    # scenario; retain the existing efficiency estimate.
+                    return_workload=established_return_workload(
+                        stats,prior_player_history.get(str(player),[]),volume,availability
+                    ) if position=="RB" else None
+                    if return_workload is not None:
+                        adjusted=return_workload["blended_carries"]
                     defensive_avg,def_games=defense_mean.get((opp,metric),(league_mean[metric],0))
                     ratio=defensive_avg/max(1,league_mean[metric])
                     adjustment=1+min(0.10,max(-0.10,(ratio-1)*0.30*def_games/(def_games+6)))
-                    role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
+                    if (position,metric) in position_markets:
+                        samples=position_defense.get((opp,position,metric),[])
+                        neutral=position_league.get((position,metric),0)
+                        if len(samples)>=3 and neutral>0:
+                            observed=sum(samples)/len(samples)
+                            factor=(observed+5*neutral)/(6*neutral)
+                            adjustment=clamp(factor,0.90,1.10)
+                        else:
+                            adjustment=1.0
+                    # Full-game QB workload is an individual conditional starter
+                    # forecast, not a simultaneous share of the team's passing.
+                    # A value >1 signals competing QB scenarios or mismatched
+                    # team baseline, not an impossible QB passing-yard forecast.
+                    raw_role_share=adjusted/max(0.1,team_targets.get(volume,adjusted))
+                    role_share=clamp(raw_role_share,0.0,1.0) if position=="QB" and volume=="attempts" and qb_full_game_volume is not None else raw_role_share
                     script_multiplier=game_script_multiplier(metric,team_margin)
                     calibrated=calibration.get(metric,{})
                     calibration_n=int(calibrated.get("sample_size",0) or 0)
                     # A bias correction is deliberately dormant until 40 archived forecasts
                     # establish a stable market-level direction.
-                    calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0) if calibration_n>=40 else 0.0
+                    calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0)*learned_weights.get(metric,0.0) if calibration_n>=40 else 0.0
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
+                    # V4 research-selected workload/matchup adjustment for yardage only.
+                    # Coefficients frozen from 2024 tuning and evaluated on 2025/2026;
+                    # other markets and QB passing forecasts remain unchanged.
+                    # This operates after production game-script/calibration adjustments,
+                    # so research MAE gains are not guaranteed in the live pipeline.
+                    if metric in ("rushing_yards", "receiving_yards") and len(stats)>=3:
+                        volumes=[max(0.0,num(x.get(volume))) for x in stats[-8:]]
+                        recent_volume=sum(volumes[-3:])/len(volumes[-3:])
+                        historical_volume=sum(volumes)/len(volumes)
+                        usage_signal=clamp(recent_volume/max(1.0,historical_volume)-1.0,-0.35,0.35)
+                        defense_signal=clamp(ratio-1.0,-0.35,0.35)*def_games/(def_games+6)
+                        if metric=="rushing_yards":
+                            factor=1-0.15*usage_signal+0.30*defense_signal+0.80*usage_signal*defense_signal-0.50*usage_signal*abs(usage_signal)
+                        else:
+                            factor=1-0.50*usage_signal-0.15*defense_signal
+                        baseline=round(max(0.0,baseline*clamp(factor,0.70,1.30)),1)
                     # Explicit RB workload scenarios when a listed starting RB
                     # is questionable. Never treat "questionable" as "out".
                     scenario=None
@@ -315,7 +549,7 @@ def generate():
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
                         "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
-                        "sample_warning":"Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None,
+                        "sample_warning":("Limited current-season games; established return workload blends five prior meaningful games with a reduced-role scenario" if return_workload is not None else ("Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None)),
                         "bet_recommendation":False,
                         "last_5":[round(x,1) for x in values],
                         "last_5_avg":round(avg,1),
@@ -328,9 +562,17 @@ def generate():
                         "uncertainty_yards":uncertainty,
                         "uncertainty":uncertainty,
                         "expected_opportunities":round(adjusted,1),
+                        "established_return_workload":return_workload,
+                        "qb_full_game_workload":round(qb_full_game_volume,1) if qb_full_game_volume is not None else None,
+                        "qb_raw_team_share":round(raw_role_share,3) if qb_full_game_volume is not None else None,
+                        "qb_workload_method":"established_full_game_appearances_not_verified_starter" if qb_full_game_volume is not None else None,
                         "opponent_adjustment":round(adjustment,3),
+                        "opponent_adjustment_basis":"position_market" if (position,metric) in position_markets else "team_market",
+                        "opponent_defense_context":defense_context.get((opp,metric)),
+                        "opponent_position_context":position_context.get((opp,position,metric)),
                         "game_script_adjustment":script_multiplier,
                         "calibration_bias_yards":round(calibration_bias,2),
+                        "learned_bias_weight":learned_weights.get(metric,0.0),
                         "calibration_sample_size":calibration_n,
                         "role_share":round(role_share,3),
                         "committee_risk":"high" if metric=="rushing_yards" and role_share<0.30 else ("moderate" if metric=="rushing_yards" and role_share<0.48 else "low"),
@@ -364,22 +606,13 @@ def generate():
             "method":"Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only.",
         })
     results.sort(key=lambda x:(x["game_id"],x["team"],x["market"],-x["projection"]))
+    # Validate before writing either the current feed or the immutable archive.
+    from live.validate_props import validate
+    validate(results)
     out={"generated_at_utc":now.isoformat(),"season":season,"week":week,"status":"research_only_no_market_odds","players":results}
     p=Path("data/player-research.json");p.parent.mkdir(exist_ok=True)
-    archive_path=Path("data/player-history.json")
-    try:
-        existing=json.loads(archive_path.read_text(encoding="utf-8"))
-        old=existing.get("players",[])
-    except (OSError,ValueError,TypeError):
-        old=[]
-    # Preserve original pregame forecasts; never rewrite past predictions.
-    seen={(str(x.get("game_id")),str(x.get("player_id")),str(x.get("stat_key"))) for x in old}
-    for item in results:
-        key=(str(item["game_id"]),str(item["player_id"]),str(item["stat_key"]))
-        if key not in seen:
-            old.append(item)
-            seen.add(key)
-    archive_path.write_text(json.dumps({"players":old},indent=2)+"\n",encoding="utf-8")
+    # History is locked only after DK odds are matched in lock_pregame_props.
+    # Do not overwrite the last published pregame card with a research-only row.
     p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
     print(f"Published {len(results)} player baselines across {len(games)} games for week {week}")
 

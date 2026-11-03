@@ -1,0 +1,97 @@
+name: Accuracy Engine weekly research
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/accuracy_engine.py'
+      - 'tools/research_bias_challenger.py'
+      - 'tools/opportunity_feature_audit.py'
+      - 'tools/weather_combo_research.py'
+      - 'tools/weather_market_research.py'
+      - 'tools/weather_adjustment_template.py'
+      - 'tests/test_weather_adjustment_template.py'
+      - 'tests/test_weather_market_research.py'
+      - 'data/backtests/weather-frozen-markets.csv'
+      - 'tests/test_weather_combo_research.py'
+      - 'data/backtests/weather-frozen-games.csv'
+      - 'tests/test_opportunity_feature_audit.py'
+      - 'tests/test_research_bias_challenger.py'
+      - 'tests/test_accuracy_engine.py'
+      - 'tests/test_same_slate_safety.py'
+      - 'research/same_slate_leaderboard.py'
+      - '.github/workflows/accuracy-engine.yml'
+      - 'data/backtests/player-predictions.csv'
+  workflow_dispatch:
+  schedule:
+    - cron: '30 15 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: accuracy-engine-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Run Accuracy Engine regression tests
+        run: python -m unittest discover -s tests -p 'test_accuracy_engine.py' -v
+      - name: Verify frozen same-slate comparison safety
+        run: python -m unittest discover -s tests -p 'test_same_slate_safety.py' -v
+      - name: Test chronological residual challenger
+        run: python -m unittest discover -s tests -p 'test_research_bias_challenger.py' -v
+      - name: Test opportunity feature availability gates
+        run: python -m unittest discover -s tests -p 'test_opportunity_feature_audit.py' -v
+      - name: Audit historical opportunity feature readiness
+        run: python tools/opportunity_feature_audit.py
+      - name: Test weather combination safety and holdout
+        run: python -m unittest discover -s tests -p 'test_weather_combo_research.py' -v
+      - name: Evaluate weather combinations when frozen history exists
+        run: python tools/weather_combo_research.py
+      - name: Test bounded weather adjustment scenarios
+        run: python -m unittest discover -s tests -p 'test_weather_adjustment_template.py' -v
+      - name: Test game and player weather challengers
+        run: python -m unittest discover -s tests -p 'test_weather_market_research.py' -v
+      - name: Evaluate frozen game and player weather markets if available
+        run: python -m tools.weather_market_research
+      - name: Evaluate frozen research-only residual challenger
+        run: python tools/research_bias_challenger.py
+      - name: Run historical holdout and weakness diagnostics
+        run: python tools/accuracy_engine.py
+      - name: Verify research-only safety gates
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/accuracy-engine.json'))
+          challenger=json.load(open('data/research-bias-challenger.json'))
+          opportunities=json.load(open('data/opportunity-feature-audit.json'))
+          assert opportunities['research_only'] is True
+          assert opportunities['production_changed'] is False
+          assert opportunities['trained_model'] is False
+          assert opportunities['postgame_workload_used_as_pregame'] is False
+          assert challenger['research_only'] is True
+          assert challenger['production_changed'] is False
+          assert challenger['automatic_promotion'] is False
+          assert challenger['production_equivalence_verified'] is False
+          assert all(not m.get('eligible_for_promotion',False) for m in challenger['markets'].values())
+          assert d['production_changed'] is False
+          assert d['automatic_promotion'] is False
+          assert d['holdout_rows'] > 0
+          assert d['markets']
+          assert all(not m['eligible_for_promotion'] for m in d['markets'].values())
+          assert all(not m['dk_calibrated'] and not m['publish_as_player_confidence'] for m in d['probability_research'].values() if m['status']!='insufficient_data')
+          print('PASS: research-only accuracy engine, production unchanged')
+          PY
+      - name: Publish research diagnostics only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/accuracy-engine.json data/research-bias-challenger.json data/opportunity-feature-audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh research-only accuracy diagnostics"
+            git reset --hard HEAD
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

@@ -1,0 +1,66 @@
+name: Site integrity checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'data/*.json'
+      - 'scripts/verify_nflverse_matchup_coverage.py'
+      - '.github/workflows/site-integrity.yml'
+  pull_request:
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'data/*.json'
+      - 'scripts/verify_nflverse_matchup_coverage.py'
+      - '.github/workflows/site-integrity.yml'
+permissions:
+  contents: read
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          for file in ./*.js; do
+            [ -f "$file" ] || continue
+            node --check "$file"
+          done
+      - name: Validate published JSON feeds
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          errors = []
+          for path in Path("data").glob("*.json"):
+              if path.stat().st_size == 0:
+                  print(f"WARNING: empty optional feed: {path}")
+                  continue
+              try:
+                  json.loads(path.read_text(encoding="utf-8"))
+              except (ValueError, UnicodeDecodeError) as exc:
+                  errors.append(f"Invalid JSON: {path}: {exc}")
+          if errors:
+              raise SystemExit("\\n".join(errors))
+          print("Published nonempty JSON feeds parse successfully")
+          PY
+      - name: Verify production player feed and nflverse matchup coverage
+        run: python scripts/verify_nflverse_matchup_coverage.py
+      - name: Verify score, player, count and simulation feed coherence
+        run: python tools/audit_projection_coherence.py
+      - name: Check required pages and assets
+        run: |
+          test -s index.html
+          test -s bets.html
+          test -s history.html
+          test -s model-lab.html
+          test -s accuracy-summary.js
+          test -s opportunities.js
+          test -s prop-desk.css

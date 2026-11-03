@@ -1,0 +1,52 @@
+name: Publish count prop projections
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/count-props-refresh.txt'
+  schedule:
+    - cron: '20 14 * * 0,2,4,6'
+permissions:
+  contents: write
+concurrency:
+  group: count-props-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download schedule and current player stats
+        run: |
+          set -euo pipefail
+          mkdir -p staging data
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
+            https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv -o staging/games.csv
+          python -m pip install --disable-pip-version-check polars
+          python tools/download_current_player_stats.py --season 2026 --output staging/player_stats.csv
+      - name: Generate pregame projections for next scheduled week
+        run: |
+          set -euo pipefail
+          TARGET=$(python -c 'import sys;from pathlib import Path;sys.path.insert(0,"tools");from run_research_refresh import season_week;a,b=season_week(Path("staging/games.csv"),"","");print(a,b)')
+          read -r SEASON WEEK <<< "$TARGET"
+          python tools/publish_count_prop_projections.py --weekly-csv staging/player_stats.csv \
+            --schedule-csv staging/games.csv --season "$SEASON" --week "$WEEK" \
+            --output data/count-projections.json
+          python -c 'import json;from pathlib import Path;p=json.loads(Path("data/count-projections.json").read_text());assert len(p["players"])>0'
+      - name: Commit published projections
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/count-projections.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh count-prop player projections"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

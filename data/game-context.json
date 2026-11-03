@@ -1,0 +1,142 @@
+{
+  "description": "Verified schedule and availability context. Missing feed data is intentionally left unavailable.",
+  "games": {
+    "2026_08_CHI_SEA": {
+      "availability": {
+        "source": "ESPN game summary",
+        "status": "unavailable"
+      },
+      "head_to_head": {
+        "games": [],
+        "source": "ESPN team schedule",
+        "status": "unavailable"
+      },
+      "kickoff_utc": "2026-11-03T01:15:00+00:00",
+      "model_metrics": {
+        "away": {
+          "defense_epa_rating": -0.0085,
+          "defense_rank": 14,
+          "offense_epa_rating": 0.0189,
+          "offense_rank": 12,
+          "recent_form": {
+            "avg_margin": 4.2,
+            "avg_points_against": 19.4,
+            "avg_points_for": 23.6,
+            "games": 5,
+            "results": [
+              {
+                "points_against": 7,
+                "points_for": 27,
+                "result": "W",
+                "week": 3
+              },
+              {
+                "points_against": 12,
+                "points_for": 23,
+                "result": "W",
+                "week": 4
+              },
+              {
+                "points_against": 31,
+                "points_for": 7,
+                "result": "L",
+                "week": 5
+              },
+              {
+                "points_against": 23,
+                "points_for": 31,
+                "result": "W",
+                "week": 6
+              },
+              {
+                "points_against": 24,
+                "points_for": 30,
+                "result": "W",
+                "week": 7
+              }
+            ],
+            "wins": 4
+          }
+        },
+        "home": {
+          "defense_epa_rating": -0.0747,
+          "defense_rank": 2,
+          "offense_epa_rating": -0.0211,
+          "offense_rank": 25,
+          "recent_form": {
+            "avg_margin": 3.2,
+            "avg_points_against": 21.6,
+            "avg_points_for": 24.8,
+            "games": 5,
+            "results": [
+              {
+                "points_against": 33,
+                "points_for": 31,
+                "result": "L",
+                "week": 3
+              },
+              {
+                "points_against": 23,
+                "points_for": 30,
+                "result": "W",
+                "week": 4
+              },
+              {
+                "points_against": 32,
+                "points_for": 29,
+                "result": "L",
+                "week": 5
+              },
+              {
+                "points_against": 17,
+                "points_for": 14,
+                "result": "L",
+                "week": 6
+              },
+              {
+                "points_against": 3,
+                "points_for": 20,
+                "result": "W",
+                "week": 7
+              }
+            ],
+            "wins": 2
+          }
+        },
+        "scoring_edge_components": {
+          "away_offense_vs_home_defense": -2.51,
+          "home_field_points": 1.5,
+          "home_offense_vs_away_defense": -1.33
+        }
+      },
+      "recent": {
+        "away": {
+          "source": "ESPN team schedule",
+          "status": "unavailable"
+        },
+        "home": {
+          "source": "ESPN team schedule",
+          "status": "unavailable"
+        }
+      },
+      "rest": {
+        "away": {
+          "bye_week": true,
+          "days_since_last_game": 11,
+          "previous_game_utc": "2026-10-23T00:15:00Z",
+          "source": "ESPN team schedule",
+          "status": "verified"
+        },
+        "home": {
+          "bye_week": false,
+          "days_since_last_game": 8,
+          "previous_game_utc": "2026-10-26T00:20:00Z",
+          "source": "ESPN team schedule",
+          "status": "verified"
+        }
+      }
+    }
+  },
+  "generated_at_utc": "2026-11-03T17:00:10Z",
+  "schema_version": 1
+}
