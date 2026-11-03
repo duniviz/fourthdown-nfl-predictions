@@ -1,5 +1,10 @@
 name: Collect historical NFL training data
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/collect_historical_nfl.py'
+      - '.github/workflows/collect-historical-nfl.yml'
   workflow_dispatch:
   schedule:
     - cron: '15 12 * * 2'
