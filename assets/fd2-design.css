@@ -84,3 +84,18 @@ body.fd2-ready .fd-modal{z-index:150!important}
 .fd2-rank-details[open]>summary{margin-bottom:10px}
 .fd2-unified-team .fd-rank-matchup-grid{margin-top:12px}
 @media(max-width:650px){.fd2-unified-team .fd-rank-matchup-grid{grid-template-columns:1fr!important}.fd2-unified-team .fd-vc-tabs{gap:6px}.fd2-unified-team .fd-vc-tabs button{padding:11px!important}}
+
+/* One-card-per-prop mobile design; detailed data is available on demand. */
+.fd-merged-player-props .fd-live-prop-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))!important}
+.fd-merged-player-props .fd-live-prop-list>.fd-mobile-prop-card{padding:14px!important;min-height:0!important}
+.fd-merged-player-props .fd-mobile-prop-numbers{margin:12px 0!important}
+.fd-merged-player-props .fd-mobile-prop-numbers>div{padding:10px 7px!important}
+.fd-merged-player-props .fd-mobile-prop-numbers b{font-size:clamp(19px,4vw,25px)!important}
+.fd-merged-player-props .fd-mobile-prop-bottom{margin:9px 0!important}
+.fd-merged-player-props .fd2-prop-more{border-top:1px solid #34454d;margin-top:12px;padding-top:5px}
+.fd-merged-player-props .fd2-prop-more>summary{cursor:pointer;color:#c7ef91;font-size:13px;font-weight:800;padding:10px 2px}
+.fd-merged-player-props .fd2-prop-more[open]>summary{margin-bottom:12px}
+.fd-merged-player-props .fd2-prop-more>.fd-prop-workload{margin-top:10px}
+.fd-merged-player-props .fd2-actual-result{margin:8px 0!important}
+.fd-merged-player-props .fd-live-prop-toolbar{margin-top:0!important}
+@media(max-width:700px){.fd-merged-player-props .fd-live-prop-list{grid-template-columns:1fr!important}.fd-merged-player-props{padding:14px!important}.fd-merged-player-props .fd-live-prop-list>.fd-mobile-prop-card{padding:12px!important}}

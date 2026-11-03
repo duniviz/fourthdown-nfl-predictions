@@ -126,10 +126,7 @@ function paintModalTotals(){
   const projection=stored?.projection!==null&&stored?.projection!==undefined?Number(stored.projection):NaN;
   return {...x,line:Number.isFinite(line)&&line>0?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
  }).filter(x=>x.line!==null||x.projection!==null);
- if(!sortedRows.length){
-  body.innerHTML='<p class="fd-modal-muted">No verified pregame projection or DraftKings line was archived for these players. Live stats are available, but FOURTHDOWN will not substitute in-game odds or revised forecasts.</p>';
-  return;
- }
+
  const format=v=>v===null?'—':Number(v).toFixed(1);
  const markup=sortedRows.map(x=>{
   const valid=x.line!==null,progress=valid?Math.min(100,Math.max(0,x.actual/x.line*100)):null;
@@ -140,7 +137,7 @@ function paintModalTotals(){
   return '<div class="fd-live-prop-row" data-fd-live-player="'+esc(x.player)+'" data-fd-live-market="'+esc(x.market)+'"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
  if(!panel.fd2ForecastCards)panel.fd2ForecastCards=[...panel.closest('.fd-merged-player-props')?.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]')||[]];
- const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
+ const nextHtml='<div class="fd-live-prop-toolbar"><strong>One card per player prop</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
  // Render a single unified player list. Preserve full projection cards and enrich
  // them with ESPN actuals; leave unmatched ESPN rows in the same list.
@@ -170,6 +167,17 @@ function paintModalTotals(){
      match.remove();
     }
     card.hidden=false;card.style.display='';
+    // Keep advanced simulation, workload and reasoning available but collapsed.
+    if(!card.querySelector('.fd2-prop-more')){
+     const details=document.createElement('details');
+     details.className='fd2-prop-more';
+     const summary=document.createElement('summary');
+     summary.textContent='Trends, workload & analysis';
+     details.appendChild(summary);
+     const keep=[...card.children].filter(el=>!el.matches('.fd-mobile-prop-name,.fd-mobile-prop-numbers,.fd2-actual-result,.fd-mobile-prop-bottom,.fd2-prop-more'));
+     for(const el of keep)details.appendChild(el);
+     card.appendChild(details);
+    }
     list.appendChild(card);
    }
    modal.querySelectorAll('.fd-mobile-prop-group').forEach(group=>{group.remove();});
