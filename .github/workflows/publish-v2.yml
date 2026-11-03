@@ -54,6 +54,14 @@ jobs:
       - name: Validate pipeline
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      # Grade the completed slate before building the next one, so player
+      # research can consume the latest validated residual evidence.
+      - name: Grade completed-game player projections
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.player_results
+      - name: Learn validated player correction weights for next forecast
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.player_weight_learning
       - name: Refresh NFL injury reports
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.injuries
@@ -96,12 +104,6 @@ jobs:
       - name: Lock latest pregame player cards with verified DraftKings lines
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.lock_pregame_props
-      - name: Grade completed-game player projections
-        if: steps.schedule_guard.outputs.run == 'true'
-        run: python -m live.player_results
-      - name: Learn validated player correction weights for next forecast
-        if: steps.schedule_guard.outputs.run == 'true'
-        run: python -m live.player_weight_learning
       - name: Simulate game scores and player yardage 10000 times
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
