@@ -884,15 +884,51 @@ function fdOpenMatchup(g){
    const projectedOtherPoints=leaderSide==='home'?Number(p.projected_away_score):Number(p.projected_home_score);
    const winRate=simGame?Number(leaderSide==='home'?simGame.home_win_pct:simGame.away_win_pct):NaN;
    const probability=Number.isFinite(winRate)?' They win '+winRate.toFixed(1)+'% of the published simulations.':'';
-   const intro=chosen.length
-    ?chosen[0].body+' The model still has '+esc(leaderTeam)+' ahead '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+'.'+probability
-    :'The model has '+esc(leaderTeam)+' winning '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+'.'+probability+' The available matchup data do not point to one dominant statistical mismatch, so I would treat this as a projection rather than a strong matchup-based endorsement.';
-   const extra=chosen.slice(1).map(x=>'<p>'+x.body+'</p>').join('');
-   const close=margin<=3.5
-    ?'My read: this is close enough that one possession could change the result. '+esc(leaderTeam)+' are the projected winner, but that alone does not tell us whether the spread or moneyline offers value.'
-    :margin>=10?'My read: the model sees a meaningful gap in expected scoring, but the DraftKings number still needs to be compared separately before calling it a worthwhile bet.'
-    :'My read: '+esc(leaderTeam)+' have the projected edge, although the final margin could look very different if the matchup advantages above do not materialize.';
-   return '<div class="fd-modal-section fd-ai-insights"><h3>'+esc(away)+' at '+esc(home)+': what stands out</h3><div class="fd-ai-summary"><p>'+intro+'</p>'+extra+'<p>'+close+'</p></div><p class="fd-ai-sources">Specific verified matchup and recent-game data where available. Sources: <a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast and matchup inputs</a> · '+official+'<span>Check the separate injuries section for availability; confirm final inactives before kickoff.</span></p></div>';
+   // Insight cards are built only from verified matchup inputs; no generic AI filler.
+   const cards=[];
+   const insightCard=(title,body,tone='')=>cards.push('<article class="fd-insight-key '+tone+'"><h4>'+title+'</h4><p>'+body+'</p></article>');
+   const scoreValid=Number.isFinite(projectedWinnerPoints)&&Number.isFinite(projectedOtherPoints);
+   insightCard('The game script',
+    (scoreValid?'The model projects '+esc(leaderTeam)+' '+num(projectedWinnerPoints)+'–'+num(projectedOtherPoints)+' over '+esc(otherTeam)+'. ':'The model favors '+esc(leaderTeam)+'. ')+
+    (Number.isFinite(winRate)?'They win '+winRate.toFixed(1)+'% of saved simulations. ':'')+
+    (margin<=3.5?'This projects as a one-possession contest; a late scoring drive could decide it.':margin>=10?'The projected scoring gap is sizable, but it is not a guaranteed result.':'The projected margin leaves room for either team to take control.'),'fd-insight-script');
+   // Identify the best documented offense-versus-defense opportunities, including
+   // the underdog's best counter, instead of repeating the model winner.
+   const edgePool=[];
+   for(const side of ['home','away']){
+    for(const edge of matchupEdges(side)){
+     if(edge.advantage<5)continue;
+     edgePool.push({...edge,side,team:side==='home'?home:away,foe:side==='home'?away:home});
+    }
+   }
+   edgePool.sort((x,y)=>y.score-x.score);
+   const usedKeys=new Set();
+   for(const edge of edgePool){
+    if(cards.length>=4)break;
+    if(usedKeys.has(edge.key))continue;
+    usedKeys.add(edge.key);
+    const subject=edge.key==='EPA / pass'?'Passing matchup':edge.key==='EPA / rush'?'Rushing matchup':'Red-zone matchup';
+    const description=esc(edge.team)+' offense ranks #'+edge.offense+' in '+(edge.key==='EPA / pass'?'EPA per pass':edge.key==='EPA / rush'?'EPA per rush':'red-zone touchdown rate')+', versus '+esc(edge.foe)+' defense at #'+edge.defense+'. ';
+    const implication=edge.key==='EPA / pass'?'Watch early-down passing efficiency and whether '+esc(edge.team)+' can avoid third-and-long.':edge.key==='EPA / rush'?'Watch rushing efficiency and whether '+esc(edge.team)+' can sustain drives on the ground.':'Watch whether '+esc(edge.team)+' turn red-zone trips into touchdowns instead of field goals.';
+    insightCard(subject,description+implication,edge.side===leaderSide?'fd-insight-edge':'fd-insight-counter');
+   }
+   if(cards.length<3){
+    for(const story of chosen){
+     if(cards.length>=4)break;
+     if(usedKeys.has(story.kind))continue;
+     usedKeys.add(story.kind);
+     const title={passing:'Passing efficiency',rushing:'Ground game',scoring:'Scoring matchup',redzone:'Red-zone execution',form:'Recent results',rest:'Rest advantage'}[story.kind]||'Matchup storyline';
+     insightCard(title,story.body);
+    }
+   }
+   // Verified form, rest, and past meetings are useful even without a dramatic
+   // efficiency mismatch. Do not invent ranks or injury impacts to fill space.
+   if(cards.length<3&&recentAway&&recentHome)insightCard('Recent form',recentAway+' '+recentHome);
+   if(cards.length<3&&restStory)insightCard('Schedule and recovery',restStory.replace(/<[^>]*>/g,''));
+   if(cards.length<3&&historyStory)insightCard('Previous meeting',historyStory.replace(/<[^>]*>/g,''));
+   const gap=cards.length<3?'<p class="fd-insight-data-gap">No additional verified matchup mismatch is available for this game. We will not invent a storyline; use the team rankings and injury report for further context.</p>':'';
+   const headline=esc(away)+' at '+esc(home)+': matchup keys';
+   return '<div class="fd-modal-section fd-ai-insights fd2-insight-preview"><div class="fd-insight-heading"><span class="fd-insight-ai">AI INSIGHTS</span><h3>'+headline+'</h3><p>Evidence-based storylines · saved pregame data</p></div><div class="fd-insight-key-grid">'+cards.join('')+'</div>'+gap+'<details class="fd-insight-sources"><summary>Data sources and limitations</summary><p>Rankings and projections come from saved FOURTHDOWN matchup inputs. Simulation percentages are model estimates, not betting probabilities. Injury availability must be checked separately.</p><p><a href="data/live-v2.json" target="_blank" rel="noopener noreferrer">FOURTHDOWN forecast data</a> · '+official+' ESPN game information</p></details></div>';
  })():'';
  const simScore=simGame?(()=>{const valid=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))&&Number(x)>=0&&Number(x)<=100;const av=valid(simGame.away_win_pct)?Number(simGame.away_win_pct):null,hv=valid(simGame.home_win_pct)?Number(simGame.home_win_pct):null,tv=valid(simGame.tie_pct)?Number(simGame.tie_pct):null;const usable=av!==null&&hv!==null&&Math.abs(av+hv+(tv??0)-100)<3;const pct=x=>x===null?'—':x.toFixed(1)+'%';const bars=usable?'<div class="fd-win-viz"><div class="fd-win-labels"><strong>'+esc(away)+' '+pct(av)+'</strong><strong>'+esc(home)+' '+pct(hv)+'</strong></div><div class="fd-win-track" role="img" aria-label="Simulated outcomes: '+esc(away)+' '+pct(av)+', '+esc(home)+' '+pct(hv)+(tv===null?'':', ties '+pct(tv))+'"><span style="width:'+av+'%"></span><span style="width:'+hv+'%"></span>'+(tv!==null?'<span style="width:'+tv+'%"></span>':'')+'</div>'+(tv!==null?'<small>Ties: '+pct(tv)+'</small>':'')+'</div>':'<p class="fd-modal-muted">Simulation percentages are not available for this matchup.</p>';return '<div class="fd-modal-section fd-win-section"><h3>Simulated game outcomes</h3>'+bars+'<p>Median score: '+esc(away)+' '+num(simGame.away_score_median)+' – '+esc(home)+' '+num(simGame.home_score_median)+'</p><p class="fd-modal-muted">Exploratory simulations, not calibrated betting probabilities.</p></div>';})():'';
  const score=p?(()=>{const av=Number(p.projected_away_score),hv=Number(p.projected_home_score),total=av+hv,valid=Number.isFinite(total)&&total>0,ap=valid?Math.max(0,Math.min(100,av/total*100)):50,hp=100-ap,winner=canon(p.predicted_winner),edge=Math.abs(hv-av);return '<div class="fd-modal-pick fd-score-hero"><div class="fd-hero-kicker">FOURTHDOWN · PROJECTED SCORE</div><div class="fd-hero-scoreline"><div><span>'+esc(away)+'</span><strong>'+num(p.projected_away_score)+'</strong></div><small>VS</small><div><span>'+esc(home)+'</span><strong>'+num(p.projected_home_score)+'</strong></div></div><div class="fd-hero-chart" role="img" aria-label="Projected points: '+esc(away)+' '+num(av)+', '+esc(home)+' '+num(hv)+'"><span style="width:'+ap.toFixed(2)+'%"></span><span style="width:'+hp.toFixed(2)+'%"></span></div><div class="fd-hero-footer"><span>Projected total <b>'+num(total)+'</b></span><strong>'+esc(winner)+' by '+num(edge)+'</strong></div></div>'})():'<div class="fd-modal-pick">'+(isFinal?'<h3>Final score</h3><div class="fd-modal-scores"><div><small>'+esc(away)+'</small>'+esc(g.away.score??'—')+'</div><small>FINAL</small><div><small>'+esc(home)+'</small>'+esc(g.home.score??'—')+'</div></div><p class="fd-modal-muted">No archived pregame model prediction was saved for this matchup.</p>':'No published model score for this matchup.')+'</div>';
