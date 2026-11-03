@@ -4,7 +4,8 @@
 These are live-input shadow variants, NOT an exact replay of historical V3.
 Only model-input fields available before kickoff are used.
 """
-import json,datetime as dt,math,pathlib\nfrom itertools import product
+import json,datetime as dt,math,pathlib
+from itertools import product
 ROOT=pathlib.Path(__file__).resolve().parents[1];DATA=ROOT/"data"
 WEIGHTS={
  "live":(0,0,0,0),"baseline":(1,0,0,0),"workload":(0,1,0,0),
