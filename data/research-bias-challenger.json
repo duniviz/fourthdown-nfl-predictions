@@ -1,0 +1,43 @@
+{
+  "research_only": true,
+  "production_changed": false,
+  "automatic_promotion": false,
+  "production_equivalence_verified": false,
+  "historical_train_seasons": [
+    2024
+  ],
+  "holdout_season": 2025,
+  "markets": {
+    "passing_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 398,
+      "holdout_n": 395,
+      "frozen_offset": 7.015,
+      "historical_new_mae": 65.139,
+      "bias_challenger_mae": 64.931,
+      "mae_delta": 0.208,
+      "eligible_for_promotion": false
+    },
+    "receiving_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 1927,
+      "holdout_n": 1852,
+      "frozen_offset": 1.593,
+      "historical_new_mae": 22.612,
+      "bias_challenger_mae": 22.926,
+      "mae_delta": -0.313,
+      "eligible_for_promotion": false
+    },
+    "rushing_yards": {
+      "status": "holdout_evaluated",
+      "train_n": 883,
+      "holdout_n": 873,
+      "frozen_offset": -0.056,
+      "historical_new_mae": 23.929,
+      "bias_challenger_mae": 23.924,
+      "mae_delta": 0.005,
+      "eligible_for_promotion": false
+    }
+  },
+  "warning": "Historical new is not verified as current production. This is a single frozen holdout, not a live-model promotion test."
+}
