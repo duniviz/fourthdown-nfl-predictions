@@ -10,6 +10,8 @@ on:
     - cron: '0 17,18 * * 2'
     # Keep Thursday, Saturday and Sunday morning refreshes.
     - cron: '15 13 * * 4,6,0'
+    # Monday Night Football: UTC Tuesday covers Monday evening in Central Time.
+    - cron: '0,30 0,1,2 * * 2'
 permissions:
   contents: write
 concurrency:
@@ -26,6 +28,12 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18 * * 2" ]]; then
             if [[ "$(TZ=America/Chicago date +%H)" != "12" ]]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0,30 0,1,2 * * 2" ]]; then
+            if ! python scripts/check_mnf_forecast_window.py; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
