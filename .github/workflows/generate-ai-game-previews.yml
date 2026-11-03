@@ -25,7 +25,12 @@ jobs:
         run: python tools/generate_ai_game_previews.py
       - name: Commit published previews
         run: |
-          if [ ! -f data/ai-game-previews.json ] || git diff --quiet -- data/ai-game-previews.json; then
+          if [ ! -f data/ai-game-previews.json ]; then
+            echo "No preview file produced"
+            exit 0
+          fi
+          git add data/ai-game-previews.json
+          if git diff --cached --quiet; then
             echo "No new editorial previews"
             exit 0
           fi
