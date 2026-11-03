@@ -1,0 +1,42 @@
+name: Wednesday weather model review
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 15 * * 3'
+permissions:
+  contents: write
+concurrency:
+  group: weather-wednesday-review
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Evaluate verified frozen weather versus baseline projections
+        run: python tools/weather_wednesday_review.py
+      - name: Verify research-only and no automatic promotion
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/weather-wednesday-review.json'))
+          assert d['research_only'] is True
+          assert d['production_changed'] is False
+          assert d['automatic_promotion'] is False
+          assert all(x['samples']>0 for x in d['markets'].values())
+          PY
+      - name: Publish Wednesday review
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/weather-wednesday-review.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: publish Wednesday weather accuracy comparison"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
