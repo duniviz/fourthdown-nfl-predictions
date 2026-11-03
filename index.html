@@ -485,17 +485,18 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
-  try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
+  let countFeed=null, playerFeed=null, simulationFeed=null;
+  try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countFeed=j;countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
   try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=Array.isArray(j.rows)?j.rows:[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
-  try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
+  try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationFeed=j;simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
   try{const response=await fetch('data/research-injury-flags.json?ts='+Date.now(),{cache:'no-store'});const j=response.ok?await response.json():null;supplementalInjuryFlags=Array.isArray(j?.flags)?j.flags:[];}catch(e){supplementalInjuryFlags=[];}
   try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
   try{const response=await fetch('data/game-context.json?ts='+Date.now(),{cache:'no-store'});gameContext=response.ok?await response.json():null;}catch(e){gameContext=null;}
   try{const r=await fetch('data/nflverse-defensive-matchups.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():null;window.fdNflverseMatchups=j&&j.source==='nflverse'&&j.contexts?j:null;}catch(e){window.fdNflverseMatchups=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
-  try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
+  try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerFeed=j;playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{
    const r=await fetch('data/dk-pregame-lines.json?ts='+Date.now(),{cache:'no-store'});
    if(r.ok){const j=await r.json();lockedPregameDkQuotes=Array.isArray(j.rows)?j.rows:[];}
@@ -544,6 +545,13 @@ renderParlays();
    const stamp=new Date(d.generated_at_utc);
    if(!Array.isArray(d.games)||!Number.isFinite(stamp.getTime())||Date.now()-stamp.getTime()>120*3600000){forecasts=[];return;}
    forecasts=d.games.filter(g=>Number.isFinite(Number(g.projected_home_score))&&Number.isFinite(Number(g.projected_away_score)));
+   // Do not mix projections from different season/week snapshots. These feeds
+   // have distinct models but must describe the same target slate.
+   const matchesSlate=feed=>feed&&Number(feed.season)===Number(d.season)&&Number(feed.week)===Number(d.week);
+   if(!matchesSlate(playerFeed)){console.warn('Player projections do not match game forecast slate; hiding mismatched players');playerResearch=[];}
+   if(!matchesSlate(countFeed)){console.warn('Count projections do not match game forecast slate; hiding mismatched counts');countProps=[];}
+   if(simulationFeed&&!matchesSlate(simulationFeed)){console.warn('Simulations do not match game forecast slate; hiding mismatched simulations');simulationGames=[];simulationPlayers=[];}
+
   }catch(e){forecasts=[];}
  }
  function getProjection(g){
