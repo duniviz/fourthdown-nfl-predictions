@@ -1043,7 +1043,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
     +(restNote?metricNote('Rest and scheduling',restNote):'')
     +(availabilityNote?metricNote('Who is available',availabilityNote):'')
     +'</ul></article><p class="fd-explain-disclaimer">Here\'s what went into our prediction. Games can always play out differently.</p>';
-  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div>'+fdMarketPickLines(p)+(wx&&wx.reasons.length?'<div class="fd-muted">Weather v1: '+esc(wx.reasons.join(', '))+' · total '+(wx.points>0?'+':'')+wx.points.toFixed(1)+' pts · heuristic forecast adjustment</div>':'')+'<div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'<div class="fd-muted" style="font-size:12px;margin-top:8px">Injuries: '+injuryNote+'</div><details class="fd-reason"><summary>Matchup notes</summary>'+why+'</details></div>';
+  return '<div class="projection-panel"><div class="projection-label">FOURTHDOWN v2 · '+esc(result)+'</div><div class="fd-pick-head"><strong>Pick: '+esc(p.predicted_winner)+' wins</strong><span>Projected edge: '+margin.toFixed(1)+' pts</span></div>'+fdMarketPickLines(p)+(wx&&wx.reasons.length?'<div class="fd-muted">Weather v1: '+esc(wx.reasons.join(', '))+' · total '+(wx.points>0?'+':'')+wx.points.toFixed(1)+' pts · heuristic forecast adjustment</div>':'')+'<div class="fd-forecast-score">Predicted: '+esc(g.away.abbr)+' '+away.toFixed(1)+' · '+esc(g.home.abbr)+' '+home.toFixed(1)+'</div>'+fdGameLineComparison(p)+(actual?'<div class="fd-muted">Actual: '+esc(g.away.abbr)+' '+esc(g.away.score)+' · '+esc(g.home.abbr)+' '+esc(g.home.score)+'</div>':'')+'</div>';
  }
 
  function renderRecap(raw){
@@ -1418,13 +1418,8 @@ function fdWireMetricFilters(root){
   select.addEventListener('change',apply);apply();
  });
 }
-function fdScorecardMatchupSummary(g){
- const p=getProjection(g);if(!p||g.state==='post')return '';
- const away=p.analysis?.away||{},home=p.analysis?.home||{};
- const fmt=x=>Number.isFinite(Number(x))&&x!=null?Number(x).toFixed(1):'—';
- const rank=x=>Number.isInteger(Number(x))&&x!=null?String(x):'—';
- return '<details class="fd-scorecard-matchup"><summary>Quick matchup read</summary><div class="fd-quick-matchup-grid"><span>Projected score <b>'+esc(g.away.abbr)+' '+fmt(p.projected_away_score)+' · '+esc(g.home.abbr)+' '+fmt(p.projected_home_score)+'</b></span><span>Offense ranks <b>'+esc(g.away.abbr)+' #'+rank(away.offense_rank)+' · '+esc(g.home.abbr)+' #'+rank(home.offense_rank)+'</b></span><span>Defense ranks <b>'+esc(g.away.abbr)+' #'+rank(away.defense_rank)+' · '+esc(g.home.abbr)+' #'+rank(home.defense_rank)+'</b></span><span>Last five <b>'+esc(g.away.abbr)+' '+(away.recent_form?.wins??'—')+' wins · '+esc(g.home.abbr)+' '+(home.recent_form?.wins??'—')+' wins</b></span></div><small>Open Full matchup for game lines, injuries and detailed analysis.</small></details>';
-}
+function fdScorecardMatchupSummary(g){ return ''; }
+
 function renderMatchupCards(games){
   const root=document.getElementById('fd-matchup-grid');if(!root)return;
   const rows=games.filter(g=>g.state!=='post'&&Date.parse(g.date)>Date.now()-4*3600000).map(g=>({g,p:getProjection(g)})).filter(x=>x.p&&Number.isFinite(Number(x.p.projected_home_score))&&Number.isFinite(Number(x.p.projected_away_score)));
@@ -1868,5 +1863,12 @@ document.addEventListener('click',function(e){
 .fd-mobile-prop-card details summary{min-height:42px;display:flex;align-items:center;cursor:pointer}
 @media(max-width:420px){.fd-mobile-prop-card{padding:13px!important}.fd-mobile-prop-numbers{gap:5px}.fd-mobile-prop-numbers>div{padding:8px 5px}.fd-mobile-prop-numbers b{font-size:17px}.fd-mobile-prop-numbers small{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.fd-mobile-prop-card{transition:none!important}}
+
+/* Neon featured picks: same treatment for winner, ATS and O/U. */
+#scoreboard-cards .fd-pick-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+#scoreboard-cards .fd-pick-head strong{display:block;flex:1 1 100%;padding:11px 13px;border:2px solid #baff25;border-radius:12px;background:#081c17;color:#c6ff27;font-size:19px;line-height:1.3;box-shadow:0 0 8px #baff2588,0 0 19px #baff2544,inset 0 0 10px #baff2518}
+#scoreboard-cards .fd-market-picks{display:grid;gap:10px;margin:12px 0!important;font-size:14px!important;line-height:1.4!important}
+#scoreboard-cards .fd-market-picks>div{padding:11px 13px;border:2px solid #baff25;border-radius:12px;background:#081c17;color:#c6ff27;font-weight:800;box-shadow:0 0 8px #baff2588,0 0 19px #baff2544,inset 0 0 10px #baff2518;overflow-wrap:anywhere}
+#scoreboard-cards .fd-reason,#scoreboard-cards .fd-scorecard-matchup{display:none!important}
 </style>
 </body></html>
