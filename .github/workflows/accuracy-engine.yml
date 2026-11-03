@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/accuracy_engine.py'
       - 'tools/research_bias_challenger.py'
+      - 'tools/opportunity_feature_audit.py'
+      - 'tests/test_opportunity_feature_audit.py'
       - 'tests/test_research_bias_challenger.py'
       - 'tests/test_accuracy_engine.py'
       - 'tests/test_same_slate_safety.py'
@@ -32,6 +34,10 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_same_slate_safety.py' -v
       - name: Test chronological residual challenger
         run: python -m unittest discover -s tests -p 'test_research_bias_challenger.py' -v
+      - name: Test opportunity feature availability gates
+        run: python -m unittest discover -s tests -p 'test_opportunity_feature_audit.py' -v
+      - name: Audit historical opportunity feature readiness
+        run: python tools/opportunity_feature_audit.py
       - name: Evaluate frozen research-only residual challenger
         run: python tools/research_bias_challenger.py
       - name: Run historical holdout and weakness diagnostics
@@ -42,6 +48,11 @@ jobs:
           import json
           d=json.load(open('data/accuracy-engine.json'))
           challenger=json.load(open('data/research-bias-challenger.json'))
+          opportunities=json.load(open('data/opportunity-feature-audit.json'))
+          assert opportunities['research_only'] is True
+          assert opportunities['production_changed'] is False
+          assert opportunities['trained_model'] is False
+          assert opportunities['postgame_workload_used_as_pregame'] is False
           assert challenger['research_only'] is True
           assert challenger['production_changed'] is False
           assert challenger['automatic_promotion'] is False
@@ -59,7 +70,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/accuracy-engine.json data/research-bias-challenger.json
+          git add data/accuracy-engine.json data/research-bias-challenger.json data/opportunity-feature-audit.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh research-only accuracy diagnostics"
             git reset --hard HEAD
