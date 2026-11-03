@@ -3,8 +3,8 @@ name: Tuesday pre-forecast evaluation
 on:
   workflow_dispatch:
   schedule:
-    # 8:30 AM Central; both UTC hours cover CST and CDT.
-    - cron: '30 13,14 * * 2'
+    # 6 AM Central; both UTC hours cover CST and CDT.
+    - cron: '0 11,12 * * 2'
 permissions:
   contents: write
 concurrency:
@@ -22,7 +22,7 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "$(TZ=America/Chicago date +%H:%M)" != "08:30" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "$(TZ=America/Chicago date +%H:%M)" != "06:00" ]]; then
             echo "run=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
