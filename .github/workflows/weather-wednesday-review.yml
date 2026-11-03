@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/ml_challengers.py'
       - 'tests/test_ml_challengers.py'
+      - 'tools/model_governance.py'
+      - 'tests/test_model_governance.py'
       - '.github/workflows/weather-wednesday-review.yml'
   workflow_dispatch:
   schedule:
@@ -32,6 +34,10 @@ jobs:
         run: python -m tools.ml_challengers
       - name: Evaluate verified frozen weather versus baseline projections
         run: python tools/weather_wednesday_review.py
+      - name: Test champion challenger safety gates
+        run: python -m unittest discover -s tests -p 'test_model_governance.py' -v
+      - name: Rank challengers and document promotion blockers
+        run: python tools/model_governance.py
       - name: Verify research-only and no automatic promotion
         run: |
           python - <<'PY'
@@ -43,12 +49,14 @@ jobs:
           assert all(x['samples']>0 for x in d['markets'].values())
           ml=json.load(open('data/ml-challenger-review.json'))
           assert ml['research_only'] and not ml['production_changed'] and not ml['automatic_promotion']
+          gov=json.load(open('data/model-governance.json'))
+          assert not gov['automatic_promotion_enabled'] and not gov['live_weights_changed']
           PY
       - name: Publish Wednesday review
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/weather-wednesday-review.json data/ml-challenger-review.json
+          git add data/weather-wednesday-review.json data/ml-challenger-review.json data/model-governance.json
           if ! git diff --cached --quiet; then
             git commit -m "data: publish Wednesday weather accuracy comparison"
             git pull --rebase origin main
