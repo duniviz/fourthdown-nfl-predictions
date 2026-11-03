@@ -1,0 +1,43 @@
+name: Accuracy Engine weekly research
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 15 * * 3'
+permissions:
+  contents: write
+concurrency:
+  group: accuracy-engine-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Run historical holdout and weakness diagnostics
+        run: python tools/accuracy_engine.py
+      - name: Verify research-only safety gates
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/accuracy-engine.json'))
+          assert d['production_changed'] is False
+          assert d['automatic_promotion'] is False
+          assert d['holdout_rows'] > 0
+          assert d['markets']
+          assert all(not m['eligible_for_promotion'] for m in d['markets'].values())
+          assert all(not m['dk_calibrated'] and not m['publish_as_player_confidence'] for m in d['probability_research'].values() if m['status']!='insufficient_data')
+          print('PASS: research-only accuracy engine, production unchanged')
+          PY
+      - name: Publish research diagnostics only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/accuracy-engine.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh research-only accuracy diagnostics"
+            git reset --hard HEAD
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
