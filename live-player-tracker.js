@@ -137,10 +137,26 @@ function paintModalTotals(){
   const pick=x.projection===null||!valid||x.projection===x.line?null:(x.projection>x.line?'OVER':'UNDER');
   const graded=gameFinal&&pick?(x.actual===x.line?'PUSH':((pick==='OVER'&&x.actual>x.line)||(pick==='UNDER'&&x.actual<x.line)?'HIT':'MISS')):null;
   const stateLabel=graded?(graded+' · '+pick+' '+format(x.line)):pick?(pick+' '+format(x.line)+' · LIVE'):'NO VERIFIED PICK';
-  return '<div class="fd-live-prop-row"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
+  return '<div class="fd-live-prop-row" data-fd-live-player="'+esc(x.player)+'" data-fd-live-market="'+esc(x.market)+'"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
  const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
+ // A player/market with an ESPN actual already appears in the unified live card.
+ // Keep forecasts without an ESPN actual visible, but never show the same prop twice.
+ const modal=panel.closest('.fd-merged-player-props');
+ if(modal){
+  const key=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const active=new Set([...body.querySelectorAll('[data-fd-live-player][data-fd-live-market]')].map(el=>key(el.dataset.fdLivePlayer)+'|'+key(el.dataset.fdLiveMarket)));
+  modal.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]').forEach(card=>{
+   const duplicate=active.has(key(card.dataset.fdPlayer)+'|'+key(card.dataset.fdMarket));
+   card.hidden=duplicate;
+   card.style.display=duplicate?'none':'';
+  });
+  modal.querySelectorAll('.fd-mobile-prop-group').forEach(group=>{
+   const cards=[...group.querySelectorAll('.fd-mobile-prop-card')];
+   group.hidden=cards.length>0&&cards.every(card=>card.hidden);
+  });
+ }
 }
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
