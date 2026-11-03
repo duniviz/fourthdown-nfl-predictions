@@ -25,15 +25,20 @@ def run(path):
         rows=list(csv.DictReader(f))
     required={"season","week","player_id","team","market","actual","old","new"}
     if not rows or not required.issubset(rows[0]):raise ValueError("Missing historical backtest columns")
-    valid=[]\n    seen=set()
+    valid=[]
+    seen=set()
     for r in rows:
         try:
             if not all(math.isfinite(float(r[k])) for k in ("actual","old","new")):continue
             r["season"]=int(r["season"]);r["week"]=int(r["week"])
             if r["week"]<1 or not r["player_id"]:continue
-            key=(r["season"],r["week"],r["player_id"],r["market"])\n            if key in seen:raise ValueError(f"Duplicate historical prediction: {key}")\n            seen.add(key)\n            valid.append(r)
+            key=(r["season"],r["week"],r["player_id"],r["market"])
+            if key in seen:raise ValueError(f"Duplicate historical prediction: {key}")
+            seen.add(key)
+            valid.append(r)
         except (ValueError,TypeError,KeyError):continue
-    if not valid:raise ValueError("No valid backtest samples")\n    if len({r["season"] for r in valid})<2:raise ValueError("Need at least two chronological seasons for holdout")
+    if not valid:raise ValueError("No valid backtest samples")
+    if len({r["season"] for r in valid})<2:raise ValueError("Need at least two chronological seasons for holdout")
     # The final chronological season is the untouched reporting holdout.
     seasons=sorted({r["season"] for r in valid})
     holdout_season=seasons[-1]
