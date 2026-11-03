@@ -116,6 +116,9 @@ jobs:
             echo "No changes to publish"
           else
             git commit -m "Update current-week v2 predictions [skip ci]"
+            # Generated staging files are intentionally not published; clear them
+            # before rebasing the committed production feeds onto the latest main.
+            git reset --hard HEAD
             git pull --rebase origin main
             git push origin HEAD:main
           fi
