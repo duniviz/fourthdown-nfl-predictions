@@ -68,7 +68,7 @@ def evaluate(path):
 def main():
     report=evaluate("data/backtests/player-predictions.csv")
     dest=Path("data/research-bias-challenger.json")
-    dest.write_text(json.dumps(report,indent=2)+"\\n")
+    dest.write_text(json.dumps(report,indent=2)+"\n")
     print("Research-only challenger evaluated",len(report["markets"]),"markets")
 if __name__=="__main__":
     main()
