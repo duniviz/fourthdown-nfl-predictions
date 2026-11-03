@@ -457,6 +457,7 @@ renderParlays();
  let supplementalInjuryFlags=[];
  let savedWeather=null;
  let gameContext=null;
+ let editorialPreviews=null;
  const aliases={WSH:'WAS',JAX:'JAC',LA:'LAR'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const stadiums={
@@ -495,6 +496,7 @@ renderParlays();
   try{const response=await fetch('data/research-injury-flags.json?ts='+Date.now(),{cache:'no-store'});const j=response.ok?await response.json():null;supplementalInjuryFlags=Array.isArray(j?.flags)?j.flags:[];}catch(e){supplementalInjuryFlags=[];}
   try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
   try{const response=await fetch('data/game-context.json?ts='+Date.now(),{cache:'no-store'});gameContext=response.ok?await response.json():null;}catch(e){gameContext=null;}
+  try{const response=await fetch('data/ai-game-previews.json?ts='+Date.now(),{cache:'no-store'});editorialPreviews=response.ok?await response.json():null;}catch(e){editorialPreviews=null;}
   try{const r=await fetch('data/nflverse-defensive-matchups.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():null;window.fdNflverseMatchups=j&&j.source==='nflverse'&&j.contexts?j:null;}catch(e){window.fdNflverseMatchups=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerFeed=j;playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
@@ -904,6 +906,25 @@ function fdOpenMatchup(g){
    const projectedOtherPoints=leaderSide==='home'?Number(p.projected_away_score):Number(p.projected_home_score);
    const winRate=simGame?Number(leaderSide==='home'?simGame.home_win_pct:simGame.away_win_pct):NaN;
    const probability=Number.isFinite(winRate)?' They win '+winRate.toFixed(1)+'% of the published simulations.':'';
+   // Use independent, grounded editorial previews when a pregame draft exists.
+   // Otherwise retain the existing evidence-based local comparison; never invent news.
+   const editorial=editorialPreviews?.games?.[p.game_id];
+   const kick=Date.parse(g.date),generated=Date.parse(editorial?.generated_at_utc);
+   if(editorial&&Array.isArray(editorial.stories)&&editorial.stories.length&&
+      Number.isFinite(kick)&&Number.isFinite(generated)&&generated<kick-30*60000&&
+      Math.abs(Date.parse(editorial.kickoff_utc)-kick)<3600000){
+     const safeStories=editorial.stories.filter(s=>s&&typeof s.title==='string'&&
+       typeof s.body==='string'&&Array.isArray(s.evidence_keys)&&s.evidence_keys.length);
+     if(safeStories.length){
+      return '<section class="fd-modal-section fd-ai-insights fd2-insight-preview fd2-editorial">'+
+       '<div class="fd-insight-heading"><span class="fd-insight-ai">GAME PREVIEW</span>'+
+       '<h3>'+esc(editorial.headline||away+' at '+home)+'</h3>'+
+       '<p>Pregame reporting based on verified matchup context · '+esc(new Date(generated).toLocaleString())+'</p></div>'+
+       '<div class="fd-editorial-stories">'+safeStories.map(s=>'<article class="fd-editorial-story"><h4>'+esc(s.title)+'</h4><p>'+esc(s.body)+'</p></article>').join('')+'</div>'+
+       '<details class="fd-insight-sources"><summary>Evidence and limitations</summary><p>Generated from saved model projections and verified game context. Model estimates are not facts or betting probabilities. Unverified injuries, market movement and news are not included.</p>'+
+       '<p>Evidence categories: '+esc([...new Set(safeStories.flatMap(s=>s.evidence_keys))].join(', '))+'</p></details></section>';
+     }
+   }
    // Insight cards are built only from verified matchup inputs; no generic AI filler.
    const cards=[];
    const insightCard=(title,body,tone='')=>cards.push('<article class="fd-insight-key '+tone+'"><h4>'+title+'</h4><p>'+body+'</p></article>');
