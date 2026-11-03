@@ -84,6 +84,23 @@ def validate(result,facts,existing):
         seen.append(title)
     return True
 
+def material_signature(facts):
+    """Only verified availability/rest changes can trigger an editorial revision."""
+    keys = ("teams", "kickoff_utc", "verified_availability", "home_rest", "away_rest")
+    return json.dumps({k: facts[k] for k in keys if k in facts}, sort_keys=True)
+
+
+def should_generate(existing, facts):
+    if not existing:
+        return True, "first eligible preview"
+    prior = existing.get("material_signature")
+    if prior is None:
+        return False, "legacy preview preserved pending verified change"
+    if prior != material_signature(facts):
+        return True, "verified material context changed"
+    return False, "no material change"
+
+
 def main():
     forecasts=json.loads((ROOT/"data/live-v2.json").read_text())
     contexts=json.loads((ROOT/"data/game-context.json").read_text()).get("games",{})
@@ -91,28 +108,48 @@ def main():
     previous=json.loads(OUT.read_text()) if OUT.exists() else {"games":{}}
     saved=previous.get("games",{})
     changed=False
+    counts = {"locked": 0, "too_early": 0, "insufficient": 0, "unchanged": 0, "attempted": 0, "failed": 0}
     for game in forecasts.get("games",[]):
         gid=game.get("game_id")
         kickoff=parse_time(game.get("kickoff_utc"))
         if not gid or not kickoff: continue
         minutes=(kickoff-now).total_seconds()/60
-        if minutes<=30 or minutes>10080: continue # no after-lock rewriting
+        if minutes<=30:
+            counts["locked"]+=1
+            print("SKIP",gid,"pregame lock reached")
+            continue
+        if minutes>10080:
+            counts["too_early"]+=1
+            print("SKIP",gid,"more than seven days away")
+            continue
         facts=evidence(game,contexts.get(gid,{}) or {})
-        if len(facts)<5: continue
+        if len(facts)<5:
+            counts["insufficient"]+=1
+            print("SKIP",gid,"insufficient verified evidence")
+            continue
+        regenerate, reason = should_generate(saved.get(gid), facts)
+        if not regenerate:
+            counts["unchanged"]+=1
+            print("SKIP",gid,reason)
+            continue
+        counts["attempted"]+=1
+        print("GENERATE",gid,reason)
         signature=json.dumps(facts,sort_keys=True)
-        if saved.get(gid,{}).get("evidence_signature")==signature: continue
         try:
             result=generate(gid,facts,saved)
             if not validate(result,facts,saved):
+                counts["failed"]+=1
                 print("Rejected ungrounded or repetitive preview",gid)
                 continue
         except Exception as exc:
+            counts["failed"]+=1
             print("Preview unavailable for",gid,type(exc).__name__,str(exc)[:120])
             continue
         saved[gid]={"headline":result["headline"],"stories":result["stories"],
-                    "evidence_signature":signature,"generated_at_utc":now.isoformat(),
+                    "evidence_signature":signature,"material_signature":material_signature(facts),"generated_at_utc":now.isoformat(),
                     "kickoff_utc":game["kickoff_utc"],"source":"AI editorial draft from saved model and verified ESPN context"}
         changed=True
+    print("Preview summary:",json.dumps(counts,sort_keys=True))
     if changed:
         OUT.write_text(json.dumps({"schema_version":1,"games":saved},indent=2,ensure_ascii=False)+"\n")
         print("Updated verified preview drafts")
