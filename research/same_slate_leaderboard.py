@@ -21,7 +21,8 @@ def finite(value):
 
 def compare(rows, week=None):
     groups=collections.defaultdict(dict)
-    rejected=collections.Counter()\n    duplicate_keys=set()
+    rejected=collections.Counter()
+    duplicate_keys=set()
     for row in rows:
         try:
             game=str(row["game_id"]); market=str(row["stat_key"]); player=str(row["player_id"])
@@ -83,7 +84,8 @@ def main():
     report=compare(rows,args.week)
     if not report["matched_slate_records"]:raise SystemExit("No valid same-slate pregame model comparisons; refusing misleading leaderboard")
     dest=pathlib.Path(args.output);dest.mkdir(parents=True,exist_ok=True)
-    (dest/"leaderboard.json").write_text(json.dumps(report,indent=2)+"\n")
+    (dest/"leaderboard.json").write_text(json.dumps(report,indent=2)+"
+")
     lines=["# Same-slate model leaderboard","","Research only; no automatic promotion.","",
            "| Market | Model | N | MAE | RMSE | DK bets | DK hit % |","|---|---|---:|---:|---:|---:|---:|"]
     for r in report["metrics"]:
@@ -91,6 +93,9 @@ def main():
         lines.append(f'| {r["market"]} | {r["model"]} | {r["n"]} | {r["mae"]:.2f} | {r["rmse"]:.2f} | {r["dk_n"]} | {rate} |')
     lines+=["",f'Matched player/game/market records: {report["matched_slate_records"]}.',
             "Missing or post-kickoff forecasts are excluded. A candidate requires multiple independent weeks before promotion."]
-    (dest/"LEADERBOARD.md").write_text("\n".join(lines)+"\n")
-    print("\n".join(lines))
+    (dest/"LEADERBOARD.md").write_text("
+".join(lines)+"
+")
+    print("
+".join(lines))
 if __name__=="__main__":main()
