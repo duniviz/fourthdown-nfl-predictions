@@ -45,10 +45,16 @@ def adjusted_projection(market,baseline,weather):
         "passing_yards":weather.pass_yards_pct,
         "receiving_yards":weather.pass_yards_pct,
         "pass_attempts":weather.pass_attempts_pct,
+        "pass_completions":(1+weather.pass_attempts_pct)*(1+weather.receptions_pct)-1,
         "receptions":weather.receptions_pct,
         "rush_attempts":weather.rush_attempts_pct,
         "rushing_yards":(1+weather.rush_attempts_pct)*(1+weather.rush_efficiency_pct)-1,
     }
+    aliases={"player_pass_yds":"passing_yards","player_rush_yds":"rushing_yards",
+        "player_rec_yds":"receiving_yards","player_pass_attempts":"pass_attempts",
+        "player_pass_completions":"pass_completions","player_receptions":"receptions",
+        "player_rush_attempts":"rush_attempts"}
+    market=aliases.get(market,market)
     if market=="game_total":return max(0,baseline+weather.total_points_delta)
     if market in ("home_score","away_score"):
         return max(0,baseline+weather.total_points_delta/2)
