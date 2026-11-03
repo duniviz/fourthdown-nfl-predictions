@@ -707,7 +707,7 @@ function fdOpenMatchup(g){
  // Include count-based props in the same unified player cards, not a second panel.
  // After kickoff, use only timestamped pregame snapshots with saved DK lines.
  const countLabels={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
- const countRows=(!isFinal&&g.state==='pre')
+ const countRows=(!isFinal&&Number.isFinite(Date.parse(g.date))&&Date.now()<Date.parse(g.date))
   ?fdCountPropRows(g).map(x=>({...x,stat_key:x.market_key,dk_line:x.line,last_5_avg:x.last5}))
   :playerHistory.filter(x=>{
     const kick=Date.parse(g.date),capture=Date.parse(x.forecast_captured_at_utc),savedKick=Date.parse(x.kickoff_utc);
