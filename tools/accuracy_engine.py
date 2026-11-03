@@ -33,7 +33,7 @@ def run(path):
             r["season"]=int(r["season"]);r["week"]=int(r["week"])
             if r["week"]<1 or not r["player_id"]:continue
             key=(r["season"],r["week"],r["player_id"],r["market"])
-            if key in seen:raise ValueError(f"Duplicate historical prediction: {key}")
+            if key in seen:raise RuntimeError(f"Duplicate historical prediction: {key}")
             seen.add(key)
             valid.append(r)
         except (ValueError,TypeError,KeyError):continue
