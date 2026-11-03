@@ -762,8 +762,8 @@ function fdOpenMatchup(g){
    return quotes;
   })()
  };
- const liveStats='<div class="fd-modal-section fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
- const props='<div class="fd-modal-section fd-mobile-props"><h3>'+(isFinal?'Archived player projections':'Player projections · DraftKings')+'</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
+ const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
+ const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props &amp; Projections</h3>'+(players.some(x=>['passing_yards','rushing_yards','receiving_yards'].includes(String(x.stat_key)))?propCards:'<p>Yardage projections unavailable for this matchup. Check Prop Desk for additional research.</p>')+'<p class="fd-modal-muted">DK line is a saved quote, not necessarily live. Older quotes must be verified before use; — means unavailable. Difference is projection minus DK line, not a validated betting edge or win probability. These projections are uncalibrated.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+'</div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
@@ -901,7 +901,7 @@ function fdOpenMatchup(g){
  const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn\'t save the injury report from before this game, so we won\'t show today\'s report as if it were from then.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString())+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
- document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+liveStats+props;
+ document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+props.replace('</h3>','</h3>'+liveStats);
  if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.getElementById('fd-modal').scrollTop=0;document.dispatchEvent(new Event('fd-matchup-opened'));document.querySelector('[data-close-matchup]').focus();
 }
@@ -1923,5 +1923,11 @@ main.wrap>#scoreboard{margin-top:14px}
 main.wrap>#scoreboard>.section-head{margin-bottom:10px}
 main.wrap>#fd-more{margin:12px 0}
 @media(max-width:700px){main.wrap>#fd-watch .fd-watch-grid{gap:10px}main.wrap>#tracking.fd-top-accuracy{margin:10px 0}}
+
+/* Single player-prop section in matchup detail: live results and forecasts share one card. */
+.fd-merged-player-props>.fd-live-player-stats{margin:8px 0 16px;padding:0;border:0;background:none}
+.fd-merged-player-props>.fd-live-player-stats>h3{display:none}
+.fd-merged-player-props>.fd-live-player-stats>.fd-modal-muted{font-size:11px;margin:8px 0}
+.fd-merged-player-props>.fd-mobile-prop-group{margin-top:14px}
 </style>
 </body></html>
