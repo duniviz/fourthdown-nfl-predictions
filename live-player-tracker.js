@@ -143,7 +143,7 @@ function paintModalTotals(){
   return '<div class="fd-live-prop-row" data-fd-live-player="'+esc(x.player)+'" data-fd-live-team="'+esc(x.team)+'" data-fd-live-market="'+esc(x.market)+'"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
  if(!panel.fd2ForecastCards)panel.fd2ForecastCards=[...panel.closest('.fd-merged-player-props')?.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]')||[]];
- const nextHtml='<div class="fd-live-prop-toolbar"><strong>One card per player prop</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
+ const nextHtml='<div class="fd-live-prop-toolbar"><strong>One card per player prop</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
  // Render a single unified player list. Preserve full projection cards and enrich
  // them with ESPN actuals; leave unmatched ESPN rows in the same list.
@@ -275,7 +275,7 @@ function paintCards(){
    const r=matches[0];
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
-   updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString():'—');slot.appendChild(sub);
+   updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'—');slot.appendChild(sub);
   });
   paintPropRows();paintModalTotals();
  }finally{painting=false;}
