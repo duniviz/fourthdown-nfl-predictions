@@ -1,5 +1,9 @@
 name: Weekly free NFL feature research
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/free-feature-research.yml'
   workflow_dispatch:
   schedule:
     - cron: '25 14 * * 2'
