@@ -1,5 +1,11 @@
 name: Accuracy Engine weekly research
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/accuracy_engine.py'
+      - '.github/workflows/accuracy-engine.yml'
+      - 'data/backtests/player-predictions.csv'
   workflow_dispatch:
   schedule:
     - cron: '30 15 * * 3'
