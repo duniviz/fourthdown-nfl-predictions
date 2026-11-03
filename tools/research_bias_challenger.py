@@ -44,7 +44,7 @@ def evaluate(path):
     training=defaultdict(list)
     testing=defaultdict(list)
     for season,week,market,actual,old,new in cleaned:
-        (training if season<holdout else testing)[market].append((actual,old,new))
+        (training if season<holdout else testing)[market].append((week,actual,old,new))
     result={}
     for market,hold in sorted(testing.items()):
         train=training.get(market,[])
@@ -52,14 +52,21 @@ def evaluate(path):
             result[market]={"status":"insufficient_training_or_holdout","train_n":len(train),"holdout_n":len(hold)}
             continue
         # One pre-registered, shrunk market-level residual correction, frozen before holdout.
-        residual=sum(a-p for a,_,p in train)/len(train)
+        residual=sum(a-p for _,a,_,p in train)/len(train)
         offset=residual*len(train)/(len(train)+100)
-        baseline=sum(abs(a-p) for a,_,p in hold)/len(hold)
-        challenger=sum(abs(a-max(0,p+offset)) for a,_,p in hold)/len(hold)
+        baseline=sum(abs(a-p) for _,a,_,p in hold)/len(hold)
+        challenger=sum(abs(a-max(0,p+offset)) for _,a,_,p in hold)/len(hold)
+        weekly=defaultdict(list)
+        for week,a,_,p in hold:
+            weekly[week].append((abs(a-p),abs(a-max(0,p+offset))))
+        week_metrics=[{"week":w,"samples":len(v),"reference_mae":round(sum(x for x,_ in v)/len(v),3),"challenger_mae":round(sum(y for _,y in v)/len(v),3)} for w,v in sorted(weekly.items())]
+        weeks_improved=sum(w["challenger_mae"]<w["reference_mae"] for w in week_metrics)
         result[market]={"status":"holdout_evaluated","train_n":len(train),"holdout_n":len(hold),
             "frozen_offset":round(offset,3),"historical_new_mae":round(baseline,3),
             "bias_challenger_mae":round(challenger,3),
-            "mae_delta":round(baseline-challenger,3),"eligible_for_promotion":False}
+            "mae_delta":round(baseline-challenger,3),"holdout_weeks":len(week_metrics),
+            "weeks_improved":weeks_improved,"weekly_diagnostics":week_metrics,
+            "eligible_for_promotion":False}
     return {"research_only":True,"production_changed":False,"automatic_promotion":False,
             "production_equivalence_verified":False,"historical_train_seasons":seasons[:-1],
             "holdout_season":holdout,"markets":result,
