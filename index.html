@@ -1153,10 +1153,26 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
  function renderHybridSpotlight(){const root=document.getElementById('hybrid-spotlight');if(!root)return;root.innerHTML='<div class="hybrid-placeholder">Player projections are uncalibrated research baselines, not validated betting edges. High differences alone are not ranked as picks. Verified DraftKings lines and backtested error estimates are required before publishing an edge leaderboard.</div>';}
  function propPanel(g){
   if(g.state==='post')return '';
-  const matches=playerResearch.filter(x=>[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))&&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent))&&!unavailablePlayer(x));
-  const best=[...matches].filter(x=>!unavailablePlayer(x)&&hasDkLine(x)).sort((a,b)=>Number(b.projection||0)-Number(a.projection||0));
-  if(!best.length&&!fdCountPropRows(g).length)return '';
-  return '<div class="fd-player-projections" data-fd-metric-scope>'+fdMarketFilterControl(g,'game')+(best.length?'<details class="fd-props fd-upcoming-projections"><summary>Player projections <span class="fd-count">'+best.length+'</span></summary><div class="fd-props-body"><div class="fd-result-list">'+best.map(x=>'<div class="fd-result-row" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team)+'" data-fd-dk-line="'+(hasDkLine(x)?Number(x.dk_line):'')+'" data-fd-projection="'+(Number.isFinite(Number(x.projection))?Number(x.projection):'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-result-name"><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><div class="fd-result-values"><div><small>PROJ</small><strong>'+esc(x.projection)+'</strong></div><div><small>DK LINE</small><strong>'+esc(x.dk_line??'—')+'</strong></div><div><small>LAST 5</small><strong>'+esc(x.last_5_avg)+'</strong></div></div></div>').join('')+'</div><p class="fd-grading-note">DK line shown only when verified and stored; — means unavailable. These are our estimates. Check the latest lines before making a pick.</p></div></details>':'')+fdCountPropsForGame(g)+'</div>';
+  const teams=[canon(g.home.abbr),canon(g.away.abbr)];
+  const yards=playerResearch.filter(x=>teams.includes(canon(x.team))&&teams.includes(canon(x.opponent))&&!unavailablePlayer(x)&&hasDkLine(x))
+   .map(x=>({player:x.player,team:x.team,market:x.market||String(x.stat_key).replace(/_/g,' '),market_key:x.stat_key,projection:Number(x.projection),line:Number(x.dk_line),last5:x.last_5_avg??null}));
+  const counts=fdCountPropRows(g).map(x=>({player:x.player,team:x.team,market:x.market,market_key:x.market_key,projection:Number(x.projection),line:Number(x.line),last5:x.last5??null}));
+  const unique=new Map();
+  for(const x of [...yards,...counts]){
+   if(!Number.isFinite(x.projection)||!Number.isFinite(x.line)||x.line<=0)continue;
+   const key=String(x.player).toLowerCase()+'|'+String(x.market_key);
+   if(!unique.has(key))unique.set(key,x);
+  }
+  const rows=[...unique.values()].sort((a,b)=>Math.abs(b.projection-b.line)-Math.abs(a.projection-a.line));
+  if(!rows.length)return '';
+  const fmt=n=>Number(n).toFixed(1);
+  const cards=rows.map(x=>{
+   const edge=x.projection-x.line,side=Math.abs(edge)<.05?'EVEN':edge>0?'OVER':'UNDER';
+   const edgeText=(edge>0?'+':'')+fmt(edge);
+   const last=x.last5!==null&&x.last5!==''&&Number.isFinite(Number(x.last5))?fmt(x.last5):'—';
+   return '<article class="fd-unified-prop" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team)+'" data-fd-dk-line="'+x.line+'" data-fd-projection="'+x.projection+'" data-fd-market="'+esc(x.market_key)+'"><div class="fd-unified-prop-head"><div><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><span class="fd-unified-side">'+side+'</span></div><div class="fd-unified-prop-metrics"><div><small>MODEL</small><strong>'+fmt(x.projection)+'</strong></div><div><small>DK LINE</small><strong>'+fmt(x.line)+'</strong></div><div><small>DIFFERENCE</small><strong>'+edgeText+'</strong></div><div><small>LAST 5 AVG</small><strong>'+last+'</strong></div></div></article>';
+  }).join('');
+  return '<div class="fd-player-projections fd-unified-props" data-fd-metric-scope><details class="fd-props" open><summary>Player Props &amp; Projections <span class="fd-count">'+rows.length+'</span></summary><div class="fd-props-body">'+fdMarketFilterControl(g,'game')+'<div class="fd-unified-prop-list">'+cards+'</div><p class="fd-grading-note">Pregame model estimates compared with saved DraftKings lines. Difference is not a validated betting edge. Only players with matching lines are shown.</p></div></details></div>';
  }
  function validArchivedYardForecast(x){
   const key=String(x.stat_key||'');
@@ -1876,5 +1892,22 @@ document.addEventListener('click',function(e){
 #scoreboard-cards .fd-pick-head strong,
 #scoreboard-cards .fd-market-picks>div{box-sizing:border-box;width:100%;min-height:82px;display:flex;align-items:center;padding:13px 16px;border:2px solid #baff25;border-radius:13px;background:#081c17;color:#c6ff27;font-size:17px;font-weight:800;line-height:1.35;box-shadow:0 0 8px #baff2588,0 0 19px #baff2544,inset 0 0 10px #baff2518}
 #scoreboard-cards .fd-market-picks{gap:10px;margin:10px 0 12px!important}
+
+/* Unified game-card player prop and projection section */
+#scoreboard-cards .fd-unified-props{margin-top:14px}
+#scoreboard-cards .fd-unified-props>.fd-props{border:1px solid #355d6b;border-radius:15px;background:#0a1d29;overflow:hidden}
+#scoreboard-cards .fd-unified-props>.fd-props>summary{padding:15px;color:#c6ff27;font-weight:850;font-size:16px;cursor:pointer}
+#scoreboard-cards .fd-unified-prop-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:10px;margin-top:12px}
+#scoreboard-cards .fd-unified-prop{background:linear-gradient(150deg,#102f3d,#0a202a);border:1px solid #315568;border-radius:12px;padding:12px;min-width:0}
+#scoreboard-cards .fd-unified-prop[hidden]{display:none!important}
+#scoreboard-cards .fd-unified-prop-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:11px}
+#scoreboard-cards .fd-unified-prop-head strong{display:block;color:#f0faff;font-size:14px}
+#scoreboard-cards .fd-unified-prop-head small{display:block;color:#9fc1cb;font-size:11px;margin-top:3px}
+#scoreboard-cards .fd-unified-side{border:1px solid #baff25;border-radius:8px;color:#c6ff27;padding:5px 8px;font-weight:850;font-size:12px}
+#scoreboard-cards .fd-unified-prop-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+#scoreboard-cards .fd-unified-prop-metrics>div{background:#173b4d;border-radius:8px;padding:9px 4px;text-align:center;min-width:0}
+#scoreboard-cards .fd-unified-prop-metrics small{display:block;color:#a6c6d2;font-size:9px}
+#scoreboard-cards .fd-unified-prop-metrics strong{display:block;color:#fff;font-size:14px;margin-top:5px}
+#scoreboard-cards .fd-unified-prop-metrics>div:nth-child(3) strong{color:#c6ff27}
 </style>
 </body></html>
