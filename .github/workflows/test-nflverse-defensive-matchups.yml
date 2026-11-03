@@ -1,0 +1,28 @@
+name: Test nflverse defensive matchups
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch (not production)
+        uses: actions/checkout@v4
+        with:
+          ref: feature/defensive-matchup-intelligence-20261102
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate defensive matchup dataset
+        run: python scripts/build_nflverse_matchups.py
+      - name: Commit dataset to feature branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/nflverse-defensive-matchups.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh verified nflverse defensive matchups"
+            git push origin HEAD:feature/defensive-matchup-intelligence-20261102
+          fi
