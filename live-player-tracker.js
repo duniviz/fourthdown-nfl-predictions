@@ -111,7 +111,7 @@ function paintModalTotals(){
  const gameId=String(panel.dataset.fdLiveGameId||'');
  const home=playerKey(panel.dataset.fdLiveHome),away=playerKey(panel.dataset.fdLiveAway);
  const rows=state.rows.filter(x=>String(x.game_id)===gameId&&[home,away].includes(playerKey(x.team)));
- if(!rows.length){body.innerHTML='<p class="fd-modal-muted">'+(state.feedError?'ESPN live stats are temporarily unavailable.':state.games.some(x=>x.id===gameId)?'Waiting for player box-score stats.':'No live player totals for this game right now. Stats appear when ESPN reports the game in progress.')+'</p>';return;}
+ if(!rows.length && !panel.closest('.fd-merged-player-props')){body.innerHTML='<p class="fd-modal-muted">'+(state.feedError?'ESPN live stats are temporarily unavailable.':state.games.some(x=>x.id===gameId)?'Waiting for player box-score stats.':'No live player totals for this game right now. Stats appear when ESPN reports the game in progress.')+'</p>';return;}
  const quotes=[...document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]')].filter(el=>el.closest('.scorecard')||el.closest('.fd-modal'));
  const markets={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
  const lookup=x=>quotes.find(el=>playerKey(el.dataset.fdPlayer)===playerKey(x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
@@ -139,6 +139,7 @@ function paintModalTotals(){
   const stateLabel=graded?(graded+' · '+pick+' '+format(x.line)):pick?(pick+' '+format(x.line)+' · LIVE'):'NO VERIFIED PICK';
   return '<div class="fd-live-prop-row" data-fd-live-player="'+esc(x.player)+'" data-fd-live-market="'+esc(x.market)+'"><div class="fd-live-prop-head"><div class="fd-live-prop-player"><strong>'+esc(x.player)+'</strong><span>'+esc(x.team)+' · '+esc(markets[x.market])+'</span></div><div class="fd-live-prop-metrics"><div><small>PROJ</small><strong>'+(x.projection===null?'—':format(x.projection))+'</strong></div><div><small>DK LINE</small><strong>'+(valid?format(x.line):'—')+'</strong></div><div class="fd-live-prop-actual"><small>ACTUAL</small><strong>'+x.actual+'</strong></div></div></div>'+(valid?'<div class="fd-live-prop-progress" role="meter" aria-label="Progress toward saved DraftKings line" aria-valuemin="0" aria-valuemax="'+x.line+'" aria-valuenow="'+Math.min(x.actual,x.line)+'"><span style="width:'+progress.toFixed(1)+'%"></span></div><div class="fd-live-prop-caption"><span>'+x.actual+' / '+format(x.line)+' ('+Math.round(progress)+'%)</span><span>'+stateLabel+'</span></div>':'<div class="fd-live-prop-caption fd-live-prop-missing">No saved pregame DK line for this prop</div>')+'</div>';
  }).join('');
+ if(!panel.fd2ForecastCards)panel.fd2ForecastCards=[...panel.closest('.fd-merged-player-props')?.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]')||[]];
  const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
  // Render a single unified player list. Preserve full projection cards and enrich
@@ -150,7 +151,7 @@ function paintModalTotals(){
   if(list){
    const liveRows=[...list.querySelectorAll('.fd-live-prop-row')];
    const liveByKey=new Map(liveRows.map(row=>[key(row.dataset.fdLivePlayer)+'|'+key(row.dataset.fdLiveMarket),row]));
-   const forecastCards=[...modal.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]')];
+   const forecastCards=panel.fd2ForecastCards||[];
    for(const card of forecastCards){
     const match=liveByKey.get(key(card.dataset.fdPlayer)+'|'+key(card.dataset.fdMarket));
     const old=card.querySelector('.fd2-actual-result');
