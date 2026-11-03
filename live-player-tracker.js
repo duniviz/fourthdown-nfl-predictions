@@ -167,16 +167,43 @@ function paintModalTotals(){
      match.remove();
     }
     card.hidden=false;card.style.display='';
-    // Keep advanced simulation, workload and reasoning available but collapsed.
-    if(!card.querySelector('.fd2-prop-more')){
-     const details=document.createElement('details');
+    // One compact summary, with all research retained behind a disclosure.
+    let details=card.querySelector('.fd2-prop-more');
+    if(!details){
+     details=document.createElement('details');
      details.className='fd2-prop-more';
      const summary=document.createElement('summary');
-     summary.textContent='Trends, workload & analysis';
+     summary.textContent='Trends & analysis';
      details.appendChild(summary);
-     const keep=[...card.children].filter(el=>!el.matches('.fd-mobile-prop-name,.fd-mobile-prop-numbers,.fd2-actual-result,.fd-mobile-prop-bottom,.fd2-prop-more'));
-     for(const el of keep)details.appendChild(el);
      card.appendChild(details);
+    }
+    const headline=card.querySelector('.fd-mobile-prop-name');
+    const metrics=card.querySelector('.fd-mobile-prop-numbers');
+    const result=card.querySelector('.fd2-actual-result');
+    const bottom=card.querySelector('.fd-mobile-prop-bottom');
+    if(headline&&metrics){
+     if(!card.querySelector('.fd2-prop-head')){
+      const head=document.createElement('div');
+      head.className='fd2-prop-head';
+      headline.before(head);
+      head.append(headline);
+      if(bottom){
+       const direction=bottom.querySelector('strong');
+       if(direction){
+        const badge=document.createElement('span');
+        badge.className='fd2-prop-direction';
+        badge.textContent=direction.textContent;
+        head.append(badge);
+       }
+      }
+     }
+     if(bottom&&bottom.parentElement!==details)details.appendChild(bottom);
+     // Put all secondary charts, workload, simulations and narrative inside details.
+     for(const child of [...card.children]){
+      if(child===card.querySelector('.fd2-prop-head')||child===metrics||child===result||child===details)continue;
+      details.appendChild(child);
+     }
+     if(details!==card.lastElementChild)card.appendChild(details);
     }
     list.appendChild(card);
    }
