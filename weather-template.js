@@ -20,8 +20,8 @@ function scenario(weather,generatedAt,kickoff){
  const condition=String(weather.conditions||'').toLowerCase();
  const heavy=precip>=60&&/rain|snow|sleet|storm|shower/.test(condition);
  if(heavy){pts-=2;pass-=.05;receptions-=.03;rush+=.03;eff-=.03;reasons.push('precipitation');}
- return {points:Math.max(-7,pts),passing:Math.max(-.18,pass),passAttempts:Math.max(-.08,passAttempts),
-  receptions:Math.max(-.12,receptions),rushAttempts:Math.min(.08,rush),rushEfficiency:Math.max(-.06,eff),
+ return {points:Math.max(-3,pts),passing:Math.max(-.05,pass),passAttempts:Math.max(-.05,passAttempts),
+  receptions:Math.max(-.05,receptions),rushAttempts:Math.min(.05,rush),rushEfficiency:Math.max(-.05,eff),
   reasons,wind,temp,precip,version:'weather-template-v1'};
 }
 function adjust(market,baseline,s){
@@ -29,9 +29,10 @@ function adjust(market,baseline,s){
  const factors={passing_yards:s.passing,receiving_yards:s.passing,pass_attempts:s.passAttempts,pass_completions:(1+s.passAttempts)*(1+s.receptions)-1,
   receptions:s.receptions,rush_attempts:s.rushAttempts,
   rushing_yards:(1+s.rushAttempts)*(1+s.rushEfficiency)-1};
+ const factor=Math.max(-.05,Math.min(.05,factors[market]||0));
  if(market==='game_total')return Math.max(0,n+s.points);
  if(market==='home_score'||market==='away_score')return Math.max(0,n+s.points/2);
- return Math.max(0,n*(1+(factors[market]||0)));
+ return Math.max(0,n*(1+factor));
 }
 root.FDWeatherTemplate={scenario,adjust};
 })(typeof window!=='undefined'?window:globalThis);
