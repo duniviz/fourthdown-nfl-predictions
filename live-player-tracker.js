@@ -156,7 +156,8 @@ function paintModalTotals(){
    const liveByKey=new Map(liveRows.map(row=>[key(row.dataset.fdLivePlayer)+'|'+key(row.dataset.fdLiveMarket),row]));
    const forecastCards=panel.fd2ForecastCards||[];
    for(const card of forecastCards){
-    const candidates=liveRows.filter(row=>samePlayer(row.dataset.fdLivePlayer,card.dataset.fdPlayer)&&row.dataset.fdLiveMarket===card.dataset.fdMarket&&(!row.dataset.fdLiveTeam||playerKey(row.dataset.fdLiveTeam)===playerKey(card.dataset.fdTeam)));\n    const match=candidates.length===1?candidates[0]:null;
+    const candidates=liveRows.filter(row=>samePlayer(row.dataset.fdLivePlayer,card.dataset.fdPlayer)&&row.dataset.fdLiveMarket===card.dataset.fdMarket&&(!row.dataset.fdLiveTeam||playerKey(row.dataset.fdLiveTeam)===playerKey(card.dataset.fdTeam)));
+    const match=candidates.length===1?candidates[0]:null;
     const old=card.querySelector('.fd2-actual-result');
     if(old)old.remove();
     if(match){
