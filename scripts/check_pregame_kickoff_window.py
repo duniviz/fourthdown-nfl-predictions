@@ -9,10 +9,14 @@ from zoneinfo import ZoneInfo
 now=dt.datetime.now(dt.timezone.utc)
 local=now.astimezone(ZoneInfo("America/Chicago"))
 refresh="--refresh" in sys.argv
-# 08:00 and 17:00 Central, Tuesday through Saturday.
-if refresh and local.weekday() in (1,2,3,4,5) and local.hour in (8,17) and local.minute<10:
-    print("DAILY_REFRESH",local.isoformat())
-    sys.exit(0)
+# Central-time API cadence: Tue-Fri every 4 hours, Sat every 2,
+# Sun-Mon hourly. Only the first 10-minute cron tick in each slot runs.
+if refresh:
+    weekday=local.weekday()
+    interval=4 if weekday in (1,2,3,4) else (2 if weekday==5 else 1)
+    if local.hour % interval == 0 and local.minute < 10:
+        print("SCHEDULED_REFRESH",local.isoformat())
+        sys.exit(0)
 try:
     games=json.loads(pathlib.Path("data/dk-game-odds.json").read_text()).get("games",[])
 except (OSError,ValueError):
@@ -23,7 +27,11 @@ for game in games:
         remaining=(kickoff-now).total_seconds()/60
     except (ValueError,TypeError,KeyError):
         continue
-    # API refresh at ~60 and ~30 minutes; snapshot only at ~30.
+    # Keep final snapshot capture at 30 minutes. During the final two
+    # hours, refresh the market at each half-hour boundary as well.
+    if refresh and 0 < remaining <= 120 and local.minute % 30 < 10:
+        print("NEAR_KICKOFF_REFRESH",game.get("away"),game.get("home"),round(remaining,1))
+        sys.exit(0)
     windows=((55,65),(25,35)) if refresh else ((25,35),)
     if any(low<=remaining<=high for low,high in windows):
         print("PREGAME_WINDOW",game.get("away"),game.get("home"),round(remaining,1))
