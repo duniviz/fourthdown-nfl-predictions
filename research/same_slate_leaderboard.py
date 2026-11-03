@@ -34,8 +34,11 @@ def compare(rows, week=None):
             if row.get("dnp") or row.get("played") is False:
                 rejected["dnp"]+=1;continue
             key=(game,player,market)
+            if (key,model) in duplicate_keys:
+                rejected["duplicate_model_forecast"]+=1;continue
             if model in groups[key]:
                 rejected["duplicate_model_forecast"]+=1
+                duplicate_keys.add((key,model))
                 del groups[key][model]
                 continue
             groups[key][model]={"projection":projection,"actual":actual,"dk_line":finite(row.get("dk_line")),"predicted_at_utc":created.isoformat()}
@@ -49,6 +52,9 @@ def compare(rows, week=None):
         actuals={round(v["actual"],6) for v in forecasts.values()}
         if len(actuals)!=1:
             rejected["conflicting_actuals"]+=1;continue
+        lines={round(v["dk_line"],6) for v in forecasts.values() if v["dk_line"] is not None}
+        if len(lines)>1:
+            rejected["conflicting_dk_lines"]+=1;continue
         matched+=1
         for model,v in forecasts.items():
             line=v["dk_line"]
