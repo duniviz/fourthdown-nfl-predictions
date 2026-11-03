@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'tools/accuracy_engine.py'
+      - 'tests/test_accuracy_engine.py'
       - '.github/workflows/accuracy-engine.yml'
       - 'data/backtests/player-predictions.csv'
   workflow_dispatch:
@@ -21,6 +22,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+      - name: Run Accuracy Engine regression tests
+        run: python -m unittest discover -s tests -p 'test_accuracy_engine.py' -v
       - name: Run historical holdout and weakness diagnostics
         run: python tools/accuracy_engine.py
       - name: Verify research-only safety gates
