@@ -51,7 +51,7 @@ jobs:
       - name: Test game and player weather challengers
         run: python -m unittest discover -s tests -p 'test_weather_market_research.py' -v
       - name: Evaluate frozen game and player weather markets if available
-        run: python tools/weather_market_research.py
+        run: python -m tools.weather_market_research
       - name: Evaluate frozen research-only residual challenger
         run: python tools/research_bias_challenger.py
       - name: Run historical holdout and weakness diagnostics
