@@ -5,6 +5,7 @@ Never estimates targets, routes, carries, or snap shares from postgame outcomes.
 """
 import csv
 import json
+import datetime as dt
 from pathlib import Path
 
 REQUIRED={"season","week","player_id","market","actual","new"}
@@ -13,6 +14,14 @@ OPPORTUNITY={
     "rushing_yards":("expected_carries","projected_carries","expected_yards_per_carry","projected_snap_share"),
     "passing_yards":("expected_pass_attempts","projected_pass_attempts","expected_yards_per_attempt"),
 }
+def pregame_verified(row):
+    try:
+        captured=dt.datetime.fromisoformat(row["features_captured_at_utc"].replace("Z","+00:00"))
+        kickoff=dt.datetime.fromisoformat(row["kickoff_utc"].replace("Z","+00:00"))
+        return captured.utcoffset() is not None and kickoff.utcoffset() is not None and captured < kickoff
+    except (KeyError,TypeError,ValueError,AttributeError):
+        return False
+
 def audit(path):
     with Path(path).open(newline="",encoding="utf-8-sig") as f:
         reader=csv.DictReader(f)
@@ -27,9 +36,13 @@ def audit(path):
         subset=[r for r in rows if r.get("market")==market]
         present=[f for f in features if f in fields]
         nonempty={f:sum(bool(r.get(f,"").strip()) for r in subset) for f in present}
+        verified=sum(pregame_verified(r) for r in subset)
+        feature_complete=bool(subset) and all(nonempty.get(f,0)==len(subset) for f in features)
         report[market]={"historical_rows":len(subset),"candidate_features":list(features),
                         "present_columns":present,"nonempty_feature_rows":nonempty,
-                        "eligible_for_opportunity_training":bool(subset) and all(nonempty.get(f,0)==len(subset) for f in features)}
+                        "pregame_timestamp_verified_rows":verified,
+                        "complete_feature_columns":feature_complete,
+                        "eligible_for_opportunity_training":feature_complete and verified==len(subset)}
     return {"status":"feature_availability_audit","research_only":True,"production_changed":False,
             "trained_model":False,"postgame_workload_used_as_pregame":False,
             "source":"data/backtests/player-predictions.csv","markets":report,
