@@ -1,0 +1,67 @@
+{
+  "seed": 20261029,
+  "trials_per_market": 601,
+  "selection": "All candidate rankings on 2024 only; single 2025 holdout evaluation",
+  "scope": "Only existing pregame usage/defense signals, their interaction and incumbent/old blend. NOT new external NGS or coverage data.",
+  "warning": "Repeated research across the same 2025 holdout eventually biases evaluation. Require fresh 2026 forward results before promotion.",
+  "production": "Never automatically deploy",
+  "results": [
+    {
+      "market": "passing_yards",
+      "n_train": 398,
+      "n_test": 395,
+      "trials": 601,
+      "weights": [
+        0,
+        0,
+        -0.8,
+        0.5,
+        0.3
+      ],
+      "train_baseline_mae": 65.2136,
+      "train_challenger_mae": 64.9637,
+      "baseline_mae": 65.139,
+      "challenger_mae": 65.1737,
+      "holdout_improvement_pct": -0.053,
+      "holdout_pass": false
+    },
+    {
+      "market": "rushing_yards",
+      "n_train": 883,
+      "n_test": 873,
+      "trials": 601,
+      "weights": [
+        -0.15,
+        0.3,
+        0.8,
+        -0.5,
+        0
+      ],
+      "train_baseline_mae": 23.6172,
+      "train_challenger_mae": 23.5194,
+      "baseline_mae": 23.9293,
+      "challenger_mae": 23.8063,
+      "holdout_improvement_pct": 0.514,
+      "holdout_pass": true
+    },
+    {
+      "market": "receiving_yards",
+      "n_train": 1927,
+      "n_test": 1852,
+      "trials": 601,
+      "weights": [
+        -0.5,
+        -0.15,
+        0,
+        0,
+        0
+      ],
+      "train_baseline_mae": 23.5167,
+      "train_challenger_mae": 23.2298,
+      "baseline_mae": 22.6123,
+      "challenger_mae": 22.3924,
+      "holdout_improvement_pct": 0.972,
+      "holdout_pass": true
+    }
+  ]
+}

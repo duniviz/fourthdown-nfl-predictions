@@ -1,0 +1,14 @@
+{
+  "purpose": "Player-prop challenger baseline selection",
+  "baseline": "new",
+  "source": "data/backtests/player-summary.json",
+  "holdout_season": 2025,
+  "markets": {
+    "passing_yards": {"samples": 395, "old_mae": 67.42, "selected_mae": 65.14},
+    "rushing_yards": {"samples": 873, "old_mae": 25.08, "selected_mae": 23.93},
+    "receiving_yards": {"samples": 1852, "old_mae": 24.16, "selected_mae": 22.61}
+  },
+  "selection_rule": "Compare future challengers to the new-model baseline on identical player-market-week observations; do not compare unpaired aggregate MAEs.",
+  "production_deployment": "pending_identification_of_model_implementation_and_paired_replay",
+  "note": "This selects a research comparison baseline only. Summary metrics do not identify a production-ready model artifact or prove live deployment."
+}

@@ -1,0 +1,40 @@
+{
+  "design": "2024 coefficient selection, 2025 holdout; same player-week rows",
+  "scope": "Historical opportunity trend and opponent defensive allowance signals only. NGS, coverage, pressure and full production replay NOT included.",
+  "deployment": "Never automatically deploy; needs live-equivalent replay and additional validation",
+  "results": [
+    {
+      "market": "passing_yards",
+      "n_2024": 398,
+      "n_2025": 395,
+      "usage_coefficient": 0.1,
+      "defense_coefficient": 0.0,
+      "baseline_mae": 65.139,
+      "challenger_mae": 65.3292,
+      "improvement_pct": -0.292,
+      "research_pass": false
+    },
+    {
+      "market": "rushing_yards",
+      "n_2024": 883,
+      "n_2025": 873,
+      "usage_coefficient": -0.2,
+      "defense_coefficient": 0.35,
+      "baseline_mae": 23.9293,
+      "challenger_mae": 23.8294,
+      "improvement_pct": 0.418,
+      "research_pass": false
+    },
+    {
+      "market": "receiving_yards",
+      "n_2024": 1927,
+      "n_2025": 1852,
+      "usage_coefficient": -0.2,
+      "defense_coefficient": 0.0,
+      "baseline_mae": 22.6123,
+      "challenger_mae": 22.4776,
+      "improvement_pct": 0.596,
+      "research_pass": true
+    }
+  ]
+}
