@@ -54,7 +54,7 @@ def generate(game_id,facts,existing):
       "Do not mention odds or line movement unless verified market history is supplied. "
       "If evidence is thin, write just 1-2 modestly scoped stories. "
       "Every story must cite 1-3 exact evidence keys from the input. "
-      "Return JSON only: {\\\"headline\\\":string,\\\"stories\\\":[{\\\"title\\\":string,\\\"body\\\":string,\\\"evidence_keys\\\":[string]}]}. "
+      "Return JSON only: {\"headline\":string,\"stories\":[{\"title\":string,\"body\":string,\"evidence_keys\":[string]}]}. "
       "Each body 45-110 words. Avoid these other games' headlines: "+json.dumps(other_titles[-70:])
     )
     payload={"model":os.environ.get("FOURTHDOWN_PREVIEW_MODEL","gpt-4.1-mini"),
@@ -80,7 +80,7 @@ def validate(result,facts,existing):
         if not isinstance(body,str) or not 70<=len(body)<=1100: return False
         if not isinstance(keys,list) or not keys or not all(isinstance(k,str) and k in facts for k in keys): return False
         if any(difflib.SequenceMatcher(None,title.lower(),old.lower()).ratio()>0.80 for old in previous+seen): return False
-        if re.search(r"\\b(?:sources say|reportedly|according to reports)\\b",body,re.I): return False
+        if re.search(r"\b(?:sources say|reportedly|according to reports)\b",body,re.I): return False
         seen.append(title)
     return True
 
@@ -114,7 +114,7 @@ def main():
                     "kickoff_utc":game["kickoff_utc"],"source":"AI editorial draft from saved model and verified ESPN context"}
         changed=True
     if changed:
-        OUT.write_text(json.dumps({"schema_version":1,"games":saved},indent=2,ensure_ascii=False)+"\\n")
+        OUT.write_text(json.dumps({"schema_version":1,"games":saved},indent=2,ensure_ascii=False)+"\n")
         print("Updated verified preview drafts")
     else: print("No verified previews updated")
 
