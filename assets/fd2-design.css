@@ -134,3 +134,8 @@ body.fd2-ready .fd-modal{z-index:150!important}
 .fd-merged-player-props .fd2-prop-more .fd-mobile-prop-bottom>strong{display:none!important}
 .fd-merged-player-props .fd2-prop-more .fd-prop-workload{margin-top:10px!important}
 @media(max-width:650px){.fd-merged-player-props .fd-live-prop-list>.fd-mobile-prop-card{padding:13px!important}.fd-merged-player-props .fd2-prop-head .fd-mobile-prop-name strong{font-size:15px!important}.fd-merged-player-props .fd2-prop-direction{font-size:10px!important;padding:5px 6px!important}.fd-merged-player-props .fd-mobile-prop-numbers b{font-size:21px!important}}
+
+/* Clear stat category dividers within the unified prop grid. */
+.fd-merged-player-props .fd-live-prop-list>.fd2-prop-metric-heading{grid-column:1/-1!important;display:flex;align-items:center;gap:12px;margin:18px 0 2px!important;padding:10px 0 7px!important;border-bottom:1px solid #394b56!important;color:#baff36!important;font-size:16px!important;font-weight:850!important;letter-spacing:.01em}
+.fd-merged-player-props .fd-live-prop-list>.fd2-prop-metric-heading:first-child{margin-top:0!important}
+.fd-merged-player-props .fd-live-prop-list>.fd2-prop-metric-heading::after{content:'';height:1px;flex:1;background:#334550}
