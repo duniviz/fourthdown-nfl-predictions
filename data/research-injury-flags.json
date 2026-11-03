@@ -1,13 +1,23 @@
 {
-  "generated_at_utc": "2026-11-01T19:08:25.678663+00:00",
+  "generated_at_utc": "2026-11-03T20:15:39.535352+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
-  "projection_markets": 159,
-  "flagged_markets": 5,
+  "projection_markets": 182,
+  "flagged_markets": 15,
   "flags": [
+    {
+      "player_id": "00-0035228",
+      "player_name": "Kyler Murray",
+      "team": "MIN",
+      "market": "passing_yards",
+      "sleeper_id": "5849",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
     {
       "player_id": "00-0034796",
       "player_name": "Lamar Jackson",
@@ -15,6 +25,16 @@
       "market": "passing_yards",
       "sleeper_id": "4881",
       "injury_flag": "out",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0026498",
+      "player_name": "Matthew Stafford",
+      "team": "LA",
+      "market": "passing_yards",
+      "sleeper_id": "421",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -29,12 +49,52 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0033280",
+      "player_name": "Christian McCaffrey",
+      "team": "SF",
+      "market": "receiving_yards",
+      "sleeper_id": "4034",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0034827",
+      "player_name": "DJ Moore",
+      "team": "BUF",
+      "market": "receiving_yards",
+      "sleeper_id": "4983",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0031381",
       "player_name": "Davante Adams",
       "team": "LA",
       "market": "receiving_yards",
       "sleeper_id": "2133",
       "injury_flag": "injured_reserve",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0034960",
+      "player_name": "Jakobi Meyers",
+      "team": "JAX",
+      "market": "receiving_yards",
+      "sleeper_id": "5947",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0033307",
+      "player_name": "Kendrick Bourne",
+      "team": "ARI",
+      "market": "receiving_yards",
+      "sleeper_id": "4454",
+      "injury_flag": "out",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -49,6 +109,16 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0031408",
+      "player_name": "Mike Evans",
+      "team": "SF",
+      "market": "receiving_yards",
+      "sleeper_id": "2216",
+      "injury_flag": "out",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035659",
       "player_name": "Terry McLaurin",
       "team": "WAS",
@@ -57,6 +127,36 @@
       "injury_flag": "injured_reserve",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0033280",
+      "player_name": "Christian McCaffrey",
+      "team": "SF",
+      "market": "rushing_yards",
+      "sleeper_id": "4034",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0035685",
+      "player_name": "David Montgomery",
+      "team": "HOU",
+      "market": "rushing_yards",
+      "sleeper_id": "5892",
+      "injury_flag": "out",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0035228",
+      "player_name": "Kyler Murray",
+      "team": "MIN",
+      "market": "rushing_yards",
+      "sleeper_id": "5849",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
     }
   ]
-}
+}\n
