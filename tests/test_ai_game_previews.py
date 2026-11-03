@@ -37,4 +37,23 @@ class PreviewTests(unittest.TestCase):
         facts={"teams":{"home":"SEA","away":"CHI"},"model_projection":{"winner":"SEA"}}
         self.assertTrue(mod.validate(preview,facts,{}))
 
+    def test_first_preview_generated(self):
+        self.assertTrue(mod.should_generate(None, {"teams":{"home":"SEA"}})[0])
+
+    def test_model_changes_do_not_rewrite(self):
+        original={"teams":{"home":"SEA"},"kickoff_utc":"2026-11-08T18:00:00Z",
+                  "model_projection":{"winner":"SEA"}}
+        saved={"material_signature":mod.material_signature(original)}
+        updated=dict(original,model_projection={"winner":"CHI"})
+        self.assertFalse(mod.should_generate(saved,updated)[0])
+
+    def test_verified_availability_change_rewrites(self):
+        original={"teams":{"home":"SEA"},"verified_availability":{"status":"verified","players":[]}}
+        saved={"material_signature":mod.material_signature(original)}
+        updated=dict(original,verified_availability={"status":"verified","players":[{"name":"QB","status":"out"}]})
+        self.assertTrue(mod.should_generate(saved,updated)[0])
+
+    def test_legacy_preview_preserved(self):
+        self.assertFalse(mod.should_generate({"headline":"Existing"}, {"teams":{"home":"SEA"}})[0])
+
 if __name__=="__main__":unittest.main()
