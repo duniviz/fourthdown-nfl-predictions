@@ -47,7 +47,7 @@ if "--refresh" in sys.argv:
     if len(month_entries()) >= limit:
         print("MONTHLY_REFRESH_CAP_REACHED", limit)
         sys.exit(1)
-    if local.hour in slots[local.weekday()] and local.minute < 10:
+    if "--force" in sys.argv:\n        print("MANUAL_REFRESH", local.isoformat(), len(month_entries()) + 1, "of", limit)\n        sys.exit(0)\n    if local.hour in slots[local.weekday()] and local.minute < 10:
         print("SCHEDULED_REFRESH", local.isoformat(), len(month_entries()) + 1, "of", limit)
         sys.exit(0)
     print("Outside scheduled refresh slot")
