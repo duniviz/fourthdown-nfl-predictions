@@ -2,7 +2,7 @@ name: Publish ESPN scoreboard backup
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * 0,1,4,5,6'
+    - cron: '17 * * * *'
 permissions:
   contents: write
 jobs:
@@ -14,13 +14,20 @@ jobs:
         run: |
           python - <<'PY'
           import json, urllib.request, datetime, pathlib
-          url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=100'
+          from zoneinfo import ZoneInfo
+          now=datetime.datetime.now(ZoneInfo('America/Chicago'))
+          day=now.weekday() # Monday=0
+          after_rollover=day==1 and (now.hour,now.minute)>=(8,0)
+          offset=(2 if after_rollover else -5) if day==1 else 1 if day==2 else -((day-3)%7)
+          start=now.date()+datetime.timedelta(days=offset)
+          end=start+datetime.timedelta(days=4)
+          url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+start.strftime('%Y%m%d')+'-'+(end+datetime.timedelta(days=1)).strftime('%Y%m%d')+'&limit=100'
           req=urllib.request.Request(url,headers={'User-Agent':'FOURTHDOWN-scoreboard/1.0'})
           with urllib.request.urlopen(req,timeout=25) as response:
               data=json.load(response)
           if not isinstance(data.get('events'),list) or not data['events']:
               raise ValueError('Empty ESPN scoreboard: keeping previous backup')
-          payload={'updated_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'events':data['events']}
+          payload={'updated_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'slate_start_ct':start.isoformat(),'slate_end_ct':end.isoformat(),'events':data['events']}
           pathlib.Path('data').mkdir(exist_ok=True)
           pathlib.Path('data/espn-scoreboard-backup.json').write_text(json.dumps(payload,separators=(',',':')))
           PY
