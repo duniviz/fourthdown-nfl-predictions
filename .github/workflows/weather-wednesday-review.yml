@@ -1,4 +1,4 @@
-name: Wednesday weather model review
+name: Tuesday weather model review
 on:
   push:
     branches: [main]
@@ -10,7 +10,7 @@ on:
       - '.github/workflows/weather-wednesday-review.yml'
   workflow_dispatch:
   schedule:
-    - cron: '45 15 * * 3'
+    - cron: '45 15 * * 2'
 permissions:
   contents: write
 concurrency:
@@ -52,7 +52,7 @@ jobs:
           gov=json.load(open('data/model-governance.json'))
           assert not gov['automatic_promotion_enabled'] and not gov['live_weights_changed']
           PY
-      - name: Publish Wednesday review
+      - name: Publish Tuesday review
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
