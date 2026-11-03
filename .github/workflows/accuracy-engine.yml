@@ -21,7 +21,7 @@ on:
       - 'data/backtests/player-predictions.csv'
   workflow_dispatch:
   schedule:
-    - cron: '30 15 * * 3'
+    - cron: '30 15 * * *'
 permissions:
   contents: write
 concurrency:
