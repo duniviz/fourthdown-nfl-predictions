@@ -626,6 +626,20 @@ function fdOpenMatchup(g){
  const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
+ const fdProjectionReliability=(x,sim)=>{
+   // This is a data-quality indicator, not a calibrated probability of hitting DK.
+   const games=Number(x.games_used);
+   const p10=Number(sim?.p10),p90=Number(sim?.p90),projection=Number(x.projection);
+   const hasRange=sim&&Number.isFinite(p10)&&Number.isFinite(p90)&&p90>=p10&&Number.isFinite(projection)&&projection>0;
+   const uncertainty=hasRange?(p90-p10)/projection:null;
+   const flags=[];
+   if(!Number.isFinite(games)||games<3)flags.push('Limited player history');
+   if(String(x.availability_status||'').toLowerCase().includes('question'))flags.push('Availability uncertain');
+   if(x.sample_warning)flags.push('Sample-size warning');
+   if(uncertainty!==null&&uncertainty>1.3)flags.push('Wide simulation range');
+   const label=flags.length?'Higher uncertainty':games>=5&&hasRange&&uncertainty<0.7?'More stable inputs':'Moderate uncertainty';
+   return '<div class="fd-modal-muted" aria-label="Projection uncertainty"><strong>Projection reliability: '+label+'</strong> · '+(Number.isFinite(games)?games+' prior games':'History not verified')+(hasRange?' · 10–90% simulated range '+p10.toFixed(1)+'–'+p90.toFixed(1):' · Simulation range unavailable')+'. '+(flags.length?flags.map(esc).join('; ')+'. ':'')+'Descriptive only; not a calibrated hit probability.</div>';
+ };
  const propExplanation=(x,line,edge)=>{
    const d=x.opponent_defense_context,parts=[];
    const n=v=>v===null||v===undefined||v===''||!Number.isFinite(Number(v))?null:Number(v);
@@ -703,7 +717,7 @@ function fdOpenMatchup(g){
        (hasRecentWorkload?'<div><small>Last 5 avg '+esc(workloadType)+'</small><b>'+recentWorkload.toFixed(1)+'</b></div>':'')+
        (hasRoleShare?'<div><small>Projected team share</small><b>'+Math.round(Math.max(0,roleShare)*100)+'%</b></div>':'')+
        '</div>':'';
-     return '<article class="fd-mobile-prop-card" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+propExplanation(x,validLine?line:null,edge)+'</article>';
+     return '<article class="fd-mobile-prop-card" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small></span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+hybridBars(x)+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+fdProjectionReliability(x,sim)+propExplanation(x,validLine?line:null,edge)+'</article>';
    }).join('')+'</div>';
  }).join('');
  // Expose only this game's stored forecast and verified quote data to the live stats display.
