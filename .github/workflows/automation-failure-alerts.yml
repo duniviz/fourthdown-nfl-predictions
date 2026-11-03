@@ -1,0 +1,45 @@
+name: Automated pipeline failure alerts
+on:
+  workflow_run:
+    workflows:
+      - Collect historical NFL training data
+      - Wednesday weather model review
+      - Accuracy Engine weekly research
+      - Capture last pregame projections and DK lines
+      - Test pregame capture
+    types: [completed]
+permissions:
+  actions: read
+  issues: write
+jobs:
+  alert:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' || github.event.workflow_run.conclusion == 'timed_out' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or update one actionable failure issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const title = '[Automation] ' + run.name + ' failed';
+            const body = [
+              'FOURTHDOWN pipeline needs attention.',
+              '',
+              '- Workflow: ' + run.name,
+              '- Conclusion: ' + run.conclusion,
+              '- Branch: ' + run.head_branch,
+              '- Commit: ' + run.head_sha,
+              '- Run: ' + run.html_url,
+              '',
+              'Live model promotions remain disabled unless independently validated.',
+              'Review logs, correct the error, then rerun the workflow.'
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'open', per_page: 100
+            });
+            const existing = issues.find(i => !i.pull_request && i.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({...context.repo, issue_number: existing.number, body});
+            } else {
+              await github.rest.issues.create({...context.repo, title, body});
+            }
