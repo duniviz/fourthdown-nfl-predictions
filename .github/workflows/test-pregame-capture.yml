@@ -1,7 +1,13 @@
 name: Test pregame capture
 on:
   push:
-    branches: [feature/last-pregame-capture]
+    branches: [main]
+    paths:
+      - 'scripts/capture_pregame_snapshots.py'
+      - 'tools/weather_adjustment_template.py'
+      - 'tests/test_capture_pregame_snapshots.py'
+      - 'tests/test_weather_adjustment_template.py'
+      - '.github/workflows/test-pregame-capture.yml'
   pull_request:
     paths:
       - 'scripts/capture_pregame_snapshots.py'
