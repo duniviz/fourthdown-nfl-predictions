@@ -231,8 +231,21 @@ const current=latestResearch.filter(x=>{
  const t=kickoffFor.get(String(x.game_id));
  return Number.isFinite(t)&&Date.now()<t;
 });
+const weatherFeed=await get('weather.json');
+const weatherCurrent=current.map(x=>{
+ const kickoff=kickoffFor.get(String(x.game_id));
+ const wx=window.FDWeatherTemplate?.scenario(weatherFeed.games?.[x.game_id],weatherFeed.generated_at_utc,new Date(kickoff).toISOString());
+ const market=String(x.market_key||x.stat_key||'').toLowerCase();
+ const aliases={player_pass_yds:'passing_yards',player_rush_yds:'rushing_yards',player_reception_yds:'receiving_yards',
+  player_receptions:'receptions',player_pass_attempts:'pass_attempts',player_rush_attempts:'rush_attempts'};
+ const mapped=aliases[market]||market;
+ const adjusted=window.FDWeatherTemplate?.adjust(mapped,x.projection,wx);
+ return adjusted!==null&&adjusted!==undefined&&wx?.reasons?.length
+  ?{...x,projection:Math.round(adjusted*10)/10,baseline_projection:x.projection,weather_version:'weather-template-v1'}
+  :x;
+});
 const archived=frozen.filter(x=>!current.some(y=>String(y.game_id)===String(x.game_id)&&norm(y.player)===norm(x.player)&&y.stat_key===x.stat_key));
-players=[...new Map([...current,...archived].map(x=>[norm(x.player)+'|'+x.team+'|'+x.game_id+'|'+(x.market_key||x.stat_key||x.market),x])).values()];const hasAnytimeTd=players.some(x=>x.market==='Anytime TD'&&Number.isFinite(Number(x.projection)));tdOption.disabled=!hasAnytimeTd;tdOption.textContent=hasAnytimeTd?'Anytime TD':'Anytime TD — unavailable';if(!hasAnytimeTd&&$('bet-market').value==='Anytime TD')$('bet-market').value='all';sims=new Map((s.players||[]).map(x=>[key(x),x]));results=res.rows||[];injuries=Object.fromEntries(Object.entries(inj.teams||{}).map(([k,v])=>[k,v.players||[]]));try{
+players=[...new Map([...weatherCurrent,...archived].map(x=>[norm(x.player)+'|'+x.team+'|'+x.game_id+'|'+(x.market_key||x.stat_key||x.market),x])).values()];const hasAnytimeTd=players.some(x=>x.market==='Anytime TD'&&Number.isFinite(Number(x.projection)));tdOption.disabled=!hasAnytimeTd;tdOption.textContent=hasAnytimeTd?'Anytime TD':'Anytime TD — unavailable';if(!hasAnytimeTd&&$('bet-market').value==='Anytime TD')$('bet-market').value='all';sims=new Map((s.players||[]).map(x=>[key(x),x]));results=res.rows||[];injuries=Object.fromEntries(Object.entries(inj.teams||{}).map(([k,v])=>[k,v.players||[]]));try{
  const response=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries',{cache:'no-store'});
  if(response.ok){
   const feed=await response.json();
@@ -318,4 +331,5 @@ load();
  };
  apply(saved);
  picker.addEventListener('change',()=>{apply(picker.value);try{localStorage.setItem(KEY,picker.value);}catch(e){}});
-})();</script><script defer src="pregame-snapshots.js?v=20261101"></script><script defer src="pregame-tracker.js?v=20261101"></script><script defer src="player-season-stats.js?v=4"></script><script>(function(){const board=document.getElementById("research-dk-board");if(!board)return;board.open=true;const summary=board.querySelector("summary"),heading=board.querySelector("h3");if(summary)summary.textContent="Current research comparisons · saved DraftKings lines";if(heading)heading.textContent="Research comparisons";})();</script></body></html>
+})();</script><script defer src="weather-template.js?v=1"></script>
+<script defer src="pregame-snapshots.js?v=20261101"></script><script defer src="pregame-tracker.js?v=20261101"></script><script defer src="player-season-stats.js?v=4"></script><script>(function(){const board=document.getElementById("research-dk-board");if(!board)return;board.open=true;const summary=board.querySelector("summary"),heading=board.querySelector("h3");if(summary)summary.textContent="Current research comparisons · saved DraftKings lines";if(heading)heading.textContent="Research comparisons";})();</script></body></html>
