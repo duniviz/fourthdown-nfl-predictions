@@ -1,5 +1,11 @@
 name: Wednesday weather model review
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/ml_challengers.py'
+      - 'tests/test_ml_challengers.py'
+      - '.github/workflows/weather-wednesday-review.yml'
   workflow_dispatch:
   schedule:
     - cron: '45 15 * * 3'
