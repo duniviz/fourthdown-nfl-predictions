@@ -1,3 +1,4 @@
+Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 name: Publish weekly v2 forecasts
 on:
   workflow_dispatch:
@@ -5,9 +6,11 @@ on:
     paths:
       - '.github/forecast-refresh.txt'
   schedule:
-    # Tuesday at noon America/Chicago, using UTC schedules plus a local-time guard.
-    # Both UTC hours are needed because Central Time observes daylight saving.
-    - cron: '0 17,18 * * 2'
+    # Retry hourly from noon through 5 PM America/Chicago on Tuesday. The
+    # upstream schedule/data feeds can publish the new slate after noon; a
+    # single Tuesday attempt would otherwise leave forecasts stale until Thursday.
+    # UTC hours span CST and CDT; the local-time guard selects the intended run.
+    - cron: '0 17,18,19,20,21,22,23 * * 2'
     # Keep Thursday, Saturday and Sunday morning refreshes.
     - cron: '15 13 * * 4,6,0'
     # Monday Night Football: UTC Tuesday covers Monday evening in Central Time.
@@ -29,8 +32,8 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18 * * 2" ]]; then
-            if [[ "$(TZ=America/Chicago date +%H)" != "12" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 17,18,19,20,21,22,23 * * 2" ]]; then
+            if ! [[ "$(TZ=America/Chicago date +%H)" =~ ^(12|13|14|15|16|17)$ ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
@@ -129,3 +132,4 @@ jobs:
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+
