@@ -19,7 +19,7 @@ jobs:
       - name: Check scheduled refresh or pre-kickoff window
         id: clock
         run: |
-          if python scripts/check_pregame_kickoff_window.py --refresh; then
+          if python scripts/check_pregame_kickoff_window.py --refresh ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
