@@ -120,14 +120,21 @@ def main():
         row["last_update"] = timestamp(p.get("last_update"))
         prop_rows.append(row)
     # Never overwrite valid published snapshots with an empty or partial provider response.
-    if not game_rows:
-        raise SystemExit("No DraftKings game spreads/totals returned; preserving prior data")
-    if not prop_rows:
-        raise SystemExit("No DraftKings player props returned; preserving prior data")
-    save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
-    save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
-    save("dk-opening-odds.json", capture_openings(game_rows, prop_rows, now))
-    save("dk-game-line-history.json", capture_game_history(game_rows, now))
+    # Publish each market family independently. A missing game market must not
+    # prevent valid player quotes from updating (or vice versa).
+    if game_rows:
+        save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
+        save("dk-game-line-history.json", capture_game_history(game_rows, now))
+    else:
+        print("WARNING: No DraftKings spreads/totals from provider; retaining last verified game snapshot")
+    if prop_rows:
+        save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
+    else:
+        print("WARNING: No DraftKings player quotes from provider; retaining last verified prop snapshot")
+    if game_rows or prop_rows:
+        save("dk-opening-odds.json", capture_openings(game_rows, prop_rows, now))
+    else:
+        raise SystemExit("No DraftKings game or player markets returned; preserving prior data")
     print(f"ParlayAPI refreshed {len(game_rows)} games, {len(prop_rows)} player quotes")
 
 if __name__ == "__main__":
