@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'tools/accuracy_engine.py'
+      - 'tools/research_bias_challenger.py'
+      - 'tests/test_research_bias_challenger.py'
       - 'tests/test_accuracy_engine.py'
       - 'tests/test_same_slate_safety.py'
       - 'research/same_slate_leaderboard.py'
@@ -28,6 +30,10 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_accuracy_engine.py' -v
       - name: Verify frozen same-slate comparison safety
         run: python -m unittest discover -s tests -p 'test_same_slate_safety.py' -v
+      - name: Test chronological residual challenger
+        run: python -m unittest discover -s tests -p 'test_research_bias_challenger.py' -v
+      - name: Evaluate frozen research-only residual challenger
+        run: python tools/research_bias_challenger.py
       - name: Run historical holdout and weakness diagnostics
         run: python tools/accuracy_engine.py
       - name: Verify research-only safety gates
@@ -35,6 +41,12 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open('data/accuracy-engine.json'))
+          challenger=json.load(open('data/research-bias-challenger.json'))
+          assert challenger['research_only'] is True
+          assert challenger['production_changed'] is False
+          assert challenger['automatic_promotion'] is False
+          assert challenger['production_equivalence_verified'] is False
+          assert all(not m.get('eligible_for_promotion',False) for m in challenger['markets'].values())
           assert d['production_changed'] is False
           assert d['automatic_promotion'] is False
           assert d['holdout_rows'] > 0
@@ -47,7 +59,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/accuracy-engine.json
+          git add data/accuracy-engine.json data/research-bias-challenger.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh research-only accuracy diagnostics"
             git reset --hard HEAD
