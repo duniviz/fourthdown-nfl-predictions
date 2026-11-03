@@ -13,7 +13,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 @media(max-width:1000px){
  html[data-fd-view="desktop"] .wrap{width:100%;padding-left:16px;padding-right:16px}
 }
-</style><style>.fd-research-details{margin:18px 0;border:1px solid #365369;border-radius:15px;background:#101f30;padding:12px}.fd-research-details>summary{cursor:pointer;color:#baff25;font-weight:850;padding:10px;font-size:16px}.fd-research-stack{display:grid;gap:14px;margin-top:12px}.fd-research-stack>.card{margin:0}.fd-research-details[open]{border-color:#7fae32}</style></head>
+</style><style>.fd-research-details{margin:18px 0;border:1px solid #365369;border-radius:15px;background:#101f30;padding:12px}.fd-research-details>summary{cursor:pointer;color:#baff25;font-weight:850;padding:10px;font-size:16px}.fd-research-stack{display:grid;gap:14px;margin-top:12px}.fd-research-stack>.card{margin:0}.fd-research-details[open]{border-color:#7fae32}</style><link rel="stylesheet" href="assets/fd2-design.css?v=2"></head>
 <body><header class="top"><div class="wrap nav"><a class="brand" href="index.html">FOURTH<b>DOWN</b></a><nav class="links" aria-label="Site navigation"><a href="index.html">Games</a><a href="bets.html">Player Prop Desk</a><a href="model-lab.html" class="active" aria-current="page">Model Lab</a><a href="history.html">History &amp; Accuracy</a></nav></div></header>
 <main class="wrap"><div class="eyebrow" style="margin-top:26px">Weekly testing</div><h1>Model Lab</h1><p class="muted">Compare player-prop models and see whether a change has earned its way into production.</p>
 <div class="grid"><section class="card"><div class="muted">Last published evaluation</div><div class="metric" id="last-run">Not published</div><small id="run-note" class="muted">Wednesday research is scheduled for 10:30 AM Central.</small></section><section class="card"><div class="muted">Production decision</div><div class="metric" id="recommendation">No change approved</div><small id="recommendation-note" class="muted">No verified promotion approval has been published.</small></section><section class="card"><div class="muted">Automatic promotion</div><div class="metric">Disabled</div><small class="muted">Production forecasts stay unchanged until a validated update is deployed.</small></section></div>
@@ -49,4 +49,4 @@ document.getElementById('comparison').innerHTML=markets.map(([key,label])=>{cons
 document.getElementById('explanation').textContent=results?.generated_at_utc?'These results come from historical research, not an exact replay of the live site. We need consistent improvements before changing production.':'No published test results yet. Check back after Wednesday’s research run.';
 }
 document.getElementById('reload').addEventListener('click',refresh);refresh();
-</script></body></html>
+</script><script defer src="assets/fd2-shell.js?v=2"></script></body></html>
