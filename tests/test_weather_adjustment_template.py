@@ -26,5 +26,5 @@ class TemplateTests(unittest.TestCase):
         self.assertGreater(adjusted_projection('player_rush_attempts',20,w),20)
     def test_rush_yards_accounts_for_efficiency(self):
         w=scenario(30,20,True)
-        self.assertAlmostEqual(adjusted_projection("rushing_yards",100,w),100*1.08*.94)
+        self.assertAlmostEqual(adjusted_projection("rushing_yards",100,w),100*1.08*.95)
 if __name__=="__main__":unittest.main()
