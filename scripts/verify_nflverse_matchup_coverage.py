@@ -29,13 +29,27 @@ for game in games:
             checked += 1
 print(f"Verified {checked} game/opponent/position contexts")
 players_path = root / "data/player-research.json"
-if players_path.exists():
-    raw = players_path.read_text().strip()
-    if not raw:
-        print("BLOCKER: player-research.json is empty; live player-card explanations cannot render")
-    else:
-        players = json.loads(raw).get("players", [])
-        if not players:
-            print("BLOCKER: player-research.json has no players")
-        else:
-            print(f"Player research feed contains {len(players)} records")
+assert players_path.exists() and players_path.stat().st_size > 0, "Production player feed is missing or empty"
+feed = json.loads(players_path.read_text(encoding="utf-8"))
+players = feed.get("players")
+assert isinstance(players, list) and players, "Production player feed has no players"
+checked_players = 0
+missing = []
+aliases = {"LA": "LAR", "WSH": "WAS", "JAX": "JAC"}
+for player in players:
+    position = str(player.get("position", "")).upper()
+    market = player.get("stat_key")
+    if (position, market) not in {("QB", "passing_yards"), ("RB", "rushing_yards"),
+                                   ("WR", "receiving_yards"), ("TE", "receiving_yards")}:
+        continue
+    game_id = str(player.get("game_id", ""))
+    parts = game_id.split("_")
+    assert len(parts) >= 3, f"Invalid player game_id: {game_id}"
+    opponent = aliases.get(player.get("opponent"), player.get("opponent"))
+    key = f"{parts[0]}|{int(parts[1])}|{opponent}|{position}|{market}"
+    if key not in contexts:
+        missing.append(key)
+    checked_players += 1
+assert checked_players, "No supported player yardage records in production feed"
+assert not missing, f"Missing {len(missing)} player matchup contexts; examples: {missing[:8]}"
+print(f"Verified {checked_players} player yardage records with correct opponent/week/position contexts")
