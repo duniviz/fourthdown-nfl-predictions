@@ -207,9 +207,38 @@ function paintModalTotals(){
     }
     list.appendChild(card);
    }
+   // Keep all props in one visual, separated by clearly labeled market headings.
+   const categories=[
+    ['passing_yards','Passing yards'],
+    ['rushing_yards','Rushing yards'],
+    ['receiving_yards','Receiving yards'],
+    ['player_pass_completions','Completions'],
+    ['player_rush_attempts','Rush attempts'],
+    ['player_receptions','Receptions']
+   ];
+   const allCards=[...list.children].filter(el=>el.matches('.fd-mobile-prop-card,.fd-live-prop-row'));
+   const marketOf=el=>el.dataset.fdMarket||el.dataset.fdLiveMarket||'';
+   const ordered=new Set();
+   for(const [market,title] of categories){
+    const matches=allCards.filter(el=>marketOf(el)===market);
+    if(!matches.length)continue;
+    const heading=document.createElement('h4');
+    heading.className='fd2-prop-metric-heading';
+    heading.textContent=title;
+    list.appendChild(heading);
+    for(const el of matches){list.appendChild(el);ordered.add(el);}
+   }
+   const other=allCards.filter(el=>!ordered.has(el));
+   if(other.length){
+    const heading=document.createElement('h4');
+    heading.className='fd2-prop-metric-heading';
+    heading.textContent='Other player props';
+    list.appendChild(heading);
+    other.forEach(el=>list.appendChild(el));
+   }
    modal.querySelectorAll('.fd-mobile-prop-group').forEach(group=>{group.remove();});
    const toolbar=body.querySelector('.fd-live-prop-toolbar strong');
-   if(toolbar)toolbar.textContent='Player props · Projections & actuals';
+   if(toolbar)toolbar.textContent='Grouped by stat category';
    if(!list.children.length)list.innerHTML='<p class="fd-modal-muted">No verified player props available for this matchup.</p>';
   }
  }
