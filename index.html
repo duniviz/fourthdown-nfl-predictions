@@ -632,7 +632,7 @@ function fdOpenMatchup(g){
    const target=[positionLabel,marketLabel].filter(Boolean).join(' ').trim()||marketLabel;
    // Matchup data are keyed to this game's own season/week, never a later refresh.
    const gameKey=String(x.game_id||p?.game_id||'');
-   const gameParts=gameKey.match(/^(20\\d{2})_(\\d{1,2})_/);
+   const gameParts=gameKey.match(/^(20\d{2})_(\d{1,2})_/);
    const opponentCode=canon(x.opponent);
    const nflverse=window.fdNflverseMatchups;
    const sourceKey=gameParts?gameParts[1]+'|'+Number(gameParts[2])+'|'+opponentCode+'|'+position+'|'+market:'';
