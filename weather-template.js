@@ -26,7 +26,7 @@ function scenario(weather,generatedAt,kickoff){
 }
 function adjust(market,baseline,s){
  const n=finite(baseline);if(n===null||n<0||!s)return null;
- const factors={passing_yards:s.passing,receiving_yards:s.passing,pass_attempts:s.passAttempts,
+ const factors={passing_yards:s.passing,receiving_yards:s.passing,pass_attempts:s.passAttempts,pass_completions:(1+s.passAttempts)*(1+s.receptions)-1,
   receptions:s.receptions,rush_attempts:s.rushAttempts,
   rushing_yards:(1+s.rushAttempts)*(1+s.rushEfficiency)-1};
  if(market==='game_total')return Math.max(0,n+s.points);
