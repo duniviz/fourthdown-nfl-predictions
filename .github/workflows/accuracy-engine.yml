@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/accuracy_engine.py'
       - 'tests/test_accuracy_engine.py'
+      - 'tests/test_same_slate_safety.py'
+      - 'research/same_slate_leaderboard.py'
       - '.github/workflows/accuracy-engine.yml'
       - 'data/backtests/player-predictions.csv'
   workflow_dispatch:
@@ -24,6 +26,8 @@ jobs:
           ref: main
       - name: Run Accuracy Engine regression tests
         run: python -m unittest discover -s tests -p 'test_accuracy_engine.py' -v
+      - name: Verify frozen same-slate comparison safety
+        run: python -m unittest discover -s tests -p 'test_same_slate_safety.py' -v
       - name: Run historical holdout and weakness diagnostics
         run: python tools/accuracy_engine.py
       - name: Verify research-only safety gates
