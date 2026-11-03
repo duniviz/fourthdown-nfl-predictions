@@ -33,7 +33,9 @@ def estimate(row, candidate):
     if candidate in blends:
         keys=blends[candidate]
         return sum(row[k] for k in keys)/len(keys)
-    if candidate in WEIGHT_GRID:\n        return sum(row[k]*w/4 for k,w in zip(BASE_FEATURES,WEIGHT_GRID[candidate]))\n    return row[candidate]
+    if candidate in WEIGHT_GRID:
+        return sum(row[k]*w/4 for k,w in zip(BASE_FEATURES,WEIGHT_GRID[candidate]))
+    return row[candidate]
 
 ALL_CANDIDATES=tuple(dict.fromkeys((*CANDIDATES,*WEIGHT_GRID)))
 def rmse(rows,candidate):
@@ -72,7 +74,11 @@ def evaluate(records):
             'selection_2024_mae':round(score(train,selected),4),
             'test_2025_n':len(test),
             'baseline_2025_mae':round(base,4),
-            'challenger_2025_mae':round(challenger,4),\n            'baseline_2025_rmse':round(rmse(test,'baseline'),4),\n            'challenger_2025_rmse':round(rmse(test,selected),4),\n            'weekly_consistency_2025':weekly_consistency(test,selected),\n            'selected_weights':dict(zip(BASE_FEATURES,[w/4 for w in WEIGHT_GRID[selected]])) if selected in WEIGHT_GRID else None,
+            'challenger_2025_mae':round(challenger,4),
+            'baseline_2025_rmse':round(rmse(test,'baseline'),4),
+            'challenger_2025_rmse':round(rmse(test,selected),4),
+            'weekly_consistency_2025':weekly_consistency(test,selected),
+            'selected_weights':dict(zip(BASE_FEATURES,[w/4 for w in WEIGHT_GRID[selected]])) if selected in WEIGHT_GRID else None,
             'change_2025_mae':round(challenger-base,4),
             'passes_holdout':challenger<base,
         }
