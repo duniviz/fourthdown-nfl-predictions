@@ -2,7 +2,7 @@ name: Weekly V3 research learning and readiness
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 15 * * 3'
+    - cron: '30 15 * * 2'
 permissions:
   contents: read
 jobs:
