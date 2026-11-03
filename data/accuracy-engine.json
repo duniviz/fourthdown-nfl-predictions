@@ -1,0 +1,392 @@
+{
+  "generated_at_utc": "2026-11-03T01:12:45.702433+00:00",
+  "status": "research_only",
+  "production_changed": false,
+  "automatic_promotion": false,
+  "holdout_season": 2025,
+  "training_seasons": [
+    2024
+  ],
+  "historical_rows": 6328,
+  "holdout_rows": 3120,
+  "markets": {
+    "passing_yards": {
+      "reference_baseline": {
+        "samples": 395,
+        "mae": 67.422,
+        "rmse": 84.022,
+        "bias": 4.231
+      },
+      "research_challenger": {
+        "samples": 395,
+        "mae": 65.139,
+        "rmse": 82.255,
+        "bias": -4.263
+      },
+      "holdout_mae_improvement": 2.283,
+      "challenger_better_on_holdout": true,
+      "eligible_for_promotion": false,
+      "weak_spots": [
+        {
+          "dimension": "team",
+          "value": "SF",
+          "samples": 13,
+          "mae": 88.185,
+          "rmse": 106.211,
+          "bias": 20.031
+        },
+        {
+          "dimension": "week",
+          "value": "11",
+          "samples": 29,
+          "mae": 86.369,
+          "rmse": 110.811,
+          "bias": 8.976
+        },
+        {
+          "dimension": "team",
+          "value": "LA",
+          "samples": 14,
+          "mae": 80.464,
+          "rmse": 100.668,
+          "bias": -24.636
+        },
+        {
+          "dimension": "week",
+          "value": "14",
+          "samples": 28,
+          "mae": 76.036,
+          "rmse": 98.998,
+          "bias": 5.693
+        },
+        {
+          "dimension": "team",
+          "value": "NO",
+          "samples": 13,
+          "mae": 73.892,
+          "rmse": 94.482,
+          "bias": -36.877
+        },
+        {
+          "dimension": "team",
+          "value": "TB",
+          "samples": 14,
+          "mae": 73.707,
+          "rmse": 94.527,
+          "bias": -0.036
+        },
+        {
+          "dimension": "week",
+          "value": "7",
+          "samples": 29,
+          "mae": 72.61,
+          "rmse": 89.408,
+          "bias": -5.9
+        },
+        {
+          "dimension": "team",
+          "value": "LV",
+          "samples": 12,
+          "mae": 71.2,
+          "rmse": 82.137,
+          "bias": 18.517
+        },
+        {
+          "dimension": "team",
+          "value": "GB",
+          "samples": 12,
+          "mae": 71.15,
+          "rmse": 83.2,
+          "bias": 4.1
+        },
+        {
+          "dimension": "week",
+          "value": "16",
+          "samples": 28,
+          "mae": 70.893,
+          "rmse": 82.854,
+          "bias": -13.464
+        },
+        {
+          "dimension": "team",
+          "value": "LAC",
+          "samples": 13,
+          "mae": 70.138,
+          "rmse": 85.188,
+          "bias": 18.908
+        },
+        {
+          "dimension": "week",
+          "value": "4",
+          "samples": 27,
+          "mae": 70.019,
+          "rmse": 87.016,
+          "bias": 12.033
+        }
+      ]
+    },
+    "receiving_yards": {
+      "reference_baseline": {
+        "samples": 1852,
+        "mae": 24.163,
+        "rmse": 31.134,
+        "bias": 3.307
+      },
+      "research_challenger": {
+        "samples": 1852,
+        "mae": 22.612,
+        "rmse": 29.789,
+        "bias": 0.121
+      },
+      "holdout_mae_improvement": 1.551,
+      "challenger_better_on_holdout": true,
+      "eligible_for_promotion": false,
+      "weak_spots": [
+        {
+          "dimension": "team",
+          "value": "DET",
+          "samples": 52,
+          "mae": 32.994,
+          "rmse": 40.904,
+          "bias": -8.571
+        },
+        {
+          "dimension": "team",
+          "value": "ATL",
+          "samples": 51,
+          "mae": 27.31,
+          "rmse": 35.115,
+          "bias": -2.545
+        },
+        {
+          "dimension": "team",
+          "value": "DAL",
+          "samples": 61,
+          "mae": 27.234,
+          "rmse": 33.976,
+          "bias": 4.887
+        },
+        {
+          "dimension": "team",
+          "value": "LAC",
+          "samples": 57,
+          "mae": 26.875,
+          "rmse": 35.818,
+          "bias": 2.682
+        },
+        {
+          "dimension": "team",
+          "value": "ARI",
+          "samples": 49,
+          "mae": 26.855,
+          "rmse": 37.298,
+          "bias": -6.81
+        },
+        {
+          "dimension": "team",
+          "value": "LA",
+          "samples": 56,
+          "mae": 26.605,
+          "rmse": 36.874,
+          "bias": -1.734
+        },
+        {
+          "dimension": "team",
+          "value": "PHI",
+          "samples": 50,
+          "mae": 26.524,
+          "rmse": 37.203,
+          "bias": -2.912
+        },
+        {
+          "dimension": "team",
+          "value": "TB",
+          "samples": 59,
+          "mae": 26.156,
+          "rmse": 32.448,
+          "bias": 4.092
+        },
+        {
+          "dimension": "week",
+          "value": "6",
+          "samples": 110,
+          "mae": 25.934,
+          "rmse": 33.496,
+          "bias": -0.277
+        },
+        {
+          "dimension": "team",
+          "value": "GB",
+          "samples": 50,
+          "mae": 25.338,
+          "rmse": 31.864,
+          "bias": -2.694
+        },
+        {
+          "dimension": "week",
+          "value": "5",
+          "samples": 106,
+          "mae": 25.009,
+          "rmse": 33.407,
+          "bias": -6.079
+        },
+        {
+          "dimension": "week",
+          "value": "7",
+          "samples": 124,
+          "mae": 24.804,
+          "rmse": 33.531,
+          "bias": -2.131
+        }
+      ]
+    },
+    "rushing_yards": {
+      "reference_baseline": {
+        "samples": 873,
+        "mae": 25.078,
+        "rmse": 34.004,
+        "bias": 0.771
+      },
+      "research_challenger": {
+        "samples": 873,
+        "mae": 23.929,
+        "rmse": 32.582,
+        "bias": -1.867
+      },
+      "holdout_mae_improvement": 1.149,
+      "challenger_better_on_holdout": true,
+      "eligible_for_promotion": false,
+      "weak_spots": [
+        {
+          "dimension": "team",
+          "value": "IND",
+          "samples": 15,
+          "mae": 42.073,
+          "rmse": 53.393,
+          "bias": 11.06
+        },
+        {
+          "dimension": "team",
+          "value": "DET",
+          "samples": 28,
+          "mae": 34.068,
+          "rmse": 45.282,
+          "bias": 5.232
+        },
+        {
+          "dimension": "team",
+          "value": "CAR",
+          "samples": 27,
+          "mae": 33.622,
+          "rmse": 50.408,
+          "bias": 1.23
+        },
+        {
+          "dimension": "team",
+          "value": "ATL",
+          "samples": 28,
+          "mae": 30.982,
+          "rmse": 41.037,
+          "bias": -1.682
+        },
+        {
+          "dimension": "week",
+          "value": "8",
+          "samples": 53,
+          "mae": 29.613,
+          "rmse": 39.35,
+          "bias": -2.47
+        },
+        {
+          "dimension": "team",
+          "value": "LAC",
+          "samples": 29,
+          "mae": 29.531,
+          "rmse": 34.134,
+          "bias": -3.703
+        },
+        {
+          "dimension": "team",
+          "value": "BUF",
+          "samples": 27,
+          "mae": 28.896,
+          "rmse": 39.989,
+          "bias": -1.089
+        },
+        {
+          "dimension": "team",
+          "value": "GB",
+          "samples": 27,
+          "mae": 28.37,
+          "rmse": 32.73,
+          "bias": -1.748
+        },
+        {
+          "dimension": "team",
+          "value": "LV",
+          "samples": 16,
+          "mae": 27.806,
+          "rmse": 38.696,
+          "bias": 2.081
+        },
+        {
+          "dimension": "team",
+          "value": "PIT",
+          "samples": 24,
+          "mae": 27.504,
+          "rmse": 37.459,
+          "bias": -4.388
+        },
+        {
+          "dimension": "team",
+          "value": "CHI",
+          "samples": 34,
+          "mae": 27.382,
+          "rmse": 39.482,
+          "bias": -3.812
+        },
+        {
+          "dimension": "week",
+          "value": "7",
+          "samples": 56,
+          "mae": 25.664,
+          "rmse": 32.004,
+          "bias": 1.889
+        }
+      ]
+    }
+  },
+  "probability_research": {
+    "passing_yards": {
+      "status": "research_only_synthetic_thresholds",
+      "training_samples": 398,
+      "holdout_samples": 395,
+      "brier": 0.2479,
+      "naive_baseline_brier": 0.2489,
+      "beats_naive_baseline": true,
+      "dk_calibrated": false,
+      "publish_as_player_confidence": false
+    },
+    "receiving_yards": {
+      "status": "research_only_synthetic_thresholds",
+      "training_samples": 1927,
+      "holdout_samples": 1852,
+      "brier": 0.2325,
+      "naive_baseline_brier": 0.2441,
+      "beats_naive_baseline": true,
+      "dk_calibrated": false,
+      "publish_as_player_confidence": false
+    },
+    "rushing_yards": {
+      "status": "research_only_synthetic_thresholds",
+      "training_samples": 883,
+      "holdout_samples": 873,
+      "brier": 0.2366,
+      "naive_baseline_brier": 0.2489,
+      "beats_naive_baseline": true,
+      "dk_calibrated": false,
+      "publish_as_player_confidence": false
+    }
+  },
+  "note": "Backtest old/new are historical comparison columns, not proven current production/challenger identities. No historical DK lines in this CSV; no sportsbook probabilities certified."
+}
