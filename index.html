@@ -550,7 +550,7 @@ renderParlays();
    const matchesSlate=feed=>feed&&Number(feed.season)===Number(d.season)&&Number(feed.week)===Number(d.week);
    if(!matchesSlate(playerFeed)){console.warn('Player projections do not match game forecast slate; hiding mismatched players');playerResearch=[];}
    if(!matchesSlate(countFeed)){console.warn('Count projections do not match game forecast slate; hiding mismatched counts');countProps=[];}
-   if(simulationFeed&&!matchesSlate(simulationFeed)){console.warn('Simulations do not match game forecast slate; hiding mismatched simulations');simulationGames=[];simulationPlayers=[];}
+   if(simulationFeed){const slateIds=new Set(d.games.map(g=>String(g.game_id)));const simIds=simulationGames.map(g=>String(g.game_id));if(!simIds.length||simIds.some(id=>!slateIds.has(id))||simIds.length!==slateIds.size){console.warn('Simulations do not match game forecast slate; hiding mismatched simulations');simulationGames=[];simulationPlayers=[];}else{simulationPlayers=simulationPlayers.filter(p=>slateIds.has(String(p.game_id)));}}
 
   }catch(e){forecasts=[];}
  }
