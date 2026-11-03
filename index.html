@@ -1447,12 +1447,15 @@ function fdGameLineComparison(p){
  const modelSpread=modelFavorite+' -'+Math.abs(m).toFixed(1);
  const dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
  const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString():'No verified pregame quote';
+ const kickoff=Date.parse(p.kickoff_utc),quoteAt=Date.parse(latest?.captured_at_utc||'');
+ const ageHours=Number.isFinite(kickoff)&&Number.isFinite(quoteAt)?(kickoff-quoteAt)/3600000:null;
+ const staleNote=ageHours!==null&&ageHours>2?'<strong class="fd-quote-stale">Older quote · '+Math.round(ageHours)+' hours before kickoff. Not a verified closing line.</strong>':'';
  return '<div class="fd-game-market"><b>FOURTHDOWN vs DraftKings · Pregame</b>'+
    '<div class="fd-game-market-grid"><div><small>MODEL SPREAD</small><strong>'+esc(modelSpread)+'</strong></div>'+
    '<div><small>DK PREGAME SPREAD</small><strong>'+esc(dkSpread)+'</strong></div>'+
    '<div><small>MODEL O/U</small><strong>'+t.toFixed(1)+'</strong></div>'+
    '<div><small>DK PREGAME O/U</small><strong>'+(tot===null?'Unavailable':tot.toFixed(1))+'</strong></div></div>'+
-   '<p class="fd-pregame-quote">'+(latest?.captured_at_utc?'Pregame snapshot: '+esc(captured):'DK pregame line unavailable')+'</p>'+
+   '<p class="fd-pregame-quote">'+(latest?.captured_at_utc?'Pregame snapshot: '+esc(captured):'DK pregame line unavailable')+'</p>'+staleNote+
    '</div>';
 }
 
