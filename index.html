@@ -1849,4 +1849,19 @@ document.addEventListener('click',function(e){
 @media(max-width:640px){#scoreboard-cards.scoreboard{grid-template-columns:minmax(0,1fr);gap:12px}#scoreboard-cards>.scorecard{padding:15px;border-radius:14px}#scoreboard-cards .score-head{margin-bottom:10px}#scoreboard-cards .score-team .name{font-size:18px}#scoreboard-cards .fd-pick-head strong{font-size:15px}#scoreboard-cards .fd-pick-head span{max-width:100px}}
 @media(hover:hover) and (pointer:fine){#scoreboard-cards>.scorecard:hover{transform:translateY(-2px);border-color:#4f8196;box-shadow:0 12px 28px #0005}}
 @media(prefers-reduced-motion:reduce){#scoreboard-cards>.scorecard{transition:none}}
-</style></body></html>
+</style>
+<style id="fd-mobile-prop-phase-two">
+/* Presentation only: no changes to frozen predictions or market data. */
+.fd-mobile-prop-card{min-width:0;overflow:hidden;border-radius:17px;box-shadow:0 9px 25px #0003}
+.fd-mobile-prop-name{display:flex;align-items:center;gap:10px;min-width:0}
+.fd-mobile-prop-name span{min-width:0;overflow-wrap:anywhere}
+.fd-mobile-prop-name strong{line-height:1.25}
+.fd-mobile-prop-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;font-variant-numeric:tabular-nums}
+.fd-mobile-prop-numbers>div{min-width:0;border-radius:10px;padding:9px 7px;background:#102b3a;border:1px solid #2d4b60}
+.fd-mobile-prop-numbers small{display:block;color:#b2c8d5;font-size:11px;line-height:1.3}
+.fd-mobile-prop-numbers b{display:block;font-size:clamp(16px,4vw,23px);line-height:1.35;overflow-wrap:anywhere}
+.fd-mobile-prop-card details summary{min-height:42px;display:flex;align-items:center;cursor:pointer}
+@media(max-width:420px){.fd-mobile-prop-card{padding:13px!important}.fd-mobile-prop-numbers{gap:5px}.fd-mobile-prop-numbers>div{padding:8px 5px}.fd-mobile-prop-numbers b{font-size:17px}.fd-mobile-prop-numbers small{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.fd-mobile-prop-card{transition:none!important}}
+</style>
+</body></html>
