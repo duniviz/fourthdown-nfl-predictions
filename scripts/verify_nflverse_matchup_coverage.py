@@ -11,7 +11,8 @@ assert len(contexts) > 100, "Matchup data missing"
 checked = 0
 for game in games:
     season, week, *_ = game["game_id"].split("_")
-    for opponent in (game["home"], game["away"]):
+    for raw_opponent in (game["home"], game["away"]):
+        opponent = {"LA": "LAR", "WSH": "WAS", "JAX": "JAC"}.get(raw_opponent, raw_opponent)
         for position, market in (
             ("QB", "passing_yards"),
             ("RB", "rushing_yards"),
