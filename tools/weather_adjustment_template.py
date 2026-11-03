@@ -35,8 +35,8 @@ def scenario(wind_mph:Optional[float],temp_f:Optional[float],heavy_precip:bool=F
         pts-=1;p-=.02;ra+=.01;reasons.append("extreme_cold")
     if heavy_precip:
         pts-=2;p-=.05;rec-=.03;ra+=.03;eff-=.03;reasons.append("heavy_precipitation")
-    return WeatherScenario(max(-7,pts),max(-.18,p),max(-.08,pa),
-        max(-.12,rec),min(.08,ra),max(-.06,eff),tuple(reasons))
+    return WeatherScenario(max(-3,pts),max(-.05,p),max(-.05,pa),
+        max(-.05,rec),min(.05,ra),max(-.05,eff),tuple(reasons))
 
 def adjusted_projection(market,baseline,weather):
     if weather is None or baseline is None:return None
@@ -59,4 +59,4 @@ def adjusted_projection(market,baseline,weather):
     if market in ("home_score","away_score"):
         return max(0,baseline+weather.total_points_delta/2)
     if market not in factors:return baseline
-    return max(0,baseline*(1+factors[market]))
+    return max(0,baseline*(1+max(-.05,min(.05,factors[market]))))
