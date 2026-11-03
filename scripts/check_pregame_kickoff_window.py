@@ -9,11 +9,11 @@ from zoneinfo import ZoneInfo
 now=dt.datetime.now(dt.timezone.utc)
 local=now.astimezone(ZoneInfo("America/Chicago"))
 refresh="--refresh" in sys.argv
-# Central-time API cadence: Tue-Fri every 4 hours, Sat every 2,
-# Sun-Mon hourly. Only the first 10-minute cron tick in each slot runs.
+# Central-time API cadence: Tue-Fri every 2 hours, Sat-Mon hourly.
+# Only the first 10-minute cron tick in each slot runs.
 if refresh:
     weekday=local.weekday()
-    interval=4 if weekday in (1,2,3,4) else (2 if weekday==5 else 1)
+    interval=2 if weekday in (1,2,3,4) else 1
     if local.hour % interval == 0 and local.minute < 10:
         print("SCHEDULED_REFRESH",local.isoformat())
         sys.exit(0)
