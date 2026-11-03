@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Check Tuesday Central Time schedule
         id: schedule_guard
         shell: bash
@@ -39,10 +42,6 @@ jobs:
             fi
           fi
           echo "run=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        if: steps.schedule_guard.outputs.run == 'true'
-        with:
-          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
