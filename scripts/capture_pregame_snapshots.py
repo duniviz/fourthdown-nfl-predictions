@@ -2,7 +2,9 @@
 """Persist latest strictly pre-kickoff player projections and verified DK quotes.
 Uses only published source timestamps; never backfills post-kickoff estimates.
 """
-import json, pathlib, datetime, urllib.request
+import json, pathlib, datetime, urllib.request, sys
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
+from tools.weather_adjustment_template import scenario, adjusted_projection
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
 def read(name):
@@ -23,7 +25,7 @@ def schedule():
     for b in teams:
      if a!=b:result[(a,b)]=start
  return result
-def capture(existing,projections,quotes,games,now):
+def capture(existing,projections,quotes,games,now,weather_feed=None):
  records={tuple(str(r.get(k,"")) for k in ("game_id","player_id","market")):r for r in existing}
  for p in projections:
   team=p.get("team","");opp=p.get("opponent","")
@@ -47,6 +49,21 @@ def capture(existing,projections,quotes,games,now):
   try:line=float(quote.get("line") if quote.get("line") is not None else quote.get("dk_line"))
   except (TypeError,ValueError):line=None
   key=(str(p["game_id"]),str(p["player_id"]),str(market))
+  wx=None
+  if weather_feed:
+   game_weather=weather_feed.get('games',{}).get(str(p['game_id']),{})
+   weather_time=dt(weather_feed.get('generated_at_utc'))
+   if (game_weather.get('status')=='forecast' and weather_time and weather_time<=now and weather_time<kickoff):
+    try:
+     import re
+     wind=re.search(r'\\d+(?:\\.\\d+)?',str(game_weather.get('wind_speed','')))
+     temp=float(game_weather['temperature_f'])
+     chance=float(game_weather['precipitation_probability'])
+     conditions=str(game_weather.get('conditions','')).lower()
+     heavy=chance>=60 and any(x in conditions for x in ('rain','snow','sleet','storm','shower'))
+     wx=scenario(float(wind.group()) if wind else None,temp,heavy,'outdoor')
+    except (TypeError,ValueError,KeyError,AttributeError):pass
+  weather_projection=adjusted_projection(str(market),projection,wx) if wx else None
   previous=records.get(key)
   # Never regress a captured projection, even when the feed is stale.
   if previous:
@@ -63,9 +80,15 @@ def capture(existing,projections,quotes,games,now):
    dk_time=next_dk_time.isoformat() if next_dk_time else None
   else:
    dk_time=matching[0][0].isoformat() if matching else None
+  # Preserve the weather value from the most recent immutable pregame capture.
+  if previous and prev_time and prev_time>=dt(p.get('generated_at_utc')):
+   weather_projection=previous.get('weather_projection')
+   wx=None
   records[key]={"game_id":p["game_id"],"player_id":p["player_id"],"player":p.get("player"),
     "team":team,"market":market,"projection":projection,"dk_line":line,
     "captured_at":generated.isoformat(),"dk_captured_at":dk_time,
+    "weather_projection":weather_projection,
+    "weather_version":"weather-template-v1" if weather_projection is not None else None,
     "kickoff":kickoff.isoformat()}
  return sorted(records.values(),key=lambda r:(str(r["game_id"]),str(r["player_id"]),str(r["market"])))
 def main():
@@ -87,7 +110,7 @@ def main():
 
  dest=DATA/"pregame-snapshots.json"
  old=read("pregame-snapshots.json").get("records",[])
- rows=capture(old,projections,quotes,games,now)
+ rows=capture(old,projections,quotes,games,now,read('weather.json'))
  if not games: raise RuntimeError("No schedule data returned")
  if not rows and not old: raise RuntimeError("No pre-kickoff records captured; verify schedule and model feed")
 
