@@ -7,6 +7,7 @@ on:
       - '*.js'
       - '*.css'
       - 'data/*.json'
+      - 'scripts/verify_nflverse_matchup_coverage.py'
       - '.github/workflows/site-integrity.yml'
   pull_request:
     paths:
@@ -14,6 +15,7 @@ on:
       - '*.js'
       - '*.css'
       - 'data/*.json'
+      - 'scripts/verify_nflverse_matchup_coverage.py'
       - '.github/workflows/site-integrity.yml'
 permissions:
   contents: read
@@ -49,6 +51,8 @@ jobs:
               raise SystemExit("\\n".join(errors))
           print("Published nonempty JSON feeds parse successfully")
           PY
+      - name: Verify production player feed and nflverse matchup coverage
+        run: python scripts/verify_nflverse_matchup_coverage.py
       - name: Check required pages and assets
         run: |
           test -s index.html

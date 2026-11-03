@@ -493,6 +493,7 @@ renderParlays();
   try{const response=await fetch('data/research-injury-flags.json?ts='+Date.now(),{cache:'no-store'});const j=response.ok?await response.json():null;supplementalInjuryFlags=Array.isArray(j?.flags)?j.flags:[];}catch(e){supplementalInjuryFlags=[];}
   try{const response=await fetch('data/weather.json?ts='+Date.now(),{cache:'no-store'});savedWeather=response.ok?await response.json():null;}catch(e){savedWeather=null;}
   try{const response=await fetch('data/game-context.json?ts='+Date.now(),{cache:'no-store'});gameContext=response.ok?await response.json():null;}catch(e){gameContext=null;}
+  try{const r=await fetch('data/nflverse-defensive-matchups.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():null;window.fdNflverseMatchups=j&&j.source==='nflverse'&&j.contexts?j:null;}catch(e){window.fdNflverseMatchups=null;}
   try{const r=await fetch('data/player-history.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerHistory=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{const r=await fetch('data/player-research.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResearch=Array.isArray(j.players)?j.players:[];}}catch(e){}
   try{
@@ -629,7 +630,14 @@ function fdOpenMatchup(g){
    const positionLabel=esc(({QB:'quarterback',RB:'running back',WR:'wide receiver',TE:'tight end',FB:'fullback'})[position]||position.toLowerCase());
    const positionPlural=({QB:'quarterbacks',RB:'running backs',WR:'wide receivers',TE:'tight ends',FB:'fullbacks'})[position]||positionLabel+'s';
    const target=[positionLabel,marketLabel].filter(Boolean).join(' ').trim()||marketLabel;
-   const positionContext=x.opponent_position_context;
+   // Matchup data are keyed to this game's own season/week, never a later refresh.
+   const gameKey=String(x.game_id||p?.game_id||'');
+   const gameParts=gameKey.match(/^(20\d{2})_(\d{1,2})_/);
+   const opponentCode=canon(x.opponent);
+   const nflverse=window.fdNflverseMatchups;
+   const sourceKey=gameParts?gameParts[1]+'|'+Number(gameParts[2])+'|'+opponentCode+'|'+position+'|'+market:'';
+   const verifiedContext=nflverse?.contexts?.[sourceKey];
+   const positionContext=verifiedContext||x.opponent_position_context;
    const positionRank=n(positionContext?.rank),positionTeams=n(positionContext?.ranked_teams),positionTies=n(positionContext?.tie_count)||1;
    const positionSeason=n(positionContext?.season_allowed_per_game),positionAllowed=n(positionContext?.last_5_allowed_per_game);
    const positionGames=n(positionContext?.games),positionRecentGames=n(positionContext?.last_5_games);
@@ -653,6 +661,7 @@ function fdOpenMatchup(g){
      const defenseLabel=rank<=Math.ceil(teams/3)?'one of the toughest':rank>=Math.floor(teams*2/3)?'one of the most generous':'around the middle of the pack';
      parts.push(opponent+' is '+defenseLabel+' by '+teamStat+', ranking '+rank+' of '+teams+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, it allowed '+recentAllowed.toFixed(1)+' per game':'')+'. This is team-wide context; a '+target+'-specific rank is not available yet.');
    }else parts.push('Opponent-specific '+target+' data are not available in the current feed.');
+   if(verifiedContext)parts.push('Defensive matchup source: nflverse completed-game player stats, calculated before this matchup week. This is context only; no projection change was made by this display.');
    const adj=n(x.opponent_adjustment);
    const adjDescription=x.opponent_adjustment_basis==='position_market'?'position-specific opponent adjustment':x.opponent_adjustment_basis==='team_market'?'team-wide (not position-specific) opponent adjustment':'opponent adjustment';
    if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The '+adjDescription+' '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
