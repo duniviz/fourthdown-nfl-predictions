@@ -41,7 +41,8 @@ function readPlayers(summary,event){
 
 // Update only the matching player's market in the existing matchup card.
 // No guesswork: player name, team abbreviation and stat market must all agree.
-const playerKey=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+// ESPN sometimes omits generational suffixes (III, Jr., etc.) from box scores.
+const playerKey=x=>String(x||'').toLowerCase().replace(/\\b(?:jr|sr|ii|iii|iv|v)\\.?\\b/g,'').replace(/[^a-z0-9]/g,'');
 // Experimental in-game estimate: blend observed per-minute pace with pregame
 // rate for remaining regulation time. Avoid extreme extrapolation in Q1.
 function elapsedMinutes(r){
@@ -143,7 +144,7 @@ function paintModalTotals(){
  // them with ESPN actuals; leave unmatched ESPN rows in the same list.
  const modal=panel.closest('.fd-merged-player-props');
  if(modal){
-  const key=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const key=playerKey;
   const list=body.querySelector('.fd-live-prop-list');
   if(list){
    const liveRows=[...list.querySelectorAll('.fd-live-prop-row')];
