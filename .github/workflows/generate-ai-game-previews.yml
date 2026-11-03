@@ -1,0 +1,37 @@
+name: Generate unique pregame editorials
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '12,42 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: unique-game-previews
+  cancel-in-progress: false
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate evidence-based previews before lock
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FOURTHDOWN_PREVIEW_MODEL: gpt-4.1-mini
+        run: python tools/generate_ai_game_previews.py
+      - name: Commit published previews
+        run: |
+          if [ ! -f data/ai-game-previews.json ] || git diff --quiet -- data/ai-game-previews.json; then
+            echo "No new editorial previews"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ai-game-previews.json
+          git commit -m "Update game-specific pregame editorial previews"
+          git pull --rebase origin main
+          git push
