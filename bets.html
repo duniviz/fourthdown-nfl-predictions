@@ -236,7 +236,7 @@ const weatherCurrent=current.map(x=>{
  const kickoff=kickoffFor.get(String(x.game_id));
  const wx=window.FDWeatherTemplate?.scenario(weatherFeed.games?.[x.game_id],weatherFeed.generated_at_utc,new Date(kickoff).toISOString());
  const market=String(x.market_key||x.stat_key||'').toLowerCase();
- const aliases={player_pass_yds:'passing_yards',player_rush_yds:'rushing_yards',player_reception_yds:'receiving_yards',
+ const aliases={player_pass_yds:'passing_yards',player_rush_yds:'rushing_yards',player_reception_yds:'receiving_yards',player_rec_yds:'receiving_yards',player_pass_completions:'pass_completions',
   player_receptions:'receptions',player_pass_attempts:'pass_attempts',player_rush_attempts:'rush_attempts'};
  const mapped=aliases[market]||market;
  const adjusted=window.FDWeatherTemplate?.adjust(mapped,x.projection,wx);
