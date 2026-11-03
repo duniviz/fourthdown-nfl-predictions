@@ -8,6 +8,8 @@ on:
       - 'tools/opportunity_feature_audit.py'
       - 'tools/weather_combo_research.py'
       - 'tools/weather_market_research.py'
+      - 'tools/weather_adjustment_template.py'
+      - 'tests/test_weather_adjustment_template.py'
       - 'tests/test_weather_market_research.py'
       - 'data/backtests/weather-frozen-markets.csv'
       - 'tests/test_weather_combo_research.py'
@@ -48,6 +50,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_weather_combo_research.py' -v
       - name: Evaluate weather combinations when frozen history exists
         run: python tools/weather_combo_research.py
+      - name: Test bounded weather adjustment scenarios
+        run: python -m unittest discover -s tests -p 'test_weather_adjustment_template.py' -v
       - name: Test game and player weather challengers
         run: python -m unittest discover -s tests -p 'test_weather_market_research.py' -v
       - name: Evaluate frozen game and player weather markets if available
