@@ -43,7 +43,7 @@ jobs:
           import json,zipfile,pathlib,datetime
           z=zipfile.ZipFile('/tmp/model-artifact/research.zip')
           for source,target in [('research/v3-results/results.json','data/model-lab-results.json'),('research/auto-promotion/readiness.json','data/model-lab-readiness.json')]:
-              matches=[n for n in z.namelist() if n.endswith(source)]
+              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
               if not matches:
                   print('Missing',source,'— keeping existing published file')
                   continue
@@ -54,7 +54,7 @@ jobs:
                   obj['generated_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
               pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\n')
           for source,target in [('research/yardage-game-results/leaderboard.json','data/model-lab-yardage-game.json'),('research/weekly-shadow-results/leaderboard.json','data/model-lab-weekly-shadow.json')]:
-              matches=[n for n in z.namelist() if n.endswith(source)]
+              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
               if not matches:
                   print('Missing',source,'— keeping existing published file')
                   continue
