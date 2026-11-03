@@ -6,6 +6,9 @@ on:
       - 'tools/accuracy_engine.py'
       - 'tools/research_bias_challenger.py'
       - 'tools/opportunity_feature_audit.py'
+      - 'tools/weather_combo_research.py'
+      - 'tests/test_weather_combo_research.py'
+      - 'data/backtests/weather-frozen-games.csv'
       - 'tests/test_opportunity_feature_audit.py'
       - 'tests/test_research_bias_challenger.py'
       - 'tests/test_accuracy_engine.py'
@@ -38,6 +41,10 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_opportunity_feature_audit.py' -v
       - name: Audit historical opportunity feature readiness
         run: python tools/opportunity_feature_audit.py
+      - name: Test weather combination safety and holdout
+        run: python -m unittest discover -s tests -p 'test_weather_combo_research.py' -v
+      - name: Evaluate weather combinations when frozen history exists
+        run: python tools/weather_combo_research.py
       - name: Evaluate frozen research-only residual challenger
         run: python tools/research_bias_challenger.py
       - name: Run historical holdout and weakness diagnostics
