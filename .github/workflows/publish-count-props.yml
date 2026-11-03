@@ -1,6 +1,9 @@
 name: Publish count prop projections
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/count-props-refresh.txt'
   schedule:
     - cron: '20 14 * * 0,2,4,6'
 permissions:
