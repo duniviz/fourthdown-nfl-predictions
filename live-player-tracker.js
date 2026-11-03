@@ -141,22 +141,43 @@ function paintModalTotals(){
  }).join('');
  const nextHtml='<div class="fd-live-prop-toolbar"><strong>Pregame picks · Live results</strong><span>'+sortedRows.length+' stats · ESPN</span></div><div class="fd-live-prop-list">'+markup+'</div><div class="fd-live-prop-footer">ESPN box-score actuals · '+(state.updated?'Checked '+state.updated.toLocaleTimeString():'Awaiting update')+' · Projection and DK line frozen before kickoff · ESPN actuals update live.</div>';
  if(body.innerHTML!==nextHtml)body.innerHTML=nextHtml;
- // A player/market with an ESPN actual already appears in the unified live card.
- // Keep forecasts without an ESPN actual visible, but never show the same prop twice.
+ // Render a single unified player list. Preserve full projection cards and enrich
+ // them with ESPN actuals; leave unmatched ESPN rows in the same list.
  const modal=panel.closest('.fd-merged-player-props');
  if(modal){
   const key=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]/g,'');
-  const active=new Set([...body.querySelectorAll('[data-fd-live-player][data-fd-live-market]')].map(el=>key(el.dataset.fdLivePlayer)+'|'+key(el.dataset.fdLiveMarket)));
-  modal.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]').forEach(card=>{
-   const duplicate=active.has(key(card.dataset.fdPlayer)+'|'+key(card.dataset.fdMarket));
-   card.hidden=duplicate;
-   card.style.display=duplicate?'none':'';
-  });
-  modal.querySelectorAll('.fd-mobile-prop-group').forEach(group=>{
-   const cards=[...group.querySelectorAll('.fd-mobile-prop-card')];
-   group.hidden=cards.length>0&&cards.every(card=>card.hidden);
-  });
+  const list=body.querySelector('.fd-live-prop-list');
+  if(list){
+   const liveRows=[...list.querySelectorAll('.fd-live-prop-row')];
+   const liveByKey=new Map(liveRows.map(row=>[key(row.dataset.fdLivePlayer)+'|'+key(row.dataset.fdLiveMarket),row]));
+   const forecastCards=[...modal.querySelectorAll('.fd-mobile-prop-card[data-fd-player][data-fd-market]')];
+   for(const card of forecastCards){
+    const match=liveByKey.get(key(card.dataset.fdPlayer)+'|'+key(card.dataset.fdMarket));
+    const old=card.querySelector('.fd2-actual-result');
+    if(old)old.remove();
+    if(match){
+     const actual=match.querySelector('.fd-live-prop-actual strong')?.textContent||'—';
+     const caption=match.querySelector('.fd-live-prop-caption span:last-child')?.textContent||'';
+     const badge=document.createElement('div');
+     badge.className='fd2-actual-result';
+     const label=document.createElement('span');label.textContent='ESPN actual';
+     const value=document.createElement('strong');value.textContent=actual;
+     const status=document.createElement('span');status.textContent=caption;
+     badge.append(label,value,status);
+     const metrics=card.querySelector('.fd-mobile-prop-numbers');
+     if(metrics)metrics.after(badge);else card.append(badge);
+     match.remove();
+    }
+    card.hidden=false;card.style.display='';
+    list.appendChild(card);
+   }
+   modal.querySelectorAll('.fd-mobile-prop-group').forEach(group=>{group.remove();});
+   const toolbar=body.querySelector('.fd-live-prop-toolbar strong');
+   if(toolbar)toolbar.textContent='Player props · Projections & actuals';
+   if(!list.children.length)list.innerHTML='<p class="fd-modal-muted">No verified player props available for this matchup.</p>';
+  }
  }
+
 }
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
