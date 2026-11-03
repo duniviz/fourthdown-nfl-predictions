@@ -2,7 +2,7 @@ name: Scheduled V4 Weekly Research Grading
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 * * 3'
+    - cron: '0 15 * * 2'
 permissions:
   contents: write
 concurrency:
