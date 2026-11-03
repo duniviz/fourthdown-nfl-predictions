@@ -3,7 +3,7 @@ on:
   workflow_run:
     workflows:
       - Collect historical NFL training data
-      - Wednesday weather model review
+      - Tuesday weather model review
       - Accuracy Engine weekly research
       - Capture last pregame projections and DK lines
       - Test pregame capture
