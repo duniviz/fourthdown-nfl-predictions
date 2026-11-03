@@ -21,7 +21,7 @@ def finite(value):
 
 def compare(rows, week=None):
     groups=collections.defaultdict(dict)
-    rejected=collections.Counter()
+    rejected=collections.Counter()\n    duplicate_keys=set()
     for row in rows:
         try:
             game=str(row["game_id"]); market=str(row["stat_key"]); player=str(row["player_id"])
