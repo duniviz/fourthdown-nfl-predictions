@@ -61,3 +61,15 @@ body.fd2-ready .fd-matchup-grid .card,body.fd2-ready .fd-watch-grid>*{min-width:
 body.fd2-ready .fd-modal{z-index:150!important}
 @media(max-width:850px){body.fd2-ready .fd-command{padding:17px!important}body.fd2-ready .fd-command-side{display:none!important}body.fd2-ready .fd-history-mini-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}body.fd2-ready .fd-history-mini-grid>div{min-width:0}body.fd2-ready .hero{grid-template-columns:1fr!important}body.fd2-ready .fd-command-actions{flex-wrap:wrap!important}}
 @media(max-width:480px){body.fd2-ready .fd-history-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.fd2-ready .fd-command h1{font-size:30px!important}body.fd2-ready .fd-command p{font-size:13px!important}body.fd2-ready .fd-history-mini-grid strong{font-size:17px!important}}
+
+/* One unified matchup player list: live actuals and saved forecasts share cards. */
+.fd-merged-player-props .fd-live-player-stats{margin:0!important;padding:0!important;background:transparent!important;border:0!important}
+.fd-merged-player-props .fd-live-prop-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;background:transparent;border:0;overflow:visible}
+.fd-merged-player-props .fd-live-prop-list>.fd-mobile-prop-card,.fd-merged-player-props .fd-live-prop-list>.fd-live-prop-row{margin:0!important;background:#16232b!important;border:1px solid #3a4a51!important;border-radius:14px!important;padding:15px!important}
+.fd-merged-player-props .fd-live-prop-toolbar{margin:0 0 14px}
+.fd2-actual-result{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid #42633a;background:#1b3026;color:#d8e9da}
+.fd2-actual-result>span:first-child{font-size:11px;color:#b4c8b7;text-transform:uppercase;letter-spacing:.06em}
+.fd2-actual-result strong{font-size:22px;color:#baff36;font-variant-numeric:tabular-nums}
+.fd2-actual-result>span:last-child{margin-left:auto;text-align:right;font-size:11px;font-weight:750;color:#c4e8a0}
+.fd-merged-player-props .fd-mobile-prop-group{display:none!important}
+@media(max-width:700px){.fd-merged-player-props .fd-live-prop-list{grid-template-columns:1fr}.fd2-actual-result{flex-wrap:wrap}.fd2-actual-result>span:last-child{max-width:60%}}
