@@ -1909,5 +1909,19 @@ document.addEventListener('click',function(e){
 #scoreboard-cards .fd-unified-prop-metrics small{display:block;color:#a6c6d2;font-size:9px}
 #scoreboard-cards .fd-unified-prop-metrics strong{display:block;color:#fff;font-size:14px;margin-top:5px}
 #scoreboard-cards .fd-unified-prop-metrics>div:nth-child(3) strong{color:#c6ff27}
+
+/* Compact home: one featured picks area, one game center, one results summary.
+   Existing research sections and data remain accessible through More/Prop Desk. */
+main.wrap>.fd-command,main.wrap>.hero,main.wrap>.dashboard-strip,
+main.wrap>#reading-guide,main.wrap>.hybrid-spot,
+main.wrap>#fd-opportunities{display:none!important}
+main.wrap>#fd-watch{margin-top:12px}
+main.wrap>#fd-watch .fd-quick-props{display:none!important}
+main.wrap>#fd-watch .section-head p.caption{display:none}
+main.wrap>#fd-watch .section-head{margin-bottom:10px}
+main.wrap>#scoreboard{margin-top:14px}
+main.wrap>#scoreboard>.section-head{margin-bottom:10px}
+main.wrap>#fd-more{margin:12px 0}
+@media(max-width:700px){main.wrap>#fd-watch .fd-watch-grid{gap:10px}main.wrap>#tracking.fd-top-accuracy{margin:10px 0}}
 </style>
 </body></html>
