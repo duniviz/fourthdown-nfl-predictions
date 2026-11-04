@@ -125,15 +125,33 @@ def evaluate(rows):
           "Pressure rate: no independently verified historical pressure feed"],
          "results":out}
 def main():
+ import gc
  seasons=list(range(2006,datetime.now(timezone.utc).year+1))
  schedules=nfl.load_schedules(seasons).to_dicts()
- pbp=[]
+ all_samples=[]
+ coverage={}
  for season in seasons:
-  try:pbp.extend(nfl.load_pbp([season]).to_dicts())
-  except Exception as exc:print("PBP unavailable",season,str(exc))
- if not pbp:raise RuntimeError("No verified PBP; no empty success report")
- report=evaluate(features(schedules,pbp))
+  print("Loading and aggregating NFL season",season,flush=True)
+  try:
+   # Load only one season of play-by-play at a time. Retain compact
+   # per-game features, not millions of historical play dictionaries.
+   pbp=nfl.load_pbp([season]).select([
+    "season","week","season_type","play_type","posteam","defteam",
+    "epa","success","yardline_100"]).to_dicts()
+   games=[g for g in schedules if int(g.get("season") or 0)==season]
+   rows=features(games,pbp)
+   all_samples.extend(rows)
+   coverage[str(season)]={"plays":len(pbp),"eligible_games":len(rows)}
+   print("Season",season,"plays",len(pbp),"eligible games",len(rows),flush=True)
+   del pbp,rows
+   gc.collect()
+  except Exception as exc:
+   coverage[str(season)]={"error":str(exc)}
+   print("Season unavailable:",season,str(exc),flush=True)
+ if not all_samples:raise RuntimeError("No verified historical PBP")
+ report=evaluate(all_samples)
+ report["source_coverage"]=coverage
  out=ROOT/"research/feature-ablation-results";out.mkdir(parents=True,exist_ok=True)
- (out/"report.json").write_text(json.dumps(report,indent=2)+"\n")
- print("Holdout evaluations:",len(report["results"]))
+ (out/"report.json").write_text(json.dumps(report,indent=2)+"\\n")
+ print("Holdout evaluations:",len(report["results"]),flush=True)
 if __name__=="__main__":main()
