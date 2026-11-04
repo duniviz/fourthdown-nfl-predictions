@@ -41,6 +41,14 @@ jobs:
       - name: Freeze trained ML player yardage predictions
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/freeze_player_ml_predictions.py
+      - name: Train and freeze game spread and total ML challengers
+        if: steps.kickoff.outputs.run == 'true'
+        run: |
+          if curl --fail --location --retry 2 --max-time 90 'https://github.com/nflverse/nfldata/raw/refs/heads/master/data/games.csv' -o /tmp/fourthdown-games.csv; then
+            python scripts/freeze_game_ml_predictions.py /tmp/fourthdown-games.csv
+          else
+            echo 'WARNING: Historical game scores unavailable; no game ML forecasts generated' >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Commit snapshot updates
         if: steps.kickoff.outputs.run == 'true'
         run: |
