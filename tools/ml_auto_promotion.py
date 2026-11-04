@@ -14,7 +14,18 @@ def decide(report,registry):
         incumbent=registry.get("markets",{}).get(market,{"champion":"baseline","version":"original"})
         result={"champion":incumbent["champion"],"version":incumbent.get("version","original"),
                 "action":"keep","reason":"insufficient validated evidence"}
-        if info.get("status")!="evaluated" or info.get("holdout",0)<300:
+        # A research leaderboard is not a deployable production validation.
+        # Require an explicit independent replay, multiweek stability,
+        # cross-market regression check and tested rollback before any promotion.
+        safety=info.get("production_validation") or {}
+        verified=all(safety.get(flag) is True for flag in (
+            "independent_chronological_replay_passed",
+            "multiweek_stability_passed",
+            "cross_market_regression_passed",
+            "rollback_test_passed"))
+        if not verified:
+            result["reason"]="production replay, multiweek stability, regression or rollback evidence missing"
+        elif info.get("status")!="evaluated" or info.get("holdout",0)<300:
             result["reason"]="insufficient holdout"
         else:
             baseline=info.get("baseline_mae",0)
@@ -38,7 +49,7 @@ def decide(report,registry):
         markets[market]=result
     return {"generated_at_utc":datetime.now(timezone.utc).isoformat(),
             "policy":"minimum 300 holdout samples, >=3% MAE improvement, deployable artifact required",
-            "markets":markets,"automatic_promotion_enabled":True,
+            "markets":markets,"automatic_promotion_enabled":False,
             "promotions":sum(x["action"]=="promote" for x in markets.values())}
 def main():
     data=ROOT/"data"
@@ -48,7 +59,9 @@ def main():
     result=decide(report,registry)
     for market,decision in result["markets"].items():
         if decision["action"]=="promote":
-            registry.setdefault("markets",{})[market]={"champion":decision["champion"],"version":decision["version"]}
+            # Never change production registry from a research-only decision.
+            # Deployment requires a separate, audited integration.
+            raise RuntimeError("Research promotion cannot modify the production registry")
     (data/"ml-weekly-decisions.json").write_text(json.dumps(result,indent=2)+"\n")
     path.write_text(json.dumps(registry,indent=2)+"\n")
     print(json.dumps(result,indent=2))
