@@ -126,7 +126,7 @@ def evaluate(rows):
          "results":out}
 def main():
  import gc
- seasons=list(range(2006,datetime.now(timezone.utc).year+1))
+ seasons=list(range(2016,datetime.now(timezone.utc).year+1))
  schedules=nfl.load_schedules(seasons).to_dicts()
  all_samples=[]
  coverage={}
