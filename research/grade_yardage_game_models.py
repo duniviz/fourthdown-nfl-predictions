@@ -43,7 +43,7 @@ def main():
   key=(str(r.get("game_id")),str(r.get("player_id")),market)
   if key not in actuals:continue
   groups.setdefault(key,[]).append(dict(r,stat_key=market,actual=actuals[key]))
- complete=[r for group in groups.values() if len(group)==len(EXPECTED) and {r["model"] for r in group}==EXPECTED for r in group]
+ complete=[r for group in groups.values() if EXPECTED.issubset({r["model"] for r in group}) for r in group]
  report=compare(complete)
  report["status"]="COMPLETE" if report["matched_slate_records"] else ("WAITING_FOR_FINALS" if groups else "WAITING_FOR_PREGAME_OR_FINALS")
  report["coverage"]={"verified_market_rows":len(groups),"complete_market_rows":len({(r["game_id"],r["player_id"],r["stat_key"]) for r in complete}),"required_models":len(EXPECTED)}
@@ -54,7 +54,7 @@ def main():
  for r in report["metrics"]:
   hit="—" if r["dk_hit_rate"] is None else f'{r["dk_hit_rate"]*100:.1f}%'
   lines.append(f'| {r["market"]} | {r["model"]} | {r["n"]} | {r["mae"]} | {r["rmse"]} | {r["dk_n"]} | {hit} |')
- lines+=["","Research only. Yardage variants are sensitivity adjustments to a shared pregame projection, not independently trained yardage models. No production promotion."]
+ lines+=["","Research only. Mix variants are sensitivity adjustments; ml_ variants are separately fitted historical models. No production promotion."]
  (out/"RESULTS.md").write_text("\n".join(lines)+"\n")
  print("\n".join(lines))
 if __name__=="__main__":main()
