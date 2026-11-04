@@ -33,6 +33,12 @@ def main():
              "player_rush_attempts":"player_rushing_attempts","player_receptions":"player_receptions",
              "player_passing_yards":"player_passing_yards","player_rushing_yards":"player_rushing_yards",
              "player_receiving_yards":"player_receiving_yards"}
+    odds_aliases={"player_pass_yds":"player_passing_yards",
+                  "player_rush_yds":"player_rushing_yards",
+                  "player_rec_yds":"player_receiving_yards",
+                  "player_pass_completions":"player_passing_completions",
+                  "player_pass_attempts":"player_passing_attempts",
+                  "player_rush_attempts":"player_rushing_attempts"}
     stat_keys={"player_passing_completions":"completions","player_passing_attempts":"attempts",
                "player_rushing_attempts":"carries","player_receptions":"receptions",
                "player_passing_yards":"passing_yards","player_rushing_yards":"rushing_yards",
@@ -58,7 +64,7 @@ def main():
         parts=game_id.split("_")
         if len(parts)<4: continue
         for q in odds["rows"]:
-            if norm(q.get("player"))!=norm(p.get("player")) or q.get("market_key")!=market: continue
+            if norm(q.get("player"))!=norm(p.get("player")) or odds_aliases.get(q.get("market_key"),q.get("market_key"))!=market: continue
             kickoff=time(q.get("commence_time")); quoted=time(q.get("last_update"))
             line=q.get("line")
             if not kickoff or not quoted or not isinstance(line,(int,float)) or isinstance(line,bool) or not math.isfinite(line): continue
