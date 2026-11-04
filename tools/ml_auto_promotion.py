@@ -44,8 +44,9 @@ def decide(report,registry):
                 if not artifact:
                     result["reason"]="missing validated production artifact"
                 else:
-                    result.update({"action":"promote","champion":candidates[0][0],
-                                   "version":artifact,"reason":"passed promotion gates"})
+                    result.update({"action":"keep","research_candidate":candidates[0][0],
+                                   "validated_artifact":artifact,
+                                   "reason":"candidate passes research gates; separate audited deployment required"})
         markets[market]=result
     return {"generated_at_utc":datetime.now(timezone.utc).isoformat(),
             "policy":"minimum 300 holdout samples, >=3% MAE improvement, deployable artifact required",
@@ -57,11 +58,7 @@ def main():
     path=data/"ml-model-registry.json"
     registry=json.loads(path.read_text()) if path.exists() else {"schema_version":1,"markets":{},"deployable":{},"artifacts":{}}
     result=decide(report,registry)
-    for market,decision in result["markets"].items():
-        if decision["action"]=="promote":
-            # Never change production registry from a research-only decision.
-            # Deployment requires a separate, audited integration.
-            raise RuntimeError("Research promotion cannot modify the production registry")
+    # Research-only reports must never update the live model registry.
     (data/"ml-weekly-decisions.json").write_text(json.dumps(result,indent=2)+"\n")
     path.write_text(json.dumps(registry,indent=2)+"\n")
     print(json.dumps(result,indent=2))
