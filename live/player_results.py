@@ -45,8 +45,8 @@ def main():
             "projection":proj,"actual":observed,"error":round(observed-proj,1),
             "dk_line":float(line) if line is not None and str(line).strip() and float(line)>0 else None,"recommended_side":None,"recommendation_result":"not_available"}
         # Grade only a stored pregame line and an explicit stored recommendation.
-        if line is not None and x.get("recommended_side") in ("over","under"):
-            line=float(line);side=x["recommended_side"]
+        if result["dk_line"] is not None and str(x.get("recommended_side") or "").strip().lower() in ("over","under"):
+            line=float(line);side=str(x["recommended_side"]).strip().lower()
             result["dk_line"]=line;result["recommended_side"]=side
             result["recommendation_result"]="push" if observed==line else (
                 "hit" if (observed>line)==(side=="over") else "miss")
