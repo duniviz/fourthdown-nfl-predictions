@@ -7,6 +7,7 @@ on:
       - 'research/player_impact_research.py'
       - 'research/audit_historical_injuries.py'
       - 'research/player_impact_proxy_challenger.py'
+      - 'research/qb_efficiency_challenger.py'
       - 'tests/test_player_impact_research.py'
       - 'tests/test_historical_injury_audit.py'
       - '.github/workflows/research-player-impact.yml'
@@ -43,6 +44,15 @@ jobs:
       - name: Run paired injury-designation proxy challenger (not player WAR)
         run: |
           python research/player_impact_proxy_challenger.py --schedule /tmp/fourthdown-games.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/proxy-comparison.json
+      - name: Download nflverse weekly QB stats
+        run: |
+          mkdir -p /tmp/fourthdown-qb
+          for year in 2023 2024 2025; do
+            curl --fail --location --retry 3 --max-time 120 "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_${year}.csv" -o "/tmp/fourthdown-qb/stats_${year}.csv"
+          done
+      - name: Run historical QB efficiency challenger
+        run: |
+          python research/qb_efficiency_challenger.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-efficiency.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
