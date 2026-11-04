@@ -47,6 +47,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Preflight compile-check all Python modules
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m compileall -q backtest live research scripts tests tools
       - name: Install nflverse data dependencies
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m pip install -r requirements-backtest.txt
