@@ -53,7 +53,7 @@ def main():
     root=Path(__file__).resolve().parents[1]
     archive=json.loads((root/"data/weekly-shadow-forecasts.json").read_text()).get("rows",[])
     actuals=get_game_actuals(archive)
-    report=paired(archive,actuals)
+    report=paired(archive,{(game,market):score for (game,player,market),score in actuals.items() if player=="GAME"})
     dest=root/"research/paired-game-results";dest.mkdir(parents=True,exist_ok=True)
     (dest/"report.json").write_text(json.dumps(report,indent=2)+"\n")
     lines=["# Exact production vs challenger: paired game grading","","Research only. No automatic deployment.","",
