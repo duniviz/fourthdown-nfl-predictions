@@ -24,20 +24,24 @@ def features(history,season,week,home,away):
  h=stats(home);a=stats(away)
  return h+a+[week] if h and a else None
 def train(schedule):
- history=defaultdict(list);samples=defaultdict(list)
+ history=defaultdict(list);samples=defaultdict(list);pending=[];current=None
  for r in sorted(schedule,key=lambda r:(int(r.get("season") or 0),int(r.get("week") or 0))):
   try:
    season=int(r["season"]);week=int(r["week"])
    home=r["home_team"];away=r["away_team"]
    hs=number(r.get("home_score"));aws=number(r.get("away_score"))
    if None in (hs,aws) or not home or not away or str(r.get("game_type") or "REG")!="REG":continue
+   if current is not None and current!=(season,week):
+    for key,val in pending:history[key].append(val)
+    pending=[]
+   current=(season,week)
    x=features(history,season,week,home,away)
    if season<=2025 and x:
     samples["game_total"].append((x,hs+aws))
     samples["game_margin_home"].append((x,hs-aws))
-   history[(season,home)].append((week,hs,aws))
-   history[(season,away)].append((week,aws,hs))
+   pending.extend([((season,home),(week,hs,aws)),((season,away),(week,aws,hs))])
   except (KeyError,ValueError,TypeError):continue
+ for key,val in pending:history[key].append(val)
  models={}
  for market,rows in samples.items():
   if len(rows)<150:continue
