@@ -43,7 +43,12 @@ def main():
   key=(str(r.get("game_id")),str(r.get("player_id")),market)
   if key not in actuals:continue
   groups.setdefault(key,[]).append(dict(r,stat_key=market,actual=actuals[key]))
- complete=[r for group in groups.values() if EXPECTED.issubset({r["model"] for r in group}) for r in group]
+ # Game models have a different candidate family than player-yardage models.
+ # Require the incumbent plus all three ML challengers for an exact paired slate.
+ game_models={"live","ml_ridge","ml_random_forest","ml_gradient_boosting"}
+ complete=[r for key,group in groups.items()
+           if (game_models if key[2] in ("game_margin_home","game_total") else EXPECTED).issubset({r["model"] for r in group})
+           for r in group]
  report=compare(complete)
  report["status"]="COMPLETE" if report["matched_slate_records"] else ("WAITING_FOR_FINALS" if groups else "WAITING_FOR_PREGAME_OR_FINALS")
  report["coverage"]={"verified_market_rows":len(groups),"complete_market_rows":len({(r["game_id"],r["player_id"],r["stat_key"]) for r in complete}),"required_models":len(EXPECTED)}
@@ -54,7 +59,7 @@ def main():
  for r in report["metrics"]:
   hit="—" if r["dk_hit_rate"] is None else f'{r["dk_hit_rate"]*100:.1f}%'
   lines.append(f'| {r["market"]} | {r["model"]} | {r["n"]} | {r["mae"]} | {r["rmse"]} | {r["dk_n"]} | {hit} |')
- lines+=["","Research only. Mix variants are sensitivity adjustments; ml_ variants are separately fitted historical models. No production promotion."]
+ lines+=["","Research only. Game comparisons now require frozen incumbent plus three ML challengers on identical games. QB PAR is not yet a deployable pregame challenger. No production promotion."]
  (out/"RESULTS.md").write_text("\n".join(lines)+"\n")
  print("\n".join(lines))
 if __name__=="__main__":main()
