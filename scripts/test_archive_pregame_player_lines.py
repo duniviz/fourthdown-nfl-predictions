@@ -29,7 +29,7 @@ class ArchiveTest(unittest.TestCase):
                     {"game_id":"2026_08_KC_DEN","player":"Test Player","player_id":"00-TEST-1","team":"KC",
                      "market_key":market,"projection":proj} for market,proj,line in selected]}
             write("count-projections.json",projections(markets[3:]))
-            write("yardage-projections.json",projections(markets[:3]))
+            write("player-research.json",projections(markets[:3]))
             write("dk-odds.json",{"bookmaker":"draftkings","rows":[
                 {"game_id":"2026_08_KC_DEN","player":"Test Player","market_key":market,
                  "line":line,"commence_time":kickoff,"last_update":quote,
