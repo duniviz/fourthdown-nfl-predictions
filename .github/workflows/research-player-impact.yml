@@ -10,6 +10,7 @@ on:
       - 'research/qb_efficiency_challenger.py'
       - 'research/qb_injury_interaction.py'
       - 'research/qb_replacement_events.py'
+      - 'research/qb_replacement_delta_oracle.py'
       - 'tests/test_player_impact_research.py'
       - 'tests/test_historical_injury_audit.py'
       - '.github/workflows/research-player-impact.yml'
@@ -61,6 +62,9 @@ jobs:
       - name: Audit retrospective starting QB changes
         run: |
           python research/qb_replacement_events.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-replacement-events.json
+      - name: Evaluate hindsight-only QB replacement efficiency delta
+        run: |
+          python research/qb_replacement_delta_oracle.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-replacement-oracle.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
