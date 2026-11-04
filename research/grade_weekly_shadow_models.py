@@ -25,9 +25,9 @@ def main():
   grouped[(row["game_id"],row["player_id"],norm(row["stat_key"]))].append(row)
  expected={"live","baseline","workload","matchup","recent_form","baseline_workload_blend","workload_matchup_blend","baseline_matchup_blend","recent_matchup_blend","four_way_blend"}
  expected.update("mix_"+''.join(map(str,w)) for w in product(range(5),repeat=4) if sum(w)==4)
- complete=[r for group in grouped.values() if len(group)==len(expected) and {r["model"] for r in group}==expected for r in group]
+ complete=[r for group in grouped.values() if expected.issubset({r["model"] for r in group}) for r in group]
  report=compare(complete)
- report["coverage"]={"frozen_forecasts":len(archive),"verified_forecasts":len(rows),"complete_player_game_markets":len(complete)//len(expected),"incomplete_player_game_markets":len(grouped)-len(complete)//len(expected)}
+ report["coverage"]={"frozen_forecasts":len(archive),"verified_forecasts":len(rows),"complete_player_game_markets":sum(expected.issubset({r["model"] for r in group}) for group in grouped.values()),"incomplete_player_game_markets":len(grouped)-len(complete)//len(expected)}
  report["status"]="COMPLETE" if report["matched_slate_records"] else ("WAITING_FOR_FINAL_STATS" if archive else "WAITING_FOR_PREGAME_CAPTURE")
  out=ROOT/"research"/"weekly-shadow-results";out.mkdir(parents=True,exist_ok=True)
  (out/"leaderboard.json").write_text(json.dumps(report,indent=2)+"\n")
