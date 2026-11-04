@@ -64,6 +64,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_ml_promotion_safety.py' -v
       - name: Test player results grading audit
         run: python -m unittest discover -s tests -p 'test_player_result_audit.py' -v
+      - name: Audit published player hit/miss results
+        run: python tools/audit_player_result_grading.py
       - name: Verify production player feed and nflverse matchup coverage
         run: python scripts/verify_nflverse_matchup_coverage.py
       - name: Verify DraftKings game markets and quote history
