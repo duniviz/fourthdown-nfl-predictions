@@ -102,7 +102,7 @@ def main():
         old.append(row)
         existing.add(key)
         added += 1
-    path.write_text(json.dumps({"players": old}, indent=2) + "\\n")
+    path.write_text(json.dumps({"players": old}, indent=2) + "\n")
     print(f"Appended {added} pregame observations; retained {len(old)} total")
 
 if __name__=="__main__":
