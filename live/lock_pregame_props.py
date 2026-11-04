@@ -74,8 +74,8 @@ def main():
                    last_5_avg=item.get("recent_5_avg"),
                    snapshot_source="count_projections")
         candidates.append(row)
-    # Append-only history: each valid forecast and DK quote pair is retained.
-    # Deduplicate repeated workflow runs, never erase earlier pregame observations.
+    # Preserve every valid pre-kickoff observation, including earlier quotes.
+    # Re-running a workflow with the same forecast and quote is idempotent.
     existing = {
         (str(x.get("game_id")), str(x.get("player_id")), str(x.get("stat_key")),
          str(x.get("forecast_captured_at_utc")), str(x.get("dk_quote_time")))
