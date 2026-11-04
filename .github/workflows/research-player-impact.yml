@@ -8,6 +8,7 @@ on:
       - 'research/audit_historical_injuries.py'
       - 'research/player_impact_proxy_challenger.py'
       - 'research/qb_efficiency_challenger.py'
+      - 'research/qb_injury_interaction.py'
       - 'tests/test_player_impact_research.py'
       - 'tests/test_historical_injury_audit.py'
       - '.github/workflows/research-player-impact.yml'
@@ -53,6 +54,9 @@ jobs:
       - name: Run historical QB efficiency challenger
         run: |
           python research/qb_efficiency_challenger.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-efficiency.json
+      - name: Run injured-QB designation interaction challenger
+        run: |
+          python research/qb_injury_interaction.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-injury-interaction.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
