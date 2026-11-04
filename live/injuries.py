@@ -55,7 +55,8 @@ def main():
             team=ALIASES.get(team,team)
             if team:
                 data["teams"][team]={"status":"retrieved","players":entries(block.get("injuries",[]))}
-        # An empty league feed is not evidence of a complete injury report.\n        ok=sum(bool(v["players"]) for v in data["teams"].values())
+        # An empty league feed is not evidence of a complete injury report.
+        ok=sum(bool(v["players"]) for v in data["teams"].values())
     except Exception:
         pass
     for team in TEAMS:
@@ -67,7 +68,8 @@ def main():
             data["teams"][code]={"status":"retrieved","players":rows}
             ok+=1
         except Exception as e:
-            if code not in data["teams"]:\n                data["teams"][code]={"status":"unavailable","players":[]}
+            if code not in data["teams"]:
+                data["teams"][code]={"status":"unavailable","players":[]}
     # Scoped official-report fallback for the 2026 Week 7 Monday matchup.
     # Do not carry this historical snapshot into later games/weeks.
     today=datetime.now(timezone.utc).date()
