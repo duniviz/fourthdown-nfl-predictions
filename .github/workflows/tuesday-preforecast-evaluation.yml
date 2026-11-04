@@ -2,7 +2,7 @@ name: Tuesday pre-forecast evaluation
 on:
   workflow_dispatch:
   schedule:
-    # 6 AM Central; both UTC hours cover CST and CDT.
+    # 6 AM Central; both UTC hours cover CST and CDT.\n    # Allow GitHub scheduling delays within the 6 AM hour.
     - cron: '0 11,12 * * 2'
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "$(TZ=America/Chicago date +%H:%M)" != "06:00" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "$(TZ=America/Chicago date +%u:%H)" != "2:06" ]]; then
             echo "run=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
