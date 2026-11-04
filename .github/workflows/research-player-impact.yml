@@ -17,12 +17,22 @@ jobs:
         run: |
           python -m compileall -q research/player_impact_research.py tests/test_player_impact_research.py
           python -m unittest discover -s tests -p 'test_player_impact_research.py' -v
+          python -m unittest discover -s tests -p 'test_historical_injury_audit.py' -v
       - name: Download 2023-2025 historical schedules and scores
         run: curl --fail --location --retry 3 --max-time 120 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv' -o /tmp/fourthdown-games.csv
       - name: Run historical chronological baseline and injury coverage audit
         run: python research/player_impact_research.py --schedule /tmp/fourthdown-games.csv --output research/player-impact-results/report.json
+      - name: Download historical weekly injury reports (2023-2025)
+        run: |
+          mkdir -p /tmp/fourthdown-injuries
+          for year in 2023 2024 2025; do
+            curl --fail --location --retry 3 --max-time 120 "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${year}.csv" -o "/tmp/fourthdown-injuries/injuries_${year}.csv"
+          done
+      - name: Audit historical injury designations and coverage
+        run: |
+          python research/audit_historical_injuries.py --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/injury-coverage.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
           name: player-impact-2023-2025-research
-          path: research/player-impact-results/report.json
+          path: research/player-impact-results/
