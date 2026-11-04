@@ -48,8 +48,7 @@ jobs:
               except (ValueError, UnicodeDecodeError) as exc:
                   errors.append(f"Invalid JSON: {path}: {exc}")
           if errors:
-              raise SystemExit("\
-".join(errors))
+              raise SystemExit("\\n".join(errors))
           print("Published nonempty JSON feeds parse successfully")
           PY
       - name: Verify production player feed and nflverse matchup coverage
