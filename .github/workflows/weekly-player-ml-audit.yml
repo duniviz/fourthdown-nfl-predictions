@@ -1,0 +1,46 @@
+name: Weekly player ML challenger audit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 16 * * 3'
+permissions:
+  contents: read
+jobs:
+  player-ml:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile-check all Python
+        run: python -m compileall -q live tools research scripts tests
+      - name: Install ML dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Evaluate all available player markets on untouched historical season
+        run: python tools/ml_challengers.py
+      - name: Report yardage and count market coverage
+        run: |
+          python - <<'PY'
+          import json,os
+          d=json.load(open('data/ml-challenger-review.json'))
+          names=['passing_yards','rushing_yards','receiving_yards','qb_completions','rb_rush_attempts','wr_receptions']
+          lines=['## Player ML challenger coverage','Historical holdout only; NOT verified weekly live-versus-challenger results.']
+          for m in names:
+              r=d.get('markets',{}).get(m)
+              if not r:
+                  lines.append(f'- {m}: NOT EVALUATED — no compatible frozen training rows')
+              elif r.get('status')!='evaluated':
+                  lines.append(f"- {m}: {r.get('status')} (train {r.get('train')}, holdout {r.get('holdout')})")
+              else:
+                  scores=', '.join(f"{k} MAE {v['mae']}" for k,v in r['challengers'].items())
+                  lines.append(f"- {m}: {r['holdout']} holdout rows; baseline MAE {r['baseline_mae']}; {scores}")
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('\n'.join(lines)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: player-ml-weekly-audit
+          path: data/ml-challenger-review.json
+          if-no-files-found: warn
