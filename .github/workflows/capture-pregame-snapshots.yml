@@ -35,6 +35,9 @@ jobs:
       - name: Freeze research-only count challenger predictions
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/freeze_weekly_shadow_models.py
+      - name: Train and freeze count-prop ML challengers
+        if: steps.kickoff.outputs.run == 'true'
+        run: python scripts/freeze_count_ml_predictions.py
       - name: Freeze yardage and game research models
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/freeze_yardage_game_shadow_models.py
