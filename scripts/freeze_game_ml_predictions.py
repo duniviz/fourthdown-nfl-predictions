@@ -64,6 +64,16 @@ def main():
    if not kickoff or not created<kickoff or not now<kickoff:continue
    x=features(history,int(game["season"]),int(game["week"]),game["home"],game["away"])
    if x is None:continue
+   # Freeze the incumbent on the same slate and timestamp as challengers.
+   incumbent={"game_total":number(game.get("projected_total")),
+              "game_margin_home":number(game.get("projected_margin_home"))}
+   for market,value in incumbent.items():
+    key=(str(game["game_id"]),"GAME",market,"live")
+    if value is not None and key not in indexed:
+     indexed[key]={"game_id":key[0],"player_id":"GAME","stat_key":market,
+       "model":"live","projection":round(value,4),"dk_line":None,
+       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
+       "source":"frozen production game projection","actual":None}
    for market,modelset in models.items():
     for name,model in modelset.items():
      key=(str(game["game_id"]),"GAME",market,name)
