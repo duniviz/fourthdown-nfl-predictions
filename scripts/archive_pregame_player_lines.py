@@ -22,6 +22,11 @@ def main():
     odds=read("dk-odds.json",{})
     sources=[("count-projections.json",read("count-projections.json",{})),
              ("yardage-projections.json",read("yardage-projections.json",{}))]
+    if not any(isinstance(data.get("players"),list) and data["players"] for _,data in sources):
+        raise SystemExit("No usable timestamped player projection feeds; refusing empty capture")
+    for source_name,data in sources:
+        if not isinstance(data.get("players"),list) or not data["players"]:
+            print("WARNING: missing or empty projection source:",source_name)
     history=read("player-history.json",{"schema_version":1,"players":[]})
     if not isinstance(history.get("players"),list): history={"schema_version":1,"players":[]}
     if odds.get("bookmaker","").lower()!="draftkings": raise SystemExit("Not DraftKings odds")
@@ -31,6 +36,8 @@ def main():
     # Count prop market aliases used by the current projection generator.
     aliases={"player_pass_completions":"player_passing_completions","player_pass_attempts":"player_passing_attempts",
              "player_rush_attempts":"player_rushing_attempts","player_receptions":"player_receptions",
+             "player_pass_yds":"player_passing_yards","player_rush_yds":"player_rushing_yards",
+             "player_rec_yds":"player_receiving_yards",
              "player_passing_yards":"player_passing_yards","player_rushing_yards":"player_rushing_yards",
              "player_receiving_yards":"player_receiving_yards"}
     odds_aliases={"player_pass_yds":"player_passing_yards",
