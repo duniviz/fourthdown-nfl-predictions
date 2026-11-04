@@ -1,0 +1,68 @@
+name: FOURTHDOWN unified weekly ML cycle
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 16 * * 3'
+permissions:
+  contents: read
+concurrency:
+  group: fourthdown-weekly-ml
+  cancel-in-progress: false
+jobs:
+  weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install data and ML dependencies
+        run: python -m pip install -r requirements-backtest.txt numpy scikit-learn nflreadpy polars pyarrow
+      - name: Validate Python and safety tests
+        run: |
+          python -m compileall -q live tools research scripts
+          python -m unittest discover -s tests -p 'test_paired_game_grading.py' -v
+          python -m unittest discover -s tests -p 'test_count_ml_safety.py' -v
+      - name: Update verified completed game and player results
+        run: |
+          python tools/track_weekly_performance.py
+      - name: Retrain and evaluate historical player ML challengers
+        run: python tools/ml_challengers.py
+      - name: Compare 2006 onward NFL data and rolling training windows
+        run: python research/expanded_game_feature_lab.py
+      - name: Grade frozen count and yardage player challengers
+        run: python research/grade_weekly_shadow_models.py
+      - name: Grade frozen yardage and game models
+        run: python research/grade_yardage_game_models.py
+      - name: Grade exact paired game challengers
+        run: python research/grade_paired_game_models.py
+      - name: Grade all available matched past weeks across markets
+        run: python research/grade_all_markets_paired.py
+      - name: Preserve research-only champion selection
+        run: |
+          python research/weekly_shadow_promotion.py
+          python tools/ml_auto_promotion.py
+      - name: Summarize weekly cycle
+        if: always()
+        run: |
+          echo '## FOURTHDOWN weekly ML research' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Live model unchanged; promotion remains research-only until rollback and production replay are validated.' >> "$GITHUB_STEP_SUMMARY"
+          for f in research/weekly-shadow-results/RESULTS.md research/paired-game-results/RESULTS.md research/all-markets-paired-results/RESULTS.md; do
+            if [ -f "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fourthdown-unified-weekly-ml
+          path: |
+            research/feature-ablation-results/
+            research/weekly-shadow-results/
+            research/yardage-game-results/
+            research/paired-game-results/
+            research/all-markets-paired-results/
+            data/ml-challenger-review.json
+            data/ml-weekly-decisions.json
+          if-no-files-found: warn
