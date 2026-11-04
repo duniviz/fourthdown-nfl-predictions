@@ -1057,7 +1057,7 @@ function fdOpenMatchup(g){
        '<div class="fd-insight-heading"><span class="fd-insight-ai">GAME PREVIEW</span>'+
        '<h3>'+esc(editorial.headline||away+' at '+home)+'</h3>'+
        '<p>Pregame reporting based on verified matchup context · '+esc(new Date(generated).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'</p></div>'+
-       '<div class="fd-editorial-stories">'+safeStories.map(s=>'<article class="fd-editorial-story"><h4>'+esc(s.title)+'</h4><p>'+esc(s.body)+'</p></article>').join('')+'</div>'++
+       '<div class="fd-editorial-stories">'+safeStories.map(s=>'<article class="fd-editorial-story"><h4>'+esc(s.title)+'</h4><p>'+esc(s.body)+'</p></article>').join('')+'</div>'+ 
        (Array.isArray(editorial.news)&&editorial.news.length?'<div class="fd-editorial-stories"><h4>Latest matchup headlines · ESPN</h4>'+editorial.news.filter(n=>n&&typeof n.title==='string'&&typeof n.url==='string'&&n.url.startsWith('https://www.espn.com/')).slice(0,4).map(n=>'<p><a href="'+esc(n.url)+'" target="_blank" rel="noopener noreferrer">'+esc(n.title)+'</a> <small>· '+esc(n.publisher||'ESPN')+'</small></p>').join('')+'</div>':'')
        '<details class="fd-insight-sources"><summary>Evidence and limitations</summary><p>Generated from saved model projections and verified game context. Model estimates are not facts or betting probabilities. Unverified injuries, market movement and news are not included.</p>'+
        '<p>Evidence categories: '+esc([...new Set(safeStories.flatMap(s=>s.evidence_keys))].join(', '))+'</p></details></section>';
