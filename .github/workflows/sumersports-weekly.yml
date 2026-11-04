@@ -1,0 +1,26 @@
+name: SumerSports weekly research snapshots
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * 2'
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Capture available public research tables
+        run: python research/sumersports_snapshot.py
+      - name: Preserve dated snapshots and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sumersports-research-${{ github.run_id }}
+          path: research/sumersports-snapshots/
+          retention-days: 90
+          if-no-files-found: warn
