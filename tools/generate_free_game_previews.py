@@ -53,8 +53,7 @@ def relevant_news(game,articles):
     matches=[]
     for item in articles:
         title=item["title"]
-        if any(name and (re.search(r"\\b"+re.escape(name.split()[-1])+r"\\b",title,re.I) or
-                         name.lower() in title.lower()) for name in teams):
+        if any(name and (name.split()[-1].lower() in title.lower() or name.lower() in title.lower()) for name in teams):
             matches.append(item)
     return matches[:4]
 
