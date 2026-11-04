@@ -26,6 +26,9 @@ jobs:
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Install fitted ML inference dependencies
+        if: steps.kickoff.outputs.run == 'true'
+        run: python -m pip install numpy scikit-learn
       - name: Capture available pregame source records
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/capture_pregame_snapshots.py
@@ -35,6 +38,9 @@ jobs:
       - name: Freeze yardage and game research models
         if: steps.kickoff.outputs.run == 'true'
         run: python scripts/freeze_yardage_game_shadow_models.py
+      - name: Freeze trained ML player yardage predictions
+        if: steps.kickoff.outputs.run == 'true'
+        run: python scripts/freeze_player_ml_predictions.py
       - name: Commit snapshot updates
         if: steps.kickoff.outputs.run == 'true'
         run: |
