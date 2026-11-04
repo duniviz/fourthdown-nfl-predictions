@@ -1,0 +1,31 @@
+name: Weekly expanded NFL ML feature ablation
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 16 * * 3'
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: python -m pip install numpy scikit-learn nflreadpy polars pyarrow
+      - name: Compile expanded feature experiment
+        run: python -m py_compile research/expanded_game_feature_lab.py
+      - name: Compare basic versus expanded features on chronological holdout seasons
+        run: python research/expanded_game_feature_lab.py
+      - name: Publish research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: expanded-nfl-ml-feature-ablation
+          path: research/feature-ablation-results/
+          if-no-files-found: warn
