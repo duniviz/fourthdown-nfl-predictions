@@ -46,10 +46,6 @@ jobs:
           PY
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
-      - name: Compare 2006 onward NFL data and rolling training windows (independent research)
-        continue-on-error: true
-        timeout-minutes: 25
-        run: python -u research/expanded_game_feature_lab.py
       - name: Grade frozen count and yardage player challengers
         run: python research/grade_weekly_shadow_models.py
       - name: Grade frozen yardage and game models
