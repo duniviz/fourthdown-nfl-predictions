@@ -52,6 +52,38 @@ jobs:
           else
             echo 'WARNING: Historical game scores unavailable; no game ML forecasts generated' >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Verify frozen live and challenger coverage
+        if: steps.kickoff.outputs.run == 'true'
+        run: |
+          python - <<'PY'
+          import json, os
+          from collections import Counter
+          from pathlib import Path
+          snapshots=json.loads(Path("data/pregame-snapshots.json").read_text()).get("records",[])
+          archive=Path("data/weekly-shadow-forecasts.json")
+          rows=json.loads(archive.read_text()).get("rows",[]) if archive.exists() else []
+          models=Counter(str(r.get("model")) for r in rows)
+          games=len({str(r.get("game_id")) for r in snapshots})
+          summary=(f"## Pregame freeze coverage\\n"
+                   f"- Snapshot records: {len(snapshots)} across {games} games\\n"
+                   f"- Frozen forecast rows: {len(rows)}\\n"
+                   f"- Frozen live rows: {models.get('live',0)}\\n"
+                   f"- Challenger models: {len([m for m in models if m != 'live'])}\\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as out:out.write(summary)
+          print(summary)
+          if not snapshots:
+              raise SystemExit("No pregame snapshots saved in eligible kickoff window")
+          if not rows or not models.get("live"):
+              raise SystemExit("No paired comparison baseline frozen: investigate source identifiers and projection timestamps")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pregame-freeze-diagnostics
+          path: |
+            data/pregame-snapshots.json
+            data/weekly-shadow-forecasts.json
+          if-no-files-found: warn
       - name: Commit snapshot updates
         if: steps.kickoff.outputs.run == 'true'
         run: |
