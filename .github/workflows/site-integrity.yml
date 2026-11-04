@@ -8,6 +8,9 @@ on:
       - '*.css'
       - 'data/*.json'
       - 'scripts/verify_nflverse_matchup_coverage.py'
+      - 'scripts/archive_pregame_player_lines.py'
+      - 'live/player_results.py'
+      - 'tests/test_pregame_archive_grading.py'
       - '.github/workflows/site-integrity.yml'
   pull_request:
     paths:
@@ -51,6 +54,8 @@ jobs:
               raise SystemExit("\\n".join(errors))
           print("Published nonempty JSON feeds parse successfully")
           PY
+      - name: Check pregame archive grading compatibility
+        run: python -m unittest discover -s tests -p 'test_pregame_archive_grading.py' -v
       - name: Verify production player feed and nflverse matchup coverage
         run: python scripts/verify_nflverse_matchup_coverage.py
       - name: Verify DraftKings game markets and quote history
