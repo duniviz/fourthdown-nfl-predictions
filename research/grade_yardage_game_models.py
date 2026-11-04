@@ -8,12 +8,8 @@ from same_slate_leaderboard import compare
 from join_frozen_pregame_results import norm
 MARKETS={"passing_yards","rushing_yards","receiving_yards","game_margin_home","game_total"}
 EXPECTED={"live",*("mix_"+''.join(map(str,w)) for w in product(range(5),repeat=4) if sum(w)==4)}
-def main():
- data=ROOT/"data"
- archive=json.loads((data/"weekly-shadow-forecasts.json").read_text()).get("rows",[])
- finals=json.loads((data/"player-results.json").read_text()).get("rows",[])
- actuals={(str(r.get("game_id")),str(r.get("player_id")),norm(r.get("stat_key"))):r["actual"]
-          for r in finals if r.get("player_id") and r.get("actual") is not None and not r.get("dnp") and r.get("played") is not False}
+def get_game_actuals(archive):
+ actuals={}
  games={r["game_id"] for r in archive if r.get("stat_key") in ("game_margin_home","game_total")}
  by_week={}
  for game in games:
@@ -36,6 +32,15 @@ def main():
     actuals[(game,"GAME","game_margin_home")]=hs-aws
     actuals[(game,"GAME","game_total")]=hs+aws
   except (OSError,ValueError,KeyError,TimeoutError) as exc:print("Final game scores unavailable:",exc)
+ return actuals
+
+def main():
+ data=ROOT/"data"
+ archive=json.loads((data/"weekly-shadow-forecasts.json").read_text()).get("rows",[])
+ finals=json.loads((data/"player-results.json").read_text()).get("rows",[])
+ actuals={(str(r.get("game_id")),str(r.get("player_id")),norm(r.get("stat_key"))):r["actual"]
+          for r in finals if r.get("player_id") and r.get("actual") is not None and not r.get("dnp") and r.get("played") is not False}
+ actuals.update(get_game_actuals(archive))
  groups={}
  for r in archive:
   market=norm(r.get("stat_key"))
