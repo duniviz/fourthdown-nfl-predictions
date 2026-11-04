@@ -1,0 +1,36 @@
+name: Grade frozen weekly challenger predictions
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 15 * * 3'
+permissions:
+  contents: read
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python syntax
+        run: python -m compileall -q research scripts live tools
+      - name: Grade only frozen pre-kickoff challenger predictions against verified actuals
+        run: python research/grade_weekly_shadow_models.py
+      - name: Add comparison to Wednesday run summary
+        if: always()
+        run: |
+          if [ -f research/weekly-shadow-results/RESULTS.md ]; then
+            cat research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No valid same-slate grade generated; check frozen forecasts and final results." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verified-weekly-challenger-grades
+          path: research/weekly-shadow-results/
+          if-no-files-found: warn
