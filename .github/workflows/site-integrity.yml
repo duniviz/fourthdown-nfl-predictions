@@ -9,6 +9,7 @@ on:
       - 'data/*.json'
       - 'scripts/verify_nflverse_matchup_coverage.py'
       - 'scripts/archive_pregame_player_lines.py'
+      - 'scripts/test_archive_pregame_player_lines.py'
       - 'live/player_results.py'
       - 'tests/test_pregame_archive_grading.py'
       - 'tests/test_ml_promotion_safety.py'
@@ -60,6 +61,8 @@ jobs:
           PY
       - name: Check pregame archive grading compatibility
         run: python -m unittest discover -s tests -p 'test_pregame_archive_grading.py' -v
+      - name: Test actual pregame capture and kickoff lock
+        run: python -m unittest discover -s scripts -p 'test_archive_pregame_player_lines.py' -v
       - name: Check fail-closed model promotion safety
         run: python -m unittest discover -s tests -p 'test_ml_promotion_safety.py' -v
       - name: Test player results grading audit
