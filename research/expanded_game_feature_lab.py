@@ -101,21 +101,23 @@ def evaluate(rows):
  seasons=sorted({r["season"] for r in rows})
  out=[]
  for season in seasons:
-  train=[r for r in rows if r["season"]<season]
   test=[r for r in rows if r["season"]==season]
-  if len(train)<150 or len(test)<100:continue
-  for market in ("total","margin"):
-   y=np.array([r[market] for r in train]);actual=np.array([r[market] for r in test])
-   for feature_set in ("base","extended"):
-    x=np.array([r[feature_set] for r in train]);xt=np.array([r[feature_set] for r in test])
-    models={"ridge":make_pipeline(StandardScaler(),Ridge(alpha=100)),
-     "random_forest":RandomForestRegressor(n_estimators=100,max_depth=5,min_samples_leaf=12,random_state=42,n_jobs=1),
-     "gradient_boosting":HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=20,l2_regularization=20,random_state=42)}
-    for name,model in models.items():
-     pred=model.fit(x,y).predict(xt)
-     out.append({"holdout_season":season,"market":market,"features":feature_set,"model":name,
-                 "matched_games":len(test),"mae":round(float(np.mean(abs(pred-actual))),4),
-                 "rmse":round(float(np.sqrt(np.mean((pred-actual)**2))),4)})
+  if len(test)<100:continue
+  for window in (2,3,5,10,None):
+   train=[r for r in rows if r["season"]<season and (window is None or r["season"]>=season-window)]
+   if len(train)<150:continue
+   for market in ("total","margin"):
+    y=np.array([r[market] for r in train]);actual=np.array([r[market] for r in test])
+    for feature_set in ("base","extended"):
+     x=np.array([r[feature_set] for r in train]);xt=np.array([r[feature_set] for r in test])
+     models={"ridge":make_pipeline(StandardScaler(),Ridge(alpha=100)),
+      "random_forest":RandomForestRegressor(n_estimators=100,max_depth=5,min_samples_leaf=12,random_state=42,n_jobs=1),
+      "gradient_boosting":HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=20,l2_regularization=20,random_state=42)}
+     for name,model in models.items():
+      pred=model.fit(x,y).predict(xt)
+      out.append({"holdout_season":season,"training_window_seasons":window if window is not None else "all_prior","training_games":len(train),"market":market,"features":feature_set,"model":name,
+                  "matched_games":len(test),"mae":round(float(np.mean(abs(pred-actual))),4),
+                  "rmse":round(float(np.sqrt(np.mean((pred-actual)**2))),4)})
  return {"status":"RESEARCH_ONLY_FEATURE_ABLATION","production_modified":False,
          "not_live_comparison":True,"features_base":BASE,"features_extended":EXTRA,
          "exclusions":["Weather: no verified timestamped historical pregame weather",
@@ -123,7 +125,7 @@ def evaluate(rows):
           "Pressure rate: no independently verified historical pressure feed"],
          "results":out}
 def main():
- seasons=list(range(2020,datetime.now(timezone.utc).year+1))
+ seasons=list(range(2006,datetime.now(timezone.utc).year+1))
  schedules=nfl.load_schedules(seasons).to_dicts()
  pbp=[]
  for season in seasons:
