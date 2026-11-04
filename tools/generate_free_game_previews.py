@@ -1,12 +1,62 @@
 #!/usr/bin/env python3
 """Free, evidence-grounded matchup previews. No external AI service or API charges."""
 import json
+import urllib.request
+import xml.etree.ElementTree as ET
+import re
+from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORECAST = ROOT / "data/live-v2.json"
 OUTPUT = ROOT / "data/ai-game-previews.json"
+
+TEAM_NAMES = {
+"ARI":"Arizona Cardinals","ATL":"Atlanta Falcons","BAL":"Baltimore Ravens","BUF":"Buffalo Bills",
+"CAR":"Carolina Panthers","CHI":"Chicago Bears","CIN":"Cincinnati Bengals","CLE":"Cleveland Browns",
+"DAL":"Dallas Cowboys","DEN":"Denver Broncos","DET":"Detroit Lions","GB":"Green Bay Packers",
+"HOU":"Houston Texans","IND":"Indianapolis Colts","JAX":"Jacksonville Jaguars","KC":"Kansas City Chiefs",
+"LAC":"Los Angeles Chargers","LAR":"Los Angeles Rams","LA":"Los Angeles Rams","LV":"Las Vegas Raiders",
+"MIA":"Miami Dolphins","MIN":"Minnesota Vikings","NE":"New England Patriots","NO":"New Orleans Saints",
+"NYG":"New York Giants","NYJ":"New York Jets","PHI":"Philadelphia Eagles","PIT":"Pittsburgh Steelers",
+"SEA":"Seattle Seahawks","SF":"San Francisco 49ers","TB":"Tampa Bay Buccaneers",
+"TEN":"Tennessee Titans","WSH":"Washington Commanders"
+}
+
+def fetch_news(now):
+    """Public RSS headlines only; never copy articles or infer injury facts."""
+    url="https://www.espn.com/espn/rss/nfl/news"
+    try:
+        req=urllib.request.Request(url,headers={"User-Agent":"FOURTHDOWN-News/1.0"})
+        with urllib.request.urlopen(req,timeout=12) as response:
+            root=ET.fromstring(response.read(600000))
+        articles=[]
+        for item in root.findall(".//item"):
+            title=(item.findtext("title") or "").strip()
+            link=(item.findtext("link") or "").strip()
+            pub=(item.findtext("pubDate") or "").strip()
+            if not title or not link.startswith("https://www.espn.com/"):
+                continue
+            try: published=parsedate_to_datetime(pub).astimezone(timezone.utc)
+            except (TypeError,ValueError): continue
+            if not 0 <= (now-published).total_seconds() <= 7*86400: continue
+            articles.append({"title":title[:180],"url":link,"published_at_utc":published.isoformat(),"publisher":"ESPN"})
+        print("Fresh public ESPN RSS headlines:",len(articles))
+        return articles
+    except (OSError,ET.ParseError,ValueError) as exc:
+        print("News feed unavailable; preserving model previews:",type(exc).__name__)
+        return []
+
+def relevant_news(game,articles):
+    teams=[TEAM_NAMES.get(game["home"],""),TEAM_NAMES.get(game["away"],"")]
+    matches=[]
+    for item in articles:
+        title=item["title"]
+        if any(name and (re.search(r"\\b"+re.escape(name.split()[-1])+r"\\b",title,re.I) or
+                         name.lower() in title.lower()) for name in teams):
+            matches.append(item)
+    return matches[:4]
 
 def describe(game):
     home, away = game["home"], game["away"]
@@ -53,26 +103,28 @@ def main():
     old=previous.get("games",{})
     updated={}
     now=datetime.now(timezone.utc)
+    articles=fetch_news(now)
     for game in forecasts.get("games",[]):
         gid=game.get("game_id")
         if not gid or not game.get("kickoff_utc") or not game.get("analysis"):
             continue
         kickoff=datetime.fromisoformat(game["kickoff_utc"].replace("Z","+00:00"))
         prior=old.get(gid)
+        news=relevant_news(game,articles)
         # Preserve existing editorial writing when projections and kickoff have not changed.
         signature=json.dumps({"kickoff":game["kickoff_utc"],"home":game["home"],
           "away":game["away"],"scores":[game["projected_home_score"],game["projected_away_score"]],
           "analysis":game["analysis"]},sort_keys=True)
         if prior and (prior.get("free_evidence_signature")==signature or
                       (not prior.get("free_evidence_signature") and prior.get("kickoff_utc")==game["kickoff_utc"])):
-            updated[gid]=prior
+            updated[gid]={**prior,"news":news if articles else prior.get("news",[])}
             continue
         if kickoff <= now:
             if prior: updated[gid]=prior
             continue
         updated[gid]={**describe(game),"generated_at_utc":now.isoformat(),
             "kickoff_utc":game["kickoff_utc"],"free_evidence_signature":signature,
-            "source":"Free evidence-based model commentary (not generative AI)"}
+            "source":"Free evidence-based model commentary (not generative AI)","news":news}
     result={"schema_version":1,"games":updated}
     serialized=json.dumps(result,indent=2,ensure_ascii=False)+"\n"
     if not OUTPUT.exists() or OUTPUT.read_text()!=serialized:
