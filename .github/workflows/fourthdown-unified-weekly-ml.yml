@@ -80,8 +80,8 @@ jobs:
             data/ml-weekly-decisions.json
           if-no-files-found: warn
 
-  historical-2006-2026:
-    name: Extended history 2006-2026 (independent research)
+  historical-2016-2026:
+    name: Extended history 2016-2026 (independent research)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     continue-on-error: true
@@ -96,7 +96,7 @@ jobs:
         run: python -m pip install numpy scikit-learn nflreadpy polars pyarrow
       - name: Validate historical ML experiment syntax
         run: python -m py_compile research/expanded_game_feature_lab.py
-      - name: Train and compare 2006-2026 NFL historical windows
+      - name: Train and compare 2016-2026 NFL historical windows
         timeout-minutes: 75
         run: python -u research/expanded_game_feature_lab.py
       - name: Summarize historical data coverage
@@ -118,6 +118,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: fourthdown-historical-2006-2026
+          name: fourthdown-historical-2016-2026
           path: research/feature-ablation-results/
           if-no-files-found: warn
