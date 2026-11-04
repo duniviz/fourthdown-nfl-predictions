@@ -1603,7 +1603,7 @@ function fdGameLineComparison(p){
  const tot=valid(latest?.total)?Number(latest.total):null;
  const modelFavorite=m>=0?p.home:p.away;
  const modelSpread=modelFavorite+' -'+Math.abs(m).toFixed(1);
- const dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp>0?'+':'')+sp.toFixed(1);
+ const dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp<0?sp:-sp).toFixed(1).replace(/^([0-9])/,'+$1');
  const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago'}):'No verified pregame quote';
  const kickoff=Date.parse(p.kickoff_utc),quoteAt=Date.parse(latest?.captured_at_utc||'');
  const ageHours=Number.isFinite(kickoff)&&Number.isFinite(quoteAt)?(kickoff-quoteAt)/3600000:null;
