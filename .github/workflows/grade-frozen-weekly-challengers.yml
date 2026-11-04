@@ -20,11 +20,16 @@ jobs:
         run: python -m compileall -q research scripts live tools
       - name: Grade only frozen pre-kickoff challenger predictions against verified actuals
         run: python research/grade_weekly_shadow_models.py
+      - name: Grade game scoring lines and yardage ML against verified finals
+        run: python research/grade_yardage_game_models.py
       - name: Add comparison to Wednesday run summary
         if: always()
         run: |
           if [ -f research/weekly-shadow-results/RESULTS.md ]; then
             cat research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f research/yardage-game-results/RESULTS.md ]; then
+            cat research/yardage-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "No valid same-slate grade generated; check frozen forecasts and final results." >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -32,5 +37,7 @@ jobs:
         if: always()
         with:
           name: verified-weekly-challenger-grades
-          path: research/weekly-shadow-results/
+          path: |
+            research/weekly-shadow-results/
+            research/yardage-game-results/
           if-no-files-found: warn
