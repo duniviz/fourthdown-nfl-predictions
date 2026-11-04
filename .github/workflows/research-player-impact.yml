@@ -1,6 +1,8 @@
 name: Research player impact 2023-2025
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 15 * * 3' # Wednesday 15:00 UTC
   push:
     branches: [main]
     paths:
