@@ -1,0 +1,83 @@
+name: Wednesday FOURTHDOWN operations review
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 15 * * 3'
+permissions:
+  actions: read
+  contents: read
+  issues: write
+jobs:
+  weekly-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const now = new Date();
+            const since = new Date(now.getTime() - 7 * 86400000);
+            const {data} = await github.rest.actions.listWorkflowRunsForRepo({
+              ...context.repo, per_page: 100, created: '>=' + since.toISOString().slice(0,10)
+            });
+            const important = [
+              'Archive pregame DK player props',
+              'Capture last pregame projections and DK lines',
+              'Publish count prop projections',
+              'Publish weekly v2 forecasts',
+              'Site integrity checks',
+              'Scheduled V4 Weekly Research Grading',
+              'Accuracy Engine weekly research'
+            ];
+            const lines = ['# FOURTHDOWN weekly operations review',
+              'Generated: ' + now.toISOString(),
+              '',
+              '## Automation status (last 7 days)'];
+            for (const name of important) {
+              const runs = data.workflow_runs.filter(r => r.name === name);
+              const latest = runs[0];
+              const failures = runs.filter(r => ['failure','timed_out'].includes(r.conclusion));
+              lines.push('- **' + name + '**: ' + (latest
+                ? (latest.status === 'completed' ? latest.conclusion : latest.status) +
+                  ' (' + runs.length + ' runs, ' + failures.length + ' failures) — ' + latest.html_url
+                : 'NO RUN FOUND in the last seven days'));
+            }
+            async function readJson(path) {
+              try {
+                const {data:file} = await github.rest.repos.getContent({...context.repo,path,ref:'main'});
+                if (!file.content) return null;
+                return JSON.parse(Buffer.from(file.content,'base64').toString('utf8'));
+              } catch (e) { return null; }
+            }
+            const history = await readJson('data/player-history.json');
+            const results = await readJson('data/player-results.json');
+            const count = await readJson('data/count-projections.json');
+            const yard = await readJson('data/player-research.json');
+            const rows = Array.isArray(history?.players) ? history.players : [];
+            const resultRows = Array.isArray(results?.rows) ? results.rows : [];
+            const graded = resultRows.filter(r => ['hit','miss','push'].includes(String(r.recommendation_result).toLowerCase()));
+            const hits = graded.filter(r => String(r.recommendation_result).toLowerCase() === 'hit').length;
+            const misses = graded.filter(r => String(r.recommendation_result).toLowerCase() === 'miss').length;
+            const decisions = hits + misses;
+            lines.push('', '## Data and grading coverage',
+              '- Locked DK player snapshots: **' + rows.length + '**',
+              '- Published player results: **' + resultRows.length + '**',
+              '- Graded recommendations: **' + graded.length + '**',
+              '- Pick hit rate (pushes excluded): **' + (decisions ? (100*hits/decisions).toFixed(1)+'% ('+hits+'/'+decisions+')' : 'NOT AVAILABLE — no verified graded picks') + '**',
+              '- Count projection feed: **' + (count?.players?.length ? count.players.length+' rows, '+count.generated_at_utc : 'MISSING OR EMPTY') + '**',
+              '- Yardage research feed: **' + (yard?.players?.length ? yard.players.length+' rows, '+yard.generated_at_utc : 'MISSING OR EMPTY') + '**',
+              '',
+              '## What needs attention',
+              '- Investigate any failed or missing workflow above.',
+              '- Verify locked DK lines and forecasts before using hit-rate metrics.',
+              '- Model promotion remains disabled until independent production replay and rollback validation.',
+              '',
+              'This report is generated automatically; it does not rewrite predictions or grade missing picks.');
+            const title = '[FOURTHDOWN] Wednesday weekly review';
+            const body = lines.join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo,{
+              ...context.repo,state:'open',per_page:100
+            });
+            const existing = issues.find(i => !i.pull_request && i.title === title);
+            if (existing) await github.rest.issues.update({...context.repo,issue_number:existing.number,body});
+            else await github.rest.issues.create({...context.repo,title,body});
