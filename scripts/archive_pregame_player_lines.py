@@ -21,7 +21,7 @@ def main():
     now=dt.datetime.now(dt.timezone.utc)
     odds=read("dk-odds.json",{})
     sources=[("count-projections.json",read("count-projections.json",{})),
-             ("yardage-projections.json",read("yardage-projections.json",{}))]
+             ("player-research.json",read("player-research.json",{}))]
     if not any(isinstance(data.get("players"),list) and data["players"] for _,data in sources):
         raise SystemExit("No usable timestamped player projection feeds; refusing empty capture")
     for source_name,data in sources:
@@ -62,7 +62,7 @@ def main():
       for p in projections.get("players",[]):
         market=aliases.get(p.get("market_key"))
         if not market: continue
-        if source_name=="yardage-projections.json" and market not in ("player_passing_yards","player_rushing_yards","player_receiving_yards"): continue
+        if source_name=="player-research.json" and market not in ("player_passing_yards","player_rushing_yards","player_receiving_yards"): continue
         projection=p.get("projection")
         game_id=str(p.get("game_id") or "")
         if not game_id or not isinstance(projection,(float,int)) or isinstance(projection,bool) or not math.isfinite(projection): continue
