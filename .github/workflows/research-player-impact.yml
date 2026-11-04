@@ -1,6 +1,14 @@
 name: Research player impact 2023-2025
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'research/player_impact_research.py'
+      - 'research/audit_historical_injuries.py'
+      - 'tests/test_player_impact_research.py'
+      - 'tests/test_historical_injury_audit.py'
+      - '.github/workflows/research-player-impact.yml'
 permissions:
   contents: read
 jobs:
