@@ -24,7 +24,7 @@ def fit(rows):
    season=int(r["season"]);week=int(r["week"])
    old=finite(r["old"]);new=finite(r["new"]);actual=finite(r["actual"])
    if season>=2026 or None in (old,new,actual) or min(old,new,actual)<0:continue
-   grouped[r["market"]].append(([new,old,week],actual))
+   grouped[r["market"]].append(([new,week],actual))
   except (KeyError,ValueError,TypeError):continue
  models={}
  for market,items in grouped.items():
@@ -54,18 +54,15 @@ def build(now=None):
   if not kickoff or not (ds<kickoff and gs<kickoff and now<kickoff):continue
   live=finite(p.get("projected_yards"))
   if live is None or live<0:continue
-  # Historical training used new and old projections. Current feed exposes only
-  # one comparable value; do not invent an old-model forecast. Require both.
-  old=finite(p.get("old_projection"))
-  if old is None:continue
-  features=np.asarray([[live,old,int(g["week"])]])
+  # Train and infer on the same available features: pregame baseline and week.
+  features=np.asarray([[live,int(g["week"])]])
   for name,model in modelset.items():
    key=(str(g["game_id"]),str(p["player_id"]),market,"ml_"+name)
    if key in indexed:continue
    pred=float(model.predict(features)[0])
    indexed[key]={"game_id":key[0],"player_id":key[1],"stat_key":market,"model":key[3],
     "projection":round(max(0,pred),4),"dk_line":None,"kickoff_utc":kickoff.isoformat(),
-    "predicted_at_utc":ds.isoformat(),"source":"fitted historical 2024-2025 ML, old/new pregame inputs","actual":None}
+    "predicted_at_utc":ds.isoformat(),"source":"fitted historical 2024-2025 ML, baseline/week pregame inputs","actual":None}
  return sorted(indexed.values(),key=lambda r:(r["game_id"],r["player_id"],r["stat_key"],r["model"]))
 def main():
  rows=build();path=DATA/"weekly-shadow-forecasts.json"
