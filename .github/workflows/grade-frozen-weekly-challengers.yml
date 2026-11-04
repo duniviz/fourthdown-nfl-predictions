@@ -26,6 +26,8 @@ jobs:
         run: python research/grade_yardage_game_models.py
       - name: Grade exact production against each game challenger on identical finals
         run: python research/grade_paired_game_models.py
+      - name: Automatically evaluate challenger promotion eligibility
+        run: python research/weekly_shadow_promotion.py
       - name: Add comparison to Wednesday run summary
         if: always()
         run: |
