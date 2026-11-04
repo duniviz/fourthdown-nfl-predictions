@@ -6,6 +6,7 @@ on:
     paths:
       - 'research/player_impact_research.py'
       - 'research/audit_historical_injuries.py'
+      - 'research/player_impact_proxy_challenger.py'
       - 'tests/test_player_impact_research.py'
       - 'tests/test_historical_injury_audit.py'
       - '.github/workflows/research-player-impact.yml'
@@ -39,6 +40,9 @@ jobs:
       - name: Audit historical injury designations and coverage
         run: |
           python research/audit_historical_injuries.py --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/injury-coverage.json
+      - name: Run paired injury-designation proxy challenger (not player WAR)
+        run: |
+          python research/player_impact_proxy_challenger.py --schedule /tmp/fourthdown-games.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/proxy-comparison.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
