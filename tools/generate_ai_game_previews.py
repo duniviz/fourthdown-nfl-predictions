@@ -106,6 +106,8 @@ def main():
     contexts=json.loads((ROOT/"data/game-context.json").read_text()).get("games",{})
     now=dt.datetime.now(UTC)
     previous=json.loads(OUT.read_text()) if OUT.exists() else {"games":{}}
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("OPENAI_API_KEY secret missing; cannot publish AI previews")
     saved=previous.get("games",{})
     changed=False
     counts = {"locked": 0, "too_early": 0, "insufficient": 0, "unchanged": 0, "attempted": 0, "failed": 0}
@@ -154,5 +156,9 @@ def main():
         OUT.write_text(json.dumps({"schema_version":1,"games":saved},indent=2,ensure_ascii=False)+"\n")
         print("Updated verified preview drafts")
     else: print("No verified previews updated")
+    if counts["failed"]:
+        raise SystemExit("AI preview generation failed for some games; check API key, quota, and validation")
+    if not OUT.exists() or not saved:
+        raise SystemExit("No AI preview file was produced; refusing false-success workflow")
 
 if __name__=="__main__": main()
