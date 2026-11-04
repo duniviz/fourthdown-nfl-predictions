@@ -26,9 +26,17 @@ jobs:
           python -m compileall -q live tools research scripts
           python -m unittest discover -s tests -p 'test_paired_game_grading.py' -v
           python -m unittest discover -s tests -p 'test_count_ml_safety.py' -v
-      - name: Update verified completed game and player results
+      - name: Verify archived pregame and completed-player data are present
         run: |
-          python tools/track_weekly_performance.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ("pregame-snapshots.json", "weekly-shadow-forecasts.json", "player-results.json"):
+              path=Path("data")/name
+              if not path.exists(): raise SystemExit(f"Missing required archive: {path}")
+              json.loads(path.read_text())
+              print("Verified archive:",path)
+          PY
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
       - name: Compare 2006 onward NFL data and rolling training windows
