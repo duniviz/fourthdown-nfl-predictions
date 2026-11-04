@@ -2,7 +2,6 @@
 """Audit published pregame prop results without inventing missing observations."""
 import json
 import math
-from collections import Counter
 from pathlib import Path
 
 def audit(rows):
@@ -40,7 +39,12 @@ def main():
     rows=payload.get("rows")
     if not isinstance(rows,list): raise SystemExit("Invalid player results rows")
     errors=audit(rows)
-    print(f"Checked {len(rows)} graded result rows; issues: {len(errors)}")
+    with_lines=sum(r.get("dk_line") is not None for r in rows)
+    with_saved_sides=sum(str(r.get("recommended_side") or "").lower() in ("over","under") for r in rows)
+    graded=sum(r.get("recommendation_result") in ("hit","miss","push") for r in rows)
+    print(f"Checked {len(rows)} player results; DK lines: {with_lines}; saved sides: {with_saved_sides}; graded picks: {graded}; issues: {len(errors)}")
+    if not graded:
+        print("NOTICE: No eligible archived pregame recommendations. Do not publish a hit rate.")
     for e in errors[:25]:print("ERROR:",e)
     if errors:raise SystemExit(1)
 
