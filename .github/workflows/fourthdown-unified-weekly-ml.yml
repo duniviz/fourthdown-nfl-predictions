@@ -38,7 +38,7 @@ jobs:
               print("Verified source:",path)
           path=Path("data/weekly-shadow-forecasts.json")
           if not path.exists():
-              path.write_text(json.dumps({"schema_version":2,"description":"Empty pending first verified pregame freeze","rows":[]})+"\\n")
+              path.write_text(json.dumps({"schema_version":2,"description":"Empty pending first verified pregame freeze","rows":[]})+"\n")
               print("No prior frozen forecasts yet: initialized EMPTY research archive; no historical forecasts invented")
           else:
               json.loads(path.read_text())
