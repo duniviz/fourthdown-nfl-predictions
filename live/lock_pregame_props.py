@@ -74,32 +74,36 @@ def main():
                    last_5_avg=item.get("recent_5_avg"),
                    snapshot_source="count_projections")
         candidates.append(row)
-    # Never alter any completed-game snapshot. Only replace future game rows
-    # when a new fully joined pregame card can be published.
-    replacements={}
+    # Append-only history: each valid forecast and DK quote pair is retained.
+    # Deduplicate repeated workflow runs, never erase earlier pregame observations.
+    existing = {
+        (str(x.get("game_id")), str(x.get("player_id")), str(x.get("stat_key")),
+         str(x.get("forecast_captured_at_utc")), str(x.get("dk_quote_time")))
+        for x in old
+    }
+    added = 0
     for p in candidates:
-        found=match_quote(p,odds.get("rows",[]),now)
-        if not found: continue
-        updated,q,kickoff,line=found
-        key=(str(p.get("game_id")),str(p.get("player_id")),str(p.get("stat_key")))
-        row=dict(p)
-        row.update(dk_line=line,dk_quote_time=updated.isoformat(),
-                   forecast_captured_at_utc=now.isoformat(),
+        found = match_quote(p, odds.get("rows", []), now)
+        if not found:
+            continue
+        updated, q, kickoff, line = found
+        forecast_time = utc(count.get("generated_at_utc") if p.get("snapshot_source") == "count_projections" else research.get("generated_at_utc"))
+        if not forecast_time or not (forecast_time <= now and forecast_time < kickoff and updated < kickoff):
+            continue
+        key = (str(p.get("game_id")), str(p.get("player_id")), str(p.get("stat_key")),
+               forecast_time.isoformat(), updated.isoformat())
+        if key in existing:
+            continue
+        row = dict(p)
+        row.update(dk_line=line, dk_quote_time=updated.isoformat(),
+                   forecast_captured_at_utc=forecast_time.isoformat(),
                    kickoff_utc=kickoff.isoformat(),
                    snapshot_source="matched_published_pregame_card")
-        replacements[key]=row
-    # Do not replace a previously saved complete snapshot with a forecast
-    # that has no verified DK quote in this refresh.
-    remaining=[]
-    for row in old:
-        key=(str(row.get("game_id")),str(row.get("player_id")),str(row.get("stat_key")))
-        kickoff=utc(replacements[key].get("kickoff_utc")) if key in replacements else None
-        if kickoff and now<kickoff:
-            continue
-        remaining.append(row)
-    remaining.extend(replacements.values())
-    path.write_text(json.dumps({"players":remaining},indent=2)+"\n")
-    print(f"Saved {len(replacements)} matched pregame projection+DK snapshots")
+        old.append(row)
+        existing.add(key)
+        added += 1
+    path.write_text(json.dumps({"players": old}, indent=2) + "\\n")
+    print(f"Appended {added} pregame observations; retained {len(old)} total")
 
 if __name__=="__main__":
     main()
