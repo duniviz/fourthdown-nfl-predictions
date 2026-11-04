@@ -12,7 +12,7 @@ checked = 0
 for game in games:
     season, week, *_ = game["game_id"].split("_")
     for raw_opponent in (game["home"], game["away"]):
-        opponent = {"LA": "LAR", "WSH": "WAS", "JAX": "JAC"}.get(raw_opponent, raw_opponent)
+        opponent = {"LA": "LAR", "WSH": "WAS", "JAC": "JAX"}.get(raw_opponent, raw_opponent)
         for position, market in (
             ("QB", "passing_yards"),
             ("RB", "rushing_yards"),
@@ -35,7 +35,7 @@ players = feed.get("players")
 assert isinstance(players, list) and players, "Production player feed has no players"
 checked_players = 0
 missing = []
-aliases = {"LA": "LAR", "WSH": "WAS", "JAX": "JAC"}
+aliases = {"LA": "LAR", "WSH": "WAS", "JAC": "JAX"}
 for player in players:
     position = str(player.get("position", "")).upper()
     market = player.get("stat_key")
