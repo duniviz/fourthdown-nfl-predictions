@@ -36,6 +36,14 @@ class ArchiveTest(unittest.TestCase):
                  "away_team":"Kansas City Chiefs","home_team":"Denver Broncos"}
                 for market,proj,line in markets]})
             try:
+                # Real DK feeds often use shorthand names for the same markets.
+                odds=json.loads((archive.ROOT/"dk-odds.json").read_text())
+                shorthand={"player_passing_yards":"player_pass_yds",
+                           "player_rushing_yards":"player_rush_yds",
+                           "player_receiving_yards":"player_rec_yds"}
+                for row in odds["rows"]:
+                    row["market_key"]=shorthand.get(row["market_key"],row["market_key"])
+                write("dk-odds.json",odds)
                 archive.main()
                 first=json.loads((archive.ROOT/"player-history.json").read_text())["players"]
                 self.assertEqual(len(first),4)
