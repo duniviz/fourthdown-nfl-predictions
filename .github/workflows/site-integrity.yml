@@ -48,11 +48,14 @@ jobs:
               except (ValueError, UnicodeDecodeError) as exc:
                   errors.append(f"Invalid JSON: {path}: {exc}")
           if errors:
-              raise SystemExit("\\n".join(errors))
+              raise SystemExit("\
+".join(errors))
           print("Published nonempty JSON feeds parse successfully")
           PY
       - name: Verify production player feed and nflverse matchup coverage
         run: python scripts/verify_nflverse_matchup_coverage.py
+      - name: Verify DraftKings game markets and quote history
+        run: python tools/audit_dk_market_consistency.py
       - name: Verify score, player, count and simulation feed coherence
         run: python tools/audit_projection_coherence.py
       - name: Check required pages and assets
