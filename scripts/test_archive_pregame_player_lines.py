@@ -26,7 +26,7 @@ class ArchiveTest(unittest.TestCase):
                 (archive.ROOT/name).write_text(json.dumps(obj))
             def projections(selected):
                 return {"generated_at_utc":forecast,"players":[
-                    {"game_id":"2026_08_KC_DEN","player":"Test Player","team":"KC",
+                    {"game_id":"2026_08_KC_DEN","player":"Test Player","player_id":"00-TEST-1","team":"KC",
                      "market_key":market,"projection":proj} for market,proj,line in selected]}
             write("count-projections.json",projections(markets[3:]))
             write("yardage-projections.json",projections(markets[:3]))
@@ -39,10 +39,11 @@ class ArchiveTest(unittest.TestCase):
                 archive.main()
                 first=json.loads((archive.ROOT/"player-history.json").read_text())["players"]
                 self.assertEqual(len(first),4)
-                self.assertEqual({x["stat_key"] for x in first},{x[0] for x in markets})
+                self.assertEqual({x["stat_key"] for x in first},{"passing_yards","rushing_yards","receiving_yards","receptions"})
+                self.assertTrue(all(x["player_id"]=="00-TEST-1" for x in first))
                 self.assertEqual({x["stat_key"]:x["recommended_side"] for x in first},
-                                 {"player_passing_yards":"OVER","player_rushing_yards":"UNDER",
-                                  "player_receiving_yards":"OVER","player_receptions":"OVER"})
+                                 {"passing_yards":"OVER","rushing_yards":"UNDER",
+                                  "receiving_yards":"OVER","receptions":"OVER"})
                 archive.main()
                 self.assertEqual(len(json.loads((archive.ROOT/"player-history.json").read_text())["players"]),4)
                 # Odds changed after kickoff must not replace the original snapshots.
@@ -53,7 +54,7 @@ class ArchiveTest(unittest.TestCase):
                 archive.main()
                 final=json.loads((archive.ROOT/"player-history.json").read_text())["players"]
                 self.assertEqual(len(final),4)
-                self.assertEqual(next(x["dk_line"] for x in final if x["stat_key"]=="player_passing_yards"),250.5)
+                self.assertEqual(next(x["dk_line"] for x in final if x["stat_key"]=="passing_yards"),250.5)
             finally:
                 archive.ROOT=original
 
