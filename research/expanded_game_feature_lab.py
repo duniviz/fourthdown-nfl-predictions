@@ -152,6 +152,6 @@ def main():
  report=evaluate(all_samples)
  report["source_coverage"]=coverage
  out=ROOT/"research/feature-ablation-results";out.mkdir(parents=True,exist_ok=True)
- (out/"report.json").write_text(json.dumps(report,indent=2)+"\\n")
+ (out/"report.json").write_text(json.dumps(report,indent=2)+"\n")
  print("Holdout evaluations:",len(report["results"]),flush=True)
 if __name__=="__main__":main()
