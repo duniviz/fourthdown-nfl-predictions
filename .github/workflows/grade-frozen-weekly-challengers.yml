@@ -26,6 +26,8 @@ jobs:
         run: python research/grade_yardage_game_models.py
       - name: Grade exact production against each game challenger on identical finals
         run: python research/grade_paired_game_models.py
+      - name: Grade all available completed weeks and player/game metrics on exact paired live samples
+        run: python research/grade_all_markets_paired.py
       - name: Automatically evaluate challenger promotion eligibility
         run: python research/weekly_shadow_promotion.py
       - name: Add comparison to Wednesday run summary
@@ -33,6 +35,9 @@ jobs:
         run: |
           if [ -f research/weekly-shadow-results/RESULTS.md ]; then
             cat research/weekly-shadow-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f research/all-markets-paired-results/RESULTS.md ]; then
+            cat research/all-markets-paired-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f research/paired-game-results/RESULTS.md ]; then
             cat research/paired-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
@@ -50,4 +55,5 @@ jobs:
             research/weekly-shadow-results/
             research/yardage-game-results/
             research/paired-game-results/
+            research/all-markets-paired-results/
           if-no-files-found: warn
