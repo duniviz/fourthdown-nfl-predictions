@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-11-04T14:38:36.044377+00:00",
+  "policy": "minimum 300 holdout samples, >=3% MAE improvement, deployable artifact required",
+  "markets": {
+    "passing_yards": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    },
+    "receiving_yards": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    },
+    "rushing_yards": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    }
+  },
+  "automatic_promotion_enabled": false,
+  "promotions": 0
+}
