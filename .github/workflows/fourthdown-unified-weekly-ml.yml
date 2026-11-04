@@ -31,11 +31,18 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          for name in ("pregame-snapshots.json", "weekly-shadow-forecasts.json", "player-results.json"):
+          for name in ("pregame-snapshots.json", "player-results.json"):
               path=Path("data")/name
-              if not path.exists(): raise SystemExit(f"Missing required archive: {path}")
+              if not path.exists(): raise SystemExit(f"Missing required source: {path}")
               json.loads(path.read_text())
-              print("Verified archive:",path)
+              print("Verified source:",path)
+          path=Path("data/weekly-shadow-forecasts.json")
+          if not path.exists():
+              path.write_text(json.dumps({"schema_version":2,"description":"Empty pending first verified pregame freeze","rows":[]})+"\\n")
+              print("No prior frozen forecasts yet: initialized EMPTY research archive; no historical forecasts invented")
+          else:
+              json.loads(path.read_text())
+              print("Verified existing frozen archive:",path)
           PY
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
