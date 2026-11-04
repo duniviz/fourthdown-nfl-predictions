@@ -5,9 +5,9 @@ name: Publish weekly v2 forecasts
     paths:
       - '.github/forecast-refresh.txt'
   schedule:
-    # 5 PM America/Chicago daily: 22:00 UTC in CDT, 23:00 UTC in CST.
-    # The Central-time guard below skips the extra UTC invocation.
-    - cron: '0 22,23 * * *'
+    # Daily 5 PM Central: staggered UTC triggers avoid top-of-hour GitHub congestion.
+    # Both UTC hours cover CDT/CST; guard selects only the 5 PM local hour.
+    - cron: '17,43 22,23 * * *'
     # Preserve existing Sunday morning pregame refresh.
     - cron: '15 13 * * 0'
     # Preserve existing Thursday morning game-day refresh.
@@ -31,7 +31,7 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "0 22,23 * * *" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17,43 22,23 * * *" ]]; then
             if [[ "$(TZ=America/Chicago date +%H)" != "17" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
