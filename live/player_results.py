@@ -8,7 +8,34 @@ from live.player_research import METRICS
 
 def main():
     archive=Path("data/player-history.json")
-    rows=json.loads(archive.read_text()).get("players",[])
+    observations=json.loads(archive.read_text()).get("players",[])
+    # Historical observations remain append-only, but each player/game/market
+    # contributes exactly one closest eligible pre-kickoff record to grading.
+    # Never select a quote or forecast captured after kickoff.
+    def parsed(value):
+        try:
+            d=datetime.fromisoformat(str(value).replace("Z","+00:00"))
+            return d.astimezone(timezone.utc) if d.tzinfo else None
+        except (ValueError,TypeError):
+            return None
+
+    latest={}
+    for row in observations:
+        kickoff=parsed(row.get("kickoff_utc") or row.get("kickoff"))
+        forecast=parsed(row.get("forecast_captured_at_utc") or row.get("captured_at"))
+        quote=parsed(row.get("dk_quote_time") or row.get("dk_captured_at"))
+        if not kickoff or not forecast or not forecast<kickoff:
+            continue
+        if row.get("dk_line") is not None and (not quote or not quote<kickoff):
+            continue
+        key=(str(row.get("game_id")),str(row.get("player_id")),str(row.get("stat_key")))
+        if not all(key) or "None" in key:
+            continue
+        candidate=(forecast,quote or forecast)
+        if key not in latest or candidate>latest[key][0]:
+            latest[key]=(candidate,row)
+    rows=[entry[1] for entry in latest.values()]
+    print(f"Selected {len(rows)} official pregame snapshots from {len(observations)} observations")
     seasons=sorted({int(x["game_id"].split("_")[0]) for x in rows if x.get("game_id")})
     actual={}
     for season in seasons:
