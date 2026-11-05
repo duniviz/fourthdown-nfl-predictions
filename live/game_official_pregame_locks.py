@@ -21,11 +21,12 @@ def select(records, existing, now):
         kickoff=dt(row.get("kickoff_utc"))
         forecast=dt(row.get("forecast_at_utc"))
         quote=dt(row.get("dk_at_utc"))
-        if not kickoff or not forecast or not quote or kickoff>now:
+        captured=dt(row.get("captured_at_utc"))
+        if not kickoff or not forecast or not quote or not captured or kickoff>now:
             continue
         cutoff=kickoff-timedelta(minutes=30)
         earliest=cutoff-timedelta(minutes=90)
-        if not (earliest<=forecast<=cutoff and earliest<=quote<=cutoff):
+        if not (earliest<=forecast<=cutoff and earliest<=quote<=cutoff and captured<=cutoff):
             continue
         if row.get("projected_margin_home") is None or row.get("projected_total") is None:
             continue

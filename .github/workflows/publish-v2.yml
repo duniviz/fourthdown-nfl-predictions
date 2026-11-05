@@ -14,6 +14,7 @@ name: Publish weekly v2 forecasts
     - cron: '15 13 * * 4'
     # Monday Night Football: UTC Tuesday covers Monday evening Central.
     - cron: '0,30 0,1,2 * * 2'
+    - cron: '7 * * * 0,1,2,4,5'
 permissions:
   contents: write
 concurrency:
@@ -43,6 +44,12 @@ jobs:
               exit 0
             fi
           fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7 * * * 0,1,2,4,5" ]]; then
+            if ! python -m scripts.check_pregame_forecast_window; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
           echo "run=true" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with:
@@ -61,6 +68,9 @@ jobs:
       - name: Grade completed-game player projections
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_results
+      - name: Grade immutable official game locks against final scores
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.game_official_results
       - name: Learn validated player correction weights for next forecast
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.player_weight_learning
@@ -139,7 +149,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
+          git add -f data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/game-official-results.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
