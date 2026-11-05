@@ -12,7 +12,7 @@ errors = []
 seen = set()
 for row in odds.get("games", []):
     home, away, kickoff = (row.get(k) for k in ("home", "away", "commence_time"))
-    key = f"{home}|{away}|{kickoff}"
+    key = f"{away}|{home}|{kickoff}"
     if not home or not away or not kickoff:
         errors.append(f"Incomplete game identity: {row.get('game_id')}")
         continue
@@ -34,5 +34,5 @@ for row in odds.get("games", []):
     except (ValueError, AttributeError):
         errors.append(f"Invalid kickoff timestamp: {key}")
 if errors:
-    raise SystemExit("\\n".join(errors))
+    raise SystemExit("\n".join(errors))
 print(f"PASS: {len(seen)} unique DraftKings games, numeric market sanity and quote-history linkage")
