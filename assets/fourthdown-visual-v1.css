@@ -1,0 +1,39 @@
+/* FOURTHDOWN visual system v1 — presentation only; no data or model changes. */
+:root{--fd-lime:#baff25;--fd-neon:#a8ff16;--fd-ink:#f4f8f6;--fd-muted:#a9b8b8;--fd-surface:#0e1518;--fd-surface-raised:#131d21;--fd-line:#34434a;--fd-radius:18px;color-scheme:dark}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse 70% 380px at 50% -220px,#21341b 0,transparent 90%),#06090b!important;color:var(--fd-ink)!important}
+.wrap{max-width:1480px!important}
+.top{background:#070a0de8!important;border-bottom:1px solid #36483e!important;box-shadow:0 8px 28px #0008;backdrop-filter:blur(18px)}
+.logo,.brand{font-weight:950!important;letter-spacing:-.055em!important;color:#fff!important}
+.logo b,.brand b{color:var(--fd-lime)!important}
+.links a,.nav a:not(.logo):not(.brand){transition:color .15s ease}
+.links a:hover,.nav a:hover{color:var(--fd-lime)!important}
+h1,h2,h3{letter-spacing:-.035em}
+h1{line-height:1.12!important}
+.eyebrow,.fd-command-kicker{color:var(--fd-lime)!important}
+.card,.scorecard,.bet-card,.fd-research-card,.fd-experience,.fd-modal-section,.fd-watch-grid>*,.fd-history-mini-grid>*,.fd-lab-section,.fd-research-stack>*,.fd-opportunity-list>*,.fd-quick-props,.fd-guide,.hybrid-spot,.marketcard,.game,.pick,.fd-command,.fd-launch{border-radius:var(--fd-radius)!important}
+.card,.scorecard,.bet-card,.fd-research-card,.fd-experience,.fd-modal-section,.fd-lab-section,.fd-guide,.hybrid-spot,.marketcard,.game,.pick{background:linear-gradient(145deg,#151e22,#0b1115)!important;border:1px solid var(--fd-line)!important;box-shadow:0 7px 24px #0004}
+.card,.scorecard,.bet-card,.fd-research-card,.game,.pick{transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+@media(hover:hover) and (pointer:fine){.card:hover,.scorecard:hover,.bet-card:hover,.fd-research-card:hover,.game:hover,.pick:hover{border-color:#8ebc4d!important;box-shadow:0 10px 28px #0009,0 0 0 1px #baff2526}}
+button,select,input,.filter{accent-color:var(--fd-lime)}
+button,.filter,select,input[type="search"],input[type="text"]{border-radius:11px}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--fd-lime)!important;outline-offset:3px}
+button[aria-pressed="true"],button[aria-selected="true"],.fd-filter.active,.fd-market-tabs button.active{background:var(--fd-lime)!important;color:#071008!important;border-color:var(--fd-lime)!important;font-weight:850!important}
+.fd-pick-head strong,.fd-pick-head .fd-pick-value,.fd-forecast-score,.metric,.big{font-variant-numeric:tabular-nums}
+.fd-pick-head strong,.fd-pick-head .fd-pick-value{color:var(--fd-lime)!important}
+#scoreboard-cards{gap:16px!important}
+#scoreboard-cards .scorecard,#scoreboard-cards .card{border-radius:21px!important;overflow:hidden}
+#scoreboard-cards .fd-pick-head{gap:10px}
+#scoreboard-cards .fd-pick-head strong{font-weight:900}
+#tracking .card,#summary .card,#weekly-ml-summary .card{background:linear-gradient(155deg,#142018,#0b1113)!important}
+.bet-metrics strong,.fd-research-card .bet-metrics strong{font-size:clamp(17px,2vw,24px);font-variant-numeric:tabular-nums}
+.bet-rec,.bet-prob,.fd-prop-visual{border-radius:12px}
+.bet-grid,.grid{gap:14px!important}
+table{border-collapse:collapse}
+th{color:#c1d0cb!important}
+td,th{border-bottom-color:#304047!important}
+.tablewrap,.table-wrap{border-radius:12px}
+.muted,.bet-sub,small{color:var(--fd-muted)}
+.tag,.status{border-radius:999px}
+@media(max-width:700px){.wrap{padding-left:13px!important;padding-right:13px!important}.nav{gap:10px!important}.logo,.brand{font-size:20px!important}.card,.bet-card,.fd-research-card,.game,.pick{border-radius:15px!important}.bet-grid,.grid,#scoreboard-cards{gap:11px!important}#scoreboard-cards .fd-pick-head strong{font-size:clamp(15px,4.4vw,22px)!important}button,select{min-height:38px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.scorecard,.bet-card,.fd-research-card,.game,.pick{transition:none!important}}
