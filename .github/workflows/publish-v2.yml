@@ -117,6 +117,9 @@ jobs:
       - name: Archive verified pregame game forecast and DK quote observations
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.game_pregame_observations
+      - name: Freeze official 30-minute pregame game observations
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: python -m live.game_official_pregame_locks
       - name: Simulate game scores and player yardage 10000 times
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.simulate
@@ -136,7 +139,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
+          git add -f data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/player-history.json data/injuries.json data/weather.json data/dk-odds.json data/simulations.json data/player-results.json data/player-calibration.json data/dk-line-history.json data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else
