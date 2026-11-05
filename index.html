@@ -1878,7 +1878,10 @@ function render(){
   if(!q||Math.abs(Date.parse(q.commence_time)-Date.parse(p.kickoff_utc))>3600000)return;
   const home=Number(p.projected_home_score),away=Number(p.projected_away_score),margin=home-away,total=home+away;
   const sim=simulations.find(v=>v.game_id===p.game_id);const base={game_id:p.game_id,game:p.away+' @ '+p.home,kickoff:p.kickoff_utc,score:p.away+' '+away.toFixed(1)+' · '+p.home+' '+home.toFixed(1),quote:q,sim};
-  if(margin!==0&&Array.isArray(q.moneyline)&&q.moneyline.length===2&&q.moneyline.every(m=>Number.isFinite(Number(m.price))))markets.winner.push({...base,rank:Math.abs(margin),pick:margin>0?p.home:p.away,detail:'Projected winning margin '+Math.abs(margin).toFixed(1)+' pts'});
+  // Winner recommendations compare the model's projected margin; unlike ATS and totals,
+  // they do not consume a DraftKings price.  Keep the matched, pre-kickoff DK game quote
+  // requirement above, but do not suppress a winner solely because this feed omitted moneylines.
+  if(margin!==0)markets.winner.push({...base,rank:Math.abs(margin),pick:margin>0?p.home:p.away,detail:'Projected winning margin '+Math.abs(margin).toFixed(1)+' pts'});
   if(q.total!==null&&q.total!==''&&Number.isFinite(Number(q.total))){const line=Number(q.total),gap=total-line;if(gap!==0)markets.total.push({...base,rank:Math.abs(gap),pick:(gap>0?'Over ':'Under ')+line.toFixed(1),detail:'Model total '+total.toFixed(1)+' · DK '+line.toFixed(1)+' · Difference '+(gap>0?'+':'')+gap.toFixed(1)});}
   if(q.home_spread!==null&&q.home_spread!==''&&Number.isFinite(Number(q.home_spread))){const line=Number(q.home_spread),edge=margin+line;if(edge!==0)markets.ats.push({...base,rank:Math.abs(edge),pick:(edge>0?p.home+' '+(line>0?'+':'')+line.toFixed(1):p.away+' '+(-line>0?'+':'')+(-line).toFixed(1)),detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts vs DK'});}
  });
