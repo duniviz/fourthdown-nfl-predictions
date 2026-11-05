@@ -56,6 +56,55 @@ def parse(payload, now):
                         "home_spread":spread,"total":total,"updated_at_utc":updated.isoformat()})
     return out
 
+def response_diagnostics(payload, now):
+    """Summarize response shape and rejection reasons without logging odds or secrets."""
+    if isinstance(payload, list):
+        events=payload
+        shape="list"
+    elif isinstance(payload, dict):
+        shape="dict"
+        events=next((payload[k] for k in ("data","events","results","rows")
+                     if isinstance(payload.get(k),list)),None)
+        if events is None:
+            print("DK response diagnostic: object keys="+",".join(sorted(str(k) for k in payload)[:20]))
+            return
+    else:
+        print("DK response diagnostic: unexpected top-level type="+type(payload).__name__)
+        return
+    counts={"invalid_event":0,"missing_or_past_kickoff":0,
+            "missing_teams_or_books":0,"no_draftkings_book":0,
+            "invalid_book_timestamp":0,"no_usable_spread_or_total":0,
+            "eligible":0}
+    for event in events:
+        if not isinstance(event,dict):
+            counts["invalid_event"]+=1
+            continue
+        kickoff=dt(event.get("commence_time"))
+        if not kickoff or kickoff<=now:
+            counts["missing_or_past_kickoff"]+=1
+            continue
+        books=event.get("bookmakers")
+        if not event.get("home_team") or not event.get("away_team") or not isinstance(books,list):
+            counts["missing_teams_or_books"]+=1
+            continue
+        dk=[b for b in books if isinstance(b,dict) and str(b.get("key","")).lower()=="draftkings"]
+        if not dk:
+            counts["no_draftkings_book"]+=1
+            continue
+        valid=[b for b in dk if (lambda t: t is not None and t<=now and t<kickoff)(dt(b.get("last_update")))]
+        if not valid:
+            counts["invalid_book_timestamp"]+=1
+            continue
+        if not any(isinstance(m,dict) and m.get("key") in ("spreads","totals")
+                   and isinstance(m.get("outcomes"),list)
+                   for b in valid for m in b.get("markets",[])):
+            counts["no_usable_spread_or_total"]+=1
+            continue
+        counts["eligible"]+=1
+    print(f"DK response diagnostic: shape={shape}, events={len(events)}, "+", ".join(f"{k}={v}" for k,v in counts.items()))
+    if events and isinstance(events[0],dict):
+        print("DK response diagnostic: event field names="+",".join(sorted(str(k) for k in events[0])[:20]))
+
 def main():
     key=os.environ.get("PARLAY_API_KEY","").strip()
     if not key:
@@ -66,6 +115,7 @@ def main():
     req=urllib.request.Request(BASE+"?"+params,headers={"X-API-Key":key,"Accept":"application/json"})
     with urllib.request.urlopen(req,timeout=35) as response:
         payload=json.load(response)
+    response_diagnostics(payload,now)
     rows=parse(payload,now)
     if not rows:
         print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
