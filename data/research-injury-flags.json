@@ -1,13 +1,23 @@
 {
-  "generated_at_utc": "2026-11-03T20:15:39.535352+00:00",
+  "generated_at_utc": "2026-11-05T20:46:40.572921+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
-  "projection_markets": 182,
-  "flagged_markets": 15,
+  "projection_markets": 180,
+  "flagged_markets": 19,
   "flags": [
+    {
+      "player_id": "00-0033537",
+      "player_name": "Deshaun Watson",
+      "team": "CLE",
+      "market": "passing_yards",
+      "sleeper_id": "4017",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
     {
       "player_id": "00-0035228",
       "player_name": "Kyler Murray",
@@ -19,22 +29,12 @@
       "game_day_status_verified": false
     },
     {
-      "player_id": "00-0034796",
-      "player_name": "Lamar Jackson",
-      "team": "BAL",
+      "player_id": "00-0034869",
+      "player_name": "Sam Darnold",
+      "team": "SEA",
       "market": "passing_yards",
-      "sleeper_id": "4881",
+      "sleeper_id": "4943",
       "injury_flag": "out",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0026498",
-      "player_name": "Matthew Stafford",
-      "team": "LA",
-      "market": "passing_yards",
-      "sleeper_id": "421",
-      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -44,7 +44,17 @@
       "team": "NE",
       "market": "receiving_yards",
       "sleeper_id": "5859",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0033906",
+      "player_name": "Alvin Kamara",
+      "team": "NO",
+      "market": "receiving_yards",
+      "sleeper_id": "4035",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -79,22 +89,12 @@
       "game_day_status_verified": false
     },
     {
-      "player_id": "00-0034960",
-      "player_name": "Jakobi Meyers",
-      "team": "JAX",
-      "market": "receiving_yards",
-      "sleeper_id": "5947",
-      "injury_flag": "questionable",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
       "player_id": "00-0033307",
       "player_name": "Kendrick Bourne",
       "team": "ARI",
       "market": "receiving_yards",
       "sleeper_id": "4454",
-      "injury_flag": "out",
+      "injury_flag": "injured_reserve",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -114,7 +114,7 @@
       "team": "SF",
       "market": "receiving_yards",
       "sleeper_id": "2216",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -125,6 +125,26 @@
       "market": "receiving_yards",
       "sleeper_id": "5927",
       "injury_flag": "injured_reserve",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0030506",
+      "player_name": "Travis Kelce",
+      "team": "KC",
+      "market": "receiving_yards",
+      "sleeper_id": "1466",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0033906",
+      "player_name": "Alvin Kamara",
+      "team": "NO",
+      "market": "rushing_yards",
+      "sleeper_id": "4035",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -149,6 +169,16 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0033537",
+      "player_name": "Deshaun Watson",
+      "team": "CLE",
+      "market": "rushing_yards",
+      "sleeper_id": "4017",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035228",
       "player_name": "Kyler Murray",
       "team": "MIN",
@@ -157,6 +187,16 @@
       "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0034844",
+      "player_name": "Saquon Barkley",
+      "team": "PHI",
+      "market": "rushing_yards",
+      "sleeper_id": "4866",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
     }
   ]
-}
+}\n
