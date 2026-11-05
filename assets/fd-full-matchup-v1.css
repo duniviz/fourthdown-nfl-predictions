@@ -1,0 +1,27 @@
+/* Full Matchup detail view — presentation only. Existing tab/content logic unchanged. */
+#fd-modal{background:#030607ee!important;backdrop-filter:blur(12px);padding:clamp(8px,2vw,22px)!important}
+#fd-modal-body.fd-modal-inner{max-width:1040px!important;width:100%;margin:0 auto 24px!important;padding:clamp(14px,2.6vw,28px)!important;background:radial-gradient(ellipse at 85% -10%,#20331e 0,transparent 45%),#090f12!important;border:1px solid #658c51!important;border-radius:22px!important;box-shadow:0 24px 85px #000e,0 0 0 1px #baff2520;color:#f2f9f6!important}
+#fd-modal .fd-modal-top{align-items:center!important;gap:12px;padding:0 0 15px;margin-bottom:12px;border-bottom:1px solid #364b42}
+#fd-modal .fd-modal-top h2{font-size:clamp(21px,3vw,34px)!important;line-height:1.12;letter-spacing:-.045em;color:#fff}
+#fd-modal .fd-modal-close{flex-shrink:0;min-width:46px;min-height:46px;background:#1b2926!important;color:#fff!important;border:1px solid #617867!important;border-radius:13px!important}
+#fd-modal .fd-modal-pick{padding:clamp(14px,2.2vw,23px)!important;margin:12px 0 16px!important;border-radius:17px!important;background:linear-gradient(125deg,#1d3123,#0d1817 70%)!important;border:1px solid #779e43!important;box-shadow:inset 0 1px #baff2515}
+#fd-modal .fd-modal-pick h3,#fd-modal .fd-modal-section h3{font-size:13px!important;text-transform:uppercase;letter-spacing:.09em;color:#baff25!important;font-weight:900!important}
+#fd-modal .fd-modal-scores{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:center;font-size:clamp(23px,3vw,36px)!important;font-weight:950}
+#fd-modal .fd-modal-scores>div{background:linear-gradient(135deg,#1a2b2d,#101a1e);border:1px solid #405b57;border-radius:13px;padding:15px 10px;min-width:0}
+#fd-modal .fd-modal-scores small{color:#b5cac4!important;font-size:12px!important;font-weight:600}
+#fd-modal .fd-modal-tabs{display:flex!important;gap:8px!important;overflow-x:auto;scrollbar-width:thin;position:sticky;top:0;z-index:2;padding:10px 0!important;margin:8px 0 13px!important;background:#090f12}
+#fd-modal .fd-modal-tabs button{flex:0 0 auto!important;min-height:42px;padding:10px 15px!important;background:#182421!important;border:1px solid #3d5750!important;border-radius:12px!important;color:#d8e6e1!important;font-size:12px!important;font-weight:800!important;white-space:nowrap}
+#fd-modal .fd-modal-tabs button[aria-selected="true"]{background:#baff25!important;color:#0b1308!important;border-color:#baff25!important}
+#fd-modal .fd-modal-section{background:linear-gradient(145deg,#151e21,#0d1518)!important;border:1px solid #3a514c!important;border-radius:17px!important;padding:clamp(13px,2vw,21px)!important;margin:12px 0!important;min-width:0}
+#fd-modal .fd-modal-grid{gap:10px!important}
+#fd-modal .fd-modal-stat{background:linear-gradient(145deg,#1a2b2b,#111c1f)!important;border:1px solid #3d5b54;border-radius:12px!important;padding:14px!important;min-width:0;overflow-wrap:anywhere}
+#fd-modal .fd-modal-stat strong{font-size:clamp(18px,2vw,25px)!important;color:#fff}
+#fd-modal .fd-modal-muted{color:#a9bdb8!important;font-size:12px!important}
+#fd-modal .fd-modal-section table{width:100%;border-collapse:collapse}
+#fd-modal .fd-modal-section th{color:#c0d2c8!important;font-size:11px!important}
+#fd-modal .fd-modal-section th,#fd-modal .fd-modal-section td{padding:10px 7px!important;border-bottom:1px solid #344840!important}
+#fd-modal .fd-modal-section .fd-prop-item,#fd-modal .fd-merged-player-props .fd-unified-prop{border-radius:13px!important}
+#fd-modal button:focus-visible,#fd-modal summary:focus-visible{outline:2px solid #baff25!important;outline-offset:3px}
+@media(max-width:650px){#fd-modal{padding:0!important}#fd-modal-body.fd-modal-inner{max-width:none!important;min-height:100dvh!important;margin:0!important;border:0!important;border-radius:0!important;padding:14px 13px 28px!important}#fd-modal .fd-modal-top{position:sticky;top:0;z-index:4;background:#090f12;padding:9px 0 13px!important;margin:-5px 0 10px!important}#fd-modal .fd-modal-tabs{top:64px}#fd-modal .fd-modal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#fd-modal .fd-modal-stat{padding:11px!important}#fd-modal .fd-modal-scores{gap:8px}#fd-modal .fd-modal-scores>div{padding:11px 6px}#fd-modal .fd-modal-section{padding:13px 11px!important}#fd-modal .fd-modal-section table{font-size:11px!important}#fd-modal .fd-modal-section th,#fd-modal .fd-modal-section td{padding:8px 4px!important}}
+@media(max-width:380px){#fd-modal .fd-modal-grid{grid-template-columns:1fr!important}#fd-modal .fd-modal-tabs button{padding:9px 11px!important}}
+@media(prefers-reduced-motion:reduce){#fd-modal *{scroll-behavior:auto!important;transition:none!important}}
