@@ -71,9 +71,6 @@ def main():
     import nflreadpy as nfl
     locks=json.loads(LOCKS.read_text()).get("records",[]) if LOCKS.exists() else []
     seasons=sorted({int(r["season"]) for r in locks if r.get("season") is not None})
-    if not seasons:
-        print("No official game locks to grade; leaving existing results unchanged")
-        return
     schedules=[]
     for season in seasons:
         schedules.extend(nfl.load_schedules([season]).to_dicts())
