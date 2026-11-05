@@ -1126,7 +1126,14 @@ function fdOpenMatchup(g){
  const completedBox='<div class="fd-modal-section"><h3>Player box scores · projection vs actual</h3>'+(completedRows.length?completedGroups:'<p class="fd-modal-muted">No archived pregame player forecasts with verified final stats available for this matchup.</p>')+'<p class="fd-modal-muted">Over/under results are graded only when a pregame DK line and explicit recommendation were archived. Missing picks are never counted as wins or losses.</p></div>';
  const historicalInjury='<div class="fd-modal-section"><h3>Pregame injuries</h3><p class="fd-modal-muted">We didn\'t save the injury report from before this game, so we won\'t show today\'s report as if it were from then.</p></div>';
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
- document.getElementById('fd-modal-body').innerHTML=header+score+market+fdSimulationPanel(p,g)+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+props.replace('</h3>','</h3>'+liveStats);
+ /* Mobile-first layout: existing verified game, simulation, DK and prop content; reordered only. */
+ const topProps=props.replace('</h3>','</h3>'+liveStats);
+ const headline='<div class="fd-detail-hero"><div class="fd-detail-teams"><div class="fd-detail-team"><span class="fd-detail-team-label">AWAY</span><strong>'+esc(away)+'</strong></div><span class="fd-detail-versus">AT</span><div class="fd-detail-team"><span class="fd-detail-team-label">HOME</span><strong>'+esc(home)+'</strong></div></div><p class="fd-detail-status">'+esc(isFinal?'Final result · archived predictions':g.state==='in'?'Game in progress':'Pregame forecast')+'</p></div>';
+ const detailHtml=header+headline+'<div class="fd-detail-primary">'+score+'<div class="fd-detail-market">'+market+'</div></div>'
+   +'<div class="fd-detail-simulation">'+fdSimulationPanel(p,g)+'</div>'
+   +'<div class="fd-detail-props">'+topProps+'</div>'
+   +'<details class="fd-detail-more"><summary>AI matchup breakdown, team stats &amp; injuries <span>Expand analysis</span></summary><div class="fd-detail-more-body">'+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+'</div></details>';
+ document.getElementById('fd-modal-body').innerHTML=detailHtml;
  if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.getElementById('fd-modal').scrollTop=0;document.dispatchEvent(new Event('fd-matchup-opened'));document.querySelector('[data-close-matchup]').focus();
 }
@@ -2146,4 +2153,4 @@ main.wrap>#fd-more{margin:12px 0}
 .fd-merged-player-props>.fd-live-player-stats>.fd-modal-muted{font-size:11px;margin:8px 0}
 .fd-merged-player-props>.fd-mobile-prop-group{margin-top:14px}
 </style>
-<script defer src="assets/fd2-shell.js?v=2"></script><link rel="stylesheet" href="assets/fourthdown-visual-v1.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-mockup-v2.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-v1.css?v=1"></body></html>
+<script defer src="assets/fd2-shell.js?v=2"></script><link rel="stylesheet" href="assets/fourthdown-visual-v1.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-mockup-v2.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-v1.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-layout-v2.css?v=1"></body></html>
