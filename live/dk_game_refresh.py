@@ -172,6 +172,17 @@ def main():
                dt(g.get("kickoff_utc"))==dt(item["commence_time"]) for g in live.get("games",[])):
             mapped.append(item)
     mapped=list({(x["home"],x["away"],x["commence_time"]):x for x in mapped}.values())
+    matched_ids={x["game_id"] for x in mapped}
+    unmatched=[x for x in rows if x["game_id"] not in matched_ids]
+    if unmatched:
+        print("DK unmatched provider matchups: "+", ".join(
+            f"{x['away_team']} @ {x['home_team']} ({x['commence_time']})" for x in unmatched))
+    missing_forecasts=[g for g in live.get("games",[]) if not any(
+        x["home"]==g.get("home") and x["away"]==g.get("away") and
+        dt(x["commence_time"])==dt(g.get("kickoff_utc")) for x in mapped)]
+    if missing_forecasts:
+        print("Published games without matched DK spread/total: "+", ".join(
+            f"{g.get('away')} @ {g.get('home')} ({g.get('kickoff_utc')})" for g in missing_forecasts))
     if not mapped:
         print(f"DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
         return
