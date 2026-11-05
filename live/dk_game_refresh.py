@@ -44,9 +44,12 @@ def parse(payload, now):
             # Retrieval time is an observed pre-kickoff quote timestamp when
             # the provider omits last_update; never label it provider time.
             provider_updated=dt(book.get("last_update"))
-            if provider_updated and (provider_updated>now or provider_updated>=kickoff):
-                continue
-            updated=provider_updated or now
+            # The HTTP response was observed at 'now' before kickoff.
+            # A future-dated provider last_update cannot establish quote age;
+            # record the actual retrieval time and flag the anomaly instead.
+            # Never reinterpret an offset-aware timestamp as Central time.
+            provider_valid=bool(provider_updated and provider_updated<=now and provider_updated<kickoff)
+            updated=provider_updated if provider_valid else now
             markets={m.get("key"):m for m in book.get("markets",[]) if isinstance(m,dict)}
             spread=next((finite(x.get("point")) for x in markets.get("spreads",{}).get("outcomes",[])
                          if isinstance(x,dict) and x.get("name")==home),None)
@@ -57,7 +60,10 @@ def parse(payload, now):
             out.append({"game_id":event.get("id"),"home_team":home,"away_team":away,
                         "commence_time":kickoff.isoformat(),"bookmaker":"draftkings",
                         "home_spread":spread,"total":total,"updated_at_utc":updated.isoformat(),
-                        "quote_timestamp_source":"provider" if provider_updated else "retrieval",
+                        "quote_timestamp_source":"provider" if provider_valid else "retrieval",
+                        "provider_timestamp_status":("valid" if provider_valid else
+                            "future" if provider_updated and provider_updated>now else
+                            "at_or_after_kickoff" if provider_updated and provider_updated>=kickoff else "missing"),
                         "provider_updated_at_utc":provider_updated.isoformat() if provider_updated else None})
     return out
 
@@ -103,7 +109,9 @@ def response_diagnostics(payload, now):
                     "future" if stamp>now else
                     "at_or_after_kickoff" if stamp>=kickoff else "valid")
             timestamp_reasons[reason]+=1
-        valid=[b for b in dk if (lambda t: t is None or (t<=now and t<kickoff))(dt(b.get("last_update")))]
+        # The quote is observed at retrieval; a provider future timestamp
+        # is flagged by parse(), not mistaken for a future retrieval.
+        valid=dk
         if not valid:
             counts["invalid_book_timestamp"]+=1
             continue
@@ -134,7 +142,7 @@ def main():
         print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
         return
     print(f"DK game odds: {len(rows)} eligible provider events; "+
-          f"{sum(x['quote_timestamp_source']=='retrieval' for x in rows)} observed at retrieval without provider timestamp")
+          f"{sum(x['quote_timestamp_source']=='retrieval' for x in rows)} observed at retrieval with missing or invalid provider timestamp")
     # Map the provider's full team names to published NFL team abbreviations,
     # never infer from substrings or fabricate a game match.
     live=json.loads(Path("data/live-v2.json").read_text())
@@ -173,7 +181,8 @@ def main():
         k="|".join((row["away"],row["home"],row["commence_time"]))
         entry={"captured_at_utc":row["updated_at_utc"],
                "home_spread":row["home_spread"],"total":row["total"],
-               "quote_timestamp_source":row["quote_timestamp_source"]}
+               "quote_timestamp_source":row["quote_timestamp_source"],
+               "provider_timestamp_status":row["provider_timestamp_status"]}
         prior=games.setdefault(k,[])
         if entry not in prior:
             prior.append(entry)
