@@ -94,8 +94,14 @@ def main():
                forecast_time.isoformat(), updated.isoformat())
         if key in existing:
             continue
+        try:
+            projection=float(p.get("projection"))
+        except (TypeError,ValueError):
+            continue
+        if not (projection == projection and abs(projection) != float("inf")):
+            continue
         row = dict(p)
-        row.update(recommended_side="OVER" if float(p["projection"])>line else "UNDER" if float(p["projection"])<line else "NO_PICK",
+        row.update(recommended_side="OVER" if projection>line else "UNDER" if projection<line else "NO_PICK",
                    dk_line=line, dk_quote_time=updated.isoformat(),
                    forecast_captured_at_utc=forecast_time.isoformat(),
                    kickoff_utc=kickoff.isoformat(),
