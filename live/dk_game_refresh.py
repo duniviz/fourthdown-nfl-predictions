@@ -130,12 +130,12 @@ def main():
     key=os.environ.get("PARLAY_API_KEY","").strip()
     if not key:
         raise RuntimeError("PARLAY_API_KEY missing; cannot refresh DraftKings game odds")
-    now=datetime.now(timezone.utc)
     params=urllib.parse.urlencode({"bookmakers":"draftkings","regions":"us",
         "markets":"spreads,totals","oddsFormat":"american","dateFormat":"iso"})
     req=urllib.request.Request(BASE+"?"+params,headers={"X-API-Key":key,"Accept":"application/json"})
     with urllib.request.urlopen(req,timeout=35) as response:
         payload=json.load(response)
+    now=datetime.now(timezone.utc)
     response_diagnostics(payload,now)
     rows=parse(payload,now)
     if not rows:
@@ -164,6 +164,7 @@ def main():
             names[row["home_team"]]=row["home"]
         if row.get("away_team") and row.get("away"):
             names[row["away_team"]]=row["away"]
+    names.update({"Las Vegas Raiders":"LV","San Francisco 49ers":"SF"})
     for row in rows:
         if row["home_team"] not in names or row["away_team"] not in names:
             continue
