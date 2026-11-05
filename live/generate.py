@@ -110,6 +110,10 @@ def build_team_matchup_metrics(schedules, plays, season, target_week):
         rankings[key]={"offense":{team:i+1 for i,(team,_) in enumerate(offense)},"defense":{team:i+1 for i,(team,_) in enumerate(defense)}}
     return values,rankings,definitions
 
+# NFL-confirmed Week 9 flex: LV @ SF moved from 4:05 to 4:25 ET.
+# https://www.nfl.com/schedules/2026/by-week/week-9
+VERIFIED_KICKOFF_OVERRIDES = {("2026_09_LV_SF"): "2026-11-08T16:25:00"}
+
 def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None: raise ValueError("now must be timezone-aware")
@@ -125,7 +129,9 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
         from datetime import date, time
         from zoneinfo import ZoneInfo
         try:
-            local=datetime.fromisoformat(str(dt)+"T"+str(tm)).replace(tzinfo=ZoneInfo("America/New_York"))
+            local=datetime.fromisoformat(
+                VERIFIED_KICKOFF_OVERRIDES.get(str(g.get("game_id")), str(dt)+"T"+str(tm))
+            ).replace(tzinfo=ZoneInfo("America/New_York"))
         except ValueError:
             continue
         if local.astimezone(timezone.utc)>now:
