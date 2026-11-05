@@ -59,8 +59,7 @@ def parse(payload, now):
 def main():
     key=os.environ.get("PARLAY_API_KEY","").strip()
     if not key:
-        print("PARLAY_API_KEY missing; preserving existing game odds")
-        return
+        raise RuntimeError("PARLAY_API_KEY missing; cannot refresh DraftKings game odds")
     now=datetime.now(timezone.utc)
     params=urllib.parse.urlencode({"bookmakers":"draftkings","regions":"us",
         "markets":"spreads,totals","oddsFormat":"american","dateFormat":"iso"})
@@ -69,8 +68,9 @@ def main():
         payload=json.load(response)
     rows=parse(payload,now)
     if not rows:
-        print("No valid DraftKings game odds returned; retaining previous files")
+        print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
         return
+    print(f"DK game odds: {len(rows)} eligible provider events")
     # Map the provider's full team names to published NFL team abbreviations,
     # never infer from substrings or fabricate a game match.
     live=json.loads(Path("data/live-v2.json").read_text())
@@ -101,7 +101,7 @@ def main():
             mapped.append(item)
     mapped=list({(x["home"],x["away"],x["commence_time"]):x for x in mapped}.values())
     if not mapped:
-        print("No odds matched published games; retaining existing files")
+        print(f"DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
         return
     history=json.loads(HISTORY.read_text()) if HISTORY.exists() else {"schema_version":1,"games":{}}
     games=history.setdefault("games",{})
