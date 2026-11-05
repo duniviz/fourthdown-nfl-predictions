@@ -106,7 +106,7 @@ def main():
     history=json.loads(HISTORY.read_text()) if HISTORY.exists() else {"schema_version":1,"games":{}}
     games=history.setdefault("games",{})
     for row in mapped:
-        k="|".join((row["home"],row["away"],row["commence_time"]))
+        k="|".join((row["away"],row["home"],row["commence_time"]))
         entry={"captured_at_utc":row["updated_at_utc"],
                "home_spread":row["home_spread"],"total":row["total"]}
         prior=games.setdefault(k,[])
