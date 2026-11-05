@@ -1,0 +1,30 @@
+/* Matchup cards v2: visual-only composition using existing live game markup. */
+#scoreboard-cards{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:18px!important}
+#scoreboard-cards>.scorecard{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);column-gap:18px;align-items:start;padding:19px!important;border:1px solid #6b9873!important;border-radius:22px!important;background:linear-gradient(120deg,#10191d 0%,#0a1014 62%,#0b1418 100%)!important;box-shadow:0 10px 35px #000a,0 0 0 1px #baff251a!important}
+#scoreboard-cards>.scorecard:before{height:3px!important;background:linear-gradient(90deg,#baff25,#43d4e2,#baff25)!important}
+#scoreboard-cards .score-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334c47!important;padding:0 0 11px!important;margin-bottom:14px!important}
+#scoreboard-cards .score-state{font-size:12px!important;color:#baff25!important;font-weight:900!important}
+#scoreboard-cards .hybrid-teamlogos{grid-column:1;display:flex;align-items:center;gap:12px!important;padding:10px 14px;margin:0!important;background:linear-gradient(100deg,#1a2830,#111b20);border:1px solid #3b555b;border-radius:14px 14px 0 0}
+#scoreboard-cards .hybrid-teamlogos img{width:42px!important;height:42px!important;object-fit:contain}
+#scoreboard-cards .hybrid-teamlogos span{font-size:clamp(16px,2vw,24px)!important;font-weight:950!important;color:#fff}
+#scoreboard-cards .score-teams{grid-column:1;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:0!important;min-width:0;overflow:hidden;border-radius:0 0 14px 14px;border:1px solid #3b555b;border-top:0}
+#scoreboard-cards .score-team{display:flex!important;flex-wrap:wrap;gap:7px!important;min-width:0;padding:15px 12px!important;min-height:95px!important;background:linear-gradient(140deg,color-mix(in srgb,var(--fd-team,#1b4c52) 38%,#11171c),#0d1418)!important}
+#scoreboard-cards .score-team+.score-team{border-left:1px solid #496269}
+#scoreboard-cards .score-team img{width:44px!important;height:44px!important;object-fit:contain}
+#scoreboard-cards .score-team .name{font-size:clamp(16px,2vw,23px)!important;font-weight:950!important;white-space:normal!important;line-height:1.15}
+#scoreboard-cards .score-team .points{font-size:clamp(22px,2.5vw,32px)!important}
+#scoreboard-cards .fd-team-record{grid-column:1;margin:10px 0 0;color:#afc9c7;font-size:12px}
+#scoreboard-cards .projection-panel{grid-column:2;grid-row:2 / span 4;margin:0!important;padding:16px!important;min-width:0;background:linear-gradient(145deg,#15211d,#0b1416)!important;border:1px solid #52765c!important;border-radius:15px!important}
+#scoreboard-cards .projection-label{font-size:11px!important;color:#baff25!important;letter-spacing:.12em}
+#scoreboard-cards .fd-pick-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+#scoreboard-cards .fd-pick-head strong{font-size:clamp(20px,2.3vw,30px)!important;line-height:1.15!important;color:#fff!important}
+#scoreboard-cards .fd-market-picks{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px!important;margin-top:13px!important}
+#scoreboard-cards .fd-market-picks>div{border:1px solid #648e37!important;border-radius:11px!important;background:linear-gradient(145deg,#1d2a19,#111a17)!important;padding:11px!important;color:#dcffc2!important;font-weight:850;overflow-wrap:anywhere}
+#scoreboard-cards .fd-forecast-score{padding:10px 0;color:#fff!important;font-size:15px!important}
+#scoreboard-cards .fd-history-link,#scoreboard-cards .fd-recap,#scoreboard-cards .fd-modal-open,#scoreboard-cards .score-footer{grid-column:1/-1}
+#scoreboard-cards .fd-modal-open{margin-top:16px!important;background:#baff25!important;border:1px solid #baff25!important;border-radius:12px!important;color:#0a1009!important;font-weight:900!important;min-height:44px}
+#scoreboard-cards .score-footer{margin-top:12px!important}
+@media(min-width:901px){#scoreboard-cards>.scorecard:has(.fd-recap) .projection-panel{grid-row:2 / span 5}}
+@media(max-width:900px){#scoreboard-cards>.scorecard{grid-template-columns:minmax(0,1fr);padding:14px!important;gap:0!important}#scoreboard-cards .score-head,#scoreboard-cards .hybrid-teamlogos,#scoreboard-cards .score-teams,#scoreboard-cards .fd-team-record,#scoreboard-cards .projection-panel,#scoreboard-cards .fd-history-link,#scoreboard-cards .fd-recap,#scoreboard-cards .fd-modal-open,#scoreboard-cards .score-footer{grid-column:1;grid-row:auto}#scoreboard-cards .projection-panel{margin-top:13px!important}#scoreboard-cards .fd-market-picks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:440px){#scoreboard-cards .hybrid-teamlogos img{width:29px!important;height:29px!important}#scoreboard-cards .score-team{padding:10px 8px!important}#scoreboard-cards .score-team img{width:30px!important;height:30px!important}#scoreboard-cards .score-team .name{font-size:15px!important}#scoreboard-cards .fd-market-picks{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){#scoreboard-cards .scorecard{transition:none!important}}
