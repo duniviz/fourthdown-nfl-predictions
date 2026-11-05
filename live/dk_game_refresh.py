@@ -80,6 +80,7 @@ def response_diagnostics(payload, now):
             "missing_teams_or_books":0,"no_draftkings_book":0,
             "invalid_book_timestamp":0,"no_usable_spread_or_total":0,
             "eligible":0}
+    timestamp_reasons={"missing":0,"future":0,"at_or_after_kickoff":0,"valid":0}
     for event in events:
         if not isinstance(event,dict):
             counts["invalid_event"]+=1
@@ -96,6 +97,12 @@ def response_diagnostics(payload, now):
         if not dk:
             counts["no_draftkings_book"]+=1
             continue
+        for book in dk:
+            stamp=dt(book.get("last_update"))
+            reason=("missing" if stamp is None else
+                    "future" if stamp>now else
+                    "at_or_after_kickoff" if stamp>=kickoff else "valid")
+            timestamp_reasons[reason]+=1
         valid=[b for b in dk if (lambda t: t is None or (t<=now and t<kickoff))(dt(b.get("last_update")))]
         if not valid:
             counts["invalid_book_timestamp"]+=1
@@ -107,6 +114,7 @@ def response_diagnostics(payload, now):
             continue
         counts["eligible"]+=1
     print(f"DK response diagnostic: shape={shape}, events={len(events)}, "+", ".join(f"{k}={v}" for k,v in counts.items()))
+    print("DK timestamp reasons: "+", ".join(f"{k}={v}" for k,v in timestamp_reasons.items()))
     if events and isinstance(events[0],dict):
         print("DK response diagnostic: event field names="+",".join(sorted(str(k) for k in events[0])[:20]))
 
