@@ -95,7 +95,8 @@ def main():
         if key in existing:
             continue
         row = dict(p)
-        row.update(dk_line=line, dk_quote_time=updated.isoformat(),
+        row.update(recommended_side="OVER" if float(p["projection"])>line else "UNDER" if float(p["projection"])<line else "NO_PICK",
+                   dk_line=line, dk_quote_time=updated.isoformat(),
                    forecast_captured_at_utc=forecast_time.isoformat(),
                    kickoff_utc=kickoff.isoformat(),
                    snapshot_source="matched_published_pregame_card")
