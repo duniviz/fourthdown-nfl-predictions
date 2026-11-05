@@ -23,7 +23,11 @@ class DKGameRefreshTests(unittest.TestCase):
         self.assertEqual(observed[0]["quote_timestamp_source"],"retrieval")
         self.assertEqual(observed[0]["updated_at_utc"],now.isoformat())
         event["bookmakers"][1]["last_update"]=(now+timedelta(minutes=2)).isoformat()
-        self.assertEqual(parse({"data":[event]},now),[])
+        future=parse({"data":[event]},now)
+        self.assertEqual(len(future),1)
+        self.assertEqual(future[0]["quote_timestamp_source"],"retrieval")
+        self.assertEqual(future[0]["provider_timestamp_status"],"future")
+        self.assertEqual(future[0]["updated_at_utc"],now.isoformat())
         event["commence_time"]=(now-timedelta(minutes=2)).isoformat()
         self.assertEqual(parse({"data":[event]},now),[])
 
