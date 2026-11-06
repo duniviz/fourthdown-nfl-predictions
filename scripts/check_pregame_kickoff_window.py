@@ -31,18 +31,22 @@ if "--record" in sys.argv:
     print("RECORDED_REFRESH", len(rows), "of", limit)
     sys.exit(0)
 
-# Tuesday 2, Wednesday 2, Thursday 5, Friday 1,
-# Saturday 3, Sunday 13, Monday 5 = 31 per week.
-# All times are America/Chicago. The cap protects 5-week months.
-slots = {
-    0: (10, 14, 17, 18, 19),
-    1: (9, 17),
-    2: (9, 17),
-    3: (10, 14, 17, 18, 19),
-    4: (16,),
-    5: (9, 14, 19),
-    6: tuple(range(8, 21)),
-}
+# One evening refresh at 7 PM America/Chicago on days without NFL kickoffs.
+# The separate capture-game-pregame workflow handles game-day kickoff slates.
+def has_game_today():
+    try:
+        payload = json.loads(pathlib.Path("data/live-v2.json").read_text())
+        games = payload["games"]
+        if not isinstance(games, list) or not games:
+            return None
+        for game in games:
+            kickoff = dt.datetime.fromisoformat(str(game["kickoff_utc"]).replace("Z", "+00:00"))
+            if kickoff.astimezone(ZoneInfo("America/Chicago")).date() == local.date():
+                return True
+        return False
+    except (OSError, ValueError, TypeError, KeyError):
+        return None
+
 if "--refresh" in sys.argv:
     if len(month_entries()) >= limit:
         print("MONTHLY_REFRESH_CAP_REACHED", limit)
@@ -50,10 +54,12 @@ if "--refresh" in sys.argv:
     if "--force" in sys.argv:
         print("MANUAL_REFRESH", local.isoformat(), len(month_entries()) + 1, "of", limit)
         sys.exit(0)
-    if local.hour in slots[local.weekday()] and local.minute < 10:
-        print("SCHEDULED_REFRESH", local.isoformat(), len(month_entries()) + 1, "of", limit)
+    game_today = has_game_today()
+    if local.hour == 19 and local.minute < 15 and game_today is False:
+        print("NO_GAME_EVENING_REFRESH", local.isoformat(), len(month_entries()) + 1, "of", limit)
         sys.exit(0)
-    print("Outside scheduled refresh slot")
+    print("Skipping refresh: outside 7 PM Central no-game window, game scheduled, or schedule unavailable")
+
     sys.exit(1)
 
 # Preserve the independent final pregame snapshot trigger at 30 minutes.

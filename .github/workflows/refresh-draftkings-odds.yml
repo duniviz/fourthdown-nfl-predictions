@@ -2,7 +2,9 @@ name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/10 * * * *'
+    # 7 PM Chicago: 00:00 UTC in CDT, 01:00 UTC in CST.
+    # The Python guard checks America/Chicago and skips the other run.
+    - cron: '0 0,1 * * *'
 permissions:
   contents: write
 concurrency:
@@ -16,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check scheduled refresh or pre-kickoff window
+      - name: Check 7 PM Chicago no-game refresh window
         id: clock
         run: |
           if python scripts/check_pregame_kickoff_window.py --refresh ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}; then
