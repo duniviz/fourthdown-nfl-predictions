@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -28,6 +28,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_count_ml_safety.py' -v
           python -m unittest discover -s tests -p 'test_expanded_game_feature_symmetry.py' -v
           python -m unittest discover -s tests -p 'test_official_game_lock_ml_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_ml_pipeline_integration.py' -v
       - name: Verify archived pregame and completed-player data are present
         run: |
           python - <<'PY'
