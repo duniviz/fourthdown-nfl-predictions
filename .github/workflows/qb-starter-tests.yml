@@ -5,6 +5,8 @@ on:
     paths:
       - 'live/injury_adjust.py'
       - 'tests/test_injury_adjust.py'
+      - 'tools/build_game_context.py'
+      - 'tests/test_qb_game_context.py'
       - '.github/workflows/qb-starter-tests.yml'
   push:
     branches:
@@ -23,4 +25,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Run QB injury safeguard regression tests
-        run: python -m unittest discover -s tests -p 'test_injury_adjust.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_injury_adjust.py' -v
+          python -m unittest discover -s tests -p 'test_qb_game_context.py' -v
