@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime,timedelta,timezone
-from live.pregame_capture_guard import due_refresh,due_lock
+from live.pregame_capture_guard import due_refresh,due_lock,evening_key
 from live.generate import VERIFIED_KICKOFF_OVERRIDES
 
 class PregameScheduleTests(unittest.TestCase):
@@ -12,6 +12,16 @@ class PregameScheduleTests(unittest.TestCase):
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=30)),[kickoff])
         self.assertEqual(due_refresh(games,{kickoff.isoformat()},kickoff-timedelta(minutes=30)),[])
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=19)),[])
+    def test_evening_no_game_central_daylight_and_standard(self):
+        for hour in (0,1):
+            now=datetime(2026,11,7,hour,tzinfo=timezone.utc) if hour==1 else datetime(2026,7,8,0,tzinfo=timezone.utc)
+            self.assertIsNotNone(evening_key([],set(),now))
+            key=evening_key([],set(),now)
+            self.assertIsNone(evening_key([],{key},now))
+            self.assertIsNone(evening_key([{"kickoff_utc":now.isoformat()}],set(),now))
+    def test_evening_outside_window(self):
+        now=datetime(2026,11,7,2,tzinfo=timezone.utc)
+        self.assertIsNone(evening_key([],set(),now))
     def test_independent_t15_lock(self):
         kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]
