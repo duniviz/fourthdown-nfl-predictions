@@ -34,8 +34,12 @@ class PipelineIntegrationTests(unittest.TestCase):
 
     def test_capture_wiring_and_persistence(self):
         workflow = (ROOT / ".github/workflows/capture-game-pregame.yml").read_text()
-        self.assertIn("python -m research.freeze_pregame_game_challengers", workflow)
-        self.assertIn("data/weekly-shadow-forecasts.json", workflow)
+        self.assertNotIn("python -m research.freeze_pregame_game_challengers", workflow)
+        independent = (ROOT / ".github/workflows/freeze-game-ml-challengers.yml").read_text()
+        self.assertIn("python -m research.freeze_pregame_game_challengers", independent)
+        self.assertIn("python -m research.game_ml_freeze_guard", independent)
+        self.assertIn("data/weekly-shadow-forecasts.json", independent)
+        self.assertNotIn("data/weekly-shadow-forecasts.json", workflow)
         self.assertIn("steps.guard.outputs.refresh == 'true'", workflow)
 
     def test_weekly_wiring_uses_selected_branch(self):
