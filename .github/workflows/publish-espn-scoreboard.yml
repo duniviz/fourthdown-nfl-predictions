@@ -21,12 +21,29 @@ jobs:
           offset=(2 if after_rollover else -5) if day==1 else 1 if day==2 else -((day-3)%7)
           start=now.date()+datetime.timedelta(days=offset)
           end=start+datetime.timedelta(days=4)
-          url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+start.strftime('%Y%m%d')+'-'+(end+datetime.timedelta(days=1)).strftime('%Y%m%d')+'&limit=100'
-          req=urllib.request.Request(url,headers={'User-Agent':'FOURTHDOWN-scoreboard/1.0'})
-          with urllib.request.urlopen(req,timeout=25) as response:
-              data=json.load(response)
-          if not isinstance(data.get('events'),list) or not data['events']:
+          # ESPN's scoreboard endpoint accepts YYYYMMDD; fetch each day
+          # separately rather than passing a rejected multi-day date range.
+          events_by_id={}
+          errors=[]
+          for n in range((end-start).days+1):
+              date=start+datetime.timedelta(days=n)
+              url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates='+date.strftime('%Y%m%d')+'&limit=100'
+              req=urllib.request.Request(url,headers={'User-Agent':'FOURTHDOWN-scoreboard/1.0'})
+              try:
+                  with urllib.request.urlopen(req,timeout=25) as response:
+                      data=json.load(response)
+                  if not isinstance(data.get('events'),list):
+                      raise ValueError('Missing ESPN events list for '+date.isoformat())
+                  for event in data['events']:
+                      if isinstance(event,dict) and event.get('id'):
+                          events_by_id[str(event['id'])]=event
+              except (OSError,ValueError) as exc:
+                  errors.append(date.isoformat()+': '+str(exc))
+          if errors:
+              raise RuntimeError('ESPN scoreboard incomplete; keeping previous backup: '+'; '.join(errors))
+          if not events_by_id:
               raise ValueError('Empty ESPN scoreboard: keeping previous backup')
+          data={'events':list(events_by_id.values())}
           payload={'updated_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'slate_start_ct':start.isoformat(),'slate_end_ct':end.isoformat(),'events':data['events']}
           pathlib.Path('data').mkdir(exist_ok=True)
           pathlib.Path('data/espn-scoreboard-backup.json').write_text(json.dumps(payload,separators=(',',':')))
