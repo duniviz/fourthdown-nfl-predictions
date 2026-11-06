@@ -37,7 +37,7 @@ jobs:
       - name: Save pregame forecast and DK observations
         if: steps.guard.outputs.run == 'true'
         run: python -m live.game_pregame_observations
-      - name: Freeze official 30-minute pregame records
+      - name: Freeze official 15-minute testing lines and projections
         if: steps.guard.outputs.run == 'true'
         run: python -m live.game_official_pregame_locks
       - name: Commit captured data
