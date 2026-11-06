@@ -26,6 +26,7 @@ jobs:
           python -m compileall -q live tools research scripts
           python -m unittest discover -s tests -p 'test_paired_game_grading.py' -v
           python -m unittest discover -s tests -p 'test_count_ml_safety.py' -v
+          python -m unittest discover -s tests -p 'test_expanded_game_feature_symmetry.py' -v
       - name: Verify archived pregame and completed-player data are present
         run: |
           python - <<'PY'
