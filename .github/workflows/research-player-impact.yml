@@ -10,6 +10,7 @@ on:
       - 'research/audit_historical_injuries.py'
       - 'research/player_impact_proxy_challenger.py'
       - 'research/qb_efficiency_challenger.py'
+      - 'research/qb_walkforward.py'
       - 'research/qb_injury_interaction.py'
       - 'research/qb_replacement_events.py'
       - 'research/qb_replacement_delta_oracle.py'
@@ -72,6 +73,25 @@ jobs:
       - name: Compare QB PAR machine learning methods (hindsight-only)
         run: |
           python research/qb_par_ml_lab.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2016.csv /tmp/fourthdown-qb/stats_2017.csv /tmp/fourthdown-qb/stats_2018.csv /tmp/fourthdown-qb/stats_2019.csv /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-par-ml.json
+      - name: Evaluate every season and recency-weighted training windows
+        run: |
+          python - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,'research')
+          from player_impact_research import load
+          from qb_efficiency_challenger import read_qb_stats,make_samples
+          from qb_injury_interaction import qb_injury_reports,sample_games
+          from qb_walkforward import evaluate
+          games=load(Path('/tmp/fourthdown-games.csv'))
+          qbs=read_qb_stats(sorted(Path('/tmp/fourthdown-qb').glob('stats_*.csv')))
+          injury,coverage=qb_injury_reports(sorted(Path('/tmp/fourthdown-injuries').glob('injuries_*.csv')))
+          results={'qb_efficiency':evaluate(make_samples(games,qbs),'qb_efficiency'),
+                   'qb_injury_interaction':evaluate(sample_games(games,qbs,injury,coverage),'qb_injury_interaction')}
+          Path('research/player-impact-results/qb-walkforward.json').write_text(json.dumps(results,indent=2)+'\\n')
+          for name,report in results.items():
+              print(name,{year:{w:round(v.get('spread',{}).get('mae_change',0),3) for w,v in windows.items()} for year,windows in report['seasons'].items()})
+          PY
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
