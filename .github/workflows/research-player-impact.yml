@@ -92,6 +92,36 @@ jobs:
           for name,report in results.items():
               print(name,{year:{w:round(v.get('spread',{}).get('mae_change',0),3) for w,v in windows.items()} for year,windows in report['seasons'].items()})
           PY
+      - name: Tournament recent form, shrinkage, and home advantage across seasons
+        run: |
+          python - <<'PY'
+          import csv,json,sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          from game_score_model_lab import evaluate,VARIANTS
+          with open('/tmp/fourthdown-games.csv',newline='',encoding='utf-8-sig') as f:
+              games=list(csv.DictReader(f))
+          seasons={str(y):evaluate(games,y) for y in range(2016,2026)}
+          summary={}
+          for variant in VARIANTS[1:]:
+              summary[variant]={}
+              for target in ('home_margin','total'):
+                  comparisons=[]
+                  for year,r in seasons.items():
+                      if r.get('status')!='research_only':continue
+                      base=r['results']['holdout']['baseline'][target]
+                      challenger=r['results']['holdout'][variant][target]
+                      if base['samples'] and challenger['samples']:
+                          comparisons.append({'year':year,'n':base['samples'],'mae_change':round(challenger['mae']-base['mae'],3),'rmse_change':round(challenger['rmse']-base['rmse'],3)})
+                  summary[variant][target]={'seasons':comparisons,'improved_years':sum(x['mae_change']<0 for x in comparisons),
+                      'total_years':len(comparisons),'weighted_mae_change':round(sum(x['mae_change']*x['n'] for x in comparisons)/sum(x['n'] for x in comparisons),4) if comparisons else None}
+          result={'status':'RESEARCH_ONLY','promotion_eligible':False,'production_modified':False,
+                  'limitations':['Single-season rolling baselines are not equivalent to deployed live model.',
+                                 'Holdout weeks are not an independent forward shadow test.'],
+                  'season_results':seasons,'summary':summary}
+          Path('research/player-impact-results/game-score-tournament.json').write_text(json.dumps(result,indent=2)+'\\n')
+          print(json.dumps(summary,indent=2))
+          PY
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
