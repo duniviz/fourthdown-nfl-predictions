@@ -180,7 +180,6 @@ function paintModalTotals(){
     if(match){
      match.remove();
     }
-    }
     card.hidden=false;card.style.display='';
     // One compact summary, with all research retained behind a disclosure.
     let details=card.querySelector('.fd2-prop-more');
