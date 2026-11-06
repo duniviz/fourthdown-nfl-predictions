@@ -18,7 +18,7 @@ class InjuryAdjustmentTests(unittest.TestCase):
             rows.append({"week":week,"team":"PHI","position":"QB","player_display_name":name,
                          "attempts":25,"passing_yards":250 if week<=2 else 160,
                          "passing_tds":1,"interceptions":0,"rushing_yards":0})
-        result=estimate("PHI",[{"player":"Jalen Hurts","position":"QB","status":"Out"}],rows,games,7)
+        result=estimate("PHI",[{"player":"Jalen Hurts","position":"QB","status":"Out"}],rows,games,7,expected_starter="Tanner McKee")
         self.assertEqual(result["status"],"experimental_qb_baseline_adjustment")
         self.assertLessEqual(abs(result["points"]),2)
         self.assertLess(result["points"],0)
@@ -26,4 +26,23 @@ class InjuryAdjustmentTests(unittest.TestCase):
         result=estimate("PHI",[{"player":"A Lineman","position":"OT","status":"Out"}],[],[],8)
         self.assertEqual(result["points"],0)
         self.assertEqual(len(result["unmodeled_injuries"]),1)
+    def test_verified_starter_without_sample_does_not_guess(self):
+        games=[]; rows=[]
+        for week in range(1,7):
+            games.append({"week":week,"game_type":"REG","home_team":"PHI","away_team":"DAL","home_score":20,"away_score":17})
+            name="Jalen Hurts" if week<=2 else "Tanner McKee"
+            rows.append({"week":week,"team":"PHI","position":"QB","player_display_name":name,
+                         "attempts":25,"passing_yards":200,"passing_tds":1,
+                         "interceptions":0,"rushing_yards":0})
+        injuries=[{"player":"Jalen Hurts","position":"QB","status":"Out"}]
+        result=estimate("PHI",injuries,rows,games,7)
+        self.assertEqual(result["status"],"starter_confirmation_required")
+        result=estimate("PHI",injuries,rows,games,7,expected_starter="Rookie QB")
+        self.assertEqual(result["status"],"verified_starter_insufficient_prior_sample")
+        self.assertEqual(result["points"],0)
+        result=estimate("PHI",injuries,rows,games,7,expected_starter="Jalen Hurts")
+        self.assertEqual(result["status"],"starter_unverified_or_out")
+        result=estimate("PHI",injuries,rows,games,7,expected_starter="Tanner McKee")
+        self.assertEqual(result["status"],"experimental_qb_baseline_adjustment")
+        self.assertTrue(result["starter_verified"])
 if __name__=="__main__":unittest.main()

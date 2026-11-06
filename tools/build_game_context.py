@@ -122,6 +122,32 @@ def injury_context(event: dict[str, Any] | None, away: str, home: str) -> dict[s
     }
 
 
+
+def qb_availability(availability: dict[str, Any], away: str, home: str) -> dict[str, Any]:
+    """Report confirmed unavailable QBs; injury reports cannot verify starters."""
+    # Keep this script runnable directly from tools/ without package path changes.
+    out_words = ("injured reserve", "inactive", "ruled out", "out for season", "season-ending", "out indefinitely", "suspended", "physically unable", "reserve/injured")
+    def confirmed_out(status: Any) -> bool:
+        value = str(status or "").lower().strip()
+        return value in ("out", "ir") or any(word in value for word in out_words)
+    result: dict[str, Any] = {}
+    for team in (away, home):
+        rows = [
+            {"player": row["player"], "status": row["status"]}
+            for row in availability.get("players", [])
+            if row.get("team") == team and row.get("position", "").upper() == "QB"
+            and confirmed_out(row.get("status")) and row.get("player")
+        ]
+        result[team] = {
+            "status": "injury_report_only" if availability.get("status") == "verified" else "unavailable",
+            "confirmed_out": rows,
+            "expected_starter": None,
+            "starter_verified": False,
+            "source": availability.get("source", "unavailable"),
+        }
+    return result
+
+
 def recent_results(team: str, kickoff: dt.datetime, limit: int = 5) -> dict[str, Any]:
     """Verified completed games strictly before kickoff, never future outcomes."""
     schedule = fetch_json(f"{ESPN}/teams/{team.lower()}/schedule?limit=1000") or {}
@@ -208,12 +234,14 @@ def build(source: pathlib.Path, output: pathlib.Path) -> None:
             continue
         away, home = team_code(game.get("away")), team_code(game.get("home"))
         event = event_for_game(game)
+        availability = injury_context(event, away, home)
         result["games"][game_id] = {
             "kickoff_utc": game.get("kickoff_utc"),
             "rest": {"away": rest_context(away, kickoff), "home": rest_context(home, kickoff)},
             "recent": {"away": recent_results(away, kickoff), "home": recent_results(home, kickoff)},
             "head_to_head": prior_meetings(away, home, kickoff),
-            "availability": injury_context(event, away, home),
+            "availability": availability,
+            "quarterbacks": qb_availability(availability, away, home),
             "model_metrics": model_metrics(game),
         }
     output.parent.mkdir(parents=True, exist_ok=True)

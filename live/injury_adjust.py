@@ -21,7 +21,7 @@ def _num(x):
         return v if math.isfinite(v) else 0.
     except (ValueError,TypeError):return 0.
 
-def estimate(team, injury_rows, weekly_stats, schedules, target_week):
+def estimate(team, injury_rows, weekly_stats, schedules, target_week, expected_starter=None):
     reported=[r for r in injury_rows if confirmed_out(r.get("status"))]
     base={"points":0.,"status":"no_confirmed_out_in_feed" if not reported else "insufficient_verified_replacement_data",
           "players":[],"reported_out":len(reported),"unmodeled_injuries":[
@@ -61,10 +61,25 @@ def estimate(team, injury_rows, weekly_stats, schedules, target_week):
     absent_qbs=[r for r in reported if str(r.get("position","")).upper()=="QB"]
     if not absent_qbs:return base
     absent_names={normalize(r.get("player")) for r in absent_qbs}
+    # Never treat the most-used available backup as the confirmed starter.
+    if expected_starter is None:
+        base["status"] = "starter_confirmation_required"
+        return base
     # Need an observed alternative QB with >=2 distinct prior appearances;
     # do not assume an unnamed replacement or assign a guessed starter.
     candidates=[(name,vals) for name,vals in by_player.items()
                 if name not in absent_names and len({w for w,_,_ in vals})>=2]
+    # A verified pregame starter takes precedence over inferred replacement usage.
+    # Never infer that the most-used healthy QB is the actual starter.
+    if expected_starter is not None:
+        starter = normalize(expected_starter)
+        if not starter or starter in absent_names:
+            base["status"] = "starter_unverified_or_out"
+            return base
+        candidates = [(name, vals) for name, vals in candidates if name == starter]
+        if not candidates:
+            base["status"] = "verified_starter_insufficient_prior_sample"
+            return base
     if len(candidates)!=1:
         base["status"]="replacement_not_confirmed" if candidates else "replacement_sample_unavailable"
         return base
@@ -87,5 +102,5 @@ def estimate(team, injury_rows, weekly_stats, schedules, target_week):
         "players":[{"player":replacement,"role":"observed_replacement_candidate",
                     "games":len({w for w,_,_ in vals}),"adjustment_points":round(adjustment,2)}],
         "method":"Expected replacement proxy minus recency-weighted QB baseline; coefficient not backtested",
-        "confidence":"low"})
+        "confidence":"low", "starter_verified":expected_starter is not None})
     return base

@@ -28,7 +28,7 @@ def read_qb_stats(paths):
     try:
      y=int(r["season"]);w=int(r["week"]);attempts=float(r["attempts"] or 0);epa=float(r["passing_epa"] or 0)
     except (TypeError,ValueError):continue
-    if y not in (2023,2024,2025) or not 1<=w<=18 or attempts<1:continue
+    if y not in tuple(range(2016,2026)) or not 1<=w<=18 or attempts<1:continue
     if r.get("season_type") and r["season_type"] not in ("REG","REGULAR"):continue
     rows[(y,w,normalized_team(r["team"]))].append((r[player_key],attempts,epa))
  return rows
