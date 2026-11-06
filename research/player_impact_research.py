@@ -21,7 +21,7 @@ def load(path):
  for r in rows:
   try:
    season=int(r["season"]);week=int(r["week"]);h=number(r.get("home_score"));a=number(r.get("away_score"))
-   if season not in (2023,2024,2025) or r.get("game_type","REG")!="REG" or not 1<=week<=18 or h is None or a is None:continue
+   if season not in tuple(range(2020,2026)) or r.get("game_type","REG")!="REG" or not 1<=week<=18 or h is None or a is None:continue
    games.append(dict(r,season=season,week=week,home_score=h,away_score=a))
   except (ValueError,KeyError,TypeError):continue
  return sorted(games,key=lambda g:(g["season"],g["week"],g.get("gameday",""),g.get("game_id","")))
@@ -48,7 +48,7 @@ def evaluate(games):
   if x:samples.append((g["season"],x,g["home_score"],g["away_score"]))
   pending.extend([((g["season"],home),(g["week"],g["home_score"],g["away_score"])),((g["season"],away),(g["week"],g["away_score"],g["home_score"]))])
  report={"status":"RESEARCH_ONLY_INJURY_DATA_BLOCKED","production_modified":False,"positions":list(POSITIONS),
-  "scope":"2023-2025 regular-season games","eligible_baseline_games":len(samples),
+  "scope":"2020-2025 regular-season games","eligible_baseline_games":len(samples),
   "verified_pregame_injury_games":0,"seasons":{},
   "limitation":"No historical timestamped, complete pregame player availability and replacement-starter coverage was supplied. Do not fabricate player WAR/PAR or infer injury absences from postgame participation."}
  for season in (2024,2025):
