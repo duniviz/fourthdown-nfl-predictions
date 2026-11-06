@@ -23,7 +23,8 @@ EXTRA=("home_epa","away_epa","home_success","away_success",
        "home_pass_epa","away_pass_epa","home_rush_epa","away_rush_epa",
        "home_defense_epa_allowed","away_defense_epa_allowed",
        "home_redzone_rate","away_redzone_rate",
-       "home_qb_proxy_epa","away_qb_proxy_epa")
+       "home_qb_proxy_epa","away_qb_proxy_epa",
+       "home_cpoe","away_cpoe")
 def num(v):
  try:
   f=float(v)
@@ -38,7 +39,7 @@ def features(schedules,pbp):
   if p.get("season_type") not in ("REG",None) or p.get("play_type") not in ("pass","run"):continue
   offense=p.get("posteam");defense=p.get("defteam")
   if not offense or not defense:continue
-  epa=num(p.get("epa"));success=num(p.get("success"));yardline=num(p.get("yardline_100"))
+  epa=num(p.get("epa"));success=num(p.get("success"));yardline=num(p.get("yardline_100"));cpoe=num(p.get("cpoe"))
   for team,side in ((offense,"off"),(defense,"def")):
    a=weekly[(season,week,team)]
    a[side+"_plays"].append(1.)
@@ -50,6 +51,7 @@ def features(schedules,pbp):
    if epa is not None:a["pass_epa"].append(epa)
    # QB pass/dropback efficiency proxy; excludes unverified starter identity.
    if epa is not None:a["qb_proxy"].append(epa)
+   if cpoe is not None:a["cpoe"].append(cpoe)
   elif epa is not None:a["rush_epa"].append(epa)
   if yardline is not None and yardline<=20:a["redzone"].append(1.)
  history=defaultdict(list);samples=[];last=None;pending=[]
@@ -73,11 +75,11 @@ def features(schedules,pbp):
     return sum(vals)/len(vals) if vals else default
    return [avg("for"),avg("against"),avg("epa"),avg("success"),
            avg("plays"),avg("pass_rate"),avg("pass_epa"),avg("rush_epa"),
-           avg("def_epa"),avg("redzone"),avg("qb_proxy")]
+           avg("def_epa"),avg("redzone"),avg("qb_proxy"),avg("cpoe")]
   h=team(home);a=team(away)
   if h and a:
    base=[week,h[0],h[1],a[0],a[1]]
-   extended=base+[h[i] for i in range(2,11)]+[a[i] for i in range(2,11)]
+   extended=base+[h[i] for i in range(2,12)]+[a[i] for i in range(2,11)]
    samples.append({"season":season,"week":week,"base":base,"extended":extended,
                    "game_id":str(g.get("game_id") or ""), "total":hs+aws,"margin":hs-aws})
   for team_name,pf,pa in ((home,hs,aws),(away,aws,hs)):
@@ -92,7 +94,7 @@ def features(schedules,pbp):
     "pass_epa":mean("pass_epa"),"rush_epa":mean("rush_epa"),
     "def_epa":mean("def_epa"),
     "redzone":len(w.get("redzone",[]))/plays if plays else None,
-    "qb_proxy":mean("qb_proxy")}))
+    "qb_proxy":mean("qb_proxy"),"cpoe":mean("cpoe")}))
  flush()
  return samples
 def evaluate(rows):
@@ -137,7 +139,7 @@ def main():
    # per-game features, not millions of historical play dictionaries.
    pbp=nfl.load_pbp([season]).select([
     "season","week","season_type","play_type","posteam","defteam",
-    "epa","success","yardline_100"]).to_dicts()
+    "epa","success","yardline_100","cpoe"]).to_dicts()
    games=[g for g in schedules if int(g.get("season") or 0)==season]
    rows=features(games,pbp)
    all_samples.extend(rows)
