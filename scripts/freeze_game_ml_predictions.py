@@ -52,6 +52,24 @@ def train(schedule):
    "ml_gradient_boosting":HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=20,l2_regularization=20,random_state=42)}
   for model in models[market].values():model.fit(x,y)
  return history,models
+def less_shrinkage_margin(history,season,week,home,away):
+ """Research-only prior-week 50/50 blend of shrunk and raw team scoring."""
+ teams={}
+ for (year,team),games in history.items():
+  if year!=season:continue
+  past=[g for g in games if g[0]<week]
+  if len(past)>=3:teams[team]=past
+ if home not in teams or away not in teams:return None
+ all_points=[g[1] for games in teams.values() for g in games]
+ if not all_points:return None
+ league=sum(all_points)/len(all_points)
+ def rate(team,index):
+  games=teams[team];raw=sum(g[index] for g in games)/len(games)
+  weight=len(games)/(len(games)+5)
+  shrunk=weight*raw+(1-weight)*league
+  return .5*shrunk+.5*raw
+ return .5*(rate(home,1)+rate(away,2))-.5*(rate(away,1)+rate(home,2))+2
+
 def main():
  with open(sys.argv[1],newline="") as f:history,models=train(csv.DictReader(f))
  live=json.loads((DATA/"live-v2.json").read_text());created=time(live.get("generated_at_utc"))
@@ -74,6 +92,14 @@ def main():
        "model":"live","projection":round(value,4),"dk_line":None,
        "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
        "source":"frozen production game projection","actual":None}
+   margin=less_shrinkage_margin(history,int(game["season"]),int(game["week"]),game["home"],game["away"])
+   if margin is not None:
+    key=(str(game["game_id"]),"GAME","game_margin_home","less_shrinkage")
+    if key not in indexed:
+     indexed[key]={"game_id":key[0],"player_id":"GAME","stat_key":"game_margin_home",
+       "model":"less_shrinkage","projection":round(margin,4),"dk_line":None,
+       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
+       "source":"prior-week 50/50 shrunk/raw scoring challenger","actual":None}
    for market,modelset in models.items():
     for name,model in modelset.items():
      key=(str(game["game_id"]),"GAME",market,name)
