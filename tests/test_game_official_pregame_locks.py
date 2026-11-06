@@ -12,7 +12,10 @@ class OfficialGameLockTests(unittest.TestCase):
                     "projected_margin_home":2,"projected_total":44,
                     "dk_home_spread":spread,"dk_total":43}
         rows=[row(110,-1),row(40,-2),row(20,-3)]
-        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=1)),[])
+        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=31)),[])
+        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=30))[0]["dk_home_spread"],-2)
+        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=15))[0]["dk_home_spread"],-2)
+        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=14)),[])
         first=select(rows,[],kickoff)
         self.assertEqual(len(first),1)
         self.assertEqual(first[0]["dk_home_spread"],-2)

@@ -3,7 +3,7 @@ name: Capture official pregame DraftKings game lines
   workflow_dispatch: {}
   schedule:
     # GitHub Actions UTC schedule; actual kickoff times are UTC-aware.
-    - cron: '3,18,33,48 * * * *'
+    - cron: '*/5 * * * *'
 permissions:
   contents: write
 concurrency:
@@ -52,3 +52,6 @@ jobs:
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+      - name: Verify official lock after kickoff
+        if: steps.guard.outputs.run == 'true'
+        run: python -m live.verify_game_pregame_locks
