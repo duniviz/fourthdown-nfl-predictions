@@ -3,39 +3,31 @@ from datetime import datetime,timedelta,timezone
 from live.game_official_pregame_locks import select
 
 class OfficialGameLockTests(unittest.TestCase):
-    def test_selects_latest_eligible_and_never_replaces(self):
-        kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
-        def row(minutes,spread):
-            stamp=(kickoff-timedelta(minutes=minutes)).isoformat()
-            return {"game_id":"g","kickoff_utc":kickoff.isoformat(),
-                    "forecast_at_utc":stamp,"dk_at_utc":stamp,"captured_at_utc":stamp,
-                    "projected_margin_home":2,"projected_total":44,
-                    "dk_home_spread":spread,"dk_total":43}
-        rows=[row(110,-1),row(40,-2),row(20,-3)]
-        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=31)),[])
-        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=30))[0]["dk_home_spread"],-2)
-        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=15))[0]["dk_home_spread"],-2)
-        self.assertEqual(select(rows,[],kickoff-timedelta(minutes=14)),[])
-        first=select(rows,[],kickoff)
-        self.assertEqual(len(first),1)
+    def setUp(self):
+        self.kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
+    def row(self,minutes,spread, captured_minutes=None):
+        t=(self.kickoff-timedelta(minutes=minutes)).isoformat()
+        capture=(self.kickoff-timedelta(minutes=captured_minutes if captured_minutes is not None else minutes)).isoformat()
+        return {"game_id":"g","kickoff_utc":self.kickoff.isoformat(),
+                "forecast_at_utc":t,"dk_at_utc":t,"captured_at_utc":capture,
+                "projected_margin_home":2,"projected_total":44,
+                "dk_home_spread":spread,"dk_total":43}
+    def test_t15_freeze_and_immutable(self):
+        rows=[self.row(40,-2),self.row(16,-4),self.row(10,-9)]
+        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=16)),[])
+        first=select(rows,[],self.kickoff-timedelta(minutes=15))
+        self.assertEqual(first[0]["dk_home_spread"],-4)
+        self.assertEqual(first[0]["lock_status"],"official")
+        self.assertEqual(first[0]["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=15)).isoformat())
+        self.assertEqual(select(rows,first,self.kickoff-timedelta(minutes=2)),first)
+    def test_late_scheduled_run_uses_pre_cutoff_only(self):
+        rows=[self.row(18,-2),self.row(12,-9)]
+        first=select(rows,[],self.kickoff-timedelta(minutes=10))
         self.assertEqual(first[0]["dk_home_spread"],-2)
-        self.assertEqual(select([row(31,-4)],first,kickoff+timedelta(hours=1)),first)
-    def test_rejects_capture_after_cutoff(self):
-        kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
-        row={"game_id":"late","kickoff_utc":kickoff.isoformat(),
-             "forecast_at_utc":(kickoff-timedelta(minutes=50)).isoformat(),
-             "dk_at_utc":(kickoff-timedelta(minutes=50)).isoformat(),
-             "captured_at_utc":(kickoff-timedelta(minutes=20)).isoformat(),
-             "projected_margin_home":2,"projected_total":44,"dk_total":45}
-        self.assertEqual(select([row],[],kickoff),[])
-    def test_rejects_stale_and_post_cutoff(self):
-        kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
-        def row(minutes):
-            t=(kickoff-timedelta(minutes=minutes)).isoformat()
-            return {"game_id":str(minutes),"kickoff_utc":kickoff.isoformat(),
-                    "forecast_at_utc":t,"dk_at_utc":t,"captured_at_utc":t,
-                    "projected_margin_home":2,"projected_total":44,"dk_total":45}
-        self.assertEqual(select([row(121),row(29)],[],kickoff),[])
+    def test_no_new_lock_after_kickoff(self):
+        self.assertEqual(select([self.row(16,-2)],[],self.kickoff),[])
+    def test_reject_stale_and_post_cutoff_capture(self):
+        rows=[self.row(106,-2),self.row(16,-3,captured_minutes=12),self.row(14,-4)]
+        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=15)),[])
 
-if __name__=="__main__":
-    unittest.main()
+if __name__=="__main__":unittest.main()

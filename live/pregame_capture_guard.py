@@ -1,25 +1,51 @@
-"""Gate lightweight pregame capture near scheduled kickoffs (no API calls)."""
+"""Decide whether to fetch odds once per kickoff slate, or check T-15 locks.
+
+No API calls are made by this module. Refresh marker is committed only after
+a successful provider refresh and observation capture.
+"""
+import argparse
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from live.game_pregame_observations import dt
 
-def due(games, now):
-    for game in games:
-        kickoff=dt(game.get("kickoff_utc"))
-        if kickoff and -45 <= (kickoff-now).total_seconds()/60 <= 150:
-            return True
-    return False
+MARKER=Path("data/dk-slate-refreshes.json")
+GAMES=Path("data/live-v2.json")
+
+def slates(games):
+    starts=sorted({dt(g.get("kickoff_utc")) for g in games if dt(g.get("kickoff_utc"))})
+    return starts
+
+def due_refresh(games, done, now):
+    # Allow the next scheduled run up to 10 minutes late, never refresh after
+    # the T-15 freeze window begins.
+    return [k for k in slates(games)
+            if timedelta(minutes=20) <= k-now <= timedelta(minutes=30)
+            and k.isoformat() not in done]
+
+def due_lock(games, now):
+    return any(timedelta(0)<k-now<=timedelta(minutes=15) for k in slates(games))
 
 def main():
-    path=Path("data/live-v2.json")
-    games=json.loads(path.read_text()).get("games",[]) if path.exists() else []
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--mode",choices=("refresh","lock"),default="refresh")
+    parser.add_argument("--mark",action="store_true")
+    args=parser.parse_args()
+    games=json.loads(GAMES.read_text()).get("games",[]) if GAMES.exists() else []
+    data=json.loads(MARKER.read_text()) if MARKER.exists() else {"schema_version":1,"slates":[]}
+    done=set(data.get("slates",[]))
     now=datetime.now(timezone.utc)
-    if due(games,now):
-        print("Upcoming/recent NFL kickoff: capture enabled")
+    pending=due_refresh(games,done,now)
+    if args.mark:
+        if not pending:
+            raise SystemExit("No due slate to mark")
+        data["slates"]=sorted(done|{k.isoformat() for k in pending})
+        MARKER.write_text(json.dumps(data,indent=2)+"\n")
         return
-    print("No kickoff near capture window")
-    raise SystemExit(1)
+    eligible=bool(pending) if args.mode=="refresh" else due_lock(games,now)
+    print(f"Pregame {args.mode}: {'due' if eligible else 'not due'}")
+    if not eligible:
+        raise SystemExit(1)
 
 if __name__=="__main__":
     main()

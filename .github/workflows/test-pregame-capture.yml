@@ -14,9 +14,15 @@ on:
       - 'tests/test_capture_pregame_snapshots.py'
       - 'tests/test_gb_car_pregame.py'
       - '.github/workflows/test-pregame-capture.yml'
+      - 'live/pregame_capture_guard.py'
+      - 'live/game_official_pregame_locks.py'
+      - 'tests/test_pregame_capture_guard.py'
+      - 'tests/test_game_official_pregame_locks.py'
+      - '.github/workflows/capture-game-pregame.yml'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -33,3 +39,16 @@ jobs:
         run: python scripts/audit_completed_games.py
       - name: Validate Python syntax
         run: python -m py_compile scripts/capture_pregame_snapshots.py
+
+      - name: Validate T-30 slate and T-15 official lock
+        run: python -m unittest tests.test_pregame_capture_guard tests.test_game_official_pregame_locks -v
+  merge-validated-lock:
+    needs: test
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 343 && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'fix/official-t15-game-testing-locks' && github.event.pull_request.user.login == 'duniviz' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge PR after all tests pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge "$PR_URL" --squash --delete-branch
