@@ -1,0 +1,30 @@
+name: FOURTHDOWN Full System Audit
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/full-system-audit.yml'
+      - 'scripts/full_system_audit.py'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run offline full system audit
+        run: python scripts/full_system_audit.py
+      - name: Upload full audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fourthdown-full-system-audit
+          path: full-system-audit-report.md
+          if-no-files-found: warn
