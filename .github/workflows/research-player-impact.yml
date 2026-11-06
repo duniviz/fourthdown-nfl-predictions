@@ -1,4 +1,4 @@
-name: Research player impact 2023-2025
+name: Research player impact 2020-2025
 on:
   workflow_dispatch:
   schedule:
@@ -35,45 +35,45 @@ jobs:
           python -m compileall -q research/player_impact_research.py tests/test_player_impact_research.py
           python -m unittest discover -s tests -p 'test_player_impact_research.py' -v
           python -m unittest discover -s tests -p 'test_historical_injury_audit.py' -v
-      - name: Download 2023-2025 historical schedules and scores
+      - name: Download 2020-2025 historical schedules and scores
         run: curl --fail --location --retry 3 --max-time 120 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv' -o /tmp/fourthdown-games.csv
       - name: Run historical chronological baseline and injury coverage audit
         run: python research/player_impact_research.py --schedule /tmp/fourthdown-games.csv --output research/player-impact-results/report.json
-      - name: Download historical weekly injury reports (2023-2025)
+      - name: Download historical weekly injury reports (2020-2025)
         run: |
           mkdir -p /tmp/fourthdown-injuries
-          for year in 2023 2024 2025; do
+          for year in 2020 2021 2022 2023 2024 2025; do
             curl --fail --location --retry 3 --max-time 120 "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_${year}.csv" -o "/tmp/fourthdown-injuries/injuries_${year}.csv"
           done
       - name: Audit historical injury designations and coverage
         run: |
-          python research/audit_historical_injuries.py --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/injury-coverage.json
+          python research/audit_historical_injuries.py --injuries /tmp/fourthdown-injuries/injuries_2020.csv /tmp/fourthdown-injuries/injuries_2021.csv /tmp/fourthdown-injuries/injuries_2022.csv /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/injury-coverage.json
       - name: Run paired injury-designation proxy challenger (not player WAR)
         run: |
-          python research/player_impact_proxy_challenger.py --schedule /tmp/fourthdown-games.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/proxy-comparison.json
+          python research/player_impact_proxy_challenger.py --schedule /tmp/fourthdown-games.csv --injuries /tmp/fourthdown-injuries/injuries_2020.csv /tmp/fourthdown-injuries/injuries_2021.csv /tmp/fourthdown-injuries/injuries_2022.csv /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/proxy-comparison.json
       - name: Download nflverse weekly QB stats
         run: |
           mkdir -p /tmp/fourthdown-qb
-          for year in 2023 2024 2025; do
+          for year in 2020 2021 2022 2023 2024 2025; do
             curl --fail --location --retry 3 --max-time 120 "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_${year}.csv" -o "/tmp/fourthdown-qb/stats_${year}.csv"
           done
       - name: Run historical QB efficiency challenger
         run: |
-          python research/qb_efficiency_challenger.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-efficiency.json
+          python research/qb_efficiency_challenger.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-efficiency.json
       - name: Run injured-QB designation interaction challenger
         run: |
-          python research/qb_injury_interaction.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-injury-interaction.json
+          python research/qb_injury_interaction.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2020.csv /tmp/fourthdown-injuries/injuries_2021.csv /tmp/fourthdown-injuries/injuries_2022.csv /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-injury-interaction.json
       - name: Audit retrospective starting QB changes
         run: |
-          python research/qb_replacement_events.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-replacement-events.json
+          python research/qb_replacement_events.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --injuries /tmp/fourthdown-injuries/injuries_2020.csv /tmp/fourthdown-injuries/injuries_2021.csv /tmp/fourthdown-injuries/injuries_2022.csv /tmp/fourthdown-injuries/injuries_2023.csv /tmp/fourthdown-injuries/injuries_2024.csv /tmp/fourthdown-injuries/injuries_2025.csv --output research/player-impact-results/qb-replacement-events.json
       - name: Evaluate hindsight-only QB replacement efficiency delta
         run: |
-          python research/qb_replacement_delta_oracle.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-replacement-oracle.json
+          python research/qb_replacement_delta_oracle.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-replacement-oracle.json
       - name: Compare QB PAR machine learning methods (hindsight-only)
         run: |
-          python research/qb_par_ml_lab.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-par-ml.json
+          python research/qb_par_ml_lab.py --schedule /tmp/fourthdown-games.csv --qb-stats /tmp/fourthdown-qb/stats_2020.csv /tmp/fourthdown-qb/stats_2021.csv /tmp/fourthdown-qb/stats_2022.csv /tmp/fourthdown-qb/stats_2023.csv /tmp/fourthdown-qb/stats_2024.csv /tmp/fourthdown-qb/stats_2025.csv --output research/player-impact-results/qb-par-ml.json
       - name: Publish auditable research report
         uses: actions/upload-artifact@v4
         with:
-          name: player-impact-2023-2025-research
+          name: player-impact-2020-2025-research
           path: research/player-impact-results/
