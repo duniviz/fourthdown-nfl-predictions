@@ -1,8 +1,8 @@
 """Freeze one official game forecast and DK quote from pre-kickoff observations.
 
-A qualifying pair must be observed in the 90 minutes before the 30-minute
-pregame cutoff. Freeze at the first scheduled run from 30 to 15 minutes before kickoff, never
-using observations or quote timestamps after the cutoff.
+A qualifying pair must be observed within 90 minutes before the 15-minute
+pregame cutoff. Freeze on the first available scheduled run at/after T-15
+but strictly before kickoff. Never use post-cutoff observations.
 """
 import json
 from datetime import datetime, timedelta, timezone
@@ -23,9 +23,9 @@ def select(records, existing, now):
         forecast=dt(row.get("forecast_at_utc"))
         quote=dt(row.get("dk_at_utc"))
         captured=dt(row.get("captured_at_utc"))
-        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=30)<=now<=kickoff-timedelta(minutes=15)):
+        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=15)<=now<kickoff):
             continue
-        cutoff=kickoff-timedelta(minutes=30)
+        cutoff=kickoff-timedelta(minutes=15)
         earliest=cutoff-timedelta(minutes=90)
         if not (earliest<=forecast<=cutoff and earliest<=quote<=cutoff and captured<=cutoff):
             continue
@@ -40,7 +40,7 @@ def select(records, existing, now):
         if key not in grouped or rank>grouped[key][0]:
             grouped[key]=(rank,row)
     for key,(_,row) in grouped.items():
-        locked[key]={**row,"lock_cutoff_utc":(dt(row["kickoff_utc"])-timedelta(minutes=30)).isoformat(),
+        locked[key]={**row,"lock_cutoff_utc":(dt(row["kickoff_utc"])-timedelta(minutes=15)).isoformat(),
                      "lock_status":"official"}
     return sorted(locked.values(),key=lambda x:(str(x.get("kickoff_utc")),str(x.get("game_id"))))
 
