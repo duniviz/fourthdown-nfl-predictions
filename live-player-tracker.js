@@ -175,19 +175,9 @@ function paintModalTotals(){
    for(const card of forecastCards){
     const candidates=liveRows.filter(row=>samePlayer(row.dataset.fdLivePlayer,card.dataset.fdPlayer)&&row.dataset.fdLiveMarket===card.dataset.fdMarket&&(!row.dataset.fdLiveTeam||playerKey(row.dataset.fdLiveTeam)===playerKey(card.dataset.fdTeam)));
     const match=candidates.length===1?candidates[0]:null;
-    const old=card.querySelector('.fd2-actual-result');
-    if(old)old.remove();
+    const direct=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,card.dataset.fdMarket,card.dataset.fdPlayerId,gameId);
+    if(direct)showCardActual(card,direct);
     if(match){
-     const actual=match.querySelector('.fd-live-prop-actual strong')?.textContent||'—';
-     const caption=match.querySelector('.fd-live-prop-caption span:last-child')?.textContent||'';
-     const badge=document.createElement('div');
-     badge.className='fd2-actual-result';
-     const label=document.createElement('span');label.textContent='ESPN actual';
-     const value=document.createElement('strong');value.textContent=actual;
-     const status=document.createElement('span');status.textContent=caption;
-     badge.append(label,value,status);
-     const metrics=card.querySelector('.fd-mobile-prop-numbers');
-     if(metrics)metrics.after(badge);else card.append(badge);
      match.remove();
     }
     card.hidden=false;card.style.display='';
@@ -268,6 +258,18 @@ function paintModalTotals(){
  }
 
 }
+// Always show verified ESPN totals in the collapsed player card, not just
+// inside the expandable research section. Keep pregame figures unchanged.
+function showCardActual(card,record){
+ let badge=card.querySelector('.fd2-actual-result');
+ if(!badge){badge=document.createElement('div');badge.className='fd2-actual-result';}
+ badge.replaceChildren();
+ const label=document.createElement('span');label.textContent='ESPN '+(state.finalIds.has(String(record.game_id))?'FINAL':'LIVE');
+ const value=document.createElement('strong');value.textContent=String(record.actual);
+ badge.append(label,value);
+ const metrics=card.querySelector('.fd-mobile-prop-numbers');
+ if(metrics)metrics.after(badge);else card.prepend(badge);
+}
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
   const player=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
@@ -291,6 +293,7 @@ function paintCards(){
    let slot=card.querySelector('.fd-live-inline');
    if(!match){card.querySelector('.fd-live-final-bar')?.remove();if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}slot.textContent=state.feedError?'ESPN stats temporarily unavailable':state.games.length?'ESPN stats pending for this player':'ESPN live stats · Waiting for kickoff';return;}
    const r=match;
+   showCardActual(card,r);
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
    updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'—');slot.appendChild(sub);
