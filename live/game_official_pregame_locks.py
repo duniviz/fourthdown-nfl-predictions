@@ -1,7 +1,7 @@
 """Freeze one official game forecast and DK quote from pre-kickoff observations.
 
 A qualifying pair must be observed in the 90 minutes before the 30-minute
-pregame cutoff. Freeze at the first scheduled run at/after the cutoff, never
+pregame cutoff. Freeze at the first scheduled run from 30 to 15 minutes before kickoff, never
 using observations or quote timestamps after the cutoff.
 """
 import json
@@ -23,7 +23,7 @@ def select(records, existing, now):
         forecast=dt(row.get("forecast_at_utc"))
         quote=dt(row.get("dk_at_utc"))
         captured=dt(row.get("captured_at_utc"))
-        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=30)<=now<kickoff):
+        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=30)<=now<=kickoff-timedelta(minutes=15)):
             continue
         cutoff=kickoff-timedelta(minutes=30)
         earliest=cutoff-timedelta(minutes=90)
