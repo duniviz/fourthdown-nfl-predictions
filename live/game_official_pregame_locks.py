@@ -23,7 +23,7 @@ def select(records, existing, now):
         forecast=dt(row.get("forecast_at_utc"))
         quote=dt(row.get("dk_at_utc"))
         captured=dt(row.get("captured_at_utc"))
-        if not kickoff or not forecast or not quote or not captured or kickoff-timedelta(minutes=30)>now:
+        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=30)<=now<kickoff):
             continue
         cutoff=kickoff-timedelta(minutes=30)
         earliest=cutoff-timedelta(minutes=90)
