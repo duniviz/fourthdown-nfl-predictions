@@ -125,7 +125,11 @@ def injury_context(event: dict[str, Any] | None, away: str, home: str) -> dict[s
 
 def qb_availability(availability: dict[str, Any], away: str, home: str) -> dict[str, Any]:
     """Report confirmed unavailable QBs; injury reports cannot verify starters."""
-    from live.injury_adjust import confirmed_out
+    # Keep this script runnable directly from tools/ without package path changes.
+    out_words = ("injured reserve", "inactive", "ruled out", "out for season", "season-ending", "out indefinitely", "suspended", "physically unable", "reserve/injured")
+    def confirmed_out(status: Any) -> bool:
+        value = str(status or "").lower().strip()
+        return value in ("out", "ir") or any(word in value for word in out_words)
     result: dict[str, Any] = {}
     for team in (away, home):
         rows = [
