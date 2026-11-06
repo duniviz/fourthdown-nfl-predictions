@@ -20,32 +20,43 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Check kickoff capture window
+      - name: Check slate refresh window
         id: guard
         shell: bash
         run: |
-          if python -m live.pregame_capture_guard; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
+          if python -m live.pregame_capture_guard --mode refresh; then
+            echo "refresh=true" >> "$GITHUB_OUTPUT"
           else
-            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "refresh=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Fetch verified DraftKings spreads and totals
-        if: steps.guard.outputs.run == 'true'
+        if: steps.guard.outputs.refresh == 'true'
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_game_refresh
       - name: Save pregame forecast and DK observations
-        if: steps.guard.outputs.run == 'true'
+        if: steps.guard.outputs.refresh == 'true'
         run: python -m live.game_pregame_observations
+      - name: Mark refreshed slate
+        if: steps.guard.outputs.refresh == 'true'
+        run: python -m live.pregame_capture_guard --mark
+      - name: Check T-15 lock window
+        id: lock_guard
+        shell: bash
+        run: |
+          if python -m live.pregame_capture_guard --mode lock; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
       - name: Freeze official 15-minute testing lines and projections
-        if: steps.guard.outputs.run == 'true'
+        if: steps.lock_guard.outputs.run == 'true'
         run: python -m live.game_official_pregame_locks
       - name: Commit captured data
-        if: steps.guard.outputs.run == 'true'
+        if: steps.guard.outputs.refresh == 'true' || steps.lock_guard.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json
+          git add -f data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/dk-slate-refreshes.json
           if ! git diff --cached --quiet; then
             git commit -m "Capture pregame DraftKings game snapshot [skip ci]"
             git reset --hard HEAD
@@ -53,5 +64,5 @@ jobs:
             git push origin HEAD:main
           fi
       - name: Verify official lock after kickoff
-        if: steps.guard.outputs.run == 'true'
+        if: always()
         run: python -m live.verify_game_pregame_locks
