@@ -119,7 +119,7 @@ jobs:
                   'limitations':['Single-season rolling baselines are not equivalent to deployed live model.',
                                  'Holdout weeks are not an independent forward shadow test.'],
                   'season_results':seasons,'summary':summary}
-          Path('research/player-impact-results/game-score-tournament.json').write_text(json.dumps(result,indent=2)+'\\n')
+          Path('research/player-impact-results/game-score-tournament.json').write_text(json.dumps(result,indent=2)+chr(10))
           print(json.dumps(summary,indent=2))
           PY
       - name: Publish auditable research report
