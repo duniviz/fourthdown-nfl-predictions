@@ -61,6 +61,10 @@ def estimate(team, injury_rows, weekly_stats, schedules, target_week, expected_s
     absent_qbs=[r for r in reported if str(r.get("position","")).upper()=="QB"]
     if not absent_qbs:return base
     absent_names={normalize(r.get("player")) for r in absent_qbs}
+    # Never treat the most-used available backup as the confirmed starter.
+    if expected_starter is None:
+        base["status"] = "starter_confirmation_required"
+        return base
     # Need an observed alternative QB with >=2 distinct prior appearances;
     # do not assume an unnamed replacement or assign a guessed starter.
     candidates=[(name,vals) for name,vals in by_player.items()
