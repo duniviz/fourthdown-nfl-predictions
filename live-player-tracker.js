@@ -47,6 +47,23 @@ const playerKey=x=>String(x||'').toLowerCase().replace(/\b(?:jr|sr|ii|iii|iv|v)\
 // Only accept that fallback when team and market identify exactly one athlete.
 const shortNameKey=x=>{const words=String(x||'').toLowerCase().replace(/\b(?:jr|sr|ii|iii|iv|v)\.?\b/g,'').replace(/[^a-z\s]/g,' ').trim().split(/\s+/).filter(Boolean);return words.length>=2?words[0][0]+words[words.length-1]:'';};
 const samePlayer=(a,b)=>playerKey(a)===playerKey(b)||(shortNameKey(a)!==''&&shortNameKey(a)===shortNameKey(b));
+// Resolve by ESPN athlete ID when the saved card has one. Otherwise require
+// a unique name match within the same team, market and (when available) game.
+// Never silently attach another player's stats to a prop.
+function matchActual(rows,player,team,market,playerId='',gameId=''){
+ const candidates=rows.filter(r=>r.market===market&&playerKey(r.team)===playerKey(team)&&(!gameId||String(r.game_id)===String(gameId)));
+ const id=String(playerId||'').trim();
+ if(id){
+  const byId=candidates.filter(r=>String(r.player_id||'')===id);
+  if(byId.length===1)return byId[0];
+  if(byId.length>1)return null;
+ }
+ const exact=candidates.filter(r=>playerKey(r.player)===playerKey(player));
+ if(exact.length===1)return exact[0];
+ if(exact.length>1)return null;
+ const abbreviated=candidates.filter(r=>samePlayer(r.player,player));
+ return abbreviated.length===1?abbreviated[0]:null;
+}
 
 // Experimental in-game estimate: blend observed per-minute pace with pregame
 // rate for remaining regulation time. Avoid extreme extrapolation in Q1.
@@ -254,11 +271,11 @@ function paintModalTotals(){
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
   const player=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
-  const found=state.rows.filter(r=>samePlayer(r.player,card.dataset.fdPlayer)&&playerKey(r.team)===team&&r.market===market);
+  const found=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,card.dataset.fdGameId);
   let slot=card.querySelector('.fd-prop-live-actual');
   if(!slot){slot=document.createElement('div');slot.className='fd-prop-live-actual';slot.style.cssText='margin-top:8px;padding:8px;border-radius:8px;background:#10333d;color:#b8f5e6;font-size:12px';card.appendChild(slot);}
-  if(found.length!==1){slot.textContent=state.feedError?'Live ESPN stats unavailable':state.games.length?'Live actual pending':'Live actual starts at kickoff';return;}
-  const x=found[0],line=Number(card.dataset.fdDkLine),hasLine=card.dataset.fdDkLine!==''&&Number.isFinite(line);
+  if(!found){slot.textContent=state.feedError?'Live ESPN stats unavailable':state.games.length?'Live actual pending':'Live actual starts at kickoff';return;}
+  const x=found,line=Number(card.dataset.fdDkLine),hasLine=card.dataset.fdDkLine!==''&&Number.isFinite(line);
   const remaining=hasLine?Math.max(0,Math.floor(line-x.actual)+1):null;
   const unit=market.includes('yards')?'yards':market==='player_pass_completions'?'completions':market==='player_rush_attempts'?'attempts':'receptions';
   slot.textContent='LIVE ACTUAL: '+x.actual+' '+unit+(hasLine?' / DK '+line+' · '+(remaining===0?'Over line reached':remaining+' more to go over'):'')+' · '+(x.game_status||'In progress');
@@ -270,10 +287,10 @@ function paintCards(){
  try{
   document.querySelectorAll('.fd-mobile-prop-card[data-fd-player]').forEach(card=>{
    const p=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
-   const matches=state.rows.filter(r=>samePlayer(r.player,card.dataset.fdPlayer)&&playerKey(r.team)===team&&r.market===market);
+   const match=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,card.dataset.fdGameId);
    let slot=card.querySelector('.fd-live-inline');
-   if(matches.length!==1){card.querySelector('.fd-live-final-bar')?.remove();if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}slot.textContent=state.feedError?'ESPN stats temporarily unavailable':state.games.length?'ESPN stats pending for this player':'ESPN live stats · Waiting for kickoff';return;}
-   const r=matches[0];
+   if(!match){card.querySelector('.fd-live-final-bar')?.remove();if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}slot.textContent=state.feedError?'ESPN stats temporarily unavailable':state.games.length?'ESPN stats pending for this player':'ESPN live stats · Waiting for kickoff';return;}
+   const r=match;
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
    slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
    updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'—');slot.appendChild(sub);
