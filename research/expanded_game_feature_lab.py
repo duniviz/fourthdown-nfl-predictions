@@ -79,7 +79,7 @@ def features(schedules,pbp):
   h=team(home);a=team(away)
   if h and a:
    base=[week,h[0],h[1],a[0],a[1]]
-   extended=base+[h[i] for i in range(2,12)]+[a[i] for i in range(2,11)]
+   extended=base+[h[i] for i in range(2,12)]+[a[i] for i in range(2,12)]
    samples.append({"season":season,"week":week,"base":base,"extended":extended,
                    "game_id":str(g.get("game_id") or ""), "total":hs+aws,"margin":hs-aws})
   for team_name,pf,pa in ((home,hs,aws),(away,aws,hs)):
