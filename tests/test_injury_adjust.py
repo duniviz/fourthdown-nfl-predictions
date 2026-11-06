@@ -18,7 +18,7 @@ class InjuryAdjustmentTests(unittest.TestCase):
             rows.append({"week":week,"team":"PHI","position":"QB","player_display_name":name,
                          "attempts":25,"passing_yards":250 if week<=2 else 160,
                          "passing_tds":1,"interceptions":0,"rushing_yards":0})
-        result=estimate("PHI",[{"player":"Jalen Hurts","position":"QB","status":"Out"}],rows,games,7)
+        result=estimate("PHI",[{"player":"Jalen Hurts","position":"QB","status":"Out"}],rows,games,7,expected_starter="Tanner McKee")
         self.assertEqual(result["status"],"experimental_qb_baseline_adjustment")
         self.assertLessEqual(abs(result["points"]),2)
         self.assertLess(result["points"],0)
@@ -35,6 +35,8 @@ class InjuryAdjustmentTests(unittest.TestCase):
                          "attempts":25,"passing_yards":200,"passing_tds":1,
                          "interceptions":0,"rushing_yards":0})
         injuries=[{"player":"Jalen Hurts","position":"QB","status":"Out"}]
+        result=estimate("PHI",injuries,rows,games,7)
+        self.assertEqual(result["status"],"starter_confirmation_required")
         result=estimate("PHI",injuries,rows,games,7,expected_starter="Rookie QB")
         self.assertEqual(result["status"],"verified_starter_insufficient_prior_sample")
         self.assertEqual(result["points"],0)
