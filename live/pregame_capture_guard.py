@@ -7,6 +7,7 @@ import argparse
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from live.game_pregame_observations import dt
 
 MARKER=Path("data/dk-slate-refreshes.json")
@@ -23,6 +24,16 @@ def due_refresh(games, done, now):
             if timedelta(minutes=20) <= k-now <= timedelta(minutes=30)
             and k.isoformat() not in done]
 
+def evening_key(games, done, now):
+    """One 7 PM America/Chicago refresh only when no game kicks off that day."""
+    local=now.astimezone(ZoneInfo("America/Chicago"))
+    key="evening:"+local.date().isoformat()
+    if key in done or local.hour != 19 or local.minute >= 15:
+        return None
+    if any(k.astimezone(ZoneInfo("America/Chicago")).date()==local.date() for k in slates(games)):
+        return None
+    return key
+
 def due_lock(games, now):
     return any(timedelta(0)<k-now<=timedelta(minutes=15) for k in slates(games))
 
@@ -36,13 +47,14 @@ def main():
     done=set(data.get("slates",[]))
     now=datetime.now(timezone.utc)
     pending=due_refresh(games,done,now)
+    evening=evening_key(games,done,now)
     if args.mark:
-        if not pending:
-            raise SystemExit("No due slate to mark")
-        data["slates"]=sorted(done|{k.isoformat() for k in pending})
+        if not pending and not evening:
+            raise SystemExit("No due refresh to mark")
+        data["slates"]=sorted(done|{k.isoformat() for k in pending}|({evening} if evening else set()))
         MARKER.write_text(json.dumps(data,indent=2)+"\n")
         return
-    eligible=bool(pending) if args.mode=="refresh" else due_lock(games,now)
+    eligible=(bool(pending) or bool(evening)) if args.mode=="refresh" else due_lock(games,now)
     print(f"Pregame {args.mode}: {'due' if eligible else 'not due'}")
     if not eligible:
         raise SystemExit(1)
