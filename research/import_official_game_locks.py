@@ -36,7 +36,7 @@ def merge(locks, existing):
             if not isinstance(value, (int, float)) or isinstance(value, bool):
                 continue
             key = (str(lock["game_id"]), "GAME", market, "live")
-            if key in indexed:
+            if key in indexed and indexed[key].get("source") == "official T-15 game pregame lock":
                 continue
             indexed[key] = {
                 "game_id": key[0], "player_id": "GAME", "stat_key": market,
