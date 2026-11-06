@@ -37,11 +37,11 @@ class QBContextTests(unittest.TestCase):
             report = {"status": "verified", "source": "ESPN game summary", "players": [
                 {"team": "BAL", "player": "Starting QB", "position": "QB", "status": "Out"}
             ]}
-            with patch.object(module, "event_for_game", return_value=None), \
-                 patch.object(module, "rest_context", return_value={"status": "unavailable"}), \\
-                 patch.object(module, "recent_results", return_value={"status": "unavailable"}), \\
-                 patch.object(module, "prior_meetings", return_value={"status": "unavailable"}), \\
-                 patch.object(module, "injury_context", return_value=report):
+            with (patch.object(module, "event_for_game", return_value=None),
+                  patch.object(module, "rest_context", return_value={"status": "unavailable"}),
+                  patch.object(module, "recent_results", return_value={"status": "unavailable"}),
+                  patch.object(module, "prior_meetings", return_value={"status": "unavailable"}),
+                  patch.object(module, "injury_context", return_value=report)):
                 module.build(source, output)
             game = json.loads(output.read_text(encoding="utf-8"))["games"]["2026_09_BAL_JAX"]
             self.assertEqual(game["quarterbacks"]["BAL"]["confirmed_out"][0]["player"], "Starting QB")
