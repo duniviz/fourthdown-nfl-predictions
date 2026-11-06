@@ -144,7 +144,12 @@ function paintModalTotals(){
   const stored=(dataset?.projections||[]).find(p=>samePlayer(p.player,x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
   const marketMap={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
   const quote=(dataset?.quotes||[]).find(p=>samePlayer(p.player,x.player)&&p.market===(marketMap[x.market]||x.market));
-  const raw=stored?.dk_line??quote?.line;
+  // The visible pregame card is authoritative for the frozen line displayed
+  // to the user. Do not substitute a refreshed quote in the live grading row.
+  const cards=[...document.querySelectorAll('.fd-merged-player-props .fd-mobile-prop-card[data-fd-player][data-fd-market]')];
+  const matchingCards=cards.filter(c=>samePlayer(c.dataset.fdPlayer,x.player)&&playerKey(c.dataset.fdTeam)===playerKey(x.team)&&c.dataset.fdMarket===x.market);
+  const visibleLine=matchingCards.length===1?matchingCards[0].querySelector('.fd-mobile-prop-numbers>div:nth-child(2) b')?.textContent?.trim():null;
+  const raw=visibleLine&&Number.isFinite(Number(visibleLine))?visibleLine:(stored?.dk_line??quote?.line);
   const line=raw!==null&&raw!==undefined&&raw!==''?Number(raw):NaN;
   const projection=stored?.projection!==null&&stored?.projection!==undefined?Number(stored.projection):NaN;
   return {...x,line:Number.isFinite(line)&&line>0?line:null,projection:Number.isFinite(projection)&&projection>=0?projection:null};
