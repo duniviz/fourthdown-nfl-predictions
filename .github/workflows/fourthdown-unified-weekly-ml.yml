@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -27,6 +27,8 @@ jobs:
           python -m unittest discover -s tests -p 'test_paired_game_grading.py' -v
           python -m unittest discover -s tests -p 'test_count_ml_safety.py' -v
           python -m unittest discover -s tests -p 'test_expanded_game_feature_symmetry.py' -v
+          python -m unittest discover -s tests -p 'test_official_game_lock_ml_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_ml_pipeline_integration.py' -v
       - name: Verify archived pregame and completed-player data are present
         run: |
           python - <<'PY'
@@ -45,6 +47,8 @@ jobs:
               json.loads(path.read_text())
               print("Verified existing frozen archive:",path)
           PY
+      - name: Import verified official T-15 game incumbent locks
+        run: python -m research.import_official_game_locks
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
       - name: Grade frozen count and yardage player challengers
@@ -74,7 +78,7 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/ml-challenger-review.json data/ml-weekly-decisions.json
+          git add -f data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json
           if ! git diff --cached --quiet; then
             git commit -m "Publish weekly ML Lab research summary [skip ci]"
             git pull --rebase origin main
