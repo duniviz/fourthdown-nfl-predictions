@@ -11,7 +11,9 @@ class PregameScheduleTests(unittest.TestCase):
         games=[{"kickoff_utc":kickoff.isoformat()}]*2
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=30)),[kickoff])
         self.assertEqual(due_refresh(games,{kickoff.isoformat()},kickoff-timedelta(minutes=30)),[])
-        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=19)),[])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=19)),[kickoff])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=15)),[kickoff])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=14)),[])
     def test_evening_no_game_central_daylight_and_standard(self):
         for hour in (0,1):
             now=datetime(2026,11,7,hour,tzinfo=timezone.utc) if hour==1 else datetime(2026,7,8,0,tzinfo=timezone.utc)

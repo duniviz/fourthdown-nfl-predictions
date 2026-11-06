@@ -18,10 +18,10 @@ def slates(games):
     return starts
 
 def due_refresh(games, done, now):
-    # Allow the next scheduled run up to 10 minutes late, never refresh after
-    # the T-15 freeze window begins.
+    # Allow delayed scheduled runs through T-15; never refresh after the
+    # official cutoff. This protects against a late GitHub Actions start.
     return [k for k in slates(games)
-            if timedelta(minutes=20) <= k-now <= timedelta(minutes=30)
+            if timedelta(minutes=15) <= k-now <= timedelta(minutes=30)
             and k.isoformat() not in done]
 
 def evening_key(games, done, now):
