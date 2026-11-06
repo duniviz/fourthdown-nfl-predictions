@@ -8,7 +8,7 @@ verified pre-kickoff snapshot or infer absence from postgame box scores.
 import argparse,csv,json
 from collections import Counter,defaultdict
 from pathlib import Path
-YEARS=(2023,2024,2025)
+YEARS=tuple(range(2020,2026))
 GROUPS={"QB":"QB","WR":"WR","RB":"RB","OL":"OL","C":"OL","G":"OL","T":"OL",
         "LT":"OL","RT":"OL","LG":"OL","RG":"OL","OT":"OL","OG":"OL",
         "DE":"Defense","DT":"Defense","DL":"Defense","EDGE":"Defense","LB":"Defense",
@@ -39,7 +39,7 @@ def audit(path):
    all_reports[(year,group)]+=1
    statuses[status or "not designated"]+=1
    if status in ("out","doubtful"):out[(year,group)]+=1
- return {"source":"nflverse weekly injury report CSV","scope":"2023-2025 REG",
+ return {"source":"nflverse weekly injury report CSV","scope":"2020-2025 REG",
          "status":"HISTORICAL_WEEKLY_REPORT_AUDIT_ONLY","verified_pregame_injury_games":0,
          "replacement_starters_verified":0,"production_modified":False,
          "limitations":["Weekly injury report is not a timestamped pre-kickoff snapshot.",
