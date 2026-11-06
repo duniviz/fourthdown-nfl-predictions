@@ -46,7 +46,9 @@ jobs:
               json.loads(path.read_text())
               print("Verified existing frozen archive:",path)
           PY
-      - name: Import verified official T-15 game incumbent locks\n        run: python -m research.import_official_game_locks\n      - name: Retrain and evaluate historical player ML challengers
+      - name: Import verified official T-15 game incumbent locks
+        run: python -m research.import_official_game_locks
+      - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
       - name: Grade frozen count and yardage player challengers
         run: python research/grade_weekly_shadow_models.py
