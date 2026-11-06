@@ -26,7 +26,7 @@ def qb_injury_reports(paths):
    for row in rd:
     try:y=int(row["season"]);w=int(row["week"])
     except (TypeError,ValueError):continue
-    if y not in (2023,2024,2025) or not 1<=w<=18:continue
+    if y not in tuple(range(2020,2026)) or not 1<=w<=18:continue
     if row.get("game_type") and row["game_type"]!="REG":continue
     team=normalized_team(row["team"])
     coverage.add((y,w,team))
