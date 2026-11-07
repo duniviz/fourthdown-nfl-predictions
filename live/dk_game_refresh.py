@@ -134,9 +134,21 @@ def main():
         "markets":"spreads,totals","oddsFormat":"american","dateFormat":"iso"})
     req=urllib.request.Request(BASE+"?"+params,headers={"X-API-Key":key,"Accept":"application/json"})
     with urllib.request.urlopen(req,timeout=35) as response:
+        # These headers are included in the existing paid response; no extra request.
+        headers=response.headers
+        diagnostic_headers=("x-markets-served","x-markets-unservable",
+                            "x-markets-served-elsewhere","x-requests-remaining",
+                            "x-requests-used","x-credits-remaining")
+        for name in diagnostic_headers:
+            value=headers.get(name)
+            if value is not None:
+                print(f"DK provider header {name}: {value}")
         payload=json.load(response)
     now=datetime.now(timezone.utc)
     response_diagnostics(payload,now)
+    if isinstance(payload,list) and not payload:
+        print("::warning::ParlayAPI returned HTTP 200 with zero NFL events for the DraftKings spreads/totals request; no local game matching was attempted.")
+        print("DK diagnostic: check provider DraftKings NFL game-line coverage and x-markets-served response header; do not substitute other books or refresh old timestamps.")
     rows=parse(payload,now)
     if not rows:
         print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
