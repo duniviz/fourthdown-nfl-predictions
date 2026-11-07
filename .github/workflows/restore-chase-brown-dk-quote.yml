@@ -1,0 +1,58 @@
+name: Restore verified historical Chase Brown DK quote
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: draftkings-odds-refresh
+  cancel-in-progress: false
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore quote only if newer matching quote is absent
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          from pathlib import Path
+          path = Path("data/dk-odds.json")
+          data = json.loads(path.read_text())
+          rows = data["rows"]
+          original = {
+              "player": "Chase Brown", "market_key": "player_rushing_yards",
+              "line": 49.5, "over_price": -110, "under_price": -114,
+              "yes_price": None, "no_price": None,
+              "home_team": "Atlanta Falcons", "away_team": "Cincinnati Bengals",
+              "commence_time": "2026-11-08T14:30:00.0000000Z",
+              "last_update": "2026-11-07T16:22:54Z", "age_seconds": 2863.6
+          }
+          def parse(value):
+              return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+          now = dt.datetime.now(dt.timezone.utc)
+          if now >= parse(original["commence_time"]):
+              print("Game has started; no historical pregame quote added.")
+          else:
+              matches = [r for r in rows if all(r.get(k) == original[k] for k in (
+                  "player", "market_key", "home_team", "away_team", "commence_time"))]
+              if matches:
+                  print("Existing quote present; no changes made.")
+              else:
+                  rows.append(original)
+                  path.write_text(json.dumps(data, indent=2) + "\n")
+                  print("Restored Chase Brown historical 49.5 rushing yards, original timestamp preserved.")
+          PY
+      - name: Commit restored quote without overwriting refreshed data
+        run: |
+          if ! git diff --quiet -- data/dk-odds.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/dk-odds.json
+            git commit -m "data: restore historical Chase Brown rushing quote"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
