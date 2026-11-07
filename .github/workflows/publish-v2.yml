@@ -161,8 +161,12 @@ jobs:
               stamp=datetime.fromisoformat(data[key].replace('Z','+00:00'))
               age=now-stamp
               print(f'{label}: {stamp.isoformat()} UTC, age {age}')
-              if age<timedelta(0) or age>limit:
-                  raise SystemExit(f'REFRESH_FAILED: {label} timestamp is stale or invalid; refusing to publish')
+              if age<timedelta(0):
+                  raise SystemExit(f'REFRESH_FAILED: {label} timestamp is in the future')
+              if age>limit:
+                  if label == 'forecast':
+                      raise SystemExit(f'REFRESH_FAILED: {label} timestamp is stale; refusing to publish')
+                  print(f'::warning::DraftKings game odds were not refreshed; preserving previous verified quote timestamp ({age} old). Publishing new forecast separately.')
           PY
       - name: Publish forecast and player research JSON
         if: steps.schedule_guard.outputs.run == 'true'

@@ -14,6 +14,8 @@ class RefreshReliabilityTests(unittest.TestCase):
         self.assertNotIn('  schedule:',odds)
         self.assertIn('Verify refreshed production timestamps before publishing',publish)
         self.assertIn('REFRESH_FAILED',publish)
+        self.assertIn('Publishing new forecast separately',publish)
+        self.assertIn('if label == \'forecast\':',publish)
 
     def test_pregame_locks_are_not_queued_behind_forecasts(self):
         capture=(ROOT/'.github/workflows/capture-game-pregame.yml').read_text()
