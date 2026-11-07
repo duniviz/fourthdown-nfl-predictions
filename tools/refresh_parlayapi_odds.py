@@ -49,25 +49,50 @@ def opening_key(row, fields):
     return "|".join(str(row.get(field) or "") for field in fields)
 
 def merge_player_quotes(previous, incoming, now):
-    """Retain missing upcoming-market quotes without pretending they were refreshed."""
+    """Keep distinct upcoming DK markets and preserve the newest observed quote.
+
+    Milestone/threshold markets offer several lines per player; ordinary full-game
+    O/U markets offer one line that can move. Never treat these as equivalent.
+    """
     def identity(row):
-        return tuple(str(row.get(field) or "") for field in
-                     ("player", "market_key", "home_team", "away_team", "commence_time"))
+        fields = ("player", "market_key", "home_team", "away_team", "commence_time")
+        key = tuple(str(row.get(field) or "").strip().lower() for field in fields)
+        market = key[1]
+        if "milestone" in market or "to_record_x+" in market:
+            key += (str(row.get("line")),)
+        return key
+
+    def parsed_time(value):
+        try:
+            result = dt.datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            return result if result.tzinfo else None
+        except (TypeError, ValueError):
+            return None
+
     def usable(row):
         if not isinstance(row, dict):
             return False
         if str(row.get("market_key", "")).lower().endswith("_spread"):
             return False
         try:
-            float(row["line"])
-            kickoff = dt.datetime.fromisoformat(str(row["commence_time"]).replace("Z", "+00:00"))
-            return kickoff > now and all(identity(row))
-        except (KeyError, ValueError, TypeError):
+            line = float(row["line"])
+        except (KeyError, TypeError, ValueError):
             return False
-    merged = {identity(row): row for row in previous if usable(row)}
-    for row in incoming:
-        if usable(row):
-            merged[identity(row)] = row
+        if not (-float("inf") < line < float("inf")):
+            return False
+        kickoff = parsed_time(row.get("commence_time"))
+        updated = parsed_time(row.get("last_update"))
+        return bool(kickoff and updated and now < kickoff and updated <= now
+                    and updated < kickoff and all(identity(row)[:5]))
+
+    merged = {}
+    for row in list(previous) + list(incoming):
+        if not usable(row):
+            continue
+        key = identity(row)
+        old = merged.get(key)
+        if old is None or parsed_time(row["last_update"]) > parsed_time(old["last_update"]):
+            merged[key] = row
     return list(merged.values())
 
 def capture_openings(game_rows, prop_rows, now):
@@ -160,7 +185,8 @@ def main():
         previous = load("dk-odds.json", {}).get("rows", [])
         retained = merge_player_quotes(previous, prop_rows, dt.datetime.now(dt.timezone.utc))
         save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":retained})
-        print(f"Retained {len(retained) - len(prop_rows)} older upcoming-market quotes (original timestamps preserved)")
+        print(f"Published {len(retained)} distinct upcoming-market quotes from {len(prop_rows)} provider rows; "
+              f"retained {sum(1 for row in retained if row not in prop_rows)} previously saved quotes")
     else:
         print("WARNING: No DraftKings player quotes from provider; retaining last verified prop snapshot")
     if game_rows or prop_rows:
