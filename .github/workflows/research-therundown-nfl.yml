@@ -1,0 +1,62 @@
+name: Research TheRundown NFL game lines (read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect NFL DraftKings coverage without publishing odds
+        env:
+          THERUNDOWN_API_KEY: ${{ secrets.THERUNDOWN_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request
+          from datetime import datetime, timezone, timedelta
+          key=os.getenv("THERUNDOWN_API_KEY","").strip()
+          if not key:
+              raise SystemExit("THERUNDOWN_API_KEY secret missing")
+          root="https://therundown.io"
+          def fetch(path, authenticated=False):
+              headers={"Accept":"application/json"}
+              if authenticated: headers["X-TheRundown-Key"]=key
+              req=urllib.request.Request(root+path,headers=headers)
+              with urllib.request.urlopen(req,timeout=25) as response:
+                  return json.load(response),dict(response.headers)
+          def rows(payload):
+              if isinstance(payload,list): return payload
+              if isinstance(payload,dict):
+                  for k in ("sports","affiliates","data","results","events"):
+                      if isinstance(payload.get(k),list): return payload[k]
+              return []
+          sports,_=fetch("/api/v2/sports")
+          affiliates,_=fetch("/api/v2/affiliates")
+          nfl=[x for x in rows(sports) if isinstance(x,dict) and
+               (str(x.get("name","")).strip().lower()=="nfl" or
+                str(x.get("name","")).strip().lower()=="national football league")]
+          dk=[x for x in rows(affiliates) if isinstance(x,dict) and
+              "draftkings" in str(x.get("name","")).lower().replace(" ","")]
+          print("Reference catalog: NFL matches=",len(nfl),"DraftKings affiliate matches=",len(dk))
+          if len(nfl)!=1 or len(dk)!=1:
+              print("NFL reference sample=",json.dumps(rows(sports)[:2])[:1100])
+              print("Affiliate reference sample=",json.dumps(rows(affiliates)[:2])[:1100])
+              raise SystemExit("Could not unambiguously identify NFL sport and DraftKings affiliate; no metered odds request made")
+          sport=nfl[0].get("id",nfl[0].get("sport_id"))
+          affiliate=dk[0].get("id",dk[0].get("affiliate_id"))
+          if not isinstance(sport,int) or not isinstance(affiliate,int):
+              raise SystemExit("Reference identifiers missing; no metered odds request made")
+          day=(datetime.now(timezone.utc)+timedelta(days=1)).date().isoformat()
+          params=urllib.parse.urlencode({"market_ids":"2,3","affiliate_ids":str(affiliate),"main_line":"true","hide_closed":"true"})
+          path=f"/api/v2/sports/{sport}/events/{day}?{params}"
+          data,headers=fetch(path,True)
+          events=rows(data)
+          print("Research-only NFL snapshot date UTC=",day,"event count=",len(events))
+          print("Response top-level keys=",sorted(data.keys()) if isinstance(data,dict) else "list")
+          if events and isinstance(events[0],dict):
+              print("First event field names=",sorted(events[0].keys()))
+          for k in ("X-Datapoints","X-Datapoints-Used","X-Datapoints-Remaining","X-Data-Delay-Seconds"):
+              print(k+"=",next((v for h,v in headers.items() if h.lower()==k.lower()),"not provided"))
+          print("No odds values, secrets, production files, snapshots, or pregame locks were written.")
+          PY
