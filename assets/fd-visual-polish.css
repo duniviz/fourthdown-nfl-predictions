@@ -1,0 +1,26 @@
+/* FOURTHDOWN visual polish — shared, presentation-only enhancements. */
+:root{--fd-polish-focus:#baff25;--fd-polish-border:#34454c;--fd-polish-muted:#b9c9d2}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-variant-numeric:tabular-nums}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:3px solid var(--fd-polish-focus)!important;outline-offset:3px}
+:where(button,a,summary){-webkit-tap-highlight-color:transparent}
+:where(.card,.fd-mobile-prop-card,.fd-history-teaser,.fd-experience){transition:border-color .18s ease,box-shadow .18s ease}
+@media(hover:hover) and (pointer:fine){
+ :where(.card,.fd-mobile-prop-card,.fd-history-teaser,.fd-experience):hover{border-color:#617c81}
+}
+:where(.card,.fd-mobile-prop-card,.fd-history-teaser,.fd-experience) :where(h2,h3){text-wrap:balance}
+:where(.fd-modal,.fd-mobile-prop-card,.card) :where(small,.muted){line-height:1.4}
+:where(.fd-modal,.fd-mobile-prop-card,.card) :where(strong,b){font-variant-numeric:tabular-nums}
+@media(max-width:600px){
+ :where(.fd-modal-inner,.wrap){overflow-wrap:break-word}
+ .fd-merged-player-props .fd-mobile-prop-card{padding:12px!important;margin-bottom:10px!important;border-radius:16px!important}
+ .fd-merged-player-props .fd-mobile-prop-numbers{gap:5px!important;margin-top:10px!important}
+ .fd-merged-player-props .fd-mobile-prop-numbers>div{padding:9px 4px!important;border-radius:9px!important}
+ .fd-merged-player-props .fd-mobile-prop-numbers small{font-size:11px!important;letter-spacing:.015em}
+ .fd-merged-player-props .fd-mobile-prop-numbers b{font-size:clamp(19px,5.3vw,25px)!important}
+ .fd-merged-player-props .fd-prop-pick{margin:10px 0 2px!important}
+ .fd-merged-player-props .fd-prop-analysis{margin-top:8px!important;padding-top:5px!important}
+ .fd-merged-player-props .fd-prop-analysis>summary{padding:10px 0!important;min-height:42px}
+ :where(.fd-modal-close,.back){min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}:where(.card,.fd-mobile-prop-card,.fd-history-teaser,.fd-experience){transition:none}}
