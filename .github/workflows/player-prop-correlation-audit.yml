@@ -1,0 +1,26 @@
+name: Player projection correlation audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/audit_player_prop_correlations.py'
+      - '.github/workflows/player-prop-correlation-audit.yml'
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Evaluate historical correlated player errors
+        run: python -m tools.audit_player_prop_correlations --start 2016 --end 2026 --output research/player-prop-correlations.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: player-prop-correlations
+          path: research/player-prop-correlations.json
