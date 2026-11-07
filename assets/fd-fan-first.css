@@ -1,0 +1,13 @@
+/* Fan-first presentation: elevate game-day scoreboard, reduce duplication, retain research. */
+.fd-fan-nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px}
+.fd-fan-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #496a53;border-radius:11px;background:#17251e;color:#eaf5e7;text-decoration:none;font-weight:800;font-size:13px}
+.fd-fan-nav a:first-child{background:#baff25;border-color:#baff25;color:#10190c}
+.fd-fan-note{border-left:3px solid #baff25;padding:9px 13px;background:#17251e;border-radius:7px;font-size:12px;color:#c9dfcd;margin:10px 0 18px}
+#scoreboard{scroll-margin-top:15px}
+#scoreboard .fd-filters{display:flex;flex-wrap:wrap;gap:8px}
+#scoreboard .fd-filter{min-height:43px}
+#fd-accuracy-dashboard + #summary{display:none!important}
+.fd-fan-lab-guide{padding:12px 15px;border-radius:12px;border:1px solid #41664a;background:#16251d;margin:15px 0;color:#d5e6d4;font-size:13px}
+.fd-fan-lab-guide strong{color:#baff25}
+.fd-fan-prop-help{border:1px solid #47634a;border-radius:12px;padding:12px;background:#18251e;color:#d5e5d4;font-size:12px;margin:12px 0}
+@media(max-width:640px){.fd-fan-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.fd-fan-nav a{justify-content:center;text-align:center;padding:9px 6px;font-size:12px}.fd-command-side{display:none!important}#scoreboard{margin-top:12px}}
