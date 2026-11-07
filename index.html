@@ -835,7 +835,7 @@ function fdOpenMatchup(g){
  const relevantIds=new Set();
  for(const market of Object.keys(relevantThresholds)){
    for(const team of [away,home]){
-     const eligible=allPropEntries.filter(x=>x.stat_key===market&&canon(x.team)===team&&!unavailablePlayer(x)&&Number.isFinite(Number(x.projection))&&Number(x.projection)>=relevantThresholds[market]&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
+     const eligible=allPropEntries.filter(x=>x.stat_key===market&&canon(x.team)===team&&!unavailablePlayer(x)&&Number.isFinite(Number(x.projection))&&Number(x.projection)>=relevantThresholds[market]);
      // A promoted starter with a verified line and meaningful workload can qualify,
      // even if limited recent history makes a recent average misleading.
      eligible.sort((a,b)=>Number(b.projection)-Number(a.projection));
