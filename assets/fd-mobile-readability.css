@@ -118,3 +118,22 @@
  .fd-merged-player-props .fd-prop-analysis>summary{padding:9px 0!important}
  .bet-card .bet-metrics{gap:5px}
 }
+
+/* Visual pass 5: consistent accuracy and model lab scorecards. */
+#fd-accuracy-dashboard,#fd-lab-scoreboard{border-color:#506c52;border-radius:18px}
+.fd-accuracy-head,.fd-lab-board-title{padding-bottom:10px;border-bottom:1px solid #ffffff16}
+.fd-accuracy-eyebrow,.fd-lab-board-kicker{text-transform:uppercase;letter-spacing:.12em}
+.fd-accuracy-tile>small:first-child,.fd-lab-board-metrics small{line-height:1.3}
+.fd-accuracy-tile strong{letter-spacing:-.04em}
+.fd-accuracy-track{height:7px}
+.fd-lab-board-card-head strong{line-height:1.25}
+.fd-lab-board-foot{border-top:1px solid #ffffff17;padding-top:9px}
+.fd-accuracy-disclaimer{max-width:75ch}
+@media(max-width:700px){
+ #fd-accuracy-dashboard,#fd-lab-scoreboard{padding:12px!important}
+ .fd-accuracy-grid,.fd-lab-board-grid{gap:8px!important}
+ .fd-accuracy-tile strong{font-size:clamp(21px,6vw,29px)}
+ .fd-accuracy-tile p{margin:6px 0 2px}
+ .fd-lab-board-card-head{margin-bottom:9px}
+ .fd-lab-board-foot{margin-top:9px}
+}
