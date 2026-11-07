@@ -25,3 +25,48 @@
 }
 @media(max-width:360px){:where(.fd-accuracy-grid){grid-template-columns:minmax(0,1fr)!important}}
 @media(prefers-reduced-motion:reduce){:where(.fd-mobile-prop-card,.fd-lab-board-card,.fd-accuracy-tile,.bet-card){transition:none!important}}
+
+/* Card makeover v2: clearer hierarchy, tighter vertical rhythm, shared premium surfaces. */
+:where(#scoreboard-cards>.scorecard,.fd-mobile-prop-card,.bet-card,.fd-lab-board-card,.fd-accuracy-tile){
+ position:relative;
+ background-image:linear-gradient(155deg,#1c2d29 0%,#111b1d 66%,#10171b 100%)!important;
+ border:1px solid #405a4c!important;
+ border-radius:16px!important;
+ box-shadow:inset 0 1px 0 #ffffff10,0 8px 24px #0004!important;
+}
+:where(#scoreboard-cards>.scorecard,.fd-mobile-prop-card,.bet-card,.fd-lab-board-card,.fd-accuracy-tile)::before{
+ content:"";position:absolute;top:0;left:16px;right:16px;height:2px;
+ background:linear-gradient(90deg,transparent,#baff25 35%,#74d7b4 65%,transparent);
+ opacity:.7;pointer-events:none;
+}
+:where(#scoreboard-cards .score-head,.fd-lab-board-card-head,.bet-head){gap:9px}
+:where(#scoreboard-cards .score-head,.fd-lab-board-card-head){border-bottom:1px solid #ffffff16;padding-bottom:9px}
+:where(#scoreboard-cards .score-footer,.fd-lab-board-foot){border-top:1px solid #ffffff12;padding-top:9px}
+:where(#scoreboard-cards .scorecard,.fd-mobile-prop-card,.bet-card) :where(h3,h4){line-height:1.2;letter-spacing:-.015em}
+:where(.fd-mobile-prop-card,.bet-card,.fd-lab-board-card) :where(p,small){line-height:1.4}
+:where(.fd-merged-player-props .fd-mobile-prop-numbers>div,.fd-lab-board-metrics>div,.bet-metrics>div){
+ background:#0c1718!important;border:1px solid #32483e;border-radius:10px;min-width:0
+}
+:where(.fd-merged-player-props .fd-mobile-prop-numbers small,.fd-lab-board-metrics small){color:#c7d9cd!important}
+:where(.fd-merged-player-props .fd-mobile-prop-numbers b,.fd-lab-board-metrics strong){font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+:where(#scoreboard-cards .fd-modal-open,.bet-btn){border-radius:11px;font-weight:850}
+:where(#fd-modal .fd-detail-hero,#fd-modal .fd-modal-section,#fd-accuracy-dashboard,#fd-lab-scoreboard){
+ box-shadow:inset 0 1px 0 #ffffff0c,0 10px 26px #0004
+}
+@media(max-width:700px){
+ #scoreboard-cards{gap:10px!important}
+ #scoreboard-cards>.scorecard{padding:12px!important}
+ #scoreboard-cards .projection-panel{padding:10px!important}
+ #scoreboard-cards .fd-market-picks>div{padding:8px!important;min-height:44px}
+ :where(.fd-mobile-prop-card,.bet-card){padding:12px!important}
+ :where(.fd-lab-board-card,.fd-accuracy-tile){padding:11px!important}
+ :where(.fd-merged-player-props .fd-mobile-prop-numbers){gap:5px!important}
+ :where(.fd-merged-player-props .fd-mobile-prop-numbers>div){padding:8px 3px!important}
+ :where(.fd-lab-board-metrics){gap:5px}
+ :where(.fd-lab-board-metrics>div){padding:8px 5px}
+ #fd-accuracy-dashboard,#fd-lab-scoreboard{margin-block:13px!important}
+}
+@media(max-width:380px){
+ :where(.fd-merged-player-props .fd-mobile-prop-numbers){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ :where(.fd-merged-player-props .fd-mobile-prop-numbers b){font-size:18px!important}
+}
