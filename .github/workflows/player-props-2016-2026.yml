@@ -1,0 +1,44 @@
+name: Player props 2016-2026 historical backtest
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/player-props-2016-2026.yml'
+permissions:
+  contents: read
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Run chronological player-prop tests
+        run: python -m tools.backtest_player_props_2016_2026 --start 2016 --end 2026 --output research/player-props-2016-2026.json
+      - name: Summarize MAE
+        run: |
+          python - <<'PY'
+          import json,os
+          d=json.load(open('research/player-props-2016-2026.json'))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('## 2016–2026 player prop research\n\n')
+              f.write('| Yardage market | Samples | Baseline MAE | Challenger MAE |\n|---|---:|---:|---:|\n')
+              for k,v in d['yards_all'].items():
+                  f.write(f"| {k} | {v['samples']} | {v['baseline_mae']} | {v['candidate_mae']} |\n")
+              f.write('\n| Count prop | Samples | Baseline MAE | Challenger MAE |\n|---|---:|---:|---:|\n')
+              for k,v in d['counts']['markets'].items():
+                  a,b=v['baseline'],v['candidate']
+                  f.write(f"| {k} | {a['samples']} | {a['mae']} | {b['mae']} |\n")
+              f.write('\nHistorical research only; production unchanged.\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: player-props-2016-2026-research
+          path: research/player-props-2016-2026.json
+          if-no-files-found: warn
