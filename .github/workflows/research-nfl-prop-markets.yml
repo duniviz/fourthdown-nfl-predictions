@@ -1,0 +1,42 @@
+name: Research NFL player prop market catalog (zero-credit)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Identify available market definitions without requesting prices
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json,os,urllib.request
+          key=os.environ.get("PARLAY_API_KEY","").strip()
+          if not key: raise SystemExit("PARLAY_API_KEY missing")
+          url="https://parlay-api.com/v1/sports/americanfootball_nfl/props/markets"
+          req=urllib.request.Request(url,headers={"X-API-Key":key,"Accept":"application/json"})
+          with urllib.request.urlopen(req,timeout=25) as r: data=json.load(r)
+          markets=data if isinstance(data,list) else data.get("markets",[])
+          targets={
+            "passing_yards":("passing_yards","pass_yards","player_pass_yds"),
+            "rushing_yards":("rushing_yards","rush_yards","player_rush_yds"),
+            "receiving_yards":("receiving_yards","reception_yards","player_reception_yds"),
+            "receptions":("receptions","player_receptions"),
+            "passing_completions":("passing_completions","pass_completions","completions"),
+            "rushing_attempts":("rushing_attempts","rush_attempts","carries"),
+          }
+          print("Market definitions returned:",len(markets))
+          for label,needles in targets.items():
+              matches=[]
+              for market in markets:
+                  if not isinstance(market,dict): continue
+                  identifier=" ".join(str(market.get(k,"")) for k in ("key","market_key","name","market_name","description","id")).lower()
+                  if any(term in identifier for term in needles):
+                      matches.append({k:market.get(k) for k in ("key","market_key","name","market_name") if k in market})
+              print(label,":",len(matches),"matching definitions",json.dumps(matches[:6],sort_keys=True)[:1200])
+          print("Catalog definitions do not establish current DraftKings price coverage.")
+          print("Zero-credit catalog only; no live odds calls, writes, or pregame lock changes.")
+          PY
