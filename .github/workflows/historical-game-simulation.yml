@@ -1,0 +1,26 @@
+name: Historical correlated game simulation validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/backtest_correlated_game_sim.py'
+      - '.github/workflows/historical-game-simulation.yml'
+permissions:
+  contents: read
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Backtest historical score distributions and win calibration
+        run: python -m tools.backtest_correlated_game_sim --start 2016 --end 2026 --iterations 1000 --output research/historical-game-simulation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-game-simulation
+          path: research/historical-game-simulation.json
