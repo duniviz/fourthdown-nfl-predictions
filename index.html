@@ -614,7 +614,7 @@ renderParlays();
    const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});
    if(r.ok){
     const data=await r.json();
-    const keys={'Passing yards':'player_pass_yds','Rushing yards':'player_rush_yds','Receiving yards':'player_rec_yds'};
+    const keys={'Passing yards':['player_pass_yds','player_passing_yards'],'Rushing yards':['player_rush_yds','player_rushing_yards'],'Receiving yards':['player_rec_yds','player_receiving_yards']};
     const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
     const byKey=new Map();
     const snapshotTime=Date.parse(data.generated_at_utc||'');
@@ -626,7 +626,7 @@ renderParlays();
      byKey.get(key).push(x);
     }
     for(const x of playerResearch){
-     const candidates=byKey.get(norm(x.player)+'|'+keys[x.market])||[];
+     const candidates=(keys[x.market]||[]).flatMap(key=>byKey.get(norm(x.player)+'|'+key)||[]);
      const aliases={'ARI':'Arizona Cardinals','ATL':'Atlanta Falcons','BAL':'Baltimore Ravens','BUF':'Buffalo Bills','CAR':'Carolina Panthers','CHI':'Chicago Bears','CIN':'Cincinnati Bengals','CLE':'Cleveland Browns','DAL':'Dallas Cowboys','DEN':'Denver Broncos','DET':'Detroit Lions','GB':'Green Bay Packers','HOU':'Houston Texans','IND':'Indianapolis Colts','JAX':'Jacksonville Jaguars','JAC':'Jacksonville Jaguars','KC':'Kansas City Chiefs','LV':'Las Vegas Raiders','LAC':'Los Angeles Chargers','LA':'Los Angeles Rams','LAR':'Los Angeles Rams','MIA':'Miami Dolphins','MIN':'Minnesota Vikings','NE':'New England Patriots','NO':'New Orleans Saints','NYG':'New York Giants','NYJ':'New York Jets','PHI':'Philadelphia Eagles','PIT':'Pittsburgh Steelers','SF':'San Francisco 49ers','SEA':'Seattle Seahawks','TB':'Tampa Bay Buccaneers','TEN':'Tennessee Titans','WAS':'Washington Commanders'};
      const team=t=>norm(aliases[String(t||'').toUpperCase()]||t);
      const sameTeam=q=>[q.home_team,q.away_team].some(t=>team(t)===team(x.team));
