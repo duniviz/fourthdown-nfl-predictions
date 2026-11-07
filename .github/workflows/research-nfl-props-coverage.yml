@@ -1,0 +1,61 @@
+name: Research free NFL player-prop coverage (read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check public ESPN and zero-credit ParlayAPI prop coverage
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json,os,urllib.parse,urllib.request
+          from collections import Counter
+          from datetime import datetime,timezone
+          def get(url,key=None):
+              headers={"Accept":"application/json","User-Agent":"FOURTHDOWN research validator"}
+              if key: headers["X-API-Key"]=key
+              with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=20) as r:
+                  return json.load(r)
+          board=get("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard")
+          now=datetime.now(timezone.utc)
+          upcoming=[]
+          for e in board.get("events",[]):
+              try: kick=datetime.fromisoformat(e.get("date","").replace("Z","+00:00"))
+              except ValueError: continue
+              if kick>now and str(e.get("id","")).isdigit(): upcoming.append(e["id"])
+          print("ESPN upcoming NFL events:",len(upcoming))
+          if upcoming:
+              event_id=upcoming[0]
+              for url in (
+                  f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={event_id}",
+                  f"https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/{event_id}/competitions/{event_id}/odds",
+              ):
+                  try:
+                      data=get(url)
+                      print("ESPN endpoint:",url.split("?")[0].split("/")[-1],"top-level fields:",sorted(data.keys()) if isinstance(data,dict) else type(data).__name__)
+                      if isinstance(data,dict):
+                          print("ESPN player-prop top-level fields:",sorted(k for k in data if "prop" in k.lower() or "bet" in k.lower()))
+                  except Exception as ex: print("ESPN endpoint unavailable:",type(ex).__name__)
+          key=os.getenv("PARLAY_API_KEY","").strip()
+          if not key:
+              print("ParlayAPI secret absent; skipping zero-credit coverage discovery.")
+          else:
+              root="https://parlay-api.com/v1/sports/americanfootball_nfl/props"
+              for suffix in ("/markets","/coverage"):
+                  try:
+                      data=get(root+suffix,key)
+                      print("ParlayAPI zero-credit",suffix,"response type:",type(data).__name__)
+                      if isinstance(data,dict):
+                          print("ParlayAPI",suffix,"top-level fields:",sorted(data.keys())[:25])
+                          print("ParlayAPI",suffix,"bookmaker mentions DraftKings:", "draftkings" in json.dumps(data).lower())
+                          print("ParlayAPI",suffix,"requested market mentions:",{k:k in json.dumps(data).lower() for k in ("passing_yards","rushing_yards","receiving_yards","receptions","completions","rush_attempts")})
+                      elif isinstance(data,list):
+                          print("ParlayAPI",suffix,"items:",len(data),"DraftKings mentioned:","draftkings" in json.dumps(data).lower())
+                  except Exception as ex: print("ParlayAPI",suffix,"unavailable:",type(ex).__name__)
+          print("Read-only research: no metered props requests, odds values, files, or pregame locks written.")
+          PY
