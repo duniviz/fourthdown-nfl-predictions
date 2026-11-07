@@ -144,6 +144,26 @@ jobs:
         run: |
           python -m live.free_feature_research
           python tools/v3_score_shadow.py --v2 data/live-v2.json --features data/free-feature-research.json --output data/v3-score-shadow.json --history data/v3-score-shadow-history.json
+      - name: Verify refreshed production timestamps before publishing
+        if: steps.schedule_guard.outputs.run == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone, timedelta
+          from pathlib import Path
+          now=datetime.now(timezone.utc)
+          sources=[
+              ('forecast',Path('data/live-v2.json'),'generated_at_utc',timedelta(minutes=45)),
+              ('DraftKings game odds',Path('data/dk-game-odds.json'),'snapshot_date_utc',timedelta(hours=26)),
+          ]
+          for label,path,key,limit in sources:
+              data=json.loads(path.read_text())
+              stamp=datetime.fromisoformat(data[key].replace('Z','+00:00'))
+              age=now-stamp
+              print(f'{label}: {stamp.isoformat()} UTC, age {age}')
+              if age<timedelta(0) or age>limit:
+                  raise SystemExit(f'REFRESH_FAILED: {label} timestamp is stale or invalid; refusing to publish')
+          PY
       - name: Publish forecast and player research JSON
         if: steps.schedule_guard.outputs.run == 'true'
         run: |
