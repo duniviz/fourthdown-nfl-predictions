@@ -48,6 +48,7 @@ jobs:
             git add data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/simulations.json
             git commit -m "data: refresh DraftKings NFL odds"
             # Stash unrelated workflow outputs before rebasing.
-            git stash push --include-untracked -m "Unpublished workflow outputs"\n            git pull --rebase origin main
+            git stash push --include-untracked -m "Unpublished workflow outputs"
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
