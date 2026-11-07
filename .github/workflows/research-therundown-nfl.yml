@@ -34,10 +34,10 @@ jobs:
           sports,_=fetch("/api/v2/sports")
           affiliates,_=fetch("/api/v2/affiliates")
           nfl=[x for x in rows(sports) if isinstance(x,dict) and
-               (str(x.get("name","")).strip().lower()=="nfl" or
-                str(x.get("name","")).strip().lower()=="national football league")]
+               (str(x.get("sport_name",x.get("name",""))).strip().lower()=="nfl" or
+                str(x.get("sport_name",x.get("name",""))).strip().lower()=="national football league")]
           dk=[x for x in rows(affiliates) if isinstance(x,dict) and
-              "draftkings" in str(x.get("name","")).lower().replace(" ","")]
+              "draftkings" in str(x.get("affiliate_name",x.get("name",""))).lower().replace(" ","")]
           print("Reference catalog: NFL matches=",len(nfl),"DraftKings affiliate matches=",len(dk))
           if len(nfl)!=1 or len(dk)!=1:
               print("NFL reference sample=",json.dumps(rows(sports)[:2])[:1100])
