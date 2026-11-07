@@ -198,7 +198,10 @@ def main():
             names[row["home_team"]]=row["home"]
         if row.get("away_team") and row.get("away"):
             names[row["away_team"]]=row["away"]
-    names.update({"Las Vegas Raiders":"LV","San Francisco 49ers":"SF"})
+    # Use the complete known NFL name map, not only names present in an old
+    # published odds snapshot. A stale/empty DK file must not block recovery.
+    from tools.refresh_parlayapi_odds import ABBR
+    names.update(ABBR)
     for row in rows:
         if row["home_team"] not in names or row["away_team"] not in names:
             continue
