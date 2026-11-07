@@ -42,10 +42,10 @@ function readPlayers(summary,event){
 // Update only the matching player's market in the existing matchup card.
 // No guesswork: player name, team abbreviation and stat market must all agree.
 // ESPN sometimes omits generational suffixes (III, Jr., etc.) from box scores.
-const playerKey=x=>String(x||'').toLowerCase().replace(/\b(?:jr|sr|ii|iii|iv|v)\.?\b/g,'').replace(/[^a-z0-9]/g,'');
+const playerKey=x=>String(x||'').toLowerCase().replace(/\b(?:junior|senior|jr|sr|ii|iii|iv|v)\.?\b/g,'').replace(/[^a-z0-9]/g,'');
 // ESPN may use abbreviated first names in some feeds (e.g. L. Burden).
 // Only accept that fallback when team and market identify exactly one athlete.
-const shortNameKey=x=>{const words=String(x||'').toLowerCase().replace(/\b(?:jr|sr|ii|iii|iv|v)\.?\b/g,'').replace(/[^a-z\s]/g,' ').trim().split(/\s+/).filter(Boolean);return words.length>=2?words[0][0]+words[words.length-1]:'';};
+const shortNameKey=x=>{const words=String(x||'').toLowerCase().replace(/\b(?:junior|senior|jr|sr|ii|iii|iv|v)\.?\b/g,'').replace(/[^a-z\s]/g,' ').trim().split(/\s+/).filter(Boolean);return words.length>=2?words[0][0]+words[words.length-1]:'';};
 const samePlayer=(a,b)=>playerKey(a)===playerKey(b)||(shortNameKey(a)!==''&&shortNameKey(a)===shortNameKey(b));
 // Resolve by ESPN athlete ID when the saved card has one. Otherwise require
 // a unique name match within the same team, market and (when available) game.

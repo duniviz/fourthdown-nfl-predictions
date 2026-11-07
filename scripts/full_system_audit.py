@@ -22,6 +22,7 @@ groups = [
     ("Frozen game locks", ["tests.test_game_official_pregame_locks"]),
     ("Official winner/ATS/total grading", ["tests.test_game_official_results"]),
     ("Player prop archive grading", ["tests.test_pregame_archive_grading"]),
+    ("Player name suffix matching", ["tests.test_player_name_suffixes"]),
     ("Player result grading", ["tests.test_player_result_audit"]),
 ]
 for label, modules in groups:
