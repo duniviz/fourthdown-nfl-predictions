@@ -28,7 +28,7 @@ jobs:
         if: steps.kickoff.outputs.run == 'true'
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
-        run: python tools/refresh_parlayapi_odds.py
+        run: python tools/refresh_parlayapi_odds.py --props-only
       - name: Test archive locking
         if: steps.kickoff.outputs.run == 'true'
         run: python -m unittest discover -s scripts -p "test_archive_pregame_player_lines.py" -v

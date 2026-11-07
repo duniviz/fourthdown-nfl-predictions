@@ -3,6 +3,7 @@
 import datetime as dt
 import json
 import os
+import sys
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -89,7 +90,9 @@ def main():
     if not KEY:
         raise SystemExit("PARLAY_API_KEY GitHub Actions secret required")
     now = dt.datetime.now(dt.timezone.utc).isoformat()
-    events = request("/odds", regions="us", markets="h2h,spreads,totals", bookmakers="draftkings", oddsFormat="american", dateFormat="iso")
+    # The official T-15 game capture owns game odds. Avoid a second paid game request.
+    props_only = "--props-only" in sys.argv
+    events = [] if props_only else request("/odds", regions="us", markets="h2h,spreads,totals", bookmakers="draftkings", oddsFormat="american", dateFormat="iso")
     props = request("/props", bookmakers="draftkings", limit=10000)
     game_rows = []
     for e in events:
@@ -125,7 +128,7 @@ def main():
     if game_rows:
         save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
         save("dk-game-line-history.json", capture_game_history(game_rows, now))
-    else:
+    elif not props_only:
         print("WARNING: No DraftKings spreads/totals from provider; retaining last verified game snapshot")
     if prop_rows:
         save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
