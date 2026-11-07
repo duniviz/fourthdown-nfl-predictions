@@ -137,3 +137,16 @@
  .fd-lab-board-card-head{margin-bottom:9px}
  .fd-lab-board-foot{margin-top:9px}
 }
+
+/* Final mobile source review: avoid clipped data and improve hierarchy. */
+:where(#scoreboard-cards .scorecard,.fd-mobile-prop-card,.bet-card,.fd-lab-board-card,.fd-accuracy-tile){min-width:0}
+:where(#scoreboard-cards .scorecard,.fd-mobile-prop-card,.bet-card) :where(strong,b,small){overflow-wrap:break-word}
+:where(#scoreboard-cards .score-team,.fd-lab-board-card-head,.bet-head){min-width:0}
+:where(.fd-merged-player-props .fd-mobile-prop-numbers,.fd-lab-board-metrics){align-items:stretch}
+:where(#scoreboard-cards .score-state,.fd-accuracy-eyebrow,.fd-lab-board-kicker){line-height:1.25}
+@media(max-width:640px){
+ :where(#scoreboard-cards .scorecard,.fd-mobile-prop-card,.bet-card){max-width:100%}
+ :where(.fd-lab-board-card-head,.bet-head){gap:6px}
+ :where(#scoreboard-cards .score-footer,.fd-lab-board-foot){gap:6px}
+ :where(#fd-modal .fd-detail-primary,#fd-modal .fd-detail-props){min-width:0}
+}
