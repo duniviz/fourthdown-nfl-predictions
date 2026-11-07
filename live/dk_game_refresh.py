@@ -171,6 +171,13 @@ def main():
         print("::warning::ParlayAPI returned HTTP 200 with zero NFL events for the DraftKings spreads/totals request; no local game matching was attempted.")
         print("DK diagnostic: check provider DraftKings NFL game-line coverage and x-markets-served response header; do not substitute other books or refresh old timestamps.")
         diagnose_free_event_catalog(key,now)
+        summary=os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary,"a",encoding="utf-8") as report:
+                report.write("\\n### DraftKings game-odds feed warning\\n"
+                             "- ParlayAPI returned HTTP 200 with zero NFL game events.\\n"
+                             "- Existing game odds were retained; **they are not fresh**.\\n"
+                             "- Review the free event-catalog diagnostic in this job log.\\n")
     rows=parse(payload,now)
     if not rows:
         print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
