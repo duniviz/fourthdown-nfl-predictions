@@ -13,7 +13,12 @@ def read(name,default):
 def time(value):
     try: return dt.datetime.fromisoformat(str(value).replace("Z","+00:00"))
     except (ValueError,TypeError): return None
-def norm(value): return re.sub(r"[^a-z0-9]","",str(value or "").lower())
+def norm(value):
+    """Normalize generational suffixes for name-based quote matching."""
+    tokens = re.findall(r"[a-z0-9]+", str(value or "").casefold())
+    if tokens and tokens[-1] in {"jr", "junior", "sr", "senior", "ii", "iii", "iv", "v"}:
+        tokens.pop()
+    return "".join(tokens)
 NICKNAMES={"cardinals":"ARI","falcons":"ATL","ravens":"BAL","bills":"BUF","panthers":"CAR","bears":"CHI","bengals":"CIN","browns":"CLE","cowboys":"DAL","broncos":"DEN","lions":"DET","packers":"GB","texans":"HOU","colts":"IND","jaguars":"JAX","chiefs":"KC","raiders":"LV","chargers":"LAC","rams":"LA","dolphins":"MIA","vikings":"MIN","patriots":"NE","saints":"NO","giants":"NYG","jets":"NYJ","eagles":"PHI","steelers":"PIT","49ers":"SF","seahawks":"SEA","buccaneers":"TB","titans":"TEN","commanders":"WAS"}
 def team_code(value):
     return NICKNAMES.get(str(value or '').lower().split()[-1], '')
