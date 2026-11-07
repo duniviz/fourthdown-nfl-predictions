@@ -1,0 +1,25 @@
+name: Player yardage variant lab 2016-2026
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/player-yardage-variant-lab.yml'
+permissions:
+  contents: read
+jobs:
+  variants:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Evaluate live core, prior challenger, and parameter variations
+        run: python -m tools.player_yardage_variant_lab --start 2016 --end 2026 --output research/player-yardage-variants.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: player-yardage-variant-lab
+          path: research/player-yardage-variants.json
