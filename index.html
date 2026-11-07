@@ -856,7 +856,7 @@ function fdOpenMatchup(g){
      const unit=countLabels[x.stat_key]?'':' yards';
      const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+unit+' · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+unit+'</div>':'';
      const edge=validProjection&&validLine?projection-line:null;
-     const direction=edge===null?'No verified line':Math.abs(edge)<Math.max(countLabels[x.stat_key]?1.5:10,0.08*line)?'Small difference · no validated edge':edge>0?'Uncalibrated OVER lean':'Uncalibrated UNDER lean';
+     const direction=x.dk_quote_stale&&validLine?'Older DK quote · verify current line':edge===null?'No verified line':Math.abs(edge)<Math.max(countLabels[x.stat_key]?1.5:10,0.08*line)?'Small difference · no validated edge':edge>0?'Uncalibrated OVER lean':'Uncalibrated UNDER lean';
      const workloadType=String(x.opportunity_type||'opportunities').replace(/_/g,' ');
      const expectedWorkload=Number(x.expected_opportunities),recentWorkload=Number(x.last_5_opportunities_avg),roleShare=Number(x.role_share);
      const hasWorkload=Number.isFinite(expectedWorkload),hasRecentWorkload=Number.isFinite(recentWorkload),hasRoleShare=Number.isFinite(roleShare);
