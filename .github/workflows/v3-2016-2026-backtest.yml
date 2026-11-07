@@ -1,0 +1,44 @@
+name: V3 2016-2026 historical paired backtest
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/v3-2016-2026-backtest.yml'
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install historical data requirements
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Replay V2 and V3 on same historical games
+        run: python tools/backtest_v3_score_shadow.py --start-season 2016 --end-season 2026 --output research/v3-2016-2026-results.json
+      - name: Publish comparison summary
+        run: |
+          python - <<'PY'
+          import json,os
+          r=json.load(open('research/v3-2016-2026-results.json'))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('## V2 vs V3: 2016–2026 paired replay\n\n')
+              f.write(f"Eligible games: {r['sample_count']}\n\n")
+              f.write('| Season | Games | V2 margin MAE | V3 margin MAE | V2 total MAE | V3 total MAE |\n|---|---:|---:|---:|---:|---:|\n')
+              for season,d in r['seasons'].items():
+                  n=d['v2_margin']['samples']
+                  f.write(f"| {season} | {n} | {d['v2_margin']['mae']} | {d['v3_margin']['mae']} | {d['v2_total']['mae']} | {d['v3_total']['mae']} |\n")
+              d=r['all_seasons']
+              f.write(f"| **All** | **{r['sample_count']}** | **{d['v2_margin']['mae']}** | **{d['v3_margin']['mae']}** | **{d['v2_total']['mae']}** | **{d['v3_total']['mae']}** |\n")
+              f.write('\nResearch only; no live model changes.\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-2016-2026-paired-backtest
+          path: research/v3-2016-2026-results.json
+          if-no-files-found: warn

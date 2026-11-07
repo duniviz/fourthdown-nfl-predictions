@@ -174,15 +174,23 @@ def main():
     import nflreadpy as nfl
     p=argparse.ArgumentParser()
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--start-season",type=int,default=2016)
+    p.add_argument("--end-season",type=int,default=2026)
     args=p.parse_args()
-    seasons=[2024,2025]
+    if not 2016 <= args.start_season <= args.end_season <= 2026:
+        p.error("Seasons must be within 2016–2026")
+    seasons=list(range(args.start_season,args.end_season+1))
     rows=evaluate(nfl.load_schedules(seasons).to_dicts(),nfl.load_pbp(seasons).to_dicts())
     result={"status":"research_only_historical_replay","models":["FOURTHDOWN v2 replay","FOURTHDOWN pace-only total shadow","FOURTHDOWN pass-EPA total shadow","FOURTHDOWN v3 feature shadow"],
             "results":summarize(rows)}
+    result["seasons"]={str(year):{f"{model}_{market}":metric([r[f"{model}_{market}"]-r[f"actual_{market}"] for r in rows if r["season"]==year]) for market in ("margin","total") for model in ("v2","v3","pace","pass")} for year in seasons}
+    result["all_seasons"]={f"{model}_{market}":metric([r[f"{model}_{market}"]-r[f"actual_{market}"] for r in rows]) for market in ("margin","total") for model in ("v2","v3","pace","pass")}
+    result["sample_count"]=len(rows)
+    result["production_changed"]=False
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+"\n")
-    if not result["results"]["eligible_for_review"]:
-        raise RuntimeError("Fewer than 200 2025 holdout games were available")
+    if not rows:
+        raise RuntimeError("No eligible historical games available")
     print(json.dumps(result,indent=2))
 
 if __name__=="__main__":
