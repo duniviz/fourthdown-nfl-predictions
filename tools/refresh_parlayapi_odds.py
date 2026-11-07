@@ -112,7 +112,11 @@ def main():
     for p in props:
         if p.get("bookmaker") != "draftkings" or not p.get("player") or not p.get("market_key"):
             continue
-        # Player spread/handicap markets are not standard over/under totals.\n        # In particular, negative spread values must not appear as yardage lines.\n        if str(p.get("market_key", "")).lower().endswith("_spread"):\n            continue\n        line = p.get("line")
+        # Player spread/handicap markets are not standard over/under totals.
+        # In particular, negative spread values must not appear as yardage lines.
+        if str(p.get("market_key", "")).lower().endswith("_spread"):
+            continue
+        line = p.get("line")
         if line is None:
             continue
         try:
