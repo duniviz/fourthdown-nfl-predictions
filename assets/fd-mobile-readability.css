@@ -150,3 +150,16 @@
  :where(#scoreboard-cards .score-footer,.fd-lab-board-foot){gap:6px}
  :where(#fd-modal .fd-detail-primary,#fd-modal .fd-detail-props){min-width:0}
 }
+
+/* Reduce repeated decorative framing without removing useful content. */
+:where(.fd-merged-player-props .fd-live-inline,.fd-accuracy-secondary,.fd-lab-board-note){margin-block:4px}
+:where(.fd-merged-player-props .fd-prop-analysis,.fd-lab-board-foot){box-shadow:none!important}
+:where(.fd-merged-player-props .fd-prop-analysis>summary,#fd-modal .fd-detail-more>summary){list-style-position:inside}
+:where(.fd-merged-player-props .fd-prop-analysis[open],#fd-modal .fd-detail-more[open]){border-color:#55784b}
+:where(.fd-merged-player-props .fd-prop-analysis>summary,#fd-modal .fd-detail-more>summary):hover{color:#d9ffb1}
+:where(.fd-fan-note,.fd-fan-prop-help,.fd-fan-lab-guide){line-height:1.45}
+@media(max-width:700px){
+ :where(.fd-fan-note,.fd-fan-prop-help,.fd-fan-lab-guide){padding:9px 11px;margin-block:8px}
+ :where(.fd-merged-player-props .fd-live-inline,.fd-accuracy-secondary){font-size:11px}
+ :where(#fd-modal .fd-detail-more){margin-block:8px}
+}
