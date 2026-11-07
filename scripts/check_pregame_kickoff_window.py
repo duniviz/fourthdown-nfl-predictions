@@ -78,7 +78,7 @@ for game in games:
         kickoffs.append((game.get("commence_time"), game.get("away"), game.get("home"), "dk"))
 for game in live_games:
     if isinstance(game, dict):
-        kickoffs.append((game.get("kickoff_utc"), game.get("away_team"), game.get("home_team"), "schedule"))
+        kickoffs.append((game.get("kickoff_utc"), game.get("away"), game.get("home"), "schedule"))
 for kickoff_value, away, home, source in kickoffs:
     try:
         kickoff = dt.datetime.fromisoformat(str(kickoff_value).replace("Z", "+00:00"))
