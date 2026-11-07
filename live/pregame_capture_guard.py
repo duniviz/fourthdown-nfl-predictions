@@ -41,13 +41,14 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--mode",choices=("refresh","lock"),default="refresh")
     parser.add_argument("--mark",action="store_true")
+    parser.add_argument("--slate-only",action="store_true",help="Skip non-game evening refresh; main forecast owns nightly updates")
     args=parser.parse_args()
     games=json.loads(GAMES.read_text()).get("games",[]) if GAMES.exists() else []
     data=json.loads(MARKER.read_text()) if MARKER.exists() else {"schema_version":1,"slates":[]}
     done=set(data.get("slates",[]))
     now=datetime.now(timezone.utc)
     pending=due_refresh(games,done,now)
-    evening=evening_key(games,done,now)
+    evening=None if args.slate_only else evening_key(games,done,now)
     if args.mark:
         if not pending and not evening:
             raise SystemExit("No due refresh to mark")

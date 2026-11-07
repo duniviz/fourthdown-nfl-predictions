@@ -7,7 +7,7 @@ name: Capture official pregame DraftKings game lines
 permissions:
   contents: write
 concurrency:
-  group: publish-v2
+  group: official-pregame-capture
   cancel-in-progress: false
 jobs:
   capture:
@@ -24,7 +24,7 @@ jobs:
         id: guard
         shell: bash
         run: |
-          if python -m live.pregame_capture_guard --mode refresh; then
+          if python -m live.pregame_capture_guard --mode refresh --slate-only; then
             echo "refresh=true" >> "$GITHUB_OUTPUT"
           else
             echo "refresh=false" >> "$GITHUB_OUTPUT"
@@ -39,7 +39,7 @@ jobs:
         run: python -m live.game_pregame_observations
       - name: Mark refreshed slate
         if: steps.guard.outputs.refresh == 'true'
-        run: python -m live.pregame_capture_guard --mark
+        run: python -m live.pregame_capture_guard --mark --slate-only
       - name: Check T-15 lock window
         id: lock_guard
         shell: bash

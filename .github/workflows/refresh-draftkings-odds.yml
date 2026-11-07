@@ -1,10 +1,6 @@
 name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
-  schedule:
-    # 7 PM Chicago: 00:00 UTC in CDT, 01:00 UTC in CST.
-    # The Python guard checks America/Chicago and skips the other run.
-    - cron: '0 0,1 * * *'
 permissions:
   contents: write
 concurrency:
