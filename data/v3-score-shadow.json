@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-06T00:08:05.892018+00:00",
+  "generated_at_utc": "2026-11-07T16:57:35.204887+00:00",
   "season": 2026,
   "week": 9,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_09_JAX_BAL",
-      "season": 2026,
-      "week": 9,
-      "kickoff_utc": "2026-11-06T01:15:00+00:00",
-      "home": "BAL",
-      "away": "JAX",
-      "projected_home_score": 17.5,
-      "projected_away_score": 25.5,
-      "projected_margin_home": -7.94,
-      "projected_total": 43.04,
-      "predicted_winner": "JAX",
-      "v2_reference": {
-        "projected_margin_home": -7.57,
-        "projected_total": 43.42
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.381,
-        "margin_from_success_and_pass_proxy": -0.37,
-        "home_features": {
-          "plays_per_game": 60.2,
-          "success_rate": 0.405,
-          "neutral_pass_proxy": 0.565
-        },
-        "away_features": {
-          "plays_per_game": 60.0,
-          "success_rate": 0.46,
-          "neutral_pass_proxy": 0.53
-        }
-      }
-    },
     {
       "game_id": "2026_09_CIN_ATL",
       "season": 2026,
