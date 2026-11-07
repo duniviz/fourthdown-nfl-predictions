@@ -173,6 +173,16 @@ def main():
         row = {k:p.get(k) for k in ("player","market_key","line","over_price","under_price","yes_price","no_price","home_team","away_team","commence_time","age_seconds")}
         row["last_update"] = timestamp(p.get("last_update"))
         prop_rows.append(row)
+    # Diagnose missing player quotes from this already-paid provider response.
+    # No additional API calls, no made-up lines, and no player-specific overrides.
+    from collections import Counter
+    passing = [row for row in prop_rows if "passing_yards" in str(row.get("market_key", "")).lower()]
+    print(f"DK coverage: {len(passing)} passing-yards quote rows, {len(set(str(r.get('player','')).casefold() for r in passing))} unique players")
+    for expected in ("Michael Penix", "Joe Burrow"):
+        matched = [r for r in prop_rows if expected.casefold() in str(r.get("player", "")).casefold()]
+        print(f"DK coverage {expected}: {len(matched)} provider quote(s); market keys: {dict(Counter(str(r.get('market_key')) for r in matched))}")
+    # If a player is absent here, the quote was not in the returned DK provider payload.
+    # If present but absent on the site, inspect downstream identity/market matching.
     # Never overwrite valid published snapshots with an empty or partial provider response.
     # Publish each market family independently. A missing game market must not
     # prevent valid player quotes from updating (or vice versa).
