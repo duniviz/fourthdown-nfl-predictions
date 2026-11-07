@@ -1,0 +1,29 @@
+/* Final visual consistency pass: mobile navigation, prop filters and tables. */
+:root{--fd-v3-accent:#baff25;--fd-v3-border:#3b5149}
+body{font-variant-numeric:tabular-nums}
+:where(a,button,input,select,summary):focus-visible{outline:3px solid var(--fd-v3-accent)!important;outline-offset:3px}
+:where(.top,.nav){scroll-margin-top:20px}
+:where(.nav,.links){row-gap:8px}
+:where(.nav a,.links a){min-height:40px;display:inline-flex;align-items:center}
+:where(.card,.fd-lab-section){overflow-wrap:anywhere}
+:where(.tablewrap,.table-wrap){scrollbar-color:#688467 #15211d;overscroll-behavior-x:contain}
+:where(.tablewrap,.table-wrap) table{font-variant-numeric:tabular-nums}
+:where(.tablewrap,.table-wrap) thead{background:#1a2925}
+:where(.tablewrap,.table-wrap) th{color:#d0e2d2;font-weight:850}
+:where(.tablewrap,.table-wrap) tr:hover td{background:#1c302a40}
+:where(.fd-history-details,.fd-research-details){border:1px solid var(--fd-v3-border);border-radius:14px;margin:16px 0;overflow:hidden}
+:where(.fd-history-details,.fd-research-details)>summary{cursor:pointer;padding:15px;min-height:50px;color:#dcf6d5;font-weight:850;background:#17251f}
+:where(.fd-history-details,.fd-research-details)[open]>summary{border-bottom:1px solid var(--fd-v3-border)}
+#bet-player-search,#fd-extra-search{min-height:44px}
+#bet-visible-count,#fd-extra-count{font-variant-numeric:tabular-nums}
+@media(max-width:640px){
+ :where(.nav,.links){gap:8px!important}
+ :where(.nav a:not(.brand),.links a){font-size:12px;padding:7px 9px;border-radius:9px;background:#19241e;border:1px solid #3c5043;min-height:42px}
+ :where(.nav a.active,.links a.active){color:#baff25!important;border-color:#789c4a;background:#23301d}
+ :where(.wrap){padding-left:12px!important;padding-right:12px!important}
+ :where(.card,.fd-lab-section){border-radius:13px}
+ :where(.row){flex-wrap:wrap}
+ :where(.tablewrap,.table-wrap){margin-left:-4px;margin-right:-4px}
+ :where(.fd-history-details,.fd-research-details)>summary{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
