@@ -67,14 +67,26 @@ try:
     games = json.loads(pathlib.Path("data/dk-game-odds.json").read_text()).get("games", [])
 except (OSError, ValueError):
     games = []
+# Keep the T-30 snapshot window independent of DraftKings availability.
+try:
+    live_games = json.loads(pathlib.Path("data/live-v2.json").read_text()).get("games", [])
+except (OSError, ValueError, TypeError, AttributeError):
+    live_games = []
+kickoffs = []
 for game in games:
+    if isinstance(game, dict):
+        kickoffs.append((game.get("commence_time"), game.get("away"), game.get("home"), "dk"))
+for game in live_games:
+    if isinstance(game, dict):
+        kickoffs.append((game.get("kickoff_utc"), game.get("away_team"), game.get("home_team"), "schedule"))
+for kickoff_value, away, home, source in kickoffs:
     try:
-        kickoff = dt.datetime.fromisoformat(str(game["commence_time"]).replace("Z", "+00:00"))
+        kickoff = dt.datetime.fromisoformat(str(kickoff_value).replace("Z", "+00:00"))
         remaining = (kickoff - now).total_seconds() / 60
     except (ValueError, TypeError, KeyError):
         continue
     if 25 <= remaining <= 35:
-        print("PREGAME_WINDOW", game.get("away"), game.get("home"), round(remaining, 1))
+        print("PREGAME_WINDOW", away, home, round(remaining, 1), "source", source)
         sys.exit(0)
 print("No pregame snapshot window")
 sys.exit(1)
