@@ -1,0 +1,27 @@
+/* FOURTHDOWN mobile readability pass. Presentation only; no prediction or odds logic. */
+:root{--fd-readable-muted:#c0d1cb;--fd-readable-stroke:#496253}
+:where(.fd-mobile-prop-card,.fd-lab-board-card,.fd-accuracy-tile,.bet-card,#fd-modal .fd-modal-section){min-width:0;overflow-wrap:break-word}
+:where(.fd-mobile-prop-card,.fd-lab-board-card,.fd-accuracy-tile,.bet-card){box-shadow:0 6px 22px #0003}
+:where(.fd-mobile-prop-card,.fd-lab-board-card,.fd-accuracy-tile,.bet-card):focus-within{border-color:#baff25}
+:where(.fd-lab-board-note,.fd-lab-board-empty,.fd-accuracy-disclaimer,.fd-fan-note,.bet-note){color:var(--fd-readable-muted);line-height:1.55}
+:where(.fd-lab-board-metrics,.fd-accuracy-grid,.bet-metrics){font-variant-numeric:tabular-nums}
+:where(.fd-lab-board-metrics strong,.fd-accuracy-tile strong,.bet-metrics strong){overflow-wrap:anywhere}
+:where(.fd-detail-primary,.fd-lab-board-grid,.fd-accuracy-grid,.bet-grid)>*{min-width:0}
+:where(.fd-modal,.fd-modal-section,.fd-merged-player-props){scroll-margin-top:70px}
+:where(.tablewrap,.table-wrap){max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+:where(.tablewrap,.table-wrap) th{white-space:nowrap}
+@media(hover:hover) and (pointer:fine){
+ :where(.fd-lab-board-card,.fd-accuracy-tile,.bet-card):hover{border-color:#789e68;box-shadow:0 10px 28px #0005}
+}
+@media(max-width:700px){
+ :where(#fd-modal .fd-detail-primary,.fd-lab-board-grid,.bet-grid){grid-template-columns:minmax(0,1fr)!important}
+ :where(.fd-accuracy-grid){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ :where(.fd-lab-board-metrics){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ :where(.fd-lab-board-card,.fd-accuracy-tile,.bet-card){padding:12px}
+ :where(.fd-lab-board-card-head){flex-wrap:wrap}
+ :where(.fd-lab-board-card-head strong){text-align:left}
+ :where(.fd-mobile-prop-card,.fd-accuracy-tile,.fd-lab-board-card){border-radius:13px}
+ :where(.fd-modal button,.fd-modal summary,.bet-card button){min-height:44px}
+}
+@media(max-width:360px){:where(.fd-accuracy-grid){grid-template-columns:minmax(0,1fr)!important}}
+@media(prefers-reduced-motion:reduce){:where(.fd-mobile-prop-card,.fd-lab-board-card,.fd-accuracy-tile,.bet-card){transition:none!important}}
