@@ -1,0 +1,26 @@
+name: Calibrate game simulation probabilities
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/calibrate_game_sim_probabilities.py'
+      - '.github/workflows/calibrate-game-simulation.yml'
+permissions:
+  contents: read
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-backtest.txt
+      - name: Fit calibration on earlier seasons and evaluate holdout
+        run: python -m tools.calibrate_game_sim_probabilities --start 2016 --end 2026 --iterations 1000 --output research/game-sim-probability-calibration.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game-sim-probability-calibration
+          path: research/game-sim-probability-calibration.json
