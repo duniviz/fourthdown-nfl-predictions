@@ -1,0 +1,41 @@
+name: Probe NFL odds coverage (one-credit diagnostic)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Compare DraftKings with all-book NFL spread coverage
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.parse
+          key=os.environ.get("PARLAY_API_KEY","")
+          if not key:
+              raise SystemExit("Missing PARLAY_API_KEY secret")
+          base="https://parlay-api.com/v1/sports/americanfootball_nfl/odds"
+          # One market and one region: at most one billed odds request.
+          url=base+"?"+urllib.parse.urlencode({"regions":"us","markets":"spreads","oddsFormat":"american","dateFormat":"iso"})
+          request=urllib.request.Request(url,headers={"X-API-Key":key,"Accept":"application/json"})
+          with urllib.request.urlopen(request,timeout=30) as response:
+              payload=json.load(response)
+              headers=response.headers
+          events=payload if isinstance(payload,list) else next((payload.get(k) for k in ("data","events","results","rows") if isinstance(payload,dict) and isinstance(payload.get(k),list)),[])
+          books={}
+          for event in events:
+              if not isinstance(event,dict): continue
+              for book in event.get("bookmakers",[]):
+                  if isinstance(book,dict):
+                      name=str(book.get("key","unknown"))
+                      books[name]=books.get(name,0)+1
+          print("NFL all-book spread probe: events=",len(events))
+          print("NFL all-book spread probe: event counts by bookmaker=",json.dumps(dict(sorted(books.items()))))
+          print("NFL all-book spread probe: DraftKings present=",books.get("draftkings",0))
+          for name in ("x-requests-last","x-requests-remaining","x-markets-served","x-request-id"):
+              print(name+":",headers.get(name,"not provided"))
+          print("This diagnostic does not publish odds, alter model inputs, or overwrite snapshots.")
+          PY
