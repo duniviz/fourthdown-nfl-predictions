@@ -70,3 +70,28 @@
  :where(.fd-merged-player-props .fd-mobile-prop-numbers){grid-template-columns:repeat(2,minmax(0,1fr))!important}
  :where(.fd-merged-player-props .fd-mobile-prop-numbers b){font-size:18px!important}
 }
+
+/* Visual pass 3: prioritize matchup result, team identity and primary actions. */
+#scoreboard-cards>.scorecard{isolation:isolate}
+#scoreboard-cards .score-head{align-items:center}
+#scoreboard-cards .score-state{font-size:11px;font-weight:850;letter-spacing:.075em}
+#scoreboard-cards .hybrid-teamlogos{background:linear-gradient(110deg,#172922,#12211e 55%,#15241f);border:1px solid #3a5548}
+#scoreboard-cards .score-team{min-width:0}
+#scoreboard-cards .score-team :where(strong,b){letter-spacing:-.025em}
+#scoreboard-cards .projection-panel{border:1px solid #547c48!important;background:linear-gradient(135deg,#1b2f23,#101c1c)!important}
+#scoreboard-cards .fd-market-picks>div{border:1px solid #3c5944;border-radius:10px;background:#101d1b}
+#scoreboard-cards .fd-modal-open{box-shadow:0 5px 18px #0005;min-height:46px}
+#fd-modal .fd-detail-hero{border-color:#5b8450!important}
+#fd-modal .fd-detail-team strong{font-size:clamp(26px,5vw,45px)}
+#fd-modal .fd-detail-primary{align-items:stretch}
+#fd-modal .fd-detail-market .fd-market-picks>div{border-bottom:1px solid #ffffff16}
+@media(max-width:700px){
+ #scoreboard-cards .score-head{gap:7px!important}
+ #scoreboard-cards .score-state{font-size:10px}
+ #scoreboard-cards .score-team{min-height:62px!important}
+ #scoreboard-cards .hybrid-teamlogos{padding:7px 9px!important}
+ #scoreboard-cards .projection-panel{margin-top:7px!important}
+ #scoreboard-cards .fd-market-picks{gap:5px!important}
+ #scoreboard-cards .fd-modal-open{margin-top:8px!important}
+ #fd-modal .fd-detail-hero{padding:12px!important}
+}
