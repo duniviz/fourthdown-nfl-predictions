@@ -606,6 +606,13 @@
         "players": [
           {
             "detail": "Injured Reserve",
+            "player": "Jordyn Tyson",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "NO"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Kelvin Banks Jr.",
             "position": "OT",
             "status": "Injured Reserve",
@@ -626,13 +633,6 @@
             "team": "NO"
           },
           {
-            "detail": "Injured Reserve",
-            "player": "Jordyn Tyson",
-            "position": "WR",
-            "status": "Injured Reserve",
-            "team": "NO"
-          },
-          {
             "detail": "questionable",
             "player": "Asim Richards",
             "position": "OT",
@@ -640,17 +640,17 @@
             "team": "NO"
           },
           {
-            "detail": "out",
-            "player": "Maliek Collins",
-            "position": "DT",
-            "status": "Out",
-            "team": "CLE"
-          },
-          {
             "detail": "questionable",
             "player": "Deshaun Watson",
             "position": "QB",
             "status": "Questionable",
+            "team": "CLE"
+          },
+          {
+            "detail": "out",
+            "player": "Maliek Collins",
+            "position": "DT",
+            "status": "Out",
             "team": "CLE"
           },
           {
@@ -836,10 +836,10 @@
             "team": "IND"
           },
           {
-            "detail": "questionable",
+            "detail": "out",
             "player": "A.J. Haulcy",
             "position": "S",
-            "status": "Questionable",
+            "status": "Out",
             "team": "IND"
           },
           {
@@ -1944,157 +1944,6 @@
         }
       }
     },
-    "2026_09_JAX_BAL": {
-      "availability": {
-        "source": "ESPN game summary",
-        "status": "unavailable"
-      },
-      "head_to_head": {
-        "games": [],
-        "source": "ESPN team schedule",
-        "status": "unavailable"
-      },
-      "kickoff_utc": "2026-11-06T01:15:00+00:00",
-      "model_metrics": {
-        "away": {
-          "defense_epa_rating": -0.0635,
-          "defense_rank": 4,
-          "offense_epa_rating": 0.082,
-          "offense_rank": 1,
-          "recent_form": {
-            "avg_margin": 13.6,
-            "avg_points_against": 16.2,
-            "avg_points_for": 29.8,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 6,
-                "points_for": 35,
-                "result": "W",
-                "week": 3
-              },
-              {
-                "points_against": 17,
-                "points_for": 22,
-                "result": "W",
-                "week": 4
-              },
-              {
-                "points_against": 17,
-                "points_for": 19,
-                "result": "W",
-                "week": 5
-              },
-              {
-                "points_against": 34,
-                "points_for": 31,
-                "result": "L",
-                "week": 6
-              },
-              {
-                "points_against": 7,
-                "points_for": 42,
-                "result": "W",
-                "week": 8
-              }
-            ],
-            "wins": 4
-          }
-        },
-        "home": {
-          "defense_epa_rating": 0.0124,
-          "defense_rank": 19,
-          "offense_epa_rating": -0.0437,
-          "offense_rank": 25,
-          "recent_form": {
-            "avg_margin": -7.6,
-            "avg_points_against": 25.0,
-            "avg_points_for": 17.4,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 18,
-                "points_for": 24,
-                "result": "W",
-                "week": 4
-              },
-              {
-                "points_against": 23,
-                "points_for": 30,
-                "result": "W",
-                "week": 5
-              },
-              {
-                "points_against": 13,
-                "points_for": 10,
-                "result": "L",
-                "week": 6
-              },
-              {
-                "points_against": 35,
-                "points_for": 13,
-                "result": "L",
-                "week": 7
-              },
-              {
-                "points_against": 36,
-                "points_for": 10,
-                "result": "L",
-                "week": 8
-              }
-            ],
-            "wins": 2
-          }
-        },
-        "scoring_edge_components": {
-          "away_offense_vs_home_defense": 4.24,
-          "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -4.82
-        }
-      },
-      "quarterbacks": {
-        "BAL": {
-          "confirmed_out": [],
-          "expected_starter": null,
-          "source": "ESPN game summary",
-          "starter_verified": false,
-          "status": "unavailable"
-        },
-        "JAX": {
-          "confirmed_out": [],
-          "expected_starter": null,
-          "source": "ESPN game summary",
-          "starter_verified": false,
-          "status": "unavailable"
-        }
-      },
-      "recent": {
-        "away": {
-          "source": "ESPN team schedule",
-          "status": "unavailable"
-        },
-        "home": {
-          "source": "ESPN team schedule",
-          "status": "unavailable"
-        }
-      },
-      "rest": {
-        "away": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-11-01T18:00:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        },
-        "home": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-11-01T18:00:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        }
-      }
-    },
     "2026_09_LA_WAS": {
       "availability": {
         "source": "ESPN game summary",
@@ -2245,6 +2094,13 @@
         "event_id": "401873047",
         "players": [
           {
+            "detail": "out",
+            "player": "Brandon Aiyuk",
+            "position": "WR",
+            "status": "Out",
+            "team": "SF"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "Nate Hobbs",
             "position": "CB",
@@ -2268,13 +2124,6 @@
           {
             "detail": "out",
             "player": "Christian Kirk",
-            "position": "WR",
-            "status": "Out",
-            "team": "SF"
-          },
-          {
-            "detail": "out",
-            "player": "Deebo Samuel Sr.",
             "position": "WR",
             "status": "Out",
             "team": "SF"
@@ -2728,10 +2577,17 @@
             "team": "KC"
           },
           {
-            "detail": "questionable",
+            "detail": "out",
+            "player": "Nahshon Wright",
+            "position": "CB",
+            "status": "Out",
+            "team": "NYJ"
+          },
+          {
+            "detail": "out",
             "player": "Joseph Ossai",
             "position": "DE",
-            "status": "Questionable",
+            "status": "Out",
             "team": "NYJ"
           },
           {
@@ -2739,13 +2595,6 @@
             "player": "Trevin Wallace",
             "position": "LB",
             "status": "Out",
-            "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Nahshon Wright",
-            "position": "CB",
-            "status": "Questionable",
             "team": "NYJ"
           },
           {
@@ -3064,6 +2913,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-07T12:56:08Z",
+  "generated_at_utc": "2026-11-07T19:24:47Z",
   "schema_version": 1
 }
