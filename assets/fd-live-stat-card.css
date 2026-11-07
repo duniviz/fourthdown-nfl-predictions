@@ -1,0 +1,7 @@
+/* Four clearly labeled stat values on mobile player cards. */
+.fd-merged-player-props .fd-mobile-prop-numbers{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.fd-merged-player-props .fd-mobile-prop-numbers .fd-live-stat-cell{background:linear-gradient(145deg,#1b3926,#101f1b)!important;border:1px solid #507c43;border-radius:9px}
+.fd-merged-player-props .fd-mobile-prop-numbers .fd-live-stat-cell small{color:#c3f3a1!important}
+.fd-merged-player-props .fd-mobile-prop-numbers .fd-live-stat-cell b{color:#baff25!important}
+.fd-merged-player-props .fd-live-inline{font-size:10px!important;padding:4px 2px!important;margin:4px 0!important;color:#a9c2b4!important;background:transparent!important;border:0!important}
+@media(max-width:480px){.fd-merged-player-props .fd-mobile-prop-numbers{gap:4px!important}.fd-merged-player-props .fd-mobile-prop-numbers>div{padding:8px 2px!important}.fd-merged-player-props .fd-mobile-prop-numbers small{font-size:9px!important;white-space:normal;line-height:1.25}.fd-merged-player-props .fd-mobile-prop-numbers b{font-size:clamp(14px,4.2vw,20px)!important}}

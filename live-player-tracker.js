@@ -266,14 +266,17 @@ function paintModalTotals(){
 // Always show verified ESPN totals in the collapsed player card, not just
 // inside the expandable research section. Keep pregame figures unchanged.
 function showCardActual(card,record){
- let badge=card.querySelector('.fd2-actual-result');
- if(!badge){badge=document.createElement('div');badge.className='fd2-actual-result';}
- badge.replaceChildren();
- const label=document.createElement('span');label.textContent='ESPN '+(state.finalIds.has(String(record.game_id))?'FINAL':'LIVE');
- const value=document.createElement('strong');value.textContent=String(record.actual);
- badge.append(label,value);
+ // Show the verified ESPN total alongside Projection / DK line / Difference.
+ // Preserve the existing stat market, never infer or estimate an actual.
  const metrics=card.querySelector('.fd-mobile-prop-numbers');
- if(metrics)metrics.after(badge);else card.prepend(badge);
+ if(!metrics)return;
+ let cell=metrics.querySelector('.fd-live-stat-cell');
+ if(!cell){cell=document.createElement('div');cell.className='fd-live-stat-cell';const label=document.createElement('small');const value=document.createElement('b');cell.append(label,value);metrics.appendChild(cell);}
+ const final=state.finalIds.has(String(record.game_id));
+ cell.querySelector('small').textContent=final?'ESPN Final':'ESPN Live';
+ cell.querySelector('b').textContent=String(record.actual);
+ cell.setAttribute('aria-label',(final?'ESPN final':'ESPN live')+' actual: '+record.actual);
+ card.querySelector('.fd2-actual-result')?.remove();
 }
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
@@ -296,11 +299,11 @@ function paintCards(){
    const p=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
    const match=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,card.dataset.fdGameId);
    let slot=card.querySelector('.fd-live-inline');
-   if(!match){card.querySelector('.fd-live-final-bar')?.remove();if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}slot.textContent=state.feedError?'ESPN stats temporarily unavailable':state.games.length?'ESPN stats pending for this player':'ESPN live stats · Waiting for kickoff';return;}
+   if(!match){card.querySelector('.fd-live-final-bar')?.remove();card.querySelector('.fd2-actual-result')?.remove();const metrics=card.querySelector('.fd-mobile-prop-numbers');if(metrics){let cell=metrics.querySelector('.fd-live-stat-cell');if(!cell){cell=document.createElement('div');cell.className='fd-live-stat-cell';cell.innerHTML='<small>ESPN Live</small><b>—</b>';metrics.appendChild(cell);}cell.querySelector('small').textContent='ESPN Live';cell.querySelector('b').textContent='—';}slot?.remove();return;}
    const r=match;
    showCardActual(card,r);
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
-   slot.textContent='ESPN LIVE · '+r.actual+' '+(labels[r.market]||'')+' yards';
+   slot.textContent='ESPN box score · '+(state.finalIds.has(String(r.game_id))?'Final':'Live');
    updateLiveBar(card,r);const sub=document.createElement('small');sub.textContent=(r.game_status||'In progress')+' · Checked '+(state.updated?state.updated.toLocaleTimeString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'—');slot.appendChild(sub);
   });
   paintPropRows();paintModalTotals();
