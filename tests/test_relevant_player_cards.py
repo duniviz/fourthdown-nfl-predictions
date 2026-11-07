@@ -18,6 +18,10 @@ class RelevantPlayerCardsTests(unittest.TestCase):
             ("player_rush_attempts",5),("player_receptions",2)):
             self.assertIn(f"{market}:{minimum}",self.html)
 
+    def test_upstream_player_filter_does_not_require_dk_line(self):
+        self.assertIn("const players=(isFinal?[]:playerResearch).filter(", self.html)
+        self.assertNotIn("&&!unavailablePlayer(x)&&x.dk_line!==null", self.html)
+
     def test_no_changes_to_model_research(self):
         self.assertIn("Presentation-only relevance filter",self.html)
         self.assertIn("const allPropEntries=",self.html)
