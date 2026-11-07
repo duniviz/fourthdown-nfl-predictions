@@ -1,0 +1,30 @@
+name: Recover missing historical DK player lines
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: draftkings-odds-refresh
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recover missing player markets from historical snapshot (no API calls)
+        run: python tools/recover_historical_dk_markets.py
+      - name: Commit only missing historical quotes
+        run: |
+          if ! git diff --quiet -- data/dk-odds.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/dk-odds.json
+            git commit -m "data: recover missing historical player yardage lines"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
