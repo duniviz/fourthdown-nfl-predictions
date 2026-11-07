@@ -7,7 +7,7 @@ name: Capture official pregame DraftKings game lines
 permissions:
   contents: write
 concurrency:
-  group: publish-v2
+  group: official-pregame-capture
   cancel-in-progress: false
 jobs:
   capture:
