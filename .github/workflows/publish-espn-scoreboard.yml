@@ -5,6 +5,9 @@ on:
     - cron: '17 * * * *'
 permissions:
   contents: write
+concurrency:
+  group: espn-scoreboard-backup
+  cancel-in-progress: false
 jobs:
   scoreboard:
     runs-on: ubuntu-latest
@@ -55,5 +58,6 @@ jobs:
           git add data/espn-scoreboard-backup.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh ESPN scoreboard backup"
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
