@@ -1,0 +1,27 @@
+name: Validate live player core against 2016-2026 challengers
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/validate-live-player-core.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements-backtest.txt
+      - name: Compare shared live core to challenger, no production changes
+        run: python -m tools.audit_live_player_core_2016_2026 --start 2016 --end 2026 --output research/live-player-core-comparison.json
+      - name: Upload research evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-player-core-2016-2026
+          path: research/live-player-core-comparison.json
