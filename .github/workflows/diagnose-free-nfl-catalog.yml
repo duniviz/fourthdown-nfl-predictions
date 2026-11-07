@@ -1,0 +1,27 @@
+name: Diagnose free NFL event catalog
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Inspect free ParlayAPI NFL event catalog without requesting odds
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os
+          from datetime import datetime, timezone
+          from live.dk_game_refresh import diagnose_free_event_catalog
+          if not os.getenv("PARLAY_API_KEY"):
+              raise SystemExit("PARLAY_API_KEY secret missing")
+          print("Free NFL catalog check only; no /odds or /props requests")
+          diagnose_free_event_catalog(os.environ["PARLAY_API_KEY"], datetime.now(timezone.utc))
+          PY
