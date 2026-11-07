@@ -728,7 +728,7 @@ function fdOpenMatchup(g){
  const stats=isFinal&&!p?'<div class="fd-modal-section"><h3>Completed game</h3><div class="fd-modal-grid"><div class="fd-modal-stat"><b>'+esc(away)+'</b><strong>'+esc(g.away.score??'—')+'</strong><small>Final score</small></div><div class="fd-modal-stat"><b>'+esc(home)+'</b><strong>'+esc(g.home.score??'—')+'</strong><small>Final score</small></div></div><p class="fd-modal-muted">Historical team ranks and pregame scoring averages were not saved for this matchup. Open Game recap on the scoreboard for actual team statistics.</p></div>':(matchupPanel||'');
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No confirmed injury adjustment for this game';
  const injury='<div class="fd-modal-section" data-modal-game-card-injuries data-game-id="'+esc(g.id)+'"><h3>Injuries and model impact</h3><p class="fd-modal-muted">Loading ESPN game-card injury report…</p></div>';
- const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x)&&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line)));
+ const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const fdProjectionReliability=(x,sim)=>{
@@ -904,7 +904,7 @@ function fdOpenMatchup(g){
   })()
  };
  const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
- const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No verified pregame player projections with DraftKings lines are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
+ const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No eligible player projections are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
  const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+'</div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
