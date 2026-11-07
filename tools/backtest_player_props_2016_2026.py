@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Research-only chronological player-prop comparisons for 2016–2026."""
-import argparse,json,math
+import argparse,json,math,sys
 from collections import defaultdict
 from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 import nflreadpy as nfl
 from live.backtest_players import backtest
 from tools.backtest_count_props_walkforward import evaluate as evaluate_counts
