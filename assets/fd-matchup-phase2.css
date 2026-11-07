@@ -1,0 +1,49 @@
+/* Phase 2: compact premium matchup summaries, presentation only. */
+#scoreboard-cards>.scorecard{position:relative;overflow:hidden}
+#scoreboard-cards .score-head{gap:12px;min-width:0}
+#scoreboard-cards .score-head>*{min-width:0}
+#scoreboard-cards .score-state{display:inline-flex;align-items:center;gap:6px;letter-spacing:.06em;text-transform:uppercase}
+#scoreboard-cards .projection-panel{box-shadow:inset 0 1px 0 #ffffff12,0 10px 28px #0004}
+#scoreboard-cards .fd-market-picks>div{display:flex;align-items:center;justify-content:space-between;min-height:54px;line-height:1.35}
+#scoreboard-cards .fd-modal-open{display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.025em;transition:filter .16s ease,transform .16s ease}
+@media(hover:hover) and (pointer:fine){#scoreboard-cards .fd-modal-open:hover{filter:brightness(1.08);transform:translateY(-1px)}}
+#fd-modal .fd-detail-hero{box-shadow:inset 0 1px 0 #ffffff18,0 8px 28px #0004}
+#fd-modal .fd-detail-team strong{font-variant-numeric:tabular-nums;line-height:1.1}
+#fd-modal .fd-detail-primary>.fd-modal-pick{min-width:0}
+#fd-modal .fd-score-hero{display:flex;flex-direction:column;justify-content:center;min-width:0}
+#fd-modal .fd-hero-scoreline{gap:8px}
+#fd-modal .fd-hero-scoreline>div{min-width:0}
+#fd-modal .fd-hero-scoreline strong{font-variant-numeric:tabular-nums}
+#fd-modal .fd-hero-footer{gap:12px;justify-content:space-between}
+#fd-modal .fd-detail-market .fd-market-picks>div{min-height:48px;display:flex;align-items:center}
+#fd-modal .fd-detail-more>summary{min-height:52px}
+#fd-modal .fd-detail-more>summary:focus-visible{outline:3px solid #baff25;outline-offset:-4px}
+@media(max-width:700px){
+ #scoreboard-cards{gap:12px!important}
+ #scoreboard-cards>.scorecard{padding:12px!important;border-radius:17px!important}
+ #scoreboard-cards .score-head{margin-bottom:10px!important;padding-bottom:9px!important}
+ #scoreboard-cards .hybrid-teamlogos{padding:8px 10px!important;border-radius:12px 12px 0 0}
+ #scoreboard-cards .score-team{min-height:70px!important;align-items:center}
+ #scoreboard-cards .projection-panel{margin-top:9px!important;padding:12px!important;border-radius:12px!important}
+ #scoreboard-cards .fd-pick-head{margin:7px 0!important}
+ #scoreboard-cards .fd-market-picks{margin-top:9px!important;gap:7px!important}
+ #scoreboard-cards .fd-market-picks>div{min-height:48px;padding:9px!important;font-size:12px}
+ #scoreboard-cards .fd-modal-open{margin-top:10px!important;min-height:46px}
+ #scoreboard-cards .score-footer{margin-top:8px!important}
+ #fd-modal .fd-detail-hero{padding:13px 10px;margin-bottom:10px}
+ #fd-modal .fd-detail-primary{gap:9px}
+ #fd-modal .fd-score-hero{padding:15px!important;border-radius:16px!important}
+ #fd-modal .fd-hero-scoreline{margin:12px 0!important}
+ #fd-modal .fd-hero-scoreline strong{font-size:clamp(30px,9vw,44px)!important}
+ #fd-modal .fd-hero-footer{flex-wrap:wrap;margin-top:10px}
+ #fd-modal .fd-detail-market .fd-market-picks{gap:6px}
+ #fd-modal .fd-detail-market .fd-market-picks>div{padding:9px;font-size:12px}
+ #fd-modal .fd-detail-more{margin:10px 0;border-radius:13px}
+ #fd-modal .fd-detail-more>summary{padding:12px;min-height:48px}
+}
+@media(max-width:380px){
+ #scoreboard-cards .fd-market-picks{grid-template-columns:minmax(0,1fr)!important}
+ #fd-modal .fd-detail-teams{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);gap:4px}
+ #fd-modal .fd-detail-team strong{font-size:clamp(21px,7vw,29px)}
+}
+@media(prefers-reduced-motion:reduce){#scoreboard-cards .fd-modal-open{transition:none}}
