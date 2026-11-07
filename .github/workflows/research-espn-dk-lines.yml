@@ -1,0 +1,51 @@
+name: Research ESPN DraftKings NFL lines (read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect ESPN public NFL scoreboard and provider-labeled lines
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          from datetime import datetime, timezone
+          def fetch(url):
+              req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"FOURTHDOWN-personal-research/1.0"})
+              with urllib.request.urlopen(req,timeout=15) as r:
+                  return json.load(r)
+          board=fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard")
+          events=board.get("events",[])
+          now=datetime.now(timezone.utc)
+          counts={"upcoming":0,"provider_draftkings":0,"usable_spread":0,"usable_total":0,"unverified_timestamp":0}
+          for event in events:
+              start=event.get("date","")
+              try: kickoff=datetime.fromisoformat(start.replace("Z","+00:00"))
+              except ValueError: continue
+              if kickoff<=now: continue
+              counts["upcoming"]+=1
+              event_id=str(event.get("id",""))
+              if not event_id.isdigit(): continue
+              url=f"https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/{event_id}/competitions/{event_id}/odds"
+              try: odds=fetch(url)
+              except Exception as e:
+                  print(f"ESPN event {event_id}: odds endpoint unavailable ({type(e).__name__})")
+                  continue
+              for item in odds.get("items",[]):
+                  if not isinstance(item,dict): continue
+                  provider=item.get("provider",{})
+                  if str(provider.get("name","")).lower()!="draftkings" and str(provider.get("id",""))!="41": continue
+                  counts["provider_draftkings"]+=1
+                  spread=item.get("spread")
+                  total=item.get("overUnder")
+                  if isinstance(spread,(int,float)) and not isinstance(spread,bool): counts["usable_spread"]+=1
+                  if isinstance(total,(int,float)) and not isinstance(total,bool): counts["usable_total"]+=1
+                  # ESPN retrieval time is NOT a provider quote timestamp.
+                  counts["unverified_timestamp"]+=1
+                  print(f"Event {event_id}: DraftKings-labeled spread={'yes' if isinstance(spread,(int,float)) else 'no'}, total={'yes' if isinstance(total,(int,float)) else 'no'}, source_timestamp_verified=no")
+          print("ESPN read-only NFL coverage summary:",json.dumps(counts,sort_keys=True))
+          print("Research only: no odds values, production files, history, or locks written.")
+          PY
