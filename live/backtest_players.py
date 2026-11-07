@@ -33,8 +33,9 @@ def backtest(seasons=(2024,2025)):
                 for (team,pid),past in history.items():
                     for r in past:
                         key=(team,int(r["week"]))
-                        for metric,_,volume in METRICS:
+                        for volume in {volume for _,_,volume in METRICS}:
                             team_week[key][volume]+=max(0,num(r.get(volume)))
+                        for metric,_,_ in METRICS:
                             if r.get("opponent_team"):
                                 defense_week[(r["opponent_team"],int(r["week"]))][metric]+=max(0,num(r.get(metric)))
                 league={}
@@ -72,9 +73,15 @@ def backtest(seasons=(2024,2025)):
                         ratio=def_avg/max(1,league[metric])
                         adj=1+min(.10,max(-.10,(ratio-1)*.30*len(opp_vals)/(len(opp_vals)+6)))
                         new_pred=max(0,raw_pred*adjusted/max(.1,expected_volume)*adj)
+                        # Pregame-only challenger signals, not used in the incumbent forecast.
+                        vols=[max(0,num(x.get(volume))) for x in past[-8:]]
+                        recent_vol=sum(vols[-3:])/len(vols[-3:])
+                        full_vol=sum(vols)/len(vols)
+                        opportunity_signal=max(-0.35,min(0.35,recent_vol/max(1,full_vol)-1))
+                        defense_signal=max(-0.35,min(0.35,ratio-1))*len(opp_vals)/(len(opp_vals)+6)
                         old_pred=old_model(past,metric)
                         actual_yards=max(0,num(actual.get(metric)))
-                        rows.append(dict(season=season,week=week,player_id=pid,player=actual.get("player_display_name") or pid,team=team,opponent=opp,market=metric,actual=round(actual_yards,1),old=round(old_pred,1),new=round(new_pred,1),old_abs_error=round(abs(old_pred-actual_yards),2),new_abs_error=round(abs(new_pred-actual_yards),2)))
+                        rows.append(dict(season=season,week=week,player_id=pid,player=actual.get("player_display_name") or pid,team=team,opponent=opp,market=metric,actual=round(actual_yards,1),old=round(old_pred,1),new=round(new_pred,1),opportunity_signal=round(opportunity_signal,6),defense_signal=round(defense_signal,6),old_abs_error=round(abs(old_pred-actual_yards),2),new_abs_error=round(abs(new_pred-actual_yards),2)))
             for r in weeks[week]:
                 history[(str(r["team"]),str(r["player_id"]))].append(r)
     return rows
