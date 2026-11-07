@@ -33,9 +33,12 @@ def backtest(seasons=(2024,2025)):
                 for (team,pid),past in history.items():
                     for r in past:
                         key=(team,int(r["week"]))
-                        for metric,_,volume in METRICS:
+                        # Count each opportunity type once per player-week. METRICS
+                        # contains multiple outcomes sharing attempts/carries/targets.
+                        for volume in {v for _,_,v in METRICS}:
                             team_week[key][volume]+=max(0,num(r.get(volume)))
-                            if r.get("opponent_team"):
+                        if r.get("opponent_team"):
+                            for metric,_,_ in METRICS:
                                 defense_week[(r["opponent_team"],int(r["week"]))][metric]+=max(0,num(r.get(metric)))
                 league={}
                 for metric,_,_ in METRICS:
