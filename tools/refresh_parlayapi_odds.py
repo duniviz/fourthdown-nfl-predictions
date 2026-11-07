@@ -48,6 +48,28 @@ def load(filename, fallback):
 def opening_key(row, fields):
     return "|".join(str(row.get(field) or "") for field in fields)
 
+def merge_player_quotes(previous, incoming, now):
+    """Retain missing upcoming-market quotes without pretending they were refreshed."""
+    def identity(row):
+        return tuple(str(row.get(field) or "") for field in
+                     ("player", "market_key", "home_team", "away_team", "commence_time"))
+    def usable(row):
+        if not isinstance(row, dict):
+            return False
+        if str(row.get("market_key", "")).lower().endswith("_spread"):
+            return False
+        try:
+            float(row["line"])
+            kickoff = dt.datetime.fromisoformat(str(row["commence_time"]).replace("Z", "+00:00"))
+            return kickoff > now and all(identity(row))
+        except (KeyError, ValueError, TypeError):
+            return False
+    merged = {identity(row): row for row in previous if usable(row)}
+    for row in incoming:
+        if usable(row):
+            merged[identity(row)] = row
+    return list(merged.values())
+
 def capture_openings(game_rows, prop_rows, now):
     """Keep the first valid DraftKings quote observed for every market."""
     opening = load("dk-opening-odds.json", {"schema_version": 1, "source": "ParlayAPI", "bookmaker": "draftkings", "games": {}, "props": {}})
@@ -135,7 +157,10 @@ def main():
     elif not props_only:
         print("WARNING: No DraftKings spreads/totals from provider; retaining last verified game snapshot")
     if prop_rows:
-        save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":prop_rows})
+        previous = load("dk-odds.json", {}).get("rows", [])
+        retained = merge_player_quotes(previous, prop_rows, dt.datetime.now(dt.timezone.utc))
+        save("dk-odds.json", {"generated_at_utc":now,"source":"ParlayAPI","bookmaker":"draftkings","rows":retained})
+        print(f"Retained {len(retained) - len(prop_rows)} older upcoming-market quotes (original timestamps preserved)")
     else:
         print("WARNING: No DraftKings player quotes from provider; retaining last verified prop snapshot")
     if game_rows or prop_rows:
