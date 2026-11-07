@@ -126,6 +126,27 @@ def response_diagnostics(payload, now):
     if events and isinstance(events[0],dict):
         print("DK response diagnostic: event field names="+",".join(sorted(str(k) for k in events[0])[:20]))
 
+def diagnose_free_event_catalog(key, now):
+    """Check the zero-credit NFL event catalog without fetching more paid odds."""
+    url="https://parlay-api.com/v1/sports/americanfootball_nfl/events"
+    req=urllib.request.Request(url,headers={"X-API-Key":key,"Accept":"application/json"})
+    try:
+        with urllib.request.urlopen(req,timeout=20) as response:
+            payload=json.load(response)
+        events=payload if isinstance(payload,list) else (
+            next((payload[k] for k in ("data","events","results","rows")
+                  if isinstance(payload,dict) and isinstance(payload.get(k),list)),[]))
+        future=[e for e in events if isinstance(e,dict) and
+                (kickoff:=dt(e.get("commence_time"))) and kickoff>now]
+        print(f"DK free NFL events diagnostic: catalog_events={len(events)}, upcoming={len(future)}")
+        if future:
+            print("DK free NFL events diagnostic: upcoming event start dates="+
+                  ",".join(sorted({str(e.get("commence_time",""))[:10] for e in future})[:8]))
+        else:
+            print("::warning::ParlayAPI free NFL event catalog also has no upcoming events; verify NFL sport key and upstream schedule.")
+    except Exception as exc:
+        print(f"::warning::Free NFL event catalog diagnostic unavailable ({type(exc).__name__}); preserving existing odds.")
+
 def main():
     key=os.environ.get("PARLAY_API_KEY","").strip()
     if not key:
@@ -149,6 +170,7 @@ def main():
     if isinstance(payload,list) and not payload:
         print("::warning::ParlayAPI returned HTTP 200 with zero NFL events for the DraftKings spreads/totals request; no local game matching was attempted.")
         print("DK diagnostic: check provider DraftKings NFL game-line coverage and x-markets-served response header; do not substitute other books or refresh old timestamps.")
+        diagnose_free_event_catalog(key,now)
     rows=parse(payload,now)
     if not rows:
         print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
