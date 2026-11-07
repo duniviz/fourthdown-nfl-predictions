@@ -47,6 +47,6 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/dk-game-odds.json data/dk-odds.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/simulations.json
             git commit -m "data: refresh DraftKings NFL odds"
-            git pull --rebase origin main
+            # Simulations/audits may leave unrelated working-tree changes.\n            # Stash them after committing only the intended published artifacts.\n            git stash push --include-untracked -m "Unpublished workflow outputs"\n            git pull --rebase origin main
             git push origin HEAD:main
           fi
