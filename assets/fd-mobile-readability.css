@@ -163,3 +163,16 @@
  :where(.fd-merged-player-props .fd-live-inline,.fd-accuracy-secondary){font-size:11px}
  :where(#fd-modal .fd-detail-more){margin-block:8px}
 }
+
+/* Save vertical space while preserving readable labels and touch targets. */
+@media(max-width:700px){
+ :where(#scoreboard-cards .scorecard,.fd-mobile-prop-card,.bet-card){margin-block:0}
+ :where(#scoreboard-cards .score-head,.fd-lab-board-card-head){margin-bottom:7px!important}
+ :where(#scoreboard-cards .score-footer,.fd-lab-board-foot){margin-top:7px!important}
+ :where(.fd-accuracy-tile p,.bet-card .bet-reason){margin-block:5px}
+ :where(.fd-accuracy-tile,.fd-lab-board-card,.bet-card){line-height:1.4}
+ :where(#fd-accuracy-dashboard .fd-accuracy-grid,#fd-lab-scoreboard .fd-lab-board-grid){margin-top:9px}
+ :where(#scoreboard-cards .fd-modal-open,.bet-card .bet-btn){min-height:44px}
+ :where(#fd-modal .fd-detail-hero,#fd-modal .fd-modal-section){margin-bottom:9px}
+ :where(.fd-merged-player-props .fd-mobile-prop-numbers){margin-block:7px}
+}
