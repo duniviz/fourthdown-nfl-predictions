@@ -40,7 +40,7 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertIn("python -m research.game_ml_freeze_guard", independent)
         self.assertIn("data/weekly-shadow-forecasts.json", independent)
         self.assertNotIn("data/weekly-shadow-forecasts.json", workflow)
-        self.assertIn("steps.guard.outputs.refresh == 'true'", workflow)
+        self.assertIn("python -m live.pregame_cycle", workflow)
 
     def test_weekly_wiring_uses_selected_branch(self):
         workflow = (ROOT / ".github/workflows/fourthdown-unified-weekly-ml.yml").read_text()

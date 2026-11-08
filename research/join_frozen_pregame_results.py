@@ -4,7 +4,7 @@
 No postgame forecast reconstruction. Only exact game/player/market matches.
 """
 import argparse,collections,datetime as dt,json,pathlib
-ALIASES={"player_pass_completions":"completions","player_pass_attempts":"attempts","player_rush_attempts":"carries",
+ALIASES={"player_pass_yds":"passing_yards","player_rush_yds":"rushing_yards","player_rec_yds":"receiving_yards","player_pass_completions":"completions","player_pass_attempts":"attempts","player_rush_attempts":"carries",
 "player_receptions":"receptions","player_receiving_yards":"receiving_yards","player_rushing_yards":"rushing_yards",
 "player_passing_yards":"passing_yards","passing_yards":"passing_yards","receiving_yards":"receiving_yards",
 "rushing_yards":"rushing_yards","receptions":"receptions","completions":"completions","attempts":"attempts","carries":"carries"}

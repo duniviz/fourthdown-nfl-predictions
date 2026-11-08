@@ -6,7 +6,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: fourthdown-weekly-ml
+  group: game-ml-freeze
   cancel-in-progress: false
 jobs:
   weekly:
@@ -49,6 +49,8 @@ jobs:
           PY
       - name: Import verified official T-15 game incumbent locks
         run: python -m research.import_official_game_locks
+      - name: Import archived production player projections
+        run: python -m research.import_player_locks
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py
       - name: Grade frozen count and yardage player challengers

@@ -1,62 +1,10 @@
-name: Refresh DraftKings NFL odds
+name: Retired duplicate pregame writer
 on:
   workflow_dispatch:
-  schedule:
-    # 7:05 PM Chicago (CDT or CST); local-time guard prevents duplicates.
-    - cron: '5 0,1 * * *'
 permissions:
-  contents: write
-concurrency:
-  group: draftkings-odds-refresh
-  cancel-in-progress: false
+  contents: read
 jobs:
-  refresh:
+  retired:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Check 7 PM Chicago no-game refresh window
-        id: clock
-        run: |
-          if python scripts/check_pregame_kickoff_window.py --refresh ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Fetch DraftKings markets from ParlayAPI
-        if: steps.clock.outputs.run == 'true'
-        env:
-          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
-        run: python tools/refresh_parlayapi_odds.py
-      - name: Fill missing DraftKings markets from SportsGameOdds (free-tier guarded)
-        if: steps.clock.outputs.run == 'true'
-        env:
-          SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
-        run: python tools/refresh_sportsgameodds_backup.py
-      - name: Archive player line movement from refreshed snapshot (no API request)
-        if: steps.clock.outputs.run == 'true'
-        run: python -m live.line_history
-      - name: Record completed API refresh against monthly budget
-        if: steps.clock.outputs.run == 'true'
-        run: python scripts/check_pregame_kickoff_window.py --record
-      - name: Refresh simulation cover probabilities using latest DK lines
-        if: steps.clock.outputs.run == 'true'
-        run: python -m live.simulate
-      - name: Audit published data feeds
-        if: steps.clock.outputs.run == 'true'
-        run: python tools/audit_published_data.py
-      - name: Commit refreshed snapshot
-        if: steps.clock.outputs.run == 'true'
-        run: |
-          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/sportsgameodds-usage.json data/simulations.json)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/sportsgameodds-usage.json data/simulations.json
-            git commit -m "data: refresh DraftKings NFL odds"
-            # Stash unrelated workflow outputs before rebasing.
-            git stash push --include-untracked -m "Unpublished workflow outputs"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+      - run: echo "Use Capture pregame projections and DraftKings lines"

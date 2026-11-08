@@ -9,7 +9,10 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from refresh_parlayapi_odds import ABBR, TEAMS, load, save, merge_player_quotes
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from live.dk_identity import quote_key
+from tools.refresh_parlayapi_odds import ABBR, TEAMS, load, save, merge_player_quotes
 
 BASE = "https://api.sportsgameodds.com/v2/events"
 MARKETS = {
@@ -181,15 +184,11 @@ def main():
     old_rows = prior_props.get("rows", [])
     # Never replace any existing exact DraftKings market from the primary feed,
     # even when the secondary provider has a newer timestamp.
-    existing = {(r.get("player", "").casefold(), r.get("market_key", "").casefold(),
-                 r.get("home_team"), r.get("away_team"), str(date(r.get("commence_time"))))
-                for r in old_rows if isinstance(r, dict)}
-    additions = [r for r in prop_rows if
-                 (r["player"].casefold(), r["market_key"].casefold(), r["home_team"],
-                  r["away_team"], str(date(r["commence_time"]))) not in existing]
+    primary = {quote_key(r) for r in old_rows if r.get("source_provider") != "SportsGameOdds"}
+    additions = [r for r in prop_rows if quote_key(r) not in primary]
     if additions:
         merged = merge_player_quotes(old_rows, additions, now)
-        save("dk-odds.json", {**prior_props, "rows": merged})
+        save("dk-odds.json", {**prior_props, "bookmaker":"draftkings", "generated_at_utc":now.isoformat(), "rows": merged})
     prior_games = load("dk-game-odds.json", {})
     by_game = {(g.get("home"), g.get("away"), str(date(g.get("commence_time")))): g
                for g in prior_games.get("games", []) if isinstance(g, dict)}
@@ -207,7 +206,7 @@ def main():
                     old[field + "_last_verified_at_utc"] = g.get(field + "_last_verified_at_utc")
                     changed += 1
     if changed:
-        save("dk-game-odds.json", {**prior_games, "games": list(by_game.values())})
+        save("dk-game-odds.json", {**prior_games, "bookmaker":"draftkings", "snapshot_date_utc":now.isoformat(), "games":list(by_game.values())})
     print(f"SportsGameOdds backup: {len(events)} event objects; {len(additions)} candidate props; {changed} game market additions; monthly usage {used + len(events)}/{MONTHLY_CAP}")
     if events and not prop_rows:
         print("::warning::No fully identified standard DraftKings player props in backup response; no unverified markets published")

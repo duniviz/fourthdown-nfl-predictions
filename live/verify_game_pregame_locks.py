@@ -7,7 +7,7 @@ from live.game_pregame_observations import dt
 DATA=Path("data")
 
 def missing_locks(games,locks,now):
-    locked={str(r.get("game_id")) for r in locks if r.get("lock_status") in ("official","forecast_only")}
+    locked={str(r.get("game_id")) for r in locks if r.get("lock_status") in ("official","forecast_only","last_available","early_pregame")}
     missing=[]
     for game in games:
         kickoff=dt(game.get("kickoff_utc"))
