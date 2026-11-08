@@ -77,6 +77,20 @@ def refresh(keys,games,stamp):
     if backup_needed(games,keys,now()):
         subprocess.run([sys.executable,"-m","tools.refresh_sportsgameodds_backup"],check=True)
     line_history.main()
+    odds=read("dk-game-odds",{})
+    history=read("dk-game-line-history",{"games":{}})
+    for row in odds.get("games",[]):
+        kickoff=observations.dt(row.get("commence_time"))
+        if not kickoff or now()>=kickoff or row.get("bookmaker")!="draftkings":continue
+        key="|".join((row["away"],row["home"],row["commence_time"]))
+        entry={"captured_at_utc":now().isoformat(),"home_spread":row.get("home_spread"),"total":row.get("total"),
+               "home_spread_last_verified_at_utc":row.get("home_spread_last_verified_at_utc") or row.get("updated_at_utc"),
+               "total_last_verified_at_utc":row.get("total_last_verified_at_utc") or row.get("updated_at_utc"),
+               "source_provider":row.get("source_provider")}
+        records=history["games"].setdefault(key,[])
+        if not records or any(records[-1].get(field)!=entry[field] for field in ("home_spread","total")):
+            records.append(entry)
+    save("dk-game-line-history",history)
 
 def checkpoint(games):
     stamp=now()
