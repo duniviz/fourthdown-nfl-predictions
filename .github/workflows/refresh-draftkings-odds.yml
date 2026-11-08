@@ -30,6 +30,11 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python tools/refresh_parlayapi_odds.py
+      - name: Fill missing DraftKings markets from SportsGameOdds (free-tier guarded)
+        if: steps.clock.outputs.run == 'true'
+        env:
+          SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+        run: python tools/refresh_sportsgameodds_backup.py
       - name: Archive player line movement from refreshed snapshot (no API request)
         if: steps.clock.outputs.run == 'true'
         run: python -m live.line_history
@@ -45,10 +50,10 @@ jobs:
       - name: Commit refreshed snapshot
         if: steps.clock.outputs.run == 'true'
         run: |
-          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/simulations.json)" ]]; then
+          if [[ -n "$(git status --porcelain -- data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/sportsgameodds-usage.json data/simulations.json)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/simulations.json
+            git add data/dk-game-odds.json data/dk-odds.json data/dk-line-history.json data/dk-opening-odds.json data/dk-game-line-history.json data/dk-refresh-ledger.json data/sportsgameodds-usage.json data/simulations.json
             git commit -m "data: refresh DraftKings NFL odds"
             # Stash unrelated workflow outputs before rebasing.
             git stash push --include-untracked -m "Unpublished workflow outputs"
