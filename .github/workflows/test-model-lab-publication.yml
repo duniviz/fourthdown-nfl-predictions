@@ -1,0 +1,26 @@
+name: Test Model Lab publication
+on:
+  pull_request:
+    paths:
+      - 'scripts/publish_model_lab.py'
+      - 'tests/test_publish_model_lab.py'
+      - '.github/workflows/publish-model-lab.yml'
+      - '.github/workflows/test-model-lab-publication.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/publish_model_lab.py'
+      - 'tests/test_publish_model_lab.py'
+      - '.github/workflows/publish-model-lab.yml'
+      - '.github/workflows/test-model-lab-publication.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_publish_model_lab.py' -v
