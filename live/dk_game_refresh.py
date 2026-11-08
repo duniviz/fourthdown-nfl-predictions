@@ -242,8 +242,32 @@ def main():
         prior=games.setdefault(k,[])
         if entry not in prior:
             prior.append(entry)
+    # Keep older quotes for upcoming matchups absent from a partial response.
+    # Preserve individual spread/total values if only one market is returned.
+    # Retained rows keep their original timestamp; never claim a fresh quote.
+    previous_by_game = {(x.get("away"), x.get("home"), x.get("commence_time")): x
+                        for x in previous.get("games", []) if isinstance(x, dict)}
+    updated_by_game = {}
+    for row in mapped:
+        key = (row["away"], row["home"], row["commence_time"])
+        old = previous_by_game.get(key, {})
+        combined = dict(row)
+        for field in ("home_spread", "total"):
+            if combined.get(field) is None and old.get(field) is not None:
+                combined[field] = old[field]
+                # Keep provenance of an older market-level quote.
+                combined[field + "_last_verified_at_utc"] = old.get(field + "_last_verified_at_utc") or old.get("updated_at_utc")
+            elif combined.get(field) is not None:
+                combined[field + "_last_verified_at_utc"] = row.get("updated_at_utc")
+        updated_by_game[key] = combined
+    for key, old in previous_by_game.items():
+        if key in updated_by_game:
+            continue
+        kickoff = dt(old.get("commence_time"))
+        if kickoff and kickoff > now:
+            updated_by_game[key] = old
     OUT.write_text(json.dumps({"source":"ParlayAPI","bookmaker":"draftkings",
-        "snapshot_date_utc":now.isoformat(),"games":mapped},indent=2)+"\n")
+        "snapshot_date_utc":now.isoformat(),"games":list(updated_by_game.values())},indent=2)+"\n")
     HISTORY.write_text(json.dumps(history,indent=2)+"\n")
     print(f"Updated {len(mapped)} verified DraftKings game odds")
 
