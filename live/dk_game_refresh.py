@@ -148,6 +148,24 @@ def diagnose_free_event_catalog(key, now):
     except Exception as exc:
         print(f"::warning::Free NFL event catalog diagnostic unavailable ({type(exc).__name__}); preserving existing odds.")
 
+def history_entry(row):
+    """Record when this process verified a quote separately from line movement."""
+    observed=row.get("observed_at_utc") or row.get("updated_at_utc")
+    return {
+        "captured_at_utc": observed,
+        "observed_at_utc": observed,
+        "provider_updated_at_utc": row.get("provider_updated_at_utc") or row.get("updated_at_utc"),
+        "home_spread": row.get("home_spread"),
+        "total": row.get("total"),
+        "home_spread_last_verified_at_utc": row.get("home_spread_last_verified_at_utc") or row.get("updated_at_utc"),
+        "total_last_verified_at_utc": row.get("total_last_verified_at_utc") or row.get("updated_at_utc"),
+        "home_spread_observed_at_utc": row.get("home_spread_observed_at_utc") or observed,
+        "total_observed_at_utc": row.get("total_observed_at_utc") or observed,
+        "quote_timestamp_source": row.get("quote_timestamp_source"),
+        "provider_timestamp_status": row.get("provider_timestamp_status"),
+    }
+
+
 def main():
     key=os.environ.get("PARLAY_API_KEY","").strip()
     if not key:
@@ -236,10 +254,7 @@ def main():
     games=history.setdefault("games",{})
     for row in mapped:
         k="|".join((row["away"],row["home"],row["commence_time"]))
-        entry={"captured_at_utc":row["updated_at_utc"],
-               "home_spread":row["home_spread"],"total":row["total"],
-               "quote_timestamp_source":row["quote_timestamp_source"],
-               "provider_timestamp_status":row["provider_timestamp_status"]}
+        entry=history_entry(row)
         prior=games.setdefault(k,[])
         if entry not in prior:
             prior.append(entry)
