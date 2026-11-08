@@ -125,6 +125,11 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_odds
+      - name: Fill missing DraftKings markets from SportsGameOdds (free-tier guarded)
+        if: steps.schedule_guard.outputs.run == 'true' && steps.dk_dedup.outputs.skip != 'true'
+        env:
+          SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+        run: python tools/refresh_sportsgameodds_backup.py
       - name: Archive DraftKings line movement
         if: steps.schedule_guard.outputs.run == 'true' && steps.dk_dedup.outputs.skip != 'true'
         run: python -m live.line_history
