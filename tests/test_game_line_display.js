@@ -1,0 +1,23 @@
+const assert = require('assert');
+const fs = require('fs');
+const vm = require('vm');
+const html = fs.readFileSync('index.html', 'utf8');
+const begin = html.indexOf('function fdLatestPregameGameLine(p){');
+const end = html.indexOf('\nfunction fdMarketPickLines', begin);
+assert(begin >= 0 && end > begin);
+class TestDate extends Date { static now() { return Date.parse('2026-11-08T17:00:00Z'); } }
+const context = {Date:TestDate,canon:x=>x,fdGameOdds:{},fdGameOddsObservedAt:Date.parse('2026-11-08T16:00:00Z'),fdGameLineHistory:{}};
+vm.createContext(context);
+vm.runInContext(html.slice(begin,end),context);
+const game={home:'IND',away:'DAL',kickoff_utc:'2026-11-08T18:00:00Z'};
+context.fdGameLineHistory['DAL|IND|2026-11-08T18:00:00Z']=[{captured_at_utc:'2026-11-07T16:00:00Z',home_spread:5.5,total:51.5}];
+context.fdGameOdds.x={home:'IND',away:'DAL',commence_time:game.kickoff_utc,home_spread:4.5,total:51.5,updated_at_utc:'2026-11-08T15:55:00Z'};
+let actual=context.fdLatestPregameGameLine(game);
+assert.strictEqual(actual.home_spread,4.5);
+assert.strictEqual(actual.total,51.5);
+context.fdGameOddsObservedAt=Date.parse('2026-11-08T18:01:00Z');
+actual=context.fdLatestPregameGameLine(game);
+assert.strictEqual(actual.home_spread,5.5);
+context.fdGameLineHistory['DAL|IND|2026-11-08T18:00:00Z'][0].captured_at_utc='2026-11-08T18:01:00Z';
+assert.strictEqual(context.fdLatestPregameGameLine(game),null);
+console.log('Verified current, archived, and post-kickoff game line selection');

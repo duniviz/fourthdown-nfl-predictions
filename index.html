@@ -1487,26 +1487,48 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
 
  function safeScoreWidget(fn){try{return fn()||'';}catch(e){console.warn('Optional scoreboard widget unavailable',e);return '';}}
 
- let fdGameOdds={},fdOpeningGameOdds={},fdGameLineHistory={};
+ let fdGameOdds={},fdGameOddsObservedAt=null,fdOpeningGameOdds={},fdGameLineHistory={};
 async function fdLoadGameOdds(){try{
  const [current,opening,history]=await Promise.all([
    fetch('data/dk-game-odds.json?ts='+Date.now(),{cache:'no-store'}),
    fetch('data/dk-opening-odds.json?ts='+Date.now(),{cache:'no-store'}),
    fetch('data/dk-game-line-history.json?ts='+Date.now(),{cache:'no-store'})
  ]);
- if(current.ok){const j=await current.json();fdGameOdds=Object.fromEntries((j.games||[]).filter(x=>x.game_id&&x.bookmaker==='draftkings').map(x=>[x.game_id,x]));}
+ if(current.ok){const j=await current.json();fdGameOddsObservedAt=Date.parse(j.snapshot_date_utc);fdGameOdds=Object.fromEntries((j.games||[]).filter(x=>x.game_id&&x.bookmaker==='draftkings').map(x=>[x.game_id,x]));}
  if(opening.ok){const j=await opening.json();fdOpeningGameOdds=j.games&&typeof j.games==='object'?j.games:{};}
  if(history.ok){const j=await history.json();fdGameLineHistory=j.games&&typeof j.games==='object'?j.games:{};}
 }catch(e){console.warn('DK game odds unavailable',e);}}
 function fdLatestPregameGameLine(p){
- const kickoff=Date.parse(p.kickoff_utc);
- const history=Object.entries(fdGameLineHistory).filter(([key,rows])=>{
-   if(!Array.isArray(rows))return false;
+ const kickoff=Date.parse(p.kickoff_utc),now=Date.now();
+ if(!Number.isFinite(kickoff))return null;
+ const candidates=Object.entries(fdGameLineHistory).filter(([key,rows])=>{
    const parts=key.split('|');
-   return parts.length>=3&&((canon(parts[0])===canon(p.home)&&canon(parts[1])===canon(p.away))||(canon(parts[0])===canon(p.away)&&canon(parts[1])===canon(p.home)))&&Number.isFinite(kickoff)&&Math.abs(Date.parse(parts[2])-kickoff)<12*3600000;
- }).flatMap(([,rows])=>rows).filter(x=>Number.isFinite(Date.parse(x.captured_at_utc))&&Date.parse(x.captured_at_utc)<kickoff).sort((a,b)=>Date.parse(b.captured_at_utc)-Date.parse(a.captured_at_utc));
- return history[0]||null;
+   return Array.isArray(rows)&&parts.length>=3&&canon(parts[0])===canon(p.away)
+    &&canon(parts[1])===canon(p.home)&&Date.parse(parts[2])===kickoff;
+ }).flatMap(([,rows])=>rows);
+ if(Number.isFinite(fdGameOddsObservedAt)&&fdGameOddsObservedAt<kickoff&&fdGameOddsObservedAt<=now){
+  for(const q of Object.values(fdGameOdds)){
+   if(canon(q.away)!==canon(p.away)||canon(q.home)!==canon(p.home)||Date.parse(q.commence_time)!==kickoff)continue;
+   candidates.push({...q,captured_at_utc:new Date(fdGameOddsObservedAt).toISOString()});
+  }
+ }
+ const latest={};
+ for(const field of ['home_spread','total']){
+  const matches=candidates.filter(q=>{
+   const captured=Date.parse(q.captured_at_utc);
+   const verified=Date.parse(q[field+'_last_verified_at_utc']||q.updated_at_utc||q.captured_at_utc);
+   return q[field]!==null&&q[field]!==undefined&&q[field]!==''&&Number.isFinite(Number(q[field]))
+    &&Number.isFinite(captured)&&captured<kickoff&&captured<=now
+    &&Number.isFinite(verified)&&verified<=captured&&verified<kickoff;
+  }).sort((a,b)=>Date.parse(b[field+'_last_verified_at_utc']||b.updated_at_utc||b.captured_at_utc)-Date.parse(a[field+'_last_verified_at_utc']||a.updated_at_utc||a.captured_at_utc));
+  if(matches.length){latest[field]=Number(matches[0][field]);latest[field+'_verified_at']=matches[0][field+'_last_verified_at_utc']||matches[0].updated_at_utc||matches[0].captured_at_utc;}
+ }
+ const times=['home_spread','total'].filter(f=>latest[f]!==undefined).map(f=>Date.parse(latest[f+'_verified_at']));
+ if(!times.length)return null;
+ latest.captured_at_utc=new Date(Math.min(...times)).toISOString();
+ return latest;
 }
+
 function fdMarketPickLines(p){
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
  const line=fdLatestPregameGameLine(p);

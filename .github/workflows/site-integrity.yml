@@ -44,6 +44,8 @@ jobs:
             [ -f "$file" ] || continue
             node --check "$file"
           done
+      - name: Test current and archived DraftKings game-line display
+        run: node tests/test_game_line_display.js
       - name: Validate published JSON feeds
         run: |
           python - <<'PY'
