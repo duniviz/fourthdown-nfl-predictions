@@ -1,7 +1,7 @@
 {
   "source": "ParlayAPI",
   "bookmaker": "draftkings",
-  "snapshot_date_utc": "2026-11-08T20:35:08.181697+00:00",
+  "snapshot_date_utc": "2026-11-08T20:35:18.887198+00:00",
   "games": [
     {
       "game_id": "e58eae923c458dc1cf2b851cd133ae12",
@@ -45,23 +45,24 @@
     },
     {
       "game_id": "8ae1b1400a6afbe4b2bc6e9f80013ee1",
+      "home": "SF",
+      "away": "LV",
       "home_team": "San Francisco 49ers",
       "away_team": "Las Vegas Raiders",
-      "commence_time": "2026-11-08T21:25:00+00:00",
+      "commence_time": "2026-11-08T21:25:00Z",
       "bookmaker": "draftkings",
       "home_spread": -8.5,
       "total": 51.5,
-      "updated_at_utc": "2026-11-08T20:34:45+00:00",
-      "observed_at_utc": "2026-11-08T20:35:08.181697+00:00",
-      "quote_timestamp_source": "provider",
-      "provider_timestamp_status": "valid",
-      "provider_updated_at_utc": "2026-11-08T20:34:45+00:00",
-      "home": "SF",
-      "away": "LV",
-      "home_spread_last_verified_at_utc": "2026-11-08T20:34:45+00:00",
-      "home_spread_observed_at_utc": "2026-11-08T20:35:08.181697+00:00",
-      "total_last_verified_at_utc": "2026-11-08T20:34:45+00:00",
-      "total_observed_at_utc": "2026-11-08T20:35:08.181697+00:00"
+      "moneyline": [],
+      "updated_at_utc": "2026-11-08T20:35:00.223000+00:00",
+      "home_spread_last_verified_at_utc": "2026-11-08T20:35:00.223000+00:00",
+      "home_spread_observed_at_utc": "2026-11-08T20:35:18.887198+00:00",
+      "home_spread_source_provider": "SportsGameOdds",
+      "total_last_verified_at_utc": "2026-11-08T20:35:00.223000+00:00",
+      "total_observed_at_utc": "2026-11-08T20:35:18.887198+00:00",
+      "total_source_provider": "SportsGameOdds",
+      "observed_at_utc": "2026-11-08T20:35:18.887198+00:00",
+      "source_provider": "SportsGameOdds"
     },
     {
       "game_id": "fbb3bddb85f75af5f4707bec559b8700",
@@ -122,20 +123,6 @@
       "home_spread_observed_at_utc": "2026-11-08T20:35:08.181697+00:00",
       "total_last_verified_at_utc": "2026-11-08T20:34:45+00:00",
       "total_observed_at_utc": "2026-11-08T20:35:08.181697+00:00"
-    },
-    {
-      "game_id": "8ae1b1400a6afbe4b2bc6e9f80013ee1",
-      "home": "SF",
-      "away": "LV",
-      "home_team": "San Francisco 49ers",
-      "away_team": "Las Vegas Raiders",
-      "commence_time": "2026-11-08T21:25:00Z",
-      "bookmaker": "draftkings",
-      "home_spread": -9.5,
-      "total": 51.5,
-      "moneyline": [],
-      "updated_at_utc": "2026-11-08T14:07:39.777932+00:00",
-      "home_spread_last_verified_at_utc": "2026-11-08T14:07:13.317000+00:00"
     },
     {
       "game_id": "Qq8Zi9AOEqVNhRnPgzcx",
