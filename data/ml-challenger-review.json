@@ -75,10 +75,10 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-06T13:45:31.448840+00:00",
+  "generated_at_utc": "2026-11-08T15:30:31.451673+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
-  "feature_policy": "frozen pregame model values + week only; no outcomes as features",
-  "limitation": "Only player markets with historical frozen projections; no ATS, winners, weather or DK lines in source."
+  "feature_policy": "retrospective walk-forward player estimates + week; no outcomes as features",
+  "limitation": "Retrospective 2024\u20132025 backtest, not live frozen predictions; no ATS, winners, weather or DK lines in source."
 }
