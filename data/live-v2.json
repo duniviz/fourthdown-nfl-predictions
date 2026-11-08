@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-07T17:10:18.187885+00:00",
+  "generated_at_utc": "2026-11-08T13:14:40.009012+00:00",
   "season": 2026,
   "week": 9,
   "status": "research_uncalibrated",
@@ -3529,8 +3529,10 @@
       "injury_adjustments": {
         "NE": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         },
         "GB": {
           "points": 0.0,
