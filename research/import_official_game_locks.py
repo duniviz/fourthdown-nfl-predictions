@@ -15,7 +15,7 @@ def merge(locks, existing):
     rejected = 0
     for lock in locks:
         status = lock.get("lock_status")
-        if status not in ("official", "forecast_only"):
+        if status not in ("official", "forecast_only", "last_available", "early_pregame"):
             rejected += 1
             continue
         kickoff = dt(lock.get("kickoff_utc"))
@@ -31,6 +31,10 @@ def merge(locks, existing):
                 or (status == "forecast_only" and
                     (forecast > captured or not cutoff <= captured < kickoff
                      or lock.get("dk_total") is not None or lock.get("dk_home_spread") is not None))
+                or not forecast<=captured<kickoff
+                or (status in ("early_pregame","last_available") and
+                    any(lock.get(k) is not None for k in ("dk_total","dk_home_spread")) and
+                    (not quote or quote>captured))
                 or not lock.get("game_id")):
             rejected += 1
             continue
@@ -47,10 +51,10 @@ def merge(locks, existing):
             indexed[key] = {
                 "game_id": key[0], "player_id": "GAME", "stat_key": market,
                 "model": "live", "projection": value,
-                "dk_line": lock.get(dkfield) if status == "official" else None,
+                "dk_line": lock.get(dkfield) if status != "forecast_only" else None,
                 "kickoff_utc": kickoff.isoformat(),
                 "predicted_at_utc": forecast.isoformat(),
-                "source": "official T-15 game pregame lock" if status == "official" else "pregame forecast only (no verified DK line)",
+                "source": "official T-15 game pregame lock" if status == "official" else status+" pregame incumbent",
                 "actual": None,
             }
             added += 1

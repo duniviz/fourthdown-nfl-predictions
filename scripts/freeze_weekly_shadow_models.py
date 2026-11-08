@@ -34,7 +34,7 @@ def build(source,snapshots,existing):
    kickoff=dt.datetime.fromisoformat(snap["kickoff"].replace("Z","+00:00"))
    captured=dt.datetime.fromisoformat(snap["captured_at"].replace("Z","+00:00"))
    generated=dt.datetime.fromisoformat(source["generated_at_utc"].replace("Z","+00:00"))
-   if not (generated<=captured<kickoff):continue
+   if not (generated<=captured<kickoff and dt.datetime.now(dt.timezone.utc)<kickoff):continue
   except (KeyError,ValueError,TypeError):continue
   live=finite(snap.get("projection"));base=finite(p.get("base_projection"))
   defense=finite(p.get("defense_factor"));workload=finite(p.get("workload_factor"))

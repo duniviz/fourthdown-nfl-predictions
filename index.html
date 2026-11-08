@@ -446,7 +446,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 .fd-prop-pick-copy{display:flex;flex-direction:column;min-width:0;line-height:1.2;gap:3px}.fd-prop-pick-copy small{font-size:10px;letter-spacing:.13em;color:#b7c9d7;font-weight:800}.fd-prop-pick-copy strong{font-size:22px;font-weight:950;letter-spacing:.06em}.fd-prop-pick-copy em{font-style:normal;font-size:11px;color:#c6d5df}
 .fd-prop-pick-stale{margin-left:auto;align-self:center;flex-shrink:0;border:1px solid #a1a947;border-radius:7px;padding:4px 6px;color:#d8e76b;font-size:9px;font-weight:900}
 @media(max-width:400px){.fd-prop-pick{gap:9px;padding:10px}.fd-prop-pick-stale{font-size:8px;padding:3px 4px}.fd-prop-pick-icon{flex-basis:39px;height:39px}.fd-prop-pick-copy strong{font-size:19px}}
-</style><link rel="stylesheet" href="assets/fd-visual-polish.css"><link rel="stylesheet" href="assets/fd-live-stat-card.css?v=1"></head><body><div class="fd-modal" id="fd-modal"><div class="fd-modal-inner" role="dialog" aria-modal="true" aria-label="NFL matchup details" id="fd-modal-body"></div></div>
+</style><link rel="stylesheet" href="assets/fd-visual-polish.css"><link rel="stylesheet" href="assets/fd-live-stat-card.css?v=1"><script src="assets/dk-lines.js"></script></head><body><div class="fd-modal" id="fd-modal"><div class="fd-modal-inner" role="dialog" aria-modal="true" aria-label="NFL matchup details" id="fd-modal-body"></div></div>
 <header class="top"><div class="wrap nav"><div class="fd-view-picker"><label for="fd-view-choice">View</label><select id="fd-view-choice" aria-label="Choose layout"><option value="auto">Auto</option><option value="mobile">Mobile</option><option value="desktop">Desktop</option></select></div><div class="logo">FOURTH<b>DOWN</b> <span class="logo-subtitle">/ PREDICTION CENTER</span></div><nav class="links"><a href="#fd-watch">Games to Watch</a><a href="history.html">History &amp; Accuracy</a><a href="#scoreboard">Games &amp; Scores</a><a href="bets.html">Best Bets</a><a href="model-lab.html">Model Lab</a><a href="#picks" data-fd-expand>Top Picks</a><a href="#props" data-fd-expand>Player Props</a><a href="#parlays" data-fd-expand>Parlays</a><a href="#tracking" data-fd-expand>Tracking</a></nav><span class="pill">DRAFTKINGS ONLY</span></div></header>
 <main class="wrap"><section class="fd-command" aria-label="FOURTHDOWN game center"><div class="fd-command-main"><div class="fd-command-kicker">NFL games, explained</div><h1>See what <em>we expect.</em><br>And why.</h1><p>See our score predictions, compare them with DraftKings, and dig into the matchups that interest you.</p><div class="fd-command-actions"><a href="#scoreboard">View games</a><a href="bets.html">Open prop desk</a><button type="button" data-fd-command="picks">Show model picks</button></div></div><aside class="fd-command-side"><div class="fd-command-stat"><span>DraftKings</span><strong>Latest available <b>lines</b></strong></div><div class="fd-command-stat"><span>Injuries</span><strong>Review reported <b>status</b></strong></div><div class="fd-command-stat"><span>Results</span><strong>See how our <b>picks did</b></strong></div></aside></section><style>body:not(.fd-expanded) #tracking.fd-top-accuracy{display:block} .fd-history-teaser.fd-top-accuracy{margin:18px 0 22px;padding:16px 18px}.fd-top-accuracy .section-head{margin:0;align-items:center}.fd-top-accuracy h2{font-size:16px;margin:0}.fd-top-accuracy .fd-history-mini-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:10px 0 5px}.fd-top-accuracy .fd-history-mini-grid>div{padding:8px 3px}.fd-top-accuracy .fd-history-mini-grid small{font-size:10px}.fd-top-accuracy .fd-history-mini-grid strong{font-size:17px}.fd-top-accuracy .caption{font-size:11px;margin:4px 0 0}@media(max-width:540px){.fd-top-accuracy .fd-history-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fd-top-accuracy .fd-history-mini-grid strong{font-size:14px}.fd-top-accuracy .section-head a{font-size:11px}}</style><nav class="fd-fan-nav" aria-label="Fan quick navigation"><a href="#scoreboard">Game Day &amp; Scores</a><a href="bets.html">Player Props</a><a href="history.html">Accuracy</a><a href="model-lab.html">Model Lab</a></nav><p class="fd-fan-note">Pregame projections are estimates, not live score predictions. DraftKings lines may be unavailable or older than the latest refresh; missing lines are never estimated.</p><section id="tracking" class="fd-history-teaser fd-top-accuracy"><div class="section-head"><div><h2>Verified prediction results</h2></div><a href="history.html">Full history &amp; results →</a></div><div class="fd-history-mini-grid"><div><small>All graded picks</small><strong id="fd-mini-all">—</strong></div><div><small>Winner hit %</small><strong id="fd-mini-winners">—</strong></div><div><small>ATS hit %</small><strong id="fd-mini-ats">—</strong></div><div><small>O/U hit %</small><strong id="fd-mini-ou">—</strong></div><div><small>Player prop hit %</small><strong id="fd-mini-props">—</strong></div></div><p id="fd-mini-coverage" class="caption">Checking pending and ungraded predictions…</p><p class="caption">Only eligible pregame records are graded. Open History for coverage details.</p></section>
 <style>.fd-history-teaser{margin:32px 0;padding:18px;background:#102338;border:1px solid #31526b;border-radius:16px}.fd-history-mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.fd-history-mini-grid>div{padding:12px 7px;text-align:center;background:#0a1d2d;border-radius:10px}.fd-history-mini-grid small{display:block;color:#b6c9d8;font-size:11px}.fd-history-mini-grid strong{display:block;font-size:22px;margin-top:4px}@media(max-width:540px){.fd-history-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}</style>
@@ -553,7 +553,7 @@ renderParlays();
  const recapCache=new Map();
  let playerResearch=[];
  let countProps=[];
- let countDkQuotes=[];
+ let countDkQuotes=[], dkIndex=null;
  let simulationGames=[];
  let simulationPlayers=[];
  let playerHistory=[];
@@ -596,7 +596,7 @@ renderParlays();
  async function loadForecasts(){
   let countFeed=null, playerFeed=null, simulationFeed=null;
   try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countFeed=j;countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
-  try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=Array.isArray(j.rows)?j.rows:[];}catch(e){countDkQuotes=[];}
+  try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=j.bookmaker==='draftkings'&&Array.isArray(j.rows)?j.rows.filter(q=>Date.parse(j.generated_at_utc)<Date.parse(q.commence_time)):[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}
   try{const r=await fetch('data/simulations.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();simulationFeed=j;simulationGames=Array.isArray(j.games)?j.games:[];simulationPlayers=Array.isArray(j.players)?j.players:[];}}catch(e){simulationGames=[];simulationPlayers=[];}
   try{const response=await fetch('data/injuries.json?ts='+Date.now(),{cache:'no-store'});injuryData=response.ok?await response.json():null;}catch(e){injuryData=null;}
@@ -611,42 +611,7 @@ renderParlays();
    const r=await fetch('data/dk-pregame-lines.json?ts='+Date.now(),{cache:'no-store'});
    if(r.ok){const j=await r.json();lockedPregameDkQuotes=Array.isArray(j.rows)?j.rows:[];}
   }catch(e){lockedPregameDkQuotes=[];}
-  // Historical odds are joined at render time using the exact game kickoff.
-  // Older quote archives do not contain home/away team fields.
-  try{
-   const r=await fetch('data/dk-line-history.json?ts='+Date.now(),{cache:'no-store'});
-   if(r.ok){const j=await r.json();archivedDkQuotes=Array.isArray(j.rows)?j.rows:[];}
-  }catch(e){console.warn('Archived DK lines unavailable',e);}
-  // Join public DraftKings odds snapshot to research rows by player + full-game market.
-  // A missing quote remains missing; never invent a line or betting edge.
-  try{
-   const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});
-   if(r.ok){
-    const data=await r.json();
-    const keys={'Passing yards':['player_pass_yds','player_passing_yards'],'Rushing yards':['player_rush_yds','player_rushing_yards'],'Receiving yards':['player_rec_yds','player_receiving_yards']};
-    const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/(?:\s|\.)+(?:jr|junior|sr|senior|ii|iii|iv|v)\.?$/i,'').replace(/[^a-z0-9]/gi,'');
-    const byKey=new Map();
-    const snapshotTime=Date.parse(data.generated_at_utc||'');
-    for(const x of (data.rows||[])){
-     const update=Date.parse(x.last_update||'');
-     if(!x.player||!x.market_key||!Number.isFinite(Number(x.line))||!Number.isFinite(update)||update>Date.now()+300000)continue;
-     const key=norm(x.player)+'|'+x.market_key;
-     if(!byKey.has(key))byKey.set(key,[]);
-     byKey.get(key).push(x);
-    }
-    for(const x of playerResearch){
-     const candidates=(keys[x.market]||[]).flatMap(key=>byKey.get(norm(x.player)+'|'+key)||[]);
-     const aliases={'ARI':'Arizona Cardinals','ATL':'Atlanta Falcons','BAL':'Baltimore Ravens','BUF':'Buffalo Bills','CAR':'Carolina Panthers','CHI':'Chicago Bears','CIN':'Cincinnati Bengals','CLE':'Cleveland Browns','DAL':'Dallas Cowboys','DEN':'Denver Broncos','DET':'Detroit Lions','GB':'Green Bay Packers','HOU':'Houston Texans','IND':'Indianapolis Colts','JAX':'Jacksonville Jaguars','JAC':'Jacksonville Jaguars','KC':'Kansas City Chiefs','LV':'Las Vegas Raiders','LAC':'Los Angeles Chargers','LA':'Los Angeles Rams','LAR':'Los Angeles Rams','MIA':'Miami Dolphins','MIN':'Minnesota Vikings','NE':'New England Patriots','NO':'New Orleans Saints','NYG':'New York Giants','NYJ':'New York Jets','PHI':'Philadelphia Eagles','PIT':'Pittsburgh Steelers','SF':'San Francisco 49ers','SEA':'Seattle Seahawks','TB':'Tampa Bay Buccaneers','TEN':'Tennessee Titans','WAS':'Washington Commanders'};
-     const team=t=>norm(aliases[String(t||'').toUpperCase()]||t);
-     const sameTeam=q=>[q.home_team,q.away_team].some(t=>team(t)===team(x.team));
-     const sameOpponent=q=>[q.home_team,q.away_team].some(t=>team(t)===team(x.opponent));
-     const matched=candidates.filter(q=>sameTeam(q)&&sameOpponent(q)).sort((a,b)=>Date.parse(b.last_update)-Date.parse(a.last_update));
-     if(!matched.length)continue;
-     const q=matched[0];
-     x.dk_line=Number(q.line);x.dk_over_price=q.over_price;x.dk_under_price=q.under_price;x.dk_source='DraftKings via ParlayAPI';x.dk_quote_time=q.last_update;x.dk_quote_stale=Date.now()-Date.parse(q.last_update)>3*3600000;
-    }
-   }
-  }catch(e){}
+  dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...lockedPregameDkQuotes,...countDkQuotes]);
   try{const h=await fetch('data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
   try{
    const response=await fetch('data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
@@ -655,6 +620,8 @@ renderParlays();
    const stamp=new Date(d.generated_at_utc);
    if(!Array.isArray(d.games)||!Number.isFinite(stamp.getTime())||Date.now()-stamp.getTime()>120*3600000){forecasts=[];return;}
    forecasts=d.games.filter(g=>Number.isFinite(Number(g.projected_home_score))&&Number.isFinite(Number(g.projected_away_score)));
+   const starts=new Map(d.games.map(g=>[g.game_id,g.kickoff_utc]));
+   playerResearch=playerResearch.map(x=>withSavedLine(x,starts.get(x.game_id)));
    // Do not mix projections from different season/week snapshots. These feeds
    // have distinct models but must describe the same target slate.
    const matchesSlate=feed=>feed&&Number(feed.season)===Number(d.season)&&Number(feed.week)===Number(d.week);
@@ -737,7 +704,9 @@ function fdOpenMatchup(g){
  const stats=isFinal&&!p?'<div class="fd-modal-section"><h3>Completed game</h3><div class="fd-modal-grid"><div class="fd-modal-stat"><b>'+esc(away)+'</b><strong>'+esc(g.away.score??'—')+'</strong><small>Final score</small></div><div class="fd-modal-stat"><b>'+esc(home)+'</b><strong>'+esc(g.home.score??'—')+'</strong><small>Final score</small></div></div><p class="fd-modal-muted">Historical team ranks and pregame scoring averages were not saved for this matchup. Open Game recap on the scoreboard for actual team statistics.</p></div>':(matchupPanel||'');
  const impact=p?.injury_adjustments?Object.entries(p.injury_adjustments).map(([t,v])=>esc(t)+': '+num(v.points)+' points ('+esc(v.status||'unknown')+')').join(' · '):'No confirmed injury adjustment for this game';
  const injury='<div class="fd-modal-section" data-modal-game-card-injuries data-game-id="'+esc(g.id)+'"><h3>Injuries and model impact</h3><p class="fd-modal-muted">Loading ESPN game-card injury report…</p></div>';
- const players=(isFinal?[]:playerResearch).filter(x=>[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))&&!unavailablePlayer(x));
+ const started=isFinal||g.state==='in'||Date.now()>=Date.parse(g.date);
+ const archivedPlayers=started?frozenPlayers(g):[];
+ const players=started?archivedPlayers:playerResearch.filter(x=>x.game_id===p?.game_id&&!unavailablePlayer(x));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const fdProjectionReliability=(x,sim)=>{
@@ -822,14 +791,8 @@ function fdOpenMatchup(g){
  const countLabels={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
  const countRows=(!isFinal&&Number.isFinite(Date.parse(g.date))&&Date.now()<Date.parse(g.date))
   ?fdCountPropRows(g).map(x=>({...x,stat_key:x.market_key,dk_line:x.line,last_5_avg:x.last5}))
-  :playerHistory.filter(x=>{
-    const kick=Date.parse(g.date),capture=Date.parse(x.forecast_captured_at_utc),savedKick=Date.parse(x.kickoff_utc);
-    return countLabels[x.stat_key]&&[away,home].includes(canon(x.team))&&[away,home].includes(canon(x.opponent))
-      &&Number.isFinite(kick)&&Number.isFinite(capture)&&capture<kick
-      &&Number.isFinite(savedKick)&&Math.abs(savedKick-kick)<3600000
-      &&x.dk_line!==null&&x.dk_line!==undefined&&x.dk_line!==''&&Number.isFinite(Number(x.dk_line))
-      &&x.projection!==null&&x.projection!==undefined&&x.projection!==''&&Number.isFinite(Number(x.projection));
-   }).map(x=>({...x,market:countLabels[x.stat_key]}));
+  :archivedPlayers.map(x=>({...x,stat_key:dkIndex.market(x.market_key||x.stat_key)}))
+    .filter(x=>countLabels[x.stat_key]).map(x=>({...x,market:countLabels[x.stat_key]}));
  const countKeys=new Set();
  const extraCountCards=countRows.filter(x=>{
   const key=String(x.player).toLowerCase()+'|'+x.stat_key;
@@ -889,33 +852,10 @@ function fdOpenMatchup(g){
   gameKey:p?.game_id||'',
   // During and after kickoff, only timestamped pregame forecast snapshots are eligible.
   // No current model refresh or in-game market line can overwrite these values.
-  projections:(()=>{
-   const kickoff=Date.parse(g.date);
-   const records=playerHistory.filter(x=>{
-    const captured=Date.parse(x.forecast_captured_at_utc),savedKickoff=Date.parse(x.kickoff_utc);
-    return [home,away].includes(canon(x.team))&&[home,away].includes(canon(x.opponent))
-     &&Number.isFinite(kickoff)&&Number.isFinite(captured)&&captured<kickoff
-     &&Number.isFinite(savedKickoff)&&Math.abs(savedKickoff-kickoff)<3600000;
-   });
-   return records.map(x=>({player:x.player,team:canon(x.team),market:x.stat_key,
-    projection:x.projection,dk_line:hasDkLine(x)?x.dk_line:null,
-    pregame:true,quote_time:x.dk_quote_time,captured_at:x.forecast_captured_at_utc}));
-  })(),
-  quotes:(()=>{
-   const teamNames={ARI:'Arizona Cardinals',ATL:'Atlanta Falcons',BAL:'Baltimore Ravens',BUF:'Buffalo Bills',CAR:'Carolina Panthers',CHI:'Chicago Bears',CIN:'Cincinnati Bengals',CLE:'Cleveland Browns',DAL:'Dallas Cowboys',DEN:'Denver Broncos',DET:'Detroit Lions',GB:'Green Bay Packers',HOU:'Houston Texans',IND:'Indianapolis Colts',JAC:'Jacksonville Jaguars',KC:'Kansas City Chiefs',LV:'Las Vegas Raiders',LAC:'Los Angeles Chargers',LAR:'Los Angeles Rams',MIA:'Miami Dolphins',MIN:'Minnesota Vikings',NE:'New England Patriots',NO:'New Orleans Saints',NYG:'New York Giants',NYJ:'New York Jets',PHI:'Philadelphia Eagles',PIT:'Pittsburgh Steelers',SF:'San Francisco 49ers',SEA:'Seattle Seahawks',TB:'Tampa Bay Buccaneers',TEN:'Tennessee Titans',WAS:'Washington Commanders'};
-   const norm=x=>String(x||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
-   const gameTeams=new Set([norm(teamNames[home]||home),norm(teamNames[away]||away)]);
-   const kickoff=new Date(g.date).getTime();
-   const valid=lockedPregameDkQuotes.filter(q=>{
-    const t=Date.parse(q.commence_time),updated=Date.parse(q.last_update);
-    return Number.isFinite(kickoff)&&Number.isFinite(t)&&Math.abs(t-kickoff)<12*3600000
-     &&Number.isFinite(updated)&&updated<t&&Number.isFinite(Number(q.line))
-     &&gameTeams.has(norm(q.home_team))&&gameTeams.has(norm(q.away_team))
-     &&norm(q.home_team)!==norm(q.away_team);
-   });
-   const quotes=valid.map(q=>({player:q.player,team:'',market:q.market_key,line:Number(q.line),last_update:q.last_update,pregame:true}));
-   return quotes;
-  })()
+  projections:archivedPlayers.map(x=>({player:x.player,team:canon(x.team),market:countLabels[dkIndex.market(x.market_key)]?dkIndex.market(x.market_key):x.stat_key,
+    projection:x.projection,dk_line:x.dk_line,pregame:true,quote_time:x.dk_quote_time,captured_at:x.forecast_captured_at_utc})),
+  quotes:[]
+
  };
  const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
  const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No eligible player projections are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
@@ -1432,33 +1372,28 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
  function beatableDkLine(x){
   return hasDkLine(x)&&Number.isFinite(Number(x.projection))&&Math.abs(Number(x.projection)-Number(x.dk_line))>=Math.max(3,Number(x.dk_line)*0.05);
  }
- function applyArchivedDkLines(g){
-  const kickoff=Date.parse(g.date||'');
-  if(!Number.isFinite(kickoff))return;
-  const norm=n=>String(n||'').toLowerCase().replace(/[^a-z0-9]/g,'');
-  const market={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
-  const teams=[canon(g.away.abbr),canon(g.home.abbr)];
-  for(const x of playerHistory){
-   if(hasDkLine(x)||!market[x.stat_key]||!teams.includes(canon(x.team))||!teams.includes(canon(x.opponent)))continue;
-   // Require same matchup and, when stored, the same kickoff.
-   if(x.kickoff_utc&&Math.abs(Date.parse(x.kickoff_utc)-kickoff)>3600000)continue;
-   const matches=archivedDkQuotes.filter(q=>q.player&&norm(q.player)===norm(x.player)&&q.market_key===market[x.stat_key]&&Number.isFinite(Date.parse(q.commence_time))&&Math.abs(Date.parse(q.commence_time)-kickoff)<=3600000&&Number.isFinite(Date.parse(q.last_update))&&Date.parse(q.last_update)<=kickoff&&q.line!==null&&q.line!==undefined&&Number(q.line)>0);
-   if(!matches.length)continue;
-   matches.sort((a,b)=>Date.parse(b.last_update)-Date.parse(a.last_update));
-   x.dk_line=Number(matches[0].line);
-   x.dk_quote_time=matches[0].last_update;
+ function withSavedLine(row,kickoff){
+  const q=dkIndex?.find(row,kickoff);
+  const old=Date.parse(row.dk_quote_time),kick=Date.parse(kickoff);
+  if(hasDkLine(row)&&old<kick&&old<=Date.now()&&(!q||old>=q.last_update))return row;
+  if(!q)return {...row,dk_line:null,dk_quote_time:null};
+  return {...row,dk_line:q.line,dk_quote_time:new Date(q.last_update).toISOString(),dk_source:q.source_provider||'DraftKings',
+   dk_quote_stale:Date.now()<kick&&Date.now()-q.last_update>3*3600000,dk_over_price:q.over_price,dk_under_price:q.under_price};
+ }
+ function frozenPlayers(g){
+  const kickoff=Date.parse(g.date),teams=[canon(g.away.abbr),canon(g.home.abbr)];
+  const selected=new Map();
+  for(const row of playerHistory){
+   if(Date.parse(row.kickoff_utc)!==kickoff||!teams.includes(canon(row.team))||!teams.includes(canon(row.opponent))||
+      !(Date.parse(row.forecast_captured_at_utc)<kickoff)||row.team===row.opponent)continue;
+   const key=[row.game_id,row.player_id||FDDraftKings.name(row.player),dkIndex?.market(row.market_key||row.stat_key)].join('|');
+   const old=selected.get(key),time=Date.parse(row.forecast_captured_at_utc);
+   if(!old||time>Date.parse(old.forecast_captured_at_utc)||(time===Date.parse(old.forecast_captured_at_utc)&&Date.parse(row.dk_quote_time)>(Date.parse(old.dk_quote_time)||0)))selected.set(key,row);
   }
+  return [...selected.values()].map(row=>withSavedLine(row,g.date));
  }
  function completedPlayerPanel(g){
-  applyArchivedDkLines(g);
-  const kickoff=Date.parse(g.date);
-  const rows=playerHistory.filter(x=>validArchivedYardForecast(x)&&hasDkLine(x)
-   &&Number.isFinite(Date.parse(x.forecast_captured_at_utc))
-   &&Date.parse(x.forecast_captured_at_utc)<kickoff
-   &&Number.isFinite(Date.parse(x.kickoff_utc))
-   &&Math.abs(Date.parse(x.kickoff_utc)-kickoff)<3600000
-   &&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.team))
-   &&[canon(g.home.abbr),canon(g.away.abbr)].includes(canon(x.opponent)));
+  const rows=frozenPlayers(g).filter(x=>validArchivedYardForecast(x)&&hasDkLine(x));
   if(!rows.length)return '<div class="fd-no-projection">No verified pregame projection and DK line were archived for this game.</div>';
   return '<details class="fd-props fd-player-results" data-game-id="'+esc(g.id)+'" data-home="'+esc(g.home.abbr)+'" data-away="'+esc(g.away.abbr)+'"><summary>Pregame projection results · '+rows.length+' forecasts</summary><div class="fd-props-body">Open to compare projected and actual yards.</div></details>';
  }
@@ -1655,15 +1590,8 @@ function fdTopModelSignals(p){
 function fdCountPropRows(g){
  const away=canon(g.away.abbr),home=canon(g.home.abbr);
  const markets={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
- const normName=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/(?:\s|\.)+(?:jr|junior|sr|senior|ii|iii|iv|v)\.?$/i,'').replace(/[^a-z0-9]/gi,'');
- const aliases={ARI:'Arizona Cardinals',ATL:'Atlanta Falcons',BAL:'Baltimore Ravens',BUF:'Buffalo Bills',CAR:'Carolina Panthers',CHI:'Chicago Bears',CIN:'Cincinnati Bengals',CLE:'Cleveland Browns',DAL:'Dallas Cowboys',DEN:'Denver Broncos',DET:'Detroit Lions',GB:'Green Bay Packers',HOU:'Houston Texans',IND:'Indianapolis Colts',JAX:'Jacksonville Jaguars',JAC:'Jacksonville Jaguars',KC:'Kansas City Chiefs',LV:'Las Vegas Raiders',LAC:'Los Angeles Chargers',LA:'Los Angeles Rams',LAR:'Los Angeles Rams',MIA:'Miami Dolphins',MIN:'Minnesota Vikings',NE:'New England Patriots',NO:'New Orleans Saints',NYG:'New York Giants',NYJ:'New York Jets',PHI:'Philadelphia Eagles',PIT:'Pittsburgh Steelers',SF:'San Francisco 49ers',SEA:'Seattle Seahawks',TB:'Tampa Bay Buccaneers',TEN:'Tennessee Titans',WAS:'Washington Commanders'};
- const teamKey=x=>normName(aliases[canon(x)]||x);
- const teamSet=new Set([teamKey(away),teamKey(home)]);
- const gameQuotes=countDkQuotes.filter(q=>markets[q.market_key]&&q.player&&q.line!=null&&q.line!==''&&Number.isFinite(Number(q.line))&&teamSet.has(teamKey(q.home_team))&&teamSet.has(teamKey(q.away_team))&&teamKey(q.home_team)!==teamKey(q.away_team));
- const quoteIndex=new Map();
- for(const q of gameQuotes){const key=normName(q.player)+'|'+q.market_key;const old=quoteIndex.get(key);if(!old||Date.parse(q.last_update)>Date.parse(old.last_update))quoteIndex.set(key,q);}
- const rows=countProps.filter(p=>markets[p.market_key]&&teamSet.has(teamKey(p.team))&&teamSet.has(teamKey(p.opponent))&&teamKey(p.team)!==teamKey(p.opponent)&&Number.isFinite(Number(p.projection))).map(p=>({p,q:quoteIndex.get(normName(p.player)+'|'+p.market_key)})).filter(x=>x.q);
-
+ const rows=countProps.filter(p=>markets[p.market_key]&&[away,home].includes(canon(p.team))&&[away,home].includes(canon(p.opponent)))
+   .map(p=>({p,q:dkIndex?.find(p,g.date)})).filter(x=>x.q);
  return rows.map(({p,q})=>({player:p.player,team:p.team,opponent:p.opponent,market_key:p.market_key,market:markets[p.market_key],projection:Number(p.projection),line:Number(q.line),last5:p.last_5_avg??p.last5_avg??null}));
 }
 function fdMarketFilterControl(g,scope){

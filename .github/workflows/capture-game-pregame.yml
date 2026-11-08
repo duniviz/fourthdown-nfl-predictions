@@ -1,72 +1,29 @@
-name: Capture official pregame DraftKings game lines
-'on':
-  workflow_dispatch: {}
+name: Capture pregame projections and DraftKings lines
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Publish weekly v2 forecasts, Publish count prop projections]
+    types: [completed]
   schedule:
-    # GitHub Actions UTC schedule; actual kickoff times are UTC-aware.
-    - cron: '*/5 * * * *'
+    - cron: '7,22,37,52 * * * *'
 permissions:
   contents: write
 concurrency:
-  group: official-pregame-capture
+  group: pregame-pipeline
   cancel-in-progress: false
 jobs:
   capture:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Check slate refresh window
-        id: guard
-        shell: bash
-        run: |
-          if python -m live.pregame_capture_guard --mode refresh --slate-only; then
-            echo "refresh=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "refresh=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Fetch verified DraftKings spreads and totals
-        if: steps.guard.outputs.refresh == 'true'
+          python-version: '3.12'
+      - name: Save and refresh pregame snapshots
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
-        run: python -m live.dk_game_refresh
-      - name: Save pregame forecast and DK observations
-        if: steps.guard.outputs.refresh == 'true'
-        run: python -m live.game_pregame_observations
-      - name: Mark refreshed slate
-        if: steps.guard.outputs.refresh == 'true'
-        run: python -m live.pregame_capture_guard --mark --slate-only
-      - name: Check T-15 lock window
-        id: lock_guard
-        shell: bash
-        run: |
-          if python -m live.pregame_capture_guard --mode lock; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Freeze official 15-minute testing lines and projections
-        if: steps.lock_guard.outputs.run == 'true'
-        run: python -m live.game_official_pregame_locks
-      - name: Commit captured data
-        if: steps.guard.outputs.refresh == 'true' || steps.lock_guard.outputs.run == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # The slate marker is created only when a refresh is due. A T-15
-          # lock-only run must not fail just because that file is absent.
-          for file in data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/dk-slate-refreshes.json; do
-            if test -f "$file"; then git add -f -- "$file"; fi
-          done
-          if ! git diff --cached --quiet; then
-            git commit -m "Capture pregame DraftKings game snapshot [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
-      - name: Verify official lock after kickoff
-        if: always()
-        run: python -m live.verify_game_pregame_locks
+          SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+        run: python -m live.pregame_cycle

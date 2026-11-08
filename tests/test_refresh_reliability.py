@@ -19,9 +19,9 @@ class RefreshReliabilityTests(unittest.TestCase):
 
     def test_pregame_locks_are_not_queued_behind_forecasts(self):
         capture=(ROOT/'.github/workflows/capture-game-pregame.yml').read_text()
-        self.assertIn('group: official-pregame-capture',capture)
-        self.assertIn('pregame_capture_guard --mode refresh --slate-only',capture)
-        self.assertIn('pregame_capture_guard --mark --slate-only',capture)
+        self.assertIn('group: pregame-pipeline',capture)
+        self.assertIn('python -m live.pregame_cycle',capture)
+        self.assertIn('timeout-minutes: 340',capture)
         self.assertNotIn('freeze_pregame_game_challengers',capture)
 
     def test_homepage_displays_actual_feed_timestamps(self):

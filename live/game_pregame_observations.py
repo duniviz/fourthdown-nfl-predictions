@@ -51,6 +51,9 @@ def collect(forecasts, odds, existing, now):
         observed, quote = match
         spread, total = number(quote.get("home_spread")), number(quote.get("total"))
         margin, projected_total = number(g.get("projected_margin_home")), number(g.get("projected_total"))
+        ages=[dt(quote.get(k+"_last_verified_at_utc")) or observed for k,v in (("home_spread",spread),("total",total)) if v is not None]
+        if ages:
+            observed=min(ages)
         if margin is None or projected_total is None or (spread is None and total is None):
             continue
         key = (str(g.get("game_id")), forecast_at.isoformat(), observed.isoformat())
@@ -65,8 +68,9 @@ def collect(forecasts, odds, existing, now):
             "predicted_winner": g.get("predicted_winner"),
             "projected_margin_home": margin, "projected_total": projected_total,
             "dk_home_spread": spread, "dk_total": total,
-            "source": "DraftKings via ParlayAPI"
+            "source": quote.get("source_provider") or "DraftKings"
         })
+        saved[-1].update({k:g[k] for k in ("projected_home_score","projected_away_score") if k in g})
         seen.add(key)
     return saved
 

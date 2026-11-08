@@ -9,11 +9,10 @@ from pathlib import Path
 MARKETS={"passing_yards":{"player_pass_yds","player_passing_yards"},
          "rushing_yards":{"player_rush_yds","player_rushing_yards"},
          "receiving_yards":{"player_rec_yds","player_receiving_yards"}}
-TEAMS={"ARI":"Arizona Cardinals","ATL":"Atlanta Falcons","BAL":"Baltimore Ravens","BUF":"Buffalo Bills","CAR":"Carolina Panthers","CHI":"Chicago Bears","CIN":"Cincinnati Bengals","CLE":"Cleveland Browns","DAL":"Dallas Cowboys","DEN":"Denver Broncos","DET":"Detroit Lions","GB":"Green Bay Packers","HOU":"Houston Texans","IND":"Indianapolis Colts","JAC":"Jacksonville Jaguars","JAX":"Jacksonville Jaguars","KC":"Kansas City Chiefs","LV":"Las Vegas Raiders","LAC":"Los Angeles Chargers","LA":"Los Angeles Rams","MIA":"Miami Dolphins","MIN":"Minnesota Vikings","NE":"New England Patriots","NO":"New Orleans Saints","NYG":"New York Giants","NYJ":"New York Jets","PHI":"Philadelphia Eagles","PIT":"Pittsburgh Steelers","SF":"San Francisco 49ers","SEA":"Seattle Seahawks","TB":"Tampa Bay Buccaneers","TEN":"Tennessee Titans","WAS":"Washington Commanders"}
-def norm(x):
-    return re.sub(r"[^a-z0-9]","",re.sub(r"(?:\\s|\\.)+(?:jr|junior|sr|senior|ii|iii|iv|v)\\.?$", "",str(x or "").lower()))
-def team(x):
-    return norm(TEAMS.get(str(x or "").upper(),x))
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from live.dk_identity import norm, team
+
 def timestamp(x):
     try:
         return datetime.fromisoformat(str(x).replace("Z","+00:00")).astimezone(timezone.utc)
@@ -43,6 +42,8 @@ def match(players,odds,now,max_age_hours=3):
             if q.get("market_key") not in MARKETS.get(p.get("market"),set()): continue
             if not same_name(p.get("player_name"),q.get("player")): continue
             if {team(q.get("home_team")),team(q.get("away_team"))}!={team(p.get("team")),team(p.get("opponent"))}: continue
+            kickoff=timestamp(q.get("commence_time")) if q.get("commence_time") else None
+            if kickoff and (now>=kickoff or (p.get("kickoff_utc") and kickoff!=timestamp(p["kickoff_utc"]))): continue
             try:
                 line=float(q["line"])
             except (TypeError,ValueError,KeyError):

@@ -26,8 +26,9 @@ class ArchiveTest(unittest.TestCase):
                 (archive.ROOT/name).write_text(json.dumps(obj))
             def projections(selected):
                 return {"generated_at_utc":forecast,"players":[
-                    {"game_id":"2026_08_KC_DEN","player":"Test Player","player_id":"00-TEST-1","team":"KC",
+                    {"game_id":"2026_08_KC_DEN","player":"Test Player","player_id":"00-TEST-1","team":"KC","opponent":"DEN",
                      "market_key":market,"projection":proj} for market,proj,line in selected]}
+            write("live-v2.json",{"games":[{"game_id":"2026_08_KC_DEN","kickoff_utc":kickoff}]})
             write("count-projections.json",projections(markets[3:]))
             write("player-research.json",projections(markets[:3]))
             write("dk-odds.json",{"bookmaker":"draftkings","rows":[

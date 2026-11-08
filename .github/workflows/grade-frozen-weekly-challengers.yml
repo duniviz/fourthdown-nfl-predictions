@@ -20,6 +20,10 @@ jobs:
         run: python -m compileall -q research scripts live tools
       - name: Verify exact same-game grading safety
         run: python -m unittest discover -s tests -p 'test_paired_game_grading.py' -v
+      - name: Import archived production forecasts
+        run: |
+          python -m research.import_official_game_locks
+          python -m research.import_player_locks
       - name: Grade only frozen pre-kickoff challenger predictions against verified actuals
         run: python research/grade_weekly_shadow_models.py
       - name: Grade game scoring lines and yardage ML against verified finals

@@ -8,6 +8,8 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from live.dk_identity import quote_key
 ROOT = Path(__file__).resolve().parents[1] / "data"
 BASE = "https://parlay-api.com/v1/sports/americanfootball_nfl"
 KEY = os.environ.get("PARLAY_API_KEY")
@@ -21,6 +23,8 @@ def request(endpoint, **params):
     url = BASE + endpoint + "?" + urlencode(params)
     with urlopen(Request(url, headers={"X-API-Key": KEY, "User-Agent":"FOURTHDOWN/1.0"}), timeout=45) as response:
         data = json.load(response)
+    if isinstance(data, dict):
+        data = next((data[k] for k in ("data","props","events","results","rows") if isinstance(data.get(k),list)), None)
     if not isinstance(data, list):
         raise ValueError("Unexpected ParlayAPI response shape for " + endpoint)
     return data
@@ -42,7 +46,7 @@ def load(filename, fallback):
     try:
         value = json.loads(target.read_text(encoding="utf-8"))
         return value if isinstance(value, dict) else fallback
-    except (OSError, json.JSONDecodeError):
+    except FileNotFoundError:
         return fallback
 
 def opening_key(row, fields):
@@ -55,9 +59,8 @@ def merge_player_quotes(previous, incoming, now):
     O/U markets offer one line that can move. Never treat these as equivalent.
     """
     def identity(row):
-        fields = ("player", "market_key", "home_team", "away_team", "commence_time")
-        key = tuple(str(row.get(field) or "").strip().lower() for field in fields)
-        market = key[1]
+        key = quote_key(row)
+        market = key[1] or ""
         if "milestone" in market or "to_record_x+" in market:
             key += (str(row.get("line")),)
         return key
@@ -70,7 +73,7 @@ def merge_player_quotes(previous, incoming, now):
             return None
 
     def usable(row):
-        if not isinstance(row, dict):
+        if not isinstance(row, dict) or row.get("bookmaker","draftkings") != "draftkings" or isinstance(row.get("line"),bool):
             return False
         if str(row.get("market_key", "")).lower().endswith("_spread"):
             return False
@@ -133,28 +136,18 @@ def capture_game_history(game_rows, now):
     history["updated_at_utc"] = now
     return history
 
-def main():
+def main(props_only=None):
     if not KEY:
         raise SystemExit("PARLAY_API_KEY GitHub Actions secret required")
     now = dt.datetime.now(dt.timezone.utc).isoformat()
     # The official T-15 game capture owns game odds. Avoid a second paid game request.
-    props_only = "--props-only" in sys.argv
-    events = [] if props_only else request("/odds", regions="us", markets="h2h,spreads,totals", bookmakers="draftkings", oddsFormat="american", dateFormat="iso")
+    if props_only is None:
+        props_only = "--props-only" in sys.argv
+    if not props_only:
+        from live.dk_game_refresh import main as refresh_games
+        refresh_games()
     props = request("/props", bookmakers="draftkings", limit=10000)
     game_rows = []
-    for e in events:
-        home, away = e.get("home_team"), e.get("away_team")
-        if home not in ABBR or away not in ABBR:
-            continue
-        books = [b for b in e.get("bookmakers", []) if b.get("key") == "draftkings"]
-        markets = {m.get("key"):m for b in books for m in b.get("markets", [])}
-        def outcome(market, name, field):
-            return next((o.get(field) for o in markets.get(market, {}).get("outcomes", []) if o.get("name") == name), None)
-        spread = outcome("spreads", home, "point")
-        total = outcome("totals", "Over", "point")
-        if spread is None and total is None:
-            continue
-        game_rows.append({"game_id":e.get("id"),"home":ABBR[home],"away":ABBR[away],"home_team":home,"away_team":away,"commence_time":e.get("commence_time"),"bookmaker":"draftkings","home_spread":spread,"total":total,"moneyline":markets.get("h2h", {}).get("outcomes", []),"updated_at_utc":now})
     prop_rows = []
     for p in props:
         if p.get("bookmaker") != "draftkings" or not p.get("player") or not p.get("market_key"):
@@ -186,11 +179,6 @@ def main():
     # Never overwrite valid published snapshots with an empty or partial provider response.
     # Publish each market family independently. A missing game market must not
     # prevent valid player quotes from updating (or vice versa).
-    if game_rows:
-        save("dk-game-odds.json", {"source":"ParlayAPI","bookmaker":"draftkings","snapshot_date_utc":now,"games":game_rows})
-        save("dk-game-line-history.json", capture_game_history(game_rows, now))
-    elif not props_only:
-        print("WARNING: No DraftKings spreads/totals from provider; retaining last verified game snapshot")
     if prop_rows:
         previous = load("dk-odds.json", {}).get("rows", [])
         retained = merge_player_quotes(previous, prop_rows, dt.datetime.now(dt.timezone.utc))
@@ -200,7 +188,7 @@ def main():
     else:
         print("WARNING: No DraftKings player quotes from provider; retaining last verified prop snapshot")
     if game_rows or prop_rows:
-        save("dk-opening-odds.json", capture_openings(game_rows, prop_rows, now))
+        save("dk-opening-odds.json", capture_openings(game_rows, merge_player_quotes([],prop_rows,dt.datetime.now(dt.timezone.utc)), now))
     else:
         raise SystemExit("No DraftKings game or player markets returned; preserving prior data")
     print(f"ParlayAPI refreshed {len(game_rows)} games, {len(prop_rows)} player quotes")
