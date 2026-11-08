@@ -57,7 +57,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/dk-slate-refreshes.json
+          # The slate marker is created only when a refresh is due. A T-15
+          # lock-only run must not fail just because that file is absent.
+          for file in data/dk-game-odds.json data/dk-game-line-history.json data/game-pregame-observations.json data/game-official-pregame-locks.json data/dk-slate-refreshes.json; do
+            if test -f "$file"; then git add -f -- "$file"; fi
+          done
           if ! git diff --cached --quiet; then
             git commit -m "Capture pregame DraftKings game snapshot [skip ci]"
             git reset --hard HEAD
