@@ -10,7 +10,10 @@
   nav.className = "fd-app-nav";
   nav.setAttribute("aria-label", "Primary mobile navigation");
   nav.innerHTML = items.map(item => {
-    const active = item.paths.includes(path);
+    // GitHub Pages serves this project below /fourthdown-nfl-predictions/.
+    // Match page suffixes so navigation state works at both the domain root
+    // and the repository's deployed subpath.
+    const active = item.paths.some(page => path === page || path.endsWith(page));
     return `<a href="${item.href}"${active ? ' aria-current="page"' : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${item.icon}"/></svg><span>${item.label}</span></a>`;
   }).join("");
   document.body.append(nav);
