@@ -108,19 +108,31 @@ jobs:
       - name: Audit player projections and flag suspicious workloads
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.projection_audit
-      - name: Fetch DraftKings NFL props from ParlayAPI
+      # The dedicated 7:05 PM odds workflow handles no-game evenings.
+      # Avoid a second paid DK request during the nightly forecast publish.
+      - name: Avoid duplicate no-game evening DK requests
+        id: dk_dedup
         if: steps.schedule_guard.outputs.run == 'true'
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17,43 0,1 * * *" ]] && python scripts/check_pregame_kickoff_window.py --no-game-evening; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fetch DraftKings NFL props from ParlayAPI
+        if: steps.schedule_guard.outputs.run == 'true' && steps.dk_dedup.outputs.skip != 'true'
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_odds
       - name: Archive DraftKings line movement
-        if: steps.schedule_guard.outputs.run == 'true'
+        if: steps.schedule_guard.outputs.run == 'true' && steps.dk_dedup.outputs.skip != 'true'
         run: python -m live.line_history
       - name: Lock latest pregame player cards with verified DraftKings lines
         if: steps.schedule_guard.outputs.run == 'true'
         run: python -m live.lock_pregame_props
       - name: Refresh verified DraftKings game spreads and totals
-        if: steps.schedule_guard.outputs.run == 'true'
+        if: steps.schedule_guard.outputs.run == 'true' && steps.dk_dedup.outputs.skip != 'true'
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_game_refresh
