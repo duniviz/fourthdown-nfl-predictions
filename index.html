@@ -1385,12 +1385,28 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
  function frozenPlayers(g){
   const kickoff=Date.parse(g.date),teams=[canon(g.away.abbr),canon(g.home.abbr)];
   const selected=new Map();
+  const keyFor=row=>[row.game_id,row.player_id||FDDraftKings.name(row.player),dkIndex?.market(row.market_key||row.stat_key)].join('|');
+  // Prefer the immutable lock/archive when present.
   for(const row of playerHistory){
    if(Date.parse(row.kickoff_utc)!==kickoff||!teams.includes(canon(row.team))||!teams.includes(canon(row.opponent))||
       !(Date.parse(row.forecast_captured_at_utc)<kickoff)||row.team===row.opponent)continue;
-   const key=[row.game_id,row.player_id||FDDraftKings.name(row.player),dkIndex?.market(row.market_key||row.stat_key)].join('|');
-   const old=selected.get(key),time=Date.parse(row.forecast_captured_at_utc);
+   const key=keyFor(row),old=selected.get(key),time=Date.parse(row.forecast_captured_at_utc);
    if(!old||time>Date.parse(old.forecast_captured_at_utc)||(time===Date.parse(old.forecast_captured_at_utc)&&Date.parse(row.dk_quote_time)>(Date.parse(old.dk_quote_time)||0)))selected.set(key,row);
+  }
+  // A missed archive must not erase a valid forecast already published before kickoff.
+  // Use only the feed's own generation timestamp and pre-kick quotes; never reconstruct from live or final data.
+  const feedCaptured=Date.parse(playerFeed?.generated_at_utc||'');
+  const gameKey=String(getProjection(g)?.game_id||'');
+  if(Number.isFinite(feedCaptured)&&feedCaptured<kickoff&&gameKey){
+   const supported=new Set(['passing_yards','rushing_yards','receiving_yards','player_pass_completions','player_rush_attempts','player_receptions']);
+   for(const row of playerResearch){
+    if(String(row.game_id)!==gameKey||!teams.includes(canon(row.team))||!teams.includes(canon(row.opponent))||
+       !supported.has(String(row.stat_key))||row.team===row.opponent)continue;
+    const key=keyFor(row);
+    if(selected.has(key))continue;
+    selected.set(key,{...row,kickoff_utc:g.date,forecast_captured_at_utc:new Date(feedCaptured).toISOString(),
+      pregame_feed_fallback:true});
+   }
   }
   return [...selected.values()].map(row=>withSavedLine(row,g.date));
  }
