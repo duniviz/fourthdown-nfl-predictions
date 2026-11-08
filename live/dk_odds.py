@@ -97,12 +97,20 @@ def fetch():
         "generated_at_utc": now.isoformat(),
         "rows": sorted(by_key.values(), key=lambda x: (str(x.get("commence_time")), str(x.get("player")), str(x.get("market_key"))))
     }, indent=2) + "\n", encoding="utf-8")
+    # Retain last genuine pregame quote for an exact player/market/matchup
+    # when the provider omits it. Do not promote a stale quote to fresh.
+    from tools.refresh_parlayapi_odds import merge_player_quotes
+    try:
+        previous = json.loads(OUT.read_text(encoding="utf-8")).get("rows", [])
+    except (OSError, ValueError, AttributeError):
+        previous = []
+    merged = merge_player_quotes(previous, cleaned, now)
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps({
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "source": "ParlayAPI", "bookmaker": "draftkings", "rows": cleaned
+        "source": "ParlayAPI", "bookmaker": "draftkings", "rows": merged
     }, indent=2) + "\n", encoding="utf-8")
-    print(f"Published {len(cleaned)} DraftKings NFL prop rows")
+    print(f"Published {len(merged)} DraftKings NFL prop rows; {len(merged)-len(cleaned)} net retained/merged rows")
 
 if __name__ == "__main__":
     fetch()
