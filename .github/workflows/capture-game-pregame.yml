@@ -1,6 +1,9 @@
 name: Capture pregame projections and DraftKings lines
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/capture-game-pregame.yml']
   workflow_run:
     workflows: [Publish weekly v2 forecasts, Publish count prop projections]
     types: [completed]
