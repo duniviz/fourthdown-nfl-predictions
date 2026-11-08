@@ -63,6 +63,67 @@ def player_name(event, odd):
             return names.get("long") or names.get("full") or p.get("name")
     return None
 
+def merge_game_quotes(existing, updates, now, stale_after=dt.timedelta(minutes=30)):
+    """Merge verified backup markets only when the current market is missing or stale."""
+    indexed={}
+    for row in existing:
+        if not isinstance(row,dict):
+            continue
+        kickoff=date(row.get("commence_time"))
+        if not kickoff:
+            continue
+        key=(row.get("home"),row.get("away"),kickoff.astimezone(dt.timezone.utc).isoformat())
+        indexed[key]=dict(row)
+    changed=0
+    for quote in updates:
+        if not isinstance(quote,dict):
+            continue
+        kickoff=date(quote.get("commence_time"))
+        observed=date(quote.get("observed_at_utc"))
+        if not kickoff or kickoff<=now or not observed or observed>now or observed>=kickoff:
+            continue
+        key=(quote.get("home"),quote.get("away"),kickoff.astimezone(dt.timezone.utc).isoformat())
+        old=indexed.get(key)
+        if old is None:
+            indexed[key]=dict(quote)
+            changed+=sum(quote.get(field) is not None for field in ("home_spread","total"))
+            continue
+        updated_fields=[]
+        for field in ("home_spread","total"):
+            value=finite(quote.get(field))
+            if value is None:
+                continue
+            old_value=finite(old.get(field))
+            old_observed=date(old.get(field+"_observed_at_utc") or old.get("observed_at_utc") or
+                              old.get(field+"_last_verified_at_utc") or old.get("updated_at_utc"))
+            is_stale=(old_value is None or old_observed is None or old_observed<now-stale_after)
+            if not is_stale:
+                continue
+            old[field]=value
+            old[field+"_last_verified_at_utc"]=quote.get(field+"_last_verified_at_utc")
+            old[field+"_observed_at_utc"]=quote.get(field+"_observed_at_utc") or observed.isoformat()
+            old[field+"_source_provider"]="SportsGameOdds"
+            updated_fields.append(field)
+            changed+=1
+        if updated_fields:
+            market_times=[date(old.get(field+"_observed_at_utc") or old.get("observed_at_utc") or
+                               old.get(field+"_last_verified_at_utc") or old.get("updated_at_utc"))
+                          for field in ("home_spread","total") if old.get(field) is not None]
+            valid_times=[value for value in market_times if value and value<=now and value<kickoff]
+            if valid_times:
+                old["observed_at_utc"]=max(valid_times).isoformat()
+            provider_times=[date(old.get(field+"_last_verified_at_utc")) for field in ("home_spread","total")]
+            valid_provider_times=[value for value in provider_times if value and value<kickoff]
+            if valid_provider_times:
+                old["updated_at_utc"]=max(valid_provider_times).isoformat()
+            sources={old.get(field+"_source_provider") for field in ("home_spread","total")
+                     if old.get(field) is not None and old.get(field+"_source_provider")}
+            if sources:
+                old["source_provider"]=next(iter(sources)) if len(sources)==1 else "mixed_verified_sources"
+            indexed[key]=old
+    return list(indexed.values()),changed
+
+
 def main():
     key = os.getenv("SPORTSGAMEODDS_API_KEY", "").strip()
     if not key:
@@ -198,25 +259,10 @@ def main():
         merged = merge_player_quotes(old_rows, additions, now)
         save("dk-odds.json", {**prior_props, "bookmaker":"draftkings", "generated_at_utc":now.isoformat(), "rows": merged})
     prior_games = load("dk-game-odds.json", {})
-    by_game = {(g.get("home"), g.get("away"), str(date(g.get("commence_time")))): g
-               for g in prior_games.get("games", []) if isinstance(g, dict)}
-    changed = 0
-    for g in game_rows:
-        identity = (g["home"], g["away"], str(date(g["commence_time"])))
-        old = by_game.get(identity)
-        if old is None:
-            by_game[identity] = g
-            changed += 1
-        else:
-            for field in ("home_spread", "total"):
-                if old.get(field) is None and g.get(field) is not None:
-                    old[field] = g[field]
-                    old[field + "_last_verified_at_utc"] = g.get(field + "_last_verified_at_utc")
-                    old[field + "_observed_at_utc"] = g.get(field + "_observed_at_utc")
-                    changed += 1
+    merged_games,changed=merge_game_quotes(prior_games.get("games",[]),game_rows,now)
     if changed:
-        save("dk-game-odds.json", {**prior_games, "bookmaker":"draftkings", "snapshot_date_utc":now.isoformat(), "games":list(by_game.values())})
-    print(f"SportsGameOdds backup: {len(events)} event objects; {len(additions)} candidate props; {changed} game market additions; monthly usage {used + len(events)}/{MONTHLY_CAP}")
+        save("dk-game-odds.json", {**prior_games, "bookmaker":"draftkings", "snapshot_date_utc":now.isoformat(), "games":merged_games})
+    print(f"SportsGameOdds backup: {len(events)} event objects; {len(additions)} candidate props; {changed} game markets refreshed; monthly usage {used + len(events)}/{MONTHLY_CAP}")
     if events and not prop_rows:
         print("::warning::No fully identified standard DraftKings player props in backup response; no unverified markets published")
 

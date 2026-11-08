@@ -612,7 +612,7 @@ renderParlays();
    const r=await fetch('data/dk-pregame-lines.json?ts='+Date.now(),{cache:'no-store'});
    if(r.ok){const j=await r.json();lockedPregameDkQuotes=Array.isArray(j.rows)?j.rows:[];}
   }catch(e){lockedPregameDkQuotes=[];}
-  dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...lockedPregameDkQuotes,...countDkQuotes]);
+  dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...lockedPregameDkQuotes,...countDkQuotes],Date.now(),[...playerResearch,...countProps]);
   try{const h=await fetch('data/v2-history.json?ts='+Date.now(),{cache:'no-store'});if(h.ok){const d=await h.json();archived=Array.isArray(d.games)?d.games:[];}}catch(e){}
   try{
    const response=await fetch('data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
