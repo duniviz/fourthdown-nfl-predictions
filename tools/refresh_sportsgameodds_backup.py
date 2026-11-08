@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from tools.refresh_parlayapi_odds import ABBR, TEAMS, load, save, merge_player_quotes
+from refresh_parlayapi_odds import ABBR, TEAMS, load, save, merge_player_quotes
 
 BASE = "https://api.sportsgameodds.com/v2/events"
 MARKETS = {
