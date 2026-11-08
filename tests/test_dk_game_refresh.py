@@ -17,6 +17,8 @@ class DKGameRefreshTests(unittest.TestCase):
         self.assertEqual(len(rows),1)
         self.assertEqual(rows[0]["home_spread"],-3.5)
         self.assertEqual(rows[0]["total"],44.5)
+        self.assertEqual(rows[0]["observed_at_utc"],now.isoformat())
+        self.assertEqual(rows[0]["updated_at_utc"],stamp)
         event["bookmakers"][1].pop("last_update")
         observed=parse({"data":[event]},now)
         self.assertEqual(len(observed),1)

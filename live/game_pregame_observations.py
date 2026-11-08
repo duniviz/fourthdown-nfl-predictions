@@ -34,7 +34,7 @@ def collect(forecasts, odds, existing, now):
         if not isinstance(q, dict) or str(q.get("bookmaker", "")).lower() != "draftkings":
             continue
         kickoff = dt(q.get("commence_time"))
-        observed = dt(q.get("updated_at_utc"))
+        observed = dt(q.get("observed_at_utc") or q.get("updated_at_utc"))
         if not kickoff or not observed or not observed <= now < kickoff:
             continue
         key = (str(q.get("away")), str(q.get("home")), kickoff)
@@ -51,9 +51,13 @@ def collect(forecasts, odds, existing, now):
         observed, quote = match
         spread, total = number(quote.get("home_spread")), number(quote.get("total"))
         margin, projected_total = number(g.get("projected_margin_home")), number(g.get("projected_total"))
-        ages=[dt(quote.get(k+"_last_verified_at_utc")) or observed for k,v in (("home_spread",spread),("total",total)) if v is not None]
-        if ages:
-            observed=min(ages)
+        market_observations=[dt(quote.get(field+"_observed_at_utc") or quote.get("observed_at_utc") or quote.get("updated_at_utc"))
+                             for field,value in (("home_spread",spread),("total",total)) if value is not None]
+        if not market_observations or any(value is None for value in market_observations):
+            continue
+        # If both game markets are published, the observation is only as fresh
+        # as the older of the two verified markets.
+        observed=min(market_observations)
         if margin is None or projected_total is None or (spread is None and total is None):
             continue
         key = (str(g.get("game_id")), forecast_at.isoformat(), observed.isoformat())
@@ -68,6 +72,10 @@ def collect(forecasts, odds, existing, now):
             "predicted_winner": g.get("predicted_winner"),
             "projected_margin_home": margin, "projected_total": projected_total,
             "dk_home_spread": spread, "dk_total": total,
+            "dk_home_spread_updated_at_utc": quote.get("home_spread_last_verified_at_utc") or quote.get("updated_at_utc"),
+            "dk_total_updated_at_utc": quote.get("total_last_verified_at_utc") or quote.get("updated_at_utc"),
+            "dk_home_spread_observed_at_utc": quote.get("home_spread_observed_at_utc") or quote.get("observed_at_utc") or observed.isoformat(),
+            "dk_total_observed_at_utc": quote.get("total_observed_at_utc") or quote.get("observed_at_utc") or observed.isoformat(),
             "source": quote.get("source_provider") or "DraftKings"
         })
         saved[-1].update({k:g[k] for k in ("projected_home_score","projected_away_score") if k in g})

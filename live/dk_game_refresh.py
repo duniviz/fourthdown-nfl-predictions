@@ -60,6 +60,7 @@ def parse(payload, now):
             out.append({"game_id":event.get("id"),"home_team":home,"away_team":away,
                         "commence_time":kickoff.isoformat(),"bookmaker":"draftkings",
                         "home_spread":spread,"total":total,"updated_at_utc":updated.isoformat(),
+                        "observed_at_utc":now.isoformat(),
                         "quote_timestamp_source":"provider" if provider_valid else "retrieval",
                         "provider_timestamp_status":("valid" if provider_valid else
                             "future" if provider_updated and provider_updated>now else
@@ -180,8 +181,8 @@ def main():
                              "- Review the free event-catalog diagnostic in this job log.\\n")
     rows=parse(payload,now)
     if not rows:
-        print("::error::DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
-        raise SystemExit(1)
+        print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
+        return
     print(f"DK game odds: {len(rows)} eligible provider events; "+
           f"{sum(x['quote_timestamp_source']=='retrieval' for x in rows)} observed at retrieval with missing or invalid provider timestamp")
     # Map the provider's full team names to published NFL team abbreviations,
@@ -229,8 +230,8 @@ def main():
         print("Published games without matched DK spread/total: "+", ".join(
             f"{g.get('away')} @ {g.get('home')} ({g.get('kickoff_utc')})" for g in missing_forecasts))
     if not mapped:
-        print(f"::error::DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
-        raise SystemExit(1)
+        print(f"DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
+        return
     history=json.loads(HISTORY.read_text()) if HISTORY.exists() else {"schema_version":1,"games":{}}
     games=history.setdefault("games",{})
     for row in mapped:
@@ -257,8 +258,10 @@ def main():
                 combined[field] = old[field]
                 # Keep provenance of an older market-level quote.
                 combined[field + "_last_verified_at_utc"] = old.get(field + "_last_verified_at_utc") or old.get("updated_at_utc")
+                combined[field + "_observed_at_utc"] = old.get(field + "_observed_at_utc") or old.get("observed_at_utc")
             elif combined.get(field) is not None:
                 combined[field + "_last_verified_at_utc"] = row.get("updated_at_utc")
+                combined[field + "_observed_at_utc"] = row.get("observed_at_utc")
         updated_by_game[key] = combined
     for key, old in previous_by_game.items():
         if key in updated_by_game:

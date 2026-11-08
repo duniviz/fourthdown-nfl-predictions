@@ -120,7 +120,7 @@ def main():
         game = {"game_id": event.get("eventID"), "home": ABBR[home], "away": ABBR[away],
                 "home_team": home, "away_team": away, "commence_time": kickoff.isoformat(),
                 "bookmaker": "draftkings", "home_spread": None, "total": None,
-                "source_provider": "SportsGameOdds"}
+                "source_provider": "SportsGameOdds", "observed_at_utc": now.isoformat()}
         diagnostics["upcoming_market_rows"] += len(odds)
         for odd in odds.values():
             if not isinstance(odd, dict):
@@ -152,9 +152,11 @@ def main():
             if bet == "ou" and side == "over" and stat in ("points", "total_points") and str(odd.get("statEntityID")).lower() == "all" and line is not None:
                 game["total"] = line
                 game["total_last_verified_at_utc"] = updated.isoformat()
+                game["total_observed_at_utc"] = now.isoformat()
             if bet == "sp" and side == "home" and stat in ("points", "spread") and line is not None:
                 game["home_spread"] = line
                 game["home_spread_last_verified_at_utc"] = updated.isoformat()
+                game["home_spread_observed_at_utc"] = now.isoformat()
             if bet != "ou" or side != "over" or stat not in MARKETS or line is None:
                 diagnostics["nonmatching_prop_market"] += 1
                 continue
@@ -169,6 +171,7 @@ def main():
                               "under_price": None, "home_team": home, "away_team": away,
                               "commence_time": kickoff.isoformat(),
                               "last_update": updated.isoformat(),
+                              "observed_at_utc": now.isoformat(),
                               "source_provider": "SportsGameOdds"})
         if game["home_spread"] is not None or game["total"] is not None:
             game["updated_at_utc"] = max(
@@ -182,10 +185,15 @@ def main():
               ", ".join(f"{k}={v}" for k, v in sorted(selected, key=lambda x: -x[1])[:20]))
     prior_props = load("dk-odds.json", {})
     old_rows = prior_props.get("rows", [])
-    # Never replace any existing exact DraftKings market from the primary feed,
-    # even when the secondary provider has a newer timestamp.
-    primary = {quote_key(r) for r in old_rows if r.get("source_provider") != "SportsGameOdds"}
-    additions = [r for r in prop_rows if quote_key(r) not in primary]
+    # Keep a freshly verified primary quote authoritative. If its last
+    # verification is stale, allow the backup to refresh that same market;
+    # merge_player_quotes retains both the provider update and fetch time.
+    primary = {quote_key(r):r for r in old_rows if r.get("source_provider") != "SportsGameOdds"}
+    def observed(row):
+        return date(row.get("observed_at_utc") or row.get("last_update"))
+    stale_before=now-dt.timedelta(minutes=30)
+    additions=[r for r in prop_rows if quote_key(r) not in primary or
+               not observed(primary[quote_key(r)]) or observed(primary[quote_key(r)])<stale_before]
     if additions:
         merged = merge_player_quotes(old_rows, additions, now)
         save("dk-odds.json", {**prior_props, "bookmaker":"draftkings", "generated_at_utc":now.isoformat(), "rows": merged})
@@ -204,6 +212,7 @@ def main():
                 if old.get(field) is None and g.get(field) is not None:
                     old[field] = g[field]
                     old[field + "_last_verified_at_utc"] = g.get(field + "_last_verified_at_utc")
+                    old[field + "_observed_at_utc"] = g.get(field + "_observed_at_utc")
                     changed += 1
     if changed:
         save("dk-game-odds.json", {**prior_games, "bookmaker":"draftkings", "snapshot_date_utc":now.isoformat(), "games":list(by_game.values())})

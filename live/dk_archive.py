@@ -9,12 +9,15 @@ def archive(previous, feed, observed):
     for row in feed.get("rows", []):
         key = quote_key(row)
         kickoff = key[-1]
-        stamp = dt(row.get("last_update"))
+        # Capture time says when FOURTHDOWN verified this quote; last_update
+        # remains the provider's price-change timestamp for provenance.
+        stamp = dt(row.get("observed_at_utc") or row.get("last_update"))
         if (not all(key) or key[1] not in CONTRACT["markets"] or key[2] == key[3]
                 or not stamp or not stamp <= observed < kickoff
                 or not (finite(row.get("line")) or 0) > 0 or row.get("bookmaker","draftkings") != "draftkings"):
             continue
         old = by_key.get(key)
         if not old or stamp > dt(old["last_update"]):
-            by_key[key] = {**row, "bookmaker":"draftkings", "observed_at_utc":observed.isoformat()}
+            by_key[key] = {**row, "bookmaker":"draftkings",
+                           "observed_at_utc":row.get("observed_at_utc") or observed.isoformat()}
     return list(by_key.values())
