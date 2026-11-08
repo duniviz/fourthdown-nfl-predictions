@@ -18,6 +18,9 @@ const css = fs.readFileSync("assets/fd-premium-app.css", "utf8");
 assert.match(css, /@media\(max-width:760px\)/);
 assert.match(css, /@media\(max-width:390px\)/);
 assert.match(css, /prefers-reduced-motion:reduce/);
+assert.match(css, /Signature FOURTHDOWN treatment/);
+assert.match(css, /#scoreboard-cards \.fd-market-picks>div:last-child/);
+assert.match(css, /\.fd-mobile-prop-card:before/);
 for (const page of ["index.html", "bets.html", "history.html", "model-lab.html"]) {
   const html = fs.readFileSync(page, "utf8");
   assert.match(html, /fd-premium-app\.css/);
