@@ -621,6 +621,8 @@ renderParlays();
    if(!Array.isArray(d.games)||!Number.isFinite(stamp.getTime())||Date.now()-stamp.getTime()>120*3600000){forecasts=[];return;}
    forecasts=d.games.filter(g=>Number.isFinite(Number(g.projected_home_score))&&Number.isFinite(Number(g.projected_away_score)));
    const starts=new Map(d.games.map(g=>[g.game_id,g.kickoff_utc]));
+   const identityRoster=[...playerResearch,...countProps,...playerHistory].map(row=>({...row,kickoff_utc:row.kickoff_utc||starts.get(row.game_id)}));
+   dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...lockedPregameDkQuotes,...countDkQuotes],Date.now(),identityRoster);
    playerResearch=playerResearch.map(x=>withSavedLine(x,starts.get(x.game_id)));
    // Do not mix projections from different season/week snapshots. These feeds
    // have distinct models but must describe the same target slate.

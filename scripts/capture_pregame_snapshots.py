@@ -17,10 +17,10 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
  records={tuple(str(r.get(k,"")) for k in ("game_id","player_id","market")):r for r in existing}
  index=QuoteIndex(quotes,now)
  from collections import defaultdict
- from live.dk_identity import norm, team as team_code
+ from live.dk_identity import norm
  names=defaultdict(set)
  for item in projections:
-  k=(norm(item.get("player")),canonical_market(item.get("market_key")),team_code(item.get("team")),str(item.get("game_id")))
+  k=(norm(item.get("player")),canonical_market(item.get("market_key")),str(item.get("game_id")))
   names[k].add(str(item.get("player_id")))
  legacy={}
  for q in quotes:
@@ -36,7 +36,7 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
   if not p.get("game_id") or not p.get("player_id") or not market:continue
   projection=finite(p.get("projection"))
   if projection is None:continue
-  name_key=(norm(p.get("player")),canonical_market(market),team_code(team),str(p.get("game_id")))
+  name_key=(norm(p.get("player")),canonical_market(market),str(p.get("game_id")))
   found=index.find(p,kickoff) if len(names[name_key])==1 else None
   matching=[(t,q) for t,q in legacy.get((str(p["game_id"]),str(p["player_id"]),canonical_market(market)),[])
             if t<=now and t<kickoff and (not q.get("commence_time") or dt(q["commence_time"])==kickoff)

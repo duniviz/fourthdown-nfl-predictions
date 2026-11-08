@@ -44,6 +44,8 @@ jobs:
             [ -f "$file" ] || continue
             node --check "$file"
           done
+      - name: Test player-name ambiguity safeguards
+        run: node tests/test_dk_identity_browser.js
       - name: Test current and archived DraftKings game-line display
         run: node tests/test_game_line_display.js
       - name: Validate published JSON feeds
