@@ -1,0 +1,30 @@
+name: Test pregame refresh retries
+on:
+  pull_request:
+    paths:
+      - 'live/pregame_cycle.py'
+      - 'live/pregame_refresh_state.py'
+      - 'live/dk_game_refresh.py'
+      - 'tests/test_pregame_refresh_state.py'
+      - '.github/workflows/test-pregame-refresh-retries.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'live/pregame_cycle.py'
+      - 'live/pregame_refresh_state.py'
+      - 'live/dk_game_refresh.py'
+      - 'tests/test_pregame_refresh_state.py'
+      - '.github/workflows/test-pregame-refresh-retries.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_pregame_refresh_state.py' -v
+      - run: python -m unittest discover -s tests -p 'test_pregame_capture_guard.py' -v
+      - run: python -m unittest discover -s tests -p 'test_dk_game_refresh.py' -v
