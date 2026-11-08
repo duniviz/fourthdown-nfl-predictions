@@ -1,22 +1,33 @@
 {
   "source": "ParlayAPI",
   "bookmaker": "draftkings",
-  "snapshot_date_utc": "2026-11-08T13:14:48.262449+00:00",
+  "snapshot_date_utc": "2026-11-08T13:41:28.655537+00:00",
   "games": [
     {
-      "game_id": "1c0f4580303842f469db24876407dc19",
-      "home_team": "Miami Dolphins",
-      "away_team": "Detroit Lions",
-      "commence_time": "2026-11-08T18:00:00+00:00",
+      "game_id": "8ae1b1400a6afbe4b2bc6e9f80013ee1",
+      "home": "SF",
+      "away": "LV",
+      "home_team": "San Francisco 49ers",
+      "away_team": "Las Vegas Raiders",
+      "commence_time": "2026-11-08T21:25:00Z",
       "bookmaker": "draftkings",
       "home_spread": null,
-      "total": 50.5,
-      "updated_at_utc": "2026-11-08T12:22:54+00:00",
-      "quote_timestamp_source": "provider",
-      "provider_timestamp_status": "valid",
-      "provider_updated_at_utc": "2026-11-08T12:22:54+00:00",
-      "home": "MIA",
-      "away": "DET"
+      "total": 51.5,
+      "moneyline": [],
+      "updated_at_utc": "2026-11-08T13:41:28.655537+00:00"
+    },
+    {
+      "game_id": "a66779e06b47aea1245496496ed3f48e",
+      "home": "PHI",
+      "away": "NYG",
+      "home_team": "Philadelphia Eagles",
+      "away_team": "New York Giants",
+      "commence_time": "2026-11-08T18:00:00Z",
+      "bookmaker": "draftkings",
+      "home_spread": 3.0,
+      "total": null,
+      "moneyline": [],
+      "updated_at_utc": "2026-11-08T13:41:28.655537+00:00"
     }
   ]
 }
