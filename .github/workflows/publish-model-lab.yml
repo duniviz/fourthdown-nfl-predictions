@@ -42,5 +42,4 @@ jobs:
       - name: Commit published research data
         run: |
           bash scripts/publish_data.sh "Publish latest validated Model Lab research results" \
-            data/model-lab-results.json data/model-lab-readiness.json \
-            data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
+            data/model-lab-results.json data/model-lab-readiness.json
