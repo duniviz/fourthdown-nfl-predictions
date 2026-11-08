@@ -23,7 +23,7 @@ def features(history,season,week,home,away):
   return [sum(x[j] for x in recent)/len(recent) for j in (1,2)]
  h=stats(home);a=stats(away)
  return h+a+[week] if h and a else None
-def train(schedule):
+def train(schedule,target_season=2026,target_week=1):
  history=defaultdict(list);samples=defaultdict(list);pending=[];current=None
  for r in sorted(schedule,key=lambda r:(int(r.get("season") or 0),int(r.get("week") or 0))):
   try:
@@ -36,7 +36,7 @@ def train(schedule):
     pending=[]
    current=(season,week)
    x=features(history,season,week,home,away)
-   if season<=2025 and x:
+   if (season,week)<(target_season,target_week) and x:
     samples["game_total"].append((x,hs+aws))
     samples["game_margin_home"].append((x,hs-aws))
    pending.extend([((season,home),(week,hs,aws)),((season,away),(week,aws,hs))])
@@ -71,15 +71,16 @@ def less_shrinkage_margin(history,season,week,home,away):
  return .5*(rate(home,1)+rate(away,2))-.5*(rate(away,1)+rate(home,2))+2
 
 def main():
- with open(sys.argv[1],newline="") as f:history,models=train(csv.DictReader(f))
  live=json.loads((DATA/"live-v2.json").read_text());created=time(live.get("generated_at_utc"))
+ target=(int(live["season"]),int(live["week"]))
+ with open(sys.argv[1],newline="") as f:history,models=train(csv.DictReader(f),*target)
  now=dt.datetime.now(dt.timezone.utc);path=DATA/"weekly-shadow-forecasts.json"
  existing=json.loads(path.read_text()).get("rows",[]) if path.exists() else []
  indexed={(r["game_id"],r["player_id"],r["stat_key"],r["model"]):r for r in existing}
  if created and created<=now:
   for game in live.get("games",[]):
    kickoff=time(game.get("kickoff_utc"))
-   if not kickoff or not created<kickoff or not now<kickoff:continue
+   if not kickoff or not created<kickoff or not dt.datetime.now(dt.timezone.utc)<kickoff:continue
    x=features(history,int(game["season"]),int(game["week"]),game["home"],game["away"])
    if x is None:continue
    # Freeze the incumbent on the same slate and timestamp as challengers.
@@ -90,7 +91,7 @@ def main():
     if value is not None and key not in indexed:
      indexed[key]={"game_id":key[0],"player_id":"GAME","stat_key":market,
        "model":"live","projection":round(value,4),"dk_line":None,
-       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
+       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":now.isoformat(),"source_forecast_at_utc":created.isoformat(),
        "source":"frozen production game projection","actual":None}
    margin=less_shrinkage_margin(history,int(game["season"]),int(game["week"]),game["home"],game["away"])
    if margin is not None:
@@ -98,16 +99,18 @@ def main():
     if key not in indexed:
      indexed[key]={"game_id":key[0],"player_id":"GAME","stat_key":"game_margin_home",
        "model":"less_shrinkage","projection":round(margin,4),"dk_line":None,
-       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
+       "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":now.isoformat(),"source_forecast_at_utc":created.isoformat(),
        "source":"prior-week 50/50 shrunk/raw scoring challenger","actual":None}
    for market,modelset in models.items():
     for name,model in modelset.items():
      key=(str(game["game_id"]),"GAME",market,name)
      if key in indexed:continue
      pred=float(model.predict(np.array([x]))[0])
+     recorded=dt.datetime.now(dt.timezone.utc)
+     if recorded>=kickoff:continue
      indexed[key]={"game_id":key[0],"player_id":"GAME","stat_key":market,"model":name,
        "projection":round(max(0,pred),4) if market=="game_total" else round(pred,4),
-       "dk_line":None,"kickoff_utc":kickoff.isoformat(),"predicted_at_utc":created.isoformat(),
+       "dk_line":None,"kickoff_utc":kickoff.isoformat(),"predicted_at_utc":recorded.isoformat(),"source_forecast_at_utc":created.isoformat(),
        "source":"fitted historical prior-week score features","actual":None}
  path.write_text(json.dumps({"schema_version":2,"description":"Frozen pregame research challenger forecasts","rows":sorted(indexed.values(),key=lambda r:(r["game_id"],r["player_id"],r["stat_key"],r["model"]))},indent=2)+"\n")
  print("Frozen game ML rows:",sum(r["model"].startswith("ml_") and r["player_id"]=="GAME" for r in indexed.values()))

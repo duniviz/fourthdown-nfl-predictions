@@ -22,7 +22,8 @@ def finite(x):
  try:
   n=float(x);return n if math.isfinite(n) else None
  except (ValueError,TypeError):return None
-def build(source,snapshots,existing):
+def build(source,snapshots,existing,now=None):
+ now=now or dt.datetime.now(dt.timezone.utc)
  indexed={(str(r.get("game_id")),str(r.get("player_id")),str(r.get("market_key") or r.get("market"))):r for r in source.get("players",[])}
  # Keep all previously frozen forecasts; never recalculate or overwrite a model/game/player/market.
  out={(str(r.get("game_id")),str(r.get("player_id")),str(r.get("stat_key")),str(r.get("model"))):r for r in existing}
@@ -34,7 +35,7 @@ def build(source,snapshots,existing):
    kickoff=dt.datetime.fromisoformat(snap["kickoff"].replace("Z","+00:00"))
    captured=dt.datetime.fromisoformat(snap["captured_at"].replace("Z","+00:00"))
    generated=dt.datetime.fromisoformat(source["generated_at_utc"].replace("Z","+00:00"))
-   if not (generated<=captured<kickoff and dt.datetime.now(dt.timezone.utc)<kickoff):continue
+   if not (generated<=captured<kickoff and now<kickoff):continue
   except (KeyError,ValueError,TypeError):continue
   live=finite(snap.get("projection"));base=finite(p.get("base_projection"))
   defense=finite(p.get("defense_factor"));workload=finite(p.get("workload_factor"))
@@ -47,7 +48,7 @@ def build(source,snapshots,existing):
    projection=live if name=="live" else sum(v*w for v,w in zip(values,weights))
    out[record_key]={"game_id":key[0],"player_id":key[1],"stat_key":key[2],"model":name,
      "projection":round(max(0,projection),4),"dk_line":snap.get("dk_line"),
-     "kickoff_utc":snap["kickoff"],"predicted_at_utc":snap["captured_at"],
+     "kickoff_utc":snap["kickoff"],"predicted_at_utc":now.isoformat(),"source_forecast_at_utc":snap["captured_at"],
      "source":"count-props pregame components","actual":None}
  return sorted(out.values(),key=lambda r:(r["game_id"],r["player_id"],r["stat_key"],r["model"]))
 def main():
