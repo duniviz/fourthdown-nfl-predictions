@@ -17,6 +17,9 @@ def merge(snapshots, existing):
         if not all(key) or 'None' in key:
             continue
         line=row.get('dk_line') if quote and quote<=saved else None
+        for existing_key in list(indexed):
+            if existing_key[0]==key[0] and existing_key[1]==key[1] and norm(existing_key[2])==key[2] and existing_key[3]=='live':
+                del indexed[existing_key]
         indexed[key]={'game_id':key[0], 'player_id':key[1], 'stat_key':key[2], 'model':'live',
                       'projection':row.get('projection'), 'dk_line':line, 'kickoff_utc':kickoff.isoformat(),
                       'predicted_at_utc':predicted.isoformat(), 'source':'archived production player projection', 'actual':None}
