@@ -14,7 +14,8 @@ def merge(locks, existing):
     added = 0
     rejected = 0
     for lock in locks:
-        if lock.get("lock_status") != "official":
+        status = lock.get("lock_status")
+        if status not in ("official", "forecast_only"):
             rejected += 1
             continue
         kickoff = dt(lock.get("kickoff_utc"))
@@ -22,10 +23,15 @@ def merge(locks, existing):
         quote = dt(lock.get("dk_at_utc"))
         captured = dt(lock.get("captured_at_utc"))
         cutoff = dt(lock.get("lock_cutoff_utc"))
-        if (not all((kickoff, forecast, quote, captured, cutoff))
+        if (not all((kickoff, forecast, captured, cutoff))
                 or cutoff != kickoff - timedelta(minutes=15)
-                or not all(cutoff-timedelta(minutes=90) <= t <= cutoff for t in (forecast, quote))
-                or captured > cutoff or not lock.get("game_id")):
+                or (status == "official" and
+                    (not quote or not all(cutoff-timedelta(minutes=90) <= t <= cutoff for t in (forecast, quote))
+                     or captured > cutoff))
+                or (status == "forecast_only" and
+                    (forecast > captured or not cutoff <= captured < kickoff
+                     or lock.get("dk_total") is not None or lock.get("dk_home_spread") is not None))
+                or not lock.get("game_id")):
             rejected += 1
             continue
         for market, field, dkfield in (
@@ -41,10 +47,10 @@ def merge(locks, existing):
             indexed[key] = {
                 "game_id": key[0], "player_id": "GAME", "stat_key": market,
                 "model": "live", "projection": value,
-                "dk_line": lock.get(dkfield),
+                "dk_line": lock.get(dkfield) if status == "official" else None,
                 "kickoff_utc": kickoff.isoformat(),
                 "predicted_at_utc": forecast.isoformat(),
-                "source": "official T-15 game pregame lock",
+                "source": "official T-15 game pregame lock" if status == "official" else "pregame forecast only (no verified DK line)",
                 "actual": None,
             }
             added += 1
