@@ -21,7 +21,10 @@ jobs:
               ...context.repo, per_page: 100, created: '>=' + since.toISOString().slice(0,10)
             });
             const important = [
-              'Archive pregame DK player props',
+              'Capture pregame projections and DraftKings lines',
+              'Verify pregame capture integrity',
+              'Freeze independent pregame game ML challengers',
+              'FOURTHDOWN unified weekly ML cycle',
               'Capture last pregame projections and DK lines',
               'Publish count prop projections',
               'Publish weekly v2 forecasts',

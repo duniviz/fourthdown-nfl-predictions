@@ -38,37 +38,9 @@ jobs:
           print('Downloaded research artifact from run',run)
           PY
       - name: Publish validated research JSON
-        run: |
-          python - <<'PY'
-          import json,zipfile,pathlib,datetime
-          z=zipfile.ZipFile('/tmp/model-artifact/research.zip')
-          for source,target in [('research/v3-results/results.json','data/model-lab-results.json'),('research/auto-promotion/readiness.json','data/model-lab-readiness.json')]:
-              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
-              if not matches:
-                  print('Missing',source,'— keeping existing published file')
-                  continue
-              obj=json.loads(z.read(matches[0]))
-              if not isinstance(obj,dict): raise ValueError('Invalid research data')
-              if source.endswith('results.json'):
-                  if not isinstance(obj.get('markets'),dict): raise ValueError('Research markets missing')
-                  obj['generated_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
-              pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\n')
-          for source,target in [('research/yardage-game-results/leaderboard.json','data/model-lab-yardage-game.json'),('research/weekly-shadow-results/leaderboard.json','data/model-lab-weekly-shadow.json')]:
-              matches=[n for n in z.namelist() if n.endswith(source) or n.endswith(source.removeprefix('research/'))]
-              if not matches:
-                  print('Missing',source,'— keeping existing published file')
-                  continue
-              obj=json.loads(z.read(matches[0]))
-              if not isinstance(obj,dict):raise ValueError('Invalid leaderboard')
-              obj['published_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
-              pathlib.Path(target).write_text(json.dumps(obj,indent=2)+'\\n')
-          PY
+        run: python scripts/publish_model_lab.py /tmp/model-artifact/research.zip
       - name: Commit published research data
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- data/model-lab-results.json data/model-lab-readiness.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json 2>/dev/null || git add -A -- data/
-          if ! git diff --cached --quiet; then
-            git commit -m "Publish latest validated Model Lab research results"
-            git push
-          fi
+          bash scripts/publish_data.sh "Publish latest validated Model Lab research results" \
+            data/model-lab-results.json data/model-lab-readiness.json \
+            data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
