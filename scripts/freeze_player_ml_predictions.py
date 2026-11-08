@@ -60,9 +60,11 @@ def build(now=None):
    key=(str(g["game_id"]),str(p["player_id"]),market,"ml_"+name)
    if key in indexed:continue
    pred=float(model.predict(features)[0])
+   recorded=dt.datetime.now(UTC)
+   if recorded>=kickoff:continue
    indexed[key]={"game_id":key[0],"player_id":key[1],"stat_key":market,"model":key[3],
     "projection":round(max(0,pred),4),"dk_line":None,"kickoff_utc":kickoff.isoformat(),
-    "predicted_at_utc":ds.isoformat(),"source":"fitted historical 2024-2025 ML, baseline/week pregame inputs","actual":None}
+    "predicted_at_utc":recorded.isoformat(),"source_forecast_at_utc":ds.isoformat(),"source":"fitted historical 2024-2025 ML, baseline/week pregame inputs","actual":None}
  return sorted(indexed.values(),key=lambda r:(r["game_id"],r["player_id"],r["stat_key"],r["model"]))
 def main():
  rows=build();path=DATA/"weekly-shadow-forecasts.json"

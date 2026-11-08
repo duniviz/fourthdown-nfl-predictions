@@ -16,10 +16,10 @@ def number(x):
  except (ValueError,TypeError):return None
 WEIGHTS={"mix_"+''.join(map(str,w)):tuple(v/4 for v in w) for w in product(range(5),repeat=4) if sum(w)==4}
 WEIGHTS["live"]=(0,0,0,0)
-def variants(key,values,live,kickoff,predicted,dk_line,source):
+def variants(key,values,live,kickoff,predicted,dk_line,source,now):
  if None in values or live is None:return []
  return [dict(key,model=name,projection=round(max(0,v),4) if key["stat_key"] not in ("game_margin_home",) else round(v,4),
-              dk_line=dk_line,kickoff_utc=kickoff,predicted_at_utc=predicted,source=source,actual=None)
+              dk_line=dk_line,kickoff_utc=kickoff,predicted_at_utc=now.isoformat(),source_forecast_at_utc=predicted,source=source,actual=None)
          for name,w in WEIGHTS.items()
          for v in [live if name=="live" else sum(a*b for a,b in zip(values,w))]]
 def build(now=None):
@@ -46,7 +46,7 @@ def build(now=None):
   total_components=(total, (recent_home+recent_away) if None not in (recent_home,recent_away) else total,
                     total*.95,total*1.05)
   for market,vals,live in [("game_margin_home",margin_components,margin),("game_total",total_components,total)]:
-   for r in variants({"game_id":g["game_id"],"player_id":"GAME","stat_key":market},vals,live,kickoff.isoformat(),stamp.isoformat(),None,"live-v2 pregame game metrics"):
+   for r in variants({"game_id":g["game_id"],"player_id":"GAME","stat_key":market},vals,live,kickoff.isoformat(),stamp.isoformat(),None,"live-v2 pregame game metrics",now):
     key=(r["game_id"],r["player_id"],r["stat_key"],r["model"]);indexed.setdefault(key,r)
  desk=load("research-prop-desk.json");dstamp=parse(desk.get("generated_at_utc"))
  if dstamp and dstamp<=now:
@@ -66,7 +66,7 @@ def build(now=None):
    # Independent input variants based on the same pregame projection.
    # Do not claim these are separate trained historical models.
    values=(live,live*.9,live*1.1,live*.95)
-   for r in variants({"game_id":g["game_id"],"player_id":player,"stat_key":market},values,live,kickoff.isoformat(),dstamp.isoformat(),line,"research-prop-desk pregame projection sensitivity grid"):
+   for r in variants({"game_id":g["game_id"],"player_id":player,"stat_key":market},values,live,kickoff.isoformat(),dstamp.isoformat(),line,"research-prop-desk pregame projection sensitivity grid",now):
     key=(r["game_id"],r["player_id"],r["stat_key"],r["model"]);indexed.setdefault(key,r)
  return sorted(indexed.values(),key=lambda r:(r["game_id"],r["player_id"],r["stat_key"],r["model"]))
 def main():

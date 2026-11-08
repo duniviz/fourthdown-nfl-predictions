@@ -72,9 +72,11 @@ def build(now=None):
    key=(str(p["game_id"]),str(p["player_id"]),market,name)
    if key in indexed:continue
    pred=float(model.fit(x,y).predict([[projection,week]])[0])
+   recorded=dt.datetime.now(dt.timezone.utc)
+   if recorded>=kickoff:continue
    indexed[key]={"game_id":key[0],"player_id":key[1],"stat_key":market,
       "model":name,"projection":round(max(0,pred),4),"dk_line":None,
-      "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":generated.isoformat(),
+      "kickoff_utc":kickoff.isoformat(),"predicted_at_utc":recorded.isoformat(),"source_forecast_at_utc":generated.isoformat(),
       "source":"historical frozen count projections; prior completed weeks only","actual":None}
    added+=1
  print("New pregame count ML shadow rows:",added)

@@ -1,6 +1,12 @@
 name: Freeze independent pregame game ML challengers
 'on':
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: [.github/workflows/freeze-game-ml-challengers.yml]
+  workflow_run:
+    workflows: [Publish weekly v2 forecasts, Publish count prop projections]
+    types: [completed]
   schedule:
     - cron: '*/5 * * * *'
 permissions:
@@ -22,7 +28,7 @@ jobs:
       - name: Check independent early ML window (T-90 to T-45)
         id: guard
         run: |
-          if python -m research.game_ml_freeze_guard; then
+          if [[ "${{ github.event_name }}" == "push" ]] || [[ "${{ github.event_name }}" == "workflow_run" && "${{ github.event.workflow_run.conclusion }}" == "success" ]] || python -m research.game_ml_freeze_guard; then
             echo "due=true" >> "$GITHUB_OUTPUT"
           else
             echo "due=false" >> "$GITHUB_OUTPUT"
@@ -33,6 +39,13 @@ jobs:
       - name: Freeze research-only game ML challengers
         if: steps.guard.outputs.due == 'true'
         run: python -m research.freeze_pregame_game_challengers
+      - name: Freeze player and scoring research challengers
+        if: steps.guard.outputs.due == 'true'
+        run: |
+          python scripts/freeze_weekly_shadow_models.py
+          python scripts/freeze_count_ml_predictions.py
+          python scripts/freeze_yardage_game_shadow_models.py
+          python scripts/freeze_player_ml_predictions.py
       - name: Commit only frozen ML predictions
         if: steps.guard.outputs.due == 'true'
         run: |
