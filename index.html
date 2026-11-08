@@ -624,7 +624,7 @@ renderParlays();
    if(r.ok){
     const data=await r.json();
     const keys={'Passing yards':['player_pass_yds','player_passing_yards'],'Rushing yards':['player_rush_yds','player_rushing_yards'],'Receiving yards':['player_rec_yds','player_receiving_yards']};
-    const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/(?:\\s|\\.)+(?:jr|junior|sr|senior|ii|iii|iv|v)\\.?$/i,'').replace(/[^a-z0-9]/gi,'');
+    const norm=n=>String(n||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/(?:\s|\.)+(?:jr|junior|sr|senior|ii|iii|iv|v)\.?$/i,'').replace(/[^a-z0-9]/gi,'');
     const byKey=new Map();
     const snapshotTime=Date.parse(data.generated_at_utc||'');
     for(const x of (data.rows||[])){
