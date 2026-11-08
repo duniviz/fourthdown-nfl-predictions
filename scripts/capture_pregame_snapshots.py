@@ -39,7 +39,8 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
   name_key=(norm(p.get("player")),canonical_market(market),team_code(team),str(p.get("game_id")))
   found=index.find(p,kickoff) if len(names[name_key])==1 else None
   matching=[(t,q) for t,q in legacy.get((str(p["game_id"]),str(p["player_id"]),canonical_market(market)),[])
-            if t<=now and t<kickoff and finite(q.get("line",q.get("dk_line"))) is not None]
+            if t<=now and t<kickoff and (not q.get("commence_time") or dt(q["commence_time"])==kickoff)
+            and finite(q.get("line",q.get("dk_line"))) is not None]
   if found:matching.append(found[:2])
   matching.sort(key=lambda x:x[0],reverse=True)
   quote=matching[0][1] if matching else {}
@@ -61,6 +62,13 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
     except (TypeError,ValueError,KeyError,AttributeError):pass
   weather_projection=adjusted_projection(str(market),projection,wx) if wx else None
   previous=records.get(key)
+  if previous and dt(previous.get("kickoff")) != kickoff:
+   old_kickoff=dt(previous.get("kickoff"))
+   if not old_kickoff or now>=old_kickoff:
+    continue
+   # Old quote belongs to the previous scheduled time. Keep that observation
+   # in player-history and require a quote for the revised kickoff.
+   previous=None
   # Never regress a captured projection, even when the feed is stale.
   if previous:
    prev_time=dt(previous.get("captured_at"))

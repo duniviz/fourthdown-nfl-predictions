@@ -7,7 +7,8 @@ class OfficialResultsTests(unittest.TestCase):
     def setUp(self):
         self.row={"game_id":"2026_09_LV_SF","season":2026,"week":9,
             "home":"SF","away":"LV","kickoff_utc":"2026-11-08T21:25:00+00:00",
-            "lock_status":"official","projected_margin_home":3,
+            "lock_status":"official","forecast_at_utc":"2026-11-08T20:50:00+00:00",
+            "captured_at_utc":"2026-11-08T21:00:00+00:00","dk_at_utc":"2026-11-08T20:55:00+00:00","projected_margin_home":3,
             "projected_total":47,"dk_home_spread":-2.5,"dk_total":45.5}
         self.game={"game_id":"2026_09_LV_SF","home_team":"SF","away_team":"LV",
                    "home_score":24,"away_score":20}
@@ -24,6 +25,19 @@ class OfficialResultsTests(unittest.TestCase):
     def test_never_grade_unlocked_or_mismatched(self):
         self.assertEqual(grade([{**self.row,"lock_status":"pending"}],[self.game]),[])
         self.assertEqual(grade([self.row],[{**self.game,"home_team":"SEA"}]),[])
+    def test_forecast_only_counts_winner_without_odds(self):
+        row={**self.row,"lock_status":"forecast_only","dk_home_spread":None,"dk_total":None,"dk_at_utc":None}
+        result=grade([row],[self.game])[0]
+        self.assertEqual(result["winner_result"],"hit")
+        self.assertEqual(result["ats_result"],"not_available")
+        self.assertEqual(result["ou_result"],"not_available")
+
+    def test_postkickoff_forecast_or_quote_is_not_used(self):
+        self.assertEqual(grade([{**self.row,"captured_at_utc":"2026-11-08T21:25:00+00:00"}],[self.game]),[])
+        result=grade([{**self.row,"dk_at_utc":"2026-11-08T21:26:00+00:00"}],[self.game])[0]
+        self.assertEqual(result["winner_result"],"hit")
+        self.assertEqual(result["ats_result"],"not_available")
+
     def test_kickoff_guard(self):
         now=datetime(2026,11,8,20,tzinfo=timezone.utc)
         game=lambda m:{"kickoff_utc":(now+timedelta(minutes=m)).isoformat()}

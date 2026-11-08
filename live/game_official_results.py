@@ -1,4 +1,4 @@
-"""Grade only immutable official pregame game locks against completed NFL scores."""
+"""Grade valid pregame game forecasts against verified completed scores."""
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,11 +16,16 @@ def grade(locks,schedules):
                if g.get("home_score") is not None and g.get("away_score") is not None}
     results=[]
     for row in locks:
-        if not isinstance(row,dict) or row.get("lock_status")!="official":
+        if not isinstance(row,dict) or row.get("lock_status") not in ("official","forecast_only","last_available","early_pregame"):
             continue
         gid=str(row.get("game_id",""))
         game=completed.get(gid)
         if not game or not dt(row.get("kickoff_utc")):
+            continue
+        kickoff=dt(row.get("kickoff_utc"))
+        predicted=dt(row.get("forecast_at_utc"))
+        captured=dt(row.get("captured_at_utc"))
+        if not predicted or not captured or not predicted<=captured<kickoff:
             continue
         # Fail closed if the official record does not match the completed matchup.
         if game.get("home_team")!=row.get("home") or game.get("away_team")!=row.get("away"):
@@ -36,18 +41,20 @@ def grade(locks,schedules):
         actual_winner=side(margin)
         winner_result="push" if actual_winner=="push" else (
             "not_available" if winner=="push" else "hit" if winner==actual_winner else "miss")
-        spread=number(row.get("dk_home_spread"))
+        quote=dt(row.get("dk_at_utc"))
+        quote_valid=bool(quote and quote<=captured and quote<kickoff and row.get("lock_status")!="forecast_only")
+        spread=number(row.get("dk_home_spread")) if quote_valid else None
         model_ats=side(projected_margin+spread) if spread is not None else None
         actual_ats=side(margin+spread) if spread is not None else None
         ats_result=("not_available" if spread is None or model_ats=="push" else
                     "push" if actual_ats=="push" else "hit" if model_ats==actual_ats else "miss")
-        line=number(row.get("dk_total"))
+        line=number(row.get("dk_total")) if quote_valid else None
         model_ou=side(projected_total-line) if line is not None else None
         actual_ou=side(total-line) if line is not None else None
         ou_result=("not_available" if line is None or model_ou=="push" else
                    "push" if actual_ou=="push" else "hit" if model_ou==actual_ou else "miss")
         results.append({"game_id":gid,"season":row.get("season"),"week":row.get("week"),
-            "home":row["home"],"away":row["away"],"kickoff_utc":row["kickoff_utc"],
+            "home":row["home"],"away":row["away"],"kickoff_utc":row["kickoff_utc"],"lock_status":row["lock_status"],
             "lock_cutoff_utc":row.get("lock_cutoff_utc"),
             "forecast_at_utc":row.get("forecast_at_utc"),"dk_at_utc":row.get("dk_at_utc"),
             "home_score":home,"away_score":away,
@@ -76,7 +83,7 @@ def main():
         schedules.extend(nfl.load_schedules([season]).to_dicts())
     rows=grade(locks,schedules)
     data={"generated_at_utc":datetime.now(timezone.utc).isoformat(),
-          "source":"immutable official 30-minute pregame game locks",
+          "source":"timestamped pregame game forecast locks",
           "graded_games":len(rows),"summary":summarize(rows),"rows":rows}
     OUT.write_text(json.dumps(data,indent=2)+"\n")
     print(f"Graded {len(rows)} official game locks: {json.dumps(data['summary'])}")

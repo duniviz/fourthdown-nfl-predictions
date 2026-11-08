@@ -57,6 +57,10 @@ def freeze(live, observations, old, now):
         kickoff=dt(g.get("kickoff_utc"))
         if not stamp or not kickoff or not stamp<=now<kickoff:continue
         old_row=indexed.get(gid)
+        if old_row and dt(old_row.get("kickoff_utc"))!=kickoff:
+            previous_kickoff=dt(old_row.get("kickoff_utc"))
+            if not previous_kickoff or now>=previous_kickoff:continue
+            old_row=None
         if old_row and old_row.get("lock_status")!="early_pregame":continue
         if not all(isinstance(g.get(k),(int,float)) and not isinstance(g[k],bool)
                    for k in ("projected_total","projected_margin_home")):continue

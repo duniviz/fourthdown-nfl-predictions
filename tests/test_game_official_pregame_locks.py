@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime,timedelta,timezone
-from live.game_official_pregame_locks import select
+from live.game_official_pregame_locks import select, freeze
 
 class OfficialGameLockTests(unittest.TestCase):
     def setUp(self):
@@ -24,6 +24,19 @@ class OfficialGameLockTests(unittest.TestCase):
         rows=[self.row(18,-2),self.row(12,-9)]
         first=select(rows,[],self.kickoff-timedelta(minutes=10))
         self.assertEqual(first[0]["dk_home_spread"],-2)
+    def test_rescheduled_lock_is_not_reused_for_new_kickoff(self):
+        old={**self.row(20,-3),"lock_status":"official"}
+        moved=self.kickoff+timedelta(hours=1)
+        now=self.kickoff-timedelta(minutes=5)
+        live={"generated_at_utc":(now-timedelta(minutes=5)).isoformat(),
+              "games":[{"game_id":"g","kickoff_utc":moved.isoformat(),
+                        "projected_margin_home":2,"projected_total":44}]}
+        row=freeze(live,[],[old],now)[0]
+        self.assertEqual(row["kickoff_utc"],moved.isoformat())
+        self.assertEqual(row["lock_status"],"early_pregame")
+        self.assertIsNone(row["dk_home_spread"])
+        self.assertEqual(freeze(live,[],[old],self.kickoff+timedelta(minutes=5)),[old])
+
     def test_no_new_lock_after_kickoff(self):
         self.assertEqual(select([self.row(16,-2)],[],self.kickoff),[])
     def test_reject_stale_and_post_cutoff_capture(self):
