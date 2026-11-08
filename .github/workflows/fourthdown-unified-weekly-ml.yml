@@ -1,6 +1,9 @@
 name: FOURTHDOWN unified weekly ML cycle
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/fourthdown-unified-weekly-ml.yml']
   schedule:
     - cron: '45 16 * * 3'
 permissions:
