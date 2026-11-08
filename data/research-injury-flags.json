@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-11-07T18:12:13.033928+00:00",
+  "generated_at_utc": "2026-11-08T19:02:09.105738+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
-  "projection_markets": 170,
-  "flagged_markets": 10,
+  "projection_markets": 167,
+  "flagged_markets": 6,
   "flags": [
     {
       "player_id": "00-0033537",
@@ -14,27 +14,7 @@
       "team": "CLE",
       "market": "passing_yards",
       "sleeper_id": "4017",
-      "injury_flag": "questionable",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "market": "passing_yards",
-      "sleeper_id": "5849",
-      "injury_flag": "questionable",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0034827",
-      "player_name": "DJ Moore",
-      "team": "BUF",
-      "market": "receiving_yards",
-      "sleeper_id": "4983",
-      "injury_flag": "questionable",
+      "injury_flag": "out",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -64,7 +44,7 @@
       "team": "NE",
       "market": "receiving_yards",
       "sleeper_id": "4177",
-      "injury_flag": "injured_reserve",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -79,34 +59,14 @@
       "game_day_status_verified": false
     },
     {
-      "player_id": "00-0035685",
-      "player_name": "David Montgomery",
-      "team": "HOU",
-      "market": "rushing_yards",
-      "sleeper_id": "5892",
-      "injury_flag": "out",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
       "player_id": "00-0033537",
       "player_name": "Deshaun Watson",
       "team": "CLE",
       "market": "rushing_yards",
       "sleeper_id": "4017",
-      "injury_flag": "questionable",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "market": "rushing_yards",
-      "sleeper_id": "5849",
-      "injury_flag": "questionable",
+      "injury_flag": "out",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     }
   ]
-}
+}\n

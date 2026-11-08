@@ -1,32 +1,26 @@
 {
   "season": 2026,
   "week": 9,
-  "generated_at_utc": "2026-11-07T18:12:13.098949+00:00",
+  "generated_at_utc": "2026-11-08T19:02:09.186916+00:00",
   "status": "research_only_no_publication",
   "source": "DraftKings via existing ParlayAPI snapshot",
-  "odds_snapshot_generated_at": "2026-11-07T18:07:15.408597+00:00",
+  "odds_snapshot_generated_at": "2026-11-08T17:30:18.014093+00:00",
   "counts": {
-    "total": 170,
-    "matched": 19,
-    "missing": 151,
-    "stale": 0,
+    "total": 167,
+    "matched": 41,
+    "missing": 110,
+    "stale": 16,
     "ambiguous": 0,
-    "unverified": 170
+    "unverified": 167
   },
   "coverage_diagnostics": {
     "market_inventory": {
-      "passing_yards": 2,
-      "rushing_yards": 15,
-      "receiving_yards": 26
+      "passing_yards": 26,
+      "rushing_yards": 75,
+      "receiving_yards": 161
     },
     "unmatched_examples": {
       "passing_yards": [
-        {
-          "player": "Baker Mayfield",
-          "team": "TB",
-          "opponent": "CHI",
-          "reason": "missing"
-        },
         {
           "player": "Bo Nix",
           "team": "DEN",
@@ -37,24 +31,12 @@
           "player": "Brock Purdy",
           "team": "SF",
           "opponent": "LV",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Bryce Young",
           "team": "CAR",
           "opponent": "DEN",
-          "reason": "missing"
-        },
-        {
-          "player": "C.J. Stroud",
-          "team": "HOU",
-          "opponent": "LAC",
-          "reason": "missing"
-        },
-        {
-          "player": "Caleb Williams",
-          "team": "CHI",
-          "opponent": "TB",
           "reason": "missing"
         },
         {
@@ -64,15 +46,15 @@
           "reason": "missing"
         },
         {
-          "player": "Deshaun Watson",
-          "team": "CLE",
-          "opponent": "NO",
+          "player": "Daniel Jones",
+          "team": "IND",
+          "opponent": "DAL",
           "reason": "missing"
         },
         {
-          "player": "Drake Maye",
-          "team": "NE",
-          "opponent": "GB",
+          "player": "Deshaun Watson",
+          "team": "CLE",
+          "opponent": "NO",
           "reason": "missing"
         },
         {
@@ -80,15 +62,27 @@
           "team": "NYJ",
           "opponent": "KC",
           "reason": "missing"
+        },
+        {
+          "player": "J.J. McCarthy",
+          "team": "NYG",
+          "opponent": "PHI",
+          "reason": "missing"
+        },
+        {
+          "player": "Jacoby Brissett",
+          "team": "ARI",
+          "opponent": "SEA",
+          "reason": "missing"
+        },
+        {
+          "player": "Jalen Hurts",
+          "team": "PHI",
+          "opponent": "NYG",
+          "reason": "missing"
         }
       ],
       "rushing_yards": [
-        {
-          "player": "Aaron Jones",
-          "team": "MIN",
-          "opponent": "BUF",
-          "reason": "missing"
-        },
         {
           "player": "Alvin Kamara",
           "team": "NO",
@@ -96,9 +90,21 @@
           "reason": "missing"
         },
         {
+          "player": "Ashton Jeanty",
+          "team": "LV",
+          "opponent": "SF",
+          "reason": "stale"
+        },
+        {
           "player": "Bhayshul Tuten",
           "team": "JAX",
           "opponent": "BAL",
+          "reason": "missing"
+        },
+        {
+          "player": "Bijan Robinson",
+          "team": "ATL",
+          "opponent": "CIN",
           "reason": "missing"
         },
         {
@@ -108,15 +114,15 @@
           "reason": "missing"
         },
         {
-          "player": "Bucky Irving",
-          "team": "TB",
-          "opponent": "CHI",
+          "player": "Braelon Allen",
+          "team": "NYJ",
+          "opponent": "KC",
           "reason": "missing"
         },
         {
-          "player": "Caleb Williams",
-          "team": "CHI",
-          "opponent": "TB",
+          "player": "Breece Hall",
+          "team": "NYJ",
+          "opponent": "KC",
           "reason": "missing"
         },
         {
@@ -132,12 +138,6 @@
           "reason": "missing"
         },
         {
-          "player": "Christian McCaffrey",
-          "team": "SF",
-          "opponent": "LV",
-          "reason": "missing"
-        },
-        {
           "player": "Chuba Hubbard",
           "team": "CAR",
           "opponent": "DEN",
@@ -145,6 +145,12 @@
         }
       ],
       "receiving_yards": [
+        {
+          "player": "Adonai Mitchell",
+          "team": "NYJ",
+          "opponent": "KC",
+          "reason": "missing"
+        },
         {
           "player": "Alvin Kamara",
           "team": "NO",
@@ -167,7 +173,7 @@
           "player": "Ashton Jeanty",
           "team": "LV",
           "opponent": "SF",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Brenton Strange",
@@ -176,9 +182,9 @@
           "reason": "missing"
         },
         {
-          "player": "Brock Bowers",
-          "team": "LV",
-          "opponent": "SF",
+          "player": "CeeDee Lamb",
+          "team": "DAL",
+          "opponent": "IND",
           "reason": "missing"
         },
         {
@@ -197,17 +203,11 @@
           "player": "Christian McCaffrey",
           "team": "SF",
           "opponent": "LV",
-          "reason": "missing"
-        },
-        {
-          "player": "Christian Watson",
-          "team": "GB",
-          "opponent": "NE",
-          "reason": "missing"
+          "reason": "stale"
         }
       ]
     },
-    "matched_pct": 11.2
+    "matched_pct": 24.6
   },
   "note": "Differences are not calibrated edges; stale, ambiguous, missing or unverified players are not betting recommendations",
   "comparisons": [
@@ -221,9 +221,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 212.5,
+      "difference_yards": -76.6,
+      "over_price": -112,
+      "under_price": -112,
+      "last_update": "2026-11-08T16:57:45Z"
     },
     {
       "player_id": "00-0039732",
@@ -249,7 +252,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -277,9 +280,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 249.5,
+      "difference_yards": -2.0,
+      "over_price": "-113",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039918",
@@ -291,9 +297,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 246.5,
+      "difference_yards": 3.1,
+      "over_price": -111,
+      "under_price": -113,
+      "last_update": "2026-11-08T16:57:45Z"
     },
     {
       "player_id": "00-0033077",
@@ -319,12 +328,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 206.5,
-      "difference_yards": -15.9,
-      "over_price": -111,
-      "under_price": -113,
-      "last_update": "2026-11-07T17:38:46Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0033537",
@@ -350,9 +356,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 229.5,
+      "difference_yards": 35.2,
+      "over_price": "-113",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0030565",
@@ -490,9 +499,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 274.5,
+      "difference_yards": 6.4,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0034857",
@@ -504,7 +516,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -518,9 +530,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 212.5,
+      "difference_yards": -6.9,
+      "over_price": "-112",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0029604",
@@ -532,23 +547,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "BUF",
-      "market": "passing_yards",
-      "projected_yards": 197.2,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 247.5,
+      "difference_yards": 32.5,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0038128",
@@ -686,12 +690,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 50.5,
-      "difference_yards": 15.3,
-      "over_price": -114,
-      "under_price": -110,
-      "last_update": "2026-11-07T17:30:31Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0033906",
@@ -745,7 +746,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -773,9 +774,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 75.5,
+      "difference_yards": 11.4,
+      "over_price": "-112",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036358",
@@ -787,12 +791,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 82.5,
-      "difference_yards": -0.2,
-      "over_price": -111,
-      "under_price": -113,
-      "last_update": "2026-11-07T17:12:45Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0038597",
@@ -832,7 +833,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -846,9 +847,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 68.5,
+      "difference_yards": 17.7,
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0040126",
@@ -861,11 +865,11 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "matched",
-      "dk_line": 53.5,
-      "difference_yards": -4.9,
-      "over_price": -114,
-      "under_price": -110,
-      "last_update": "2026-11-07T17:30:31Z"
+      "dk_line": 54.5,
+      "difference_yards": -5.9,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0034827",
@@ -878,11 +882,11 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "matched",
-      "dk_line": 47.5,
-      "difference_yards": 1.5,
-      "over_price": -112,
-      "under_price": -112,
-      "last_update": "2026-11-07T17:30:31Z"
+      "dk_line": 48.5,
+      "difference_yards": 0.5,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0034351",
@@ -964,9 +968,12 @@
       "availability_status": "questionable",
       "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 50.5,
+      "difference_yards": -13.4,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0033288",
@@ -978,9 +985,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 71.5,
+      "difference_yards": -5.9,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0037247",
@@ -992,12 +1002,9 @@
       "availability_status": "questionable",
       "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 57.5,
-      "difference_yards": 15.0,
-      "over_price": -112,
-      "under_price": -112,
-      "last_update": "2026-11-07T17:38:41Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0037252",
@@ -1121,9 +1128,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 94.5,
+      "difference_yards": 24.6,
+      "over_price": "-112",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036613",
@@ -1135,12 +1145,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 48.5,
-      "difference_yards": -13.9,
-      "over_price": -110,
-      "under_price": -114,
-      "last_update": "2026-11-07T17:12:45Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0038994",
@@ -1155,9 +1162,9 @@
       "match_status": "matched",
       "dk_line": 41.5,
       "difference_yards": 7.2,
-      "over_price": -109,
-      "under_price": -115,
-      "last_update": "2026-11-07T17:30:31Z"
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0038997",
@@ -1183,9 +1190,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 75.5,
+      "difference_yards": -22.4,
+      "over_price": "-113",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036040",
@@ -1254,11 +1264,11 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "matched",
-      "dk_line": 37.5,
-      "difference_yards": 11.8,
-      "over_price": -114,
-      "under_price": -110,
-      "last_update": "2026-11-07T17:30:31Z"
+      "dk_line": 40.5,
+      "difference_yards": 8.8,
+      "over_price": "-109",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036970",
@@ -1301,9 +1311,9 @@
       "match_status": "matched",
       "dk_line": 65.5,
       "difference_yards": 8.2,
-      "over_price": -110,
-      "under_price": -114,
-      "last_update": "2026-11-07T17:30:31Z"
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0033555",
@@ -1315,9 +1325,12 @@
       "availability_status": "questionable",
       "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 32.5,
+      "difference_yards": 18.9,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0040867",
@@ -1385,9 +1398,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 69.5,
+      "difference_yards": 5.3,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039066",
@@ -1399,7 +1415,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1413,9 +1429,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 48.5,
+      "difference_yards": 10.4,
+      "over_price": "-113",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036554",
@@ -1427,9 +1446,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 68.5,
+      "difference_yards": -4.5,
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0038606",
@@ -1483,9 +1505,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 50.5,
+      "difference_yards": 11.8,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039410",
@@ -1497,12 +1522,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 39.5,
-      "difference_yards": 10.8,
-      "over_price": -110,
-      "under_price": -115,
-      "last_update": "2026-11-07T17:38:41Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0039065",
@@ -1542,9 +1564,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 41.5,
+      "difference_yards": 4.9,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036410",
@@ -1612,9 +1637,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 34.5,
+      "difference_yards": 22.6,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0037744",
@@ -1627,11 +1655,11 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "matched",
-      "dk_line": 61.5,
-      "difference_yards": 0.9,
-      "over_price": -111,
-      "under_price": -113,
-      "last_update": "2026-11-07T17:40:08Z"
+      "dk_line": 62.5,
+      "difference_yards": -0.1,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0038996",
@@ -1643,9 +1671,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 45.5,
+      "difference_yards": 1.6,
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0040128",
@@ -1671,9 +1702,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 21.5,
+      "difference_yards": 15.0,
+      "over_price": "-116",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039894",
@@ -1713,9 +1747,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 32.5,
+      "difference_yards": 28.9,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0033906",
@@ -1741,12 +1778,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 29.5,
-      "difference_yards": 0.6,
-      "over_price": -116,
-      "under_price": -108,
-      "last_update": "2026-11-07T17:15:17Z"
+      "match_status": "stale",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0040719",
@@ -1772,12 +1806,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 99.5,
-      "difference_yards": -7.4,
-      "over_price": -111,
-      "under_price": -113,
-      "last_update": "2026-11-07T17:50:35Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0039738",
@@ -1803,12 +1834,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 35.5,
-      "difference_yards": 51.4,
-      "over_price": -112,
-      "under_price": -112,
-      "last_update": "2026-11-07T17:15:17Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0038120",
@@ -1820,12 +1848,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 37.5,
-      "difference_yards": 14.8,
-      "over_price": -116,
-      "under_price": -108,
-      "last_update": "2026-11-07T17:15:17Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0039361",
@@ -1837,9 +1862,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 64.5,
+      "difference_yards": 32.6,
+      "over_price": -114,
+      "under_price": -110,
+      "last_update": "2026-11-08T16:57:55Z"
     },
     {
       "player_id": "00-0039918",
@@ -1851,9 +1879,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 19.5,
+      "difference_yards": 4.5,
+      "over_price": -107,
+      "under_price": -117,
+      "last_update": "2026-11-08T16:57:55Z"
     },
     {
       "player_id": "00-0038597",
@@ -1893,9 +1924,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 61.5,
+      "difference_yards": 1.0,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036555",
@@ -1921,9 +1955,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 21.5,
+      "difference_yards": 7.5,
+      "over_price": "-111",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036275",
@@ -1935,9 +1972,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 62.5,
+      "difference_yards": -5.0,
+      "over_price": -114,
+      "under_price": -110,
+      "last_update": "2026-11-08T16:57:55Z"
     },
     {
       "player_id": "00-0037258",
@@ -1946,20 +1986,6 @@
       "opponent": "NYG",
       "market": "rushing_yards",
       "projected_yards": 33.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035685",
-      "player_name": "David Montgomery",
-      "team": "HOU",
-      "opponent": "LAC",
-      "market": "rushing_yards",
-      "projected_yards": 28.3,
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
@@ -2019,9 +2045,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 25.5,
+      "difference_yards": 1.3,
+      "over_price": "-112",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0038797",
@@ -2075,7 +2104,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2117,9 +2146,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 83.5,
+      "difference_yards": 19.7,
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0036997",
@@ -2131,12 +2163,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 72.5,
-      "difference_yards": 0.2,
-      "over_price": -111,
-      "under_price": -113,
-      "last_update": "2026-11-07T17:18:51Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0039910",
@@ -2190,12 +2219,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 64.5,
-      "difference_yards": 14.2,
-      "over_price": -114,
-      "under_price": -110,
-      "last_update": "2026-11-07T17:50:35Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0037525",
@@ -2207,9 +2233,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 46.5,
+      "difference_yards": 0.8,
+      "over_price": "-114",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0034857",
@@ -2221,7 +2250,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2235,7 +2264,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2249,7 +2278,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2277,7 +2306,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2305,12 +2334,9 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "matched",
-      "dk_line": 91.5,
-      "difference_yards": 11.7,
-      "over_price": -114,
-      "under_price": -110,
-      "last_update": "2026-11-07T17:50:35Z"
+      "match_status": "missing",
+      "dk_line": null,
+      "difference_yards": null
     },
     {
       "player_id": "00-0036919",
@@ -2322,9 +2348,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 22.5,
+      "difference_yards": 24.1,
+      "over_price": "-112",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039391",
@@ -2336,7 +2365,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2349,20 +2378,6 @@
       "projected_yards": 75.4,
       "availability_status": "questionable",
       "provisional_research_eligible": false,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "BUF",
-      "market": "rushing_yards",
-      "projected_yards": 29.2,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -2406,7 +2421,7 @@
       "availability_status": "questionable",
       "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2420,7 +2435,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2462,7 +2477,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2518,9 +2533,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 56.5,
+      "difference_yards": -8.0,
+      "over_price": "-109",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     },
     {
       "player_id": "00-0039021",
@@ -2532,9 +2550,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 16.5,
+      "difference_yards": 1.6,
+      "over_price": -114,
+      "under_price": -110,
+      "last_update": "2026-11-08T16:57:55Z"
     },
     {
       "player_id": "00-0033526",
@@ -2616,7 +2637,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2644,9 +2665,12 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
+      "match_status": "matched",
+      "dk_line": 63.5,
+      "difference_yards": -20.2,
+      "over_price": "-110",
+      "under_price": null,
+      "last_update": "2026-11-08T17:30:01.190000+00:00"
     }
   ]
-}
+}\n
