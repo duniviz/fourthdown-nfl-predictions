@@ -27,3 +27,5 @@ for (const page of ["index.html", "bets.html", "history.html", "model-lab.html"]
   assert.match(html, /fd-app-shell\.js/);
 }
 console.log("Premium shell navigation and responsive hooks passed.");
+
+require("./test_frozen_player_fallback.js");
