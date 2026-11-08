@@ -13,6 +13,8 @@ from live import line_history
 from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
 from live.pregame_capture_guard import due_refresh, slates
+from live.pregame_refresh_state import (reserved_attempt, record_result,
+    MONTHLY_PRIMARY_REQUEST_CAP)
 from scripts.capture_pregame_snapshots import collect, STATS
 
 DATA = Path("data")
@@ -20,6 +22,7 @@ CENTRAL = ZoneInfo("America/Chicago")
 FILES = ("dk-odds","dk-game-odds","dk-opening-odds","dk-game-line-history","dk-line-history",
          "dk-pregame-lines","dk-refresh-ledger","dk-slate-refreshes","sportsgameodds-usage",
          "game-pregame-observations","game-official-pregame-locks","pregame-snapshots","player-history")
+PRIMARY_COMMANDS = (["-m","live.dk_game_refresh"], ["-m","tools.refresh_parlayapi_odds","--props-only"])
 
 def read(name, default=None):
     path=DATA/(name+".json")
@@ -56,26 +59,38 @@ def backup_needed(games, keys, stamp):
     return any(market(p.get("market_key")) in STATS and p.get("game_id") in targets and not index.find(p,targets[p["game_id"]])
                for src in ("player-research","count-projections") for p in read(src,{}).get("players",[]))
 
-def refresh(keys,games,stamp):
+def refresh(keys,games,stamp,run=subprocess.run):
     state=read("dk-slate-refreshes",{"slates":[]})
     ledger=read("dk-refresh-ledger",{"refreshes":[]})
     month=stamp.astimezone(CENTRAL).strftime("%Y-%m")
     entries=[t for t in ledger["refreshes"] if t.startswith(month)]
-    # Reserve two primary requests durably before contacting either endpoint.
-    if len(entries)+2>125:
-        print("::warning::Primary request budget exhausted; using saved odds")
-    else:
-        entries.extend([stamp.astimezone(CENTRAL).isoformat()]*2)
-        save("dk-refresh-ledger",{"refreshes":entries})
-    allowed=len(ledger["refreshes"])==0 or len([t for t in ledger["refreshes"] if t.startswith(month)])+2<=125
-    state["slates"]=sorted(set(state["slates"])|set(keys))
+    state, reserved_count, pending, attempt=reserved_attempt(
+        state, len(entries), keys, stamp.isoformat())
+    if not pending:
+        return True
+    if attempt in ("budget_exhausted", "attempts_exhausted"):
+        print(f"::warning::Primary refresh {attempt}; retaining saved odds and recording failure")
+        save("dk-slate-refreshes",state)
+        publish("Record pregame odds refresh failure")
+        return False
+    reserved_at=stamp.astimezone(CENTRAL).isoformat()
+    entries=[t for t in ledger["refreshes"] if not t.startswith(month)]
+    entries.extend([reserved_at]*reserved_count)
+    save("dk-refresh-ledger",{"refreshes":entries})
     save("dk-slate-refreshes",state)
     publish("Reserve pregame refresh slot")
-    if allowed:
-        for cmd in (["-m","live.dk_game_refresh"],["-m","tools.refresh_parlayapi_odds","--props-only"]):
-            if subprocess.run([sys.executable,*cmd]).returncode:print("::warning::Primary endpoint failed; retaining saved markets")
+    attempt_number, requested=attempt
+    results={}
+    for provider,cmd in zip(("game","player"),PRIMARY_COMMANDS):
+        if provider in requested:
+            results[provider]=run([sys.executable,*cmd]).returncode==0
+    primary_ok=all(state.get("provider_success",{}).get(key,{}).get(provider,False) or results.get(provider,False)
+                   for key in pending for provider in ("game","player"))
+    if not primary_ok: print("::warning::At least one primary odds refresh failed; retaining saved markets and scheduling a bounded retry")
+    backup_ok=True
     if backup_needed(games,keys,now()):
-        subprocess.run([sys.executable,"-m","tools.refresh_sportsgameodds_backup"],check=True)
+        backup_ok=run([sys.executable,"-m","tools.refresh_sportsgameodds_backup"]).returncode==0
+        if not backup_ok: print("::warning::Backup odds refresh failed; retaining previously saved quotes")
     line_history.main()
     odds=read("dk-game-odds",{})
     history=read("dk-game-line-history",{"games":{}})
@@ -91,6 +106,10 @@ def refresh(keys,games,stamp):
         if not records or any(records[-1].get(field)!=entry[field] for field in ("home_spread","total")):
             records.append(entry)
     save("dk-game-line-history",history)
+    state=record_result(state,pending,attempt_number,results,backup_ok)
+    save("dk-slate-refreshes",state)
+    publish("Record pregame odds refresh result")
+    return primary_ok
 
 def checkpoint(games):
     stamp=now()
@@ -119,11 +138,27 @@ def main():
         if keys:
             # Persist available inputs before any provider request can fail.
             checkpoint(games)
-            refresh(keys,games,stamp)
-            done.update(keys)
+            succeeded=refresh(keys,games,stamp)
+            if succeeded: done.update(keys)
+        state=read("dk-slate-refreshes",{"slates":[]})
+        pending_attempts={k for k in state.get("attempts",{}) if k not in set(state.get("slates",[]))|set(state.get("failed_slates",[]))}
         checkpoint(games)
         # If a boundary passed while publishing, process it immediately.
         wake=next_wake(games,done,stamp)
+        if pending_attempts:
+            current=now()
+            retry_at=current+timedelta(minutes=5)
+            cutoffs=[observations.dt(g["kickoff_utc"])-timedelta(minutes=15) for g in games
+                     if observations.dt(g.get("kickoff_utc")) and observations.dt(g["kickoff_utc"]).isoformat() in pending_attempts
+                     and observations.dt(g["kickoff_utc"])-timedelta(minutes=15)>current]
+            if not cutoffs and not any(k.startswith("evening:") for k in pending_attempts):
+                state["failed_slates"]=sorted(set(state.get("failed_slates",[]))|pending_attempts)
+                state["failures"]={**state.get("failures",{}),**{k:"retry window closed before provider recovery" for k in pending_attempts}}
+                save("dk-slate-refreshes",state)
+                publish("Record pregame odds retry window failure")
+            else:
+                if cutoffs: retry_at=min(retry_at,min(cutoffs))
+                wake=min(wake,retry_at) if wake else retry_at
         if not wake or wake>=deadline:break
         print("Next capture:",wake.astimezone(CENTRAL).isoformat(),flush=True)
         time.sleep(max(0,(wake-now()).total_seconds()))

@@ -180,8 +180,8 @@ def main():
                              "- Review the free event-catalog diagnostic in this job log.\\n")
     rows=parse(payload,now)
     if not rows:
-        print("DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
-        return
+        print("::error::DK game odds: zero eligible upcoming DraftKings markets; retaining existing files")
+        raise SystemExit(1)
     print(f"DK game odds: {len(rows)} eligible provider events; "+
           f"{sum(x['quote_timestamp_source']=='retrieval' for x in rows)} observed at retrieval with missing or invalid provider timestamp")
     # Map the provider's full team names to published NFL team abbreviations,
@@ -229,8 +229,8 @@ def main():
         print("Published games without matched DK spread/total: "+", ".join(
             f"{g.get('away')} @ {g.get('home')} ({g.get('kickoff_utc')})" for g in missing_forecasts))
     if not mapped:
-        print(f"DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
-        return
+        print(f"::error::DK game odds: {len(rows)} provider events, zero matched published games; retaining existing files")
+        raise SystemExit(1)
     history=json.loads(HISTORY.read_text()) if HISTORY.exists() else {"schema_version":1,"games":{}}
     games=history.setdefault("games",{})
     for row in mapped:
