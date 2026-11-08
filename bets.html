@@ -294,7 +294,8 @@ players=[...new Map([...weatherCurrent,...archived].map(x=>[norm(x.player)+'|'+x
 }catch(error){console.warn('Live ESPN injuries unavailable; using saved injury report',error);}
 const latest=Date.parse(o.generated_at_utc);oddsTime=Number.isFinite(latest)?latest:null;
 const currentQuotes=o.bookmaker==='draftkings'?(o.rows||[]).filter(q=>latest<Date.parse(q.commence_time)):[];
-dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...(locked.rows||[]),...currentQuotes]);
+const identityRoster=[...latestResearch,...(countData.players||[]),...frozen].map(row=>({...row,kickoff_utc:row.kickoff_utc||kickoffFor.get(String(row.game_id))}));
+dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...(locked.rows||[]),...currentQuotes],Date.now(),identityRoster);
 lines=dkIndex.rows;
 try{fdUpdateGameOptions();render();renderSlip();renderExtraMarkets();fdRefreshActuals();}catch(error){console.error('Prop research rendering failed',error);$('bet-freshness').textContent='Research board error';$('bet-cards').innerHTML='<p class="bet-sub">Could not display player forecasts. Refresh or check the published research feed.</p>';}}
 
