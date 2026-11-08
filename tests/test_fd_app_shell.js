@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const vm = require("node:vm");
 
 const source = fs.readFileSync("assets/fd-app-shell.js", "utf8");
-for (const [path, expected] of [["/", "Games"], ["/index.html", "Games"], ["/bets.html", "Players"], ["/history.html", "Accuracy"], ["/model-lab.html", "Labs"]]) {
+for (const [path, expected] of [["/", "Games"], ["/index.html", "Games"], ["/fourthdown-nfl-predictions/", "Games"], ["/fourthdown-nfl-predictions/index.html", "Games"], ["/bets.html", "Players"], ["/fourthdown-nfl-predictions/bets.html", "Players"], ["/history.html", "Accuracy"], ["/fourthdown-nfl-predictions/history.html", "Accuracy"], ["/model-lab.html", "Labs"], ["/fourthdown-nfl-predictions/model-lab.html", "Labs"]]) {
   const nav = { setAttribute(name, value) { this[name] = value; } };
   const context = { location: { pathname: path }, document: { createElement: () => nav, body: { append: element => { context.appended = element; } } } };
   vm.runInNewContext(source, context);
