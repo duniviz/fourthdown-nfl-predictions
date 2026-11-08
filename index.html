@@ -552,6 +552,7 @@ renderParlays();
  const weatherCache=new Map();
  const recapCache=new Map();
  let playerResearch=[];
+ let playerFeed=null;
  let countProps=[];
  let countDkQuotes=[], dkIndex=null;
  let simulationGames=[];
@@ -594,7 +595,7 @@ renderParlays();
  let forecasts=[];
  let archived=[];
  async function loadForecasts(){
-  let countFeed=null, playerFeed=null, simulationFeed=null;
+  let countFeed=null, simulationFeed=null;
   try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countFeed=j;countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
   try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=j.bookmaker==='draftkings'&&Array.isArray(j.rows)?j.rows.filter(q=>Date.parse(j.generated_at_utc)<Date.parse(q.commence_time)):[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/player-results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();playerResults=Array.isArray(j.rows)?j.rows:[];}}catch(e){playerResults=[];}

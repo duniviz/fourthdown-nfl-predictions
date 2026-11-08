@@ -7,6 +7,8 @@ const start = html.indexOf(" function frozenPlayers(g){");
 const end = html.indexOf("\n function completedPlayerPanel(g){", start);
 assert.ok(start >= 0 && end > start, "matchup player freezer must exist");
 const implementation = html.slice(start, end);
+assert.match(html, /let playerFeed=null;/, "pregame feed timestamp must be in matchup renderer scope");
+assert.doesNotMatch(html, /let countFeed=null, playerFeed=null/, "loader must not shadow the feed timestamp");
 
 const kickoff = "2026-11-08T14:30:00.000Z";
 const feedStamp = "2026-11-08T14:14:00.000Z";
