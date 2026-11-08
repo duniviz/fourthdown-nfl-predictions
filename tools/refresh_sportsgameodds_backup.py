@@ -74,7 +74,7 @@ def main():
         print(f"SportsGameOdds monthly guard: {used}/{MONTHLY_CAP}; skipping")
         return
     params = urlencode({"leagueID": "NFL", "oddsAvailable": "true",
-                        "finalized": "false", "includeAltLines": "false", "limit": 15})
+                        "finalized": "false", "started": "false", "bookmakerID": "draftkings", "includeAltLines": "false", "limit": 15})
     request = Request(BASE + "?" + params,
                       headers={"X-Api-Key": key, "Accept": "application/json",
                                "User-Agent": "FOURTHDOWN/1.0"})
@@ -100,7 +100,7 @@ def main():
         teams = event.get("teams") or {}
         home = team_name(teams.get("home"))
         away = team_name(teams.get("away"))
-        kickoff = date(event.get("startsAt") or event.get("startTime") or event.get("commence_time"))
+        kickoff = date((event.get("status") or {}).get("startsAt") or event.get("startsAt") or event.get("startTime") or event.get("commence_time"))
         if home not in ABBR or away not in ABBR:
             diagnostics["unmatched_teams"] += 1
             continue
