@@ -6,6 +6,7 @@ Adjusts current forecasts only when a market has demonstrated lower walk-forward
 import json
 from collections import defaultdict
 from pathlib import Path
+from live.game_pregame_observations import dt
 
 MIN_TRAIN=16
 MIN_TEST=12
@@ -22,7 +23,9 @@ def evaluate(archive,schedules,target_season,target_week):
     for g in archive:
         gid=str(g.get('game_id',''))
         if gid in seen or gid not in completed:continue
-        seen.add(gid)
+        published=dt(g.get('published_at_utc'))
+        kickoff=dt(g.get('kickoff_utc'))
+        if not published or not kickoff or published>=kickoff:continue
         try:
             season,week=int(g['season']),int(g['week'])
             if (season,week)>=(target_season,target_week):continue
@@ -30,6 +33,7 @@ def evaluate(archive,schedules,target_season,target_week):
             margin=float(actual['home_score'])-float(actual['away_score'])
             total=float(actual['home_score'])+float(actual['away_score'])
             grouped[(season,week)].append((float(g['projected_margin_home']),float(g['projected_total']),margin,total))
+            seen.add(gid)
         except (ValueError,KeyError,TypeError):continue
     histories={'margin':[],'total':[]}
     trials={'margin':[],'total':[]}
