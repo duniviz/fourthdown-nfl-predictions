@@ -1,0 +1,35 @@
+name: Test premium frontend shell
+on:
+  pull_request:
+    paths:
+      - 'assets/fd-premium-app.css'
+      - 'assets/fd-app-shell.js'
+      - 'tests/test_fd_app_shell.js'
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - '.github/workflows/test-premium-frontend.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'assets/fd-premium-app.css'
+      - 'assets/fd-app-shell.js'
+      - 'tests/test_fd_app_shell.js'
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - '.github/workflows/test-premium-frontend.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --check assets/fd-app-shell.js
+      - run: node tests/test_fd_app_shell.js
