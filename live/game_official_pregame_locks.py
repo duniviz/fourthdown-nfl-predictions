@@ -49,6 +49,38 @@ def main():
     observations=json.loads(SOURCE.read_text()).get("records",[])
     old=json.loads(OUT.read_text()).get("records",[]) if OUT.exists() else []
     records=select(observations,old,now)
+    # Independently freeze live scoring forecasts when verified DK game odds
+    # are missing or stale. This is NOT an official DK-backed lock.
+    live_path=ROOT/"live-v2.json"
+    if live_path.exists():
+        live=json.loads(live_path.read_text())
+        generated=dt(live.get("generated_at_utc"))
+        already={str(r.get("game_id")) for r in records}
+        for game in live.get("games",[]):
+            kickoff=dt(game.get("kickoff_utc"))
+            game_id=str(game.get("game_id") or "")
+            if (not game_id or game_id in already or not kickoff or not generated
+                    or not generated<=now<kickoff
+                    or not kickoff-timedelta(minutes=15)<=now):
+                continue
+            if not all(isinstance(game.get(k),(int,float)) and not isinstance(game.get(k),bool)
+                       for k in ("projected_margin_home","projected_total")):
+                continue
+            records.append({
+                "game_id":game_id,"season":game.get("season"),"week":game.get("week"),
+                "home":game.get("home"),"away":game.get("away"),
+                "kickoff_utc":kickoff.isoformat(),"forecast_at_utc":generated.isoformat(),
+                "captured_at_utc":now.isoformat(),
+                "lock_cutoff_utc":(kickoff-timedelta(minutes=15)).isoformat(),
+                "lock_status":"forecast_only",
+                "predicted_winner":game.get("predicted_winner"),
+                "projected_margin_home":game["projected_margin_home"],
+                "projected_total":game["projected_total"],
+                "dk_home_spread":None,"dk_total":None,"dk_at_utc":None,
+                "source":"frozen pregame model forecast; no verified T-15 DK quote"
+            })
+            already.add(game_id)
+    records.sort(key=lambda r:(str(r.get("kickoff_utc")),str(r.get("game_id"))))
     OUT.write_text(json.dumps({"schema_version":1,"records":records},indent=2)+"\n")
     print(f"Official game locks: {len(records)} total; {len(records)-len(old)} new")
 
