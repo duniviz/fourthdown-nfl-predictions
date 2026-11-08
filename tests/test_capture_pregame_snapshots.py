@@ -27,6 +27,14 @@ class CaptureTests(unittest.TestCase):
   updated=m.capture(old,[self.p],[later],self.games,date(17))
   self.assertEqual(updated[0]["projection"],82)
   self.assertEqual(updated[0]["dk_line"],79.5)
+ def test_rescheduled_game_does_not_reuse_old_kickoff_line(self):
+  quote={**self.q,"commence_time":date(18).isoformat()}
+  old=m.capture([], [self.p],[quote],self.games,date(17))
+  revised={("GB","CHI"):date(20)}
+  new=m.capture(old,[self.p],[quote],revised,date(17))
+  self.assertIsNone(new[0]["dk_line"])
+  self.assertEqual(new[0]["kickoff"],date(20).isoformat())
+  self.assertEqual(m.capture(old,[self.p],[quote],revised,date(19)),old)
  def test_stale_quote_does_not_replace_newer(self):
   newer=dict(self.q,line=79.5,captured_at=date(17).isoformat())
   old=m.capture([],[self.p],[newer],self.games,date(17))

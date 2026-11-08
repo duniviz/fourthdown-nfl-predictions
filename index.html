@@ -1750,7 +1750,8 @@ function renderMatchupCards(games){
      const active=g.state==='in',isFinal=g.state==='post';
      const kickoff=new Date(g.date);
      const title=active?'IN PROGRESS':isFinal?'FINAL':'UPCOMING';
-     const display=g.status||(!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit'}):'Scheduled');
+     const centralKickoff=!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'Scheduled';
+     const display=g.state==='pre'?centralKickoff:(g.status||centralKickoff);
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
      const awayPoints=Number(g.away.score),homePoints=Number(g.home.score);

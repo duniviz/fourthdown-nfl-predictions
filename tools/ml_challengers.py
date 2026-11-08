@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Leakage-aware, research-only ML challengers for frozen player predictions.
+"""Leakage-aware research challengers on retrospective walk-forward player projections.
 
-Features are restricted to frozen pregame predictions and known identifiers;
+Features are restricted to historical walk-forward estimates and known identifiers;
 no actuals, errors, or same-game postgame stats are inputs.
 Train on earlier seasons, evaluate untouched latest season.
 """
@@ -77,8 +77,8 @@ def main():
     result=evaluate(load(SOURCE))
     result.update({"generated_at_utc":datetime.now(timezone.utc).isoformat(),
                    "research_only":True,"production_changed":False,"automatic_promotion":False,
-                   "feature_policy":"frozen pregame model values + week only; no outcomes as features",
-                   "limitation":"Only player markets with historical frozen projections; no ATS, winners, weather or DK lines in source."})
+                   "feature_policy":"retrospective walk-forward player estimates + week; no outcomes as features",
+                   "limitation":"Retrospective 2024–2025 backtest, not live frozen predictions; no ATS, winners, weather or DK lines in source."})
     DEST.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps({"status":result["status"],"markets":result["markets"]},indent=2))
 if __name__=="__main__":main()
