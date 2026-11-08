@@ -15,7 +15,7 @@ class PublishLabTests(unittest.TestCase):
             unrelated.write_text('{"value":7}\n')
             with zipfile.ZipFile(artifact,'w') as archive:
                 archive.writestr('research/v3-results/results.json','{"markets":{}}')
-                archive.writestr('research/weekly-shadow-results/leaderboard.json','{"metrics":[]}')
+                archive.writestr('research/auto-promotion/readiness.json','{"status":"waiting"}')
             written=publish(artifact,root,datetime(2026,11,8,tzinfo=timezone.utc))
             self.assertEqual(len(written),2)
             for path in written:
