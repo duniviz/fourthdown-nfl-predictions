@@ -47,6 +47,10 @@ def has_game_today():
     except (OSError, ValueError, TypeError, KeyError):
         return None
 
+if "--no-game-evening" in sys.argv:
+    # Used by the forecast workflow to avoid duplicate API calls on no-game nights.
+    sys.exit(0 if local.hour == 19 and has_game_today() is False else 1)
+
 if "--refresh" in sys.argv:
     if len(month_entries()) >= limit:
         print("MONTHLY_REFRESH_CAP_REACHED", limit)
