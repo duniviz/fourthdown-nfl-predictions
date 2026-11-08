@@ -45,7 +45,7 @@ class QuoteIndex:
             if q.get("bookmaker", "draftkings") != "draftkings":
                 continue
             name, mk, away, home, kick = quote_key(q)
-            stamp = dt(q.get("last_update"))
+            stamp = dt(q.get("observed_at_utc") or q.get("last_update"))
             line = finite(q.get("line"))
             if not all((name, mk, away, home, kick, stamp)) or home == away:
                 continue

@@ -2,6 +2,7 @@
 import datetime as dt
 import unittest
 from tools.refresh_parlayapi_odds import merge_player_quotes
+from live.dk_identity import QuoteIndex
 
 NOW = dt.datetime(2026, 11, 7, 19, tzinfo=dt.timezone.utc)
 KICK = "2026-11-08T14:30:00.0000000Z"
@@ -41,6 +42,19 @@ class MergePlayerQuotesTests(unittest.TestCase):
         old = quote()
         result = merge_player_quotes([old], [], NOW)
         self.assertEqual(result[0]["last_update"], old["last_update"])
+
+    def test_same_price_can_be_reverified_without_rewriting_provider_timestamp(self):
+        old = quote()
+        checked = {**quote(), "observed_at_utc": NOW.isoformat()}
+        merged = merge_player_quotes([old], [checked], NOW)
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["last_update"], old["last_update"])
+        self.assertEqual(merged[0]["observed_at_utc"], NOW.isoformat())
+        player = {"player":"Chase Brown","market_key":"player_rushing_yards",
+                  "team":"CIN","opponent":"ATL"}
+        match = QuoteIndex(merged,NOW).find(player,dt.datetime.fromisoformat(KICK.replace("Z","+00:00")))
+        self.assertIsNotNone(match)
+        self.assertEqual(match[0], NOW)
 
 if __name__ == "__main__":
     unittest.main()

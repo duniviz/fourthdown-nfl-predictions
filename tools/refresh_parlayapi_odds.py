@@ -72,6 +72,9 @@ def merge_player_quotes(previous, incoming, now):
         except (TypeError, ValueError):
             return None
 
+    def observed_time(row):
+        return parsed_time(row.get("observed_at_utc")) or parsed_time(row.get("last_update"))
+
     def usable(row):
         if not isinstance(row, dict) or row.get("bookmaker","draftkings") != "draftkings" or isinstance(row.get("line"),bool):
             return False
@@ -94,7 +97,10 @@ def merge_player_quotes(previous, incoming, now):
             continue
         key = identity(row)
         old = merged.get(key)
-        if old is None or parsed_time(row["last_update"]) > parsed_time(old["last_update"]):
+        # A successful fetch is a new verification even when the book has not
+        # moved the price. Keep the provider's last_update intact, but select
+        # the most recently observed exact DraftKings quote for display/locks.
+        if old is None or observed_time(row) > observed_time(old):
             merged[key] = row
     return list(merged.values())
 
@@ -147,6 +153,7 @@ def main(props_only=None):
         from live.dk_game_refresh import main as refresh_games
         refresh_games()
     props = request("/props", bookmakers="draftkings", limit=10000)
+    observed_at = dt.datetime.now(dt.timezone.utc).isoformat()
     game_rows = []
     prop_rows = []
     for p in props:
@@ -165,6 +172,7 @@ def main(props_only=None):
             continue
         row = {k:p.get(k) for k in ("player","market_key","line","over_price","under_price","yes_price","no_price","home_team","away_team","commence_time","age_seconds")}
         row["last_update"] = timestamp(p.get("last_update"))
+        row["observed_at_utc"] = observed_at
         prop_rows.append(row)
     # Diagnose missing player quotes from this already-paid provider response.
     # No additional API calls, no made-up lines, and no player-specific overrides.

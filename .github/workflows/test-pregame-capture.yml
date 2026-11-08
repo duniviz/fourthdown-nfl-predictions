@@ -16,6 +16,18 @@ on:
       - '.github/workflows/test-pregame-capture.yml'
       - 'live/pregame_capture_guard.py'
       - 'live/game_official_pregame_locks.py'
+      - 'live/game_pregame_observations.py'
+      - 'live/pregame_cycle.py'
+      - 'live/dk_identity.py'
+      - 'live/dk_archive.py'
+      - 'live/dk_game_refresh.py'
+      - 'tools/refresh_parlayapi_odds.py'
+      - 'tools/refresh_sportsgameodds_backup.py'
+      - 'assets/dk-lines.js'
+      - 'assets/dk-markets.json'
+      - 'tests/test_dk_lines_frontend.js'
+      - 'tests/test_dk_prop_snapshot_merge.py'
+      - 'tests/test_game_pregame_observations.py'
       - 'tests/test_pregame_capture_guard.py'
       - 'tests/test_game_official_pregame_locks.py'
       - '.github/workflows/capture-game-pregame.yml'
@@ -31,8 +43,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Run snapshot unit tests
         run: python -m unittest discover -s tests -p 'test_capture_pregame_snapshots.py' -v
+      - name: Test frontend DraftKings identity and freshness
+        run: node tests/test_dk_lines_frontend.js
       - name: Test saved odds through capture and grading
         run: python -m unittest discover -s tests -p 'test_pregame_end_to_end.py' -v
       - name: Test real GB-CAR historical regression

@@ -17,14 +17,14 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
  records={tuple(str(r.get(k,"")) for k in ("game_id","player_id","market")):r for r in existing}
  index=QuoteIndex(quotes,now)
  from collections import defaultdict
- from live.dk_identity import norm
+ from live.dk_identity import norm, team as team_code
  names=defaultdict(set)
  for item in projections:
-  k=(norm(item.get("player")),canonical_market(item.get("market_key")),str(item.get("game_id")))
+  k=(norm(item.get("player")),canonical_market(item.get("market_key")),team_code(item.get("team")),str(item.get("game_id")))
   names[k].add(str(item.get("player_id")))
  legacy={}
  for q in quotes:
-  stamp=dt(q.get("captured_at") or q.get("updated_at_utc") or q.get("timestamp"))
+  stamp=dt(q.get("observed_at_utc") or q.get("captured_at") or q.get("updated_at_utc") or q.get("timestamp"))
   if stamp and q.get("player_id") and q.get("game_id") and q.get("bookmaker","draftkings")=="draftkings":
    legacy.setdefault((str(q["game_id"]),str(q["player_id"]),canonical_market(q.get("market_key") or q.get("market"))),[]).append((stamp,q))
  for p in projections:
@@ -36,11 +36,10 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
   if not p.get("game_id") or not p.get("player_id") or not market:continue
   projection=finite(p.get("projection"))
   if projection is None:continue
-  name_key=(norm(p.get("player")),canonical_market(market),str(p.get("game_id")))
+  name_key=(norm(p.get("player")),canonical_market(market),team_code(team),str(p.get("game_id")))
   found=index.find(p,kickoff) if len(names[name_key])==1 else None
   matching=[(t,q) for t,q in legacy.get((str(p["game_id"]),str(p["player_id"]),canonical_market(market)),[])
-            if t<=now and t<kickoff and (not q.get("commence_time") or dt(q["commence_time"])==kickoff)
-            and finite(q.get("line",q.get("dk_line"))) is not None]
+            if t<=now and t<kickoff and finite(q.get("line",q.get("dk_line"))) is not None]
   if found:matching.append(found[:2])
   matching.sort(key=lambda x:x[0],reverse=True)
   quote=matching[0][1] if matching else {}
@@ -62,18 +61,12 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
     except (TypeError,ValueError,KeyError,AttributeError):pass
   weather_projection=adjusted_projection(str(market),projection,wx) if wx else None
   previous=records.get(key)
-  if previous and dt(previous.get("kickoff")) != kickoff:
-   old_kickoff=dt(previous.get("kickoff"))
-   if not old_kickoff or now>=old_kickoff:
-    continue
-   # Old quote belongs to the previous scheduled time. Keep that observation
-   # in player-history and require a quote for the revised kickoff.
-   previous=None
   # Never regress a captured projection, even when the feed is stale.
   if previous:
    prev_time=dt(previous.get("captured_at"))
    prev_dk_time=dt(previous.get("dk_captured_at"))
    next_dk_time=matching[0][0] if matching else None
+   provider_update=quote.get("last_update") if quote else None
    # Keep latest pregame projection and DK line independently.
    if prev_time and prev_time>=generated:
     projection=previous.get("projection")
@@ -81,9 +74,11 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
    if prev_dk_time and (not next_dk_time or prev_dk_time>=next_dk_time):
     line=previous.get("dk_line")
     next_dk_time=prev_dk_time
+    provider_update=previous.get("dk_provider_updated_at_utc")
    dk_time=next_dk_time.isoformat() if next_dk_time else None
   else:
    dk_time=matching[0][0].isoformat() if matching else None
+   provider_update=quote.get("last_update") if quote else None
   # Preserve the weather value from the most recent immutable pregame capture.
   if previous and prev_time and prev_time>=dt(p.get('generated_at_utc')):
    weather_projection=previous.get('weather_projection')
@@ -91,6 +86,7 @@ def capture(existing,projections,quotes,games,now,weather_feed=None):
   records[key]={"game_id":p["game_id"],"player_id":p["player_id"],"player":p.get("player"),
     "team":team,"opponent":opp,"market":market,"projection":projection,"dk_line":line,
     "captured_at":generated.isoformat(),"dk_captured_at":dk_time,
+    "dk_provider_updated_at_utc":provider_update,
     "weather_projection":weather_projection,
     "weather_version":"weather-template-v1" if weather_projection is not None else None,
     "kickoff":kickoff.isoformat(),"saved_at_utc":now.isoformat()}
@@ -137,7 +133,8 @@ def collect(data, now, game_ids=None):
   line=row["dk_line"]
   side=None if line is None else ("OVER" if row["projection"]>line else "UNDER" if row["projection"]<line else "NO_PICK")
   record={**p,"kickoff_utc":row["kickoff"],"forecast_captured_at_utc":row["captured_at"],
-          "dk_quote_time":row["dk_captured_at"],"dk_line":line,"saved_at_utc":now.isoformat(),
+          "dk_quote_time":row["dk_captured_at"],"dk_provider_updated_at_utc":row.get("dk_provider_updated_at_utc"),
+          "dk_line":line,"saved_at_utc":now.isoformat(),
           "recommended_side":side,"snapshot_source":"matched_published_pregame_card"}
   if observation(record) not in seen:
    seen.add(observation(record))
