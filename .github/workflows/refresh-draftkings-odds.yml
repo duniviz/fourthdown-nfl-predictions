@@ -1,6 +1,9 @@
 name: Refresh DraftKings NFL odds
 on:
   workflow_dispatch:
+  schedule:
+    # 7:05 PM Chicago (CDT or CST); local-time guard prevents duplicates.
+    - cron: '5 0,1 * * *'
 permissions:
   contents: write
 concurrency:
