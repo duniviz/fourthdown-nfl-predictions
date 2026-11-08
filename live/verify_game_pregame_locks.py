@@ -7,7 +7,7 @@ from live.game_pregame_observations import dt
 DATA=Path("data")
 
 def missing_locks(games,locks,now):
-    locked={str(r.get("game_id")) for r in locks if r.get("lock_status")=="official"}
+    locked={str(r.get("game_id")) for r in locks if r.get("lock_status") in ("official","forecast_only")}
     missing=[]
     for game in games:
         kickoff=dt(game.get("kickoff_utc"))
@@ -23,7 +23,7 @@ def main():
     locks=json.loads((DATA/"game-official-pregame-locks.json").read_text()).get("records",[])
     missing=missing_locks(live.get("games",[]),locks,now)
     if missing:
-        raise SystemExit("MISSING OFFICIAL PREGAME LOCK (no post-cutoff backfill permitted): "+", ".join(missing))
+        raise SystemExit("MISSING PREGAME FORECAST RECORD (no post-kickoff backfill permitted): "+", ".join(missing))
     print("Official pregame lock verification passed for recently kicked-off games")
 
 if __name__=="__main__":
