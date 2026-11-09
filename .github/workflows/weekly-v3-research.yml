@@ -102,6 +102,15 @@ jobs:
           else
             echo "Yardage/game comparison pending frozen pregame forecasts." >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Grade game winner, ATS and over/under picks on paired frozen predictions
+        if: always()
+        run: |
+          if [ -f readiness-gate/data/weekly-shadow-forecasts.json ]; then
+            python readiness-gate/research/grade_paired_game_models.py
+            cat readiness-gate/research/paired-game-results/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Pick grading pending frozen pregame game forecasts." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Show weekly learner summary
         if: always()
         run: |
@@ -122,4 +131,5 @@ jobs:
             research/same-slate/
             readiness-gate/research/weekly-shadow-results/
             readiness-gate/research/yardage-game-results/
+            readiness-gate/research/paired-game-results/
           if-no-files-found: warn
