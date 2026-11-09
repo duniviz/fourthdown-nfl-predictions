@@ -8,6 +8,7 @@ from pathlib import Path
 SOURCES = (
     ('research/v3-results/results.json', 'model-lab-results.json'),
     ('research/auto-promotion/readiness.json', 'model-lab-readiness.json'),
+    ('research/paired-game-results/report.json', 'model-lab-paired-games.json'),
 )
 
 def publish(artifact, destination, now):
@@ -28,6 +29,10 @@ def publish(artifact, destination, now):
                 if not isinstance(report.get('markets'), dict):
                     raise ValueError('Research markets missing')
                 report['generated_at_utc'] = now.isoformat()
+            elif filename == 'model-lab-paired-games.json':
+                if not isinstance(report.get('pick_results'), list):
+                    raise ValueError('Paired game pick results missing')
+                report['published_at_utc'] = now.isoformat()
             target = destination / filename
             target.write_text(json.dumps(report, indent=2) + '\n')
             written.append(target)
