@@ -6,6 +6,13 @@
         "event_id": "401873048",
         "players": [
           {
+            "detail": "questionable",
+            "player": "Drew Lock",
+            "position": "QB",
+            "status": "Questionable",
+            "team": "SEA"
+          },
+          {
             "detail": "out",
             "player": "Leonard Williams",
             "position": "DT",
@@ -34,11 +41,11 @@
             "team": "SEA"
           },
           {
-            "detail": "out",
-            "player": "Rashid Shaheed",
-            "position": "WR",
-            "status": "Out",
-            "team": "SEA"
+            "detail": "questionable",
+            "player": "Roy Lopez",
+            "position": "DT",
+            "status": "Questionable",
+            "team": "ARI"
           },
           {
             "detail": "out",
@@ -65,13 +72,6 @@
             "detail": "out",
             "player": "Bam Knight",
             "position": "RB",
-            "status": "Out",
-            "team": "ARI"
-          },
-          {
-            "detail": "out",
-            "player": "Eku Leota",
-            "position": "LB",
             "status": "Out",
             "team": "ARI"
           }
@@ -381,39 +381,53 @@
         "event_id": "401873049",
         "players": [
           {
-            "detail": "out",
-            "player": "Behren Morton",
-            "position": "QB",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Ben Brown",
+            "position": "C",
+            "status": "Questionable",
             "team": "NE"
           },
           {
-            "detail": "out",
-            "player": "TreVeyon Henderson",
-            "position": "RB",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Brenden Schooler",
+            "position": "S",
+            "status": "Questionable",
             "team": "NE"
           },
           {
-            "detail": "out",
-            "player": "A.J. Brown",
-            "position": "WR",
-            "status": "Out",
-            "team": "NE"
-          },
-          {
-            "detail": "out",
-            "player": "Dametrious Crownover",
+            "detail": "questionable",
+            "player": "Will Campbell",
             "position": "OT",
-            "status": "Out",
+            "status": "Questionable",
             "team": "NE"
           },
           {
-            "detail": "out",
-            "player": "Charles Woods",
-            "position": "CB",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Rhamondre Stevenson",
+            "position": "RB",
+            "status": "Questionable",
             "team": "NE"
+          },
+          {
+            "detail": "questionable",
+            "player": "Carlton Davis III",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "NE"
+          },
+          {
+            "detail": "questionable",
+            "player": "Josh Jacobs",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "GB"
+          },
+          {
+            "detail": "questionable",
+            "player": "Bo Melton",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "GB"
           },
           {
             "detail": "questionable",
@@ -433,20 +447,6 @@
             "detail": "out",
             "player": "Josh Whyle",
             "position": "TE",
-            "status": "Out",
-            "team": "GB"
-          },
-          {
-            "detail": "out",
-            "player": "Sean Rhyan",
-            "position": "G",
-            "status": "Out",
-            "team": "GB"
-          },
-          {
-            "detail": "out",
-            "player": "Donovan Jennings",
-            "position": "G",
             "status": "Out",
             "team": "GB"
           }
@@ -566,12 +566,7 @@
           "status": "injury_report_only"
         },
         "NE": {
-          "confirmed_out": [
-            {
-              "player": "Behren Morton",
-              "status": "Out"
-            }
-          ],
+          "confirmed_out": [],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -611,6 +606,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Justin Herbert",
+            "position": "QB",
+            "status": "Questionable",
+            "team": "LAC"
+          },
+          {
+            "detail": "questionable",
             "player": "Isas Waxter",
             "position": "CB",
             "status": "Questionable",
@@ -634,13 +636,6 @@
             "detail": "out",
             "player": "Kayode Awosika",
             "position": "G",
-            "status": "Out",
-            "team": "LAC"
-          },
-          {
-            "detail": "out",
-            "player": "Brenen Thompson",
-            "position": "WR",
             "status": "Out",
             "team": "LAC"
           },
@@ -834,6 +829,27 @@
         "event_id": "401873047",
         "players": [
           {
+            "detail": "questionable",
+            "player": "Deommodore Lenoir",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "SF"
+          },
+          {
+            "detail": "questionable",
+            "player": "Renardo Green",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "SF"
+          },
+          {
+            "detail": "out",
+            "player": "Gracen Halton",
+            "position": "DT",
+            "status": "Out",
+            "team": "SF"
+          },
+          {
             "detail": "out",
             "player": "Kurtis Rourke",
             "position": "QB",
@@ -848,25 +864,11 @@
             "team": "SF"
           },
           {
-            "detail": "out",
-            "player": "Khalid Kareem",
-            "position": "DE",
-            "status": "Out",
-            "team": "SF"
-          },
-          {
-            "detail": "out",
-            "player": "Tatum Bethune",
-            "position": "LB",
-            "status": "Out",
-            "team": "SF"
-          },
-          {
-            "detail": "out",
-            "player": "Enrique Cruz Jr.",
-            "position": "OT",
-            "status": "Out",
-            "team": "SF"
+            "detail": "questionable",
+            "player": "Trey Zuhn III",
+            "position": "C",
+            "status": "Questionable",
+            "team": "LV"
           },
           {
             "detail": "out",
@@ -893,13 +895,6 @@
             "detail": "out",
             "player": "Dalton Johnson",
             "position": "S",
-            "status": "Out",
-            "team": "LV"
-          },
-          {
-            "detail": "out",
-            "player": "Thomas Booker IV",
-            "position": "DT",
             "status": "Out",
             "team": "LV"
           }
@@ -1215,6 +1210,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-08T22:00:01Z",
+  "generated_at_utc": "2026-11-09T06:19:38Z",
   "schema_version": 1
 }
