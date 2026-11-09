@@ -1,6 +1,12 @@
 name: FOURTHDOWN unified weekly ML cycle
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/fourthdown-unified-weekly-ml.yml'
+      - 'scripts/verify_weekly_learning_evidence.py'
+      - 'tests/test_weekly_learning_evidence.py'
+      - 'tests/test_ml_pipeline_integration.py'
   push:
     branches: [main]
     paths: ['.github/workflows/fourthdown-unified-weekly-ml.yml']
@@ -12,7 +18,27 @@ concurrency:
   group: game-ml-freeze
   cancel-in-progress: false
 jobs:
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-backtest.txt numpy scikit-learn
+      - name: Run weekly grading integration and evidence tests
+        run: |
+          python -m unittest discover -s tests -p 'test_ml_pipeline_integration.py' -v
+          python -m unittest discover -s tests -p 'test_weekly_learning_evidence.py' -v
+          python -m unittest discover -s tests -p 'test_official_game_lock_ml_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_weekly_learning_evidence.py' -v
+
   weekly:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -32,12 +58,13 @@ jobs:
           python -m unittest discover -s tests -p 'test_expanded_game_feature_symmetry.py' -v
           python -m unittest discover -s tests -p 'test_official_game_lock_ml_bridge.py' -v
           python -m unittest discover -s tests -p 'test_ml_pipeline_integration.py' -v
+          python -m unittest discover -s tests -p 'test_weekly_learning_evidence.py' -v
       - name: Verify archived pregame and completed-player data are present
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          for name in ("pregame-snapshots.json", "player-results.json"):
+          for name in ("pregame-snapshots.json", "player-history.json"):
               path=Path("data")/name
               if not path.exists(): raise SystemExit(f"Missing required source: {path}")
               json.loads(path.read_text())
@@ -50,6 +77,10 @@ jobs:
               json.loads(path.read_text())
               print("Verified existing frozen archive:",path)
           PY
+      - name: Grade frozen player predictions against verified finals
+        run: python -m live.player_results
+      - name: Grade frozen game predictions against verified finals
+        run: python -m live.game_official_results
       - name: Import verified official T-15 game incumbent locks
         run: python -m research.import_official_game_locks
       - name: Import archived production player projections
@@ -64,6 +95,8 @@ jobs:
         run: python research/grade_paired_game_models.py
       - name: Grade all available matched past weeks across markets
         run: python research/grade_all_markets_paired.py
+      - name: Prove prior-week forecast evaluation sample
+        run: python -m scripts.verify_weekly_learning_evidence
       - name: Publish paired weekly leaderboards for Model Lab
         run: python scripts/publish_weekly_lab.py
       - name: Preserve research-only champion selection
@@ -85,7 +118,7 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
+          git add -f data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json data/weekly-learning-evidence.json data/player-results.json data/player-calibration.json data/game-official-results.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
           if ! git diff --cached --quiet; then
             git commit -m "Publish weekly ML Lab research summary [skip ci]"
             git pull --rebase origin main
@@ -111,6 +144,7 @@ jobs:
             research/all-markets-paired-results/
             data/ml-challenger-review.json
             data/ml-weekly-decisions.json
+            data/weekly-learning-evidence.json
           if-no-files-found: warn
 
   historical-2016-2026:
