@@ -61,11 +61,10 @@ def build_evidence(forecasts, player_results, game_results, generated_at=None):
         if not week_key(game_id) or finite(row.get("home_score")) is None or finite(row.get("away_score")) is None:
             continue
         completed_games[game_id] = row
-    common_weeks = {week_key(key[0]) for key in player_keys}
-    common_weeks &= {week_key(game_id) for game_id in completed_games}
-    if not common_weeks:
-        raise ValueError("No completed week has both frozen player forecasts and completed game results")
-    selected_week = max(common_weeks, key=lambda wk: (int(wk[0]), int(wk[1])))
+    completed_weeks = {week_key(game_id) for game_id in completed_games}
+    if not completed_weeks:
+        raise ValueError("No completed games are available for weekly evaluation")
+    selected_week = max(completed_weeks, key=lambda wk: (int(wk[0]), int(wk[1])))
 
     selected_players = [key for key in player_keys if week_key(key[0]) == selected_week]
     selected_games = [row for game_id, row in completed_games.items() if week_key(game_id) == selected_week]
