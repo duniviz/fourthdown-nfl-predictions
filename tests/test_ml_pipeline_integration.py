@@ -48,6 +48,10 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertIn("python -m research.import_official_game_locks", workflow)
         self.assertIn("python research/grade_paired_game_models.py", workflow)
         self.assertIn("data/weekly-shadow-forecasts.json", workflow)
+        self.assertIn("python -m live.player_results", workflow)
+        self.assertIn("python -m live.game_official_results", workflow)
+        self.assertIn("python -m scripts.verify_weekly_learning_evidence", workflow)
+        self.assertIn("data/weekly-learning-evidence.json", workflow)
 
 if __name__ == "__main__":
     unittest.main()
