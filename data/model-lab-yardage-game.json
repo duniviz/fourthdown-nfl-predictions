@@ -1,16 +1,1789 @@
 {
   "research_only": true,
   "promotion_allowed": false,
-  "matched_slate_records": 0,
-  "rejected": {},
-  "metrics": [],
-  "provisional_lowest_mae_challengers": {},
+  "matched_slate_records": 122,
+  "rejected": {
+    "conflicting_dk_lines": 11
+  },
+  "metrics": [
+    {
+      "market": "game_margin_home",
+      "model": "less_shrinkage",
+      "n": 11,
+      "mae": 9.54,
+      "rmse": 11.988,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "live",
+      "n": 11,
+      "mae": 8.845,
+      "rmse": 11.278,
+      "dk_n": 11,
+      "dk_hit_rate": 0.9091
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0004",
+      "n": 11,
+      "mae": 10.282,
+      "rmse": 12.636,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0013",
+      "n": 11,
+      "mae": 10.065,
+      "rmse": 12.424,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0022",
+      "n": 11,
+      "mae": 9.848,
+      "rmse": 12.215,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0031",
+      "n": 11,
+      "mae": 9.631,
+      "rmse": 12.008,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0040",
+      "n": 11,
+      "mae": 9.415,
+      "rmse": 11.804,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0103",
+      "n": 11,
+      "mae": 9.798,
+      "rmse": 12.147,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0112",
+      "n": 11,
+      "mae": 9.581,
+      "rmse": 11.939,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0121",
+      "n": 11,
+      "mae": 9.364,
+      "rmse": 11.733,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0130",
+      "n": 11,
+      "mae": 9.147,
+      "rmse": 11.531,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0202",
+      "n": 11,
+      "mae": 9.314,
+      "rmse": 11.692,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0211",
+      "n": 11,
+      "mae": 9.097,
+      "rmse": 11.489,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0220",
+      "n": 11,
+      "mae": 8.88,
+      "rmse": 11.288,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0301",
+      "n": 11,
+      "mae": 8.83,
+      "rmse": 11.276,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0310",
+      "n": 11,
+      "mae": 8.613,
+      "rmse": 11.078,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_0400",
+      "n": 11,
+      "mae": 8.382,
+      "rmse": 10.902,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1003",
+      "n": 11,
+      "mae": 9.92,
+      "rmse": 12.284,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1012",
+      "n": 11,
+      "mae": 9.704,
+      "rmse": 12.077,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1021",
+      "n": 11,
+      "mae": 9.487,
+      "rmse": 11.872,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1030",
+      "n": 11,
+      "mae": 9.27,
+      "rmse": 11.67,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1102",
+      "n": 11,
+      "mae": 9.436,
+      "rmse": 11.802,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1111",
+      "n": 11,
+      "mae": 9.22,
+      "rmse": 11.598,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1120",
+      "n": 11,
+      "mae": 9.003,
+      "rmse": 11.398,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1201",
+      "n": 11,
+      "mae": 8.952,
+      "rmse": 11.355,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1210",
+      "n": 11,
+      "mae": 8.735,
+      "rmse": 11.157,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_1300",
+      "n": 11,
+      "mae": 8.468,
+      "rmse": 10.948,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2002",
+      "n": 11,
+      "mae": 9.559,
+      "rmse": 11.94,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2011",
+      "n": 11,
+      "mae": 9.342,
+      "rmse": 11.737,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2020",
+      "n": 11,
+      "mae": 9.125,
+      "rmse": 11.538,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2101",
+      "n": 11,
+      "mae": 9.075,
+      "rmse": 11.464,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2110",
+      "n": 11,
+      "mae": 8.858,
+      "rmse": 11.266,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_2200",
+      "n": 11,
+      "mae": 8.591,
+      "rmse": 11.026,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_3001",
+      "n": 11,
+      "mae": 9.198,
+      "rmse": 11.604,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_3010",
+      "n": 11,
+      "mae": 8.981,
+      "rmse": 11.406,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_3100",
+      "n": 11,
+      "mae": 8.714,
+      "rmse": 11.136,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "mix_4000",
+      "n": 11,
+      "mae": 8.836,
+      "rmse": 11.277,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "ml_gradient_boosting",
+      "n": 11,
+      "mae": 9.43,
+      "rmse": 12.158,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "ml_random_forest",
+      "n": 11,
+      "mae": 9.756,
+      "rmse": 12.803,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_margin_home",
+      "model": "ml_ridge",
+      "n": 11,
+      "mae": 9.068,
+      "rmse": 11.706,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "live",
+      "n": 11,
+      "mae": 12.882,
+      "rmse": 16.191,
+      "dk_n": 11,
+      "dk_hit_rate": 0.2727
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0004",
+      "n": 11,
+      "mae": 12.349,
+      "rmse": 16.139,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0013",
+      "n": 11,
+      "mae": 12.62,
+      "rmse": 16.129,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0022",
+      "n": 11,
+      "mae": 12.891,
+      "rmse": 16.196,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0031",
+      "n": 11,
+      "mae": 13.162,
+      "rmse": 16.339,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0040",
+      "n": 11,
+      "mae": 13.445,
+      "rmse": 16.555,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0103",
+      "n": 11,
+      "mae": 11.88,
+      "rmse": 15.533,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0112",
+      "n": 11,
+      "mae": 12.151,
+      "rmse": 15.555,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0121",
+      "n": 11,
+      "mae": 12.443,
+      "rmse": 15.656,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0130",
+      "n": 11,
+      "mae": 12.939,
+      "rmse": 15.835,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0202",
+      "n": 11,
+      "mae": 11.441,
+      "rmse": 15.029,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0211",
+      "n": 11,
+      "mae": 11.936,
+      "rmse": 15.084,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0220",
+      "n": 11,
+      "mae": 12.432,
+      "rmse": 15.221,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0301",
+      "n": 11,
+      "mae": 11.43,
+      "rmse": 14.636,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0310",
+      "n": 11,
+      "mae": 11.925,
+      "rmse": 14.727,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_0400",
+      "n": 11,
+      "mae": 11.418,
+      "rmse": 14.364,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1003",
+      "n": 11,
+      "mae": 12.485,
+      "rmse": 16.124,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1012",
+      "n": 11,
+      "mae": 12.755,
+      "rmse": 16.153,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1021",
+      "n": 11,
+      "mae": 13.026,
+      "rmse": 16.258,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1030",
+      "n": 11,
+      "mae": 13.297,
+      "rmse": 16.438,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1102",
+      "n": 11,
+      "mae": 12.015,
+      "rmse": 15.534,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1111",
+      "n": 11,
+      "mae": 12.286,
+      "rmse": 15.596,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1120",
+      "n": 11,
+      "mae": 12.691,
+      "rmse": 15.736,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1201",
+      "n": 11,
+      "mae": 11.689,
+      "rmse": 15.046,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1210",
+      "n": 11,
+      "mae": 12.184,
+      "rmse": 15.142,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_1300",
+      "n": 11,
+      "mae": 11.677,
+      "rmse": 14.671,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2002",
+      "n": 11,
+      "mae": 12.62,
+      "rmse": 16.129,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2011",
+      "n": 11,
+      "mae": 12.891,
+      "rmse": 16.196,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2020",
+      "n": 11,
+      "mae": 13.162,
+      "rmse": 16.339,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2101",
+      "n": 11,
+      "mae": 12.151,
+      "rmse": 15.555,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2110",
+      "n": 11,
+      "mae": 12.443,
+      "rmse": 15.656,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_2200",
+      "n": 11,
+      "mae": 11.936,
+      "rmse": 15.084,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_3001",
+      "n": 11,
+      "mae": 12.755,
+      "rmse": 16.153,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_3010",
+      "n": 11,
+      "mae": 13.026,
+      "rmse": 16.258,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_3100",
+      "n": 11,
+      "mae": 12.286,
+      "rmse": 15.596,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "mix_4000",
+      "n": 11,
+      "mae": 12.891,
+      "rmse": 16.196,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "ml_gradient_boosting",
+      "n": 11,
+      "mae": 12.511,
+      "rmse": 15.698,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "ml_random_forest",
+      "n": 11,
+      "mae": 11.823,
+      "rmse": 15.026,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "game_total",
+      "model": "ml_ridge",
+      "n": 11,
+      "mae": 11.441,
+      "rmse": 14.815,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "live",
+      "n": 20,
+      "mae": 59.08,
+      "rmse": 70.938,
+      "dk_n": 19,
+      "dk_hit_rate": 0.4737
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0004",
+      "n": 20,
+      "mae": 60.484,
+      "rmse": 71.635,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0013",
+      "n": 20,
+      "mae": 59.566,
+      "rmse": 69.886,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0022",
+      "n": 20,
+      "mae": 59.325,
+      "rmse": 69.2,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0031",
+      "n": 20,
+      "mae": 59.872,
+      "rmse": 69.61,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0040",
+      "n": 20,
+      "mae": 60.858,
+      "rmse": 71.096,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0103",
+      "n": 20,
+      "mae": 60.816,
+      "rmse": 72.443,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0112",
+      "n": 20,
+      "mae": 59.872,
+      "rmse": 70.354,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0121",
+      "n": 20,
+      "mae": 59.327,
+      "rmse": 69.308,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0130",
+      "n": 20,
+      "mae": 59.544,
+      "rmse": 69.352,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0202",
+      "n": 20,
+      "mae": 61.379,
+      "rmse": 73.357,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0211",
+      "n": 20,
+      "mae": 60.178,
+      "rmse": 70.938,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0220",
+      "n": 20,
+      "mae": 59.33,
+      "rmse": 69.537,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0301",
+      "n": 20,
+      "mae": 61.942,
+      "rmse": 74.373,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0310",
+      "n": 20,
+      "mae": 60.484,
+      "rmse": 71.635,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_0400",
+      "n": 20,
+      "mae": 62.737,
+      "rmse": 75.488,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1003",
+      "n": 20,
+      "mae": 60.178,
+      "rmse": 70.938,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1012",
+      "n": 20,
+      "mae": 59.33,
+      "rmse": 69.537,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1021",
+      "n": 20,
+      "mae": 59.322,
+      "rmse": 69.215,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1030",
+      "n": 20,
+      "mae": 60.201,
+      "rmse": 69.988,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1102",
+      "n": 20,
+      "mae": 60.484,
+      "rmse": 71.635,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1111",
+      "n": 20,
+      "mae": 59.566,
+      "rmse": 69.886,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1120",
+      "n": 20,
+      "mae": 59.325,
+      "rmse": 69.2,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1201",
+      "n": 20,
+      "mae": 60.816,
+      "rmse": 72.443,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1210",
+      "n": 20,
+      "mae": 59.872,
+      "rmse": 70.354,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_1300",
+      "n": 20,
+      "mae": 61.379,
+      "rmse": 73.357,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2002",
+      "n": 20,
+      "mae": 59.872,
+      "rmse": 70.354,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2011",
+      "n": 20,
+      "mae": 59.327,
+      "rmse": 69.308,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2020",
+      "n": 20,
+      "mae": 59.544,
+      "rmse": 69.352,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2101",
+      "n": 20,
+      "mae": 60.178,
+      "rmse": 70.938,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2110",
+      "n": 20,
+      "mae": 59.33,
+      "rmse": 69.537,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_2200",
+      "n": 20,
+      "mae": 60.484,
+      "rmse": 71.635,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_3001",
+      "n": 20,
+      "mae": 59.566,
+      "rmse": 69.886,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_3010",
+      "n": 20,
+      "mae": 59.325,
+      "rmse": 69.2,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_3100",
+      "n": 20,
+      "mae": 59.872,
+      "rmse": 70.354,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "mix_4000",
+      "n": 20,
+      "mae": 59.33,
+      "rmse": 69.537,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "ml_gradient_boosting",
+      "n": 20,
+      "mae": 62.805,
+      "rmse": 76.435,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "ml_random_forest",
+      "n": 20,
+      "mae": 62.893,
+      "rmse": 74.75,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "passing_yards",
+      "model": "ml_ridge",
+      "n": 20,
+      "mae": 60.042,
+      "rmse": 71.415,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "receiving_yards",
+      "model": "live",
+      "n": 45,
+      "mae": 23.927,
+      "rmse": 33.293,
+      "dk_n": 42,
+      "dk_hit_rate": 0.5476
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0004",
+      "n": 45,
+      "mae": 25.258,
+      "rmse": 33.651,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0013",
+      "n": 45,
+      "mae": 25.729,
+      "rmse": 33.851,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0022",
+      "n": 45,
+      "mae": 26.286,
+      "rmse": 34.195,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0031",
+      "n": 45,
+      "mae": 26.962,
+      "rmse": 34.679,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0040",
+      "n": 45,
+      "mae": 27.671,
+      "rmse": 35.297,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0103",
+      "n": 45,
+      "mae": 25.144,
+      "rmse": 33.617,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0112",
+      "n": 45,
+      "mae": 25.548,
+      "rmse": 33.769,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0121",
+      "n": 45,
+      "mae": 26.089,
+      "rmse": 34.065,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0130",
+      "n": 45,
+      "mae": 26.726,
+      "rmse": 34.503,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0202",
+      "n": 45,
+      "mae": 25.03,
+      "rmse": 33.599,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0211",
+      "n": 45,
+      "mae": 25.372,
+      "rmse": 33.702,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0220",
+      "n": 45,
+      "mae": 25.909,
+      "rmse": 33.95,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0301",
+      "n": 45,
+      "mae": 24.948,
+      "rmse": 33.598,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0310",
+      "n": 45,
+      "mae": 25.258,
+      "rmse": 33.651,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_0400",
+      "n": 45,
+      "mae": 24.866,
+      "rmse": 33.613,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1003",
+      "n": 45,
+      "mae": 25.372,
+      "rmse": 33.702,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1012",
+      "n": 45,
+      "mae": 25.909,
+      "rmse": 33.95,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1021",
+      "n": 45,
+      "mae": 26.499,
+      "rmse": 34.341,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1030",
+      "n": 45,
+      "mae": 27.198,
+      "rmse": 34.87,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1102",
+      "n": 45,
+      "mae": 25.258,
+      "rmse": 33.651,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1111",
+      "n": 45,
+      "mae": 25.729,
+      "rmse": 33.851,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1120",
+      "n": 45,
+      "mae": 26.286,
+      "rmse": 34.195,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1201",
+      "n": 45,
+      "mae": 25.144,
+      "rmse": 33.617,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1210",
+      "n": 45,
+      "mae": 25.548,
+      "rmse": 33.769,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_1300",
+      "n": 45,
+      "mae": 25.03,
+      "rmse": 33.599,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2002",
+      "n": 45,
+      "mae": 25.548,
+      "rmse": 33.769,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2011",
+      "n": 45,
+      "mae": 26.089,
+      "rmse": 34.065,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2020",
+      "n": 45,
+      "mae": 26.726,
+      "rmse": 34.503,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2101",
+      "n": 45,
+      "mae": 25.372,
+      "rmse": 33.702,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2110",
+      "n": 45,
+      "mae": 25.909,
+      "rmse": 33.95,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_2200",
+      "n": 45,
+      "mae": 25.258,
+      "rmse": 33.651,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_3001",
+      "n": 45,
+      "mae": 25.729,
+      "rmse": 33.851,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_3010",
+      "n": 45,
+      "mae": 26.286,
+      "rmse": 34.195,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_3100",
+      "n": 45,
+      "mae": 25.548,
+      "rmse": 33.769,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "mix_4000",
+      "n": 45,
+      "mae": 25.909,
+      "rmse": 33.95,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "receiving_yards",
+      "model": "ml_gradient_boosting",
+      "n": 45,
+      "mae": 25.495,
+      "rmse": 33.529,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "receiving_yards",
+      "model": "ml_random_forest",
+      "n": 45,
+      "mae": 25.816,
+      "rmse": 33.939,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "receiving_yards",
+      "model": "ml_ridge",
+      "n": 45,
+      "mae": 25.725,
+      "rmse": 33.951,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "rushing_yards",
+      "model": "live",
+      "n": 35,
+      "mae": 17.574,
+      "rmse": 21.159,
+      "dk_n": 33,
+      "dk_hit_rate": 0.6061
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0004",
+      "n": 35,
+      "mae": 19.352,
+      "rmse": 22.671,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0013",
+      "n": 35,
+      "mae": 19.685,
+      "rmse": 23.02,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0022",
+      "n": 35,
+      "mae": 20.234,
+      "rmse": 23.512,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0031",
+      "n": 35,
+      "mae": 20.847,
+      "rmse": 24.137,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0040",
+      "n": 35,
+      "mae": 21.503,
+      "rmse": 24.886,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0103",
+      "n": 35,
+      "mae": 19.251,
+      "rmse": 22.587,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0112",
+      "n": 35,
+      "mae": 19.555,
+      "rmse": 22.888,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0121",
+      "n": 35,
+      "mae": 20.03,
+      "rmse": 23.333,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0130",
+      "n": 35,
+      "mae": 20.643,
+      "rmse": 23.915,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0202",
+      "n": 35,
+      "mae": 19.15,
+      "rmse": 22.52,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0211",
+      "n": 35,
+      "mae": 19.453,
+      "rmse": 22.771,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0220",
+      "n": 35,
+      "mae": 19.826,
+      "rmse": 23.169,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0301",
+      "n": 35,
+      "mae": 19.048,
+      "rmse": 22.47,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0310",
+      "n": 35,
+      "mae": 19.352,
+      "rmse": 22.671,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_0400",
+      "n": 35,
+      "mae": 19.008,
+      "rmse": 22.437,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1003",
+      "n": 35,
+      "mae": 19.453,
+      "rmse": 22.771,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1012",
+      "n": 35,
+      "mae": 19.826,
+      "rmse": 23.169,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1021",
+      "n": 35,
+      "mae": 20.438,
+      "rmse": 23.706,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1030",
+      "n": 35,
+      "mae": 21.051,
+      "rmse": 24.374,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1102",
+      "n": 35,
+      "mae": 19.352,
+      "rmse": 22.671,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1111",
+      "n": 35,
+      "mae": 19.685,
+      "rmse": 23.02,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1120",
+      "n": 35,
+      "mae": 20.234,
+      "rmse": 23.512,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1201",
+      "n": 35,
+      "mae": 19.251,
+      "rmse": 22.587,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1210",
+      "n": 35,
+      "mae": 19.555,
+      "rmse": 22.888,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_1300",
+      "n": 35,
+      "mae": 19.15,
+      "rmse": 22.52,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2002",
+      "n": 35,
+      "mae": 19.555,
+      "rmse": 22.888,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2011",
+      "n": 35,
+      "mae": 20.03,
+      "rmse": 23.333,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2020",
+      "n": 35,
+      "mae": 20.643,
+      "rmse": 23.915,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2101",
+      "n": 35,
+      "mae": 19.453,
+      "rmse": 22.771,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2110",
+      "n": 35,
+      "mae": 19.826,
+      "rmse": 23.169,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_2200",
+      "n": 35,
+      "mae": 19.352,
+      "rmse": 22.671,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_3001",
+      "n": 35,
+      "mae": 19.685,
+      "rmse": 23.02,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_3010",
+      "n": 35,
+      "mae": 20.234,
+      "rmse": 23.512,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_3100",
+      "n": 35,
+      "mae": 19.555,
+      "rmse": 22.888,
+      "dk_n": 1,
+      "dk_hit_rate": 0
+    },
+    {
+      "market": "rushing_yards",
+      "model": "mix_4000",
+      "n": 35,
+      "mae": 19.826,
+      "rmse": 23.169,
+      "dk_n": 1,
+      "dk_hit_rate": 1
+    },
+    {
+      "market": "rushing_yards",
+      "model": "ml_gradient_boosting",
+      "n": 35,
+      "mae": 19.841,
+      "rmse": 23.694,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "rushing_yards",
+      "model": "ml_random_forest",
+      "n": 35,
+      "mae": 19.198,
+      "rmse": 23.058,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    },
+    {
+      "market": "rushing_yards",
+      "model": "ml_ridge",
+      "n": 35,
+      "mae": 19.134,
+      "rmse": 22.439,
+      "dk_n": 0,
+      "dk_hit_rate": null
+    }
+  ],
+  "provisional_lowest_mae_challengers": {
+    "game_margin_home": null,
+    "game_total": null,
+    "passing_yards": null,
+    "receiving_yards": "mix_0400",
+    "rushing_yards": "mix_0400"
+  },
   "warning": "Model coverage differs unless n matches; provisional winners are NOT promotion approvals.",
-  "status": "WAITING_FOR_PREGAME_OR_FINALS",
+  "status": "COMPLETE",
   "coverage": {
-    "verified_market_rows": 0,
-    "complete_market_rows": 0,
+    "verified_market_rows": 363,
+    "complete_market_rows": 133,
     "required_models": 36
   },
-  "published_at_utc": "2026-11-08T15:52:20.838243+00:00"
+  "published_at_utc": "2026-11-09T15:22:20.037669+00:00"
 }
