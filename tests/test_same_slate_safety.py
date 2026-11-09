@@ -12,6 +12,18 @@ class SameSlateSafetyTests(unittest.TestCase):
         r=compare([row(),row("challenger",projection=62)])
         self.assertEqual(r["matched_slate_records"],1)
         self.assertFalse(r["promotion_allowed"])
+
+    def test_game_margin_dk_hit_rate_uses_signed_home_spread(self):
+        rows=[]
+        for model,projection in (("live",4),("challenger",0)):
+            rows.append({"game_id":"2026_09_A_B","player_id":"GAME",
+                "stat_key":"game_margin_home","model":model,"projection":projection,
+                "actual":3,"dk_line":-2.5,"kickoff_utc":"2026-11-01T18:00:00Z",
+                "predicted_at_utc":"2026-11-01T15:00:00Z"})
+        report=compare(rows)
+        metrics={x["model"]:x for x in report["metrics"]}
+        self.assertEqual(metrics["live"]["dk_hit_rate"],1.0)
+        self.assertEqual(metrics["challenger"]["dk_hit_rate"],0.0)
     def test_duplicate_cannot_reenter(self):
         r=compare([row(),row(),row(),row("challenger")])
         self.assertEqual(r["matched_slate_records"],0)

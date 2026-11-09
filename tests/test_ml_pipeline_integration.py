@@ -49,5 +49,16 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertIn("python research/grade_paired_game_models.py", workflow)
         self.assertIn("data/weekly-shadow-forecasts.json", workflow)
 
+    def test_winner_ats_total_grades_are_scheduled_and_published_to_lab(self):
+        workflow = (ROOT / ".github/workflows/weekly-v3-research.yml").read_text()
+        self.assertIn("research/grade_paired_game_models.py", workflow)
+        self.assertIn("research/paired-game-results/", workflow)
+        publisher = (ROOT / ".github/workflows/publish-model-lab.yml").read_text()
+        self.assertIn("research/paired-game-results/report.json", publisher)
+        self.assertIn("data/model-lab-paired-games.json", publisher)
+        page = (ROOT / "model-lab.html").read_text()
+        self.assertIn("data/model-lab-paired-games.json", page)
+        self.assertIn("game-pick-grade-table", page)
+
 if __name__ == "__main__":
     unittest.main()

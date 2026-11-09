@@ -5,6 +5,7 @@ Adjusts current forecasts only when a market has demonstrated lower walk-forward
 """
 import json
 from collections import defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
 MIN_TRAIN=16
@@ -12,20 +13,51 @@ MIN_TEST=12
 PRIOR=50.0
 MAX_CORRECTION=3.0
 
+def timestamp(value):
+    try:
+        return datetime.fromisoformat(str(value).replace('Z','+00:00')).astimezone(timezone.utc)
+    except (ValueError,TypeError):
+        return None
+
 def fit(history):
     return max(-MAX_CORRECTION,min(MAX_CORRECTION,sum(history)/(len(history)+PRIOR))) if len(history)>=MIN_TRAIN else 0.0
 
-def evaluate(archive,schedules,target_season,target_week):
+def evaluate(archive,schedules,target_season,target_week,official_locks=None):
     completed={str(g['game_id']):g for g in schedules if g.get('home_score') is not None and g.get('away_score') is not None}
-    grouped=defaultdict(list)
-    seen=set()
+    observations={}
+    # v2-history preserves the immutable first publication. Prefer an eligible
+    # frozen pregame lock when available so learning grades the forecast that
+    # was actually preserved for the game-day ledger.
     for g in archive:
         gid=str(g.get('game_id',''))
-        if gid in seen or gid not in completed:continue
-        seen.add(gid)
+        kickoff=timestamp(g.get('kickoff_utc'))
+        published=timestamp(g.get('published_at_utc'))
+        if gid and kickoff and published and published<kickoff and gid not in observations:
+            observations[gid]=g
+    for lock in official_locks or []:
+        if not isinstance(lock,dict) or lock.get('lock_status') not in ('official','forecast_only','last_available','early_pregame'):continue
+        gid=str(lock.get('game_id',''))
+        kickoff=timestamp(lock.get('kickoff_utc'))
+        published=timestamp(lock.get('forecast_at_utc'))
+        captured=timestamp(lock.get('captured_at_utc'))
+        if (not gid or not kickoff or not published or not captured or published>=kickoff or captured>=kickoff
+                or gid not in completed):continue
+        try:
+            margin=float(lock['projected_margin_home']);total=float(lock['projected_total'])
+            season=int(lock['season']);week=int(lock['week'])
+        except (KeyError,ValueError,TypeError):continue
+        observations[gid]={**lock,'published_at_utc':published.isoformat(),
+            'projected_margin_home':margin,'projected_total':total,'season':season,'week':week}
+    grouped=defaultdict(list)
+    for g in observations.values():
+        gid=str(g.get('game_id',''))
+        if gid not in completed:continue
         try:
             season,week=int(g['season']),int(g['week'])
             if (season,week)>=(target_season,target_week):continue
+            kickoff=timestamp(g.get('kickoff_utc'))
+            published=timestamp(g.get('published_at_utc'))
+            if not kickoff or not published or published>=kickoff:continue
             actual=completed[gid]
             margin=float(actual['home_score'])-float(actual['away_score'])
             total=float(actual['home_score'])+float(actual['away_score'])
@@ -59,9 +91,10 @@ def main():
     live=json.loads(live_path.read_text())
     season,week=int(live['season']),int(live['week'])
     archive=json.loads(Path('data/v2-history.json').read_text()).get('games',[])
+    locks=json.loads(Path('data/game-official-pregame-locks.json').read_text()).get('records',[]) if Path('data/game-official-pregame-locks.json').exists() else []
     seasons=sorted({int(g['season']) for g in archive if int(g['season'])<=season})
     schedules=[g for s in seasons for g in nfl.load_schedules([s]).to_dicts()]
-    decision=evaluate(archive,schedules,season,week)
+    decision=evaluate(archive,schedules,season,week,locks)
     for game in live['games']:
         if game.get('weekly_learning'):continue
         margin=float(game['projected_margin_home'])+decision['margin']['adjustment']

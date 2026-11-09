@@ -58,8 +58,16 @@ def compare(rows, week=None):
         matched+=1
         for model,v in forecasts.items():
             line=v["dk_line"]
-            predicted_side=None if line is None or v["projection"]==line else v["projection"]>line
-            actual_side=None if line is None or v["actual"]==line else v["actual"]>line
+            if line is None:
+                predicted_side=actual_side=None
+            elif market=="game_margin_home":
+                # `dk_line` stores DraftKings' signed home spread. ATS cover is
+                # home margin + home spread > 0, unlike an over/under threshold.
+                predicted_side=None if v["projection"]+line==0 else v["projection"]+line>0
+                actual_side=None if v["actual"]+line==0 else v["actual"]+line>0
+            else:
+                predicted_side=None if v["projection"]==line else v["projection"]>line
+                actual_side=None if v["actual"]==line else v["actual"]>line
             hit=None if predicted_side is None or actual_side is None else int(predicted_side==actual_side)
             metrics[(market,model)].append((v["projection"]-v["actual"],hit))
     result=[]
