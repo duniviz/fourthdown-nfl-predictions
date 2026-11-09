@@ -14,6 +14,13 @@
           },
           {
             "detail": "out",
+            "player": "Sam Darnold",
+            "position": "QB",
+            "status": "Out",
+            "team": "SEA"
+          },
+          {
+            "detail": "out",
             "player": "Leonard Williams",
             "position": "DT",
             "status": "Out",
@@ -30,13 +37,6 @@
             "detail": "out",
             "player": "Uchenna Nwosu",
             "position": "LB",
-            "status": "Out",
-            "team": "SEA"
-          },
-          {
-            "detail": "out",
-            "player": "Brandon Pili",
-            "position": "DT",
             "status": "Out",
             "team": "SEA"
           },
@@ -191,7 +191,12 @@
           "status": "injury_report_only"
         },
         "SEA": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Sam Darnold",
+              "status": "Out"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -381,9 +386,23 @@
         "event_id": "401873049",
         "players": [
           {
-            "detail": "questionable",
+            "detail": "doubtful",
             "player": "Ben Brown",
             "position": "C",
+            "status": "Doubtful",
+            "team": "NE"
+          },
+          {
+            "detail": "out",
+            "player": "A.J. Brown",
+            "position": "WR",
+            "status": "Out",
+            "team": "NE"
+          },
+          {
+            "detail": "questionable",
+            "player": "Rhamondre Stevenson",
+            "position": "RB",
             "status": "Questionable",
             "team": "NE"
           },
@@ -398,20 +417,6 @@
             "detail": "questionable",
             "player": "Will Campbell",
             "position": "OT",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "Rhamondre Stevenson",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "Carlton Davis III",
-            "position": "CB",
             "status": "Questionable",
             "team": "NE"
           },
@@ -606,6 +611,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Ladd McConkey",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "LAC"
+          },
+          {
+            "detail": "questionable",
             "player": "Justin Herbert",
             "position": "QB",
             "status": "Questionable",
@@ -622,13 +634,6 @@
             "detail": "questionable",
             "player": "Justin Eboigbe",
             "position": "DT",
-            "status": "Questionable",
-            "team": "LAC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Ladd McConkey",
-            "position": "WR",
             "status": "Questionable",
             "team": "LAC"
           },
@@ -1210,6 +1215,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-09T06:19:38Z",
+  "generated_at_utc": "2026-11-09T19:46:17Z",
   "schema_version": 1
 }
