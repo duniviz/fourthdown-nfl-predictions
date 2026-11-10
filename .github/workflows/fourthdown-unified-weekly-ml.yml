@@ -11,6 +11,11 @@ on:
       - 'tests/test_refresh_weekly_player_ml_data.py'
       - 'tests/test_ml_challengers.py'
       - 'tests/test_weekly_player_mix.py'
+      - 'live/player_ml_runtime.py'
+      - 'live/player_research.py'
+      - 'live/player_results.py'
+      - 'tools/train_deployable_player_ml.py'
+      - 'tests/test_deployable_player_ml.py'
       - 'tests/test_weekly_learning_evidence.py'
       - 'tests/test_ml_pipeline_integration.py'
   push:
@@ -48,10 +53,25 @@ jobs:
           python -m unittest discover -s tests -p 'test_refresh_weekly_player_ml_data.py' -v
           python -m unittest discover -s tests -p 'test_ml_challengers.py' -v
           python -m unittest discover -s tests -p 'test_weekly_player_mix.py' -v
+          python -m unittest discover -s tests -p 'test_deployable_player_ml.py' -v
       - name: Rebuild and evaluate full historical player data
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2016
           python tools/ml_challengers.py --input data/weekly-player-ml-training.csv
+          python -m tools.train_deployable_player_ml --input data/weekly-player-ml-training.csv
+      - name: Exercise active player ML through publication validators
+        run: |
+          python - <<'PYTEST'
+          import json
+          from pathlib import Path
+          p=Path('data/player-ml-runtime.json'); j=json.loads(p.read_text())
+          for decision in j['decisions'].values(): decision['active']=True
+          p.write_text(json.dumps(j))
+          PYTEST
+          python -m live.player_research
+          python -m live.validate_props
+          python -m live.simulate
+          python -m live.validate_published
 
   weekly:
     if: github.event_name != 'pull_request'
@@ -105,6 +125,8 @@ jobs:
         run: python -m tools.refresh_weekly_player_ml_data --start 2016
       - name: Retrain and evaluate historical player ML challengers
         run: python tools/ml_challengers.py --input data/weekly-player-ml-training.csv
+      - name: Train deployable player ML and evaluate frozen paired forecasts
+        run: python -m tools.train_deployable_player_ml --input data/weekly-player-ml-training.csv
       - name: Grade frozen count and yardage player challengers
         run: python research/grade_weekly_shadow_models.py
       - name: Grade frozen yardage and game models
@@ -136,7 +158,7 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json data/weekly-learning-evidence.json data/player-results.json data/player-calibration.json data/game-official-results.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
+          git add -f data/player-ml-runtime.json data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json data/weekly-learning-evidence.json data/player-results.json data/player-calibration.json data/game-official-results.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
           if ! git diff --cached --quiet; then
             git commit -m "Publish weekly ML Lab research summary [skip ci]"
             git pull --rebase origin main
@@ -146,7 +168,7 @@ jobs:
         if: always()
         run: |
           echo '## FOURTHDOWN weekly ML research' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Live model unchanged; promotion remains research-only until rollback and production replay are validated.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Player ML uses pregame paired-evidence promotion and automatic rollback; other research challengers remain research-only.' >> "$GITHUB_STEP_SUMMARY"
           for f in research/weekly-shadow-results/RESULTS.md research/paired-game-results/RESULTS.md research/all-markets-paired-results/RESULTS.md; do
             if [ -f "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; fi
           done
