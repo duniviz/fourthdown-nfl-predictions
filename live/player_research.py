@@ -49,12 +49,37 @@ MARKET_KEYS = {
     "receiving_yards": "player_rec_yds", "receptions": "player_receptions",
     "receiving_tds": "player_rec_tds", "anytime_td": "player_anytime_td",
 }
-# Officially announced Week 9 starter; scoped to this game only.
-# Vikings.com announced Carson Wentz would start vs Buffalo on Nov. 5, 2026.
-VERIFIED_QB_STARTERS = {(2026, 9, "MIN", "carson wentz")}
+def load_verified_starters(season, week):
+    """Load game-specific starter confirmations from sourced, pregame records."""
+    try:
+        payload=json.loads(Path("data/verified-starters.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        return {}
+    rows=payload.get("starters",[]) if isinstance(payload,dict) else []
+    result={}
+    for row in rows:
+        if not isinstance(row,dict) or str(row.get("status","")).lower()!="confirmed":
+            continue
+        try:
+            if int(row.get("season",-1))!=season or int(row.get("week",-1))!=week:
+                continue
+        except (TypeError,ValueError):
+            continue
+        team=str(row.get("team") or "").upper()
+        game_id=str(row.get("game_id") or "")
+        player=str(row.get("player") or "").strip()
+        source_url=str(row.get("source_url") or "")
+        if (not game_id or not team or not player or
+                str(row.get("position") or "").upper()!="QB" or
+                not source_url.startswith("https://")):
+            continue
+        result[(game_id,team)]={**row,"team":team,"player":player}
+    return result
 
-def verified_qb_starter(season, week, team, player_name):
-    return (season, week, str(team).upper(), str(player_name or "").casefold()) in VERIFIED_QB_STARTERS
+
+def verified_qb_starter(starters, game_id, team, player_name):
+    row=starters.get((str(game_id),str(team).upper()))
+    return row if row and str(row.get("player","")).casefold()==str(player_name or "").casefold() else None
 
 
 def num(x):
@@ -398,6 +423,7 @@ def generate():
     game_context=load_game_context()
     calibration=load_calibration()
     results=[]
+    verified_starters=load_verified_starters(season,week)
     for game in games:
         context=game_context.get((str(game["home_team"]),str(game["away_team"])),{})
         home_score=num(context.get("projected_home_score"))
@@ -429,9 +455,9 @@ def generate():
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
                     player_name=records[-1].get("player_display_name") or records[-1].get("player_name")
-                    confirmed_starter=verified_qb_starter(season,week,team,player_name)
+                    confirmed_starter=verified_qb_starter(verified_starters,game["game_id"],team,player_name)
                     # Do not automatically reallocate to long-inactive players,
-                    # except for a quarterback confirmed as this week's starter.
+                    # except for a quarterback confirmed for this exact game.
                     if week-last_week>2 and not confirmed_starter: continue
                     vol=[max(0,num(x.get(volume))) for x in recent]
                     raw=0.7*sum(vol[-3:])/len(vol[-3:])+0.3*sum(vol)/len(vol)
@@ -445,7 +471,7 @@ def generate():
                 stats=sorted(stats,key=lambda x:int(x["week"]))
                 if not stats: continue
                 player_name=str(stats[-1].get("player_display_name") or stats[-1].get("player_name") or player)
-                confirmed_starter=verified_qb_starter(season,week,team,player_name)
+                confirmed_starter=verified_qb_starter(verified_starters,game["game_id"],team,player_name)
                 if week-int(stats[-1]["week"])>2 and not confirmed_starter: continue
                 availability=overrides.get((team,player_name.casefold()),"unconfirmed")
                 if availability in ("out","inactive","ir"): continue
@@ -480,6 +506,7 @@ def generate():
                         observed=sum(max(0,num(x.get(volume))) for x in stats)/len(stats)
                         adjusted=min(adjusted,observed*1.20)
                     position=str(stats[-1].get("position") or "").upper()
+                    confirmed_team_qb=verified_starters.get((str(game["game_id"]),str(team).upper()))
                     # An established RB returning with only one or two current
                     # rows is not equivalent to a newly promoted backup. Blend
                     # up to five earlier meaningful games with a reduced-role
@@ -561,6 +588,9 @@ def generate():
                         "espn_athlete_id":espn_ids.get(player),
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
+                        "starter_status":("confirmed_starter" if confirmed_starter else ("not_starting" if position=="QB" and confirmed_team_qb else ("unconfirmed" if position=="QB" else None))),
+                        "starter_source":confirmed_team_qb.get("source") if position=="QB" and confirmed_team_qb else None,
+                        "starter_source_url":confirmed_team_qb.get("source_url") if position=="QB" and confirmed_team_qb else None,
                         "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
                         "sample_warning":("Limited current-season games; established return workload blends five prior meaningful games with a reduced-role scenario" if return_workload is not None else ("Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None)),
                         "bet_recommendation":False,
