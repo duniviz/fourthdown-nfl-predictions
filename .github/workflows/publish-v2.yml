@@ -5,6 +5,7 @@ name: Publish weekly v2 forecasts
     paths:
       - '.github/forecast-refresh.txt'
       - 'data/verified-starters.json'
+      - 'data/qb-replacement-trial.json'
   schedule:
     # Daily 7 PM Central: 00 UTC during CDT, 01 UTC during CST (following UTC day).
     # Guard checks America/Chicago to prevent duplicate daily runs.
