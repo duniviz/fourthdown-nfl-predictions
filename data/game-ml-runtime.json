@@ -1,0 +1,70 @@
+{
+  "family": "game-score-ridge-v1",
+  "generated_at_utc": "2026-11-10T03:18:46.867825+00:00",
+  "models": {
+    "game_total": {
+      "coefficients": [
+        0.42255019842290253,
+        0.0708449158023206,
+        0.25771121558848853,
+        0.14112763089085933,
+        -0.09896710552184212
+      ],
+      "intercept": 26.358096146765288,
+      "trained_season": 2026,
+      "trained_week": 9
+    },
+    "game_margin_home": {
+      "coefficients": [
+        0.47283129401439483,
+        -0.47622607366482317,
+        -0.49112205307938706,
+        0.2893290991546829,
+        0.09970818147568677
+      ],
+      "intercept": 5.53352061127443,
+      "trained_season": 2026,
+      "trained_week": 9
+    }
+  },
+  "decisions": {
+    "game_margin_home": {
+      "active": false,
+      "reason": "awaiting_paired_evidence",
+      "paired": 0,
+      "weeks": 0,
+      "baseline_mae": null,
+      "candidate_mae": null,
+      "recent_paired": 0,
+      "pick_checks": {
+        "winner": {
+          "games": 0,
+          "baseline_hits": 0,
+          "candidate_hits": 0
+        },
+        "ats": {
+          "games": 0,
+          "baseline_hits": 0,
+          "candidate_hits": 0
+        }
+      }
+    },
+    "game_total": {
+      "active": false,
+      "reason": "awaiting_paired_evidence",
+      "paired": 0,
+      "weeks": 0,
+      "baseline_mae": null,
+      "candidate_mae": null,
+      "recent_paired": 0,
+      "pick_checks": {
+        "ou": {
+          "games": 0,
+          "baseline_hits": 0,
+          "candidate_hits": 0
+        }
+      }
+    }
+  },
+  "policy": "100 matched games in six of last twelve weeks, 3% better MAE, no worse winner/ATS or OU hit rates on >=40 matched picks; rollback if evidence fails or recent MAE is 10% worse"
+}
