@@ -590,7 +590,7 @@ def generate():
                         "espn_athlete_id":espn_ids.get(player),
                         "player":stats[-1].get("player_display_name") or stats[-1].get("player_name") or player,
                         "position":stats[-1].get("position"),
-                        "starter_status":("confirmed_starter" if confirmed_starter else ("not_starting" if position=="QB" and confirmed_position_starters else ("unconfirmed" if position in {"QB","RB","WR"} else None))),
+                        "starter_status":(("confirmed_starter" if confirmed_starter.get("status")=="confirmed" else "projected_starter") if confirmed_starter else ("not_starting" if position=="QB" and confirmed_position_starters else ("unconfirmed" if position in {"QB","RB","WR"} else None))),
                         "starter_source":confirmed_starter.get("source") if confirmed_starter else None,
                         "starter_source_url":confirmed_starter.get("source_url") if confirmed_starter else None,
                         "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
