@@ -28,10 +28,16 @@ def position_code(node, inherited=""):
         node.get("abbreviation"), node.get("position"),
         node.get("id"), node.get("name"), node.get("shortName"),
     ]
+    aliases = {
+        "QUARTERBACK": "QB", "RUNNING BACK": "RB", "HALFBACK": "RB",
+        "WIDE RECEIVER": "WR", "FLANKER": "WR", "SPLIT END": "WR",
+    }
     for value in candidates:
         value = str(value or "").strip().upper()
         if value in POSITIONS:
             return value
+        if value in aliases:
+            return aliases[value]
     return inherited
 
 
@@ -43,16 +49,16 @@ def collect_depth_rows(payload):
             pos = position_code(node, current)
             athletes = node.get("athletes")
             if isinstance(athletes, list) and pos in POSITIONS:
-                for item in athletes:
+                for chart_order, item in enumerate(athletes, 1):
                     if not isinstance(item, dict):
                         continue
                     athlete = item.get("athlete") if isinstance(item.get("athlete"), dict) else item
                     name = str(athlete.get("displayName") or athlete.get("fullName") or athlete.get("name") or "").strip()
-                    rank = item.get("rank", athlete.get("rank", 999))
+                    rank = item.get("rank", athlete.get("rank", chart_order))
                     try:
                         rank = int(rank)
                     except (TypeError, ValueError):
-                        rank = 999
+                        rank = chart_order
                     if name:
                         found[pos].append((rank, name))
             for key, value in node.items():
