@@ -74,7 +74,7 @@ def collect_depth_rows(payload):
         if isinstance(node, dict):
             pos = position_code(node, current)
             athletes = node.get("athletes")
-            if isinstance(athletes, list) and pos in POSITIONS:
+            if isinstance(athletes, list) and pos in CANDIDATE_DEPTH:
                 for chart_order, item in enumerate(athletes, 1):
                     if not isinstance(item, dict):
                         continue
@@ -99,7 +99,7 @@ def collect_depth_rows(payload):
 
     walk(payload)
     result = {}
-    for pos, limit in POSITIONS.items():
+    for pos, limit in CANDIDATE_DEPTH.items()
         ordered = sorted(set(found[pos]), key=lambda row: (row[0], row[1].casefold()))
         result[pos] = [name for rank, name in ordered if rank <= limit]
     return result
