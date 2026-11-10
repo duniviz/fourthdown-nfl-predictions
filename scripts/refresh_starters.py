@@ -5,7 +5,7 @@ team-confirmed records already in verified-starters.json always take precedence.
 """
 import json
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 FEED = Path("data/verified-starters.json")
@@ -118,15 +118,12 @@ def main():
             kickoff = datetime.fromisoformat(str(game["kickoff_utc"]).replace("Z", "+00:00"))
         except (KeyError, TypeError, ValueError):
             continue
-        if kickoff > now:
+        if kickoff > now + timedelta(minutes=15):
             upcoming.append(game)
 
     payload = json.loads(FEED.read_text(encoding="utf-8")) if FEED.exists() else {"schema_version": 1, "starters": []}
-    upcoming_ids = {str(game.get("game_id")) for game in upcoming}
-    records = [
-        row for row in payload.get("starters", [])
-        if row.get("status") != "projected" or str(row.get("game_id")) in upcoming_ids
-    ]
+    # Preserve the last captured roles at and after the pregame freeze.
+    records = list(payload.get("starters", []))
     added = 0
     updated = 0
     try:
