@@ -32,6 +32,8 @@ def audit(players):
                 flags.append(dict(severity="warning",code="receiver_volume_mismatch",player=name,stat_key=stat,game_id=p.get("game_id"),reason=f"{value:.1f} receiving yards on {volume:.1f} targets"))
             if stat=="rushing_yards" and volume<5 and value>70:
                 flags.append(dict(severity="warning",code="rusher_volume_mismatch",player=name,stat_key=stat,game_id=p.get("game_id"),reason=f"{value:.1f} rushing yards on {volume:.1f} carries"))
+        if stat=="passing_yards" and p.get("position")=="QB" and p.get("starter_status") in {"confirmed_starter", "projected_starter"} and isinstance(p.get("games_used"), (int, float)) and p["games_used"]<3:
+            flags.append(dict(severity="warning",code="qb_starter_limited_history",player=name,stat_key=stat,game_id=p.get("game_id"),reason="Starter role with fewer than three current-season games; workload may not reflect a full game"))
         if stat in YARD_MARKETS and p.get("games_used",0)>=3:
             baseline=p.get("last_5_avg")
             if isinstance(baseline,(int,float)) and baseline>=20 and (value>2.3*baseline or value<0.40*baseline):
