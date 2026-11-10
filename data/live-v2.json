@@ -1,10 +1,10 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-10T23:11:37.074264+00:00",
+  "generated_at_utc": "2026-11-10T23:52:49.948708+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_uncalibrated",
-  "note": "Pregame EPA projections with experimental QB injury splits when data supports them; other injuries and weather not numerically adjusted.",
+  "note": "Pregame EPA projections with capped, low-confidence incoming-QB adjustments when recent player data supports them; other injuries and weather not numerically adjusted.",
   "games": [
     {
       "game_id": "2026_10_WAS_NYG",
@@ -32,6 +32,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "NYG": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "WAS": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -347,7 +361,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -0.24,
           "away_offense_vs_home_defense": -2.45,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -402,6 +418,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "DET": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "NE": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -717,7 +747,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 3.52,
           "away_offense_vs_home_defense": 1.68,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -772,6 +804,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "ATL": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "KC": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -1087,7 +1133,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -3.4,
           "away_offense_vs_home_defense": 3.43,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -1142,6 +1190,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "CLE": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "HOU": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -1457,7 +1519,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -2.37,
           "away_offense_vs_home_defense": 2.15,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -1494,9 +1558,9 @@
       "home": "GB",
       "away": "MIN",
       "projected_home_score": 21.2,
-      "projected_away_score": 12.4,
-      "projected_margin_home": 8.82,
-      "projected_total": 33.57,
+      "projected_away_score": 12.7,
+      "projected_margin_home": 8.45,
+      "projected_total": 33.94,
       "predicted_winner": "GB",
       "injury_adjustments": {
         "GB": {
@@ -1512,6 +1576,29 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "GB": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "MIN": {
+          "points": 0.37,
+          "status": "experimental_incoming_qb_adjustment",
+          "players": [
+            {
+              "player": "Kirk Cousins",
+              "starter_status": "projected",
+              "prior_games": 9,
+              "adjustment_points": 0.37
+            }
+          ],
+          "method": "recent same-season QB efficiency versus the team's prior QB mix",
+          "confidence": "low",
+          "cap_points": 2.0
         }
       },
       "analysis": {
@@ -1827,7 +1914,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.55,
           "away_offense_vs_home_defense": -8.87,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.37
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -1840,15 +1929,15 @@
         "family": "game-score-ridge-v1",
         "markets": {
           "game_margin_home": {
-            "baseline": 8.82,
+            "baseline": 8.45,
             "candidate": 8.84,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
-            "baseline": 33.57,
-            "candidate": 37.57,
+            "baseline": 33.94,
+            "candidate": 37.94,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -1882,6 +1971,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "IND": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "MIA": {
+          "points": 0.0,
+          "status": "incoming_starter_insufficient_prior_games",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -2197,7 +2300,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -1.72,
           "away_offense_vs_home_defense": 0.02,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -2252,6 +2357,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "NO": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "CAR": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -2567,7 +2686,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 0.19,
           "away_offense_vs_home_defense": 1.46,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -2622,6 +2743,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "NYJ": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "BUF": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -2937,7 +3072,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -4.79,
           "away_offense_vs_home_defense": 4.53,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -2990,6 +3127,20 @@
           "points": 0.0,
           "status": "injury_feed_unavailable",
           "players": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "TEN": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "JAX": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -3305,7 +3456,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -5.9,
           "away_offense_vs_home_defense": 4.87,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -3358,6 +3511,20 @@
           "points": 0.0,
           "status": "injury_feed_unavailable",
           "players": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "ARI": {
+          "points": 0.0,
+          "status": "incoming_starter_insufficient_prior_games",
+          "players": [],
+          "confidence": "low"
+        },
+        "LA": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -3673,7 +3840,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -5.25,
           "away_offense_vs_home_defense": 2.09,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -3728,6 +3897,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "LV": {
+          "points": 0.0,
+          "status": "incoming_starter_insufficient_prior_games",
+          "players": [],
+          "confidence": "low"
+        },
+        "SEA": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -4043,7 +4226,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -3.59,
           "away_offense_vs_home_defense": 2.3,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -4098,6 +4283,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "DAL": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "SF": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -4413,7 +4612,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -0.65,
           "away_offense_vs_home_defense": 5.02,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -4468,6 +4669,20 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "CIN": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "PIT": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -4783,7 +4998,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": 3.15,
           "away_offense_vs_home_defense": 2.16,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -4819,10 +5036,10 @@
       "kickoff_utc": "2026-11-17T01:15:00+00:00",
       "home": "BAL",
       "away": "LAC",
-      "projected_home_score": 19.8,
+      "projected_home_score": 18.5,
       "projected_away_score": 15.6,
-      "projected_margin_home": 4.13,
-      "projected_total": 35.4,
+      "projected_margin_home": 2.83,
+      "projected_total": 34.1,
       "predicted_winner": "BAL",
       "injury_adjustments": {
         "BAL": {
@@ -4838,6 +5055,29 @@
           "players": [],
           "reported_out": 0,
           "unmodeled_injuries": []
+        }
+      },
+      "qb_starter_adjustments": {
+        "BAL": {
+          "points": -1.3,
+          "status": "experimental_incoming_qb_adjustment",
+          "players": [
+            {
+              "player": "Jacoby Brissett",
+              "starter_status": "projected",
+              "prior_games": 8,
+              "adjustment_points": -1.3
+            }
+          ],
+          "method": "recent same-season QB efficiency versus the team's prior QB mix",
+          "confidence": "low",
+          "cap_points": 2.0
+        },
+        "LAC": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
         }
       },
       "analysis": {
@@ -5153,7 +5393,9 @@
         "scoring_edge_components": {
           "home_offense_vs_away_defense": -2.99,
           "away_offense_vs_home_defense": -5.61,
-          "home_field_points": 1.5
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": -1.3,
+          "away_qb_adjustment_points": 0.0
         },
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
@@ -5166,15 +5408,15 @@
         "family": "game-score-ridge-v1",
         "markets": {
           "game_margin_home": {
-            "baseline": 4.13,
-            "candidate": 1.13,
+            "baseline": 2.83,
+            "candidate": 0.81,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
-            "baseline": 35.4,
-            "candidate": 39.4,
+            "baseline": 34.1,
+            "candidate": 38.1,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
