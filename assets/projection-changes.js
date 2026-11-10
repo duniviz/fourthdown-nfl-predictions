@@ -16,7 +16,9 @@ window.FDProjectionChanges=(()=>{
   if(!v.length)return '';
   const last=v[v.length-1];if(!same(last.value,p.projection))return '';
   const prior=v[v.length-2],summary=prior?'Projection: '+fmt(prior.value)+' → '+fmt(last.value)+' · '+date(last.at):'First saved projection · '+date(last.at);
-  return block(esc(summary),v.slice().reverse().map(x=>'<div>'+esc(date(x.at))+' · <strong>'+esc(fmt(x.value))+'</strong></div>').join(''));
+  const diff=prior?Number((Number(last.value)-Number(prior.value)).toFixed(1)):null;
+  const badge=diff===null?'':diff===0?'<span class="fd-move-badge is-flat">No change</span>':diff>0?'<span class="fd-move-badge">↑ +'+fmt(diff)+'</span>':'<span class="fd-move-badge is-down">↓ −'+fmt(Math.abs(diff))+'</span>';
+  return block(esc(summary)+badge,v.slice().reverse().map(x=>'<div>'+esc(date(x.at))+' · <strong>'+esc(fmt(x.value))+'</strong></div>').join(''));
  }
  function game(p){
   if(!p?.game_id)return '';const v=data.games?.[p.game_id]||[];if(!v.length)return '';
