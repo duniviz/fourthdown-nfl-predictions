@@ -154,6 +154,32 @@ def project_yards(stats, metric, volume):
     # Descriptive uncertainty only, not a calibrated prediction interval.
     return round(forecast,1),round(spread,1),round(expected_volume,1),round(rate,2)
 
+def replacement_qb_trial(current, prior, starter, enabled):
+    """Experimental full-game conditional QB estimate; fail closed."""
+    if not enabled or not starter or starter.get("status") not in ("confirmed", "projected") or not 1 <= len(current) <= 2:
+        return None
+    rows = sorted(prior + current, key=lambda r: (int(r.get("season", 0)), int(r.get("week", 0))))
+    meaningful = [r for r in rows if num(r.get("attempts")) >= 20][-5:]
+    if len(meaningful) < 3:
+        return None
+    attempts = sum(num(r.get("attempts")) for r in meaningful)
+    yards = sum(max(0, num(r.get("passing_yards"))) for r in meaningful)
+    if not math.isfinite(attempts) or not math.isfinite(yards) or attempts <= 0:
+        return None
+    volume = attempts / len(meaningful)
+    rate = (yards + 660) / (attempts + 100)
+    return {"projection": round(volume * rate, 1), "attempts": round(volume, 1), "games": len(meaningful)}
+
+
+def trial_enabled(season, week):
+    try:
+        config = json.loads(Path("data/qb-replacement-trial.json").read_text())
+        return (config.get("enabled") is True and
+                (int(season), int(week)) >= (int(config["start_season"]), int(config["start_week"])))
+    except (OSError, ValueError, TypeError, AttributeError, KeyError):
+        return False
+
+
 def starter_qb_workload(records):
     """Estimate starter-level pass volume from full QB appearances, not relief games.
 
@@ -426,6 +452,7 @@ def generate():
     calibration=load_calibration()
     results=[]
     verified_starters=load_verified_starters(season,week)
+    qb_trial_enabled=trial_enabled(season, week)
     for game in games:
         context=game_context.get((str(game["home_team"]),str(game["away_team"])),{})
         home_score=num(context.get("projected_home_score"))
@@ -543,6 +570,15 @@ def generate():
                     # establish a stable market-level direction.
                     calibration_bias=clamp(num(calibrated.get("mean_error")), -5.0, 5.0)*learned_weights.get(metric,0.0) if calibration_n>=40 else 0.0
                     baseline=round(max(0,baseline*adjusted/max(0.1,expected_volume)*adjustment*script_multiplier+calibration_bias),1)
+                    qb_trial = None
+                    if position == "QB" and metric == "passing_yards":
+                        trial = replacement_qb_trial(stats, prior_player_history.get(str(player), []), confirmed_starter, qb_trial_enabled)
+                        if trial is not None:
+                            qb_trial = {"version": "qb-replacement-v1", "original_projection": baseline,
+                                        "trial_projection": trial["projection"], "history_games": trial["games"]}
+                            baseline = trial["projection"]
+                            adjusted = trial["attempts"]
+                            role_share = clamp(adjusted/max(0.1,team_targets.get(volume,adjusted)), 0.0, 1.0)
                     # V4 research-selected workload/matchup adjustment for yardage only.
                     # Coefficients frozen from 2024 tuning and evaluated on 2025/2026;
                     # other markets and QB passing forecasts remain unchanged.
@@ -594,7 +630,7 @@ def generate():
                         "starter_source":confirmed_starter.get("source") if confirmed_starter else None,
                         "starter_source_url":confirmed_starter.get("source_url") if confirmed_starter else None,
                         "market":label,"stat_key":metric,"market_key":MARKET_KEYS[metric],"games_used":len(stats),
-                        "sample_warning":("Limited current-season games; established return workload blends five prior meaningful games with a reduced-role scenario" if return_workload is not None else ("Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None)),
+                        "sample_warning":("Experimental replacement QB estimate; compare with original model" if qb_trial else "Limited current-season games; established return workload blends five prior meaningful games with a reduced-role scenario" if return_workload is not None else ("Limited current-season games; projected workload capped at 120% of observed opportunities" if len(stats)<3 else None)),
                         "bet_recommendation":False,
                         "last_5":[round(x,1) for x in values],
                         "last_5_avg":round(avg,1),
@@ -603,6 +639,7 @@ def generate():
                         "opportunity_type":volume,
                         "opponent_player_appearance_avg":round(sum(opp_values)/len(opp_values),1) if len(opp_values)>=10 else None,
                         "projection":baseline,
+                        "qb_replacement_trial":qb_trial,
                         "injury_scenarios":scenario,
                         "uncertainty_yards":uncertainty,
                         "uncertainty":uncertainty,
