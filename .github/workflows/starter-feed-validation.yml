@@ -28,17 +28,17 @@ jobs:
       - name: Check live ESPN depth chart
         run: |
           python - <<'PY'
-          from scripts.refresh_starters import fetch_espn_teams, fetch_depth_chart, collect_depth_rows
+          from scripts.refresh_starters import fetch_espn_teams, fetch_depth_chart, collect_depth_rows, resolve_espn_team_id
           teams = fetch_espn_teams()
           assert len(teams) >= 30, f"Only {len(teams)} ESPN teams"
           successes = []
-          for team in ('MIN', 'KC', 'BUF'):
-              if team not in teams:
-                  continue
-              payload, url = fetch_depth_chart(teams[team])
+          for team in ('MIN', 'KC', 'BUF', 'WAS', 'LA'):
+              team_id = resolve_espn_team_id(team, teams)
+              assert team_id, f"No ESPN team ID for {team}"
+              payload, url = fetch_depth_chart(team_id)
               rows = collect_depth_rows(payload)
               print(team, url, {pos: len(names) for pos, names in rows.items()})
               if all(rows[p] for p in ('QB','RB','WR','TE')):
                   successes.append(team)
-          assert successes, "ESPN depth charts did not return readable QB, RB, WR, and TE positions"
+          assert all(team in successes for team in ('WAS', 'LA')), "Washington or Rams depth chart lacks a position group"
           PY
