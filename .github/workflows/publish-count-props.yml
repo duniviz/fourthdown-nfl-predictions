@@ -1,9 +1,20 @@
 name: Publish count prop projections
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Publish weekly v2 forecasts]
+    types: [completed]
+  pull_request:
+    paths:
+      - '.github/workflows/publish-count-props.yml'
+      - 'tools/publish_count_prop_projections.py'
+      - 'tests/test_count_feed_sync.py'
   push:
+    branches: [main]
     paths:
       - '.github/count-props-refresh.txt'
+      - '.github/workflows/publish-count-props.yml'
+      - 'tools/publish_count_prop_projections.py'
   schedule:
     - cron: '20 14 * * 0,2,4,6'
 permissions:
@@ -12,7 +23,29 @@ concurrency:
   group: count-props-publish
   cancel-in-progress: false
 jobs:
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test completed-game filtering
+        run: python -m unittest discover -s tests -p 'test_count_feed_sync.py' -v
+      - name: Validate next-week count generation with current data
+        run: |
+          mkdir -p staging
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv -o staging/games.csv
+          python -m pip install --disable-pip-version-check polars
+          read -r SEASON WEEK <<< "$(python -c 'import json;d=json.load(open("data/live-v2.json"));print(d["season"],d["week"])')"
+          python tools/download_current_player_stats.py --season "$SEASON" --output staging/player_stats.csv
+          python tools/publish_count_prop_projections.py --weekly-csv staging/player_stats.csv --schedule-csv staging/games.csv --season "$SEASON" --week "$WEEK" --output staging/count-projections.json
+          python -c 'import json;d=json.load(open("staging/count-projections.json"));assert d["players"]'
   publish:
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -22,24 +55,44 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Check whether forecasts need a matching refresh
+        id: freshness
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime
+          from pathlib import Path
+          live=json.loads(Path('data/live-v2.json').read_text())
+          path=Path('data/count-projections.json')
+          counts=json.loads(path.read_text()) if path.exists() else {}
+          def stamp(x):
+              try: return datetime.fromisoformat(str(x).replace('Z','+00:00'))
+              except (TypeError,ValueError): return None
+          a,b=stamp(live.get('generated_at_utc')),stamp(counts.get('generated_at_utc'))
+          same=(counts.get('season'),counts.get('week'))==(live.get('season'),live.get('week'))
+          event=os.environ.get('GITHUB_EVENT_NAME')
+          should_run=event!='workflow_run' or not (same and a and b and b>=a)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\n')
+          print('Count refresh needed:',should_run,'forecast',live.get('season'),live.get('week'))
+          PY
       - name: Download schedule and current player stats
+        if: steps.freshness.outputs.run == 'true'
         run: |
           set -euo pipefail
           mkdir -p staging data
-          curl --fail --location --retry 3 --max-time 90 --silent --show-error \
-            https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv -o staging/games.csv
+          curl --fail --location --retry 3 --max-time 90 --silent --show-error https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv -o staging/games.csv
           python -m pip install --disable-pip-version-check polars
-          python tools/download_current_player_stats.py --season 2026 --output staging/player_stats.csv
-      - name: Generate pregame projections for next scheduled week
+          SEASON=$(python -c 'import json;print(int(json.load(open("data/live-v2.json"))["season"]))')
+          python tools/download_current_player_stats.py --season "$SEASON" --output staging/player_stats.csv
+      - name: Generate projections for the published forecast week
+        if: steps.freshness.outputs.run == 'true'
         run: |
           set -euo pipefail
-          TARGET=$(python -c 'import sys;from pathlib import Path;sys.path.insert(0,"tools");from run_research_refresh import season_week;a,b=season_week(Path("staging/games.csv"),"","");print(a,b)')
-          read -r SEASON WEEK <<< "$TARGET"
-          python tools/publish_count_prop_projections.py --weekly-csv staging/player_stats.csv \
-            --schedule-csv staging/games.csv --season "$SEASON" --week "$WEEK" \
-            --output data/count-projections.json
+          read -r SEASON WEEK <<< "$(python -c 'import json;d=json.load(open("data/live-v2.json"));print(d["season"],d["week"])')"
+          python tools/publish_count_prop_projections.py --weekly-csv staging/player_stats.csv --schedule-csv staging/games.csv --season "$SEASON" --week "$WEEK" --output data/count-projections.json
           python -c 'import json;from pathlib import Path;p=json.loads(Path("data/count-projections.json").read_text());assert len(p["players"])>0'
       - name: Commit published projections
+        if: steps.freshness.outputs.run == 'true'
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"

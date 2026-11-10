@@ -20,7 +20,35 @@ def scheduled(path,season,week):
                 teams[away]={"opponent":home,"game_id":r.get("game_id","")}
     if not teams:raise ValueError("No matching regular-season schedule")
     return teams
+def completed_player_rows(rows, schedule_path, season, target_week):
+    """Use only final games; an in-progress game is not prior-week history."""
+    final_ids=set(); final_teams=set()
+    with schedule_path.open(newline="",encoding="utf-8-sig") as f:
+        for game in csv.DictReader(f):
+            try:
+                game_season=int(game['season']); game_week=int(game['week'])
+                if game_season!=season or game_week>=target_week or game.get('game_type','REG')!='REG': continue
+                home=game.get('home_team');away=game.get('away_team')
+                if number(game,'home_score') is None or number(game,'away_score') is None or not home or not away: continue
+                if game.get('game_id'): final_ids.add(str(game['game_id']))
+                final_teams.update(((game_season,game_week,home),(game_season,game_week,away)))
+            except (KeyError,ValueError,TypeError): continue
+    if not final_teams:
+        raise ValueError('No completed prior games found; refusing count forecast refresh')
+    filtered=[]
+    for row in rows:
+        try:
+            key=(int(row['season']),int(row['week']),row.get('recent_team') or row.get('team'))
+            game_id=str(row.get('game_id') or '')
+            if key in final_teams and (not game_id or game_id in final_ids): filtered.append(row)
+        except (KeyError,ValueError,TypeError): continue
+    if not filtered:
+        raise ValueError('No player rows matched completed games; refusing count forecast refresh')
+    return filtered
+
+
 def generate(rows,schedule,season,week):
+    rows=completed_player_rows(rows,schedule,season,week)
     games=read_games(rows); by_player=defaultdict(list); by_week=defaultdict(list)
     for (s,w,pid),r in games.items():
         if s==season and w<week:
