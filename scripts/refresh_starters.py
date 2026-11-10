@@ -94,7 +94,11 @@ def main():
             upcoming.append(game)
 
     payload = json.loads(FEED.read_text(encoding="utf-8")) if FEED.exists() else {"schema_version": 1, "starters": []}
-    records = [row for row in payload.get("starters", []) if row.get("status") != "projected"]
+    upcoming_ids = {str(game.get("game_id")) for game in upcoming}
+    records = [
+        row for row in payload.get("starters", [])
+        if row.get("status") != "projected" or str(row.get("game_id")) in upcoming_ids
+    ]
     added = 0
     updated = 0
 
@@ -109,11 +113,23 @@ def main():
                 print(f"Depth chart unavailable for {team}: {exc}")
                 continue
             for position, names in positions.items():
+                if not names:
+                    # Keep the last known chart rows when this response omits a group.
+                    continue
                 # Keep official game-specific confirmations as the authority.
                 if any(row.get("game_id") == game.get("game_id") and row.get("team") == team
                        and row.get("position") == position and row.get("status") == "confirmed"
                        for row in records):
                     continue
+                # Replace only this successfully read position group; failed or
+                # missing groups retain their previous projected rows.
+                records = [
+                    row for row in records
+                    if not (row.get("status") == "projected"
+                            and row.get("game_id") == game.get("game_id")
+                            and row.get("team") == team
+                            and row.get("position") == position)
+                ]
                 for rank, player in enumerate(names, 1):
                     records.append({
                         "season": season, "week": week, "game_id": game["game_id"],
