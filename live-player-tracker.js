@@ -51,6 +51,7 @@ const samePlayer=(a,b)=>playerKey(a)===playerKey(b)||(shortNameKey(a)!==''&&shor
 // a unique name match within the same team, market and (when available) game.
 // Never silently attach another player's stats to a prop.
 function matchActual(rows,player,team,market,playerId='',gameId=''){
+ if(!String(gameId||'').trim())return null;
  const candidates=rows.filter(r=>r.market===market&&playerKey(r.team)===playerKey(team)&&(!gameId||String(r.game_id)===String(gameId)));
  const id=String(playerId||'').trim();
  if(id){
@@ -63,6 +64,13 @@ function matchActual(rows,player,team,market,playerId='',gameId=''){
  if(exact.length>1)return null;
  const abbreviated=candidates.filter(r=>samePlayer(r.player,player));
  return abbreviated.length===1?abbreviated[0]:null;
+}
+
+function cardGameId(card){
+ const explicit=card.dataset.fdGameId;
+ if(explicit)return explicit;
+ const modal=card.closest('.fd-modal');
+ return modal?.querySelector('[data-fd-live-game-id]')?.dataset.fdLiveGameId||'';
 }
 
 // Experimental in-game estimate: blend observed per-minute pace with pregame
@@ -281,7 +289,7 @@ function showCardActual(card,record){
 function paintPropRows(){
  document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]').forEach(card=>{
   const player=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
-  const found=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,card.dataset.fdGameId);
+  const found=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,cardGameId(card));
   let slot=card.querySelector('.fd-prop-live-actual');
   if(!slot){slot=document.createElement('div');slot.className='fd-prop-live-actual';slot.style.cssText='margin-top:8px;padding:8px;border-radius:8px;background:#10333d;color:#b8f5e6;font-size:12px';card.appendChild(slot);}
   if(!found){slot.textContent=state.feedError?'Live ESPN stats unavailable':state.games.length?'Live actual pending':'Live actual starts at kickoff';return;}
@@ -297,9 +305,9 @@ function paintCards(){
  try{
   document.querySelectorAll('.fd-mobile-prop-card[data-fd-player]').forEach(card=>{
    const p=playerKey(card.dataset.fdPlayer),team=playerKey(card.dataset.fdTeam),market=card.dataset.fdMarket;
-   const match=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,card.dataset.fdGameId);
+   const match=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,market,card.dataset.fdPlayerId,cardGameId(card));
    let slot=card.querySelector('.fd-live-inline');
-   if(!match){card.querySelector('.fd-live-final-bar')?.remove();card.querySelector('.fd2-actual-result')?.remove();const metrics=card.querySelector('.fd-mobile-prop-numbers');if(metrics){let cell=metrics.querySelector('.fd-live-stat-cell');if(!cell){cell=document.createElement('div');cell.className='fd-live-stat-cell';cell.innerHTML='<small>ESPN Live</small><b>—</b>';metrics.appendChild(cell);}cell.querySelector('small').textContent='ESPN Live';cell.querySelector('b').textContent='—';}slot?.remove();return;}
+   if(!match){card.querySelector('.fd-live-final-bar')?.remove();card.querySelector('.fd2-actual-result')?.remove();const metrics=card.querySelector('.fd-mobile-prop-numbers');if(metrics){let cell=metrics.querySelector('.fd-live-stat-cell');if(!cell){cell=document.createElement('div');cell.className='fd-live-stat-cell';cell.innerHTML='<small>ESPN Pending</small><b>—</b>';metrics.appendChild(cell);}cell.querySelector('small').textContent=card.dataset.fdGameState==='pre'?'ESPN Pregame':'ESPN Pending';cell.querySelector('b').textContent='—';cell.removeAttribute('aria-label');}slot?.remove();return;}
    const r=match;
    showCardActual(card,r);
    if(!slot){slot=document.createElement('div');slot.className='fd-live-inline';const target=card.querySelector('.fd-mobile-prop-numbers');if(target)target.after(slot);else card.appendChild(slot);}
