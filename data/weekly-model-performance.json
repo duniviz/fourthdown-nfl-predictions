@@ -1,8 +1,38 @@
 {
   "status": "timestamped_pregame_accuracy_only",
-  "generated_at_utc": "2026-11-08T19:01:46.504596+00:00",
+  "generated_at_utc": "2026-11-10T20:33:28.729429+00:00",
   "graded_weeks": 2,
   "weekly_reports": [
+    {
+      "season": 2026,
+      "week": 10,
+      "locked_at_utc": "2026-11-10T20:33:28.729429+00:00",
+      "status": "awaiting_completed_games",
+      "completed_games": 0,
+      "game_metrics": {},
+      "player_metrics": {
+        "passing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "rushing_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "receiving_yards": {
+          "samples": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "market_diagnostics": {},
+      "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
+    },
     {
       "season": 2026,
       "week": 8,
@@ -56,45 +86,46 @@
       "week": 9,
       "locked_at_utc": "2026-11-03T20:14:54.896780+00:00",
       "status": "graded_observed_only",
-      "completed_games": 2,
+      "completed_games": 15,
       "game_metrics": {
         "home_margin": {
-          "samples": 2,
-          "mae": 18.42,
-          "rmse": 18.55,
-          "bias": 18.42
+          "samples": 15,
+          "mae": 11.62,
+          "rmse": 13.72,
+          "bias": 5.8
         },
         "total": {
-          "samples": 2,
-          "mae": 3.23,
-          "rmse": 3.25,
-          "bias": -0.27
+          "samples": 15,
+          "mae": 10.89,
+          "rmse": 14.49,
+          "bias": 1.85
         }
       },
       "player_metrics": {
         "passing_yards": {
-          "samples": 1,
-          "mae": 7.9,
-          "rmse": 7.9,
-          "bias": 7.9
+          "samples": 25,
+          "mae": 52.38,
+          "rmse": 63.94,
+          "bias": -1.75
         },
         "rushing_yards": {
-          "samples": 3,
-          "mae": 20.7,
-          "rmse": 25.23,
-          "bias": 20.7
+          "samples": 50,
+          "mae": 19.9,
+          "rmse": 24.14,
+          "bias": 4.07
         },
         "receiving_yards": {
-          "samples": 4,
-          "mae": 33.27,
-          "rmse": 42.39,
-          "bias": 21.23
+          "samples": 66,
+          "mae": 25.47,
+          "rmse": 35.55,
+          "bias": 3.82
         }
       },
       "market_diagnostics": {
-        "spread_lines_present_not_graded": 2,
-        "total_lines_present": 2,
-        "total_side_correct": 2
+        "spread_lines_present_not_graded": 15,
+        "total_lines_present": 15,
+        "total_side_correct": 9,
+        "total_side_incorrect": 6
       },
       "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
     }
@@ -102,31 +133,31 @@
   "season_to_date": {
     "player_metrics": {
       "passing_yards": {
-        "samples": 29,
-        "mae": 84.17,
-        "rmse": 103.2
+        "samples": 53,
+        "mae": 70.61,
+        "rmse": 88.06
       },
       "rushing_yards": {
-        "samples": 52,
-        "mae": 30.85,
-        "rmse": 39.7
+        "samples": 99,
+        "mae": 25.63,
+        "rmse": 33.21
       },
       "receiving_yards": {
-        "samples": 68,
-        "mae": 28.22,
-        "rmse": 37.65
+        "samples": 130,
+        "mae": 26.67,
+        "rmse": 36.44
       }
     },
     "game_metrics": {
       "home_margin": {
-        "samples": 16,
-        "mae": 12.33,
-        "rmse": 14.71
+        "samples": 29,
+        "mae": 11.54,
+        "rmse": 13.89
       },
       "total": {
-        "samples": 16,
-        "mae": 11.13,
-        "rmse": 14.93
+        "samples": 29,
+        "mae": 11.55,
+        "rmse": 15.19
       }
     }
   },
