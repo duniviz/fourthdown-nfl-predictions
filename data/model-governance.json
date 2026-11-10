@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-11-08T15:30:31.694286+00:00",
+  "generated_at_utc": "2026-11-10T02:29:01.096164+00:00",
   "decisions": {
     "passing_yards": {
       "champion": "existing_live_model",
       "best_challenger": "ridge",
       "holdout_samples": 395,
-      "improvement_pct": 4.3,
+      "improvement_pct": 3.86,
       "research_candidate": true,
       "decision": "candidate_needs_live_equivalence_and_independent_forward_test",
       "production_changed": false
@@ -14,7 +14,7 @@
       "champion": "existing_live_model",
       "best_challenger": "random_forest",
       "holdout_samples": 1852,
-      "improvement_pct": -2.04,
+      "improvement_pct": -1.67,
       "research_candidate": false,
       "decision": "retain_champion",
       "production_changed": false
@@ -23,13 +23,13 @@
       "champion": "existing_live_model",
       "best_challenger": "ridge",
       "holdout_samples": 873,
-      "improvement_pct": 0.08,
+      "improvement_pct": -0.19,
       "research_candidate": false,
       "decision": "retain_champion",
       "production_changed": false
     }
   },
-  "weather_status": "awaiting_frozen_weather_and_verified_outcomes",
+  "weather_status": "comparison_available",
   "automatic_promotion_enabled": false,
   "live_weights_changed": false,
   "blockers": [

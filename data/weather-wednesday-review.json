@@ -1,11 +1,40 @@
 {
-  "generated_at_utc": "2026-11-08T15:30:31.584592+00:00",
+  "generated_at_utc": "2026-11-10T02:29:00.991491+00:00",
   "version": "weather-template-v1",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
   "minimum_market_samples": 30,
-  "markets": {},
-  "status": "awaiting_frozen_weather_and_verified_outcomes",
+  "markets": {
+    "passing_yards": {
+      "samples": 19,
+      "baseline_mae": 45.7,
+      "weather_mae": 46.529,
+      "mae_improvement": -0.829,
+      "sufficient_for_review": false
+    },
+    "receiving_yards": {
+      "samples": 146,
+      "baseline_mae": 16.029,
+      "weather_mae": 16.053,
+      "mae_improvement": -0.023,
+      "sufficient_for_review": true
+    },
+    "receptions": {
+      "samples": 156,
+      "baseline_mae": 1.2,
+      "weather_mae": 1.2,
+      "mae_improvement": -0.0,
+      "sufficient_for_review": true
+    },
+    "rushing_yards": {
+      "samples": 84,
+      "baseline_mae": 9.306,
+      "weather_mae": 9.313,
+      "mae_improvement": -0.007,
+      "sufficient_for_review": true
+    }
+  },
+  "status": "comparison_available",
   "note": "Same-game comparison only; descriptive, not an independent historical holdout. No automatic weight changes."
 }
