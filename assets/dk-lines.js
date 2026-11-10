@@ -33,12 +33,25 @@ window.FDDraftKings = (() => {
       if (!old || old.last_update < stamp) rows.set(rowKey, {...q, line:Number(q.line), last_update:stamp, provider_last_update:providerStamp});
       else if (old.last_update === stamp && old.line !== Number(q.line)) old.ambiguous = true;
     }
+    // Index once: each lookup previously scanned every quote and every roster row.
+    const quotesByBase = new Map();
+    for (const [key, quote] of rows) {
+      const base = key.slice(0, key.lastIndexOf('|'));
+      if (!quotesByBase.has(base)) quotesByBase.set(base, []);
+      quotesByBase.get(base).push(quote);
+    }
+    const rosterByIdentity = new Map();
+    for (const r of Array.isArray(players) ? players : []) {
+      const id = identity(r.player || r.player_name, r.market_key || r.stat_key || r.market, r.team, r.opponent, 0);
+      if (!id) continue;
+      if (!rosterByIdentity.has(id)) rosterByIdentity.set(id, []);
+      rosterByIdentity.get(id).push(r);
+    }
     const find = (p, kickoff) => {
       const base = identity(p.player, p.market_key || p.stat_key || p.market, p.team, p.opponent, time(kickoff));
       if (!base) return null;
       const requestedSuffix = suffix(p.player);
-      let candidates = [...rows.entries()].filter(([key]) => key.startsWith(base + '|')).map(([,q]) => q)
-        .filter(q => !q.ambiguous && (!requestedSuffix || !suffix(q.player) || suffix(q.player) === requestedSuffix));
+      let candidates = (quotesByBase.get(base) || []).filter(q => !q.ambiguous && (!requestedSuffix || !suffix(q.player) || suffix(q.player) === requestedSuffix));
       if (p.player_id != null) {
         const withIds = candidates.filter(q => q.player_id != null);
         if (withIds.length) candidates = withIds.filter(q => String(q.player_id) === String(p.player_id));
@@ -47,10 +60,8 @@ window.FDDraftKings = (() => {
       const quote = candidates[0];
       if (requestedSuffix && suffix(quote.player) && requestedSuffix !== suffix(quote.player)) return null;
       if (p.player_id != null && quote.player_id != null && String(p.player_id) !== String(quote.player_id)) return null;
-      const allRoster = (Array.isArray(players) ? players : []).filter(r =>
-        identity(r.player || r.player_name, r.market_key || r.stat_key || r.market,
-          r.team, r.opponent, time(kickoff)) === base &&
-        name(r.player || r.player_name) === name(p.player));
+      const rosterId = identity(p.player, p.market_key || p.stat_key || p.market, p.team, p.opponent, 0);
+      const allRoster = rosterByIdentity.get(rosterId) || [];
       const uniqueRoster = new Map();
       for (const r of allRoster) {
         const rosterName = r.player || r.player_name;
