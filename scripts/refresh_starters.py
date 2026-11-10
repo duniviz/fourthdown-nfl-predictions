@@ -42,6 +42,12 @@ def fetch_espn_teams():
     return result
 
 
+def resolve_espn_team_id(team, espn_teams):
+    """Map forecast abbreviations to ESPN while retaining forecast codes in output."""
+    aliases = {"WAS": "WSH", "WSH": "WAS", "LA": "LAR", "LAR": "LA", "JAC": "JAX", "JAX": "JAC"}
+    return espn_teams.get(team) or espn_teams.get(aliases.get(team, ""))
+
+
 def fetch_depth_chart(team_id):
     url = f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{team_id}/depthcharts"
     return fetch_json(url), url
@@ -141,7 +147,7 @@ def main():
         for team in (str(game.get("home") or "").upper(), str(game.get("away") or "").upper()):
             if not team:
                 continue
-            team_id = espn_teams.get(team)
+            team_id = resolve_espn_team_id(team, espn_teams)
             if not team_id:
                 print(f"No ESPN team ID found for {team}; preserving existing depth chart rows")
                 continue

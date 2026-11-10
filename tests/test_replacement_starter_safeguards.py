@@ -40,3 +40,13 @@ class FreezeStarterFeedTests(unittest.TestCase):
                 refresh_starters.main()
                 fetch.assert_not_called()
             self.assertEqual(json.loads(feed.read_text())['starters'],[row])
+
+class TeamCodeTests(unittest.TestCase):
+    def test_forecast_team_codes_resolve_espn_aliases(self):
+        from scripts.refresh_starters import resolve_espn_team_id
+        directory = {'WSH': '28', 'LAR': '14', 'JAX': '30', 'MIN': '16'}
+        self.assertEqual(resolve_espn_team_id('WAS', directory), '28')
+        self.assertEqual(resolve_espn_team_id('LA', directory), '14')
+        self.assertEqual(resolve_espn_team_id('JAC', directory), '30')
+        self.assertEqual(resolve_espn_team_id('MIN', directory), '16')
+        self.assertIsNone(resolve_espn_team_id('UNKNOWN', directory))
