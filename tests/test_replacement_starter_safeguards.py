@@ -7,6 +7,10 @@ class ReplacementSafeguardTests(unittest.TestCase):
         payload={'name':'Tight End','athletes':[{'rank':1,'athlete':{'displayName':'Test Tight End'}}]}
         self.assertEqual(collect_depth_rows(payload)['TE'], ['Test Tight End'])
 
+    def test_nested_espn_position(self):
+        payload={"position":{"abbreviation":"WR"},"athletes":[{"rank":1,"athlete":{"displayName":"Test Receiver"}}]}
+        self.assertEqual(collect_depth_rows(payload)["WR"], ["Test Receiver"])
+
     def test_limited_starter_is_flagged_without_changing_projection(self):
         player={'game_id':'g','player_id':'p','player':'QB','position':'QB','stat_key':'passing_yards','projection':130,'games_used':2,'starter_status':'confirmed_starter','expected_opportunities':19}
         report=audit([player])
