@@ -6,14 +6,25 @@
  const n=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
  async function changes(){
   const root=document.getElementById('fd-whats-changed');if(!root)return;
-  const [history,feed,players]=await Promise.all([get('projection-changes.json'),get('live-v2.json'),get('player-research.json')]);
+  const [history,feed,players,lineHistory]=await Promise.all([get('projection-changes.json'),get('live-v2.json'),get('player-research.json'),get('dk-game-line-history.json')]);
   const games=new Map((feed?.games||[]).filter(g=>window.fdScheduleWindow?.contains(window.fdScheduleWindow.get(),g.kickoff_utc)).map(g=>[String(g.game_id),g]));
   const names=new Map((players?.players||[]).map(p=>[String(p.game_id)+'|'+String(p.player_id),p.player]));
   const rows=[];
   for(const [id,v] of Object.entries(history?.games||{})){const g=games.get(id);if(!g||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.home)||!n(a.away)||!n(b.home)||!n(b.away)||!n(Date.parse(b.at)))continue;if(Number(a.home)===Number(b.home)&&Number(a.away)===Number(b.away))continue;rows.push({at:b.at,title:g.away+' @ '+g.home,detail:'Projected score: '+g.away+' '+Number(a.away).toFixed(1)+' → '+Number(b.away).toFixed(1)+' · '+g.home+' '+Number(a.home).toFixed(1)+' → '+Number(b.home).toFixed(1)});}
   for(const [key,v] of Object.entries(history?.players||{})){const [id,pid,market]=key.split('|');if(!games.has(id)||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.value)||!n(b.value)||!n(Date.parse(b.at))||Number(a.value)===Number(b.value))continue;const name=names.get(id+'|'+pid);if(!name)continue;rows.push({at:b.at,title:name+' · '+market.replaceAll('_',' '),detail:'Projection: '+Number(a.value).toFixed(1)+' → '+Number(b.value).toFixed(1)});}
+  const canon=x=>({WSH:'WAS',JAX:'JAC',LA:'LAR'}[String(x||'').toUpperCase()]||String(x||'').toUpperCase());
+  for(const [key,quotes] of Object.entries(lineHistory?.games||{})){
+   const [home,away,kickoff]=key.split('|'),kick=Date.parse(kickoff);
+   const g=[...games.values()].find(x=>canon(x.home)===canon(home)&&canon(x.away)===canon(away)&&Number.isFinite(kick)&&Math.abs(Date.parse(x.kickoff_utc)-kick)<12*3600000);
+   if(!g||!Array.isArray(quotes))continue;
+   const q=quotes.filter(x=>Number.isFinite(Date.parse(x.captured_at_utc))&&Date.parse(x.captured_at_utc)<kick&&Date.parse(x.captured_at_utc)<=Date.now()).sort((a,b)=>Date.parse(a.captured_at_utc)-Date.parse(b.captured_at_utc));
+   if(q.length<2)continue;const [a,b]=q.slice(-2),parts=[];
+   if(n(a.home_spread)&&n(b.home_spread)&&Number(a.home_spread)!==Number(b.home_spread))parts.push(g.home+' spread '+Number(a.home_spread).toFixed(1)+' → '+Number(b.home_spread).toFixed(1));
+   if(n(a.total)&&n(b.total)&&Number(a.total)!==Number(b.total))parts.push('Total '+Number(a.total).toFixed(1)+' → '+Number(b.total).toFixed(1));
+   if(parts.length)rows.push({at:b.captured_at_utc,title:g.away+' @ '+g.home+' · DK snapshot',detail:parts.join(' · ')});
+  }
   rows.sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
-  root.innerHTML='<span class="fd-insight-tag">Latest saved snapshots</span><h2>What changed?</h2><p class="fd-insight-note">Changes between the two latest saved forecasts for this slate. Reasons and injury changes are not recorded here.</p><div class="fd-insight-grid">'+(rows.length?rows.slice(0,6).map(x=>'<article class="fd-insight-item"><strong>'+esc(x.title)+'</strong><p>'+esc(x.detail)+'</p><small>'+esc(ct(x.at))+'</small></article>').join(''):'<p class="fd-insight-note">No changes found between the latest saved forecast snapshots for this slate.</p>')+'</div>';
+  root.innerHTML='<span class="fd-insight-tag">Latest saved snapshots</span><h2>What changed?</h2><p class="fd-insight-note">Changes between the two latest saved forecasts or DraftKings game-line snapshots for this slate. Reasons and injury changes are not recorded here.</p><div class="fd-insight-grid">'+(rows.length?rows.slice(0,6).map(x=>'<article class="fd-insight-item"><strong>'+esc(x.title)+'</strong><p>'+esc(x.detail)+'</p><small>'+esc(ct(x.at))+'</small></article>').join(''):'<p class="fd-insight-note">No changes found between the latest saved forecast snapshots for this slate.</p>')+'</div>';
  }
  async function weekly(){
   const root=document.getElementById('fd-weekly-report-card');if(!root)return;const data=await get('weekly-model-performance.json');
