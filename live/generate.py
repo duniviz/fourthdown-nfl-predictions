@@ -1,6 +1,7 @@
 """Produce upcoming-game FOURTHDOWN v2 projections from current-season nflverse data."""
 import json
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from collections import defaultdict
@@ -304,17 +305,20 @@ def main():
     data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows,qb_starters)
     dest=Path("data/live-v2.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
-    # Keep immutable first-published predictions for transparent future grading.
-    archive_path=Path("data/v2-history.json")
-    archive={"model":"FOURTHDOWN v2","games":[]}
-    if archive_path.exists():
-        archive=json.loads(archive_path.read_text(encoding="utf-8"))
-    existing={str(g.get("game_id")) for g in archive.get("games",[])}
-    for game in data["games"]:
-        if game["game_id"] not in existing:
-            archive["games"].append({**game,"published_at_utc":data["generated_at_utc"]})
-            existing.add(game["game_id"])
-    archive_path.write_text(json.dumps(archive,indent=2)+"\n",encoding="utf-8")
+    # The first workflow pass only discovers this week's slate for the
+    # starter refresh. Archive the second, starter-aware pass as the forecast.
+    if os.environ.get("FOURTHDOWN_SKIP_V2_ARCHIVE") != "1":
+        # Keep immutable first-published predictions for transparent future grading.
+        archive_path=Path("data/v2-history.json")
+        archive={"model":"FOURTHDOWN v2","games":[]}
+        if archive_path.exists():
+            archive=json.loads(archive_path.read_text(encoding="utf-8"))
+        existing={str(g.get("game_id")) for g in archive.get("games",[])}
+        for game in data["games"]:
+            if game["game_id"] not in existing:
+                archive["games"].append({**game,"published_at_utc":data["generated_at_utc"]})
+                existing.add(game["game_id"])
+        archive_path.write_text(json.dumps(archive,indent=2)+"\n",encoding="utf-8")
     dest.write_text(json.dumps(data,indent=2)+"\n",encoding="utf-8")
     print(f"Generated {len(data['games'])} v2 forecasts for {season} week {data['week']}")
 
