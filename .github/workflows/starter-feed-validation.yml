@@ -40,7 +40,7 @@ jobs:
               def inspect(node):
                   if isinstance(node, dict):
                       if isinstance(node.get('athletes'), list):
-                          print('POSITION NODE:', {k:v for k,v in node.items() if k != 'athletes' and not isinstance(v,(dict,list))})
+                          print('POSITION NODE:', {k:v for k,v in node.items() if k != 'athletes'})
                       for value in node.values():
                           if isinstance(value,(dict,list)): inspect(value)
                   elif isinstance(node,list):
