@@ -13,12 +13,38 @@ FORECAST = Path("data/live-v2.json")
 POSITIONS = {"QB": 1, "RB": 2, "WR": 3}
 
 
-def fetch_depth_chart(team):
-    url = f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{team}/depthcharts"
+def fetch_json(url):
     request = urllib.request.Request(url, headers={"User-Agent": "FOURTHDOWN starter refresh"})
     with urllib.request.urlopen(request, timeout=20) as response:
-        payload = json.load(response)
-    return payload, url
+        return json.load(response)
+
+
+def fetch_espn_teams():
+    url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=32"
+    payload = fetch_json(url)
+    result = {}
+
+    def walk(node):
+        if isinstance(node, dict):
+            team = node.get("team") if isinstance(node.get("team"), dict) else node
+            abbreviation = str(team.get("abbreviation") or "").upper()
+            team_id = str(team.get("id") or "")
+            if abbreviation and team_id.isdigit():
+                result[abbreviation] = team_id
+            for value in node.values():
+                if isinstance(value, (dict, list)):
+                    walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+
+    walk(payload)
+    return result
+
+
+def fetch_depth_chart(team_id):
+    url = f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{team_id}/depthcharts"
+    return fetch_json(url), url
 
 
 def position_code(node, inherited=""):
@@ -101,13 +127,22 @@ def main():
     ]
     added = 0
     updated = 0
+    try:
+        espn_teams = fetch_espn_teams()
+    except Exception as exc:
+        print(f"ESPN team directory unavailable; preserving existing starter feed: {exc}")
+        return
 
     for game in upcoming:
         for team in (str(game.get("home") or "").upper(), str(game.get("away") or "").upper()):
             if not team:
                 continue
+            team_id = espn_teams.get(team)
+            if not team_id:
+                print(f"No ESPN team ID found for {team}; preserving existing depth chart rows")
+                continue
             try:
-                chart, source_url = fetch_depth_chart(team)
+                chart, source_url = fetch_depth_chart(team_id)
                 positions = collect_depth_rows(chart)
             except Exception as exc:
                 print(f"Depth chart unavailable for {team}: {exc}")
