@@ -48,24 +48,24 @@
             "team": "BUF"
           },
           {
-            "detail": "out",
-            "player": "Dion Dawkins",
-            "position": "OT",
-            "status": "Out",
-            "team": "BUF"
-          },
-          {
-            "detail": "out",
+            "detail": "questionable",
             "player": "Greg Gaines",
             "position": "DT",
-            "status": "Out",
+            "status": "Questionable",
             "team": "BUF"
           },
           {
-            "detail": "out",
+            "detail": "questionable",
             "player": "Alec Anderson",
             "position": "OT",
-            "status": "Out",
+            "status": "Questionable",
+            "team": "BUF"
+          },
+          {
+            "detail": "questionable",
+            "player": "Dion Dawkins",
+            "position": "OT",
+            "status": "Questionable",
             "team": "BUF"
           },
           {
@@ -87,22 +87,16 @@
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
       "model_metrics": {
         "away": {
-          "defense_epa_rating": -0.0127,
-          "defense_rank": 12,
-          "offense_epa_rating": 0.068,
-          "offense_rank": 4,
+          "defense_epa_rating": -0.0986,
+          "defense_rank": 2,
+          "offense_epa_rating": 0.0593,
+          "offense_rank": 5,
           "recent_form": {
-            "avg_margin": 7.4,
-            "avg_points_against": 23.8,
-            "avg_points_for": 31.2,
+            "avg_margin": 9.2,
+            "avg_points_against": 21.8,
+            "avg_points_for": 31.0,
             "games": 5,
             "results": [
-              {
-                "points_against": 16,
-                "points_for": 24,
-                "result": "W",
-                "week": 3
-              },
               {
                 "points_against": 29,
                 "points_for": 26,
@@ -126,6 +120,12 @@
                 "points_for": 36,
                 "result": "W",
                 "week": 8
+              },
+              {
+                "points_against": 6,
+                "points_for": 23,
+                "result": "W",
+                "week": 9
               }
             ],
             "wins": 4
@@ -177,9 +177,9 @@
           }
         },
         "scoring_edge_components": {
-          "away_offense_vs_home_defense": 4.92,
+          "away_offense_vs_home_defense": 4.53,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -0.92
+          "home_offense_vs_away_defense": -4.79
         }
       },
       "quarterbacks": {
@@ -490,15 +490,15 @@
           },
           {
             "detail": "out",
-            "player": "David Montgomery",
-            "position": "RB",
+            "player": "Reed Blankenship",
+            "position": "S",
             "status": "Out",
             "team": "HOU"
           },
           {
             "detail": "out",
-            "player": "Reed Blankenship",
-            "position": "S",
+            "player": "David Montgomery",
+            "position": "RB",
             "status": "Out",
             "team": "HOU"
           },
@@ -765,7 +765,7 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0901,
-          "defense_rank": 2,
+          "defense_rank": 3,
           "offense_epa_rating": 0.0711,
           "offense_rank": 3,
           "recent_form": {
@@ -989,9 +989,9 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.036,
-          "defense_rank": 9,
+          "defense_rank": 10,
           "offense_epa_rating": 0.0621,
-          "offense_rank": 5,
+          "offense_rank": 4,
           "recent_form": {
             "avg_margin": 4.2,
             "avg_points_against": 18.6,
@@ -1142,7 +1142,7 @@
           "defense_epa_rating": 0.0043,
           "defense_rank": 17,
           "offense_epa_rating": -0.1359,
-          "offense_rank": 32,
+          "offense_rank": 31,
           "recent_form": {
             "avg_margin": -13.2,
             "avg_points_against": 28.6,
@@ -1187,7 +1187,7 @@
           "defense_epa_rating": 0.0112,
           "defense_rank": 19,
           "offense_epa_rating": -0.0707,
-          "offense_rank": 29,
+          "offense_rank": 28,
           "recent_form": {
             "avg_margin": -13.4,
             "avg_points_against": 28.0,
@@ -1291,7 +1291,7 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0789,
-          "defense_rank": 3,
+          "defense_rank": 4,
           "offense_epa_rating": 0.0099,
           "offense_rank": 13,
           "recent_form": {
@@ -1559,7 +1559,7 @@
           "defense_epa_rating": 0.033,
           "defense_rank": 25,
           "offense_epa_rating": -0.0951,
-          "offense_rank": 30,
+          "offense_rank": 29,
           "recent_form": {
             "avg_margin": -12.6,
             "avg_points_against": 29.0,
@@ -1735,22 +1735,16 @@
       "kickoff_utc": "2026-11-15T18:00:00+00:00",
       "model_metrics": {
         "away": {
-          "defense_epa_rating": -0.0754,
-          "defense_rank": 4,
-          "offense_epa_rating": -0.0542,
-          "offense_rank": 27,
+          "defense_epa_rating": -0.0762,
+          "defense_rank": 5,
+          "offense_epa_rating": -0.1367,
+          "offense_rank": 32,
           "recent_form": {
-            "avg_margin": 4.8,
-            "avg_points_against": 13.6,
-            "avg_points_for": 18.4,
+            "avg_margin": 0.0,
+            "avg_points_against": 15.0,
+            "avg_points_for": 15.0,
             "games": 5,
             "results": [
-              {
-                "points_against": 16,
-                "points_for": 23,
-                "result": "W",
-                "week": 3
-              },
               {
                 "points_against": 10,
                 "points_for": 15,
@@ -1774,14 +1768,20 @@
                 "points_for": 15,
                 "result": "L",
                 "week": 8
+              },
+              {
+                "points_against": 23,
+                "points_for": 6,
+                "result": "L",
+                "week": 9
               }
             ],
-            "wins": 4
+            "wins": 3
           }
         },
         "home": {
           "defense_epa_rating": -0.0605,
-          "defense_rank": 5,
+          "defense_rank": 6,
           "offense_epa_rating": 0.0416,
           "offense_rank": 8,
           "recent_form": {
@@ -1825,9 +1825,9 @@
           }
         },
         "scoring_edge_components": {
-          "away_offense_vs_home_defense": -5.16,
+          "away_offense_vs_home_defense": -8.87,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -1.52
+          "home_offense_vs_away_defense": -1.55
         }
       },
       "quarterbacks": {
@@ -1933,13 +1933,6 @@
           },
           {
             "detail": "out",
-            "player": "A.J. Brown",
-            "position": "WR",
-            "status": "Out",
-            "team": "NE"
-          },
-          {
-            "detail": "out",
             "player": "Charles Woods",
             "position": "CB",
             "status": "Out",
@@ -1949,6 +1942,13 @@
             "detail": "out",
             "player": "TreVeyon Henderson",
             "position": "RB",
+            "status": "Out",
+            "team": "NE"
+          },
+          {
+            "detail": "out",
+            "player": "A.J. Brown",
+            "position": "WR",
             "status": "Out",
             "team": "NE"
           }
@@ -2116,7 +2116,7 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0347,
-          "defense_rank": 10,
+          "defense_rank": 11,
           "offense_epa_rating": 0.0167,
           "offense_rank": 11,
           "recent_form": {
@@ -2340,7 +2340,7 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0537,
-          "defense_rank": 7,
+          "defense_rank": 8,
           "offense_epa_rating": -0.0223,
           "offense_rank": 19,
           "recent_form": {
@@ -2488,13 +2488,6 @@
         "players": [
           {
             "detail": "out",
-            "player": "Joey Porter Jr.",
-            "position": "CB",
-            "status": "Out",
-            "team": "DAL"
-          },
-          {
-            "detail": "out",
             "player": "Jake Ferguson",
             "position": "TE",
             "status": "Out",
@@ -2509,15 +2502,22 @@
           },
           {
             "detail": "out",
-            "player": "George Pickens",
-            "position": "WR",
+            "player": "P.J. Locke",
+            "position": "S",
             "status": "Out",
             "team": "DAL"
           },
           {
             "detail": "out",
-            "player": "P.J. Locke",
-            "position": "S",
+            "player": "Joey Porter Jr.",
+            "position": "CB",
+            "status": "Out",
+            "team": "DAL"
+          },
+          {
+            "detail": "out",
+            "player": "George Pickens",
+            "position": "WR",
             "status": "Out",
             "team": "DAL"
           },
@@ -2569,7 +2569,7 @@
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0595,
-          "defense_rank": 6,
+          "defense_rank": 7,
           "offense_epa_rating": 0.0801,
           "offense_rank": 2,
           "recent_form": {
@@ -2765,7 +2765,7 @@
         },
         "home": {
           "defense_epa_rating": -0.0315,
-          "defense_rank": 11,
+          "defense_rank": 12,
           "offense_epa_rating": -0.0089,
           "offense_rank": 17,
           "recent_form": {
@@ -2855,6 +2855,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-10T03:33:07Z",
+  "generated_at_utc": "2026-11-10T14:49:57Z",
   "schema_version": 1
 }
