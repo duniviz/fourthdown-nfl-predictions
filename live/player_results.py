@@ -71,6 +71,11 @@ def main():
             "team":x.get("team"),"market":x.get("market"),"stat_key":key[2],
             "projection":proj,"actual":observed,"error":round(observed-proj,1),
             "dk_line":float(line) if line is not None and str(line).strip() and float(line)>0 else None,"recommended_side":None,"recommendation_result":"not_available"}
+        trial=x.get("qb_replacement_trial")
+        if isinstance(trial,dict) and isinstance(trial.get("original_projection"),(int,float)):
+            result["qb_replacement_trial"]={**trial,
+                "original_absolute_error":round(abs(observed-trial["original_projection"]),1),
+                "trial_absolute_error":round(abs(observed-proj),1)}
         # Grade only a stored pregame line and an explicit stored recommendation.
         if result["dk_line"] is not None and str(x.get("recommended_side") or "").strip().lower() in ("over","under"):
             line=float(line);side=str(x["recommended_side"]).strip().lower()
