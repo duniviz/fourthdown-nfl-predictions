@@ -1,0 +1,24 @@
+name: Test visual insights
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'bets.html'
+      - 'model-lab.html'
+      - 'assets/fd-insights.*'
+      - 'tests/test_visual_insights.js'
+      - '.github/workflows/test-visual-insights.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-insights-server.log 2>&1 &
+          node tests/test_visual_insights.js
