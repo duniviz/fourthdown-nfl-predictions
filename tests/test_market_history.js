@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict');
+const history=require('../assets/fd-market-history.js');
+const t=Date.parse('2026-11-10T18:00:00Z');
+const a={home:'NYG',away:'WAS',home_score:24,away_score:20,kickoff_utc:'2026-11-08T18:00:00Z',dk_at_utc:'2026-11-08T17:00:00Z',dk_home_spread:-3,dk_total:44};
+const b={...a,home:'DAL',away:'NYG',home_score:21,away_score:20,dk_home_spread:-2,dk_total:40};
+const c={...a,dk_at_utc:'2026-11-08T18:01:00Z'};
+assert.equal(history.summary([a,b],'NYG'),'ATS 2–0–0 · O/U 1–0–1');
+assert.equal(history.summary([a],'WAS'),'ATS 0–1–0 · O/U 0–0–1');
+assert.equal(history.prepare([a,b,c],'NYG',t).length,2);
+assert.match(history.render({home:{abbr:'NYG'},away:{abbr:'WSH'},date:'2026-11-13T01:15:00Z'},[a,b,c],t),/Previous meetings · WSH ATS/);
+assert.match(history.render({home:{abbr:'NYG'},away:{abbr:'WSH'},date:'2026-11-13T01:15:00Z'},[a,b,c],t),/Push/);
+assert.match(history.render({home:{abbr:'NYG'},away:{abbr:'WSH'},date:'2026-11-13T01:15:00Z'},[],t),/No verified saved/);
+console.log('ATS and total history tests passed');
