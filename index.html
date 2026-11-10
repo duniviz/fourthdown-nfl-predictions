@@ -1877,7 +1877,7 @@ function renderMatchupCards(games){
   }catch(e){status.textContent='Scoreboard temporarily unavailable: '+e.message+'. Predictions below are separate from live scores.';const fallbackSlate=window.fdScheduleWindow.get(new Date());const fallbackGames=forecasts.filter(p=>p.home&&p.away&&window.fdScheduleWindow.contains(fallbackSlate,p.kickoff_utc)).map(p=>({id:p.game_id,date:p.kickoff_utc,home:{abbr:p.home},away:{abbr:p.away},state:'pre',status:'Published forecast · live scores unavailable'}));window.fdVisibleGames=fallbackGames;container.innerHTML=fallbackGames.length?fallbackGames.map(g=>'<article class="scorecard"><div class="score-head"><span class="score-state">PUBLISHED MATCHUP</span><span class="caption">Live scores unavailable</span></div><div class="score-teams"><div class="score-team"><span class="name">'+esc(g.away.abbr)+'</span></div><div class="score-team"><span class="name">'+esc(g.home.abbr)+'</span></div></div>'+projectionHtml(g)+'<button type="button" class="fd-modal-open" data-matchup-id="'+esc(g.id)+'">View full matchup →</button></article>').join(''):'<div class="score-placeholder">Live scores unavailable and no published matchups found. Try Refresh Scores.</div>';label.textContent='Live feed unavailable';}
  }
  document.getElementById('refresh-scores').addEventListener('click',update);
- container.addEventListener('click',e=>{
+ function fdHandleMatchupClick(e){
   const btn=e.target.closest('[data-matchup-id]');if(!btn)return;
   const g=(window.fdVisibleGames||[]).find(x=>String(x.id)===btn.dataset.matchupId);
   if(!g)return;
@@ -1891,7 +1891,9 @@ function renderMatchupCards(games){
    body.innerHTML='<div class="fd-modal-top"><h2>'+safe(g.away.abbr)+' @ '+safe(g.home.abbr)+'</h2><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div><div class="fd-modal-section"><h3>Game scoreboard</h3><p>'+safe(g.away.abbr)+' '+score(g.away)+' · '+safe(g.home.abbr)+' '+score(g.home)+'</p><p>'+safe(g.status||'')+'</p><p class="fd-modal-muted">Detailed matchup analysis could not load. Live scores are still available.</p></div><div class="fd-modal-section fd-live-player-stats" data-fd-live-game-id="'+safe(g.id)+'" data-fd-live-home="'+safe(g.home.abbr)+'" data-fd-live-away="'+safe(g.away.abbr)+'"><h3>Live player totals · DraftKings</h3><div class="fd-live-player-body">Checking ESPN player totals…</div></div>';
    modal.classList.add('open');document.body.style.overflow='hidden';
   }
- });
+ }
+ container.addEventListener('click',fdHandleMatchupClick);
+ document.getElementById('fd-game-spotlight')?.addEventListener('click',fdHandleMatchupClick);
  container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-injuries')&&e.target.open)loadGameCardInjuries(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
