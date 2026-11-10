@@ -28,18 +28,43 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 7.206,
-          "improvement_vs_baseline": 0.541,
+          "mae": 7.146,
+          "improvement_vs_baseline": 0.601,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 7.202,
-          "improvement_vs_baseline": 0.545,
+          "mae": 7.061,
+          "improvement_vs_baseline": 0.686,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 7.249,
-          "improvement_vs_baseline": 0.498,
+          "mae": 7.169,
+          "improvement_vs_baseline": 0.578,
+          "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 7.378,
+          "improvement_vs_baseline": 0.369,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 7.338,
+          "improvement_vs_baseline": 0.409,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 7.353,
+          "improvement_vs_baseline": 0.394,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 7.107,
+          "improvement_vs_baseline": 0.639,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 7.605,
+          "improvement_vs_baseline": 0.141,
           "beats_baseline": true
         }
       }
@@ -57,19 +82,44 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 4.408,
-          "improvement_vs_baseline": 0.472,
+          "mae": 4.39,
+          "improvement_vs_baseline": 0.49,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 4.337,
-          "improvement_vs_baseline": 0.543,
+          "mae": 4.306,
+          "improvement_vs_baseline": 0.575,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 4.562,
-          "improvement_vs_baseline": 0.318,
+          "mae": 4.649,
+          "improvement_vs_baseline": 0.231,
           "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 4.559,
+          "improvement_vs_baseline": 0.321,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 4.458,
+          "improvement_vs_baseline": 0.423,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 4.548,
+          "improvement_vs_baseline": 0.333,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 4.381,
+          "improvement_vs_baseline": 0.499,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 4.88,
+          "improvement_vs_baseline": 0.0,
+          "beats_baseline": false
         }
       }
     },
@@ -86,18 +136,43 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 4.769,
-          "improvement_vs_baseline": 0.353,
+          "mae": 4.717,
+          "improvement_vs_baseline": 0.404,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 4.844,
-          "improvement_vs_baseline": 0.278,
+          "mae": 4.832,
+          "improvement_vs_baseline": 0.29,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 4.908,
+          "mae": 4.907,
           "improvement_vs_baseline": 0.214,
+          "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 4.858,
+          "improvement_vs_baseline": 0.264,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 4.91,
+          "improvement_vs_baseline": 0.211,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 4.954,
+          "improvement_vs_baseline": 0.167,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 4.803,
+          "improvement_vs_baseline": 0.319,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 5.065,
+          "improvement_vs_baseline": 0.057,
           "beats_baseline": true
         }
       }
@@ -115,19 +190,44 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 62.218,
-          "improvement_vs_baseline": 1.91,
+          "mae": 62.117,
+          "improvement_vs_baseline": 2.012,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 62.502,
-          "improvement_vs_baseline": 1.627,
+          "mae": 62.375,
+          "improvement_vs_baseline": 1.754,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 63.178,
-          "improvement_vs_baseline": 0.951,
+          "mae": 63.926,
+          "improvement_vs_baseline": 0.203,
           "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 62.542,
+          "improvement_vs_baseline": 1.587,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 62.578,
+          "improvement_vs_baseline": 1.551,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 63.399,
+          "improvement_vs_baseline": 0.729,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 62.641,
+          "improvement_vs_baseline": 1.488,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 64.24,
+          "improvement_vs_baseline": -0.111,
+          "beats_baseline": false
         }
       }
     },
@@ -144,19 +244,44 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 24.704,
-          "improvement_vs_baseline": 0.189,
+          "mae": 24.565,
+          "improvement_vs_baseline": 0.328,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 24.663,
-          "improvement_vs_baseline": 0.23,
+          "mae": 24.567,
+          "improvement_vs_baseline": 0.326,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 24.668,
-          "improvement_vs_baseline": 0.225,
+          "mae": 24.458,
+          "improvement_vs_baseline": 0.435,
           "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 24.649,
+          "improvement_vs_baseline": 0.244,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 24.673,
+          "improvement_vs_baseline": 0.22,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 24.579,
+          "improvement_vs_baseline": 0.314,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 24.476,
+          "improvement_vs_baseline": 0.417,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 24.893,
+          "improvement_vs_baseline": 0.0,
+          "beats_baseline": false
         }
       }
     },
@@ -173,28 +298,54 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 24.247,
-          "improvement_vs_baseline": -0.092,
-          "beats_baseline": false
+          "mae": 23.703,
+          "improvement_vs_baseline": 0.451,
+          "beats_baseline": true
         },
         "random_forest": {
-          "mae": 24.324,
-          "improvement_vs_baseline": -0.169,
-          "beats_baseline": false
+          "mae": 23.805,
+          "improvement_vs_baseline": 0.349,
+          "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 24.631,
-          "improvement_vs_baseline": -0.476,
+          "mae": 23.817,
+          "improvement_vs_baseline": 0.338,
+          "beats_baseline": true
+        },
+        "baseline_ridge_50": {
+          "mae": 23.836,
+          "improvement_vs_baseline": 0.319,
+          "beats_baseline": true
+        },
+        "baseline_forest_50": {
+          "mae": 23.848,
+          "improvement_vs_baseline": 0.306,
+          "beats_baseline": true
+        },
+        "baseline_boost_50": {
+          "mae": 23.774,
+          "improvement_vs_baseline": 0.381,
+          "beats_baseline": true
+        },
+        "ml_equal_mix": {
+          "mae": 23.722,
+          "improvement_vs_baseline": 0.433,
+          "beats_baseline": true
+        },
+        "weekly_selected_mix": {
+          "mae": 24.155,
+          "improvement_vs_baseline": 0.0,
           "beats_baseline": false
         }
       }
     }
   },
-  "generated_at_utc": "2026-11-10T02:32:50.045758+00:00",
+  "generated_at_utc": "2026-11-10T02:42:03.522967+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
-  "feature_policy": "retrospective walk-forward player estimates + week; no outcomes as features",
+  "feature_policy": "retrospective prior-week player estimates, workload, team volume and opponent allowance; no target-game outcomes as features",
+  "blend_policy": "fixed 50/50 baseline-model blends and equal model mix; weekly selection uses >=100 paired earlier observations across >=3 weeks and 3% MAE gain, else baseline",
   "limitation": "Retrospective walk-forward backtest, not live frozen predictions; no ATS, winners, weather or DK lines in source.",
   "source_file": "data/weekly-player-ml-training.csv"
 }
