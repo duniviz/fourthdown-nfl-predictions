@@ -1,0 +1,25 @@
+name: Test site audit fixes
+on:
+  pull_request:
+    paths:
+      - 'history.html'
+      - 'model-lab.html'
+      - 'bets.html'
+      - 'index.html'
+      - 'assets/dk-lines.js'
+      - 'tests/test_audit_fixes.js'
+      - '.github/workflows/test-site-audit-fixes.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-ui-server.log 2>&1 &
+          node tests/test_audit_fixes.js
