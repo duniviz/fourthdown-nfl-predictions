@@ -79,6 +79,26 @@ def load_verified_starters(season, week):
     return result
 
 
+def current_roster_team(starters, player_name):
+    """Return a unique current team from this slate's sourced depth chart."""
+    name=str(player_name or "").strip().casefold()
+    if not name:
+        return None
+    teams={team for (_,team,_), rows in starters.items()
+           if any(str(row.get("player","")).strip().casefold()==name for row in rows)}
+    return next(iter(teams)) if len(teams)==1 else None
+
+
+def aggregate_player_history(history):
+    """Merge each player's historical rows across former teams exactly once."""
+    grouped=defaultdict(list)
+    for (_,player_id),records in history.items():
+        grouped[player_id].extend(records)
+    for records in grouped.values():
+        records.sort(key=lambda row:(int(row.get("week",0)),str(row.get("team") or "")))
+    return grouped
+
+
 def verified_game_starter(starters, game_id, team, position, player_name):
     key=(str(game_id),str(team).upper(),str(position or "").upper())
     name=str(player_name or "").casefold()
@@ -289,6 +309,12 @@ def generate():
         history[(team,player)].append(r)
         for metric,_,_ in METRICS:
             if opp: opponents[opp][metric].append(num(r.get(metric)))
+    player_records=defaultdict(list)
+    for (historical_team,player_id),records in history.items():
+        player_records[player_id].extend(records)
+    for records in player_records.values():
+        records.sort(key=lambda row:(int(row.get("week",0)),str(row.get("team") or "")))
+
     # nflverse player registry maps GSIS player IDs in weekly stats to ESPN
     # athlete IDs used by ESPN's public headshot CDN. Fail open to initials.
     espn_ids={}
@@ -480,9 +506,14 @@ def generate():
             allocation={}
             for metric,_,volume in METRICS:
                 eligible=[]
-                for (t,pid),records in history.items():
-                    if t!=team or len(records)<1: continue
-                    if overrides.get((team,str(records[-1].get("player_display_name") or records[-1].get("player_name") or "").casefold())) in ("out","inactive","ir"): continue
+                for pid,records in player_records.items():
+                    if len(records)<1: continue
+                    player_name=str(records[-1].get("player_display_name") or records[-1].get("player_name") or "")
+                    current_team=current_roster_team(verified_starters,player_name)
+                    latest_team=str(records[-1].get("team") or "")
+                    effective_team=current_team or latest_team
+                    if effective_team!=team: continue
+                    if overrides.get((team,player_name.casefold())) in ("out","inactive","ir"): continue
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
                     player_name=records[-1].get("player_display_name") or records[-1].get("player_name")
@@ -497,14 +528,16 @@ def generate():
                 target=team_targets.get(volume)
                 for pid,raw in eligible:
                     allocation[(pid,metric)]=target*raw/total if total>0 and target is not None else raw
-            for (t,player),stats in history.items():
-                if t!=team: continue
-                stats=sorted(stats,key=lambda x:int(x["week"]))
+            for player,stats in player_records.items():
                 if not stats: continue
                 player_name=str(stats[-1].get("player_display_name") or stats[-1].get("player_name") or player)
+                current_team=current_roster_team(verified_starters,player_name)
+                latest_team=str(stats[-1].get("team") or "")
+                effective_team=current_team or latest_team
+                if effective_team!=team: continue
                 confirmed_starter=verified_game_starter(verified_starters,game["game_id"],team,stats[-1].get("position"),player_name)
                 if week-int(stats[-1]["week"])>2 and not confirmed_starter: continue
-                availability=overrides.get((team,player_name.casefold()),"unconfirmed")
+                availability=overrides.get((team,player_name.casefold()),overrides.get((t,player_name.casefold()),"unconfirmed"))
                 if availability in ("out","inactive","ir"): continue
                 for metric,label,volume in METRICS:
                     last=stats[-5:]
