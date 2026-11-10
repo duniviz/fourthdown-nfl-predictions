@@ -49,6 +49,13 @@ MARKET_KEYS = {
     "receiving_yards": "player_rec_yds", "receptions": "player_receptions",
     "receiving_tds": "player_rec_tds", "anytime_td": "player_anytime_td",
 }
+# Officially announced Week 9 starter; scoped to this game only.
+# Vikings.com announced Carson Wentz would start vs Buffalo on Nov. 5, 2026.
+VERIFIED_QB_STARTERS = {(2026, 9, "MIN", "carson wentz")}
+
+def verified_qb_starter(season, week, team, player_name):
+    return (season, week, str(team).upper(), str(player_name or "").casefold()) in VERIFIED_QB_STARTERS
+
 def num(x):
     try: return float(x or 0)
     except (TypeError, ValueError): return 0.0
@@ -420,8 +427,11 @@ def generate():
                     if overrides.get((team,str(records[-1].get("player_display_name") or records[-1].get("player_name") or "").casefold())) in ("out","inactive","ir"): continue
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
-                    # Do not automatically reallocate to long-inactive players.
-                    if week-last_week>2: continue
+                    player_name=records[-1].get("player_display_name") or records[-1].get("player_name")
+                    confirmed_starter=verified_qb_starter(season,week,team,player_name)
+                    # Do not automatically reallocate to long-inactive players,
+                    # except for a quarterback confirmed as this week's starter.
+                    if week-last_week>2 and not confirmed_starter: continue
                     vol=[max(0,num(x.get(volume))) for x in recent]
                     raw=0.7*sum(vol[-3:])/len(vol[-3:])+0.3*sum(vol)/len(vol)
                     if raw>0: eligible.append((pid,raw))
@@ -432,8 +442,10 @@ def generate():
             for (t,player),stats in history.items():
                 if t!=team: continue
                 stats=sorted(stats,key=lambda x:int(x["week"]))
-                if len(stats)<1 or week-int(stats[-1]["week"])>2: continue
+                if not stats: continue
                 player_name=str(stats[-1].get("player_display_name") or stats[-1].get("player_name") or player)
+                confirmed_starter=verified_qb_starter(season,week,team,player_name)
+                if week-int(stats[-1]["week"])>2 and not confirmed_starter: continue
                 availability=overrides.get((team,player_name.casefold()),"unconfirmed")
                 if availability in ("out","inactive","ir"): continue
                 for metric,label,volume in METRICS:
