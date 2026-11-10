@@ -7229,6 +7229,4860 @@
         "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
       },
       "published_at_utc": "2026-11-03T21:51:31.752945+00:00"
+    },
+    {
+      "game_id": "2026_10_WAS_NYG",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-13T01:15:00+00:00",
+      "home": "NYG",
+      "away": "WAS",
+      "projected_home_score": 22.5,
+      "projected_away_score": 18.8,
+      "projected_margin_home": 3.71,
+      "projected_total": 41.31,
+      "predicted_winner": "NYG",
+      "injury_adjustments": {
+        "NYG": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "WAS": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "NYG",
+          "games_used": 8,
+          "offense_epa_rating": -0.0089,
+          "defense_epa_rating": -0.0315,
+          "offense_rank": 17,
+          "defense_rank": 11,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 3,
+            "avg_points_for": 27.2,
+            "avg_points_against": 23.4,
+            "avg_margin": 3.8,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 36,
+                "points_against": 24,
+                "result": "W"
+              },
+              {
+                "week": 5,
+                "points_for": 27,
+                "points_against": 27,
+                "result": "T"
+              },
+              {
+                "week": 6,
+                "points_for": 27,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 27,
+                "points_against": 21,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 19,
+                "points_against": 11,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "WAS",
+          "games_used": 8,
+          "offense_epa_rating": -0.0228,
+          "defense_epa_rating": 0.0035,
+          "offense_rank": 20,
+          "defense_rank": 16,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 19.4,
+            "avg_points_against": 22.0,
+            "avg_margin": -2.6,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 13,
+                "points_against": 30,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 27,
+                "points_against": 27,
+                "result": "T"
+              },
+              {
+                "week": 6,
+                "points_for": 17,
+                "points_against": 23,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 27,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 13,
+                "points_against": 20,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 21,
+              "value": 21.5
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 21.5
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 22.75
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 25.25
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 19,
+              "value": 5.3
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": 5.09
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 5.16
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 5.32
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 20,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": -0.03
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 0.0
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 21,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 0.05
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 0.02
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 16,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": -0.06
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 0.03
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 19,
+              "value": 2.5
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 2.0
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 3.38
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 2.12
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 3,
+              "value": 0.62
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 1.12
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 1.25
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 32,
+              "value": 31.1
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 38.0
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 41.8
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 41.3
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 22,
+              "value": 45.5
+            },
+            "home_defense": {
+              "rank": 19,
+              "value": 57.1
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 77.8
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 81.8
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 19,
+              "value": 54.5
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 80.0
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 62.5
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 75.0
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -0.24,
+          "away_offense_vs_home_defense": -2.45,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_NE_DET",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T14:30:00+00:00",
+      "home": "DET",
+      "away": "NE",
+      "projected_home_score": 26.3,
+      "projected_away_score": 22.9,
+      "projected_margin_home": 3.35,
+      "projected_total": 49.2,
+      "predicted_winner": "DET",
+      "injury_adjustments": {
+        "DET": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "NE": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "DET",
+          "games_used": 8,
+          "offense_epa_rating": 0.0377,
+          "defense_epa_rating": 0.0053,
+          "offense_rank": 9,
+          "defense_rank": 18,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 25.8,
+            "avg_points_against": 18.8,
+            "avg_margin": 7.0,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 26,
+                "points_against": 32,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 45,
+                "points_against": 21,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 20,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 19,
+                "points_against": 15,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 19,
+                "points_against": 9,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "NE",
+          "games_used": 9,
+          "offense_epa_rating": 0.0319,
+          "defense_epa_rating": 0.0406,
+          "offense_rank": 10,
+          "defense_rank": 29,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 3,
+            "avg_points_for": 29.2,
+            "avg_points_against": 26.0,
+            "avg_margin": 3.2,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 45,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 26,
+                "points_against": 19,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 24,
+                "points_against": 30,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 24,
+                "points_against": 19,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 27,
+                "points_against": 45,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 14,
+              "value": 23.44
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 23.62
+            },
+            "home_offense": {
+              "rank": 5,
+              "value": 27.75
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 23.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 5,
+              "value": 6.11
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 5.5
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 5.89
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 5.54
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 10,
+              "value": 0.04
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 0.08
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 0.1
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 0.04
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 11,
+              "value": 0.1
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 0.15
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.22
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 0.14
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 14,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": -0.05
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": -0.05
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 15,
+              "value": 2.22
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": 3.38
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 2.38
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 2.78
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 2.11
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 0.62
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 0.89
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 10,
+              "value": 43.4
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 44.9
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 37.2
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": 37.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 5,
+              "value": 76.9
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 73.3
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 70.6
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 50.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 22,
+              "value": 53.8
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 65.5
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 61.8
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": 50.0
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": 3.52,
+          "away_offense_vs_home_defense": 1.68,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_KC_ATL",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "ATL",
+      "away": "KC",
+      "projected_home_score": 19.3,
+      "projected_away_score": 24.7,
+      "projected_margin_home": -5.33,
+      "projected_total": 44.02,
+      "predicted_winner": "KC",
+      "injury_adjustments": {
+        "ATL": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "KC": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "ATL",
+          "games_used": 9,
+          "offense_epa_rating": -0.0396,
+          "defense_epa_rating": 0.0141,
+          "offense_rank": 24,
+          "defense_rank": 20,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 18.4,
+            "avg_points_against": 26.2,
+            "avg_margin": -7.8,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 23,
+                "points_against": 30,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 23,
+                "points_against": 31,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 29,
+                "points_against": 20,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 0,
+                "points_against": 16,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 17,
+                "points_against": 34,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "KC",
+          "games_used": 8,
+          "offense_epa_rating": 0.0621,
+          "defense_epa_rating": -0.036,
+          "offense_rank": 5,
+          "defense_rank": 9,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 3,
+            "avg_points_for": 22.8,
+            "avg_points_against": 18.6,
+            "avg_margin": 4.2,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 30,
+                "points_against": 27,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 22,
+                "points_against": 6,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 3,
+                "points_against": 20,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 24,
+                "points_against": 28,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 35,
+                "points_against": 12,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 10,
+              "value": 25.25
+            },
+            "home_defense": {
+              "rank": 19,
+              "value": 24.78
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": 20.89
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 17.88
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 3,
+              "value": 6.35
+            },
+            "home_defense": {
+              "rank": 19,
+              "value": 5.47
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 5.56
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 4.92
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.13
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": 0.0
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": -0.07
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": -0.07
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 9,
+              "value": 0.15
+            },
+            "home_defense": {
+              "rank": 17,
+              "value": 0.05
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": -0.15
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 3,
+              "value": 0.11
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 0.01
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": -0.11
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 4,
+              "value": 1.38
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": 2.22
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 1.78
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 1.75
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 7,
+              "value": 0.75
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 1.11
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 1.67
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 1.25
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 12,
+              "value": 42.1
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 43.3
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 36.2
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 37.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 12,
+              "value": 61.5
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 60.0
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 33.3
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 47.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 10,
+              "value": 63.3
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 66.7
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 61.5
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 38.1
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -3.4,
+          "away_offense_vs_home_defense": 3.43,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_HOU_CLE",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "CLE",
+      "away": "HOU",
+      "projected_home_score": 20.4,
+      "projected_away_score": 23.4,
+      "projected_margin_home": -3.02,
+      "projected_total": 43.78,
+      "predicted_winner": "HOU",
+      "injury_adjustments": {
+        "CLE": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "HOU": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "CLE",
+          "games_used": 9,
+          "offense_epa_rating": -0.0541,
+          "defense_epa_rating": -0.007,
+          "offense_rank": 26,
+          "defense_rank": 13,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 16.0,
+            "avg_points_against": 20.2,
+            "avg_margin": -4.2,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 12,
+                "points_against": 17,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 13,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 27,
+                "points_against": 24,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 6,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 22,
+                "points_against": 23,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "HOU",
+          "games_used": 8,
+          "offense_epa_rating": 0.0548,
+          "defense_epa_rating": 0.0015,
+          "offense_rank": 6,
+          "defense_rank": 15,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 3,
+            "avg_points_for": 31.0,
+            "avg_points_against": 23.4,
+            "avg_margin": 7.6,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 30,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 26,
+                "points_against": 3,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 34,
+                "points_against": 31,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 21,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 44,
+                "points_against": 22,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 9,
+              "value": 26.12
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": 21.78
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": 17.89
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 24.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 8,
+              "value": 5.84
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 5.28
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 5.08
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 5.3
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 8,
+              "value": 0.06
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": -0.02
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": -0.08
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 0.0
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 7,
+              "value": 0.15
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": -0.05
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 24,
+              "value": -0.09
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 0.02
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": -0.15
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": -0.06
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 13,
+              "value": 2.0
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 2.89
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": 4.22
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 3.62
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 1,
+              "value": 0.5
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 1.22
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 1.11
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 1.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 14,
+              "value": 40.2
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": 40.5
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 34.5
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 40.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 26,
+              "value": 37.5
+            },
+            "home_defense": {
+              "rank": 3,
+              "value": 28.6
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": 30.8
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 53.8
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 18,
+              "value": 58.1
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 48.3
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": 40.9
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 60.9
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -2.37,
+          "away_offense_vs_home_defense": 2.15,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_MIN_GB",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "GB",
+      "away": "MIN",
+      "projected_home_score": 21.2,
+      "projected_away_score": 16.1,
+      "projected_margin_home": 5.14,
+      "projected_total": 37.32,
+      "predicted_winner": "GB",
+      "injury_adjustments": {
+        "GB": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "MIN": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "GB",
+          "games_used": 9,
+          "offense_epa_rating": 0.0416,
+          "defense_epa_rating": -0.0605,
+          "offense_rank": 8,
+          "defense_rank": 5,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 28.6,
+            "avg_points_against": 17.2,
+            "avg_margin": 11.4,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 31,
+                "points_against": 7,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 23,
+                "points_against": 13,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 17,
+                "points_against": 20,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 27,
+                "points_against": 19,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 45,
+                "points_against": 27,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "MIN",
+          "games_used": 7,
+          "offense_epa_rating": -0.0542,
+          "defense_epa_rating": -0.0754,
+          "offense_rank": 27,
+          "defense_rank": 4,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 18.4,
+            "avg_points_against": 13.6,
+            "avg_margin": 4.8,
+            "results": [
+              {
+                "week": 3,
+                "points_for": 23,
+                "points_against": 16,
+                "result": "W"
+              },
+              {
+                "week": 4,
+                "points_for": 15,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 5,
+                "points_for": 23,
+                "points_against": 13,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 16,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 15,
+                "points_against": 19,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 26,
+              "value": 20.0
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 21.22
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 24.0
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 13.29
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 26,
+              "value": 4.91
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 4.93
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 5.68
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 4.69
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 28,
+              "value": -0.1
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": -0.08
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 0.04
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": -0.17
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 24,
+              "value": -0.07
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": -0.08
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 0.18
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": -0.24
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 27,
+              "value": -0.13
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": -0.22
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": -0.08
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 26,
+              "value": 3.0
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 2.89
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 1.89
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 3.57
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.71
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": 2.11
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 1.11
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 1.57
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 16,
+              "value": 39.2
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 43.7
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 38.1
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 30.8
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 9,
+              "value": 66.7
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": 42.1
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 62.5
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 45.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 17,
+              "value": 58.8
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 60.6
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 54.3
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 25.0
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -1.52,
+          "away_offense_vs_home_defense": -5.16,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_MIA_IND",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "IND",
+      "away": "MIA",
+      "projected_home_score": 21.0,
+      "projected_away_score": 21.3,
+      "projected_margin_home": -0.25,
+      "projected_total": 42.3,
+      "predicted_winner": "MIA",
+      "injury_adjustments": {
+        "IND": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "MIA": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "IND",
+          "games_used": 9,
+          "offense_epa_rating": -0.0951,
+          "defense_epa_rating": 0.033,
+          "offense_rank": 30,
+          "defense_rank": 25,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 0,
+            "avg_points_for": 16.4,
+            "avg_points_against": 29.0,
+            "avg_margin": -12.6,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 22,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 20,
+                "points_against": 26,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 10,
+                "points_against": 16,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 7,
+                "points_against": 42,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 23,
+                "points_against": 27,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "MIA",
+          "games_used": 8,
+          "offense_epa_rating": -0.0325,
+          "defense_epa_rating": 0.0568,
+          "offense_rank": 22,
+          "defense_rank": 31,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 18.0,
+            "avg_points_against": 22.8,
+            "avg_margin": -4.8,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 10,
+                "points_against": 15,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 24,
+                "points_against": 31,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 28,
+                "points_against": 25,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 19,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 9,
+                "points_against": 19,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 15.75
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 27.67
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 20.44
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 25.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 23,
+              "value": 5.07
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 6.24
+            },
+            "home_offense": {
+              "rank": 31,
+              "value": 4.55
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 5.8
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 24,
+              "value": -0.06
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 0.08
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": -0.12
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 0.12
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 25,
+              "value": -0.1
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 0.08
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": -0.22
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 0.26
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 13,
+              "value": -0.02
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": -0.0
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": -0.04
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 25,
+              "value": 3.0
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 2.11
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 2.78
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 21,
+              "value": 1.25
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 0.67
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 1.89
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 0.88
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 11,
+              "value": 42.6
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 32.7
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 38.0
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 50.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 21,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 53.8
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 58.8
+            },
+            "away_defense": {
+              "rank": 32,
+              "value": 90.9
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 27,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 62.5
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 62.5
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 59.4
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -1.72,
+          "away_offense_vs_home_defense": 0.02,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_CAR_NO",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "NO",
+      "away": "CAR",
+      "projected_home_score": 22.9,
+      "projected_away_score": 22.7,
+      "projected_margin_home": 0.23,
+      "projected_total": 45.65,
+      "predicted_winner": "NO",
+      "injury_adjustments": {
+        "NO": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "CAR": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "NO",
+          "games_used": 8,
+          "offense_epa_rating": -0.0199,
+          "defense_epa_rating": 0.0238,
+          "offense_rank": 18,
+          "defense_rank": 21,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 20.8,
+            "avg_points_against": 26.6,
+            "avg_margin": -5.8,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 24,
+                "points_against": 45,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 13,
+                "points_against": 23,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 34,
+                "points_against": 27,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 10,
+                "points_against": 16,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 23,
+                "points_against": 22,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "CAR",
+          "games_used": 8,
+          "offense_epa_rating": 0.0086,
+          "defense_epa_rating": 0.0241,
+          "offense_rank": 14,
+          "defense_rank": 22,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 22.0,
+            "avg_points_against": 27.2,
+            "avg_margin": -5.2,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 32,
+                "points_against": 26,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 25,
+                "points_against": 14,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 13,
+                "points_against": 43,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 19,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 21,
+                "points_against": 26,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 11,
+              "value": 24.88
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 27.0
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 23.12
+            },
+            "away_defense": {
+              "rank": 28,
+              "value": 27.38
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 14,
+              "value": 5.55
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 5.86
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 4.94
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 5.34
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 9,
+              "value": 0.04
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 0.05
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 0.03
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 14,
+              "value": 0.06
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 0.08
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": -0.02
+            },
+            "away_defense": {
+              "rank": 18,
+              "value": 0.05
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 10,
+              "value": 0.01
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": -0.07
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 0.01
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 28,
+              "value": 3.25
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 2.88
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": 2.5
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 19,
+              "value": 1.25
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 0.88
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 1.62
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": 1.12
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 18,
+              "value": 38.7
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 50.5
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 43.5
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 48.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 19,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 2,
+              "value": 25.0
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 80.0
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 36.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 7,
+              "value": 65.5
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": 51.4
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 65.5
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 75.0
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": 0.19,
+          "away_offense_vs_home_defense": 1.46,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_BUF_NYJ",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "NYJ",
+      "away": "BUF",
+      "projected_home_score": 21.8,
+      "projected_away_score": 26.2,
+      "projected_margin_home": -4.34,
+      "projected_total": 48.0,
+      "predicted_winner": "BUF",
+      "injury_adjustments": {
+        "NYJ": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "BUF": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "NYJ",
+          "games_used": 9,
+          "offense_epa_rating": -0.0078,
+          "defense_epa_rating": 0.0413,
+          "offense_rank": 16,
+          "defense_rank": 30,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 21.2,
+            "avg_points_against": 27.8,
+            "avg_margin": -6.6,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 17,
+                "points_against": 12,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 19,
+                "points_against": 26,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 25,
+                "points_against": 28,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 33,
+                "points_against": 38,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 12,
+                "points_against": 35,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "BUF",
+          "games_used": 7,
+          "offense_epa_rating": 0.068,
+          "defense_epa_rating": -0.0127,
+          "offense_rank": 4,
+          "defense_rank": 12,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 31.2,
+            "avg_points_against": 23.8,
+            "avg_margin": 7.4,
+            "results": [
+              {
+                "week": 3,
+                "points_for": 24,
+                "points_against": 16,
+                "result": "W"
+              },
+              {
+                "week": 4,
+                "points_for": 26,
+                "points_against": 29,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 37,
+                "points_against": 34,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 33,
+                "points_against": 30,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 36,
+                "points_against": 10,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 1,
+              "value": 33.29
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 24.78
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 20.22
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 25.86
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 2,
+              "value": 6.44
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 5.23
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": 5.33
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 5.38
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 2,
+              "value": 0.17
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 0.04
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 0.0
+            },
+            "away_defense": {
+              "rank": 24,
+              "value": 0.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.22
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.13
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 0.08
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 0.12
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 1,
+              "value": 0.13
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 26,
+              "value": -0.11
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": -0.03
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 10,
+              "value": 1.86
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": 2.44
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 3.11
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 2.14
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 26,
+              "value": 1.57
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 0.78
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 1.29
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 5,
+              "value": 46.7
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 42.7
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 36.6
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 42.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 3,
+              "value": 77.8
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 53.3
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 54.5
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 80.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 3,
+              "value": 67.7
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 68.8
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": 38.5
+            },
+            "away_defense": {
+              "rank": 23,
+              "value": 65.5
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -0.92,
+          "away_offense_vs_home_defense": 4.92,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_JAX_TEN",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T18:00:00+00:00",
+      "home": "TEN",
+      "away": "JAX",
+      "projected_home_score": 16.8,
+      "projected_away_score": 26.1,
+      "projected_margin_home": -9.27,
+      "projected_total": 42.96,
+      "predicted_winner": "JAX",
+      "injury_adjustments": {
+        "TEN": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "JAX": {
+          "points": 0.0,
+          "status": "injury_feed_unavailable",
+          "players": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "TEN",
+          "games_used": 8,
+          "offense_epa_rating": -0.0411,
+          "defense_epa_rating": 0.0371,
+          "offense_rank": 25,
+          "defense_rank": 28,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 21.4,
+            "avg_points_against": 28.0,
+            "avg_margin": -6.6,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 18,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 3,
+                "points_against": 26,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 26,
+                "points_against": 20,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 24,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 36,
+                "points_against": 43,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "JAX",
+          "games_used": 8,
+          "offense_epa_rating": 0.0711,
+          "defense_epa_rating": -0.0901,
+          "offense_rank": 3,
+          "defense_rank": 2,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 29.4,
+            "avg_points_against": 17.0,
+            "avg_margin": 12.4,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 22,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 5,
+                "points_for": 19,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 31,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 42,
+                "points_against": 7,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 33,
+                "points_against": 10,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 4,
+              "value": 28.62
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 24.88
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 18.0
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 15.12
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 6,
+              "value": 6.0
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 5.86
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 4.84
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 5.47
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 3,
+              "value": 0.15
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": -0.09
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": -0.13
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 1,
+              "value": 0.27
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.17
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": -0.12
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": -0.12
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 8,
+              "value": 0.01
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": -0.06
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": -0.14
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 7,
+              "value": 1.62
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 2.5
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 1.62
+            },
+            "away_defense": {
+              "rank": 21,
+              "value": 2.0
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 6,
+              "value": 0.75
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 1.38
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 1.25
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 1.75
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 4,
+              "value": 46.9
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 44.0
+            },
+            "home_offense": {
+              "rank": 28,
+              "value": 36.2
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 35.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 23,
+              "value": 40.0
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 62.5
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 40.0
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 33.3
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 12,
+              "value": 62.5
+            },
+            "home_defense": {
+              "rank": 15,
+              "value": 58.1
+            },
+            "home_offense": {
+              "rank": 24,
+              "value": 52.2
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 45.5
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -5.9,
+          "away_offense_vs_home_defense": 4.87,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_LA_ARI",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T21:05:00+00:00",
+      "home": "ARI",
+      "away": "LA",
+      "projected_home_score": 17.5,
+      "projected_away_score": 23.3,
+      "projected_margin_home": -5.85,
+      "projected_total": 40.84,
+      "predicted_winner": "LA",
+      "injury_adjustments": {
+        "ARI": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "LA": {
+          "points": 0.0,
+          "status": "injury_feed_unavailable",
+          "players": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "ARI",
+          "games_used": 9,
+          "offense_epa_rating": -0.0378,
+          "defense_epa_rating": 0.0366,
+          "offense_rank": 23,
+          "defense_rank": 27,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 18.2,
+            "avg_points_against": 27.6,
+            "avg_margin": -9.4,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 21,
+                "points_against": 45,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 18,
+                "points_against": 16,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 16,
+                "points_against": 30,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 33,
+                "points_against": 30,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 3,
+                "points_against": 17,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "LA",
+          "games_used": 9,
+          "offense_epa_rating": 0.0099,
+          "defense_epa_rating": -0.0789,
+          "offense_rank": 13,
+          "defense_rank": 3,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 3,
+            "avg_points_for": 25.8,
+            "avg_points_against": 19.6,
+            "avg_margin": 6.2,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 34,
+                "points_against": 37,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 16,
+                "points_against": 18,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 35,
+                "points_against": 21,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 24,
+                "points_against": 9,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 20,
+                "points_against": 13,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 13,
+              "value": 23.78
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 28.33
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 19.78
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 20.11
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 9,
+              "value": 5.77
+            },
+            "home_defense": {
+              "rank": 23,
+              "value": 5.69
+            },
+            "home_offense": {
+              "rank": 29,
+              "value": 4.78
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 4.98
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 11,
+              "value": 0.04
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 0.07
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": -0.11
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 16,
+              "value": 0.05
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 0.21
+            },
+            "home_offense": {
+              "rank": 23,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": -0.12
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 6,
+              "value": 0.02
+            },
+            "home_defense": {
+              "rank": 8,
+              "value": -0.08
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": -0.03
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": -0.1
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 5,
+              "value": 1.44
+            },
+            "home_defense": {
+              "rank": 19,
+              "value": 2.11
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": 2.56
+            },
+            "away_defense": {
+              "rank": 27,
+              "value": 1.78
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 24,
+              "value": 1.56
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.78
+            },
+            "home_offense": {
+              "rank": 9,
+              "value": 0.89
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 1.11
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 8,
+              "value": 43.5
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 43.0
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 39.0
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 32.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 10,
+              "value": 64.3
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 42.9
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 66.7
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 30.8
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 5,
+              "value": 66.7
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 68.8
+            },
+            "home_offense": {
+              "rank": 30,
+              "value": 47.1
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": 44.8
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -5.25,
+          "away_offense_vs_home_defense": 2.09,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_SEA_LV",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T21:05:00+00:00",
+      "home": "LV",
+      "away": "SEA",
+      "projected_home_score": 19.2,
+      "projected_away_score": 23.5,
+      "projected_margin_home": -4.39,
+      "projected_total": 42.71,
+      "predicted_winner": "SEA",
+      "injury_adjustments": {
+        "LV": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "SEA": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "LV",
+          "games_used": 9,
+          "offense_epa_rating": -0.0261,
+          "defense_epa_rating": 0.0734,
+          "offense_rank": 21,
+          "defense_rank": 32,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 24.6,
+            "avg_points_against": 36.8,
+            "avg_margin": -12.2,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 17,
+                "points_against": 45,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 30,
+                "points_against": 33,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 21,
+                "points_against": 35,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 38,
+                "points_against": 33,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 17,
+                "points_against": 38,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "SEA",
+          "games_used": 9,
+          "offense_epa_rating": -0.0223,
+          "defense_epa_rating": -0.0537,
+          "offense_rank": 19,
+          "defense_rank": 7,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 19.4,
+            "avg_points_against": 17.8,
+            "avg_margin": 1.6,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 29,
+                "points_against": 32,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 14,
+                "points_against": 17,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 20,
+                "points_against": 3,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 17,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 17,
+                "points_against": 3,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 18,
+              "value": 22.44
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 29.78
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 26.44
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 18.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 20,
+              "value": 5.29
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 6.24
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 5.45
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": 4.19
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 23,
+              "value": -0.04
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 0.09
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": -0.01
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": -0.1
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 17,
+              "value": 0.04
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 0.16
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.12
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": -0.11
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 28,
+              "value": -0.14
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": -0.23
+            },
+            "away_defense": {
+              "rank": 10,
+              "value": -0.08
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 14,
+              "value": 2.11
+            },
+            "home_defense": {
+              "rank": 20,
+              "value": 2.11
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 1.22
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": 2.33
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 23,
+              "value": 1.56
+            },
+            "home_defense": {
+              "rank": 5,
+              "value": 1.56
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": 1.22
+            },
+            "away_defense": {
+              "rank": 15,
+              "value": 1.22
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 19,
+              "value": 38.6
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 46.7
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 45.5
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": 33.9
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 18,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 60.0
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 40.0
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 84.6
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 23,
+              "value": 53.6
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 71.1
+            },
+            "home_offense": {
+              "rank": 25,
+              "value": 51.4
+            },
+            "away_defense": {
+              "rank": 31,
+              "value": 78.9
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -3.59,
+          "away_offense_vs_home_defense": 2.3,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_SF_DAL",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-15T21:25:00+00:00",
+      "home": "DAL",
+      "away": "SF",
+      "projected_home_score": 22.1,
+      "projected_away_score": 26.3,
+      "projected_margin_home": -4.16,
+      "projected_total": 48.37,
+      "predicted_winner": "SF",
+      "injury_adjustments": {
+        "DAL": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "SF": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "DAL",
+          "games_used": 9,
+          "offense_epa_rating": 0.0451,
+          "defense_epa_rating": 0.0314,
+          "offense_rank": 7,
+          "defense_rank": 24,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 24.8,
+            "avg_points_against": 24.8,
+            "avg_margin": 0.0,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 16,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 13,
+                "points_against": 23,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 38,
+                "points_against": 21,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 30,
+                "points_against": 33,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 27,
+                "points_against": 23,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "SF",
+          "games_used": 8,
+          "offense_epa_rating": 0.0801,
+          "defense_epa_rating": -0.0595,
+          "offense_rank": 2,
+          "defense_rank": 6,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 27.4,
+            "avg_points_against": 21.2,
+            "avg_margin": 6.2,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 24,
+                "points_against": 14,
+                "result": "W"
+              },
+              {
+                "week": 5,
+                "points_for": 32,
+                "points_against": 29,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 23,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 20,
+                "points_against": 29,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 38,
+                "points_against": 17,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 3,
+              "value": 29.38
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 26.22
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 27.33
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 19.5
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 1,
+              "value": 6.48
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 5.93
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 5.56
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 4.87
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 1,
+              "value": 0.18
+            },
+            "home_defense": {
+              "rank": 30,
+              "value": 0.09
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 0.1
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": -0.07
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 3,
+              "value": 0.25
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 0.16
+            },
+            "home_offense": {
+              "rank": 8,
+              "value": 0.15
+            },
+            "away_defense": {
+              "rank": 14,
+              "value": -0.01
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 4,
+              "value": 0.1
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 7,
+              "value": 0.01
+            },
+            "away_defense": {
+              "rank": 1,
+              "value": -0.17
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 1,
+              "value": 1.0
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 1.89
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 1.56
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 1.88
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 16,
+              "value": 1.12
+            },
+            "home_defense": {
+              "rank": 27,
+              "value": 0.89
+            },
+            "home_offense": {
+              "rank": 10,
+              "value": 0.89
+            },
+            "away_defense": {
+              "rank": 9,
+              "value": 1.38
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 2,
+              "value": 52.3
+            },
+            "home_defense": {
+              "rank": 31,
+              "value": 50.0
+            },
+            "home_offense": {
+              "rank": 3,
+              "value": 47.0
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 40.8
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 6,
+              "value": 72.7
+            },
+            "home_defense": {
+              "rank": 10,
+              "value": 44.4
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 58.3
+            },
+            "away_defense": {
+              "rank": 12,
+              "value": 46.2
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 1,
+              "value": 85.2
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 68.6
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 67.6
+            },
+            "away_defense": {
+              "rank": 8,
+              "value": 48.0
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -0.65,
+          "away_offense_vs_home_defense": 5.02,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_PIT_CIN",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-16T01:20:00+00:00",
+      "home": "CIN",
+      "away": "PIT",
+      "projected_home_score": 25.9,
+      "projected_away_score": 23.4,
+      "projected_margin_home": 2.49,
+      "projected_total": 49.31,
+      "predicted_winner": "CIN",
+      "injury_adjustments": {
+        "CIN": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "PIT": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "CIN",
+          "games_used": 8,
+          "offense_epa_rating": 0.1047,
+          "defense_epa_rating": 0.0312,
+          "offense_rank": 1,
+          "defense_rank": 23,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 32.0,
+            "avg_points_against": 22.4,
+            "avg_margin": 9.6,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 17,
+                "points_against": 22,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 31,
+                "points_against": 24,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 35,
+                "points_against": 13,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 43,
+                "points_against": 36,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 34,
+                "points_against": 17,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "PIT",
+          "games_used": 8,
+          "offense_epa_rating": 0.0167,
+          "defense_epa_rating": -0.0347,
+          "offense_rank": 11,
+          "defense_rank": 10,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 25.4,
+            "avg_points_against": 16.8,
+            "avg_margin": 8.6,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 24,
+                "points_against": 27,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 34,
+                "points_against": 22,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 26,
+                "points_against": 19,
+                "result": "W"
+              },
+              {
+                "week": 7,
+                "points_for": 16,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 8,
+                "points_for": 27,
+                "points_against": 6,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 17,
+              "value": 22.5
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": 21.88
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 30.0
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": 18.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 17,
+              "value": 5.34
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 5.79
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 6.14
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 5.04
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 19,
+              "value": -0.03
+            },
+            "home_defense": {
+              "rank": 17,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 4,
+              "value": 0.14
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": -0.07
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 26,
+              "value": -0.12
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": -0.01
+            },
+            "home_offense": {
+              "rank": 2,
+              "value": 0.25
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": -0.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 2,
+              "value": 0.12
+            },
+            "home_defense": {
+              "rank": 29,
+              "value": 0.03
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": -0.06
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 23,
+              "value": 2.88
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 2.88
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 1.88
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": 3.25
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 11,
+              "value": 1.0
+            },
+            "home_defense": {
+              "rank": 6,
+              "value": 1.5
+            },
+            "home_offense": {
+              "rank": 17,
+              "value": 1.12
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 1.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 15,
+              "value": 39.2
+            },
+            "home_defense": {
+              "rank": 28,
+              "value": 48.5
+            },
+            "home_offense": {
+              "rank": 1,
+              "value": 55.7
+            },
+            "away_defense": {
+              "rank": 7,
+              "value": 35.2
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 20,
+              "value": 50.0
+            },
+            "home_defense": {
+              "rank": 1,
+              "value": 22.2
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 60.0
+            },
+            "away_defense": {
+              "rank": 22,
+              "value": 61.5
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 28,
+              "value": 48.0
+            },
+            "home_defense": {
+              "rank": 4,
+              "value": 41.4
+            },
+            "home_offense": {
+              "rank": 6,
+              "value": 65.6
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 37.5
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": 3.15,
+          "away_offense_vs_home_defense": 2.16,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
+    },
+    {
+      "game_id": "2026_10_LAC_BAL",
+      "season": 2026,
+      "week": 10,
+      "kickoff_utc": "2026-11-17T01:15:00+00:00",
+      "home": "BAL",
+      "away": "LAC",
+      "projected_home_score": 19.8,
+      "projected_away_score": 15.6,
+      "projected_margin_home": 4.13,
+      "projected_total": 35.4,
+      "predicted_winner": "BAL",
+      "injury_adjustments": {
+        "BAL": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "LAC": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "BAL",
+          "games_used": 9,
+          "offense_epa_rating": -0.0707,
+          "defense_epa_rating": 0.0112,
+          "offense_rank": 29,
+          "defense_rank": 19,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 1,
+            "avg_points_for": 14.6,
+            "avg_points_against": 28.0,
+            "avg_margin": -13.4,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 30,
+                "points_against": 23,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 10,
+                "points_against": 13,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 13,
+                "points_against": 35,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 10,
+                "points_against": 36,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 10,
+                "points_against": 33,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "LAC",
+          "games_used": 8,
+          "offense_epa_rating": -0.1359,
+          "defense_epa_rating": 0.0043,
+          "offense_rank": 32,
+          "defense_rank": 17,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 0,
+            "avg_points_for": 15.4,
+            "avg_points_against": 28.6,
+            "avg_margin": -13.2,
+            "results": [
+              {
+                "week": 4,
+                "points_for": 23,
+                "points_against": 30,
+                "result": "L"
+              },
+              {
+                "week": 5,
+                "points_for": 17,
+                "points_against": 23,
+                "result": "L"
+              },
+              {
+                "week": 6,
+                "points_for": 6,
+                "points_against": 22,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 9,
+                "points_against": 24,
+                "result": "L"
+              },
+              {
+                "week": 9,
+                "points_for": 22,
+                "points_against": 44,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 32,
+              "value": 15.12
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 26.22
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 21.0
+            },
+            "away_defense": {
+              "rank": 29,
+              "value": 27.38
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 30,
+              "value": 4.69
+            },
+            "home_defense": {
+              "rank": 17,
+              "value": 5.38
+            },
+            "home_offense": {
+              "rank": 11,
+              "value": 5.58
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 5.84
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 32,
+              "value": -0.24
+            },
+            "home_defense": {
+              "rank": 18,
+              "value": 0.02
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": -0.01
+            },
+            "away_defense": {
+              "rank": 16,
+              "value": 0.0
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 32,
+              "value": -0.27
+            },
+            "home_defense": {
+              "rank": 22,
+              "value": 0.09
+            },
+            "home_offense": {
+              "rank": 19,
+              "value": 0.01
+            },
+            "away_defense": {
+              "rank": 19,
+              "value": 0.06
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 30,
+              "value": -0.22
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": -0.08
+            },
+            "home_offense": {
+              "rank": 18,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 17,
+              "value": -0.05
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 31,
+              "value": 3.88
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 1.89
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 2.56
+            },
+            "away_defense": {
+              "rank": 30,
+              "value": 1.62
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 32,
+              "value": 2.25
+            },
+            "home_defense": {
+              "rank": 24,
+              "value": 1.0
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 1.11
+            },
+            "away_defense": {
+              "rank": 11,
+              "value": 1.38
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 29,
+              "value": 36.0
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": 39.0
+            },
+            "home_offense": {
+              "rank": 20,
+              "value": 38.5
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 35.1
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 30,
+              "value": 31.2
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 64.3
+            },
+            "home_offense": {
+              "rank": 32,
+              "value": 30.0
+            },
+            "away_defense": {
+              "rank": 26,
+              "value": 71.4
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 29,
+              "value": 47.4
+            },
+            "home_defense": {
+              "rank": 21,
+              "value": 63.6
+            },
+            "home_offense": {
+              "rank": 16,
+              "value": 59.3
+            },
+            "away_defense": {
+              "rank": 13,
+              "value": 53.1
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -2.99,
+          "away_offense_vs_home_defense": -5.61,
+          "home_field_points": 1.5
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "published_at_utc": "2026-11-10T02:17:46.622293+00:00"
     }
   ]
 }
