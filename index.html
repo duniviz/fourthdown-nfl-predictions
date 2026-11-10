@@ -686,7 +686,8 @@ document.addEventListener('change',event=>{
  if(!event.target.matches('.fd-relevance-select'))return;
  event.target.closest('.fd-merged-player-props')?.classList.toggle('fd-show-all-props',event.target.value==='all');
 });
-function fdOpenMatchup(g){
+async function fdOpenMatchup(g){
+ const verifiedStarterFeed=await fetch('data/verified-starters.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));
  const p=getProjection(g),away=canon(g.away.abbr),home=canon(g.home.abbr);
  const num=v=>v===null||v===undefined||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1);
  const analysis=p?.analysis||{};
@@ -709,9 +710,26 @@ function fdOpenMatchup(g){
  const injury='<div class="fd-modal-section" data-modal-game-card-injuries data-game-id="'+esc(g.id)+'"><h3>Injuries and model impact</h3><p class="fd-modal-muted">Loading ESPN game-card injury report…</p></div>';
  const started=isFinal||g.state==='in'||Date.now()>=Date.parse(g.date);
  const archivedPlayers=started?frozenPlayers(g):[];
- const rawPlayers=started?archivedPlayers:playerResearch.filter(x=>x.game_id===p?.game_id&&!unavailablePlayer(x));
+ const basePlayers=started?archivedPlayers:playerResearch.filter(x=>x.game_id===p?.game_id&&!unavailablePlayer(x));
+ const gameStarters=(Array.isArray(verifiedStarterFeed.starters)?verifiedStarterFeed.starters:[]).filter(x=>String(x.game_id)===String(p?.game_id||'')&&String(x.status||'').toLowerCase()==='confirmed');
+ const playerKey=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+ const starterMarked=basePlayers.map(x=>{
+   const position=String(x.position||'').toUpperCase(),team=canon(x.team);
+   const match=gameStarters.find(s=>canon(s.team)===team&&String(s.position||'').toUpperCase()===position&&playerKey(s.player)===playerKey(x.player));
+   if(match)return {...x,starter_status:'confirmed_starter',starter_source_url:match.source_url};
+   if(position==='QB'&&gameStarters.some(s=>canon(s.team)===team&&String(s.position||'').toUpperCase()==='QB'))return {...x,starter_status:'not_starting'};
+   return x;
+ });
+ const starterOnlyRows=gameStarters.filter(s=>!starterMarked.some(x=>canon(x.team)===canon(s.team)&&String(x.position||'').toUpperCase()===String(s.position||'').toUpperCase()&&playerKey(x.player)===playerKey(s.player))).map(s=>({
+   game_id:String(s.game_id),team:s.team,opponent:canon(s.team)===away?home:away,player:s.player,position:s.position,
+   market:String(s.position).toUpperCase()==='QB'?'Passing yards':String(s.position).toUpperCase()==='RB'?'Rushing yards':'Receiving yards',
+   stat_key:String(s.position).toUpperCase()==='QB'?'passing_yards':String(s.position).toUpperCase()==='RB'?'rushing_yards':'receiving_yards',
+   projection:null,dk_line:null,starter_status:'confirmed_starter',starter_source_url:s.source_url,verified_starter_only:true
+ }));
+ const rawPlayers=[...starterMarked,...starterOnlyRows];
  const confirmedQbTeams=new Set(rawPlayers.filter(x=>String(x.position||'').toUpperCase()==='QB'&&x.starter_status==='confirmed_starter').map(x=>canon(x.team)));
  const players=rawPlayers.filter(x=>!(String(x.position||'').toUpperCase()==='QB'&&x.starter_status==='not_starting'&&confirmedQbTeams.has(canon(x.team))));
+ const suppressedQbKeys=new Set(rawPlayers.filter(x=>String(x.position||'').toUpperCase()==='QB'&&x.starter_status==='not_starting'&&confirmedQbTeams.has(canon(x.team))).map(x=>canon(x.team)+'|'+playerKey(x.player)));
 
  const propGroup=x=>/pass/i.test(x.market)?'Passing':/rush/i.test(x.market)?'Rushing':/receiv|reception|catch/i.test(x.market)?'Receiving':'Other';
  const fdProjectionReliability=(x,sim)=>{
@@ -800,6 +818,7 @@ function fdOpenMatchup(g){
     .filter(x=>countLabels[x.stat_key]).map(x=>({...x,market:countLabels[x.stat_key]}));
  const countKeys=new Set();
  const extraCountCards=countRows.filter(x=>{
+  if(x.stat_key==='player_pass_completions'&&suppressedQbKeys.has(canon(x.team)+'|'+playerKey(x.player)))return false;
   const key=String(x.player).toLowerCase()+'|'+x.stat_key;
   if(countKeys.has(key))return false;
   countKeys.add(key);return true;
@@ -848,7 +867,8 @@ function fdOpenMatchup(g){
        (hasRoleShare?'<div><small>Projected team share</small><b>'+Math.round(Math.max(0,roleShare)*100)+'%</b></div>':'')+
        '</div>':'';
      const starterBadge=x.starter_status==='confirmed_starter'?'<small class="fd-starter-badge"><a href="'+esc(x.starter_source_url||'#')+'" target="_blank" rel="noopener noreferrer">Confirmed starter · source</a></small>':['QB','RB','WR'].includes(String(x.position||'').toUpperCase())?'<small class="fd-starter-unconfirmed">Starter not confirmed</small>':'';
-     return '<article class="fd-mobile-prop-card'+(relevantIds.has(String(x.player).toLowerCase()+'|'+x.stat_key+'|'+canon(x.team))?'':' fd-low-priority')+'" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small>'+starterBadge+'</span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+leanGraphic+'<details class="fd-prop-analysis"><summary>Trends &amp; analysis</summary><div class="fd-prop-analysis-body">'+(countLabels[x.stat_key]?'':hybridBars(x))+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+(countLabels[x.stat_key]?'<p class="fd-modal-muted">Count projection from the saved model. Compare with the DK line; this is not a calibrated hit probability.</p>':fdProjectionReliability(x,sim)+propExplanation(x,validLine?line:null,edge))+'</div></details></article>';
+     const starterOnlyNote=x.verified_starter_only?'<p class="fd-modal-muted">Confirmed starter. No pregame projection was saved for this player.</p>':'';
+     return '<article class="fd-mobile-prop-card'+(relevantIds.has(String(x.player).toLowerCase()+'|'+x.stat_key+'|'+canon(x.team))?'':' fd-low-priority')+'" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team||'')+'" data-fd-market="'+esc(x.stat_key)+'"><div class="fd-mobile-prop-name">'+hybridAvatar(x)+'<span><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'')+' · '+esc(x.market)+'</small>'+starterBadge+'</span></div><div class="fd-mobile-prop-numbers"><div><small>Projection</small><b>'+ (validProjection?num(x.projection):'—') +'</b></div><div><small>DK line</small><b>'+(validLine?esc(x.dk_line):'—')+'</b></div><div><small>Difference</small><b class="'+(edge!==null&&edge>0?'fd-positive':edge!==null&&edge<0?'fd-negative':'')+'">'+(edge===null?'—':(edge>0?'+':'')+num(edge))+'</b></div></div>'+leanGraphic+starterOnlyNote+'<details class="fd-prop-analysis"><summary>Trends &amp; analysis</summary><div class="fd-prop-analysis-body">'+(countLabels[x.stat_key]?'':hybridBars(x))+workloadCards+'<div class="fd-mobile-prop-bottom"><span>Last 5 avg: '+(x.last_5_avg==null?'—':num(x.last_5_avg))+'</span><strong>'+direction+'</strong></div>'+simNote+(countLabels[x.stat_key]?'<p class="fd-modal-muted">Count projection from the saved model. Compare with the DK line; this is not a calibrated hit probability.</p>':fdProjectionReliability(x,sim)+propExplanation(x,validLine?line:null,edge))+'</div></details></article>';
    }).join('')+'</div>';
  }).join('');
  // Expose only this game's stored forecast and verified quote data to the live stats display.
