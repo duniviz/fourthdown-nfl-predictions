@@ -14,13 +14,14 @@ from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
 from live.pregame_capture_guard import due_refresh, slates
 from scripts.capture_pregame_snapshots import collect, STATS
+from tools.projection_change_tracker import main as build_projection_changes
 
 DATA = Path("data")
 CENTRAL = ZoneInfo("America/Chicago")
 REFRESH_CATEGORIES = ("game_odds", "player_props")
 FILES = ("dk-odds","dk-game-odds","dk-opening-odds","dk-game-line-history","dk-line-history",
          "dk-pregame-lines","dk-refresh-ledger","dk-slate-refreshes","sportsgameodds-usage",
-         "game-pregame-observations","game-official-pregame-locks","pregame-snapshots","player-history")
+         "game-pregame-observations","game-official-pregame-locks","pregame-snapshots","player-history","projection-changes")
 
 def read(name, default=None):
     path=DATA/(name+".json")
@@ -163,6 +164,7 @@ def checkpoint(games):
         if rows!=stored["rows"]:save("dk-pregame-lines",{**stored,"rows":rows})
         observations.main()
         locks.main()
+    build_projection_changes(DATA,stamp)
     publish("Save pregame scoring, player projections and verified DK observations")
 
 def next_wake(games,done,stamp):
