@@ -1,0 +1,39 @@
+name: Daily DraftKings player prop refresh
+on:
+  schedule:
+    # 13:20 UTC is 7:20 AM Central during standard time and 8:20 AM during daylight time.
+    - cron: '20 13 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  # Serialize with the pregame writer because both update the DK quote files.
+  group: pregame-pipeline
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh DraftKings player props
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: python -m tools.refresh_parlayapi_odds --props-only
+      - name: Publish refreshed DK player quotes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/dk-odds.json data/dk-opening-odds.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh daily DraftKings player prop lines"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            echo "No DK prop data changed; saved quotes remain intact."
+          fi
