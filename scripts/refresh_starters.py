@@ -91,7 +91,8 @@ def collect_depth_rows(payload):
                 if key == "athletes":
                     continue
                 if isinstance(value, (dict, list)):
-                    walk(value, pos)
+                    child_position = position_code({"name": key}, pos)
+                    walk(value, child_position)
         elif isinstance(node, list):
             for value in node:
                 walk(value, current)
