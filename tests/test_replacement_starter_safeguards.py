@@ -18,3 +18,21 @@ class ReplacementSafeguardTests(unittest.TestCase):
         self.assertNotIn('qb_starter_limited_history',[x['code'] for x in audit([p])['flags']])
 
 if __name__=='__main__': unittest.main()
+
+class FreezeStarterFeedTests(unittest.TestCase):
+    def test_frozen_game_rows_remain_unchanged(self):
+        import json
+        from datetime import datetime, timedelta, timezone
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        from scripts import refresh_starters
+        with TemporaryDirectory() as tmp:
+            feed=Path(tmp)/'starters.json'; forecast=Path(tmp)/'forecast.json'
+            row={'game_id':'game','team':'A','position':'QB','status':'projected','player':'Old QB'}
+            feed.write_text(json.dumps({'starters':[row]}))
+            forecast.write_text(json.dumps({'season':2026,'week':1,'games':[{'game_id':'game','home':'A','away':'B','kickoff_utc':(datetime.now(timezone.utc)+timedelta(minutes=10)).isoformat()}]}))
+            with patch.object(refresh_starters,'FEED',feed), patch.object(refresh_starters,'FORECAST',forecast), patch.object(refresh_starters,'fetch_espn_teams',return_value={'A':'1','B':'2'}), patch.object(refresh_starters,'fetch_depth_chart') as fetch:
+                refresh_starters.main()
+                fetch.assert_not_called()
+            self.assertEqual(json.loads(feed.read_text())['starters'],[row])
