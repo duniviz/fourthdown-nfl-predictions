@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const data={schema_version:1,players:{'G|1|passing_yards':[{at:'2026-11-09T20:00:00Z',value:200},{at:'2026-11-10T20:00:00Z',value:220}]},games:{G:[{at:'2026-11-09T20:00:00Z',home:20,away:17},{at:'2026-11-10T20:00:00Z',home:21,away:18}]}};
+const context={window:{},fetch:async()=>({ok:true,json:async()=>data}),Date,Number,String,Math};vm.runInNewContext(fs.readFileSync('assets/projection-changes.js','utf8'),context);
+(async()=>{await context.window.FDProjectionChanges.ready;const d=context.window.FDProjectionChanges;
+ assert.match(d.player({game_id:'G',player_id:'1',stat_key:'passing_yards',projection:220}),/200.0 → 220.0/);
+ assert.equal(d.player({game_id:'G',player_id:'1',stat_key:'passing_yards',projection:221}),'');
+ assert.equal(d.player({game_id:'G',player_id:'2',stat_key:'passing_yards',projection:220}),'');
+ assert.match(d.game({game_id:'G',home:'BUF',away:'MIN',projected_home_score:21,projected_away_score:18}),/MIN 17.0 · BUF 20.0 → MIN 18.0 · BUF 21.0/);
+ assert.match(d.player({game_id:'G',player_id:'1',stat_key:'passing_yards',projection:220}),/reason for a change was not recorded/);
+ console.log('Projection change display passed');
+})().catch(e=>{console.error(e);process.exit(1)});
