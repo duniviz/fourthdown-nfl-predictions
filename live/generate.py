@@ -264,7 +264,7 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
                         "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
                         "matchup_metrics":matchup_metrics(g["away_team"],g["home_team"]),
                         "estimated_home_advantage_points":1.5,
-                        "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5},
+                        "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5,"home_qb_adjustment_points":qb_adjustments[g["home_team"]]["points"],"away_qb_adjustment_points":qb_adjustments[g["away_team"]]["points"]},
                         "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."}})
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
     return {"model":"FOURTHDOWN v2","generated_at_utc":now.isoformat(),
