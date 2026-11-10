@@ -37,6 +37,15 @@ jobs:
                   continue
               payload, url = fetch_depth_chart(teams[team])
               rows = collect_depth_rows(payload)
+              def inspect(node):
+                  if isinstance(node, dict):
+                      if isinstance(node.get('athletes'), list):
+                          print('POSITION NODE:', {k:v for k,v in node.items() if k != 'athletes' and not isinstance(v,(dict,list))})
+                      for value in node.values():
+                          if isinstance(value,(dict,list)): inspect(value)
+                  elif isinstance(node,list):
+                      for value in node: inspect(value)
+              inspect(payload)
               print(team, url, {pos: len(names) for pos, names in rows.items()})
               if rows['QB'] and any(rows[p] for p in ('RB','WR','TE')):
                   successes.append(team)
