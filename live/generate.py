@@ -1,10 +1,12 @@
 """Produce upcoming-game FOURTHDOWN v2 projections from current-season nflverse data."""
 import json
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from collections import defaultdict
 from live.injury_adjust import estimate
+from live.qb_starter_adjust import estimate_starter_adjustment, load_qb_starters
 
 def number(x):
     try:
@@ -114,7 +116,7 @@ def build_team_matchup_metrics(schedules, plays, season, target_week):
 # https://www.nfl.com/schedules/2026/by-week/week-9
 VERIFIED_KICKOFF_OVERRIDES = {("2026_09_LV_SF"): "2026-11-08T16:25:00"}
 
-def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None):
+def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None, qb_starters=None):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None: raise ValueError("now must be timezone-aware")
     season=now.year if now.month>=3 else now.year-1
@@ -223,6 +225,7 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
     results=[]
     injury_reports=injury_reports or {}
     player_weekly=player_weekly or []
+    qb_starters=qb_starters or {}
     for dt,g in target_games:
         ho,hd,hn=rating(g["home_team"])
         ao,ad,an=rating(g["away_team"])
@@ -239,8 +242,13 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
                 adjustments[team]={"points":0.0,"status":"injury_feed_unavailable","players":[]}
             else:
                 adjustments[team]=estimate(team,report.get("players",[]),player_weekly,games,target_week)
-        home_points=max(0,home_points+adjustments[g["home_team"]]["points"])
-        away_points=max(0,away_points+adjustments[g["away_team"]]["points"])
+        qb_adjustments={}
+        for team in (g["home_team"],g["away_team"]):
+            starter=qb_starters.get((str(g["game_id"]),team))
+            qb_adjustments[team]=estimate_starter_adjustment(
+                team,starter,player_weekly,games,target_week,season)
+        home_points=max(0,home_points+adjustments[g["home_team"]]["points"]+qb_adjustments[g["home_team"]]["points"])
+        away_points=max(0,away_points+adjustments[g["away_team"]]["points"]+qb_adjustments[g["away_team"]]["points"])
         margin=home_points-away_points
         total=home_points+away_points
         results.append({"game_id":str(g["game_id"]),"season":season,"week":target_week,
@@ -251,16 +259,17 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
             "projected_margin_home":round(margin,2),"projected_total":round(total,2),
             "predicted_winner":g["home_team"] if margin>0 else g["away_team"],
             "injury_adjustments":adjustments,
+            "qb_starter_adjustments":qb_adjustments,
             "analysis":{"home":{"team":g["home_team"],"games_used":hn,"offense_epa_rating":round(ho,4),"defense_epa_rating":round(hd,4),"offense_rank":offense_rank.get(g["home_team"]),"defense_rank":defense_rank.get(g["home_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["home_team"])},
                         "away":{"team":g["away_team"],"games_used":an,"offense_epa_rating":round(ao,4),"defense_epa_rating":round(ad,4),"offense_rank":offense_rank.get(g["away_team"]),"defense_rank":defense_rank.get(g["away_team"]),"ranked_teams":len(eligible),"recent_form":team_form(g["away_team"])},
                         "matchup_metrics":matchup_metrics(g["away_team"],g["home_team"]),
                         "estimated_home_advantage_points":1.5,
-                        "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5},
+                        "scoring_edge_components":{"home_offense_vs_away_defense":round(45*(ho+ad),2),"away_offense_vs_home_defense":round(45*(ao+hd),2),"home_field_points":1.5,"home_qb_adjustment_points":qb_adjustments[g["home_team"]]["points"],"away_qb_adjustment_points":qb_adjustments[g["away_team"]]["points"]},
                         "method":"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."}})
     if not results: raise ValueError("Insufficient completed games for v2; do not publish")
     return {"model":"FOURTHDOWN v2","generated_at_utc":now.isoformat(),
             "season":season,"week":target_week,"status":"research_uncalibrated",
-            "note":"Pregame EPA projections with experimental QB injury splits when data supports them; other injuries and weather not numerically adjusted.",
+            "note":"Pregame EPA projections with capped, low-confidence incoming-QB adjustments when recent player data supports them; other injuries and weather not numerically adjusted.",
             "games":results}
 
 def main():
@@ -291,21 +300,25 @@ def main():
                 injury_reports=feed.get("teams",{})
         except (ValueError,KeyError,TypeError):
             pass
-    weekly=nfl.load_player_stats([season],summary_level="week").to_dicts() if injury_reports else []
-    data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows)
+    weekly=nfl.load_player_stats([season],summary_level="week").to_dicts()
+    qb_starters=load_qb_starters(season)
+    data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows,qb_starters)
     dest=Path("data/live-v2.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
-    # Keep immutable first-published predictions for transparent future grading.
-    archive_path=Path("data/v2-history.json")
-    archive={"model":"FOURTHDOWN v2","games":[]}
-    if archive_path.exists():
-        archive=json.loads(archive_path.read_text(encoding="utf-8"))
-    existing={str(g.get("game_id")) for g in archive.get("games",[])}
-    for game in data["games"]:
-        if game["game_id"] not in existing:
-            archive["games"].append({**game,"published_at_utc":data["generated_at_utc"]})
-            existing.add(game["game_id"])
-    archive_path.write_text(json.dumps(archive,indent=2)+"\n",encoding="utf-8")
+    # The first workflow pass only discovers this week's slate for the
+    # starter refresh. Archive the second, starter-aware pass as the forecast.
+    if os.environ.get("FOURTHDOWN_SKIP_V2_ARCHIVE") != "1":
+        # Keep immutable first-published predictions for transparent future grading.
+        archive_path=Path("data/v2-history.json")
+        archive={"model":"FOURTHDOWN v2","games":[]}
+        if archive_path.exists():
+            archive=json.loads(archive_path.read_text(encoding="utf-8"))
+        existing={str(g.get("game_id")) for g in archive.get("games",[])}
+        for game in data["games"]:
+            if game["game_id"] not in existing:
+                archive["games"].append({**game,"published_at_utc":data["generated_at_utc"]})
+                existing.add(game["game_id"])
+        archive_path.write_text(json.dumps(archive,indent=2)+"\n",encoding="utf-8")
     dest.write_text(json.dumps(data,indent=2)+"\n",encoding="utf-8")
     print(f"Generated {len(data['games'])} v2 forecasts for {season} week {data['week']}")
 

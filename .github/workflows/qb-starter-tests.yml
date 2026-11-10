@@ -7,10 +7,21 @@ on:
       - 'tests/test_injury_adjust.py'
       - 'tools/build_game_context.py'
       - 'tests/test_qb_game_context.py'
+      - 'live/qb_starter_adjust.py'
+      - 'tests/test_qb_starter_adjust.py'
       - '.github/workflows/qb-starter-tests.yml'
   push:
     branches:
+      - main
       - 'feature/qb-starter-verification-20261105'
+    paths:
+      - 'live/injury_adjust.py'
+      - 'tests/test_injury_adjust.py'
+      - 'tools/build_game_context.py'
+      - 'tests/test_qb_game_context.py'
+      - 'live/qb_starter_adjust.py'
+      - 'tests/test_qb_starter_adjust.py'
+      - '.github/workflows/qb-starter-tests.yml'
   workflow_dispatch:
 
 permissions:
@@ -28,3 +39,4 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_injury_adjust.py' -v
           python -m unittest discover -s tests -p 'test_qb_game_context.py' -v
+          python -m unittest discover -s tests -p 'test_qb_starter_adjust.py' -v
