@@ -21,6 +21,7 @@ const assert=require('node:assert/strict');
   assert.match(await page.locator('#scoreboard-cards').innerText(),/LOCKED/);
   assert.equal(await page.locator('#scoreboard-cards .fd-team-game').count(),1);
   await page.locator('#fd-game-spotlight button').click();
+  await page.waitForFunction(()=>document.querySelector('#fd-modal.open h2')?.textContent.includes('WAS @ NYG'));
   assert.equal(await page.locator('#fd-modal').evaluate(e=>e.classList.contains('open')),true);
   assert.match(await page.locator('#fd-modal h2').innerText(),/WAS @ NYG/);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`overflow ${width}`);
