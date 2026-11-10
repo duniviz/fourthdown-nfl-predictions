@@ -1,0 +1,36 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
+ for(const width of [390,1440]){
+  const page=await browser.newPage({viewport:{width,height:900}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.clock.install({time:new Date('2026-11-13T01:01:00Z')});
+  const kickoff='2026-11-13T01:15:00Z',game='2026_10_WAS_NYG';
+  await page.route('https://site.api.espn.com/**',r=>r.fulfill({json:{events:[{id:'game1',date:kickoff,competitions:[{competitors:[{homeAway:'home',team:{abbreviation:'NYG'},score:'0'},{homeAway:'away',team:{abbreviation:'WAS'},score:'0'}],status:{type:{state:'pre'}}}]}]}}));
+  await page.route('**/data/**',r=>{const u=r.request().url();let d={};
+   if(u.includes('live-v2.json'))d={season:2026,week:10,generated_at_utc:'2026-11-13T00:30:00Z',games:[{game_id:game,home:'NYG',away:'WAS',kickoff_utc:kickoff,projected_home_score:22,projected_away_score:20,projected_total:42,predicted_winner:'NYG'}]};
+   if(u.includes('game-official-pregame-locks'))d={records:[{game_id:game,home:'NYG',away:'WAS',kickoff_utc:kickoff,forecast_at_utc:'2026-11-13T00:30:00Z',captured_at_utc:'2026-11-13T01:00:01Z',lock_status:'last_available'}]};
+   if(u.includes('projection-changes.json'))d={schema_version:1,players:{},games:{[game]:[{at:'2026-11-12T00:30:00Z',home:21,away:20},{at:'2026-11-13T00:30:00Z',home:22,away:20}]}};
+   if(u.includes('player-ml-runtime'))d={decisions:{passing_yards:{active:true,paired:120,weeks:5,baseline_mae:60,candidate_mae:55}}};
+   if(u.includes('game-ml-runtime'))d={decisions:{game_total:{active:false,paired:110,weeks:6,baseline_mae:11,candidate_mae:12}}};
+   return r.fulfill({json:d});});
+  await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.querySelector('#fd-game-spotlight:not([hidden])'));
+  assert.match(await page.locator('#fd-game-spotlight').innerText(),/WAS at NYG/);
+  assert.match(await page.locator('#fd-game-spotlight').innerText(),/20.0 – 22.0/);
+  assert.match(await page.locator('#scoreboard-cards').innerText(),/LOCKED/);
+  assert.equal(await page.locator('#scoreboard-cards .fd-team-game').count(),1);
+  await page.locator('#fd-game-spotlight button').click();
+  await page.waitForFunction(()=>document.querySelector('#fd-modal.open h2')?.textContent.includes('WAS @ NYG'));
+  assert.equal(await page.locator('#fd-modal').evaluate(e=>e.classList.contains('open')),true);
+  assert.match(await page.locator('#fd-modal h2').innerText(),/WAS @ NYG/);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`overflow ${width}`);
+  await page.goto('http://127.0.0.1:8123/model-lab.html',{waitUntil:'domcontentloaded'});
+  await page.waitForSelector('#player-ml-live-status .fd-ml-compare');
+  assert.match(await page.locator('#player-ml-live-status').innerText(),/60.00 yards/);
+  assert.match(await page.locator('#player-ml-live-status').innerText(),/55.00 yards/);
+  assert.equal(await page.locator('#game-ml-live-status .fd-ml-bar-row.is-worse').count(),1);
+  assert.deepEqual(errors,[]);await page.close();console.log(`Game-day visuals ${width}px passed`);
+ }
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

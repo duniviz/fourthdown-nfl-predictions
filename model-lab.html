@@ -17,7 +17,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 .fd-lab-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 22px}.fd-lab-guide article{background:#122338;border:1px solid #2b465b;border-radius:15px;padding:18px}.fd-lab-guide h2{font-size:18px;margin:7px 0}.fd-lab-guide p{margin:8px 0;color:#c0d4df}.fd-lab-tag{display:inline-block;border-radius:7px;padding:3px 8px;background:#203a4b;color:#aee9f0;font-size:11px;font-weight:850;letter-spacing:.04em}.fd-lab-tag.ml{background:#263d58;color:#8acaff}.fd-lab-tag.formula{background:#3a3427;color:#f8d994}.fd-lab-tag.verified{background:#173e37;color:#83e9c9}.fd-lab-help{font-size:13px;color:#a9bfcc}.fd-lab-section{scroll-margin-top:20px}.fd-lab-links{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 20px}.fd-lab-links a{border:1px solid #45677b;border-radius:9px;padding:8px 12px;text-decoration:none;background:#122338}.fd-lab-simple{padding:13px 16px;background:#102a35;border-left:3px solid #46dfc1;border-radius:8px;margin:16px 0}.fd-lab-sub{color:#c0d4df;font-size:14px}.fd-lab-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}.fd-lab-legend>div{border:1px solid #2b465b;padding:12px;border-radius:10px}.fd-lab-legend strong{display:block;color:#fff}@media(max-width:760px){.fd-lab-guide,.fd-lab-legend{grid-template-columns:1fr}.fd-lab-links a{flex:1 1 auto;text-align:center}.fd-lab-guide article{padding:15px}}
 </style><link rel="stylesheet" href="assets/fd-visual-polish.css"><link rel="stylesheet" href="assets/fd-lab-scoreboard.css?v=1"><style id="clear-lab-layout">
 .clear-hero{padding:35px 0 24px}.clear-hero h1{margin:6px 0;font-size:clamp(36px,6vw,56px)}.clear-lead{color:#b9cfdb;font-size:17px;max-width:650px;margin:4px 0 12px}.clear-link{font-weight:700;text-decoration:none}.clear-intro{display:flex;gap:16px;align-items:flex-start;background:#102e36;border:1px solid #2a5960;border-radius:14px;padding:16px 20px;color:#d4e7e8}.clear-intro strong{color:#baff25;white-space:nowrap}.clear-section-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:30px 0 12px}.clear-section-heading h2{margin:3px 0}.clear-section-heading p{color:#a4b9c8;margin:0}.lab-clear>.fd-lab-section{margin:12px 0}.lab-clear #player-ml-live-status,.lab-clear #game-ml-live-status{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.lab-clear .clear-updated{grid-column:1/-1;color:#a4b9c8;font-size:12px;background:none!important;border:0!important;padding:0!important}.lab-clear #player-ml-live-status p:not(.clear-updated),.lab-clear #game-ml-live-status p:not(.clear-updated){margin:0;padding:13px;background:#0c1d2e;border:1px solid #29465a;border-radius:10px;line-height:1.55}.lab-clear #player-ml-live-status strong,.lab-clear #game-ml-live-status strong{color:#c8f07d}.clear-advanced{margin-top:20px}.clear-advanced>summary{font-size:16px}@media(max-width:650px){.clear-hero{padding:25px 0 18px}.clear-intro{display:block;padding:15px}.clear-intro strong{display:block;margin-bottom:4px}.clear-section-heading{display:block}.clear-section-heading p{font-size:13px}.lab-clear #player-ml-live-status,.lab-clear #game-ml-live-status{grid-template-columns:1fr}}
-</style></head>
+</style><link rel="stylesheet" href="assets/fd-gameday-visuals.css?v=1"></head>
 <body><header class="top"><div class="wrap nav"><a class="brand" href="index.html">FOURTH<b>DOWN</b></a><nav class="links" aria-label="Site navigation"><a href="index.html">Games</a><a href="bets.html">Player Prop Desk</a><a href="model-lab.html" class="active" aria-current="page">Model Lab</a><a href="history.html">History &amp; Accuracy</a></nav></div></header>
 <main class="wrap lab-clear"><header class="clear-hero"><span class="eyebrow">FOURTHDOWN · WEEKLY LEARNING</span><h1>Model Lab</h1><p class="clear-lead">See what’s live, what’s being tested, and whether the changes are helping.</p><a class="clear-link" href="history.html">See actual game results →</a></header>
 <div class="clear-intro"><strong>How it works</strong><span>Models learn from completed games, then face the current forecast on the same saved pregame matchups. A sustained improvement can earn a switch; weaker results trigger a rollback.</span></div>
@@ -81,6 +81,11 @@ function renderLabInventory(results,readiness){
  (reasons.length?'<ul>'+reasons.map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul>':'<p>No gate explanations published.</p>');
 }
 async function read(path){try{const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)return null;return await r.json();}catch{return null;}}
+function fdLabBars(d,unit){
+ if(d.baseline_mae==null||d.candidate_mae==null||!Number.isFinite(Number(d.baseline_mae))||!Number.isFinite(Number(d.candidate_mae)))return '';
+ const b=Number(d.baseline_mae),c=Number(d.candidate_mae);if(b<0||c<0)return '';const max=Math.max(b,c,0.01);
+ return '<div class="fd-ml-compare" aria-label="Average forecast error; lower is better"><div class="fd-ml-bar-row"><span>Existing</span><div class="fd-ml-track"><i style="width:'+(100*b/max).toFixed(1)+'%"></i></div><b>'+fmt(b)+' '+unit+'</b></div><div class="fd-ml-bar-row is-candidate'+(c>b?' is-worse':'')+'"><span>ML test</span><div class="fd-ml-track"><i style="width:'+(100*c/max).toFixed(1)+'%"></i></div><b>'+fmt(c)+' '+unit+'</b></div></div>';
+}
 function renderPlayerMLLive(runtime){
  const el=document.getElementById('player-ml-live-status');
  if(!runtime?.decisions){el.textContent='Waiting for the first weekly training run.';return;}
@@ -91,7 +96,7 @@ function renderPlayerMLLive(runtime){
  const n=Number.isFinite(Number(d.paired))?Number(d.paired):0;
  const weeks=Number.isFinite(Number(d.weeks))?Number(d.weeks):0;
  const scores=d.baseline_mae==null||d.candidate_mae==null?'Not enough matched results to say what works yet':'Average error: existing '+fmt(d.baseline_mae)+' / ML '+fmt(d.candidate_mae)+' yards (lower is better)';
- return '<p><strong>'+safe(label)+': '+safe(state)+'</strong> · '+n+' matched forecasts across '+weeks+' weeks<br><span class="muted">'+safe(scores)+'</span></p>';}).join('');
+ return '<article class="fd-lab-market"><strong>'+safe(label)+': '+safe(state)+'</strong> · '+n+' matched forecasts across '+weeks+' weeks<br><span class="muted">'+safe(scores)+'</span>'+fdLabBars(d,'yards')+'</article>';}).join('');
 }
 function renderGameMLLive(runtime){
  const el=document.getElementById('game-ml-live-status');
@@ -103,7 +108,7 @@ function renderGameMLLive(runtime){
  const n=Number.isFinite(Number(d.paired))?Number(d.paired):0;
  const weeks=Number.isFinite(Number(d.weeks))?Number(d.weeks):0;
  const scores=d.baseline_mae==null||d.candidate_mae==null?'Not enough matched results to say what works yet':'Average score error: existing '+fmt(d.baseline_mae)+' / ML '+fmt(d.candidate_mae)+' points (lower is better)';
- return '<p><strong>'+safe(label)+': '+safe(state)+'</strong> · '+n+' matched games across '+weeks+' weeks<br><span class="muted">'+safe(scores)+'</span></p>';}).join('');
+ return '<article class="fd-lab-market"><strong>'+safe(label)+': '+safe(state)+'</strong> · '+n+' matched games across '+weeks+' weeks<br><span class="muted">'+safe(scores)+'</span>'+fdLabBars(d,'points')+'</article>';}).join('');
 }
 function renderWeeklyML(ml){
  const date=document.getElementById('weekly-ml-updated'),overview=document.getElementById('weekly-ml-overview'),out=document.getElementById('weekly-ml-recommendations');
