@@ -4,6 +4,7 @@ const assert=require('node:assert/strict');
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'/usr/bin/google-chrome',args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:390,height:844}});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.clock.install({time:new Date('2099-09-08T12:00:00Z')});
  await page.route('**/data/**',route=>{
   const url=route.request().url();let data={};
   if(url.includes('game-official-pregame-locks'))data={records:[{game_id:'2026_09_BUF_MIN',home:'MIN',away:'BUF',week:9,forecast_at_utc:'2026-11-01T00:00:00Z',lock_cutoff_utc:'2026-11-02T00:00:00Z',kickoff_utc:'2026-11-02T00:15:00Z',projected_home_score:20,projected_away_score:23}]};

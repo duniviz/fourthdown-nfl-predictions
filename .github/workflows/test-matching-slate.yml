@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'bets.html'
+      - 'tests/test_schedule_window.js'
       - 'schedule-window.js'
       - 'tests/test_matching_slate.js'
       - '.github/workflows/test-matching-slate.yml'
@@ -19,4 +21,5 @@ jobs:
       - run: npm install --no-save playwright
       - run: |
           python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-ui-server.log 2>&1 &
+          node tests/test_schedule_window.js
           node tests/test_matching_slate.js
