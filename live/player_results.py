@@ -1,10 +1,34 @@
 """Grade archived pregame player yardage forecasts against completed NFL games."""
 import json
 import time
-from datetime import datetime,timezone
+from datetime import datetime,timedelta,timezone
 from pathlib import Path
 import nflreadpy as nfl
 from live.player_research import METRICS
+
+def select_frozen_ml_pairs(observations):
+    """Select the latest verified pair saved no later than 15 minutes pregame."""
+    def parsed(value):
+        try:
+            t=datetime.fromisoformat(str(value).replace("Z","+00:00"))
+            return t.astimezone(timezone.utc) if t.tzinfo else None
+        except (ValueError,TypeError): return None
+    found={}
+    for row in observations:
+        if not isinstance(row,dict) or not isinstance(row.get("player_ml_shadow"),dict): continue
+        key=(str(row.get("game_id")),str(row.get("player_id")),str(row.get("stat_key")))
+        if not all(key) or "None" in key: continue
+        kickoff=parsed(row.get("kickoff_utc") or row.get("kickoff"))
+        forecast=parsed(row.get("forecast_captured_at_utc") or row.get("captured_at"))
+        saved=parsed(row.get("saved_at_utc"))
+        if not kickoff or not forecast or not saved: continue
+        cutoff=kickoff-timedelta(minutes=15)
+        if not forecast<=saved<=cutoff: continue
+        when=(saved,forecast)
+        if key not in found or when>found[key][0]:
+            found[key]=(when,row["player_ml_shadow"])
+    return found
+
 
 def main():
     archive=Path("data/player-history.json")
@@ -20,6 +44,7 @@ def main():
             return None
 
     latest={}
+    paired_latest=select_frozen_ml_pairs(observations)
     for row in observations:
         kickoff=parsed(row.get("kickoff_utc") or row.get("kickoff"))
         forecast=parsed(row.get("forecast_captured_at_utc") or row.get("captured_at"))
@@ -71,6 +96,8 @@ def main():
             "team":x.get("team"),"market":x.get("market"),"stat_key":key[2],
             "projection":proj,"actual":observed,"error":round(observed-proj,1),
             "dk_line":float(line) if line is not None and str(line).strip() and float(line)>0 else None,"recommended_side":None,"recommendation_result":"not_available"}
+        if key in paired_latest:
+            result["player_ml_pair"]=paired_latest[key][1]
         trial=x.get("qb_replacement_trial")
         if isinstance(trial,dict) and isinstance(trial.get("original_projection"),(int,float)):
             result["qb_replacement_trial"]={**trial,
