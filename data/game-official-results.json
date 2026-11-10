@@ -1,28 +1,28 @@
 {
-  "generated_at_utc": "2026-11-10T03:18:02.776052+00:00",
+  "generated_at_utc": "2026-11-10T13:08:44.400558+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 12,
+  "graded_games": 13,
   "summary": {
     "winner": {
-      "hits": 11,
+      "hits": 12,
       "misses": 1,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 91.7
+      "hit_pct": 92.3
     },
     "ats": {
       "hits": 5,
-      "misses": 7,
-      "pushes": 0,
-      "ungraded": 0,
-      "hit_pct": 41.7
-    },
-    "ou": {
-      "hits": 4,
       "misses": 8,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 33.3
+      "hit_pct": 38.5
+    },
+    "ou": {
+      "hits": 5,
+      "misses": 8,
+      "pushes": 0,
+      "ungraded": 0,
+      "hit_pct": 38.5
     }
   },
   "rows": [
@@ -277,6 +277,27 @@
       "winner_result": "hit",
       "ats_result": "hit",
       "ou_result": "miss"
+    },
+    {
+      "game_id": "2026_09_BUF_MIN",
+      "season": 2026,
+      "week": 9,
+      "home": "MIN",
+      "away": "BUF",
+      "kickoff_utc": "2026-11-10T01:15:00+00:00",
+      "lock_status": "last_available",
+      "lock_cutoff_utc": "2026-11-10T01:00:00+00:00",
+      "forecast_at_utc": "2026-11-08T18:21:09.748522+00:00",
+      "dk_at_utc": "2026-11-10T00:45:08.417333+00:00",
+      "home_score": 6.0,
+      "away_score": 23.0,
+      "projected_margin_home": -1.43,
+      "projected_total": 40.35,
+      "dk_home_spread": 3.5,
+      "dk_total": 45.5,
+      "winner_result": "hit",
+      "ats_result": "miss",
+      "ou_result": "hit"
     }
   ]
 }

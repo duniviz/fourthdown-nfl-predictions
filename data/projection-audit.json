@@ -1,10 +1,10 @@
 {
-  "generated_at_utc": "2026-11-10T02:19:22.431861+00:00",
-  "players_checked": 2089,
+  "generated_at_utc": "2026-11-10T13:08:55.094577+00:00",
+  "players_checked": 2113,
   "summary": {
     "error": 0,
-    "warning": 5,
-    "info": 170
+    "warning": 6,
+    "info": 175
   },
   "flags": [
     {
@@ -850,6 +850,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Carson Wentz",
+      "stat_key": "interceptions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Kyler Murray",
       "stat_key": "interceptions",
       "game_id": "2026_10_MIN_GB",
@@ -866,7 +874,23 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Carson Wentz",
+      "stat_key": "passing_tds",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Kyler Murray",
+      "stat_key": "attempts",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
+      "player": "Carson Wentz",
       "stat_key": "attempts",
       "game_id": "2026_10_MIN_GB",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
@@ -882,7 +906,23 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Carson Wentz",
+      "stat_key": "completions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Kyler Murray",
+      "stat_key": "passing_yards",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
+      "player": "Carson Wentz",
       "stat_key": "passing_yards",
       "game_id": "2026_10_MIN_GB",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
@@ -1390,6 +1430,14 @@
       "stat_key": "passing_yards",
       "game_id": "2026_10_LA_ARI",
       "reason": "ARI: 2 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_qb_starter_scenarios",
+      "player": "Kyler Murray, Carson Wentz",
+      "stat_key": "passing_yards",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "MIN: 2 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
     },
     {
       "severity": "warning",
