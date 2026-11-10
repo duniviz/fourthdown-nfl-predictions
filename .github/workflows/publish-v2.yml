@@ -81,7 +81,7 @@ jobs:
         run: python -m live.injuries
       - name: Generate current-season v2 forecasts
         if: steps.schedule_guard.outputs.run == 'true'
-        run: python -m live.generate
+        run: FOURTHDOWN_SKIP_V2_ARCHIVE=1 python -m live.generate
       - name: Refresh QB, RB, WR, and TE depth-chart starters
         if: steps.schedule_guard.outputs.run == 'true'
         run: python scripts/refresh_starters.py
