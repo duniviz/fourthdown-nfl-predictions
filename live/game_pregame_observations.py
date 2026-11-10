@@ -78,7 +78,7 @@ def collect(forecasts, odds, existing, now):
             "dk_total_observed_at_utc": quote.get("total_observed_at_utc") or quote.get("observed_at_utc") or observed.isoformat(),
             "source": quote.get("source_provider") or "DraftKings"
         })
-        saved[-1].update({k:g[k] for k in ("projected_home_score","projected_away_score") if k in g})
+        saved[-1].update({k:g[k] for k in ("projected_home_score","projected_away_score","game_ml_shadow") if k in g})
         seen.add(key)
     return saved
 
