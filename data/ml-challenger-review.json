@@ -1,131 +1,200 @@
 {
   "status": "evaluated",
-  "holdout_season": 2025,
+  "holdout_season": 2026,
   "training_seasons": [
-    2024
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
   ],
   "evaluation": "week-blocked walk-forward; previous completed current-season weeks are added before each target week",
   "markets": {
-    "passing_yards": {
+    "attempts": {
       "status": "evaluated",
-      "holdout": 395,
-      "baseline_mae": 65.139,
+      "holdout": 152,
+      "baseline_mae": 7.747,
       "current_season_training_weeks": [
         4,
         5,
         6,
         7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17
+        8
       ],
       "challengers": {
         "ridge": {
-          "mae": 62.625,
-          "improvement_vs_baseline": 2.514,
+          "mae": 7.206,
+          "improvement_vs_baseline": 0.541,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 63.368,
-          "improvement_vs_baseline": 1.771,
+          "mae": 7.202,
+          "improvement_vs_baseline": 0.545,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 66.372,
-          "improvement_vs_baseline": -1.233,
-          "beats_baseline": false
+          "mae": 7.249,
+          "improvement_vs_baseline": 0.498,
+          "beats_baseline": true
+        }
+      }
+    },
+    "carries": {
+      "status": "evaluated",
+      "holdout": 41,
+      "baseline_mae": 4.88,
+      "current_season_training_weeks": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "challengers": {
+        "ridge": {
+          "mae": 4.408,
+          "improvement_vs_baseline": 0.472,
+          "beats_baseline": true
+        },
+        "random_forest": {
+          "mae": 4.337,
+          "improvement_vs_baseline": 0.543,
+          "beats_baseline": true
+        },
+        "gradient_boosting": {
+          "mae": 4.562,
+          "improvement_vs_baseline": 0.318,
+          "beats_baseline": true
+        }
+      }
+    },
+    "completions": {
+      "status": "evaluated",
+      "holdout": 124,
+      "baseline_mae": 5.122,
+      "current_season_training_weeks": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "challengers": {
+        "ridge": {
+          "mae": 4.769,
+          "improvement_vs_baseline": 0.353,
+          "beats_baseline": true
+        },
+        "random_forest": {
+          "mae": 4.844,
+          "improvement_vs_baseline": 0.278,
+          "beats_baseline": true
+        },
+        "gradient_boosting": {
+          "mae": 4.908,
+          "improvement_vs_baseline": 0.214,
+          "beats_baseline": true
+        }
+      }
+    },
+    "passing_yards": {
+      "status": "evaluated",
+      "holdout": 153,
+      "baseline_mae": 64.129,
+      "current_season_training_weeks": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "challengers": {
+        "ridge": {
+          "mae": 62.218,
+          "improvement_vs_baseline": 1.91,
+          "beats_baseline": true
+        },
+        "random_forest": {
+          "mae": 62.502,
+          "improvement_vs_baseline": 1.627,
+          "beats_baseline": true
+        },
+        "gradient_boosting": {
+          "mae": 63.178,
+          "improvement_vs_baseline": 0.951,
+          "beats_baseline": true
         }
       }
     },
     "receiving_yards": {
       "status": "evaluated",
-      "holdout": 1852,
-      "baseline_mae": 22.612,
+      "holdout": 707,
+      "baseline_mae": 24.893,
       "current_season_training_weeks": [
         4,
         5,
         6,
         7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17
+        8
       ],
       "challengers": {
         "ridge": {
-          "mae": 23.008,
-          "improvement_vs_baseline": -0.396,
-          "beats_baseline": false
+          "mae": 24.704,
+          "improvement_vs_baseline": 0.189,
+          "beats_baseline": true
         },
         "random_forest": {
-          "mae": 22.99,
-          "improvement_vs_baseline": -0.378,
-          "beats_baseline": false
+          "mae": 24.663,
+          "improvement_vs_baseline": 0.23,
+          "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 23.11,
-          "improvement_vs_baseline": -0.497,
-          "beats_baseline": false
+          "mae": 24.668,
+          "improvement_vs_baseline": 0.225,
+          "beats_baseline": true
         }
       }
     },
     "rushing_yards": {
       "status": "evaluated",
-      "holdout": 873,
-      "baseline_mae": 23.929,
+      "holdout": 293,
+      "baseline_mae": 24.155,
       "current_season_training_weeks": [
         4,
         5,
         6,
         7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17
+        8
       ],
       "challengers": {
         "ridge": {
-          "mae": 23.975,
-          "improvement_vs_baseline": -0.046,
+          "mae": 24.247,
+          "improvement_vs_baseline": -0.092,
           "beats_baseline": false
         },
         "random_forest": {
-          "mae": 24.346,
-          "improvement_vs_baseline": -0.417,
+          "mae": 24.324,
+          "improvement_vs_baseline": -0.169,
           "beats_baseline": false
         },
         "gradient_boosting": {
-          "mae": 24.824,
-          "improvement_vs_baseline": -0.895,
+          "mae": 24.631,
+          "improvement_vs_baseline": -0.476,
           "beats_baseline": false
         }
       }
     }
   },
-  "generated_at_utc": "2026-11-10T02:29:00.838450+00:00",
+  "generated_at_utc": "2026-11-10T02:32:50.045758+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
   "feature_policy": "retrospective walk-forward player estimates + week; no outcomes as features",
   "limitation": "Retrospective walk-forward backtest, not live frozen predictions; no ATS, winners, weather or DK lines in source.",
-  "source_file": "/home/runner/work/fourthdown-nfl-predictions/fourthdown-nfl-predictions/data/backtests/player-predictions.csv"
+  "source_file": "data/weekly-player-ml-training.csv"
 }

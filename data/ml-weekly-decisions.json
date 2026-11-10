@@ -1,7 +1,25 @@
 {
-  "generated_at_utc": "2026-11-09T15:22:20.107284+00:00",
+  "generated_at_utc": "2026-11-10T02:32:51.961269+00:00",
   "policy": "minimum 300 holdout samples, >=3% MAE improvement, deployable artifact required",
   "markets": {
+    "attempts": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    },
+    "carries": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    },
+    "completions": {
+      "champion": "baseline",
+      "version": "original",
+      "action": "keep",
+      "reason": "production replay, multiweek stability, regression or rollback evidence missing"
+    },
     "passing_yards": {
       "champion": "baseline",
       "version": "original",
