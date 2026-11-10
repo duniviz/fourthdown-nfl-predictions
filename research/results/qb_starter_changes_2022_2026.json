@@ -1,0 +1,77 @@
+{
+  "status": "research_only",
+  "by_season": {
+    "2022": {
+      "games": 17,
+      "current_yardage_component": {
+        "mae": 76.45,
+        "rmse": 94.86
+      },
+      "candidate": {
+        "mae": 83.37,
+        "rmse": 101.98
+      }
+    },
+    "2023": {
+      "games": 28,
+      "current_yardage_component": {
+        "mae": 90.8,
+        "rmse": 110.68
+      },
+      "candidate": {
+        "mae": 60.94,
+        "rmse": 83.35
+      }
+    },
+    "2024": {
+      "games": 29,
+      "current_yardage_component": {
+        "mae": 103.27,
+        "rmse": 134.34
+      },
+      "candidate": {
+        "mae": 74.83,
+        "rmse": 87.87
+      }
+    },
+    "2025": {
+      "games": 30,
+      "current_yardage_component": {
+        "mae": 87.09,
+        "rmse": 112.88
+      },
+      "candidate": {
+        "mae": 64.88,
+        "rmse": 82.16
+      }
+    },
+    "2026": {
+      "games": 14,
+      "current_yardage_component": {
+        "mae": 94.24,
+        "rmse": 109.96
+      },
+      "candidate": {
+        "mae": 82.73,
+        "rmse": 102.71
+      }
+    }
+  },
+  "overall": {
+    "games": 118,
+    "current_yardage_component": {
+      "mae": 91.26,
+      "rmse": 115.38
+    },
+    "candidate": {
+      "mae": 71.17,
+      "rmse": 89.51
+    }
+  },
+  "limitations": [
+    "Schedule starter identities are known retrospectively, not verified before kickoff.",
+    "Comparator is the live yardage component only, not a full production replay.",
+    "Requires prior current-team playing time and three historical 20-attempt games; excludes other replacements.",
+    "Only outcomes from earlier weeks are inputs; no automatic promotion."
+  ]
+}
