@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-11-10T13:08:55.094577+00:00",
-  "players_checked": 2113,
+  "generated_at_utc": "2026-11-10T22:29:41.391184+00:00",
+  "players_checked": 2123,
   "summary": {
     "error": 0,
-    "warning": 6,
+    "warning": 7,
     "info": 175
   },
   "flags": [
@@ -1126,6 +1126,14 @@
       "stat_key": "passing_yards",
       "game_id": "2026_10_SEA_LV",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "warning",
+      "code": "qb_starter_limited_history",
+      "player": "Fernando Mendoza",
+      "stat_key": "passing_yards",
+      "game_id": "2026_10_SEA_LV",
+      "reason": "Starter role with fewer than three current-season games; workload may not reflect a full game"
     },
     {
       "severity": "info",

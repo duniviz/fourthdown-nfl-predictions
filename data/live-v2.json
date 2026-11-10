@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-10T13:08:49.024633+00:00",
+  "generated_at_utc": "2026-11-10T22:29:35.148479+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_uncalibrated",
@@ -761,8 +761,10 @@
       "injury_adjustments": {
         "ATL": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         },
         "KC": {
           "points": 0.0,
@@ -4455,8 +4457,10 @@
       "injury_adjustments": {
         "CIN": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         },
         "PIT": {
           "points": 0.0,
@@ -4823,8 +4827,10 @@
       "injury_adjustments": {
         "BAL": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         },
         "LAC": {
           "points": 0.0,

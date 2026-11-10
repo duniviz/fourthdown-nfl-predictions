@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-11-10T13:09:05.917877+00:00",
+  "generated_at_utc": "2026-11-10T22:29:55.505411+00:00",
   "source": "US National Weather Service hourly forecast",
   "model_adjusted": false,
   "games": {
     "2026_10_WAS_NYG": {
       "status": "forecast",
-      "temperature_f": 53,
-      "wind_speed": "10 mph",
-      "wind_direction": "NE",
-      "precipitation_probability": 77,
-      "conditions": "Light Rain",
+      "temperature_f": 52,
+      "wind_speed": "9 mph",
+      "wind_direction": "N",
+      "precipitation_probability": 61,
+      "conditions": "Light Rain Likely",
       "forecast_period_start": "2026-11-12T20:00:00-05:00"
     },
     "2026_10_NE_DET": {
@@ -24,19 +24,19 @@
     },
     "2026_10_HOU_CLE": {
       "status": "forecast",
-      "temperature_f": 45,
-      "wind_speed": "12 mph",
+      "temperature_f": 46,
+      "wind_speed": "10 mph",
       "wind_direction": "NW",
-      "precipitation_probability": 7,
-      "conditions": "Partly Sunny",
+      "precipitation_probability": 16,
+      "conditions": "Slight Chance Light Rain",
       "forecast_period_start": "2026-11-15T13:00:00-05:00"
     },
     "2026_10_MIN_GB": {
       "status": "forecast",
       "temperature_f": 45,
-      "wind_speed": "2 mph",
-      "wind_direction": "N",
-      "precipitation_probability": 4,
+      "wind_speed": "3 mph",
+      "wind_direction": "NNE",
+      "precipitation_probability": 2,
       "conditions": "Mostly Sunny",
       "forecast_period_start": "2026-11-15T12:00:00-06:00"
     },
@@ -52,7 +52,7 @@
     },
     "2026_10_BUF_NYJ": {
       "status": "forecast",
-      "temperature_f": 51,
+      "temperature_f": 50,
       "wind_speed": "14 mph",
       "wind_direction": "NW",
       "precipitation_probability": 0,
@@ -85,15 +85,21 @@
     },
     "2026_10_PIT_CIN": {
       "status": "forecast",
-      "temperature_f": 42,
+      "temperature_f": 40,
       "wind_speed": "1 mph",
-      "wind_direction": "N",
-      "precipitation_probability": 1,
+      "wind_direction": "NE",
+      "precipitation_probability": 2,
       "conditions": "Mostly Clear",
       "forecast_period_start": "2026-11-15T20:00:00-05:00"
     },
     "2026_10_LAC_BAL": {
-      "status": "outside_forecast_horizon"
+      "status": "forecast",
+      "temperature_f": 45,
+      "wind_speed": "2 mph",
+      "wind_direction": "N",
+      "precipitation_probability": 1,
+      "conditions": "Partly Cloudy",
+      "forecast_period_start": "2026-11-16T20:00:00-05:00"
     }
   }
 }
