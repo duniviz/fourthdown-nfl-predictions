@@ -7,8 +7,10 @@ on:
       - 'scripts/verify_weekly_learning_evidence.py'
       - 'tools/refresh_weekly_player_ml_data.py'
       - 'tools/ml_challengers.py'
+      - 'live/backtest_players.py'
       - 'tests/test_refresh_weekly_player_ml_data.py'
       - 'tests/test_ml_challengers.py'
+      - 'tests/test_weekly_player_mix.py'
       - 'tests/test_weekly_learning_evidence.py'
       - 'tests/test_ml_pipeline_integration.py'
   push:
@@ -45,6 +47,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_refresh_weekly_player_ml_data.py' -v
           python -m unittest discover -s tests -p 'test_ml_challengers.py' -v
+          python -m unittest discover -s tests -p 'test_weekly_player_mix.py' -v
       - name: Rebuild and evaluate full historical player data
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2016
