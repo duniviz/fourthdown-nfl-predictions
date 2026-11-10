@@ -10,7 +10,7 @@ from pathlib import Path
 
 FEED = Path("data/verified-starters.json")
 FORECAST = Path("data/live-v2.json")
-POSITIONS = {"QB": 1, "RB": 2, "WR": 3}
+CANDIDATE_DEPTH = {"QB": 3, "RB": 4, "WR": 6}\nSTARTER_SLOTS = {"QB": 1, "RB": 2, "WR": 3}
 
 
 def fetch_json(url):
@@ -60,7 +60,7 @@ def position_code(node, inherited=""):
     }
     for value in candidates:
         value = str(value or "").strip().upper()
-        if value in POSITIONS:
+        if value in CANDIDATE_DEPTH:
             return value
         if value in aliases:
             return aliases[value]
@@ -68,7 +68,7 @@ def position_code(node, inherited=""):
 
 
 def collect_depth_rows(payload):
-    found = {key: [] for key in POSITIONS}
+    found = {key: [] for key in CANDIDATE_DEPTH}
 
     def walk(node, current=""):
         if isinstance(node, dict):
@@ -148,10 +148,14 @@ def main():
             except Exception as exc:
                 print(f"Depth chart unavailable for {team}: {exc}")
                 continue
-            for position, names in positions.items():
-                if not names:
+            for position, chart_names in positions.items():
+                if not chart_names:
                     # Keep the last known chart rows when this response omits a group.
                     continue
+                names = [
+                    name for name in chart_names
+                    if player_key(name) not in inactive_players.get(team, set())
+                ][:STARTER_SLOTS[position]]
                 # Keep official game-specific confirmations as the authority.
                 if any(row.get("game_id") == game.get("game_id") and row.get("team") == team
                        and row.get("position") == position and row.get("status") == "confirmed"
@@ -177,7 +181,7 @@ def main():
                     })
                     added += 1
             print(f"Read {team} depth chart: " + ", ".join(
-                f"{pos}={len(positions[pos])}" for pos in POSITIONS
+                f"{pos}={len(positions[pos])} candidates/{len([n for n in positions[pos] if player_key(n) not in inactive_players.get(team, set())][:STARTER_SLOTS[pos]])} available" for pos in CANDIDATE_DEPTH
             ))
 
     payload["schema_version"] = max(1, int(payload.get("schema_version", 1)))
