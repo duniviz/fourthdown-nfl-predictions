@@ -1,16 +1,16 @@
-"""Refresh game-specific QB/RB/WR starter candidates from ESPN depth charts.
+"""Refresh game-specific QB/RB/WR/TE starter candidates from ESPN depth charts.
 
 Rank-one depth-chart roles are projections, not game-day confirmations. Official
 team-confirmed records already in verified-starters.json always take precedence.
 """
 import json
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 FEED = Path("data/verified-starters.json")
 FORECAST = Path("data/live-v2.json")
-POSITIONS = {"QB": 1, "RB": 2, "WR": 3}
+POSITIONS = {"QB": 1, "RB": 2, "WR": 3, "TE": 1}
 
 
 def fetch_json(url):
@@ -50,6 +50,11 @@ def fetch_depth_chart(team_id):
 def position_code(node, inherited=""):
     if not isinstance(node, dict):
         return inherited
+    nested = node.get("position")
+    if isinstance(nested, dict):
+        nested_code = position_code(nested)
+        if nested_code:
+            return nested_code
     candidates = [
         node.get("abbreviation"), node.get("position"),
         node.get("id"), node.get("name"), node.get("shortName"),
@@ -57,6 +62,7 @@ def position_code(node, inherited=""):
     aliases = {
         "QUARTERBACK": "QB", "RUNNING BACK": "RB", "HALFBACK": "RB",
         "WIDE RECEIVER": "WR", "FLANKER": "WR", "SPLIT END": "WR",
+        "TIGHT END": "TE",
     }
     for value in candidates:
         value = str(value or "").strip().upper()
@@ -117,15 +123,12 @@ def main():
             kickoff = datetime.fromisoformat(str(game["kickoff_utc"]).replace("Z", "+00:00"))
         except (KeyError, TypeError, ValueError):
             continue
-        if kickoff > now:
+        if kickoff > now + timedelta(minutes=15):
             upcoming.append(game)
 
     payload = json.loads(FEED.read_text(encoding="utf-8")) if FEED.exists() else {"schema_version": 1, "starters": []}
-    upcoming_ids = {str(game.get("game_id")) for game in upcoming}
-    records = [
-        row for row in payload.get("starters", [])
-        if row.get("status") != "projected" or str(row.get("game_id")) in upcoming_ids
-    ]
+    # Preserve the last captured roles at and after the pregame freeze.
+    records = list(payload.get("starters", []))
     added = 0
     updated = 0
     try:
@@ -182,7 +185,7 @@ def main():
 
     payload["schema_version"] = max(1, int(payload.get("schema_version", 1)))
     payload["description"] = (
-        "Game-specific QB, RB, and WR roles. Official team announcements are confirmed; "
+        "Game-specific QB, RB, WR, and TE roles. Official team announcements are confirmed; "
         "nightly ESPN depth chart entries are projected roles, not game-day confirmations."
     )
     payload["starters"] = records

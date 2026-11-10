@@ -19,7 +19,7 @@ class RelevantPlayerCardsTests(unittest.TestCase):
             self.assertIn(f"{market}:{minimum}",self.html)
 
     def test_upstream_player_filter_does_not_require_dk_line(self):
-        self.assertIn("const players=started?archivedPlayers:playerResearch.filter(", self.html)
+        self.assertIn("const basePlayers=started?archivedPlayers:playerResearch.filter(", self.html)
         self.assertNotIn("&&!unavailablePlayer(x)&&x.dk_line!==null", self.html)
 
     def test_no_changes_to_model_research(self):

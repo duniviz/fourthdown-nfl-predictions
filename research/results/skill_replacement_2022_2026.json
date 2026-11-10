@@ -1,0 +1,211 @@
+{
+  "status": "research_only",
+  "by_season_position": {
+    "2022_RB": {
+      "games": 11,
+      "current_component": {
+        "mae": 32.55,
+        "rmse": 40.9
+      },
+      "candidate": {
+        "mae": 36.51,
+        "rmse": 44.54
+      }
+    },
+    "2022_TE": {
+      "games": 13,
+      "current_component": {
+        "mae": 16.8,
+        "rmse": 26.95
+      },
+      "candidate": {
+        "mae": 17.47,
+        "rmse": 24.17
+      }
+    },
+    "2022_WR": {
+      "games": 49,
+      "current_component": {
+        "mae": 22.07,
+        "rmse": 29.04
+      },
+      "candidate": {
+        "mae": 27.04,
+        "rmse": 32.15
+      }
+    },
+    "2023_RB": {
+      "games": 43,
+      "current_component": {
+        "mae": 27.1,
+        "rmse": 37.63
+      },
+      "candidate": {
+        "mae": 28.3,
+        "rmse": 34.65
+      }
+    },
+    "2023_TE": {
+      "games": 29,
+      "current_component": {
+        "mae": 17.87,
+        "rmse": 21.55
+      },
+      "candidate": {
+        "mae": 18.13,
+        "rmse": 21.07
+      }
+    },
+    "2023_WR": {
+      "games": 69,
+      "current_component": {
+        "mae": 24.66,
+        "rmse": 38.12
+      },
+      "candidate": {
+        "mae": 29.08,
+        "rmse": 39.17
+      }
+    },
+    "2024_RB": {
+      "games": 46,
+      "current_component": {
+        "mae": 21.38,
+        "rmse": 32.1
+      },
+      "candidate": {
+        "mae": 24.94,
+        "rmse": 30.41
+      }
+    },
+    "2024_TE": {
+      "games": 32,
+      "current_component": {
+        "mae": 18.45,
+        "rmse": 23.79
+      },
+      "candidate": {
+        "mae": 21.31,
+        "rmse": 24.75
+      }
+    },
+    "2024_WR": {
+      "games": 98,
+      "current_component": {
+        "mae": 24.51,
+        "rmse": 34.35
+      },
+      "candidate": {
+        "mae": 27.02,
+        "rmse": 33.49
+      }
+    },
+    "2025_RB": {
+      "games": 45,
+      "current_component": {
+        "mae": 30.5,
+        "rmse": 47.17
+      },
+      "candidate": {
+        "mae": 34.98,
+        "rmse": 43.3
+      }
+    },
+    "2025_TE": {
+      "games": 46,
+      "current_component": {
+        "mae": 12.68,
+        "rmse": 17.59
+      },
+      "candidate": {
+        "mae": 21.06,
+        "rmse": 25.77
+      }
+    },
+    "2025_WR": {
+      "games": 88,
+      "current_component": {
+        "mae": 25.95,
+        "rmse": 35.94
+      },
+      "candidate": {
+        "mae": 31.07,
+        "rmse": 37.93
+      }
+    },
+    "2026_RB": {
+      "games": 22,
+      "current_component": {
+        "mae": 23.06,
+        "rmse": 32.41
+      },
+      "candidate": {
+        "mae": 29.09,
+        "rmse": 34.54
+      }
+    },
+    "2026_TE": {
+      "games": 10,
+      "current_component": {
+        "mae": 14.09,
+        "rmse": 17.02
+      },
+      "candidate": {
+        "mae": 31.44,
+        "rmse": 33.39
+      }
+    },
+    "2026_WR": {
+      "games": 22,
+      "current_component": {
+        "mae": 19.03,
+        "rmse": 26.82
+      },
+      "candidate": {
+        "mae": 23.69,
+        "rmse": 27.56
+      }
+    }
+  },
+  "by_position": {
+    "RB": {
+      "games": 167,
+      "current_component": {
+        "mae": 26.27,
+        "rmse": 38.68
+      },
+      "candidate": {
+        "mae": 29.82,
+        "rmse": 36.84
+      }
+    },
+    "WR": {
+      "games": 326,
+      "current_component": {
+        "mae": 24.19,
+        "rmse": 34.44
+      },
+      "candidate": {
+        "mae": 28.33,
+        "rmse": 35.45
+      }
+    },
+    "TE": {
+      "games": 130,
+      "current_component": {
+        "mae": 15.78,
+        "rmse": 21.15
+      },
+      "candidate": {
+        "mae": 20.91,
+        "rmse": 25.08
+      }
+    }
+  },
+  "limitations": [
+    "Leader absent is retrospective, not confirmation of a replacement starter.",
+    "Target sample includes only players who appeared in the game.",
+    "Comparator is a yardage component, not complete published production.",
+    "History requires three prior meaningful opportunities; no same-week inputs."
+  ]
+}

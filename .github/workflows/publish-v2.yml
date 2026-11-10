@@ -84,7 +84,7 @@ jobs:
       - name: Refresh free game previews from latest forecasts
         if: steps.schedule_guard.outputs.run == 'true'
         run: python tools/generate_free_game_previews.py
-      - name: Refresh QB, RB, and WR depth-chart starters
+      - name: Refresh QB, RB, WR, and TE depth-chart starters
         if: steps.schedule_guard.outputs.run == 'true'
         run: python scripts/refresh_starters.py
       - name: Learn from completed games and validate before applying corrections
