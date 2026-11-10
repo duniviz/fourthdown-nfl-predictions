@@ -69,6 +69,14 @@ jobs:
           p.write_text(json.dumps(j))
           PYTEST
           python -m live.player_research
+          python - <<'PYCHECK'
+          import json
+          rows=json.load(open('data/player-research.json'))['players']
+          active=[r for r in rows if (r.get('player_ml_shadow') or {}).get('active')]
+          changed=[r for r in active if r['projection'] != r['player_ml_shadow']['baseline']]
+          print(f'Active ML forecasts: {len(active)}; changed forecasts: {len(changed)}')
+          assert changed, 'No active ML forecasts reached the publication pipeline'
+          PYCHECK
           python -m live.validate_props
           python -m live.simulate
           python -m live.validate_published
