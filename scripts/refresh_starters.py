@@ -50,6 +50,11 @@ def fetch_depth_chart(team_id):
 def position_code(node, inherited=""):
     if not isinstance(node, dict):
         return inherited
+    nested = node.get("position")
+    if isinstance(nested, dict):
+        nested_code = position_code(nested)
+        if nested_code:
+            return nested_code
     candidates = [
         node.get("abbreviation"), node.get("position"),
         node.get("id"), node.get("name"), node.get("shortName"),
