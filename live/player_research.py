@@ -7,6 +7,7 @@ import statistics
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
+from live.player_ml_runtime import load_runtime, use_projection
 try:
     import nflreadpy as nfl
 except ModuleNotFoundError:  # lets pure projection helpers be unit tested locally
@@ -453,6 +454,7 @@ def generate():
     results=[]
     verified_starters=load_verified_starters(season,week)
     qb_trial_enabled=trial_enabled(season, week)
+    player_ml_runtime=load_runtime()
     for game in games:
         context=game_context.get((str(game["home_team"]),str(game["away_team"])),{})
         home_score=num(context.get("projected_home_score"))
@@ -620,6 +622,9 @@ def generate():
                         # until a verified inactive designation arrives.
                         adjusted=full_carries
                         baseline=scenario["full_go"]["projection"]
+                    ml_shadow=None
+                    if metric in ("passing_yards", "rushing_yards", "receiving_yards"):
+                        baseline, ml_shadow=use_projection(player_ml_runtime, metric, baseline, season, week)
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
@@ -640,6 +645,7 @@ def generate():
                         "opponent_player_appearance_avg":round(sum(opp_values)/len(opp_values),1) if len(opp_values)>=10 else None,
                         "projection":baseline,
                         "qb_replacement_trial":qb_trial,
+                        "player_ml_shadow":ml_shadow,
                         "injury_scenarios":scenario,
                         "uncertainty_yards":uncertainty,
                         "uncertainty":uncertainty,
