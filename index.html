@@ -893,7 +893,7 @@ async function fdOpenMatchup(g){
  };
  const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
  const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No eligible player projections are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
- const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+'</div>';
+ const market='<div class="fd-modal-section"><h3>DraftKings game lines</h3>'+(p?fdGameLineComparison(p):'<p class="fd-modal-muted">We don\'t have a saved projection to compare with this line.</p>')+window.FDMarketHistory.render(g,fdGameLineHistory,fdOpeningGameOdds,fdGameOdds,fdGameOddsObservedAt)+'</div>';
  const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
    const metrics=Array.isArray(analysis.matchup_metrics)?analysis.matchup_metrics:[];
