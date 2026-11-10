@@ -8,10 +8,10 @@ Each record needs:
 - `team`, `player`, `position` (`QB`, `RB`, or `WR`), and `status: "confirmed"`
 - `source`, `source_url`, and `confirmed_at_utc`
 
-The projection generator uses a matching confirmation to retain that player even if the recent-appearance cutoff would otherwise remove them. The published feed marks that player as `confirmed_starter` and includes the source link. For QB only, when a confirmed starter exists, a competing QB is marked `not_starting` and hidden from the pregame player card. RB and WR cards remain visible together because teams can start multiple receivers and use running-back committees; confirmed players receive a badge without labeling every teammate a backup.
+The projection generator uses a matching confirmation to retain that player even if the recent-appearance cutoff would otherwise remove them. The published feed marks that player as `confirmed_starter` and includes the source link. For QB only, when a confirmed starter exists, a competing QB is marked `not_starting` and hidden from the pregame player card. RB and WR teammates remain visible because teams can start multiple receivers and use running-back committees.
 
-When there is no sourced confirmation, the app labels the player **Starter not confirmed**. It must not infer a confirmed start from depth charts or recent stats.
+When a sourced confirmation is absent, the card does not label a player as a starter. It must not infer a confirmed start from depth charts or recent stats.
 
-After adding records, run the normal player projection refresh and site publication workflow. Keep each confirmation tied to one game so a prior week's starter never carries forward. Multiple confirmed WRs or RBs are allowed for the same team and game.
+Adding or changing a starter record on `main` automatically starts the forecast publication workflow. For upcoming games, that refresh uses the confirmed starter record to keep the player in the projection feed despite missed weeks. Keep each confirmation tied to one game so a prior week's starter never carries forward. Multiple confirmed WRs or RBs are allowed for the same team and game.
 
-The Carson Wentz Week 9 record is the example entry in the JSON file, sourced from the Vikings' announcement: https://www.vikings.com/news/quarterback-carson-wentz-monday-night-bills
+If a starter is confirmed only after kickoff, any added estimate must be labeled as a late limited-history estimate and kept separate from frozen pregame predictions. Carson Wentz's Week 9 record includes an example of that distinction.
