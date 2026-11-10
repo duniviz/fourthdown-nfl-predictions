@@ -8,7 +8,7 @@ const assert=require('node:assert/strict');
   const id='2026_10_WAS_NYG', kickoff='2026-11-13T01:15:00Z';
   await page.route('https://site.api.espn.com/**',r=>r.fulfill({json:{events:[{id:'g',date:kickoff,competitions:[{competitors:[{homeAway:'home',team:{abbreviation:'NYG'}},{homeAway:'away',team:{abbreviation:'WAS'}}],status:{type:{state:'pre'}}}]}]}}));
   await page.route('**/data/**',r=>{let d={},u=r.request().url();
-   if(u.includes('live-v2.json'))d={games:[{game_id:id,home:'NYG',away:'WAS',kickoff_utc:kickoff,projected_home_score:22,projected_away_score:20,analysis:{matchup_metrics:[{label:'EPA / pass',away_offense:{rank:10},home_defense:{rank:20},home_offense:{rank:15},away_defense:{rank:25}}]}}]};
+   if(u.includes('live-v2.json'))d={season:2026,week:10,generated_at_utc:'2026-11-10T12:00:00Z',games:[{game_id:id,home:'NYG',away:'WAS',kickoff_utc:kickoff,projected_home_score:22,projected_away_score:20,analysis:{matchup_metrics:[{label:'EPA / pass',away_offense:{rank:10},home_defense:{rank:20},home_offense:{rank:15},away_defense:{rank:25}}]}}]};
    if(u.includes('projection-changes.json'))d={schema_version:1,games:{[id]:[{at:'2026-11-09T12:00:00Z',home:21,away:20},{at:'2026-11-10T12:00:00Z',home:22,away:20}]},players:{}};
    if(u.includes('player-research.json'))d={players:[{game_id:id,player_id:'p1',player:'Example Player',team:'WAS',market:'Passing yards',stat_key:'passing_yards',projection:100}]};
    if(u.includes('simulations.json'))d={games:[{game_id:id,home_win_pct:60,away_win_pct:39,simulations:10000}],players:[{game_id:id,player_id:'p1',stat_key:'passing_yards',mean_projection:100,sorted_draws:Array.from({length:100},(_,i)=>i*2)}]};
