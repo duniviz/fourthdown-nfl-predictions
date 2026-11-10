@@ -1,0 +1,22 @@
+name: Test clearer Labs
+on:
+  pull_request:
+    paths:
+      - 'model-lab.html'
+      - 'tests/test_clear_labs.js'
+      - '.github/workflows/test-clear-labs.yml'
+permissions:
+  contents: read
+jobs:
+  page:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright
+      - name: Check phone and desktop
+        run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-ui-server.log 2>&1 &
+          node tests/test_clear_labs.js
