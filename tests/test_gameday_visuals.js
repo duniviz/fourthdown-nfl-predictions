@@ -22,6 +22,7 @@ const assert=require('node:assert/strict');
   assert.equal(await page.locator('#scoreboard-cards .fd-team-game').count(),1);
   await page.locator('#fd-game-spotlight button').click();
   assert.equal(await page.locator('#fd-modal').evaluate(e=>e.classList.contains('open')),true);
+  assert.match(await page.locator('#fd-modal h2').innerText(),/WAS @ NYG/);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`overflow ${width}`);
   await page.goto('http://127.0.0.1:8123/model-lab.html',{waitUntil:'domcontentloaded'});
   await page.waitForSelector('#player-ml-live-status .fd-ml-compare');
