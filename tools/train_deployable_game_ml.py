@@ -81,7 +81,7 @@ def main():
     schedules=nfl.load_schedules(list(range(2016,season+1))).to_dicts()
     _,fitted=train(schedules,season,week)
     models={}
-    eligible=[(int(g['season']),int(g['week'])) for g in schedules if g.get('game_type')=='REG' and g.get('home_score') is not None and g.get('away_score') is not None and (int(g['season']),int(g['week']))<(season,week)]
+    eligible=[(int(g['season']),int(g['week'])) for g in schedules if g.get('game_type')=='REG' and number(g.get('home_score')) is not None and number(g.get('away_score')) is not None and (int(g['season']),int(g['week']))<(season,week)]
     if not eligible:raise ValueError('No completed pre-target games; retaining previous runtime')
     year,last_week=max(eligible)
     for market,models_by_name in fitted.items():
