@@ -59,7 +59,7 @@ def load_verified_starters(season, week):
     result={}
     allowed_positions={"QB","RB","WR"}
     for row in rows:
-        if not isinstance(row,dict) or str(row.get("status","")).lower()!="confirmed":
+        if not isinstance(row,dict) or str(row.get("status","")).lower() not in {"confirmed","projected"}:
             continue
         try:
             if int(row.get("season",-1))!=season or int(row.get("week",-1))!=week:
