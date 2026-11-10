@@ -1,0 +1,22 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'/usr/bin/google-chrome',args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:390,height:844}});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/data/**',route=>{
+  const url=route.request().url();let data={};
+  if(url.includes('game-official-pregame-locks'))data={records:[{game_id:'2026_09_BUF_MIN',home:'MIN',away:'BUF',week:9,forecast_at_utc:'2026-11-01T00:00:00Z',lock_cutoff_utc:'2026-11-02T00:00:00Z',kickoff_utc:'2026-11-02T00:15:00Z',projected_home_score:20,projected_away_score:23}]};
+  if(url.includes('ml-challenger-review'))data={markets:{completions:{status:'evaluated',holdout:124,baseline_mae:5,challengers:{ridge:{mae:4}}},carries:{status:'evaluated',holdout:41,baseline_mae:5,challengers:{ridge:{mae:4}}}}};
+  return route.fulfill({json:data});
+ });
+ await page.route('https://site.api.espn.com/**',r=>r.fulfill({json:{events:[]}}));
+ await page.goto('http://127.0.0.1:8123/history.html?home=MIN&away=BUF',{waitUntil:'networkidle'});
+ assert.equal(await page.locator('#fd-accuracy-dashboard').isVisible(),false);
+ assert.match(await page.locator('#games').innerText(),/Saved pregame prediction · final grade pending/);
+ assert.match(await page.locator('#games').innerText(),/BUF 23.0 · MIN 20.0/);
+ await page.goto('http://127.0.0.1:8123/model-lab.html',{waitUntil:'networkidle'});
+ assert.match(await page.locator('#player-ml-table').textContent(),/QB completions\s*124/);
+ assert.match(await page.locator('#player-ml-table').textContent(),/RB rush attempts\s*41/);
+ assert.deepEqual(errors,[]);await browser.close();console.log('History and Labs audit fixes passed');
+})().catch(e=>{console.error(e);process.exit(1)});
