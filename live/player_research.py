@@ -537,7 +537,7 @@ def generate():
                 if effective_team!=team: continue
                 confirmed_starter=verified_game_starter(verified_starters,game["game_id"],team,stats[-1].get("position"),player_name)
                 if week-int(stats[-1]["week"])>2 and not confirmed_starter: continue
-                availability=overrides.get((team,player_name.casefold()),overrides.get((t,player_name.casefold()),"unconfirmed"))
+                availability=overrides.get((team,player_name.casefold()),overrides.get((latest_team,player_name.casefold()),"unconfirmed"))
                 if availability in ("out","inactive","ir"): continue
                 for metric,label,volume in METRICS:
                     last=stats[-5:]
