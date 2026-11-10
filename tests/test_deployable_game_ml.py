@@ -19,7 +19,8 @@ def samples(bad=False):
 
 class GameMLTests(unittest.TestCase):
     def test_shadow_and_active_with_scores(self):
-        g=apply(game(),runtime(False));self.assertEqual(g['projected_margin_home'],3);self.assertEqual(g['game_ml_shadow']['markets']['game_total']['candidate'],48)
+        g0=game();g0['projected_home_score']=23.4;g0['projected_away_score']=20.4
+        g=apply(g0,runtime(False));self.assertEqual(g['projected_margin_home'],3);self.assertEqual(g['projected_home_score'],23.4);self.assertEqual(g['game_ml_shadow']['markets']['game_total']['candidate'],48)
         g=apply(game(),runtime(True));self.assertEqual(g['projected_margin_home'],5);self.assertEqual(g['projected_total'],48);self.assertEqual(g['predicted_winner'],'A')
     def test_stale_and_same_week_fallback(self):
         r=runtime(True);r['models']['game_margin_home']['trained_week']=10;r['models']['game_total']['trained_week']=10
@@ -47,3 +48,17 @@ class GameMLTests(unittest.TestCase):
         self.assertEqual(len(pairs([base],[{**actual,'away':'C'}])),0)
 
 if __name__=='__main__': unittest.main()
+
+class CaptureIntegrationTests(unittest.TestCase):
+    def test_game_shadow_survives_actual_observation_capture(self):
+        from datetime import datetime, timezone
+        from live.game_pregame_observations import collect
+        g=game();g.update(game_id='2026_10_B_A',kickoff_utc='2026-11-15T18:00:00Z',_forecast_generated_at='2026-11-15T17:20:00Z')
+        apply(g,runtime(False))
+        quote={'bookmaker':'draftkings','away':'B','home':'A','commence_time':'2026-11-15T18:00:00Z',
+               'observed_at_utc':'2026-11-15T17:25:00Z','home_spread':-3,'total':44}
+        rows=collect([g],[quote],[],datetime(2026,11,15,17,30,tzinfo=timezone.utc))
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['game_ml_shadow']['family'],FAMILY)
+        results=[{'game_id':'2026_10_B_A','home':'A','away':'B','home_score':27,'away_score':17}]
+        self.assertEqual(len(pairs(rows,results)),2)
