@@ -1,5 +1,5 @@
 import unittest
-from live.player_research import current_roster_team
+from live.player_research import aggregate_player_history, current_roster_team
 
 class CurrentRosterTeamTests(unittest.TestCase):
     def setUp(self):
@@ -30,6 +30,16 @@ class CurrentRosterTeamTests(unittest.TestCase):
             {"player": "Kirk Cousins", "team": "LV", "position": "QB", "status": "projected"}
         ]
         self.assertIsNone(current_roster_team(starters, "Kirk Cousins"))
+
+    def test_history_across_teams_is_combined_once_per_player(self):
+        history = {
+            ("LV", "cousins-id"): [{"team":"LV","week":3,"passing_yards":210}],
+            ("MIN", "cousins-id"): [{"team":"MIN","week":8,"passing_yards":260}],
+        }
+        merged = aggregate_player_history(history)
+        self.assertEqual(list(merged), ["cousins-id"])
+        self.assertEqual([r["team"] for r in merged["cousins-id"]], ["LV","MIN"])
+        self.assertEqual(len(merged["cousins-id"]), 2)
 
 if __name__ == "__main__":
     unittest.main()
