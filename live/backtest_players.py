@@ -77,7 +77,9 @@ def backtest(seasons=(2024,2025)):
                         new_pred=max(0,raw_pred*adjusted/max(.1,expected_volume)*adj)
                         old_pred=old_model(past,metric)
                         actual_yards=max(0,num(actual.get(metric)))
-                        rows.append(dict(season=season,week=week,player_id=pid,player=actual.get("player_display_name") or pid,team=team,opponent=opp,market=metric,actual=round(actual_yards,1),old=round(old_pred,1),new=round(new_pred,1),old_abs_error=round(abs(old_pred-actual_yards),2),new_abs_error=round(abs(new_pred-actual_yards),2)))
+                        rows.append(dict(season=season,week=week,player_id=pid,player=actual.get("player_display_name") or pid,team=team,opponent=opp,market=metric,actual=round(actual_yards,1),old=round(old_pred,1),new=round(new_pred,1),old_abs_error=round(abs(old_pred-actual_yards),2),new_abs_error=round(abs(new_pred-actual_yards),2),
+                            prior_games=len(past), recent_volume=round(sum(max(0,num(r.get(volume))) for r in last)/len(last),3),
+                            recent_yards=round(avg,3), team_volume=round(target,3), opponent_ratio=round(ratio,3)))
             for r in weeks[week]:
                 history[(str(r["team"]),str(r["player_id"]))].append(r)
     return rows
