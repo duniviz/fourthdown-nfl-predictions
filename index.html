@@ -1692,7 +1692,7 @@ function fdScorecardMatchupSummary(g){
   const side=(team,off,def)=>{const a=rank(off?.rank),d=rank(def?.rank);if(a===null||d===null)return '';return '<div><small>'+esc(team)+' offense #'+a+' vs opponent defense #'+d+'</small><div class="fd-mini-track"><i style="width:'+((33-a)/32*100).toFixed(1)+'%"></i></div><div class="fd-mini-track"><i style="width:'+((33-d)/32*100).toFixed(1)+'%"></i></div></div>';};
   const away=side(g.away.abbr,m.away_offense,m.home_defense),home=side(g.home.abbr,m.home_offense,m.away_defense);if(!away&&!home)return '';
   return '<div class="fd-adv-title">'+label+' · offense vs opposing defense</div><div class="fd-adv-row">'+away+home+'</div>';}).join('');
- return pairs?'<details class="fd-scorecard-matchup"><summary>Matchup advantage bars</summary><p class="fd-insight-note">EPA ranks: first bar offense, second opposing defense. Longer means a better rank for that unit; not a predicted result.</p>'+pairs+'</details>':'';
+ return pairs?'<details class="fd-adv-card"><summary>Matchup advantage bars</summary><p class="fd-insight-note">EPA ranks: first bar offense, second opposing defense. Longer means a better rank for that unit; not a predicted result.</p>'+pairs+'</details>':'';
 }
 
 function renderMatchupCards(games){
