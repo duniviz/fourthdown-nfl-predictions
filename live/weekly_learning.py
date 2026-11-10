@@ -89,6 +89,8 @@ def main():
     seasons=sorted({int(g['season']) for g in archive if int(g['season'])<=season})
     schedules=[g for s in seasons for g in nfl.load_schedules([s]).to_dicts()]
     decision=evaluate(archive,schedules,season,week,locks)
+    from live.game_ml_runtime import load_runtime,apply
+    game_ml=load_runtime()
     for game in live['games']:
         if game.get('weekly_learning'):continue
         margin=float(game['projected_margin_home'])+decision['margin']['adjustment']
@@ -99,6 +101,7 @@ def main():
                     predicted_winner=game['home'] if home>away else game['away'],
                     weekly_learning={'version':'bias-v1','margin_adjustment':decision['margin']['adjustment'],
                                      'total_adjustment':decision['total']['adjustment']})
+        apply(game,game_ml)
     live['weekly_learning']={'method':'chronological_shrunk_residual','validation':decision,
                              'note':'Validated margin and total bias corrections only; ATS/total probabilities are not calibrated.'}
     live_path.write_text(json.dumps(live,indent=2)+'\n')
