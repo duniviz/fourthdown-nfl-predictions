@@ -37,17 +37,8 @@ jobs:
                   continue
               payload, url = fetch_depth_chart(teams[team])
               rows = collect_depth_rows(payload)
-              def inspect(node):
-                  if isinstance(node, dict):
-                      if isinstance(node.get('athletes'), list):
-                          print('POSITION NODE:', {k:v for k,v in node.items() if k != 'athletes'})
-                      for value in node.values():
-                          if isinstance(value,(dict,list)): inspect(value)
-                  elif isinstance(node,list):
-                      for value in node: inspect(value)
-              inspect(payload)
               print(team, url, {pos: len(names) for pos, names in rows.items()})
-              if rows['QB'] and any(rows[p] for p in ('RB','WR','TE')):
+              if all(rows[p] for p in ('QB','RB','WR','TE')):
                   successes.append(team)
-          assert successes, "ESPN depth charts did not return readable QB and skill positions"
+          assert successes, "ESPN depth charts did not return readable QB, RB, WR, and TE positions"
           PY
