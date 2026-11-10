@@ -1,4 +1,4 @@
-"""Refresh game-specific QB/RB/WR starter candidates from ESPN depth charts.
+"""Refresh game-specific QB/RB/WR/TE starter candidates from ESPN depth charts.
 
 Rank-one depth-chart roles are projections, not game-day confirmations. Official
 team-confirmed records already in verified-starters.json always take precedence.
@@ -10,7 +10,7 @@ from pathlib import Path
 
 FEED = Path("data/verified-starters.json")
 FORECAST = Path("data/live-v2.json")
-POSITIONS = {"QB": 1, "RB": 2, "WR": 3}
+POSITIONS = {"QB": 1, "RB": 2, "WR": 3, "TE": 1}
 
 
 def fetch_json(url):
@@ -57,6 +57,7 @@ def position_code(node, inherited=""):
     aliases = {
         "QUARTERBACK": "QB", "RUNNING BACK": "RB", "HALFBACK": "RB",
         "WIDE RECEIVER": "WR", "FLANKER": "WR", "SPLIT END": "WR",
+        "TIGHT END": "TE",
     }
     for value in candidates:
         value = str(value or "").strip().upper()
@@ -182,7 +183,7 @@ def main():
 
     payload["schema_version"] = max(1, int(payload.get("schema_version", 1)))
     payload["description"] = (
-        "Game-specific QB, RB, and WR roles. Official team announcements are confirmed; "
+        "Game-specific QB, RB, WR, and TE roles. Official team announcements are confirmed; "
         "nightly ESPN depth chart entries are projected roles, not game-day confirmations."
     )
     payload["starters"] = records
