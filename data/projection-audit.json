@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-11-10T22:52:21.011960+00:00",
-  "players_checked": 2123,
+  "generated_at_utc": "2026-11-10T23:12:16.479418+00:00",
+  "players_checked": 2127,
   "summary": {
     "error": 0,
-    "warning": 7,
+    "warning": 6,
     "info": 175
   },
   "flags": [
@@ -466,8 +466,24 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Jacoby Brissett",
+      "stat_key": "interceptions",
+      "game_id": "2026_10_LAC_BAL",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Lamar Jackson",
       "stat_key": "interceptions",
+      "game_id": "2026_10_LAC_BAL",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
+      "player": "Jacoby Brissett",
+      "stat_key": "passing_tds",
       "game_id": "2026_10_LAC_BAL",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
@@ -498,6 +514,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Jacoby Brissett",
+      "stat_key": "attempts",
+      "game_id": "2026_10_LAC_BAL",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Tyler Huntley",
       "stat_key": "attempts",
       "game_id": "2026_10_LAC_BAL",
@@ -522,6 +546,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Jacoby Brissett",
+      "stat_key": "completions",
+      "game_id": "2026_10_LAC_BAL",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Tyler Huntley",
       "stat_key": "completions",
       "game_id": "2026_10_LAC_BAL",
@@ -546,6 +578,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Jacoby Brissett",
+      "stat_key": "passing_yards",
+      "game_id": "2026_10_LAC_BAL",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Tyler Huntley",
       "stat_key": "passing_yards",
       "game_id": "2026_10_LAC_BAL",
@@ -618,32 +658,8 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
-      "player": "Jacoby Brissett",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Jacoby Brissett",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
       "player": "Gardner Minshew",
       "stat_key": "passing_tds",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Jacoby Brissett",
-      "stat_key": "attempts",
       "game_id": "2026_10_LA_ARI",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
@@ -658,24 +674,8 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
-      "player": "Jacoby Brissett",
-      "stat_key": "completions",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
       "player": "Gardner Minshew",
       "stat_key": "completions",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Jacoby Brissett",
-      "stat_key": "passing_yards",
       "game_id": "2026_10_LA_ARI",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
@@ -850,6 +850,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Kirk Cousins",
+      "stat_key": "interceptions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Carson Wentz",
       "stat_key": "interceptions",
       "game_id": "2026_10_MIN_GB",
@@ -860,6 +868,14 @@
       "code": "qb_starter_unverified",
       "player": "Kyler Murray",
       "stat_key": "interceptions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
+      "player": "Kirk Cousins",
+      "stat_key": "passing_tds",
       "game_id": "2026_10_MIN_GB",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
@@ -882,6 +898,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Kirk Cousins",
+      "stat_key": "attempts",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Kyler Murray",
       "stat_key": "attempts",
       "game_id": "2026_10_MIN_GB",
@@ -898,6 +922,14 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
+      "player": "Kirk Cousins",
+      "stat_key": "completions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
       "player": "Kyler Murray",
       "stat_key": "completions",
       "game_id": "2026_10_MIN_GB",
@@ -908,6 +940,14 @@
       "code": "qb_starter_unverified",
       "player": "Carson Wentz",
       "stat_key": "completions",
+      "game_id": "2026_10_MIN_GB",
+      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
+    },
+    {
+      "severity": "info",
+      "code": "qb_starter_unverified",
+      "player": "Kirk Cousins",
+      "stat_key": "passing_yards",
       "game_id": "2026_10_MIN_GB",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
@@ -1085,46 +1125,6 @@
       "player": "Aaron Rodgers",
       "stat_key": "passing_yards",
       "game_id": "2026_10_PIT_CIN",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Kirk Cousins",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Kirk Cousins",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Kirk Cousins",
-      "stat_key": "attempts",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Kirk Cousins",
-      "stat_key": "completions",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Kirk Cousins",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_SEA_LV",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
     {
@@ -1426,26 +1426,18 @@
     {
       "severity": "warning",
       "code": "multiple_qb_starter_scenarios",
-      "player": "Tyler Huntley, Lamar Jackson, Joe Fagnano",
+      "player": "Jacoby Brissett, Tyler Huntley, Lamar Jackson, Joe Fagnano",
       "stat_key": "passing_yards",
       "game_id": "2026_10_LAC_BAL",
-      "reason": "BAL: 3 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
+      "reason": "BAL: 4 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
     },
     {
       "severity": "warning",
       "code": "multiple_qb_starter_scenarios",
-      "player": "Jacoby Brissett, Gardner Minshew",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "ARI: 2 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
-    },
-    {
-      "severity": "warning",
-      "code": "multiple_qb_starter_scenarios",
-      "player": "Kyler Murray, Carson Wentz",
+      "player": "Kirk Cousins, Kyler Murray, Carson Wentz",
       "stat_key": "passing_yards",
       "game_id": "2026_10_MIN_GB",
-      "reason": "MIN: 2 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
+      "reason": "MIN: 3 QBs have starter-sized workloads; treat as alternative scenarios, not simultaneous predictions"
     },
     {
       "severity": "warning",
