@@ -152,7 +152,7 @@ def decide(rows, previous, historical=None):
         decisions[market]={'active':active,'reason':reason,'paired':len(rolling),'weeks':len(weeks[-8:]),
             'baseline_mae':round(b,3) if b is not None else None,'candidate_mae':round(c,3) if c is not None else None,
             'recent_paired':len(recent),'recent_baseline_mae':round(rb,3) if rb is not None else None,
-            'recent_candidate_mae':round(rc,3) if rc is not None else None}
+            'recent_candidate_mae':round(rc,3) if rc is not None else None,'recent_regression':bool(recent_bad)}
     # Prefer frozen pregame evidence once it has enough weeks. Until then,
     # a qualifying chronological historical replay can seed the initial rollout.
     historical=historical or {}
@@ -160,7 +160,7 @@ def decide(rows, previous, historical=None):
         live=decisions[market]
         replay=historical.get(market,{})
         live_is_decisive=live['paired']>=MIN_PAIRED and live['weeks']>=MIN_WEEKS
-        if not live_is_decisive and replay.get('eligible') is True:
+        if not live_is_decisive and not live.get('recent_regression') and replay.get('eligible') is True:
             decisions[market]={**replay,'active':True,
                 'reason':'historical_walk_forward_qualified',
                 'evidence_source':'historical_walk_forward'}
