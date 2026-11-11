@@ -100,17 +100,31 @@ def historical_walk_forward(rows):
             return sum(row[index] for row in values)/len(values) if values else None
         baseline=mae(rolling,1); candidate=mae(rolling,2)
         recent_baseline=mae(recent,1); recent_candidate=mae(recent,2)
-        eligible=(len(rolling)>=HISTORICAL_MIN_PAIRED and len(weeks[-8:])>=MIN_WEEKS
-                  and baseline is not None and baseline>0
-                  and candidate<=baseline*(1-PROMOTION_GAIN)
-                  and len(recent)>=MIN_RECENT and recent_baseline is not None
-                  and recent_candidate<=recent_baseline*(1+ROLLBACK_LOSS))
+        improvement=((baseline-candidate)/baseline*100) if baseline and candidate is not None else None
+        recent_change=((recent_candidate-recent_baseline)/recent_baseline*100) if recent_baseline and recent_candidate is not None else None
+        reasons=[]
+        if len(rolling)<HISTORICAL_MIN_PAIRED:
+            reasons.append(f'Need {HISTORICAL_MIN_PAIRED} held-out forecasts; have {len(rolling)}')
+        if len(weeks[-8:])<MIN_WEEKS:
+            reasons.append(f'Need results across {MIN_WEEKS} weeks; have {len(weeks[-8:])}')
+        if baseline is None or baseline<=0:
+            reasons.append('No usable baseline error to compare')
+        elif improvement is None or improvement<PROMOTION_GAIN*100:
+            reasons.append(f'Need at least {PROMOTION_GAIN*100:.0f}% lower average error; current improvement is {improvement:.1f}%' if improvement is not None else 'Candidate error could not be compared')
+        if len(recent)<MIN_RECENT:
+            reasons.append(f'Need {MIN_RECENT} recent forecasts; have {len(recent)}')
+        elif recent_change is not None and recent_change>ROLLBACK_LOSS*100:
+            reasons.append(f'Recent average error worsened by {recent_change:.1f}%')
+        eligible=not reasons
         results[market]={'eligible':bool(eligible),'paired':len(rolling),'weeks':len(weeks[-8:]),
             'baseline_mae':round(baseline,3) if baseline is not None else None,
             'candidate_mae':round(candidate,3) if candidate is not None else None,
+            'improvement_pct':round(improvement,2) if improvement is not None else None,
             'recent_paired':len(recent),
             'recent_baseline_mae':round(recent_baseline,3) if recent_baseline is not None else None,
-            'recent_candidate_mae':round(recent_candidate,3) if recent_candidate is not None else None}
+            'recent_candidate_mae':round(recent_candidate,3) if recent_candidate is not None else None,
+            'recent_change_pct':round(recent_change,2) if recent_change is not None else None,
+            'qualification_reasons':reasons}
     return results
 
 
@@ -160,10 +174,14 @@ def decide(rows, previous, historical=None):
         live=decisions[market]
         replay=historical.get(market,{})
         live_is_decisive=live['paired']>=MIN_PAIRED and live['weeks']>=MIN_WEEKS
+        live['historical_walk_forward']=replay
         if not live_is_decisive and not live.get('recent_regression') and replay.get('eligible') is True:
-            decisions[market]={**replay,'active':True,
-                'reason':'historical_walk_forward_qualified',
-                'evidence_source':'historical_walk_forward'}
+            live.update(active=True,reason='historical_walk_forward_qualified',
+                        evidence_source='historical_walk_forward')
+        elif not live_is_decisive and replay.get('paired',0)>0:
+            live['evidence_source']='historical_walk_forward'
+            if not live.get('recent_regression') and live['reason']!='rolled_back':
+                live['reason']='historical_not_qualified'
         else:
             live['evidence_source']='frozen_live_pairs'
     return decisions
