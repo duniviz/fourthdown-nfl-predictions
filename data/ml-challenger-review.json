@@ -17,8 +17,8 @@
   "markets": {
     "attempts": {
       "status": "evaluated",
-      "holdout": 152,
-      "baseline_mae": 7.747,
+      "holdout": 153,
+      "baseline_mae": 7.71,
       "current_season_training_weeks": [
         4,
         5,
@@ -28,51 +28,51 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 7.146,
-          "improvement_vs_baseline": 0.601,
+          "mae": 7.105,
+          "improvement_vs_baseline": 0.605,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 7.061,
-          "improvement_vs_baseline": 0.686,
+          "mae": 7.021,
+          "improvement_vs_baseline": 0.689,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 7.169,
+          "mae": 7.131,
           "improvement_vs_baseline": 0.578,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 7.378,
-          "improvement_vs_baseline": 0.369,
+          "mae": 7.34,
+          "improvement_vs_baseline": 0.37,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 7.338,
-          "improvement_vs_baseline": 0.409,
+          "mae": 7.3,
+          "improvement_vs_baseline": 0.41,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 7.353,
+          "mae": 7.316,
           "improvement_vs_baseline": 0.394,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 7.107,
-          "improvement_vs_baseline": 0.639,
+          "mae": 7.068,
+          "improvement_vs_baseline": 0.642,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 7.605,
-          "improvement_vs_baseline": 0.141,
+          "mae": 7.563,
+          "improvement_vs_baseline": 0.147,
           "beats_baseline": true
         }
       }
     },
     "carries": {
       "status": "evaluated",
-      "holdout": 41,
-      "baseline_mae": 4.88,
+      "holdout": 42,
+      "baseline_mae": 5.024,
       "current_season_training_weeks": [
         4,
         5,
@@ -82,42 +82,42 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 4.39,
-          "improvement_vs_baseline": 0.49,
+          "mae": 4.595,
+          "improvement_vs_baseline": 0.429,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 4.306,
-          "improvement_vs_baseline": 0.575,
+          "mae": 4.518,
+          "improvement_vs_baseline": 0.506,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 4.649,
-          "improvement_vs_baseline": 0.231,
+          "mae": 4.83,
+          "improvement_vs_baseline": 0.194,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 4.559,
-          "improvement_vs_baseline": 0.321,
+          "mae": 4.735,
+          "improvement_vs_baseline": 0.288,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 4.458,
-          "improvement_vs_baseline": 0.423,
+          "mae": 4.638,
+          "improvement_vs_baseline": 0.385,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 4.548,
-          "improvement_vs_baseline": 0.333,
+          "mae": 4.715,
+          "improvement_vs_baseline": 0.309,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 4.381,
-          "improvement_vs_baseline": 0.499,
+          "mae": 4.582,
+          "improvement_vs_baseline": 0.442,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 4.88,
+          "mae": 5.024,
           "improvement_vs_baseline": 0.0,
           "beats_baseline": false
         }
@@ -125,8 +125,8 @@
     },
     "completions": {
       "status": "evaluated",
-      "holdout": 124,
-      "baseline_mae": 5.122,
+      "holdout": 125,
+      "baseline_mae": 5.102,
       "current_season_training_weeks": [
         4,
         5,
@@ -136,51 +136,51 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 4.717,
-          "improvement_vs_baseline": 0.404,
+          "mae": 4.7,
+          "improvement_vs_baseline": 0.402,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 4.832,
+          "mae": 4.812,
           "improvement_vs_baseline": 0.29,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 4.907,
-          "improvement_vs_baseline": 0.214,
+          "mae": 4.884,
+          "improvement_vs_baseline": 0.218,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 4.858,
-          "improvement_vs_baseline": 0.264,
+          "mae": 4.839,
+          "improvement_vs_baseline": 0.262,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 4.91,
+          "mae": 4.891,
           "improvement_vs_baseline": 0.211,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 4.954,
-          "improvement_vs_baseline": 0.167,
+          "mae": 4.933,
+          "improvement_vs_baseline": 0.169,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 4.803,
+          "mae": 4.783,
           "improvement_vs_baseline": 0.319,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 5.065,
-          "improvement_vs_baseline": 0.057,
+          "mae": 5.042,
+          "improvement_vs_baseline": 0.059,
           "beats_baseline": true
         }
       }
     },
     "passing_yards": {
       "status": "evaluated",
-      "holdout": 153,
-      "baseline_mae": 64.129,
+      "holdout": 154,
+      "baseline_mae": 63.741,
       "current_season_training_weeks": [
         4,
         5,
@@ -190,51 +190,51 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 62.117,
-          "improvement_vs_baseline": 2.012,
+          "mae": 61.756,
+          "improvement_vs_baseline": 1.985,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 62.375,
-          "improvement_vs_baseline": 1.754,
+          "mae": 62.06,
+          "improvement_vs_baseline": 1.681,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 63.926,
-          "improvement_vs_baseline": 0.203,
+          "mae": 63.67,
+          "improvement_vs_baseline": 0.071,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 62.542,
-          "improvement_vs_baseline": 1.587,
+          "mae": 62.172,
+          "improvement_vs_baseline": 1.569,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 62.578,
-          "improvement_vs_baseline": 1.551,
+          "mae": 62.231,
+          "improvement_vs_baseline": 1.51,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 63.399,
-          "improvement_vs_baseline": 0.729,
+          "mae": 63.081,
+          "improvement_vs_baseline": 0.66,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 62.641,
-          "improvement_vs_baseline": 1.488,
+          "mae": 62.331,
+          "improvement_vs_baseline": 1.41,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 64.24,
-          "improvement_vs_baseline": -0.111,
+          "mae": 63.858,
+          "improvement_vs_baseline": -0.117,
           "beats_baseline": false
         }
       }
     },
     "receiving_yards": {
       "status": "evaluated",
-      "holdout": 707,
-      "baseline_mae": 24.893,
+      "holdout": 717,
+      "baseline_mae": 24.716,
       "current_season_training_weeks": [
         4,
         5,
@@ -244,42 +244,42 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 24.565,
-          "improvement_vs_baseline": 0.328,
+          "mae": 24.428,
+          "improvement_vs_baseline": 0.289,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 24.567,
-          "improvement_vs_baseline": 0.326,
+          "mae": 24.411,
+          "improvement_vs_baseline": 0.306,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 24.458,
-          "improvement_vs_baseline": 0.435,
+          "mae": 24.317,
+          "improvement_vs_baseline": 0.399,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 24.649,
-          "improvement_vs_baseline": 0.244,
+          "mae": 24.493,
+          "improvement_vs_baseline": 0.223,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 24.673,
-          "improvement_vs_baseline": 0.22,
+          "mae": 24.508,
+          "improvement_vs_baseline": 0.209,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 24.579,
-          "improvement_vs_baseline": 0.314,
+          "mae": 24.419,
+          "improvement_vs_baseline": 0.297,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 24.476,
-          "improvement_vs_baseline": 0.417,
+          "mae": 24.33,
+          "improvement_vs_baseline": 0.386,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 24.893,
+          "mae": 24.716,
           "improvement_vs_baseline": 0.0,
           "beats_baseline": false
         }
@@ -287,8 +287,8 @@
     },
     "rushing_yards": {
       "status": "evaluated",
-      "holdout": 293,
-      "baseline_mae": 24.155,
+      "holdout": 297,
+      "baseline_mae": 24.065,
       "current_season_training_weeks": [
         4,
         5,
@@ -298,49 +298,49 @@
       ],
       "challengers": {
         "ridge": {
-          "mae": 23.703,
-          "improvement_vs_baseline": 0.451,
+          "mae": 23.666,
+          "improvement_vs_baseline": 0.399,
           "beats_baseline": true
         },
         "random_forest": {
-          "mae": 23.805,
-          "improvement_vs_baseline": 0.349,
+          "mae": 23.777,
+          "improvement_vs_baseline": 0.287,
           "beats_baseline": true
         },
         "gradient_boosting": {
-          "mae": 23.817,
-          "improvement_vs_baseline": 0.338,
+          "mae": 23.78,
+          "improvement_vs_baseline": 0.285,
           "beats_baseline": true
         },
         "baseline_ridge_50": {
-          "mae": 23.836,
-          "improvement_vs_baseline": 0.319,
+          "mae": 23.773,
+          "improvement_vs_baseline": 0.292,
           "beats_baseline": true
         },
         "baseline_forest_50": {
-          "mae": 23.848,
-          "improvement_vs_baseline": 0.306,
+          "mae": 23.791,
+          "improvement_vs_baseline": 0.273,
           "beats_baseline": true
         },
         "baseline_boost_50": {
-          "mae": 23.774,
-          "improvement_vs_baseline": 0.381,
+          "mae": 23.713,
+          "improvement_vs_baseline": 0.351,
           "beats_baseline": true
         },
         "ml_equal_mix": {
-          "mae": 23.722,
-          "improvement_vs_baseline": 0.433,
+          "mae": 23.689,
+          "improvement_vs_baseline": 0.376,
           "beats_baseline": true
         },
         "weekly_selected_mix": {
-          "mae": 24.155,
+          "mae": 24.065,
           "improvement_vs_baseline": 0.0,
           "beats_baseline": false
         }
       }
     }
   },
-  "generated_at_utc": "2026-11-10T03:18:44.718903+00:00",
+  "generated_at_utc": "2026-11-11T18:56:02.874128+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,

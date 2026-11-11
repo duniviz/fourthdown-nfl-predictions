@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-11T01:56:47.920657+00:00",
+  "generated_at_utc": "2026-11-11T18:55:12.707366+00:00",
   "method": "Market-level mean residual from archived pregame forecasts. This is not probability calibration; recommendation probability gates remain off until separately validated.",
   "markets": [
     {
@@ -32,8 +32,8 @@
     {
       "stat_key": "passing_yards",
       "sample_size": 54,
-      "mean_error": 2.41,
-      "mae": 61.03,
+      "mean_error": 2.42,
+      "mae": 61.05,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
