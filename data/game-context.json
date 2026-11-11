@@ -178,8 +178,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 4.53,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -4.79
+          "home_offense_vs_away_defense": -4.79,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -230,6 +232,13 @@
         "event_id": "401873055",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Travis Etienne Jr.",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "NO"
+          },
+          {
             "detail": "doubtful",
             "player": "Erik McCoy",
             "position": "C",
@@ -245,13 +254,6 @@
           },
           {
             "detail": "Injured Reserve",
-            "player": "Travis Etienne Jr.",
-            "position": "RB",
-            "status": "Injured Reserve",
-            "team": "NO"
-          },
-          {
-            "detail": "Injured Reserve",
             "player": "Dillon Radunz",
             "position": "G",
             "status": "Injured Reserve",
@@ -263,13 +265,6 @@
             "position": "WR",
             "status": "Out",
             "team": "NO"
-          },
-          {
-            "detail": "out",
-            "player": "Ihmir Smith-Marsette",
-            "position": "WR",
-            "status": "Out",
-            "team": "CAR"
           },
           {
             "detail": "questionable",
@@ -297,6 +292,13 @@
             "player": "Bobby Okereke",
             "position": "LB",
             "status": "Questionable",
+            "team": "CAR"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Jaycee Horn",
+            "position": "CB",
+            "status": "Injured Reserve",
             "team": "CAR"
           }
         ],
@@ -402,8 +404,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 1.46,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": 0.19
+          "home_offense_vs_away_defense": 0.19,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -626,8 +630,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 2.15,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -2.37
+          "home_offense_vs_away_defense": -2.37,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -850,8 +856,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 4.87,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -5.9
+          "home_offense_vs_away_defense": -5.9,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -1074,8 +1082,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 3.43,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -3.4
+          "home_offense_vs_away_defense": -3.4,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -1225,8 +1235,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": -5.61,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -2.99
+          "home_offense_vs_away_defense": -2.99,
+          "home_qb_adjustment_points": -1.3
         }
       },
       "quarterbacks": {
@@ -1376,8 +1388,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 2.09,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -5.25
+          "home_offense_vs_away_defense": -5.25,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -1467,10 +1481,10 @@
             "team": "MIA"
           },
           {
-            "detail": "out",
+            "detail": "Injured Reserve",
             "player": "Zach Sieler",
             "position": "DT",
-            "status": "Out",
+            "status": "Injured Reserve",
             "team": "MIA"
           },
           {
@@ -1597,8 +1611,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 0.02,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -1.72
+          "home_offense_vs_away_defense": -1.72,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -1826,8 +1842,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": -8.87,
+          "away_qb_adjustment_points": 0.37,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -1.55
+          "home_offense_vs_away_defense": -1.55,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -1878,6 +1896,13 @@
         "event_id": "401873053",
         "players": [
           {
+            "detail": "out",
+            "player": "Kerby Joseph",
+            "position": "S",
+            "status": "Out",
+            "team": "DET"
+          },
+          {
             "detail": "questionable",
             "player": "DJ Wonnum",
             "position": "LB",
@@ -1903,13 +1928,6 @@
             "player": "Cade Mays",
             "position": "C",
             "status": "Questionable",
-            "team": "DET"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Jack Campbell",
-            "position": "LB",
-            "status": "Injured Reserve",
             "team": "DET"
           },
           {
@@ -2050,8 +2068,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 1.68,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": 3.52
+          "home_offense_vs_away_defense": 3.52,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -2201,8 +2221,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 2.16,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": 3.15
+          "home_offense_vs_away_defense": 3.15,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -2425,8 +2447,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 2.3,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -3.59
+          "home_offense_vs_away_defense": -3.59,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -2512,6 +2536,13 @@
             "team": "DAL"
           },
           {
+            "detail": "Injured Reserve",
+            "player": "Gracen Halton",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "SF"
+          },
+          {
             "detail": "questionable",
             "player": "Mike Evans",
             "position": "WR",
@@ -2535,13 +2566,6 @@
           {
             "detail": "questionable",
             "player": "Deommodore Lenoir",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "SF"
-          },
-          {
-            "detail": "questionable",
-            "player": "Renardo Green",
             "position": "CB",
             "status": "Questionable",
             "team": "SF"
@@ -2649,8 +2673,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": 5.02,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -0.65
+          "home_offense_vs_away_defense": -0.65,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -2800,8 +2826,10 @@
         },
         "scoring_edge_components": {
           "away_offense_vs_home_defense": -2.45,
+          "away_qb_adjustment_points": 0.0,
           "home_field_points": 1.5,
-          "home_offense_vs_away_defense": -0.24
+          "home_offense_vs_away_defense": -0.24,
+          "home_qb_adjustment_points": 0.0
         }
       },
       "quarterbacks": {
@@ -2845,6 +2873,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-10T21:17:17Z",
+  "generated_at_utc": "2026-11-11T06:09:25Z",
   "schema_version": 1
 }
