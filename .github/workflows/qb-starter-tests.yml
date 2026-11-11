@@ -9,6 +9,9 @@ on:
       - 'tests/test_qb_game_context.py'
       - 'live/qb_starter_adjust.py'
       - 'tests/test_qb_starter_adjust.py'
+      - 'live/player_research.py'
+      - 'live/qb_starter_eligibility.py'
+      - 'tests/test_qb_starter_eligibility.py'
       - '.github/workflows/qb-starter-tests.yml'
   push:
     branches:
@@ -40,3 +43,4 @@ jobs:
           python -m unittest discover -s tests -p 'test_injury_adjust.py' -v
           python -m unittest discover -s tests -p 'test_qb_game_context.py' -v
           python -m unittest discover -s tests -p 'test_qb_starter_adjust.py' -v
+          python -m unittest discover -s tests -p 'test_qb_starter_eligibility.py' -v
