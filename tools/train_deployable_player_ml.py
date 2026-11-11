@@ -17,6 +17,7 @@ from live.player_ml_runtime import MARKETS, MODEL_FAMILY
 
 MIN_TRAIN=100
 MIN_PAIRED=100
+HISTORICAL_MIN_PAIRED=300
 MIN_WEEKS=4
 MIN_RECENT=20
 PROMOTION_GAIN=.03
@@ -46,7 +47,74 @@ def train(rows):
     return result
 
 
-def decide(rows, previous):
+def historical_walk_forward(rows):
+    """Evaluate the deployable model with chronological, held-out weekly forecasts.
+
+    Each target week is scored using a model fitted only to earlier weeks. The
+    research backtest rows are retrospective, so this remains an offline
+    qualification signal, distinct from frozen production forecasts.
+    """
+    by_market=defaultdict(list)
+    identity_counts=defaultdict(int)
+    for r in rows:
+        try:
+            season=int(r['season']); week=int(r['week'])
+            market=str(r['market']); player=str(r.get('player_id') or '')
+            if market not in MARKETS or not player: continue
+            identity_counts[(season,week,player,market)]+=1
+        except (KeyError,TypeError,ValueError): continue
+    for r in rows:
+        try:
+            season=int(r['season']); week=int(r['week'])
+            market=str(r['market']); player=str(r.get('player_id') or '')
+            identity=(season,week,player,market)
+            base=float(r['new']); actual=float(r['actual'])
+            if (market not in MARKETS or not player or identity_counts[identity]!=1
+                    or not all(math.isfinite(v) and v>=0 for v in (base,actual))): continue
+            by_market[market].append(((season,week),player,base,actual))
+        except (KeyError,TypeError,ValueError): continue
+
+    results={}
+    for market in MARKETS:
+        items=sorted(by_market.get(market,[]),key=lambda x:(x[0],x[1]))
+        target_weeks=sorted({row[0] for row in items})
+        scored=[]
+        for target_week in target_weeks:
+            earlier=[row for row in items if row[0]<target_week]
+            current=[row for row in items if row[0]==target_week]
+            if len(earlier)<MIN_TRAIN: continue
+            fit_rows=[{'market':market,'season':wk[0],'week':wk[1],
+                       'new':base,'actual':actual} for wk,_,base,actual in earlier]
+            fitted=train(fit_rows).get(market)
+            if not fitted: continue
+            c0,c1=fitted['coefficients']; intercept=fitted['intercept']
+            for _,player,base,actual in current:
+                prediction=max(0.0,intercept+c0*base+c1*target_week[1])
+                prediction=min(base*1.25,max(base*.75,prediction))
+                scored.append((target_week,abs(base-actual),abs(prediction-actual)))
+
+        weeks=sorted({row[0] for row in scored})
+        rolling=[row for row in scored if row[0] in weeks[-8:]]
+        recent=[row for row in scored if row[0] in weeks[-2:]]
+        def mae(values,index):
+            return sum(row[index] for row in values)/len(values) if values else None
+        baseline=mae(rolling,1); candidate=mae(rolling,2)
+        recent_baseline=mae(recent,1); recent_candidate=mae(recent,2)
+        eligible=(len(rolling)>=HISTORICAL_MIN_PAIRED and len(weeks[-8:])>=MIN_WEEKS
+                  and baseline is not None and baseline>0
+                  and candidate<=baseline*(1-PROMOTION_GAIN)
+                  and len(recent)>=MIN_RECENT and recent_baseline is not None
+                  and recent_candidate<=recent_baseline*(1+ROLLBACK_LOSS))
+        results[market]={'eligible':bool(eligible),'paired':len(rolling),'weeks':len(weeks[-8:]),
+            'baseline_mae':round(baseline,3) if baseline is not None else None,
+            'candidate_mae':round(candidate,3) if candidate is not None else None,
+            'recent_paired':len(recent),
+            'recent_baseline_mae':round(recent_baseline,3) if recent_baseline is not None else None,
+            'recent_candidate_mae':round(recent_candidate,3) if recent_candidate is not None else None}
+    return results
+
+
+def decide(rows, previous, historical=None):
     grouped=defaultdict(list)
     # Duplicate records must not count as independent evidence.
     counts=defaultdict(int)
@@ -85,24 +153,39 @@ def decide(rows, previous):
             'baseline_mae':round(b,3) if b is not None else None,'candidate_mae':round(c,3) if c is not None else None,
             'recent_paired':len(recent),'recent_baseline_mae':round(rb,3) if rb is not None else None,
             'recent_candidate_mae':round(rc,3) if rc is not None else None}
+    # Prefer frozen pregame evidence once it has enough weeks. Until then,
+    # a qualifying chronological historical replay can seed the initial rollout.
+    historical=historical or {}
+    for market in MARKETS:
+        live=decisions[market]
+        replay=historical.get(market,{})
+        live_is_decisive=live['paired']>=MIN_PAIRED and live['weeks']>=MIN_WEEKS
+        if not live_is_decisive and replay.get('eligible') is True:
+            decisions[market]={**replay,'active':True,
+                'reason':'historical_walk_forward_qualified',
+                'evidence_source':'historical_walk_forward'}
+        else:
+            live['evidence_source']='frozen_live_pairs'
     return decisions
 
 
 def main():
     import argparse
     p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);a=p.parse_args()
-    with a.input.open(newline='',encoding='utf-8-sig') as f: models=train(list(csv.DictReader(f)))
+    with a.input.open(newline='',encoding='utf-8-sig') as f: source_rows=list(csv.DictReader(f))
+    models=train(source_rows)
     if not models: raise SystemExit('No deployable models trained; previous runtime retained')
     path=Path('data/player-ml-runtime.json')
     try: previous=json.loads(path.read_text())
     except (OSError,ValueError):previous={}
     results=json.loads(Path('data/player-results.json').read_text()).get('rows',[])
-    decisions=decide(results,previous.get('decisions',{}) if previous.get('family')==MODEL_FAMILY else {})
+    historical=historical_walk_forward(source_rows)
+    decisions=decide(results,previous.get('decisions',{}) if previous.get('family')==MODEL_FAMILY else {},historical)
     # Missing model cannot be active.
     for market in MARKETS:
         if market not in models:decisions[market].update(active=False,reason='missing_trained_model')
     runtime={'family':MODEL_FAMILY,'generated_at_utc':datetime.now(timezone.utc).isoformat(),
-             'policy':'100 paired forecasts over at least 4 of last 8 weeks; 3% improvement; 20 recent forecasts; rollback if recent MAE worsens by 10%',
+             'policy':'Historical walk-forward: 300 held-out forecasts across 4 of the latest 8 weeks, at least 3% MAE gain and 20 recent forecasts; frozen live pairs take precedence after 100 pairs across 4 weeks; rollback if recent MAE worsens by 10%',
              'models':models,'decisions':decisions}
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(runtime,indent=2)+'\n');tmp.replace(path)
     print(json.dumps(decisions,indent=2))
