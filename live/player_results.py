@@ -1,5 +1,6 @@
 """Grade archived pregame player yardage forecasts against completed NFL games."""
 import json
+import math
 import time
 from datetime import datetime,timedelta,timezone
 from pathlib import Path
@@ -97,7 +98,23 @@ def main():
             "projection":proj,"actual":observed,"error":round(observed-proj,1),
             "dk_line":float(line) if line is not None and str(line).strip() and float(line)>0 else None,"recommended_side":None,"recommendation_result":"not_available"}
         if key in paired_latest:
-            result["player_ml_pair"]=paired_latest[key][1]
+            pair=paired_latest[key][1]
+            result["player_ml_pair"]=pair
+            try:
+                baseline=float(pair["baseline"]);candidate=float(pair["candidate"])
+                if all(math.isfinite(v) and v>=0 for v in (baseline,candidate,observed)):
+                    baseline_error=abs(observed-baseline)
+                    candidate_error=abs(observed-candidate)
+                    result["ml_comparison"]={
+                        "baseline_projection":round(baseline,1),
+                        "ml_projection":round(candidate,1),
+                        "baseline_absolute_error":round(baseline_error,1),
+                        "ml_absolute_error":round(candidate_error,1),
+                        "ml_closer":candidate_error<baseline_error,
+                        "graded_against":"verified_final_player_stat"
+                    }
+            except (KeyError,TypeError,ValueError,OverflowError):
+                pass
         trial=x.get("qb_replacement_trial")
         if isinstance(trial,dict) and isinstance(trial.get("original_projection"),(int,float)):
             result["qb_replacement_trial"]={**trial,
