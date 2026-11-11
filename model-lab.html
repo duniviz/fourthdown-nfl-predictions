@@ -94,7 +94,7 @@ function renderPlayerMLLive(runtime){
  const updated=runtime.generated_at_utc?new Date(runtime.generated_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'not available';
  el.innerHTML='<p class="clear-updated">Last reviewed: '+safe(updated)+'</p>'+Object.entries(names).map(([key,label])=>{
   const d=runtime.decisions[key]||{},h=d.historical_walk_forward||null;
-  const state=d.active?'ML model in use':d.reason==='rolled_back'?'Returned to current model':'ML candidate · current model stays in use';
+  const state=d.active?'ML active · candidate in use':d.reason==='rolled_back'?'Rolled back to existing model':'Existing model active · ML candidate not promoted';
   const histCount=Number.isFinite(Number(h?.paired))?Number(h.paired):0;
   const histWeeks=Number.isFinite(Number(h?.weeks))?Number(h.weeks):0;
   const liveCount=Number.isFinite(Number(d.paired))?Number(d.paired):0;
