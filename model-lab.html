@@ -105,7 +105,7 @@ function renderPlayerMLLive(runtime){
    :'Historical replay: '+histCount+' held-out forecasts across '+histWeeks+' weeks; error comparison unavailable';
   const reasons=Array.isArray(h?.qualification_reasons)?h.qualification_reasons:[];
   const gate=h?.eligible?'Historical replay cleared the promotion checks.':
-   reasons.length?'Still needed: '+reasons.join(' · '):'Historical replay results are not published yet.';
+   reasons.length?'Still needed: '+reasons.join(' · '):'Not enough matched results yet; historical replay results have not been published.';
   const liveScore=d.baseline_mae!==null&&d.baseline_mae!==undefined&&d.candidate_mae!==null&&d.candidate_mae!==undefined
    ?'Live saved forecasts: existing '+fmt(d.baseline_mae)+' / ML '+fmt(d.candidate_mae)+' yards'
    :'Live saved forecasts: '+liveCount+' matched forecasts across '+liveWeeks+' weeks';
