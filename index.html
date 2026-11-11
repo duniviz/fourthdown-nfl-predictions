@@ -755,7 +755,7 @@ async function fdOpenMatchup(g){
    return '<div class="fd-modal-muted" aria-label="Projection uncertainty"><strong>Projection reliability: '+label+'</strong> · '+(Number.isFinite(games)?games+' prior games':'History not verified')+(hasRange?' · 10–90% simulated range '+p10.toFixed(1)+'–'+p90.toFixed(1):' · Simulation range unavailable')+'. '+(flags.length?flags.map(esc).join('; ')+'. ':'')+'Descriptive only; not a calibrated hit probability.</div>';
  };
  const propExplanation=(x,line,edge)=>{
-   const d=x.opponent_defense_context,parts=[];
+   const d=x.opponent_defense_context,parts=['Here’s what went into the estimate. Matchup and game-flow adjustments shape the projection; they are not extra yards to add together.'];
    const n=v=>v===null||v===undefined||v===''||!Number.isFinite(Number(v))?null:Number(v);
    const playerParts=String(x.player||'This player').trim().split(/\s+/);
    const player=esc(playerParts.filter(part=>!/^(?:II|III|IV|JR\.?|SR\.?)$/i.test(part)).slice(-1)[0]||'This player');
@@ -786,9 +786,9 @@ async function fdOpenMatchup(g){
      : '';
    if(positionRank!==null&&positionTeams!==null&&positionSeason!==null){
      const rankSentence=positionTies>1
-       ? opponent+' allowed '+positionSeason.toFixed(1)+' '+marketLabel+' to '+positionPlural+' per game, '+rankDescription+' among '+positionTeams+' teams'
-       : opponent+' has allowed the '+rankDescription+' '+marketLabel+' to '+positionPlural+' ('+positionSeason.toFixed(1)+' per game), ranking '+positionRank+' of '+positionTeams+' teams';
-     parts.push(rankSentence+' through '+(positionGames??'the available number of')+' completed games'+(positionAllowed!==null&&positionRecentGames!==null?'. Over the most recent '+positionRecentGames+' games, that was '+positionAllowed.toFixed(1)+' per game':'')+'.');
+        ? opponent+' has given up '+positionSeason.toFixed(1)+' '+marketLabel+' per game to opposing '+positionPlural+' as a group.'
+       : opponent+' has given up '+positionSeason.toFixed(1)+' '+marketLabel+' per game to opposing '+positionPlural+' as a group.';
+     parts.push(rankSentence+' across '+(positionGames??'the available number of')+' games'+(positionAllowed!==null&&positionRecentGames!==null?'. In the last '+positionRecentGames+' games, it was '+positionAllowed.toFixed(1)+' per game':'')+'. This is the whole opposing '+positionPlural+' group, not a player-only stat.');
    }else if(positionAllowed!==null){
      parts.push(opponent+' has allowed about '+positionAllowed.toFixed(1)+' '+marketLabel+' per game to '+positionPlural+' over '+(positionGames??'the available number of')+' completed games; a league rank is not available yet.');
    }else if(d&&n(d.rank)!==null&&n(d.ranked_teams)!==null){
@@ -800,13 +800,13 @@ async function fdOpenMatchup(g){
    if(verifiedContext)parts.push('Defensive matchup source: nflverse completed-game player stats, calculated before this matchup week. This is context only; no projection change was made by this display.');
    const adj=n(x.opponent_adjustment);
    const adjDescription=x.opponent_adjustment_basis==='position_market'?'position-specific opponent adjustment':x.opponent_adjustment_basis==='team_market'?'team-wide (not position-specific) opponent adjustment':'opponent adjustment';
-   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The '+adjDescription+' '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
+   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The matchup adjustment '+(adj>1?'bumps':'reduces')+' this estimate by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
    const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
-   if(vol!==null&&avg!==null)parts.push('We project about '+vol.toFixed(1)+' '+esc(x.opportunity_type||'opportunities')+' for '+player+' in this matchup, compared with '+avg.toFixed(1)+' per game over the last five. '+(vol>avg+0.5?'That is a higher expected workload.':vol<avg-0.5?'That is a lighter expected workload.':'That is close to the recent workload.'));
+   if(vol!==null&&avg!==null)parts.push('We expect about '+vol.toFixed(1)+' '+esc(x.opportunity_type||'opportunities')+' in this game. The last-five average is '+avg.toFixed(1)+'. '+(vol>avg+0.5?'That points to a little more work than usual.':vol<avg-0.5?'That points to a lighter workload than usual.':'That is about the same workload as usual.'));
    const script=n(x.game_script_adjustment);
-   if(script!==null&&Math.abs(script-1)>=0.0005)parts.push('The expected game flow '+(script>1?'adds':'takes away')+' about '+Math.abs((script-1)*100).toFixed(1)+'% from this '+target+' projection.');
+   if(script!==null&&Math.abs(script-1)>=0.0005)parts.push('Our expected game flow '+(script>1?'adds':'takes away')+' about '+Math.abs((script-1)*100).toFixed(1)+'% from this '+target+' projection.');
    const last3=n(x.last_3_avg),last5=n(x.last_5_avg);
-   if(last3!==null&&last5!==null)parts.push('For '+target+', '+player+' has averaged '+last3.toFixed(1)+' yards over the last three games and '+last5.toFixed(1)+' over the last five. '+(last3>last5+2?'The shorter-term trend has been stronger.':last3<last5-2?'The shorter-term trend has cooled.':'Those averages have been fairly steady.'));
+   if(last3!==null&&last5!==null)parts.push('In recent games, '+player+' averaged '+last3.toFixed(1)+' yards over the last three and '+last5.toFixed(1)+' over the last five. '+(last3>last5+2?'The last three have been stronger.':last3<last5-2?'The last three have cooled off.':'Those numbers have been fairly steady.'));
    if(edge!==null)parts.push('Putting it together, our '+target+' projection is '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'right at')+' the saved DraftKings line. '+(Math.abs(edge)<10?'That gap alone is not enough to establish a betting edge.':'The projection difference is worth reviewing, but it does not establish a betting edge by itself.'));
    const risks=[];
    if(n(x.games_used)!==null&&n(x.games_used)<5)risks.push('limited recent-game sample');
@@ -815,7 +815,7 @@ async function fdOpenMatchup(g){
    if(n(x.last_3_avg)!==null&&n(x.last_5_avg)!==null&&Math.abs(n(x.last_3_avg)-n(x.last_5_avg))>Math.max(10,n(x.last_5_avg)*0.25))risks.push('recent production has been volatile');
    if(risks.length)parts.push('What could make this projection miss: '+risks.map(esc).join('; ')+'. These are risk indicators, not changes to the model.');
    if(x.sample_warning)parts.push('<small>'+esc(x.sample_warning)+'</small>');
-   return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+target+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
+   return '<details class="fd-prop-why"><summary>Why we have '+player+' at this number · '+target+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
  // Include count-based props in the same unified player cards, not a second panel.
  // After kickoff, use only timestamped pregame snapshots with saved DK lines.
