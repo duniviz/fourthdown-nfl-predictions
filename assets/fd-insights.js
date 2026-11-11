@@ -4,14 +4,15 @@
  const get=p=>fetch('data/'+p+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
  const ct=x=>{const d=new Date(x);return Number.isFinite(d.getTime())?d.toLocaleString('en-US',{timeZone:'America/Chicago',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'Time unavailable';};
  const n=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
+ const moved=(a,b,min)=>n(a)&&n(b)&&Math.abs(Number(a)-Number(b))>=min;
  async function changes(){
   const root=document.getElementById('fd-whats-changed');if(!root)return;
   const [history,feed,players,lineHistory]=await Promise.all([get('projection-changes.json'),get('live-v2.json'),get('player-research.json'),get('dk-game-line-history.json')]);
   const games=new Map((feed?.games||[]).filter(g=>window.fdScheduleWindow?.contains(window.fdScheduleWindow.get(),g.kickoff_utc)).map(g=>[String(g.game_id),g]));
   const names=new Map((players?.players||[]).map(p=>[String(p.game_id)+'|'+String(p.player_id),p.player]));
   const rows=[];
-  for(const [id,v] of Object.entries(history?.games||{})){const g=games.get(id);if(!g||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.home)||!n(a.away)||!n(b.home)||!n(b.away)||!n(Date.parse(b.at)))continue;if(Number(a.home)===Number(b.home)&&Number(a.away)===Number(b.away))continue;rows.push({at:b.at,title:g.away+' @ '+g.home,detail:'Projected score: '+g.away+' '+Number(a.away).toFixed(1)+' → '+Number(b.away).toFixed(1)+' · '+g.home+' '+Number(a.home).toFixed(1)+' → '+Number(b.home).toFixed(1)});}
-  for(const [key,v] of Object.entries(history?.players||{})){const [id,pid,market]=key.split('|');if(!games.has(id)||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.value)||!n(b.value)||!n(Date.parse(b.at))||Number(a.value)===Number(b.value))continue;const name=names.get(id+'|'+pid);if(!name)continue;rows.push({at:b.at,title:name+' · '+market.replaceAll('_',' '),detail:'Projection: '+Number(a.value).toFixed(1)+' → '+Number(b.value).toFixed(1)});}
+  for(const [id,v] of Object.entries(history?.games||{})){const g=games.get(id);if(!g||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.home)||!n(a.away)||!n(b.home)||!n(b.away)||!n(Date.parse(b.at)))continue;if(!moved(a.home,b.home,1)&&!moved(a.away,b.away,1))continue;rows.push({at:b.at,title:g.away+' @ '+g.home,detail:'Projected score: '+g.away+' '+Number(a.away).toFixed(1)+' → '+Number(b.away).toFixed(1)+' · '+g.home+' '+Number(a.home).toFixed(1)+' → '+Number(b.home).toFixed(1)});}
+  for(const [key,v] of Object.entries(history?.players||{})){const [id,pid,market]=key.split('|');if(!games.has(id)||!Array.isArray(v)||v.length<2)continue;const [a,b]=v.slice(-2);if(!n(a.value)||!n(b.value)||!n(Date.parse(b.at)))continue;const minDelta=/(yards?|yds?)$/i.test(market)?2:1;if(!moved(a.value,b.value,minDelta))continue;const name=names.get(id+'|'+pid);if(!name)continue;rows.push({at:b.at,title:name+' · '+market.replaceAll('_',' '),detail:'Projection: '+Number(a.value).toFixed(1)+' → '+Number(b.value).toFixed(1)});}
   const canon=x=>({WSH:'WAS',JAX:'JAC',LA:'LAR'}[String(x||'').toUpperCase()]||String(x||'').toUpperCase());
   for(const [key,quotes] of Object.entries(lineHistory?.games||{})){
    const [home,away,kickoff]=key.split('|'),kick=Date.parse(kickoff);
