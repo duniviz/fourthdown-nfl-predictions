@@ -21,7 +21,7 @@ const assert=require('node:assert/strict');
   const advantage=page.locator('.fd-adv-card').first();
   await advantage.locator('summary').click();
   const advantageText=await advantage.innerText();
-  assert.match(advantageText,/WSH/);
+  assert.match(advantageText,/WAS/);
   assert.match(advantageText,/Offense\s+#21/);
   assert.match(advantageText,/Opponent defense\s+#8/);
   assert.match(advantageText,/#1 \(strongest\)/);
