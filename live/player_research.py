@@ -8,6 +8,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from live.player_ml_runtime import load_runtime, use_projection
+from live.qb_starter_eligibility import verified_qb_starter
 try:
     import nflreadpy as nfl
 except ModuleNotFoundError:  # lets pure projection helpers be unit tested locally
@@ -517,7 +518,15 @@ def generate():
                     recent=sorted(records,key=lambda x:int(x["week"]))[-5:]
                     last_week=int(recent[-1]["week"])
                     player_name=records[-1].get("player_display_name") or records[-1].get("player_name")
-                    confirmed_starter=verified_game_starter(verified_starters,game["game_id"],team,records[-1].get("position"),player_name)
+                    position=str(records[-1].get("position") or "").upper()
+                    if position=="QB":
+                        confirmed_starter=verified_qb_starter(
+                            verified_starters,game["game_id"],team,player_name)
+                        # Do not split QB passing workloads across depth-chart backups.
+                        if not confirmed_starter: continue
+                    else:
+                        confirmed_starter=verified_game_starter(
+                            verified_starters,game["game_id"],team,position,player_name)
                     # Do not automatically reallocate to long-inactive players,
                     # except for a skill-position player confirmed for this exact game.
                     if week-last_week>2 and not confirmed_starter: continue
@@ -535,7 +544,14 @@ def generate():
                 latest_team=str(stats[-1].get("team") or "")
                 effective_team=current_team or latest_team
                 if effective_team!=team: continue
-                confirmed_starter=verified_game_starter(verified_starters,game["game_id"],team,stats[-1].get("position"),player_name)
+                position=str(stats[-1].get("position") or "").upper()
+                if position=="QB":
+                    confirmed_starter=verified_qb_starter(
+                        verified_starters,game["game_id"],team,player_name)
+                    if not confirmed_starter: continue
+                else:
+                    confirmed_starter=verified_game_starter(
+                        verified_starters,game["game_id"],team,position,player_name)
                 if week-int(stats[-1]["week"])>2 and not confirmed_starter: continue
                 availability=overrides.get((team,player_name.casefold()),overrides.get((latest_team,player_name.casefold()),"unconfirmed"))
                 if availability in ("out","inactive","ir"): continue
