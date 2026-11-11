@@ -1,6 +1,6 @@
 import unittest
 from live.player_ml_runtime import forecast, use_projection, MODEL_FAMILY
-from tools.train_deployable_player_ml import decide, train
+from tools.train_deployable_player_ml import decide, historical_walk_forward, train
 
 
 def runtime(active=False):
@@ -45,6 +45,41 @@ class DeployableMLTests(unittest.TestCase):
         rows=observations()
         for r in rows:r['player_ml_pair']['trained_season']=2026;r['player_ml_pair']['trained_week']=8
         self.assertFalse(decide(rows,{})['passing_yards']['active'])
+
+    def test_historical_walk_forward_can_seed_qualification_without_leakage(self):
+        rows=[]
+        for week in range(1,11):
+            for player in range(50):
+                rows.append({'season':2026,'week':week,'market':'passing_yards',
+                    'player_id':f'{week}-{player}','new':120,'actual':100})
+        result=historical_walk_forward(rows)['passing_yards']
+        self.assertTrue(result['eligible'])
+        self.assertGreaterEqual(result['paired'],300)
+        self.assertGreaterEqual(result['weeks'],4)
+        self.assertLess(result['candidate_mae'],result['baseline_mae']*.97)
+        activated=decide([],{}, {'passing_yards':result})['passing_yards']
+        self.assertTrue(activated['active'])
+        self.assertEqual(activated['evidence_source'],'historical_walk_forward')
+
+    def test_historical_duplicate_rows_do_not_count_twice(self):
+        rows=[]
+        for week in range(1,11):
+            for player in range(50):
+                row={'season':2026,'week':week,'market':'passing_yards',
+                     'player_id':f'{week}-{player}','new':120,'actual':100}
+                rows.extend((row,row.copy()))
+        result=historical_walk_forward(rows)['passing_yards']
+        self.assertFalse(result['eligible'])
+        self.assertEqual(result['paired'],0)
+
+    def test_historical_replay_requires_minimum_training_history(self):
+        rows=[{'season':2026,'week':week,'market':'passing_yards',
+               'player_id':f'{week}-{player}','new':120,'actual':100}
+              for week in range(1,3) for player in range(50)]
+        result=historical_walk_forward(rows)['passing_yards']
+        self.assertFalse(result['eligible'])
+        self.assertEqual(result['paired'],0)
+
     def test_train_and_inference_match(self):
         rows=[{'season':2026,'week':str(i%8+1),'market':'passing_yards','new':str(100+i),'actual':str(110+i)} for i in range(150)]
         model=train(rows)['passing_yards'];r={'family':MODEL_FAMILY,'models':{'passing_yards':model}}
