@@ -22,7 +22,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 <link rel="stylesheet" href="assets/fd-insights.css?v=1"><main class="wrap lab-clear"><section id="fd-weekly-report-card" class="fd-insight-panel" aria-live="polite"><h2>Weekly model report card</h2><p class="fd-insight-note">Checking graded weeks…</p></section><header class="clear-hero"><span class="eyebrow">FOURTHDOWN · WEEKLY LEARNING</span><h1>Model Lab</h1><p class="clear-lead">See what’s live, what’s being tested, and whether the changes are helping.</p><a class="clear-link" href="history.html">See actual game results →</a></header>
 <div class="clear-intro"><strong>How it works</strong><span>Models learn from completed games, then face the current forecast on the same saved pregame matchups. A sustained improvement can earn a switch; weaker results trigger a rollback.</span></div>
 <div class="clear-section-heading"><div><span class="eyebrow">YOUR LIVE MODELS</span><h2>What’s running now</h2></div><p>Updated after the weekly learning cycle.</p></div>
-<section class="card fd-lab-section"><span class="fd-lab-tag ml">PLAYER ML AUTO-DEPLOY</span><h2>Player yard projections</h2><p class="muted">The candidate and existing forecast are compared on the same saved games. A model can be promoted after at least 100 matched forecasts across four weeks with a 3% improvement; weaker recent results trigger a return to the existing formula.</p><div id="player-ml-live-status">Waiting for the first weekly training run.</div></section>
+<section class="card fd-lab-section"><span class="fd-lab-tag ml">PLAYER ML AUTO-DEPLOY</span><h2>Player yard projections</h2><p class="muted">Player cards show the existing projection and the ML candidate side by side. Labs grades both against the same final player stats using a week-by-week historical replay and saved pregame forecasts. ML currently covers passing, rushing, and receiving yards; other prop types will say when no ML estimate is available.</p><div id="player-ml-live-status">Waiting for the first weekly training run.</div></section>
 <section class="card fd-lab-section"><span class="fd-lab-tag ml">GAME ML AUTO-DEPLOY</span><h2>Game scores and picks</h2><p class="muted">Margin controls winner and spread picks; total controls over/under. Promotion requires matching pregame results, better score accuracy and no decline in the applicable pick results. Weak recent results trigger rollback.</p><div id="game-ml-live-status">Waiting for the first weekly training run.</div></section>
 <section class="card fd-lab-section" id="weekly-learning-cycle"><span class="fd-lab-tag ml">LATEST WEEKLY LEARNING CYCLE</span><h2>What the models learned this week</h2><p class="muted" id="weekly-cycle-updated">Checking the latest published weekly evidence…</p><div id="weekly-cycle-content"><div class="fd-lab-simple">The weekly evidence report will appear after the learning cycle publishes.</div></div><p class="fd-lab-help">This summarizes the latest training and one-week challenger checks. A promising result is a reason to keep testing; it does not automatically change the live model.</p></section>
 <section class="card fd-lab-section" id="weekly-ml-summary"><span class="fd-lab-tag ml">WEEKLY MACHINE LEARNING</span><h2>What the historical tests show</h2><p class="muted" id="weekly-ml-updated">Checking the latest published historical tests…</p><div class="fd-lab-simple" id="weekly-ml-overview">Results will appear when the Wednesday research report is published.</div><div class="recommendations" id="weekly-ml-recommendations"></div><p class="fd-lab-help">Lower MAE means predictions were closer to actual results on average. Historical wins are research evidence, not permission to replace the live model. The weekly learning summary below shows the latest training cycle and its one-week checks.</p></section>
@@ -92,12 +92,27 @@ function renderPlayerMLLive(runtime){
  if(!runtime?.decisions){el.textContent='Waiting for the first weekly training run.';return;}
  const names={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards'};
  const updated=runtime.generated_at_utc?new Date(runtime.generated_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago',timeZoneName:'short'}):'not available';
- el.innerHTML='<p class="clear-updated">Last reviewed: '+safe(updated)+'</p>'+Object.entries(names).map(([key,label])=>{const d=runtime.decisions[key]||{};
- const state=d.active?'ML active':d.reason==='rolled_back'?'Rolled back to existing model':'Existing model active';
- const n=Number.isFinite(Number(d.paired))?Number(d.paired):0;
- const weeks=Number.isFinite(Number(d.weeks))?Number(d.weeks):0;
- const scores=d.baseline_mae==null||d.candidate_mae==null?'Not enough matched results to say what works yet':'Average error: existing '+fmt(d.baseline_mae)+' / ML '+fmt(d.candidate_mae)+' yards (lower is better)';
- return '<article class="fd-lab-market"><strong>'+safe(label)+': '+safe(state)+'</strong> · '+n+' matched forecasts across '+weeks+' weeks<br><span class="muted">'+safe(scores)+'</span>'+fdLabBars(d,'yards')+'</article>';}).join('');
+ el.innerHTML='<p class="clear-updated">Last reviewed: '+safe(updated)+'</p>'+Object.entries(names).map(([key,label])=>{
+  const d=runtime.decisions[key]||{},h=d.historical_walk_forward||null;
+  const state=d.active?'ML active · candidate in use':d.reason==='rolled_back'?'Rolled back to existing model':'Existing model active · ML candidate not promoted';
+  const histCount=Number.isFinite(Number(h?.paired))?Number(h.paired):0;
+  const histWeeks=Number.isFinite(Number(h?.weeks))?Number(h.weeks):0;
+  const liveCount=Number.isFinite(Number(d.paired))?Number(d.paired):0;
+  const liveWeeks=Number.isFinite(Number(d.weeks))?Number(d.weeks):0;
+  const hasHist=h&&h.baseline_mae!==null&&h.baseline_mae!==undefined&&h.candidate_mae!==null&&h.candidate_mae!==undefined;
+  const histScore=hasHist
+   ?'Historical replay: existing average error '+fmt(h.baseline_mae)+' / ML '+fmt(h.candidate_mae)+' yards · '+histCount+' held-out forecasts across '+histWeeks+' weeks'+(h.improvement_pct!==null&&h.improvement_pct!==undefined?' · '+fmt(h.improvement_pct)+'% improvement':'')
+   :'Historical replay: '+histCount+' held-out forecasts across '+histWeeks+' weeks; error comparison unavailable';
+  const reasons=Array.isArray(h?.qualification_reasons)?h.qualification_reasons:[];
+  const gate=h?.eligible?'Historical replay cleared the promotion checks.':
+   reasons.length?'Still needed: '+reasons.join(' · '):'Not enough matched results yet; historical replay results have not been published.';
+  const liveScore=d.baseline_mae!==null&&d.baseline_mae!==undefined&&d.candidate_mae!==null&&d.candidate_mae!==undefined
+   ?'Live saved forecasts: existing '+fmt(d.baseline_mae)+' / ML '+fmt(d.candidate_mae)+' yards'
+   :'Live saved forecasts: '+liveCount+' matched forecasts across '+liveWeeks+' weeks';
+  const histBars=hasHist?fdLabBars({baseline_mae:h.baseline_mae,candidate_mae:h.candidate_mae},'yards'):'';
+  const liveBars=d.baseline_mae!==null&&d.candidate_mae!==null?fdLabBars(d,'yards'):'';
+  return '<article class="fd-lab-market"><strong>'+safe(label)+': '+safe(state)+'</strong><br><span class="muted">'+safe(histScore)+'</span>'+histBars+'<br><span class="muted">'+safe(gate)+'</span><br><span class="muted">'+safe(liveScore)+'</span>'+liveBars+'</article>';
+ }).join('');
 }
 function renderGameMLLive(runtime){
  const el=document.getElementById('game-ml-live-status');
