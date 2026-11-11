@@ -1,6 +1,6 @@
 {
   "family": "paired-ridge-v1",
-  "generated_at_utc": "2026-11-11T21:34:33.562214+00:00",
+  "generated_at_utc": "2026-11-11T23:07:14.559686+00:00",
   "policy": "Historical walk-forward: 300 held-out forecasts across 4 of the latest 8 weeks, at least 3% MAE gain and 20 recent forecasts; frozen live pairs take precedence after 100 pairs across 4 weeks; rollback if recent MAE worsens by 10%",
   "models": {
     "receiving_yards": {
@@ -37,7 +37,7 @@
   "decisions": {
     "passing_yards": {
       "active": false,
-      "reason": "awaiting_paired_evidence",
+      "reason": "historical_not_qualified",
       "paired": 0,
       "weeks": 0,
       "baseline_mae": null,
@@ -46,11 +46,26 @@
       "recent_baseline_mae": null,
       "recent_candidate_mae": null,
       "recent_regression": false,
-      "evidence_source": "frozen_live_pairs"
+      "historical_walk_forward": {
+        "eligible": false,
+        "paired": 205,
+        "weeks": 8,
+        "baseline_mae": 64.69,
+        "candidate_mae": 62.516,
+        "improvement_pct": 3.36,
+        "recent_paired": 52,
+        "recent_baseline_mae": 63.879,
+        "recent_candidate_mae": 61.862,
+        "recent_change_pct": -3.16,
+        "qualification_reasons": [
+          "Need 300 held-out forecasts; have 205"
+        ]
+      },
+      "evidence_source": "historical_walk_forward"
     },
     "rushing_yards": {
       "active": false,
-      "reason": "awaiting_paired_evidence",
+      "reason": "historical_not_qualified",
       "paired": 0,
       "weeks": 0,
       "baseline_mae": null,
@@ -59,11 +74,26 @@
       "recent_baseline_mae": null,
       "recent_candidate_mae": null,
       "recent_regression": false,
-      "evidence_source": "frozen_live_pairs"
+      "historical_walk_forward": {
+        "eligible": false,
+        "paired": 423,
+        "weeks": 8,
+        "baseline_mae": 24.03,
+        "candidate_mae": 24.053,
+        "improvement_pct": -0.09,
+        "recent_paired": 104,
+        "recent_baseline_mae": 23.453,
+        "recent_candidate_mae": 23.517,
+        "recent_change_pct": 0.27,
+        "qualification_reasons": [
+          "Need at least 3% lower average error; current improvement is -0.1%"
+        ]
+      },
+      "evidence_source": "historical_walk_forward"
     },
     "receiving_yards": {
       "active": false,
-      "reason": "awaiting_paired_evidence",
+      "reason": "historical_not_qualified",
       "paired": 0,
       "weeks": 0,
       "baseline_mae": null,
@@ -72,7 +102,22 @@
       "recent_baseline_mae": null,
       "recent_candidate_mae": null,
       "recent_regression": false,
-      "evidence_source": "frozen_live_pairs"
+      "historical_walk_forward": {
+        "eligible": false,
+        "paired": 974,
+        "weeks": 8,
+        "baseline_mae": 23.797,
+        "candidate_mae": 23.788,
+        "improvement_pct": 0.04,
+        "recent_paired": 247,
+        "recent_baseline_mae": 22.668,
+        "recent_candidate_mae": 22.776,
+        "recent_change_pct": 0.47,
+        "qualification_reasons": [
+          "Need at least 3% lower average error; current improvement is 0.0%"
+        ]
+      },
+      "evidence_source": "historical_walk_forward"
     }
   }
 }
