@@ -1,34 +1,34 @@
 {
   "family": "paired-ridge-v1",
-  "generated_at_utc": "2026-11-11T18:56:03.854291+00:00",
-  "policy": "100 paired forecasts over at least 4 of last 8 weeks; 3% improvement; 20 recent forecasts; rollback if recent MAE worsens by 10%",
+  "generated_at_utc": "2026-11-11T21:34:33.562214+00:00",
+  "policy": "Historical walk-forward: 300 held-out forecasts across 4 of the latest 8 weeks, at least 3% MAE gain and 20 recent forecasts; frozen live pairs take precedence after 100 pairs across 4 weeks; rollback if recent MAE worsens by 10%",
   "models": {
     "receiving_yards": {
       "coefficients": [
-        0.833947006508756,
-        0.1601751239129518
+        0.8339470065087556,
+        0.16017512391295136
       ],
-      "intercept": 4.805049333800959,
+      "intercept": 4.80504933380098,
       "trained_season": 2026,
       "trained_week": 9,
       "training_rows": 19717
     },
     "passing_yards": {
       "coefficients": [
-        0.5241234506145418,
-        -0.8837614807159938
+        0.524123450614542,
+        -0.8837614807159928
       ],
-      "intercept": 121.68910093108703,
+      "intercept": 121.68910093108695,
       "trained_season": 2026,
       "trained_week": 9,
       "training_rows": 3996
     },
     "rushing_yards": {
       "coefficients": [
-        0.8291566421931257,
-        0.23037109257378285
+        0.8291566421931255,
+        0.23037109257378258
       ],
-      "intercept": 6.0305317286979445,
+      "intercept": 6.030531728697959,
       "trained_season": 2026,
       "trained_week": 9,
       "training_rows": 8251
@@ -44,7 +44,9 @@
       "candidate_mae": null,
       "recent_paired": 0,
       "recent_baseline_mae": null,
-      "recent_candidate_mae": null
+      "recent_candidate_mae": null,
+      "recent_regression": false,
+      "evidence_source": "frozen_live_pairs"
     },
     "rushing_yards": {
       "active": false,
@@ -55,7 +57,9 @@
       "candidate_mae": null,
       "recent_paired": 0,
       "recent_baseline_mae": null,
-      "recent_candidate_mae": null
+      "recent_candidate_mae": null,
+      "recent_regression": false,
+      "evidence_source": "frozen_live_pairs"
     },
     "receiving_yards": {
       "active": false,
@@ -66,7 +70,9 @@
       "candidate_mae": null,
       "recent_paired": 0,
       "recent_baseline_mae": null,
-      "recent_candidate_mae": null
+      "recent_candidate_mae": null,
+      "recent_regression": false,
+      "evidence_source": "frozen_live_pairs"
     }
   }
 }
