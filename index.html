@@ -1718,7 +1718,7 @@ function fdWireMetricFilters(root){
 }
 function fdScorecardMatchupSummary(g){
  const p=getProjection(g),metrics=p?.analysis?.matchup_metrics;
- const colors={ARI:'#97233f',ATL:'#a71930',BAL:'#4f2683',BUF:'#00338d',CAR:'#0085ca',CHI:'#c83803',CIN:'#fb4f14',CLE:'#ff3c00',DAL:'#235a9a',DEN:'#fb4f14',DET:'#0076b6',GB:'#38704c',HOU:'#a71930',IND:'#326bba',JAC:'#008b8a',KC:'#e31837',LV:'#768390',LAC:'#0080c6',LA:'#245aba',LAR:'#245aba',MIA:'#008e97',MIN:'#673bb5',NE:'#c60c30',NO:'#a48a48',NYG:'#2260a0',NYJ:'#248853',PHI:'#00838c',PIT:'#d3a400',SEA:'#4b8c32',SF:'#aa0000',TB:'#d50a0a',TEN:'#4b92db',WAS:'#a03038',WSH:'#a03038'};
+ const colors={ARI:'#ff9a44',ATL:'#ff7585',BAL:'#b39afc',BUF:'#72baff',CAR:'#58cbe6',CHI:'#ff9856',CIN:'#ff8061',CLE:'#ff9656',DAL:'#70baff',DEN:'#ff9c63',DET:'#64baff',GB:'#b9d86c',HOU:'#ff806d',IND:'#70bcff',JAC:'#57d4bd',JAX:'#57d4bd',KC:'#ff7676',LV:'#c4cbd2',LAC:'#70d2ff',LA:'#f3bf5b',LAR:'#f3bf5b',MIA:'#65d6c4',MIN:'#b59bff',NE:'#78b2ee',NO:'#e6d29e',NYG:'#6baaff',NYJ:'#67d9a7',PHI:'#5ecdc5',PIT:'#ead05f',SF:'#ff7474',SEA:'#9bd875',TB:'#fa8888',TEN:'#86bdfa',WAS:'#f1788b',WSH:'#f1788b'};
  if(!Array.isArray(metrics)||g.state==='post')return '';
  const color=t=>colors[canon(t)]||'#68869a';
  const rank=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))&&Number(x)>=1&&Number(x)<=32?Number(x):null;
@@ -1732,7 +1732,7 @@ function fdScorecardMatchupSummary(g){
     else if(defense<offense){badge='✓ '+opponent+' defense edge';badgeColor=color(opponent);edgeUnit='defense';}
     else{badge='Ranks level';badgeColor='#91a3ae';}
    }
-   const meter=(unit,value,unitTeam)=>'<div class="fd-adv-unit"><span class="fd-adv-unit-label">'+unit+' <b>'+(value===null?'N/A':'#'+value)+'</b></span><div class="fd-mini-track" role="img" aria-label="'+esc(unitTeam)+' '+unit.toLowerCase()+' rank '+(value===null?'unavailable':value+' of 32')+'; lower rank is stronger"><i style="--fd-adv-fill:'+color(unitTeam)+';width:'+(value===null?'0':((33-value)/32*100).toFixed(1))+'%"></i></div></div>';
+   const meter=(unit,value,unitTeam)=>'<div class="fd-adv-unit"><span class="fd-adv-unit-label">'+unit+' <b>'+(value===null?'N/A':'#'+value)+'</b></span><div class="fd-mini-track" role="img" aria-label="'+esc(unitTeam)+' '+unit.toLowerCase()+' rank '+(value===null?'unavailable':value+' of 32')+'; lower rank is stronger"><i style="--fd-adv-fill:'+color(unitTeam)+';background-color:'+color(unitTeam)+';width:'+(value===null?'0':((33-value)/32*100).toFixed(1))+'%"></i></div></div>';
    return '<div class="fd-adv-side" style="--fd-adv-team:'+color(team)+';--fd-adv-opponent:'+color(opponent)+'"><div class="fd-adv-side-head"><strong class="fd-adv-team">'+esc(team)+'</strong><span class="fd-adv-edge" style="--fd-adv-edge-color:'+badgeColor+'">'+esc(badge)+'</span></div>'+meter('Offense',offense,team)+meter('Opponent defense',defense,opponent)+'</div>';
   };
   const away=side(g.away.abbr,g.home.abbr,m.away_offense,m.home_defense),home=side(g.home.abbr,g.away.abbr,m.home_offense,m.away_defense);if(!away&&!home)return '';
