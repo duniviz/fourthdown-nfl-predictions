@@ -889,8 +889,8 @@ async function fdOpenMatchup(g){
      const mlDelta=mlCandidate!==null&&validLine?mlCandidate-line:null,baseDelta=validLine?projection-line:null;
      const mlState=mlCandidate===null?(countLabels[x.stat_key]?'Not available · yardage models only':'No matched ML estimate'):shadow.active?'Active model':'Candidate · research only';
      const mlProjection='<div class="fd-modal-ml-compare"><div><small>CURRENT MODEL</small><strong>'+(validProjection?num(projection):'—')+'</strong><em>'+(baseDelta===null?'No verified DK line':(baseDelta>0?'+':'')+num(baseDelta)+' vs DK')+'</em></div><div><small>ML PROJECTION</small><strong>'+(mlCandidate===null?'—':num(mlCandidate))+'</strong><em>'+(mlDelta===null?'No matched estimate':(mlDelta>0?'+':'')+num(mlDelta)+' vs DK')+'</em><span>'+mlState+'</span></div></div>';
-     const fantasyWeather=weatherScenario?window.FDWeatherTemplate?.adjustFantasy(marketKey||x.stat_key,projection,weatherScenario,x.position):null;
-     const generalWeather=weatherScenario?window.FDWeatherTemplate?.adjust(marketKey||x.stat_key,projection,weatherScenario):null;
+     const fantasyWeather=weatherScenario?window.FDWeatherTemplate?.adjustFantasy(x.market_key||x.stat_key,projection,weatherScenario,x.position):null;
+     const generalWeather=weatherScenario?window.FDWeatherTemplate?.adjust(x.market_key||x.stat_key,projection,weatherScenario):null;
      const weatherValue=fantasyWeather?.projection??generalWeather;
      const weatherDelta=validProjection&&weatherValue!==null&&weatherValue!==undefined?weatherValue-projection:null;
      const weatherLabel=fantasyWeather?.label||'General weather context estimate';
