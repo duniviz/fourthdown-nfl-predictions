@@ -19,7 +19,7 @@ function scenario(weather,generatedAt,kickoff){
  const rain=precip>0&&/rain|shower|storm/.test(condition);
  const snow=precip>0&&/snow|sleet/.test(condition);
  const rainWeight=rain?precip/100:0,snowWeight=snow?precip/100:0;
- const windy=wind>=15,breezy=wind>=8&&wind<15,freezing=temp<32,hot=temp>=80;
+ const windy=wind>=15,breezy=wind>=8&&wind<15,freezing=temp<32,hot=temp>=85;
  let points=0,passing=0,passAttempts=0,receptions=0,rushAttempts=0;
  const reasons=[];
  if(rain){points-=0.8*rainWeight;passing-=0.025*rainWeight;passAttempts-=0.01*rainWeight;receptions-=0.02*rainWeight;rushAttempts+=0.01*rainWeight;reasons.push('rain chance '+Math.round(precip)+'%');}
@@ -27,10 +27,10 @@ function scenario(weather,generatedAt,kickoff){
  else if(breezy){points-=0.3;passing-=0.01;reasons.push('breezy (8–14 mph)');}
  if(snow){passing-=0.01*snowWeight;reasons.push('snow chance '+Math.round(precip)+'%');}
  if(freezing){passing-=0.01;reasons.push('freezing (<32°F)');}
- if(hot)reasons.push('hot (80°F+ estimate)');
+ if(hot)reasons.push('hot (85°F+)');
  return {points,passing,passAttempts,receptions,rushAttempts,rushEfficiency:0,
   reasons,wind,temp,precip,rain,snow,rainWeight,snowWeight,windy,breezy,freezing,hot,
-  hotThresholdEstimated:true,version:'weather-context-v3',
+  hotThresholdEstimated:false,version:'weather-context-v3',
   evidence:{source:'P3 Adaptive NFL Weather Effects',fairGames:4397,windyGames:279,rainGames:295,freezingGames:324,
    observed:{fairPoints:43.9,rainPoints:39.3,windyPoints:40.5,rainPassRatePct:57.9,fairPassRatePct:59.5,
     rainPassEpa:-0.030,fairPassEpa:0.045,rainCompletionPct:54.6,fairCompletionPct:57.3,
