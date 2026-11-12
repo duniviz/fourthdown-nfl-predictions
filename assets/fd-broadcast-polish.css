@@ -18,3 +18,17 @@
 .fd-lastfive{background:linear-gradient(135deg,#0b1c29,#0a151f)!important;border-color:#ffffff20!important}.fd-fivebar{box-shadow:0 0 12px color-mix(in srgb,currentColor 26%,transparent)}
 @media(max-width:560px){.fd-broadcast-scoreboard{gap:3px;padding:11px 5px}.fd-broadcast-team strong{font-size:24px}.fd-matchup-lines>div{padding:8px}.fd-matchup-lines strong{font-size:13px}.fd-matchup-card{padding:14px!important}}
 @media(prefers-reduced-motion:reduce){.fd-matchup-card,.fd-mobile-prop-card,.bet-card{animation:none!important}.fd-matchup-win-track span{transition:none!important}}
+
+/* Matchup comparison: team-color identity and a clearly labeled unit edge. */
+.fd-adv-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0 16px}
+.fd-adv-side{min-width:0;padding:12px;border:1px solid color-mix(in srgb,var(--fd-adv-team) 50%,#263a46);border-left:4px solid var(--fd-adv-team);border-radius:14px;background:linear-gradient(145deg,color-mix(in srgb,var(--fd-adv-team) 17%,#0a141b),#0a141bcc 75%);box-shadow:inset 0 1px 0 #ffffff0c}
+.fd-adv-side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 9px}
+.fd-adv-team{font-size:16px;font-weight:900;letter-spacing:.06em;color:#f2f8fb}
+.fd-adv-edge{display:inline-flex;align-items:center;justify-content:center;max-width:68%;padding:5px 8px;border:1px solid color-mix(in srgb,var(--fd-adv-edge-color) 75%,white 10%);border-radius:999px;background:color-mix(in srgb,var(--fd-adv-edge-color) 24%,#071018);color:#f5fbff;font-size:10px;font-weight:850;line-height:1.2;text-align:center}
+.fd-adv-unit{margin-top:8px}
+.fd-adv-unit-label{display:flex;justify-content:space-between;gap:8px;color:#bfd0d8;font-size:12px}
+.fd-adv-unit-label b{color:#fff;font-variant-numeric:tabular-nums}
+.fd-mini-track{height:10px;margin-top:4px;overflow:hidden;border-radius:99px;background:#263d49}
+.fd-mini-track i{display:block;height:100%;border-radius:99px;background:var(--fd-adv-fill)!important;box-shadow:0 0 10px color-mix(in srgb,var(--fd-adv-fill) 45%,transparent)}
+.fd-insight-note{line-height:1.55}
+@media(max-width:520px){.fd-adv-row{gap:8px}.fd-adv-side{padding:10px 9px}.fd-adv-edge{font-size:9px;padding:4px 6px}.fd-adv-team{font-size:14px}.fd-adv-unit-label{font-size:11px}}
