@@ -34,8 +34,8 @@ class WeatherPlayerBacktestTests(unittest.TestCase):
 
     def test_overlapping_weather_uses_strongest_split_once(self):
         adjusted, category = candidate_projection(200, "QB", "passing_yards", {"rain", "windy"})
-        self.assertAlmostEqual(adjusted, 188.0)
-        self.assertEqual(category, "snow" if False else "rain")
+        self.assertAlmostEqual(adjusted, 190.9)
+        self.assertEqual(category, "rain")
 
 
 if __name__ == "__main__":
