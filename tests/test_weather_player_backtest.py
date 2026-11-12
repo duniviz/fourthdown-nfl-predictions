@@ -22,9 +22,16 @@ class WeatherPlayerBacktestTests(unittest.TestCase):
         })
         self.assertEqual(categories, set())
 
-    def test_hot_weather_starts_at_85_f(self):
-        self.assertNotIn("hot", classify_weather({"roof": "outdoors", "temp": 84.9}))
-        self.assertIn("hot", classify_weather({"roof": "outdoors", "temp": 85}))
+    def test_temperature_bands_match_p3_definitions(self):
+        cases = [
+            (31.9, "freezing"), (32, "cold"), (44.9, "cold"),
+            (45, "cool"), (59.9, "cool"), (60, "mild"),
+            (74.9, "mild"), (75, "warm"), (84.9, "warm"),
+            (85, "hot"),
+        ]
+        for temp, expected in cases:
+            with self.subTest(temp=temp):
+                self.assertIn(expected, classify_weather({"roof": "outdoors", "temp": temp}))
 
     def test_candidate_applies_shrunk_p3_position_split(self):
         adjusted, category = candidate_projection(200, "QB", "passing_yards", {"rain"})
