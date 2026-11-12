@@ -720,7 +720,7 @@ document.addEventListener('change',event=>{
 async function fdOpenMatchup(g){
  const [verifiedStarterFeed,recentGameFeed]=await Promise.all([fetch('data/verified-starters.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})),fetch('data/player-recent-games.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}))]);
  const p=getProjection(g),away=canon(g.away.abbr),home=canon(g.home.abbr);
- const weatherScenario=window.FDWeatherTemplate?.scenario(savedWeather?.games?.[p?.game_id],savedWeather?.generated_at_utc,p?.kickoff_utc||g.date)||null;
+ const weatherScenario=window.FDWeatherTemplate?.scenario(savedWeather?.games?.[p?.game_id],savedWeather?.generated_at_utc,p?.kickoff_utc||g.date,stadiums[canon(g.home.abbr)]?.[2]==='roof')||null;
  const num=v=>v===null||v===undefined||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1);
  const analysis=p?.analysis||{};
  const form=(side)=>analysis[side]?.recent_form||{};
