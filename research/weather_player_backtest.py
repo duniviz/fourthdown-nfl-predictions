@@ -87,7 +87,7 @@ def classify_weather(game):
         categories.add("windy")
     if temp is not None and temp < 32:
         categories.add("freezing")
-    if temp is not None and temp >= 80:
+    if temp is not None and temp >= 85:
         categories.add("hot")
     return categories
 
