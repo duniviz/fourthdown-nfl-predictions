@@ -6,9 +6,16 @@
 (function(root){
 'use strict';
 function finite(v){return v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v))?Number(v):null;}
-function scenario(weather,generatedAt,kickoff){
- if(!weather||weather.status!=='forecast')return null;
+function scenario(weather,generatedAt,kickoff,isIndoor=false){
  const now=Date.now(),kick=Date.parse(kickoff),captured=Date.parse(generatedAt);
+ if(isIndoor){
+  if(!Number.isFinite(kick)||now>=kick)return null;
+  return {points:1.5,passing:0,passAttempts:0,receptions:0,rushAttempts:0,rushEfficiency:0,
+   reasons:['indoors'],wind:null,temp:null,precip:null,rain:false,snow:false,rainWeight:0,snowWeight:0,
+   windy:false,breezy:false,freezing:false,hot:false,indoor:true,
+   version:'weather-context-v4',evidence:{source:'P3 Adaptive NFL Weather Effects',category:'Indoors',observedPointsPerGame:46.9,fairPointsPerGame:43.9,shrinkage:0.5}};
+ }
+ if(!weather||weather.status!=='forecast')return null;
  if(!Number.isFinite(kick)||!Number.isFinite(captured)||captured>=kick||now>=kick)return null;
  const wind=finite(String(weather.wind_speed||'').match(/\d+(?:\.\d+)?/)?.[0]);
  const temp=finite(weather.temperature_f),precip=finite(weather.precipitation_probability);
@@ -53,20 +60,23 @@ function adjustFantasy(market,baseline,s,position){
  const n=finite(baseline);if(n===null||n<0||!s)return null;
  const pos=String(position||'').toUpperCase(),key=String(market||'').toLowerCase();
  const categoryWeights=[];
+ if(s.indoor)categoryWeights.push(['indoor',1]);
  if(s.rain)categoryWeights.push(['rain',s.rainWeight]);
  if(s.snow)categoryWeights.push(['snow',s.snowWeight]);
  if(s.windy)categoryWeights.push(['windy',1]);
  if(s.freezing)categoryWeights.push(['freezing',1]);
  if(s.hot)categoryWeights.push(['hot',1]);
  const rates={
-  QB:{passing_yards:{rain:-.091,snow:-.120,windy:-.079,freezing:-.050,hot:-.030}},
-  WR:{receiving_yards:{rain:-.101,snow:-.118,windy:-.075,freezing:-.050,hot:-.010},
-      receptions:{rain:-.050,snow:-.090,windy:-.090,freezing:-.010,hot:0}},
-  TE:{receiving_yards:{rain:-.083,snow:-.137,windy:-.122,freezing:-.070,hot:-.108}},
-  RB:{receptions:{rain:-.030,snow:-.050,windy:-.120,freezing:.020,hot:0}}
+  QB:{passing_yards:{indoor:.06,hot:-.03,freezing:-.05,rain:-.09,snow:-.12,windy:-.08}},
+  WR:{receiving_yards:{indoor:.10,hot:-.01,freezing:-.05,rain:-.10,snow:-.12,windy:-.07},
+      receptions:{indoor:.08,hot:-.01,freezing:-.05,rain:-.09,snow:-.09,windy:-.05}},
+  TE:{receiving_yards:{indoor:0,hot:-.11,freezing:-.07,rain:-.08,snow:-.14,windy:-.12}},
+  RB:{rushing_yards:{indoor:.02,hot:-.02,freezing:.03,rain:.03,snow:.10,windy:0},
+      receptions:{indoor:.05,hot:.02,freezing:-.03,rain:-.05,snow:-.12,windy:-.04}}
  };
  const alias={player_pass_yds:'passing_yards',passing_yards:'passing_yards',
   player_rec_yds:'receiving_yards',receiving_yards:'receiving_yards',
+  player_rush_yds:'rushing_yards',rushing_yards:'rushing_yards',
   player_receptions:'receptions',receptions:'receptions'};
  const metric=alias[key],byCategory=rates[pos]?.[metric];
  if(!byCategory)return null;
@@ -78,7 +88,7 @@ function adjustFantasy(market,baseline,s,position){
  const chosen=applicable[0],shrinkage=0.5;
  return {projection:Math.max(0,n*(1+chosen.rate*chosen.weight*shrinkage)),
   category:chosen.name,observedRate:chosen.rate,forecastWeight:chosen.weight,shrinkage,
-  label:'P3 position split · 50% shrunk · '+chosen.name};
+  label:(pos==='RB'&&metric==='rushing_yards'?'P3 RB team yards split · 50% shrunk (rushing proxy) · ':'P3 position split · 50% shrunk · ')+chosen.name};
 }
 root.FDWeatherTemplate={scenario,adjust,adjustFantasy};
 })(typeof window!=='undefined'?window:globalThis);
