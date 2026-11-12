@@ -27,17 +27,19 @@ function scenario(weather,generatedAt,kickoff,isIndoor=false){
  const snow=precip>0&&/snow|sleet/.test(condition);
  const rainWeight=rain?precip/100:0,snowWeight=snow?precip/100:0;
  const windy=wind>=15,breezy=wind>=8&&wind<15,freezing=temp<32,hot=temp>=85;
- let points=0,passing=0,passAttempts=0,receptions=0,rushAttempts=0;
- const reasons=[];
- if(rain){points-=0.8*rainWeight;passing-=0.025*rainWeight;passAttempts-=0.01*rainWeight;receptions-=0.02*rainWeight;rushAttempts+=0.01*rainWeight;reasons.push('rain chance '+Math.round(precip)+'%');}
- if(windy){points-=wind>=22?1.0:0.6;passing-=0.02;passAttempts-=0.01;receptions-=0.01;rushAttempts+=0.01;reasons.push(wind>=22?'very windy':'windy (15+ mph)');}
- else if(breezy){points-=0.3;passing-=0.01;reasons.push('breezy (8–14 mph)');}
- if(snow){passing-=0.01*snowWeight;reasons.push('snow chance '+Math.round(precip)+'%');}
- if(freezing){passing-=0.01;reasons.push('freezing (<32°F)');}
- if(hot)reasons.push('hot (85°F+)');
+ let passing=0,passAttempts=0,receptions=0,rushAttempts=0;
+ const reasons=[],pointCandidates=[];
+ // P3 per-game scoring differences, shrunk 50% toward no adjustment.
+ if(rain){pointCandidates.push(-2.3*rainWeight);passing-=0.025*rainWeight;passAttempts-=0.01*rainWeight;receptions-=0.02*rainWeight;rushAttempts+=0.01*rainWeight;reasons.push('rain chance '+Math.round(precip)+'%');}
+ if(windy){pointCandidates.push(wind>=22?-5.5:-1.9);passing-=0.02;passAttempts-=0.01;receptions-=0.01;rushAttempts+=0.01;reasons.push(wind>=22?'very windy (22+ mph)':'windy (15–21 mph)');}
+ else if(breezy){pointCandidates.push(-1.1);passing-=0.01;reasons.push('breezy (8–14 mph)');}
+ if(snow){pointCandidates.push(-0.25*snowWeight);passing-=0.01*snowWeight;reasons.push('snow chance '+Math.round(precip)+'%');}
+ if(freezing){pointCandidates.push(-0.2);passing-=0.01;reasons.push('freezing (<32°F)');}
+ if(hot){pointCandidates.push(-0.25);reasons.push('hot (85°F+)');}
+ const points=pointCandidates.sort((a,b)=>Math.abs(b)-Math.abs(a))[0]||0;
  return {points,passing,passAttempts,receptions,rushAttempts,rushEfficiency:0,
   reasons,wind,temp,precip,rain,snow,rainWeight,snowWeight,windy,breezy,freezing,hot,
-  hotThresholdEstimated:false,version:'weather-context-v3',
+  hotThresholdEstimated:false,version:'weather-context-v4',
   evidence:{source:'P3 Adaptive NFL Weather Effects',fairGames:4397,windyGames:279,rainGames:295,freezingGames:324,
    observed:{fairPoints:43.9,rainPoints:39.3,windyPoints:40.5,rainPassRatePct:57.9,fairPassRatePct:59.5,
     rainPassEpa:-0.030,fairPassEpa:0.045,rainCompletionPct:54.6,fairCompletionPct:57.3,
