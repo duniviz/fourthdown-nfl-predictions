@@ -22,6 +22,10 @@ class WeatherPlayerBacktestTests(unittest.TestCase):
         })
         self.assertEqual(categories, set())
 
+    def test_hot_weather_starts_at_85_f(self):
+        self.assertNotIn("hot", classify_weather({"roof": "outdoors", "temp": 84.9}))
+        self.assertIn("hot", classify_weather({"roof": "outdoors", "temp": 85}))
+
     def test_candidate_applies_shrunk_p3_position_split(self):
         adjusted, category = candidate_projection(200, "QB", "passing_yards", {"rain"})
         self.assertAlmostEqual(adjusted, 190.9)
