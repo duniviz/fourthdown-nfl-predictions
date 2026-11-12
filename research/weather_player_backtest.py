@@ -54,7 +54,9 @@ RATES = {
             "rain": -0.05, "snow": -0.12, "windy": -0.04,
         },
     },
-}ALIASES = {
+}
+
+ALIASES = {
     "player_pass_yds": "passing_yards",
     "player_rec_yds": "receiving_yards",
     "player_receptions": "receptions",
