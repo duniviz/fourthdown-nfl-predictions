@@ -158,7 +158,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/verified-starters.json data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/injuries.json data/weather.json data/simulations.json data/player-results.json data/player-calibration.json data/game-official-results.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json
+          git add -f data/verified-starters.json data/ai-game-previews.json data/live-v2.json data/v2-history.json data/player-research.json data/injuries.json data/weather.json data/simulations.json data/player-results.json data/player-calibration.json data/game-official-results.json data/game-learning-status.json data/player-weight-learning.json data/projection-audit.json data/free-feature-research.json data/v3-score-shadow.json data/v3-score-shadow-history.json data/weather-history.json
           if git diff --cached --quiet; then
             echo "No changes to publish"
           else

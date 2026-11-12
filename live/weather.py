@@ -1,21 +1,65 @@
-"""Fetch stadium-specific NWS hourly forecasts near NFL kickoff.
+"""Fetch kickoff-time NWS forecasts and append pregame weather snapshots.
 
-Weather is published as context, NOT silently turned into arbitrary point penalties.
+Weather remains context only; saved forecasts are research data, not live adjustments.
 """
 import json
 import urllib.request
-from datetime import datetime,timezone,timedelta
+from datetime import datetime,timezone
 from pathlib import Path
 STADIUMS={
 "ARI":(33.5276,-112.2626,True),"ATL":(33.7554,-84.4008,True),"BAL":(39.278,-76.6227,False),"BUF":(42.7738,-78.7868,False),"CAR":(35.2258,-80.8528,False),"CHI":(41.8623,-87.6167,False),"CIN":(39.0954,-84.516,False),"CLE":(41.5061,-81.6995,False),"DAL":(32.748,-97.0928,True),"DEN":(39.7439,-105.0208,False),"DET":(42.34,-83.0456,True),"GB":(44.5013,-88.0622,False),"HOU":(29.6847,-95.4107,True),"IND":(39.7601,-86.1639,True),"JAC":(30.3239,-81.6373,False),"KC":(39.0489,-94.4839,False),"LV":(36.0909,-115.1833,True),"LAC":(33.9535,-118.3392,True),"LAR":(33.9535,-118.3392,True),"MIA":(25.958,-80.2389,False),"MIN":(44.9737,-93.2575,True),"NE":(42.0909,-71.2643,False),"NO":(29.9511,-90.0812,True),"NYG":(40.8135,-74.0745,False),"NYJ":(40.8135,-74.0745,False),"PHI":(39.9008,-75.1675,False),"PIT":(40.4468,-80.0158,False),"SF":(37.403,-121.97,False),"SEA":(47.5952,-122.3316,False),"TB":(27.9759,-82.5033,False),"TEN":(36.1665,-86.7713,False),"WAS":(38.9076,-76.8645,False)}
+ROOT=Path("data")
+OUT=ROOT/"weather.json"
+HISTORY=ROOT/"weather-history.json"
+
 def get(url):
     req=urllib.request.Request(url,headers={"User-Agent":"FOURTHDOWN predictions (public research; contact via GitHub)","Accept":"application/geo+json, application/json"})
     with urllib.request.urlopen(req,timeout=12) as r:return json.load(r)
+
+def append_snapshot_history(result, games, existing):
+    """Append one timestamped forecast per game/run; never overwrite prior forecasts."""
+    rows=list(existing)
+    seen={(str(r.get("game_id")),str(r.get("captured_at_utc")))
+          for r in rows if isinstance(r,dict)}
+    captured=result["generated_at_utc"]
+    by_id={str(g.get("game_id")):g for g in games}
+    for gid,weather in result.get("games",{}).items():
+        game=by_id.get(str(gid),{})
+        kickoff=game.get("kickoff_utc")
+        if not kickoff:
+            continue
+        try:
+            kick=datetime.fromisoformat(str(kickoff).replace("Z","+00:00"))
+            saved=datetime.fromisoformat(str(captured).replace("Z","+00:00"))
+            if kick.tzinfo is None or saved.tzinfo is None or saved>=kick:
+                continue
+        except (TypeError,ValueError):
+            continue
+        key=(str(gid),str(captured))
+        if key in seen:
+            continue
+        rows.append({
+            "game_id":str(gid),"season":game.get("season"),"week":game.get("week"),
+            "home":game.get("home"),"away":game.get("away"),
+            "kickoff_utc":kick.astimezone(timezone.utc).isoformat(),
+            "captured_at_utc":saved.astimezone(timezone.utc).isoformat(),
+            "source":result.get("source"),"status":weather.get("status"),
+            "temperature_f":weather.get("temperature_f"),
+            "wind_speed":weather.get("wind_speed"),
+            "wind_direction":weather.get("wind_direction"),
+            "precipitation_probability":weather.get("precipitation_probability"),
+            "conditions":weather.get("conditions"),
+            "forecast_period_start":weather.get("forecast_period_start"),
+            "roof":weather.get("roof"),
+        })
+        seen.add(key)
+    return rows
+
 def main():
-    games=json.loads(Path("data/live-v2.json").read_text())["games"]
+    games=json.loads((ROOT/"live-v2.json").read_text())["games"]
     result={"generated_at_utc":datetime.now(timezone.utc).isoformat(),"source":"US National Weather Service hourly forecast","model_adjusted":False,"games":{}}
     for g in games:
-        home=g["home"]; gid=g["game_id"]
+        home=g["home"];gid=g["game_id"]
         if home not in STADIUMS:
             result["games"][gid]={"status":"stadium_unknown"};continue
         lat,lon,roof=STADIUMS[home]
@@ -33,6 +77,9 @@ def main():
             result["games"][gid]={"status":"forecast","temperature_f":p.get("temperature"),"wind_speed":p.get("windSpeed"),"wind_direction":p.get("windDirection"),"precipitation_probability":(p.get("probabilityOfPrecipitation") or {}).get("value"),"conditions":p.get("shortForecast"),"forecast_period_start":p.get("startTime")}
         except Exception:
             result["games"][gid]={"status":"unavailable"}
-    Path("data/weather.json").write_text(json.dumps(result,indent=2)+"\n")
-    print("Wrote weather status for",len(result["games"]),"games")
+    OUT.write_text(json.dumps(result,indent=2)+"\n")
+    old=json.loads(HISTORY.read_text()) if HISTORY.exists() else {"schema_version":1,"snapshots":[]}
+    history=append_snapshot_history(result,games,old.get("snapshots",[]))
+    HISTORY.write_text(json.dumps({"schema_version":1,"snapshots":history},indent=2)+"\n")
+    print("Wrote weather status for",len(result["games"]),"games and archived",len(history),"pregame forecasts")
 if __name__=="__main__":main()
