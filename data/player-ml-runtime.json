@@ -1,6 +1,6 @@
 {
   "family": "paired-ridge-v1",
-  "generated_at_utc": "2026-11-11T23:07:14.559686+00:00",
+  "generated_at_utc": "2026-11-12T20:13:50.139424+00:00",
   "policy": "Historical walk-forward: 300 held-out forecasts across 4 of the latest 8 weeks, at least 3% MAE gain and 20 recent forecasts; frozen live pairs take precedence after 100 pairs across 4 weeks; rollback if recent MAE worsens by 10%",
   "models": {
     "receiving_yards": {
