@@ -85,10 +85,19 @@ def classify_weather(game):
     temp = number(game.get("temp"))
     if wind is not None and wind >= 15:
         categories.add("windy")
-    if temp is not None and temp < 32:
-        categories.add("freezing")
-    if temp is not None and temp >= 85:
-        categories.add("hot")
+    if temp is not None:
+        if temp < 32:
+            categories.add("freezing")
+        elif temp < 45:
+            categories.add("cold")
+        elif temp < 60:
+            categories.add("cool")
+        elif temp < 75:
+            categories.add("mild")
+        elif temp < 85:
+            categories.add("warm")
+        else:
+            categories.add("hot")
     return categories
 
 
