@@ -1,8 +1,12 @@
 name: Daily DraftKings player prop refresh
 on:
   schedule:
-    # 13:20 UTC is 7:20 AM Central during standard time and 8:20 AM during daylight time.
-    - cron: '20 13 * * *'
+    # Refresh lines first on Tue/Wed/Sat, about 35 minutes before the forecast run.
+    - cron: '40 21,22 * * 2,3,6'
+    # Game-day line refreshes precede the hourly forecast checks by about 30 minutes.
+    - cron: '37 * * 0,1,4,5,6'
+    # Monday Night Football: refresh lines 15 minutes before each gated forecast check.
+    - cron: '15 0,1,2 * * 2'
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,16 +25,42 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Check scheduled refresh window
+        id: schedule_guard
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "40 21,22 * * 2,3,6" ]]; then
+            if [[ "$(TZ=America/Chicago date +%H)" != "16" ]]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "37 * * 0,1,4,5,6" ]]; then
+            if ! python -m scripts.check_pregame_forecast_window; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "15 0,1,2 * * 2" ]]; then
+            if ! python scripts/check_mnf_forecast_window.py; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "run=true" >> "$GITHUB_OUTPUT"
       - name: Refresh DK player props from primary feed
+        if: steps.schedule_guard.outputs.run == 'true'
         continue-on-error: true
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m tools.refresh_parlayapi_odds --props-only
       - name: Fill missing or stale DK props from backup feed
+        if: steps.schedule_guard.outputs.run == 'true'
         env:
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
         run: python -m tools.refresh_sportsgameodds_backup
       - name: Publish refreshed DK player quotes and game lines
+        if: steps.schedule_guard.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
