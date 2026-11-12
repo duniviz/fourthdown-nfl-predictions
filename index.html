@@ -1411,8 +1411,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
   if(g.state==='post')return '';
   const teams=[canon(g.home.abbr),canon(g.away.abbr)];
   const yards=playerResearch.filter(x=>teams.includes(canon(x.team))&&teams.includes(canon(x.opponent))&&!unavailablePlayer(x)&&hasDkLine(x))
-   .map(x=>({player_id:x.player_id,game_id:x.game_id,stat_key:x.stat_key,player:x.player,team:x.team,market:x.market||String(x.stat_key).replace(/_/g,' '),market_key:x.stat_key,projection:Number(x.projection),line:Number(x.dk_line),last5:x.last_5_avg??null,player_ml_shadow:x.player_ml_shadow||null}));
-  const counts=fdCountPropRows(g).map(x=>({player:x.player,team:x.team,market:x.market,market_key:x.market_key,projection:Number(x.projection),line:Number(x.line),last5:x.last5??null,player_ml_shadow:x.player_ml_shadow||null}));
+   .map(x=>({player_id:x.player_id,game_id:x.game_id,stat_key:x.stat_key,player:x.player,team:x.team,market:x.market||String(x.stat_key).replace(/_/g,' '),market_key:x.stat_key,position:x.position,projection:Number(x.projection),line:Number(x.dk_line),last5:x.last_5_avg??null,player_ml_shadow:x.player_ml_shadow||null}));
+  const counts=fdCountPropRows(g).map(x=>({player:x.player,team:x.team,market:x.market,market_key:x.market_key,position:x.position,projection:Number(x.projection),line:Number(x.line),last5:x.last5??null,player_ml_shadow:x.player_ml_shadow||null}));
   const unique=new Map();
   for(const x of [...yards,...counts]){
    if(!Number.isFinite(x.projection)||!Number.isFinite(x.line)||x.line<=0)continue;
@@ -1430,8 +1430,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    const mlStatus=mlValue==='Not available yet'?'Yardage models only':shadow.active?'Currently in use':'Candidate · not in use yet';
    const gameProjection=getProjection(g),kickoff=gameProjection?.kickoff_utc||g.date;
    const wx=window.FDWeatherTemplate?.scenario(savedWeather?.games?.[gameProjection?.game_id],savedWeather?.generated_at_utc,kickoff);
-   const weatherValue=wx?window.FDWeatherTemplate.adjust(x.market_key,x.projection,wx):null;
-   const weatherMarkup=wx?'<div class="fd-unified-ml-projection fd-weather-candidate"><span>Weather estimate · research</span><strong>'+fmt(weatherValue)+'</strong><small>'+fmt(x.projection)+' baseline · '+(weatherValue-x.projection>=0?'+':'')+fmt(weatherValue-x.projection)+' change · '+esc(wx.reasons.join(', '))+'</small></div>':'';
+   const fantasyWeather=wx?window.FDWeatherTemplate.adjustFantasy(x.market_key,x.projection,wx,x.position):null;
+   const generalWeather=wx?window.FDWeatherTemplate.adjust(x.market_key,x.projection,wx):null;
+   const weatherValue=fantasyWeather?fantasyWeather.projection:generalWeather;
+   const weatherLabel=fantasyWeather?fantasyWeather.label:'General weather context estimate';
+   const weatherMarkup=wx&&weatherValue!==null&&Math.abs(weatherValue-x.projection)>=0.05?'<div class="fd-unified-ml-projection fd-weather-candidate"><span>Weather estimate · research</span><strong>'+fmt(weatherValue)+'</strong><small>'+fmt(x.projection)+' baseline · '+(weatherValue-x.projection>=0?'+':'')+fmt(weatherValue-x.projection)+' change · '+esc(weatherLabel)+' · '+esc(wx.reasons.join(', '))+'</small></div>':'';
 
    return '<article class="fd-unified-prop" data-fd-player="'+esc(x.player)+'" data-fd-team="'+esc(x.team)+'" data-fd-dk-line="'+x.line+'" data-fd-projection="'+x.projection+'" data-fd-market="'+esc(x.market_key)+'"><div class="fd-unified-prop-head"><div><strong>'+esc(x.player)+'</strong><small>'+esc(x.team)+' · '+esc(x.market)+'</small></div><span class="fd-unified-side">'+side+'</span></div><div class="fd-unified-prop-metrics"><div><small>CURRENT MODEL</small><strong>'+fmt(x.projection)+'</strong></div><div><small>DK LINE</small><strong>'+fmt(x.line)+'</strong></div><div><small>DIFFERENCE</small><strong>'+edgeText+'</strong></div><div><small>LAST 5 AVG</small><strong>'+last+'</strong></div></div><div class="fd-unified-ml-projection"><span>ML projection</span><strong>'+mlValue+'</strong><small>'+mlStatus+'</small></div>'+weatherMarkup+window.FDProjectionChanges.player(x)+'</article>';
   }).join('');
