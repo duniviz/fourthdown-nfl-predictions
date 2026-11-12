@@ -1,20 +1,20 @@
 {
-  "generated_at_utc": "2026-11-10T22:52:02.820518+00:00",
+  "generated_at_utc": "2026-11-12T02:05:50.444448+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
   "projection_markets": 164,
-  "flagged_markets": 15,
+  "flagged_markets": 17,
   "flags": [
     {
-      "player_id": "00-0033537",
-      "player_name": "Deshaun Watson",
-      "team": "CLE",
+      "player_id": "00-0032950",
+      "player_name": "Carson Wentz",
+      "team": "MIN",
       "market": "passing_yards",
-      "sleeper_id": "4017",
-      "injury_flag": "out",
+      "sleeper_id": "3161",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -29,12 +29,22 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0033106",
+      "player_name": "Jared Goff",
+      "team": "DET",
+      "market": "passing_yards",
+      "sleeper_id": "3163",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035228",
       "player_name": "Kyler Murray",
       "team": "MIN",
       "market": "passing_yards",
       "sleeper_id": "5849",
-      "injury_flag": "out",
+      "injury_flag": "doubtful",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -45,16 +55,6 @@
       "market": "passing_yards",
       "sleeper_id": "4881",
       "injury_flag": "injured_reserve",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0033873",
-      "player_name": "Patrick Mahomes",
-      "team": "KC",
-      "market": "passing_yards",
-      "sleeper_id": "4046",
-      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -74,7 +74,7 @@
       "team": "NE",
       "market": "receiving_yards",
       "sleeper_id": "5859",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -85,6 +85,16 @@
       "market": "receiving_yards",
       "sleeper_id": "2133",
       "injury_flag": "injured_reserve",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0034960",
+      "player_name": "Jakobi Meyers",
+      "team": "JAX",
+      "market": "receiving_yards",
+      "sleeper_id": "5947",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -104,7 +114,17 @@
       "team": "SF",
       "market": "receiving_yards",
       "sleeper_id": "2216",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
+      "player_id": "00-0035229",
+      "player_name": "T.J. Hockenson",
+      "team": "MIN",
+      "market": "receiving_yards",
+      "sleeper_id": "5844",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -119,22 +139,22 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0033906",
+      "player_name": "Alvin Kamara",
+      "team": "NO",
+      "market": "rushing_yards",
+      "sleeper_id": "4035",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035685",
       "player_name": "David Montgomery",
       "team": "HOU",
       "market": "rushing_yards",
       "sleeper_id": "5892",
-      "injury_flag": "out",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0033537",
-      "player_name": "Deshaun Watson",
-      "team": "CLE",
-      "market": "rushing_yards",
-      "sleeper_id": "4017",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -154,9 +174,9 @@
       "team": "MIN",
       "market": "rushing_yards",
       "sleeper_id": "5849",
-      "injury_flag": "out",
+      "injury_flag": "doubtful",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     }
   ]
-}
+}\n
