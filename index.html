@@ -1738,7 +1738,7 @@ function fdScorecardMatchupSummary(g){
   const away=side(g.away.abbr,g.home.abbr,m.away_offense,m.home_defense),home=side(g.home.abbr,g.away.abbr,m.home_offense,m.away_defense);if(!away&&!home)return '';
   return '<div class="fd-adv-title">'+label+' · offense vs opposing defense</div><div class="fd-adv-row">'+away+home+'</div>';
  }).join('');
- return pairs?'<details class="fd-adv-card"><summary>Matchup advantage bars</summary><p class="fd-insight-note">Team colors identify each unit. A checkmark names the stronger ranked unit in that offense-versus-defense matchup; lower rank is stronger. This compares unit rankings, not the predicted game winner.</p>'+pairs+'</details>':'';
+ return pairs?'<details class="fd-adv-card"><summary>Matchup advantage bars</summary><p class="fd-insight-note">Team colors identify each unit. Ranks run from #1 (strongest) to #32 (weakest), so lower numbers are stronger and longer bars mean a better rank. A checkmark names the stronger-ranked unit in that offense-versus-defense matchup; this compares unit rankings, not the predicted game winner.</p>'+pairs+'</details>':'';
 }
 
 function fdNextScheduledUtc(hours,minute,days){const now=new Date();for(let offset=0;offset<=8;offset++){const d=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()+offset,hours,minute));if(days.includes(d.getUTCDay())&&d>now)return d;}return null;}
