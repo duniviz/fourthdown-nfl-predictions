@@ -22,34 +22,39 @@ SHRINKAGE = 0.5
 RATES = {
     "QB": {
         "passing_yards": {
-            "rain": -0.091, "snow": -0.120, "windy": -0.079,
-            "freezing": -0.050, "hot": -0.030,
+            "indoor": 0.06, "hot": -0.03, "freezing": -0.05,
+            "rain": -0.09, "snow": -0.12, "windy": -0.08,
         },
     },
     "WR": {
         "receiving_yards": {
-            "rain": -0.101, "snow": -0.118, "windy": -0.075,
-            "freezing": -0.050, "hot": -0.010,
+            "indoor": 0.10, "hot": -0.01, "freezing": -0.05,
+            "rain": -0.10, "snow": -0.12, "windy": -0.07,
         },
         "receptions": {
-            "rain": -0.050, "snow": -0.090, "windy": -0.090,
-            "freezing": -0.010, "hot": 0.0,
+            "indoor": 0.08, "hot": -0.01, "freezing": -0.05,
+            "rain": -0.09, "snow": -0.09, "windy": -0.05,
         },
     },
     "TE": {
         "receiving_yards": {
-            "rain": -0.083, "snow": -0.137, "windy": -0.122,
-            "freezing": -0.070, "hot": -0.108,
+            "indoor": 0.00, "hot": -0.11, "freezing": -0.07,
+            "rain": -0.08, "snow": -0.14, "windy": -0.12,
         },
     },
     "RB": {
+        # P3 combines rushing and receiving into one RB team-yardage bucket;
+        # applying it to player rushing yards is a proxy, not an exact split.
+        "rushing_yards": {
+            "indoor": 0.02, "hot": -0.02, "freezing": 0.03,
+            "rain": 0.03, "snow": 0.10, "windy": 0.00,
+        },
         "receptions": {
-            "rain": -0.030, "snow": -0.050, "windy": -0.120,
-            "freezing": 0.020, "hot": 0.0,
+            "indoor": 0.05, "hot": 0.02, "freezing": -0.03,
+            "rain": -0.05, "snow": -0.12, "windy": -0.04,
         },
     },
-}
-ALIASES = {
+}ALIASES = {
     "player_pass_yds": "passing_yards",
     "player_rec_yds": "receiving_yards",
     "player_receptions": "receptions",
@@ -70,7 +75,7 @@ def classify_weather(game):
     """Return observed weather categories when schedule data supports them."""
     roof = str(game.get("roof") or "").strip().lower()
     if any(token in roof for token in ("dome", "closed", "indoor")):
-        return set()
+        return {"indoor"}
 
     categories = set()
     conditions = str(
