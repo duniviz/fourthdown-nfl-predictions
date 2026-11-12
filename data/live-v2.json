@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-11T01:56:57.333019+00:00",
+  "generated_at_utc": "2026-11-12T02:05:33.415215+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_uncalibrated",
@@ -173,7 +173,7 @@
             "unit": "yds/play",
             "away_offense": {
               "rank": 19,
-              "value": 5.3
+              "value": 5.31
             },
             "home_defense": {
               "rank": 8,
@@ -763,14 +763,14 @@
         "markets": {
           "game_margin_home": {
             "baseline": 3.35,
-            "candidate": 2.96,
+            "candidate": 2.93,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
             "baseline": 49.2,
-            "candidate": 48.8,
+            "candidate": 48.77,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -1186,8 +1186,10 @@
         },
         "HOU": {
           "points": 0.0,
-          "status": "injury_feed_unavailable",
-          "players": []
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
         }
       },
       "qb_starter_adjustments": {
@@ -1533,14 +1535,14 @@
         "markets": {
           "game_margin_home": {
             "baseline": -3.02,
-            "candidate": -3.98,
+            "candidate": -4.02,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
             "baseline": 43.78,
-            "candidate": 44.85,
+            "candidate": 44.81,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -2314,14 +2316,14 @@
         "markets": {
           "game_margin_home": {
             "baseline": -0.25,
-            "candidate": -1.77,
+            "candidate": -1.76,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
             "baseline": 42.3,
-            "candidate": 42.21,
+            "candidate": 42.22,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -3086,14 +3088,14 @@
         "markets": {
           "game_margin_home": {
             "baseline": -7.81,
-            "candidate": -5.6,
+            "candidate": -5.61,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
             "baseline": 43.74,
-            "candidate": 47.36,
+            "candidate": 47.35,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -4240,14 +4242,14 @@
         "markets": {
           "game_margin_home": {
             "baseline": -4.39,
-            "candidate": -3.74,
+            "candidate": -3.7,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
           },
           "game_total": {
             "baseline": 42.71,
-            "candidate": 45.88,
+            "candidate": 45.92,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -4633,7 +4635,7 @@
           },
           "game_total": {
             "baseline": 48.37,
-            "candidate": 47.66,
+            "candidate": 47.65,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
@@ -5407,7 +5409,7 @@
         "markets": {
           "game_margin_home": {
             "baseline": 2.83,
-            "candidate": 0.81,
+            "candidate": 0.82,
             "active": false,
             "trained_season": 2026,
             "trained_week": 9
