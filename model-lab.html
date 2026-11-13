@@ -193,7 +193,7 @@ function renderPlayerYardHistory(rows){
  season.innerHTML='<option value="all">All seasons</option>'+seasons.map(y=>'<option value="'+safe(y)+'">'+safe(y)+'</option>').join('');
  const fmt1=v=>v==null||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1);
  const gameLabel=id=>{const p=String(id||'').split('_');return p.length>=4?p[0]+' W'+Number(p[1])+' · '+p[2]+' vs '+p[3]:String(id||'—');};
- const mlValue=r=>{for(const k of ['ml_projection','player_ml_projection','ml_forecast','challenger_projection'])if(r[k]!=null&&Number.isFinite(Number(r[k])))return Number(r[k]);return null;};
+ const mlValue=r=>{const direct=['ml_projection','player_ml_projection','ml_forecast','challenger_projection'].map(k=>r[k]).find(v=>v!=null&&Number.isFinite(Number(v)));if(direct!=null)return Number(direct);const nested=r.ml_comparison?.ml_projection;if(nested!=null&&Number.isFinite(Number(nested)))return Number(nested);return null;};
  const draw=()=>{
   const filtered=rows.filter(r=>{
    const seasonOK=season.value==='all'||String(r.game_id||'').startsWith(season.value+'_');
@@ -208,7 +208,7 @@ function renderPlayerYardHistory(rows){
   const mlMae=mlRows.length?mlRows.reduce((s,r)=>s+Math.abs(mlValue(r)-Number(r.actual)),0)/mlRows.length:null;
   const hits=arr=>arr.filter(r=>Math.sign(Number(r.projection)-Number(r.dk_line))===Math.sign(Number(r.actual)-Number(r.dk_line))).length;
   const mlHits=mlRows.filter(r=>Math.sign(mlValue(r)-Number(r.dk_line))===Math.sign(Number(r.actual)-Number(r.dk_line))).length;
-  document.getElementById('yard-history-summary').innerHTML='<strong>'+dkRows.length+'</strong> saved DK lines · Current model MAE <strong>'+fmt1(mae(dkRows))+'</strong> yds · ML MAE <strong>'+fmt1(mlMae)+'</strong> yds ('+mlRows.length+' matched) · DK side correct: model <strong>'+ (dkRows.length?Math.round(hits(dkRows)/dkRows.length*100)+'%':'—')+'</strong>, ML <strong>'+(mlRows.length?Math.round(mlHits/mlRows.length*100)+'%':'—')+'</strong>';
+  document.getElementById('yard-history-summary').innerHTML='<strong>'+dkRows.length+'</strong> saved DK lines · Current model MAE <strong>'+fmt1(mae(dkRows))+'</strong> yds · On the '+mlRows.length+' ML-matched lines: current MAE <strong>'+fmt1(mae(mlRows))+'</strong> vs ML MAE <strong>'+fmt1(mlMae)+'</strong> · DK side correct: model <strong>'+ (dkRows.length?Math.round(hits(dkRows)/dkRows.length*100)+'%':'—')+'</strong>, ML <strong>'+(mlRows.length?Math.round(mlHits/mlRows.length*100)+'%':'—')+'</strong>';
   document.getElementById('yard-history-status').textContent=filtered.length+' saved player-game rows shown. The ML comparison uses only rows with a saved ML projection; no missing ML values are estimated.';
   document.getElementById('yard-history-table').innerHTML=dkRows.length?dkRows.map(r=>{
    const ml=mlValue(r),modelErr=Number(r.projection)-Number(r.actual),mlErr=ml==null?null:ml-Number(r.actual);
