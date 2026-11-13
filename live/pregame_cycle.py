@@ -3,7 +3,6 @@ import json
 import os
 import subprocess
 import sys
-import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -12,7 +11,7 @@ from live import game_official_pregame_locks as locks, game_pregame_observations
 from live import line_history
 from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
-from live.pregame_capture_guard import due_refresh, slates
+from live.pregame_capture_guard import due_lock, due_refresh, slates
 from scripts.capture_pregame_snapshots import collect, STATS
 from tools.projection_change_tracker import main as build_projection_changes
 
@@ -172,31 +171,32 @@ def next_wake(games,done,stamp):
     return min((t for t in times if stamp<t<=stamp+timedelta(hours=4)),default=None)
 
 def main():
-    deadline=now()+timedelta(hours=5,minutes=25)
-    while True:
-        subprocess.run(["git","pull","--ff-only","origin","main"],check=True)
-        games=read("live-v2")["games"]
-        if not games:raise ValueError("Published schedule has no games")
-        stamp=now()
-        refresh_state=read("dk-slate-refreshes",{"slates":[]})
-        done=set(refresh_state.get("slates",[]))
-        # Older marker files recorded a slate before the requests completed.
-        # Reopen only those legacy markers while they are still in the safe
-        # refresh window; historical markers remain untouched.
-        for kickoff in due_refresh(games,set(),stamp):
-            key=kickoff.isoformat()
-            if key in done and not slate_done(refresh_state,key):
-                done.discard(key)
-        keys=slots(games,done,stamp)
-        if keys:
-            # Persist available inputs before any provider request can fail.
-            checkpoint(games)
-            refresh(keys,games,stamp)
-            done=set(read("dk-slate-refreshes",{"slates":[]}).get("slates",[]))
+    subprocess.run(["git","pull","--ff-only","origin","main"],check=True)
+    games=read("live-v2")["games"]
+    if not games:raise ValueError("Published schedule has no games")
+    stamp=now()
+    refresh_state=read("dk-slate-refreshes",{"slates":[]})
+    done=set(refresh_state.get("slates",[]))
+    # Older marker files recorded a slate before the requests completed.
+    # Reopen only those legacy markers while they are still in the safe
+    # refresh window; historical markers remain untouched.
+    for kickoff in due_refresh(games,set(),stamp):
+        key=kickoff.isoformat()
+        if key in done and not slate_done(refresh_state,key):
+            done.discard(key)
+    keys=slots(games,done,stamp)
+    lock_due=due_lock(games,stamp)
+    if not keys and not lock_due:
+        print("No pregame refresh or official-lock window is due")
+        return
+
+    if keys:
+        # Persist available inputs before any provider request can fail.
         checkpoint(games)
-        # If a boundary passed while publishing, process it immediately.
-        wake=next_wake(games,done,stamp)
-        if not wake or wake>=deadline:break
-        print("Next capture:",wake.astimezone(CENTRAL).isoformat(),flush=True)
-        time.sleep(max(0,(wake-now()).total_seconds()))
+        refresh(keys,games,stamp)
+        # Reload completion markers in case the provider refresh failed.
+        done=set(read("dk-slate-refreshes",{"slates":[]}).get("slates",[]))
+    # This scheduled run is intentionally short. The next cron run checks
+    # again, so the shared writer queue is released between kickoff windows.
+    checkpoint(games)
 if __name__=="__main__":main()
