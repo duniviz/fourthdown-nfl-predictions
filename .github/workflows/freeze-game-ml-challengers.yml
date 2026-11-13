@@ -12,7 +12,8 @@ name: Freeze independent pregame game ML challengers
 permissions:
   contents: write
 concurrency:
-  group: game-ml-freeze
+  # Serialize shared forecast/snapshot writes with the DK pregame pipeline.
+  group: pregame-pipeline
   cancel-in-progress: false
 jobs:
   freeze:
@@ -28,7 +29,7 @@ jobs:
       - name: Check independent early ML window (T-90 to T-45)
         id: guard
         run: |
-          if [[ "${{ github.event_name }}" == "push" ]] || [[ "${{ github.event_name }}" == "workflow_run" && "${{ github.event.workflow_run.conclusion }}" == "success" ]] || python -m research.game_ml_freeze_guard; then
+          if python -m research.game_ml_freeze_guard; then
             echo "due=true" >> "$GITHUB_OUTPUT"
           else
             echo "due=false" >> "$GITHUB_OUTPUT"
