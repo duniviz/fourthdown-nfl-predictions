@@ -3,7 +3,6 @@ import json
 import os
 import subprocess
 import sys
-import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -12,7 +11,7 @@ from live import game_official_pregame_locks as locks, game_pregame_observations
 from live import line_history
 from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
-from live.pregame_capture_guard import due_refresh, slates
+from live.pregame_capture_guard import due_lock, due_refresh, slates
 from scripts.capture_pregame_snapshots import collect, STATS
 from tools.projection_change_tracker import main as build_projection_changes
 
