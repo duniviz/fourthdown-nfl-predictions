@@ -89,7 +89,7 @@ for kickoff_value, away, home, source in kickoffs:
         remaining = (kickoff - now).total_seconds() / 60
     except (ValueError, TypeError, KeyError):
         continue
-    if 10 <= remaining <= 35:
+    if 20 <= remaining <= 35:
         print("PREGAME_WINDOW", away, home, round(remaining, 1), "source", source)
         sys.exit(0)
 print("No pregame snapshot window")

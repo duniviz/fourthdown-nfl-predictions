@@ -50,6 +50,9 @@ jobs:
           else
             echo 'WARNING: Historical game scores unavailable; no game ML forecasts generated' >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Save matched live, ML, and DraftKings player snapshots
+        if: steps.kickoff.outputs.run == 'true'
+        run: python -m scripts.capture_pregame_snapshots
       - name: Verify frozen live and challenger coverage
         if: steps.kickoff.outputs.run == 'true'
         run: |
@@ -62,11 +65,17 @@ jobs:
           rows=json.loads(archive.read_text()).get("rows",[]) if archive.exists() else []
           models=Counter(str(r.get("model")) for r in rows)
           games=len({str(r.get("game_id")) for r in snapshots})
+          history=json.loads(Path("data/player-history.json").read_text()).get("players",[])
+          ml_pairs=sum(isinstance(r.get("player_ml_shadow"),dict) for r in history)
+          dk_lines=sum(r.get("dk_line") is not None for r in history)
           summary=(f"## Pregame freeze coverage\\n"
                    f"- Snapshot records: {len(snapshots)} across {games} games\\n"
                    f"- Frozen forecast rows: {len(rows)}\\n"
                    f"- Frozen live rows: {models.get('live',0)}\\n"
-                   f"- Challenger models: {len([m for m in models if m != 'live'])}\\n")
+                   f"- Challenger models: {len([m for m in models if m != 'live'])}\\n"
+                   f"- Saved player history rows: {len(history)}\\n"
+                   f"- Rows with ML shadow: {ml_pairs}\\n"
+                   f"- Rows with DK lines: {dk_lines}\\n")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as out:out.write(summary)
           print(summary)
           if not snapshots:
@@ -87,7 +96,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/weekly-shadow-forecasts.json
+          git add -f data/weekly-shadow-forecasts.json data/pregame-snapshots.json data/player-history.json
           if ! git diff --cached --quiet; then
             git commit -m "data: preserve latest pre-kickoff projections and DK lines"
             git pull --rebase origin main
