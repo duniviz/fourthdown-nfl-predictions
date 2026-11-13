@@ -4,6 +4,12 @@ on:
     branches: [main]
     paths:
       - 'scripts/capture_pregame_snapshots.py'
+      - 'scripts/check_pregame_kickoff_window.py'
+      - 'tests/test_player_ml_snapshot_end_to_end.py'
+      - '.github/workflows/capture-pregame-snapshots.yml'
+      - 'scripts/check_pregame_kickoff_window.py'
+      - 'tests/test_player_ml_snapshot_end_to_end.py'
+      - '.github/workflows/capture-pregame-snapshots.yml'
       - 'tools/weather_adjustment_template.py'
       - 'tests/test_capture_pregame_snapshots.py'
       - 'tests/test_weather_adjustment_template.py'
@@ -52,6 +58,8 @@ jobs:
         run: node tests/test_dk_lines_frontend.js
       - name: Test saved odds through capture and grading
         run: python -m unittest discover -s tests -p 'test_pregame_end_to_end.py' -v
+      - name: Test player ML and DK snapshot persistence end to end
+        run: python -m unittest discover -s tests -p 'test_player_ml_snapshot_end_to_end.py' -v
       - name: Test real GB-CAR historical regression
         run: python -m unittest discover -s tests -p 'test_gb_car_pregame.py' -v
       - name: Audit Week 7 and Week 8 completed games
