@@ -13,10 +13,10 @@
             "team": "NYJ"
           },
           {
-            "detail": "questionable",
-            "player": "Omar Cooper Jr.",
-            "position": "WR",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Trevin Wallace",
+            "position": "LB",
+            "status": "Out",
             "team": "NYJ"
           },
           {
@@ -494,6 +494,13 @@
           },
           {
             "detail": "questionable",
+            "player": "Woody Marks",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "HOU"
+          },
+          {
+            "detail": "questionable",
             "player": "Reed Blankenship",
             "position": "S",
             "status": "Questionable",
@@ -517,13 +524,6 @@
             "detail": "questionable",
             "player": "Marvin Harrison Jr.",
             "position": "WR",
-            "status": "Questionable",
-            "team": "HOU"
-          },
-          {
-            "detail": "questionable",
-            "player": "Woody Marks",
-            "position": "RB",
             "status": "Questionable",
             "team": "HOU"
           }
@@ -684,6 +684,13 @@
         "event_id": "401873057",
         "players": [
           {
+            "detail": "out",
+            "player": "Carnell Tate",
+            "position": "WR",
+            "status": "Out",
+            "team": "TEN"
+          },
+          {
             "detail": "questionable",
             "player": "Tyjae Spears",
             "position": "RB",
@@ -694,13 +701,6 @@
             "detail": "questionable",
             "player": "Tony Pollard",
             "position": "RB",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Carnell Tate",
-            "position": "WR",
             "status": "Questionable",
             "team": "TEN"
           },
@@ -717,6 +717,20 @@
             "position": "LB",
             "status": "Questionable",
             "team": "TEN"
+          },
+          {
+            "detail": "out",
+            "player": "Jessie Bates III",
+            "position": "S",
+            "status": "Out",
+            "team": "JAX"
+          },
+          {
+            "detail": "questionable",
+            "player": "Bhayshul Tuten",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "JAX"
           },
           {
             "detail": "questionable",
@@ -737,20 +751,6 @@
             "player": "Chris Rodriguez Jr.",
             "position": "RB",
             "status": "Questionable",
-            "team": "JAX"
-          },
-          {
-            "detail": "questionable",
-            "player": "Bhayshul Tuten",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "JAX"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "B.J. Green II",
-            "position": "DE",
-            "status": "Injured Reserve",
             "team": "JAX"
           }
         ],
@@ -1474,15 +1474,22 @@
             "team": "IND"
           },
           {
-            "detail": "questionable",
-            "player": "Jared Wayne",
+            "detail": "doubtful",
+            "player": "Chris Bell",
             "position": "WR",
-            "status": "Questionable",
+            "status": "Doubtful",
+            "team": "MIA"
+          },
+          {
+            "detail": "out",
+            "player": "Aaron Brewer",
+            "position": "C",
+            "status": "Out",
             "team": "MIA"
           },
           {
             "detail": "questionable",
-            "player": "Chris Bell",
+            "player": "Jared Wayne",
             "position": "WR",
             "status": "Questionable",
             "team": "MIA"
@@ -1498,13 +1505,6 @@
             "detail": "questionable",
             "player": "Will Kacmarek",
             "position": "TE",
-            "status": "Questionable",
-            "team": "MIA"
-          },
-          {
-            "detail": "questionable",
-            "player": "Malik Herring",
-            "position": "DE",
             "status": "Questionable",
             "team": "MIA"
           }
@@ -1891,17 +1891,17 @@
         "event_id": "401873053",
         "players": [
           {
+            "detail": "questionable",
+            "player": "Amon-Ra St. Brown",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "DET"
+          },
+          {
             "detail": "out",
             "player": "Cade Mays",
             "position": "C",
             "status": "Out",
-            "team": "DET"
-          },
-          {
-            "detail": "questionable",
-            "player": "DJ Wonnum",
-            "position": "LB",
-            "status": "Questionable",
             "team": "DET"
           },
           {
@@ -1927,16 +1927,16 @@
           },
           {
             "detail": "questionable",
-            "player": "Hunter Henry",
-            "position": "TE",
+            "player": "Rhamondre Stevenson",
+            "position": "RB",
             "status": "Questionable",
             "team": "NE"
           },
           {
-            "detail": "questionable",
-            "player": "Rhamondre Stevenson",
+            "detail": "out",
+            "player": "TreVeyon Henderson",
             "position": "RB",
-            "status": "Questionable",
+            "status": "Out",
             "team": "NE"
           },
           {
@@ -1948,16 +1948,16 @@
           },
           {
             "detail": "questionable",
-            "player": "Charles Woods",
-            "position": "CB",
+            "player": "Hunter Henry",
+            "position": "TE",
             "status": "Questionable",
             "team": "NE"
           },
           {
-            "detail": "out",
-            "player": "Ben Brown",
-            "position": "C",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Charles Woods",
+            "position": "CB",
+            "status": "Questionable",
             "team": "NE"
           }
         ],
@@ -2868,6 +2868,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-13T06:39:16Z",
+  "generated_at_utc": "2026-11-13T17:11:03Z",
   "schema_version": 1
 }
