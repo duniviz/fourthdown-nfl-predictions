@@ -11,7 +11,7 @@ name: Publish weekly v2 forecasts
     # The guard selects the correct UTC hour for daylight/standard time.
     - cron: '17 22,23 * * 2,3,6'
     # Game-day forecasts run 45–115 minutes before kickoff when the slate check is due.
-    - cron: '7 * * 0,1,4,5,6'
+    - cron: '7 * * * 0,1,4,5,6'
     # Monday Night Football: one forecast check every half hour, gated to the kickoff window.
     - cron: '30 0,1,2 * * 2'
 permissions:
@@ -43,7 +43,7 @@ jobs:
               exit 0
             fi
           fi
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7 * * 0,1,4,5,6" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7 * * * 0,1,4,5,6" ]]; then
             if ! python -m scripts.check_pregame_forecast_window; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
