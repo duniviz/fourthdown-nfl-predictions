@@ -17,7 +17,8 @@ name: Publish weekly v2 forecasts
 permissions:
   contents: write
 concurrency:
-  group: publish-v2
+  # Serialize line refresh, forecasts, and final pregame locks.
+  group: pregame-pipeline
   cancel-in-progress: false
 jobs:
   forecast:
