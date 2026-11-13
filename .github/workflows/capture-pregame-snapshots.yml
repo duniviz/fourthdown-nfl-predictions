@@ -6,7 +6,8 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: game-ml-freeze
+  # Serialize snapshot writes with line refreshes and forecast publishing.
+  group: pregame-pipeline
   cancel-in-progress: false
 jobs:
   capture:
