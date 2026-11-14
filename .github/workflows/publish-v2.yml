@@ -7,9 +7,9 @@ name: Publish weekly v2 forecasts
       - 'data/verified-starters.json'
       - 'data/qb-replacement-trial.json'
   schedule:
-    # Forecasts run after DK lines on Tuesday, Wednesday, and Saturday at about 5 PM Central.
+    # Run the full forecast refresh every day at about 5 PM Central; skip dates with NFL games.
     # The guard selects the correct UTC hour for daylight/standard time.
-    - cron: '17 22,23 * * 2,3,6'
+    - cron: '17 22,23 * * *'
     # Game-day forecasts run 45–115 minutes before kickoff when the slate check is due.
     - cron: '7 * * * 0,1,4,5,6'
     # Monday Night Football: one forecast check every half hour, gated to the kickoff window.
@@ -32,9 +32,32 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17 22,23 * * 2,3,6" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17 22,23 * * *" ]]; then
             if [[ "$(TZ=America/Chicago date +%H)" != "17" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            # Keep the full forecast job off NFL game dates so it cannot queue ahead of kickoff snapshots.
+            if ! python - <<'PY'
+          import datetime as dt, json
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          central=ZoneInfo("America/Chicago")
+          today=dt.datetime.now(central).date()
+          games=json.loads(Path("data/live-v2.json").read_text()).get("games", [])
+          if not games:
+              raise SystemExit("No slate available to verify a non-game day")
+          for game in games:
+              try:
+                  kickoff=dt.datetime.fromisoformat(game["kickoff_utc"].replace("Z","+00:00"))
+              except (KeyError,TypeError,ValueError):
+                  continue
+              if kickoff.astimezone(central).date()==today:
+                  raise SystemExit("NFL game scheduled today; hourly game-day refresh handles it")
+          PY
+            then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Skipping daily refresh on a game day or when the slate cannot be verified"
               exit 0
             fi
           fi
