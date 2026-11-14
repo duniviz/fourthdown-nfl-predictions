@@ -7,6 +7,27 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Adonai Mitchell",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
+            "player": "Garrett Wilson",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
+            "player": "Omar Cooper Jr.",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
             "player": "Nahshon Wright",
             "position": "CB",
             "status": "Questionable",
@@ -17,27 +38,6 @@
             "player": "Harrison Phillips",
             "position": "DT",
             "status": "Questionable",
-            "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Joseph Ossai",
-            "position": "DE",
-            "status": "Questionable",
-            "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jarvis Brownlee Jr.",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "NYJ"
-          },
-          {
-            "detail": "out",
-            "player": "Trevin Wallace",
-            "position": "LB",
-            "status": "Out",
             "team": "NYJ"
           },
           {
@@ -232,6 +232,13 @@
         "event_id": "401873055",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Travis Etienne Jr.",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "NO"
+          },
+          {
             "detail": "out",
             "player": "Erik McCoy",
             "position": "C",
@@ -260,11 +267,11 @@
             "team": "NO"
           },
           {
-            "detail": "out",
-            "player": "CJ Donaldson",
-            "position": "RB",
-            "status": "Out",
-            "team": "NO"
+            "detail": "Injured Reserve",
+            "player": "Brady Christensen",
+            "position": "G",
+            "status": "Injured Reserve",
+            "team": "CAR"
           },
           {
             "detail": "Injured Reserve",
@@ -274,31 +281,24 @@
             "team": "CAR"
           },
           {
-            "detail": "questionable",
-            "player": "Will Lee III",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "CAR"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Xavier Legette",
-            "position": "WR",
-            "status": "Injured Reserve",
-            "team": "CAR"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jaelan Phillips",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "CAR"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Jonathon Brooks",
             "position": "RB",
             "status": "Injured Reserve",
+            "team": "CAR"
+          },
+          {
+            "detail": "questionable",
+            "player": "Xavier Legette",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "CAR"
+          },
+          {
+            "detail": "questionable",
+            "player": "Will Lee III",
+            "position": "CB",
+            "status": "Questionable",
             "team": "CAR"
           }
         ],
@@ -458,10 +458,10 @@
         "event_id": "401873056",
         "players": [
           {
-            "detail": "out",
+            "detail": "Injured Reserve",
             "player": "Michael Burton",
             "position": "FB",
-            "status": "Out",
+            "status": "Injured Reserve",
             "team": "CLE"
           },
           {
@@ -493,10 +493,17 @@
             "team": "CLE"
           },
           {
-            "detail": "out",
-            "player": "Keylan Rutledge",
-            "position": "G",
-            "status": "Out",
+            "detail": "questionable",
+            "player": "Jake Hummel",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "HOU"
+          },
+          {
+            "detail": "questionable",
+            "player": "Braden Smith",
+            "position": "OT",
+            "status": "Questionable",
             "team": "HOU"
           },
           {
@@ -508,22 +515,15 @@
           },
           {
             "detail": "out",
-            "player": "Danielle Hunter",
-            "position": "DE",
+            "player": "David Montgomery",
+            "position": "RB",
             "status": "Out",
             "team": "HOU"
           },
           {
             "detail": "out",
-            "player": "Brevin Jordan",
-            "position": "TE",
-            "status": "Out",
-            "team": "HOU"
-          },
-          {
-            "detail": "out",
-            "player": "Azeez Al-Shaair",
-            "position": "LB",
+            "player": "Keylan Rutledge",
+            "position": "G",
             "status": "Out",
             "team": "HOU"
           }
@@ -733,13 +733,6 @@
             "team": "JAX"
           },
           {
-            "detail": "questionable",
-            "player": "Robert Hainsey",
-            "position": "C",
-            "status": "Questionable",
-            "team": "JAX"
-          },
-          {
             "detail": "out",
             "player": "Cam'Ron Silmon-Craig",
             "position": "S",
@@ -750,6 +743,13 @@
             "detail": "Injured Reserve",
             "player": "Eric Murray",
             "position": "S",
+            "status": "Injured Reserve",
+            "team": "JAX"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "DaVon Hamilton",
+            "position": "DT",
             "status": "Injured Reserve",
             "team": "JAX"
           }
@@ -946,6 +946,13 @@
           },
           {
             "detail": "out",
+            "player": "Kenneth Walker III",
+            "position": "RB",
+            "status": "Out",
+            "team": "KC"
+          },
+          {
+            "detail": "out",
             "player": "Jaylon Moore",
             "position": "OT",
             "status": "Out",
@@ -969,13 +976,6 @@
             "detail": "questionable",
             "player": "Mansoor Delane",
             "position": "CB",
-            "status": "Questionable",
-            "team": "KC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Kenneth Walker III",
-            "position": "RB",
             "status": "Questionable",
             "team": "KC"
           }
@@ -1439,6 +1439,27 @@
         "event_id": "401873059",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Akeem Davis-Gaither",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "team": "IND"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Mo Alie-Cox",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "team": "IND"
+          },
+          {
+            "detail": "out",
+            "player": "Will Mallory",
+            "position": "TE",
+            "status": "Out",
+            "team": "IND"
+          },
+          {
             "detail": "out",
             "player": "Jalen Travis",
             "position": "OT",
@@ -1450,27 +1471,6 @@
             "player": "Jaylon Carlies",
             "position": "LB",
             "status": "Out",
-            "team": "IND"
-          },
-          {
-            "detail": "out",
-            "player": "Jerry Tillery",
-            "position": "DT",
-            "status": "Out",
-            "team": "IND"
-          },
-          {
-            "detail": "out",
-            "player": "Luke Rhodes",
-            "position": "LS",
-            "status": "Out",
-            "team": "IND"
-          },
-          {
-            "detail": "questionable",
-            "player": "Will Mallory",
-            "position": "TE",
-            "status": "Questionable",
             "team": "IND"
           },
           {
@@ -1670,6 +1670,13 @@
         "event_id": "401873060",
         "players": [
           {
+            "detail": "out",
+            "player": "Josh Jacobs",
+            "position": "RB",
+            "status": "Out",
+            "team": "GB"
+          },
+          {
             "detail": "questionable",
             "player": "Kevin Zeitler",
             "position": "G",
@@ -1694,13 +1701,6 @@
             "detail": "questionable",
             "player": "Lukas Van Ness",
             "position": "DE",
-            "status": "Questionable",
-            "team": "GB"
-          },
-          {
-            "detail": "questionable",
-            "player": "Javon Bullard",
-            "position": "S",
             "status": "Questionable",
             "team": "GB"
           },
@@ -2511,6 +2511,20 @@
         "event_id": "401873063",
         "players": [
           {
+            "detail": "questionable",
+            "player": "Jonathan Bullard",
+            "position": "DT",
+            "status": "Questionable",
+            "team": "DAL"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Tyler Goodson",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "DAL"
+          },
+          {
             "detail": "out",
             "player": "Donovan Ezeiruaku",
             "position": "LB",
@@ -2532,18 +2546,11 @@
             "team": "DAL"
           },
           {
-            "detail": "out",
-            "player": "Jonathan Mingo",
-            "position": "WR",
-            "status": "Out",
-            "team": "DAL"
-          },
-          {
-            "detail": "doubtful",
-            "player": "Juanyeh Thomas",
-            "position": "S",
-            "status": "Doubtful",
-            "team": "DAL"
+            "detail": "Injured Reserve",
+            "player": "Gracen Halton",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "SF"
           },
           {
             "detail": "questionable",
@@ -2571,13 +2578,6 @@
             "player": "Dre Greenlaw",
             "position": "LB",
             "status": "Questionable",
-            "team": "SF"
-          },
-          {
-            "detail": "out",
-            "player": "Mike Evans",
-            "position": "WR",
-            "status": "Out",
             "team": "SF"
           }
         ],
@@ -2883,6 +2883,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-14T13:35:18Z",
+  "generated_at_utc": "2026-11-14T19:55:14Z",
   "schema_version": 1
 }
