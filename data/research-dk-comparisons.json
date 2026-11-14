@@ -1,23 +1,23 @@
 {
   "season": 2026,
   "week": 10,
-  "generated_at_utc": "2026-11-12T21:01:12.938834+00:00",
+  "generated_at_utc": "2026-11-14T18:49:12.252364+00:00",
   "status": "research_only_no_publication",
   "source": "DraftKings via existing ParlayAPI snapshot",
-  "odds_snapshot_generated_at": "2026-11-12T02:04:31.451343+00:00",
+  "odds_snapshot_generated_at": "2026-11-13T01:03:49.639146+00:00",
   "counts": {
-    "total": 163,
+    "total": 155,
     "matched": 0,
-    "missing": 45,
-    "stale": 118,
+    "missing": 48,
+    "stale": 107,
     "ambiguous": 0,
-    "unverified": 163
+    "unverified": 155
   },
   "coverage_diagnostics": {
     "market_inventory": {
       "passing_yards": 29,
-      "rushing_yards": 75,
-      "receiving_yards": 119
+      "rushing_yards": 80,
+      "receiving_yards": 146
     },
     "unmatched_examples": {
       "passing_yards": [
@@ -105,7 +105,7 @@
           "player": "Austin Ekeler",
           "team": "WAS",
           "opponent": "NYG",
-          "reason": "stale"
+          "reason": "missing"
         },
         {
           "player": "Bam Knight",
@@ -155,7 +155,7 @@
           "player": "Adonai Mitchell",
           "team": "NYJ",
           "opponent": "BUF",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Amon-Ra St. Brown",
@@ -167,7 +167,7 @@
           "player": "Antonio Williams",
           "team": "WAS",
           "opponent": "NYG",
-          "reason": "stale"
+          "reason": "missing"
         },
         {
           "player": "Ashton Jeanty",
@@ -194,15 +194,15 @@
           "reason": "stale"
         },
         {
-          "player": "Carnell Tate",
-          "team": "TEN",
-          "opponent": "JAX",
-          "reason": "missing"
-        },
-        {
           "player": "CeeDee Lamb",
           "team": "DAL",
           "opponent": "SF",
+          "reason": "stale"
+        },
+        {
+          "player": "Chase Brown",
+          "team": "CIN",
+          "opponent": "PIT",
           "reason": "stale"
         }
       ]
@@ -389,7 +389,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -445,7 +445,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -512,20 +512,6 @@
       "opponent": "SEA",
       "market": "passing_yards",
       "projected_yards": 243.6,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "GB",
-      "market": "passing_yards",
-      "projected_yards": 189.7,
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
@@ -618,20 +604,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0034869",
-      "player_name": "Sam Darnold",
-      "team": "SEA",
-      "opponent": "LV",
-      "market": "passing_yards",
-      "projected_yards": 218.5,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0040668",
       "player_name": "Shedeur Sanders",
       "team": "CLE",
@@ -694,8 +666,8 @@
       "opponent": "DET",
       "market": "receiving_yards",
       "projected_yards": 35.5,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -708,10 +680,10 @@
       "opponent": "BUF",
       "market": "receiving_yards",
       "projected_yards": 54.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -722,8 +694,8 @@
       "opponent": "NE",
       "market": "receiving_yards",
       "projected_yards": 86.0,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -739,7 +711,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -800,20 +772,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0041438",
-      "player_name": "Carnell Tate",
-      "team": "TEN",
-      "opponent": "JAX",
-      "market": "receiving_yards",
-      "projected_yards": 66.2,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0036358",
       "player_name": "CeeDee Lamb",
       "team": "DAL",
@@ -851,7 +809,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -946,8 +904,8 @@
       "opponent": "HOU",
       "market": "receiving_yards",
       "projected_yards": 49.9,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -988,8 +946,8 @@
       "opponent": "BUF",
       "market": "receiving_yards",
       "projected_yards": 61.3,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -1075,7 +1033,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1156,8 +1114,8 @@
       "opponent": "GB",
       "market": "receiving_yards",
       "projected_yards": 47.0,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -1285,7 +1243,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1332,20 +1290,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0031408",
-      "player_name": "Mike Evans",
-      "team": "SF",
-      "opponent": "DAL",
-      "market": "receiving_yards",
-      "projected_yards": 72.9,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0036554",
       "player_name": "Nico Collins",
       "team": "HOU",
@@ -1366,10 +1310,10 @@
       "opponent": "BUF",
       "market": "receiving_yards",
       "projected_yards": 78.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1453,21 +1397,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035229",
-      "player_name": "T.J. Hockenson",
-      "team": "MIN",
-      "opponent": "GB",
-      "market": "receiving_yards",
-      "projected_yards": 47.0,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1691,7 +1621,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1817,7 +1747,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1898,8 +1828,8 @@
       "opponent": "CLE",
       "market": "rushing_yards",
       "projected_yards": 28.7,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -1957,7 +1887,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2055,7 +1985,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2130,20 +2060,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0035700",
-      "player_name": "Josh Jacobs",
-      "team": "GB",
-      "opponent": "MIN",
-      "market": "rushing_yards",
-      "projected_yards": 27.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0041052",
       "player_name": "Kaelon Black",
       "team": "SF",
@@ -2206,8 +2122,8 @@
       "opponent": "ATL",
       "market": "rushing_yards",
       "projected_yards": 106.4,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -2224,20 +2140,6 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "stale",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "GB",
-      "market": "rushing_yards",
-      "projected_yards": 30.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2363,7 +2265,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2374,8 +2276,8 @@
       "opponent": "DET",
       "market": "rushing_yards",
       "projected_yards": 44.3,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -2444,8 +2346,8 @@
       "opponent": "CAR",
       "market": "rushing_yards",
       "projected_yards": 44.7,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -2466,20 +2368,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0037120",
-      "player_name": "Tyler Goodson",
-      "team": "DAL",
-      "opponent": "SF",
-      "market": "rushing_yards",
-      "projected_yards": 25.9,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0040583",
       "player_name": "Woody Marks",
       "team": "HOU",
@@ -2494,4 +2382,4 @@
       "difference_yards": null
     }
   ]
-}
+}\n
