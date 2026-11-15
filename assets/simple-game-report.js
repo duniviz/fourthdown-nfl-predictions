@@ -67,9 +67,9 @@ function drawPlayers(props){
     const recommendation=p.recommended_side==="over"?"OVER":p.recommended_side==="under"?"UNDER":null;
     const recLabel=recommendation?('Saved pick '+recommendation+' · '+grade(verdict)):'No archived pick to grade';
     const model= p.ml_comparison && num(p.ml_comparison.baseline_absolute_error) && num(p.ml_comparison.ml_absolute_error)
-      ? 'ML shadow: '+(p.ml_comparison.ml_absolute_error<p.ml_comparison.baseline_absolute_error?'closer than live by ':p.ml_comparison.ml_absolute_error>p.ml_comparison.baseline_absolute_error?'farther from actual by ':'tied live; difference ')+fmt(Math.abs(p.ml_comparison.ml_absolute_error-p.ml_comparison.baseline_absolute_error))+' yards (research only).'
+      ? 'ML shadow: '+(p.ml_comparison.ml_absolute_error<p.ml_comparison.baseline_absolute_error?'closer than live by ':p.ml_comparison.ml_absolute_error>p.ml_comparison.baseline_absolute_error?'farther from actual by ':'tied live; difference ')+fmt(Math.abs(p.ml_comparison.ml_absolute_error-p.ml_comparison.baseline_absolute_error))+' '+units+' (research only).'
       : 'No verified paired ML comparison for this player.';
-    const explanation=Math.abs(diff)<0.05?'Forecast matched the final yards.':diff>0?'Player gained '+fmt(diff)+' more yards than projected.':'Player gained '+fmt(Math.abs(diff))+' fewer yards than projected.';
+    const explanation=Math.abs(diff)<0.05?'Forecast matched the final '+units+'.':diff>0?'Player gained '+fmt(diff)+' more yards than projected.':'Player gained '+fmt(Math.abs(diff))+' fewer yards than projected.';
     return '<article class="fd-player-item"><div class="fd-player-item-head"><b>'+esc(p.player||"Unknown player")+'</b><span class="'+gradeClass(verdict)+'">'+esc(recLabel)+'</span></div><small>'+esc(p.team||"")+' · '+title+'</small><div class="fd-player-figures"><span>Projected <b>'+fmt(p.projection)+'</b></span><span>Actual <b>'+fmt(p.actual)+'</b></span><span>DK line <b>'+fmt(p.dk_line)+'</b></span></div><p>'+esc(explanation)+'</p><small>'+esc(model)+'</small></article>';
   }).join("")+'</div></details>';
  }).join("");
