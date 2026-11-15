@@ -20,11 +20,11 @@ function policy(workflow, runs, now) {
   if (latest.status !== 'completed') return {action:'ignore', reason:'ongoing run'};
   if (!['failure','timed_out'].includes(latest.conclusion)) return {action:'ignore', reason:'not failed'};
   if (latest.run_attempt !== 1) return {action:'escalate', reason:'retry exhausted', run:latest};
-  // Do not rerun if ANY newer run of this workflow is in flight, including manual runs.
+  // Never replay an older failed writer after a newer run, even if newer run completed.
   if ((runs || []).some(r => r && r.id !== latest.id &&
       r.name === ALLOWED[workflow] && r.head_branch === 'main' &&
-      r.status !== 'completed' && Date.parse(r.created_at) >= Date.parse(latest.created_at))) {
-    return {action:'ignore', reason:'newer run already active'};
+      Number.isFinite(Date.parse(r.created_at)) && Date.parse(r.created_at) > Date.parse(latest.created_at))) {
+    return {action:'ignore', reason:'newer run superseded failed writer'};
   }
   return {action:'retry', run:latest};
 }
