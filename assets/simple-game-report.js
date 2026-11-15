@@ -39,16 +39,39 @@ function drawGame(r){
  const spread=ats==null?"Not available":ats>0?esc(r.home)+" + "+fmt(r.dk_home_spread):ats<0?esc(r.away)+" (vs spread)":"No pick";
  const notes=reason(r);
  const props=playerRows.filter(p=>p.game_id===r.game_id&&num(p.projection)&&num(p.actual));
- const paired=props.filter(p=>num(p.dk_line));
- const propsHit=paired.filter(p=>p.recommendation_result==="hit").length;
- const propsMiss=paired.filter(p=>p.recommendation_result==="miss").length;
- const propLine=props.length?("Archived player yardage forecasts: "+props.length+" graded against actual stats; "+paired.length+" include a DK line. "+(propsHit+propsMiss?("Verified player pick results: "+propsHit+" right, "+propsMiss+" missed."):"No verified player pick wins/losses for this matchup.")):"No verified archived player yardage results for this game.";
  const status=r.lock_status==="official"?"Official T-15 lock":"Earlier saved pregame forecast ("+esc(r.lock_status||"unknown")+")";
  return '<details class="fd-grade-game"><summary><span><b>'+esc(r.away)+' at '+esc(r.home)+'</b><small>Week '+esc(r.week)+' · Actual '+score+'</small></span><span class="fd-grade-tags"><b class="'+gradeClass(r.winner_result)+'">Winner '+grade(r.winner_result)+'</b><b class="'+gradeClass(r.ats_result)+'">ATS '+grade(r.ats_result)+'</b><b class="'+gradeClass(r.ou_result)+'">O/U '+grade(r.ou_result)+'</b></span></summary>'+
  '<div class="fd-grade-detail"><p class="fd-grade-source">'+status+' · Forecast saved before kickoff. This is not a postgame prediction.</p>'+
  '<div class="fd-grade-columns"><div><small>Before the game</small><strong>Projected '+fmt(predictedAway)+' – '+fmt(predictedHome)+'</strong><span>Pick to win: '+esc(winner)+'</span><span>Spread side: '+spread+'</span><span>O/U: '+ou+(num(line)?' '+fmt(line):'')+'</span></div>'+
  '<div><small>After the game</small><strong>'+score+'</strong><span>Winner: '+esc(actualWinner)+'</span><span>Actual total: '+fmt(r.home_score+r.away_score)+'</span><span>Actual margin (home): '+fmt(r.home_score-r.away_score)+'</span></div></div>'+
- '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><p>'+esc(propLine)+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div></div></details>';
+ '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div>'+drawPlayers(props)+'</div></details>';
+}
+function drawPlayers(props){
+ const markets=["passing_yards","rushing_yards","receiving_yards"];
+ const eligible=props.filter(p=>markets.includes(p.stat_key)&&num(p.projection)&&num(p.actual));
+ if(!eligible.length)return '<p class="fd-grade-source">No completed archived passing, rushing, or receiving yardage forecasts for this matchup.</p>';
+ const graded=eligible.filter(p=>p.recommendation_result==="hit"||p.recommendation_result==="miss"||p.recommendation_result==="push");
+ const mae=eligible.reduce((sum,p)=>sum+Math.abs(p.actual-p.projection),0)/eligible.length;
+ const summary='<p class="fd-grade-source">'+eligible.length+' archived player yardage forecasts · Average miss '+fmt(mae)+' yards · '+graded.length+' verified DK pick results. An archived DK line alone does not prove a pick was recommended.</p>';
+ const sections=markets.map(market=>{
+  const rows=eligible.filter(p=>p.stat_key===market).sort((a,b)=>Math.abs(b.actual-b.projection)-Math.abs(a.actual-a.projection));
+  if(!rows.length)return '';
+  const title=market.replace("_yards","").replace(/^./,c=>c.toUpperCase())+" yards";
+  const avg=rows.reduce((sum,p)=>sum+p.actual-p.projection,0)/rows.length;
+  const direction=avg>0?"underestimated actual production":avg<0?"overestimated actual production":"was unbiased in this sample";
+  return '<details class="fd-player-market"><summary><b>'+title+'</b><small>'+rows.length+' players · Average error '+fmt(Math.abs(avg))+' yards ('+direction+')</small></summary><div class="fd-player-items">'+rows.map(p=>{
+    const diff=p.actual-p.projection;
+    const verdict=p.recommendation_result||"not_available";
+    const recommendation=p.recommended_side==="over"?"OVER":p.recommended_side==="under"?"UNDER":null;
+    const recLabel=recommendation?('Saved pick '+recommendation+' · '+grade(verdict)):'No archived pick to grade';
+    const model= p.ml_comparison && num(p.ml_comparison.baseline_absolute_error) && num(p.ml_comparison.ml_absolute_error)
+      ? 'ML shadow: '+(p.ml_comparison.ml_absolute_error<p.ml_comparison.baseline_absolute_error?'closer than live by ':p.ml_comparison.ml_absolute_error>p.ml_comparison.baseline_absolute_error?'farther from actual by ':'tied live; difference ')+fmt(Math.abs(p.ml_comparison.ml_absolute_error-p.ml_comparison.baseline_absolute_error))+' yards (research only).'
+      : 'No verified paired ML comparison for this player.';
+    const explanation=Math.abs(diff)<0.05?'Forecast matched the final yards.':diff>0?'Player gained '+fmt(diff)+' more yards than projected.':'Player gained '+fmt(Math.abs(diff))+' fewer yards than projected.';
+    return '<article class="fd-player-item"><div class="fd-player-item-head"><b>'+esc(p.player||"Unknown player")+'</b><span class="'+gradeClass(verdict)+'">'+esc(recLabel)+'</span></div><small>'+esc(p.team||"")+' · '+title+'</small><div class="fd-player-figures"><span>Projected <b>'+fmt(p.projection)+'</b></span><span>Actual <b>'+fmt(p.actual)+'</b></span><span>DK line <b>'+fmt(p.dk_line)+'</b></span></div><p>'+esc(explanation)+'</p><small>'+esc(model)+'</small></article>';
+  }).join("")+'</div></details>';
+ }).join("");
+ return '<div class="fd-player-reports"><h3>Player yards &amp; props report cards</h3>'+summary+sections+'</div>';
 }
 function learn(status,evidence){
  const v=status&&status.validation||{},margin=v.margin||{},total=v.total||{};
