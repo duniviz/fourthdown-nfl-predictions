@@ -5,13 +5,11 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-concurrency:
-  # Serialize snapshot writes with line refreshes and forecast publishing.
-  group: pregame-pipeline
-  cancel-in-progress: false
 jobs:
-  capture:
+  preflight:
     runs-on: ubuntu-latest
+    outputs:
+      due: ${{ steps.kickoff.outputs.run }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,7 +17,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check final pregame window
+      - name: Check final pregame window outside shared writer queue
         id: kickoff
         run: |
           if python scripts/check_pregame_kickoff_window.py; then
@@ -27,23 +25,37 @@ jobs:
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
+  capture:
+    needs: preflight
+    if: needs.preflight.outputs.due == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pregame-pipeline
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Install fitted ML inference dependencies
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python -m pip install numpy scikit-learn
       - name: Freeze research-only count challenger predictions
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python scripts/freeze_weekly_shadow_models.py
       - name: Train and freeze count-prop ML challengers
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python scripts/freeze_count_ml_predictions.py
       - name: Freeze yardage and game research models
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python scripts/freeze_yardage_game_shadow_models.py
       - name: Freeze trained ML player yardage predictions
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python scripts/freeze_player_ml_predictions.py
       - name: Train and freeze game spread and total ML challengers
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: |
           if curl --fail --location --retry 2 --max-time 90 'https://github.com/nflverse/nfldata/raw/refs/heads/master/data/games.csv' -o /tmp/fourthdown-games.csv; then
             python scripts/freeze_game_ml_predictions.py /tmp/fourthdown-games.csv
@@ -51,10 +63,10 @@ jobs:
             echo 'WARNING: Historical game scores unavailable; no game ML forecasts generated' >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Save matched live, ML, and DraftKings player snapshots
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python -m scripts.capture_pregame_snapshots
       - name: Verify frozen live and challenger coverage
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: |
           python - <<'PY'
           import json, os
@@ -92,7 +104,7 @@ jobs:
             data/weekly-shadow-forecasts.json
           if-no-files-found: warn
       - name: Commit snapshot updates
-        if: steps.kickoff.outputs.run == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
