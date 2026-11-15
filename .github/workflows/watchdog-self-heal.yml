@@ -41,15 +41,21 @@ jobs:
             const active = runs.filter(r => r.name === NAME);
             const newest = active[0];
             const title = '[Automation] Pipeline watchdog needs manual attention';
-            async function issue(message) {
+            async function issue(message, dedupeKey) {
+              const marker = '<!-- fourthdown-recovery:' + dedupeKey + ' -->';
               const all = await github.paginate(github.rest.issues.listForRepo, {
                 owner, repo, state: 'open', per_page: 100
               });
               const current = all.find(i => !i.pull_request && i.title === title);
               if (current) {
-                await github.rest.issues.createComment({owner, repo, issue_number: current.number, body: message});
+                if (current.body && current.body.includes(marker)) return;
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner, repo, issue_number: current.number, per_page: 100
+                });
+                if (comments.some(comment => (comment.body || '').includes(marker))) return;
+                await github.rest.issues.createComment({owner, repo, issue_number: current.number, body: message + '\\n' + marker});
               } else {
-                await github.rest.issues.create({owner, repo, title, body: message});
+                await github.rest.issues.create({owner, repo, title, body: message + '\\n' + marker});
               }
             }
             if (missing(active, now)) {
@@ -58,7 +64,7 @@ jobs:
               try {
                 await github.rest.actions.createWorkflowDispatch({owner, repo, workflow_id, ref: 'main'});
               } catch (err) {
-                await issue('Watchdog was missing for over four hours and a recovery dispatch failed: ' + err.message);
+                await issue('Watchdog was missing for over four hours and a recovery dispatch failed: ' + err.message, 'missing-' + new Date(now).toISOString().slice(0, 10));
                 throw err;
               }
               return;
@@ -70,12 +76,12 @@ jobs:
               try {
                 await github.rest.actions.reRunWorkflowFailedJobs({owner, repo, run_id: newest.id});
               } catch (err) {
-                await issue('Could not retry read-only watchdog: ' + newest.html_url + '\\n' + err.message);
+                await issue('Could not retry read-only watchdog: ' + newest.html_url + '\\n' + err.message, String(newest.id) + '-retry-error');
                 throw err;
               }
             } else if (action === 'escalate') {
               await issue('The watchdog failed again after its one allowed recovery attempt.\\n\\nRun: ' + newest.html_url +
-                '\\n\\nPublished predictions and model promotions have not been changed.');
+                '\\n\\nPublished predictions and model promotions have not been changed.', String(newest.id) + '-failed');
               core.setFailed('Watchdog failed after one retry; manual investigation required');
             } else {
               core.info('No eligible failure to retry');
