@@ -19,7 +19,11 @@ LOCK = {
     "dk_home_spread": 3.5, "dk_total": 45.5, "lock_status": "official"
 }
 PLAYER = {"game_id": GAME["game_id"], "actual": 81, "dk_line": 72.5}
-SHADOW = {"game_id": GAME["game_id"], "model": "ridge", "projection": 41}
+SHADOW = {"game_id": GAME["game_id"], "model": "ridge", "projection": 41,
+          "player_id": "GAME", "stat_key": "game_total",
+          "kickoff_utc": KICK.isoformat(),
+          "predicted_at_utc": (KICK-timedelta(minutes=60)).isoformat()}
+LIVE = {**SHADOW, "model": "live", "projection": 43}
 
 
 class AuditTests(unittest.TestCase):
@@ -28,7 +32,7 @@ class AuditTests(unittest.TestCase):
                         [LOCK] if locks is None else locks,
                         [{"game_id": GAME["game_id"]}] if grades is None else grades,
                         [PLAYER] if players is None else players,
-                        [SHADOW] if shadows is None else shadows, NOW)
+                        [LIVE, SHADOW] if shadows is None else shadows, NOW)
 
     def test_scheduled_game_kickoff_timezone(self):
         self.assertEqual(game_kickoff(GAME), KICK)
@@ -64,6 +68,10 @@ class AuditTests(unittest.TestCase):
         r = self.evaluate(locks=[])
         self.assertEqual(r["audited_games"], 1)
         self.assertIn("valid_frozen_game_projection_missing", r["games"][0]["issues"])
+
+    def test_unpaired_shadow_rejected(self):
+        r = self.evaluate(shadows=[SHADOW])
+        self.assertIn("paired_shadow_archive_unverified", r["games"][0]["issues"])
 
     def test_future_game_not_prematurely_flagged(self):
         game = {**GAME, "gameday": "2026-11-16"}
