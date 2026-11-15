@@ -1,28 +1,28 @@
 {
-  "generated_at_utc": "2026-11-15T14:25:00.975219+00:00",
+  "generated_at_utc": "2026-11-15T18:06:03.181823+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 14,
+  "graded_games": 15,
   "summary": {
     "winner": {
-      "hits": 12,
+      "hits": 13,
       "misses": 2,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 85.7
+      "hit_pct": 86.7
     },
     "ats": {
-      "hits": 5,
+      "hits": 6,
       "misses": 9,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 35.7
+      "hit_pct": 40.0
     },
     "ou": {
-      "hits": 6,
+      "hits": 7,
       "misses": 8,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 42.9
+      "hit_pct": 46.7
     }
   },
   "rows": [
@@ -318,6 +318,27 @@
       "dk_total": 40.5,
       "winner_result": "miss",
       "ats_result": "miss",
+      "ou_result": "hit"
+    },
+    {
+      "game_id": "2026_10_NE_DET",
+      "season": 2026,
+      "week": 10,
+      "home": "DET",
+      "away": "NE",
+      "kickoff_utc": "2026-11-15T14:30:00+00:00",
+      "lock_status": "last_available",
+      "lock_cutoff_utc": "2026-11-15T14:15:00+00:00",
+      "forecast_at_utc": "2026-11-13T00:34:07.699544+00:00",
+      "dk_at_utc": "2026-11-15T01:49:00.852640+00:00",
+      "home_score": 35.0,
+      "away_score": 10.0,
+      "projected_margin_home": 3.35,
+      "projected_total": 49.2,
+      "dk_home_spread": -3.0,
+      "dk_total": 49.5,
+      "winner_result": "hit",
+      "ats_result": "hit",
       "ou_result": "hit"
     }
   ]
