@@ -10,7 +10,6 @@ on:
       - 'tests/test_operations_watchdog.py'
 permissions:
   contents: read
-  issues: write
 jobs:
   monitor:
     runs-on: ubuntu-latest
@@ -25,27 +24,3 @@ jobs:
         id: check
         if: github.event_name != 'pull_request'
         run: python -m scripts.operations_watchdog
-      - name: Create one issue on a persistent monitoring failure
-        if: failure() && github.event_name != 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const title = '[Automation] Pipeline watchdog detected stale or missing data';
-            const run = context.runId;
-            const body = [
-              'FOURTHDOWN needs review: published data is stale, missing, or pregame captures are incomplete.',
-              '',
-              'Check the watchdog log and upstream DK/forecast/capture workflows.',
-              'Run: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + run,
-              '',
-              'The watchdog does not edit forecasts, promote models, or change production.'
-            ].join('\n');
-            const issues = await github.paginate(github.rest.issues.listForRepo, {
-              ...context.repo, state: 'open', per_page: 100
-            });
-            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
-            if (existing) {
-              await github.rest.issues.createComment({...context.repo, issue_number: existing.number, body});
-            } else {
-              await github.rest.issues.create({...context.repo, title, body});
-            }
