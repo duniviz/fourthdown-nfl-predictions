@@ -11,14 +11,11 @@ name: Freeze independent pregame game ML challengers
     - cron: '*/5 * * * *'
 permissions:
   contents: write
-concurrency:
-  # Serialize shared forecast/snapshot writes with the DK pregame pipeline.
-  group: pregame-pipeline
-  cancel-in-progress: false
 jobs:
-  freeze:
+  preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    outputs:
+      due: ${{ steps.guard.outputs.due }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Check independent early ML window (T-90 to T-45)
+      - name: Check early ML window outside shared writer queue
         id: guard
         run: |
           if python -m research.game_ml_freeze_guard; then
@@ -34,21 +31,36 @@ jobs:
           else
             echo "due=false" >> "$GITHUB_OUTPUT"
           fi
+  freeze:
+    needs: preflight
+    if: needs.preflight.outputs.due == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: pregame-pipeline
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install historical model dependencies
-        if: steps.guard.outputs.due == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python -m pip install -r requirements-backtest.txt
       - name: Freeze research-only game ML challengers
-        if: steps.guard.outputs.due == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: python -m research.freeze_pregame_game_challengers
       - name: Freeze player and scoring research challengers
-        if: steps.guard.outputs.due == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: |
           python scripts/freeze_weekly_shadow_models.py
           python scripts/freeze_count_ml_predictions.py
           python scripts/freeze_yardage_game_shadow_models.py
           python scripts/freeze_player_ml_predictions.py
       - name: Commit only frozen ML predictions
-        if: steps.guard.outputs.due == 'true'
+        if: needs.preflight.outputs.due == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
