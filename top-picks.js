@@ -9,6 +9,7 @@
  const aliases={JAX:'JAC',LA:'LAR',WSH:'WAS'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const teams={ARI:'arizona cardinals',ATL:'atlanta falcons',BAL:'baltimore ravens',BUF:'buffalo bills',CAR:'carolina panthers',CHI:'chicago bears',CIN:'cincinnati bengals',CLE:'cleveland browns',DAL:'dallas cowboys',DEN:'denver broncos',DET:'detroit lions',GB:'green bay packers',HOU:'houston texans',IND:'indianapolis colts',JAC:'jacksonville jaguars',KC:'kansas city chiefs',LV:'las vegas raiders',LAC:'los angeles chargers',LAR:'los angeles rams',MIA:'miami dolphins',MIN:'minnesota vikings',NE:'new england patriots',NO:'new orleans saints',NYG:'new york giants',NYJ:'new york jets',PHI:'philadelphia eagles',PIT:'pittsburgh steelers',SF:'san francisco 49ers',SEA:'seattle seahawks',TB:'tampa bay buccaneers',TEN:'tennessee titans',WAS:'washington commanders'};
+ const propAliases={player_passing_completions:'player_pass_completions',player_passing_attempts:'player_pass_attempts',player_rushing_attempts:'player_rush_attempts',player_passing_yards:'player_pass_yds',player_rushing_yards:'player_rush_yds',player_receiving_yards:'player_rec_yds'};
  const marketNames={player_pass_completions:'Completions',player_pass_attempts:'Pass attempts',player_rush_attempts:'Rush attempts',player_receptions:'Receptions',player_pass_yds:'Passing yards',player_rush_yds:'Rushing yards',player_rec_yds:'Receiving yards'};
  const nameOf=x=>teams[canon(x)]||String(x||'');
  const number=x=>x!==null&&x!==''&&x!==undefined&&Number.isFinite(Number(x))?Number(x):null;
@@ -65,7 +66,7 @@
    const countStamp=Date.parse(count.generated_at_utc);
    if(Number.isFinite(countStamp)&&countStamp<=now&&now-countStamp<=36*3600000){
     for(const x of count.players||[]){
-     const team=canon(x.team),opp=canon(x.opponent);
+     const team=canon(x.team),opp=canon(x.opponent),marketKey=propAliases[x.market_key]||x.market_key;
      if(!upcoming.some(g=>String(g.game_id)===String(x.game_id)))continue;
      const quote=oddsRows.filter(q=>norm(q.player)===norm(x.player_name)&&q.market_key===marketKey&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-start)<3600000).filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;}).sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
      const projection=number(x.projected_yards),line=number(quote?.line);
