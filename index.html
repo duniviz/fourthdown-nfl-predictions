@@ -572,6 +572,11 @@ renderParlays();
   activeFilter='all';document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdFilter==='all')));
   update().then(()=>{const card=container.querySelector('[data-matchup-id="'+CSS.escape(String(g.id))+'"]');if(card){card.closest('article')?.scrollIntoView({behavior:'smooth',block:'center'});}fdOpenMatchup(g);});
  });
+ window.addEventListener('fd-open-matchup',event=>{
+  const game=event.detail;
+  if(!game)return;
+  Promise.resolve(fdOpenMatchup(game)).catch(error=>console.warn('Scoreboard hero matchup detail unavailable',error));
+ });
  windowSelect.addEventListener('change',()=>{kickoffWindow=windowSelect.value;update();});
 
  const weatherCache=new Map();
