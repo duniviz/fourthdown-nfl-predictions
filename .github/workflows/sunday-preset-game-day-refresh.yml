@@ -22,6 +22,9 @@ jobs:
     outputs:
       run: ${{ steps.guard.outputs.run }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Confirm this is the Central Time schedule
         id: guard
         env:
@@ -29,7 +32,9 @@ jobs:
         run: |
           python - <<'PY'
           import datetime as dt
+          import json
           import os
+          from pathlib import Path
           from zoneinfo import ZoneInfo
 
           if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
@@ -44,7 +49,21 @@ jobs:
               valid = False
               reason = "Not Sunday in Central Time"
           else:
-              schedule = os.environ["SCHEDULE_EXPR"].split()
+              games = json.loads(Path("data/live-v2.json").read_text()).get("games", [])
+              game_today = False
+              for game in games:
+                  try:
+                      kickoff = dt.datetime.fromisoformat(game["kickoff_utc"].replace("Z", "+00:00"))
+                  except (KeyError, TypeError, ValueError):
+                      continue
+                  if kickoff.astimezone(central).date() == now.date():
+                      game_today = True
+                      break
+              if not game_today:
+                  valid = False
+                  reason = "No NFL game scheduled today"
+              else:
+                  schedule = os.environ["SCHEDULE_EXPR"].split()
               minute, hour, _, _, day_of_week = schedule
               slots = [(8, 0), (11, 30), (14, 30), (18, 45)]
               valid = False
