@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-13T00:35:06.202969+00:00",
+  "generated_at_utc": "2026-11-15T14:25:52.818531+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_10_WAS_NYG",
-      "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-13T01:15:00+00:00",
-      "home": "NYG",
-      "away": "WAS",
-      "projected_home_score": 22.6,
-      "projected_away_score": 19.0,
-      "projected_margin_home": 3.62,
-      "projected_total": 41.65,
-      "predicted_winner": "NYG",
-      "v2_reference": {
-        "projected_margin_home": 3.71,
-        "projected_total": 41.31
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.344,
-        "margin_from_success_and_pass_proxy": -0.092,
-        "home_features": {
-          "plays_per_game": 68.4,
-          "success_rate": 0.395,
-          "neutral_pass_proxy": 0.594
-        },
-        "away_features": {
-          "plays_per_game": 58.8,
-          "success_rate": 0.401,
-          "neutral_pass_proxy": 0.616
-        }
-      }
-    },
     {
       "game_id": "2026_10_NE_DET",
       "season": 2026,
