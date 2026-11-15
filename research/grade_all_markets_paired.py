@@ -17,7 +17,7 @@ from same_slate_leaderboard import finite, timestamp
 from join_frozen_pregame_results import norm
 from grade_yardage_game_models import get_game_actuals
 
-GAME_ID = re.compile(r"^(\\d{4})_(\\d{1,2})_[^_]+_[^_]+$")
+GAME_ID = re.compile(r"^(\d{4})_(\d{1,2})_[^_]+_[^_]+$")
 GAME_MARKETS = {"game_margin_home", "game_total"}
 
 
