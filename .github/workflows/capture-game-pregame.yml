@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: ['.github/workflows/capture-game-pregame.yml']
   workflow_run:
-    workflows: [Publish weekly v2 forecasts, Publish count prop projections]
+    workflows: [Publish weekly v2 forecasts, Publish count prop projections, Sunday preset game-day refresh]
     types: [completed]
   schedule:
     - cron: '7,22,37,52 * * * *'
