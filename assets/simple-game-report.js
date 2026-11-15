@@ -26,6 +26,7 @@ function sideLabel(a,b,low,high){
  if(!known(a,b)||a===b)return "No clear pick";
  return a>b?high:low;
 }
+let playerRows=[];
 function drawGame(r){
  const score=esc(r.away)+" "+fmt(r.away_score)+" – "+esc(r.home)+" "+fmt(r.home_score);
  const predictedHome=num(r.projected_margin_home)&&num(r.projected_total)?(r.projected_total+r.projected_margin_home)/2:null;
@@ -37,12 +38,17 @@ function drawGame(r){
  const ou=known(r.projected_total,line)?sideLabel(r.projected_total,line,"Under","Over"):"Not available";
  const spread=ats==null?"Not available":ats>0?esc(r.home)+" + "+fmt(r.dk_home_spread):ats<0?esc(r.away)+" (vs spread)":"No pick";
  const notes=reason(r);
+ const props=playerRows.filter(p=>p.game_id===r.game_id&&num(p.projection)&&num(p.actual));
+ const paired=props.filter(p=>num(p.dk_line));
+ const propsHit=paired.filter(p=>p.recommendation_result==="hit").length;
+ const propsMiss=paired.filter(p=>p.recommendation_result==="miss").length;
+ const propLine=props.length?("Archived player yardage forecasts: "+props.length+" graded against actual stats; "+paired.length+" include a DK line. "+(propsHit+propsMiss?("Verified player pick results: "+propsHit+" right, "+propsMiss+" missed."):"No verified player pick wins/losses for this matchup.")):"No verified archived player yardage results for this game.";
  const status=r.lock_status==="official"?"Official T-15 lock":"Earlier saved pregame forecast ("+esc(r.lock_status||"unknown")+")";
  return '<details class="fd-grade-game"><summary><span><b>'+esc(r.away)+' at '+esc(r.home)+'</b><small>Week '+esc(r.week)+' · Actual '+score+'</small></span><span class="fd-grade-tags"><b class="'+gradeClass(r.winner_result)+'">Winner '+grade(r.winner_result)+'</b><b class="'+gradeClass(r.ats_result)+'">ATS '+grade(r.ats_result)+'</b><b class="'+gradeClass(r.ou_result)+'">O/U '+grade(r.ou_result)+'</b></span></summary>'+
  '<div class="fd-grade-detail"><p class="fd-grade-source">'+status+' · Forecast saved before kickoff. This is not a postgame prediction.</p>'+
  '<div class="fd-grade-columns"><div><small>Before the game</small><strong>Projected '+fmt(predictedAway)+' – '+fmt(predictedHome)+'</strong><span>Pick to win: '+esc(winner)+'</span><span>Spread side: '+spread+'</span><span>O/U: '+ou+(num(line)?' '+fmt(line):'')+'</span></div>'+
  '<div><small>After the game</small><strong>'+score+'</strong><span>Winner: '+esc(actualWinner)+'</span><span>Actual total: '+fmt(r.home_score+r.away_score)+'</span><span>Actual margin (home): '+fmt(r.home_score-r.away_score)+'</span></div></div>'+
- '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div></div></details>';
+ '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><p>'+esc(propLine)+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div></div></details>';
 }
 function learn(status,evidence){
  const v=status&&status.validation||{},margin=v.margin||{},total=v.total||{};
@@ -59,9 +65,10 @@ function learn(status,evidence){
  html+='<p><b>Simple takeaway:</b> We can identify where projected scores and picks were off. A model change counts as learned and deployed only when the saved validation says it was approved; otherwise it is still being tested.</p>';
  return html;
 }
-Promise.allSettled([read("data/game-official-results.json"),read("data/game-learning-status.json"),read("data/weekly-learning-evidence.json")]).then(results=>{
+Promise.allSettled([read("data/game-official-results.json"),read("data/game-learning-status.json"),read("data/weekly-learning-evidence.json"),read("data/player-results.json")]).then(results=>{
  if(results[0].status!=="fulfilled")throw Error("Verified game grades unavailable");
  const grades=results[0].value,rows=Array.isArray(grades.rows)?grades.rows:[];
+ playerRows=results[3].status==="fulfilled"&&Array.isArray(results[3].value.rows)?results[3].value.rows:[];
  const weeks=[...new Set(rows.map(r=>String(r.season)+" Week "+String(r.week)))].sort((a,b)=>b.localeCompare(a,undefined,{numeric:true}));
  week.innerHTML='<option value="all">All graded games</option>'+weeks.map(w=>'<option value="'+esc(w)+'">'+esc(w)+'</option>').join("");
  const render=()=>{
