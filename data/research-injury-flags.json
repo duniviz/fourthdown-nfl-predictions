@@ -1,13 +1,23 @@
 {
-  "generated_at_utc": "2026-11-14T18:49:12.150545+00:00",
+  "generated_at_utc": "2026-11-15T19:56:01.960870+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
   "projection_markets": 155,
-  "flagged_markets": 6,
+  "flagged_markets": 8,
   "flags": [
+    {
+      "player_id": "00-0030565",
+      "player_name": "Geno Smith",
+      "team": "NYJ",
+      "market": "passing_yards",
+      "sleeper_id": "1373",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
     {
       "player_id": "00-0034796",
       "player_name": "Lamar Jackson",
@@ -24,7 +34,7 @@
       "team": "NE",
       "market": "receiving_yards",
       "sleeper_id": "5859",
-      "injury_flag": "questionable",
+      "injury_flag": "out",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -59,6 +69,16 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0030506",
+      "player_name": "Travis Kelce",
+      "team": "KC",
+      "market": "receiving_yards",
+      "sleeper_id": "1466",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0035685",
       "player_name": "David Montgomery",
       "team": "HOU",
@@ -69,4 +89,4 @@
       "game_day_status_verified": false
     }
   ]
-}
+}\n
