@@ -1,4 +1,4 @@
-/* Visual game-day overview from current published forecast and DK line snapshots. */
+/* Compact live scoreboard that opens the existing matchup detail view. */
 (()=>{
  const root=document.getElementById('fd-slate-pulse');
  if(!root)return;
@@ -6,66 +6,56 @@
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const aliases={JAX:'JAC',LA:'LAR',WSH:'WAS'};
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
- const num=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))?Number(x):null;
+ const n=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
+ const teamLogo=t=>'https://a.espncdn.com/i/teamlogos/nfl/500/'+encodeURIComponent(canon(t).toLowerCase())+'.png';
+ const teamMarkup=(team,score,showScore)=>'<div class="fd-live-team"><img src="'+esc(teamLogo(team.abbr||team.name))+'" alt="" loading="lazy"><strong>'+esc(team.abbr||team.name)+'</strong><b>'+esc(showScore&&n(score)?score:'—')+'</b></div>';
  const ct=(x,opts)=>new Date(x).toLocaleString('en-US',{timeZone:'America/Chicago',...opts});
- const fmtCountdown=ms=>{if(ms<=0)return 'Kickoff now';const mins=Math.ceil(ms/60000),days=Math.floor(mins/1440),hours=Math.floor((mins%1440)/60),rest=mins%60;return days?days+'d '+hours+'h':hours?hours+'h '+rest+'m':rest+'m';};
- const logo=team=>'https://a.espncdn.com/i/teamlogos/nfl/500/'+encodeURIComponent(canon(team).toLowerCase())+'.png';
- let nextKickoff=null;
- function renderClock(){const el=$('fd-pulse-countdown');if(el&&nextKickoff)el.textContent=fmtCountdown(nextKickoff-Date.now());}
- async function refresh(){
-  try{
-   const [fr,qr]=await Promise.all([
-    fetch('data/live-v2.json?t='+Date.now(),{cache:'no-store'}),
-    fetch('data/dk-game-odds.json?t='+Date.now(),{cache:'no-store'})
-   ]);
-   if(!fr.ok||!qr.ok)throw Error('Feed unavailable');
-   const [forecast,market]=await Promise.all([fr.json(),qr.json()]);
-   const now=Date.now(),fAt=Date.parse(forecast.generated_at_utc),qAt=Date.parse(market.snapshot_date_utc);
-   if(!Number.isFinite(fAt)||fAt>now+300000||now-fAt>36*3600000||!Number.isFinite(qAt)||qAt>now+300000||now-qAt>36*3600000)throw Error('Stale feed');
-   const schedule=window.fdScheduleWindow?.get(new Date());
-   if(!schedule)throw Error('Schedule unavailable');
-   const games=(forecast.games||[]).filter(g=>window.fdScheduleWindow.contains(schedule,g.kickoff_utc)&&Number.isFinite(Date.parse(g.kickoff_utc)));
-   const projected=games.filter(g=>num(g.projected_home_score)!==null&&num(g.projected_away_score)!==null);
-   const quoteMap=new Map((market.games||[]).filter(q=>q.bookmaker==='draftkings'&&q.home&&q.away).map(q=>[canon(q.away)+'|'+canon(q.home),q]));
-   const lineCount=games.filter(g=>{
-    const q=quoteMap.get(canon(g.away)+'|'+canon(g.home)),kick=Date.parse(g.kickoff_utc);
-    if(!q||Math.abs(Date.parse(q.commence_time)-kick)>3600000)return false;
-    const updated=Date.parse(q.updated_at_utc||q.observed_at_utc||market.snapshot_date_utc);
-    const hasLine=num(q.total)!==null||num(q.home_spread)!==null;
-    return hasLine&&Number.isFinite(updated)&&updated<=now&&now-updated<=36*3600000&&updated<kick;
-   }).length;
-   const pct=games.length?Math.round(projected.length/games.length*100):0;
-   const ring=$('fd-pulse-ring');ring.style.setProperty('--coverage',pct+'%');
-   ring.setAttribute('aria-label',projected.length+' of '+games.length+' games have published score forecasts');
-   $('fd-pulse-coverage').textContent=games.length?pct+'%':'—';
-   $('fd-pulse-ready').textContent=projected.length+' / '+games.length;
-   $('fd-pulse-games').textContent=String(games.length);
-   $('fd-pulse-lines').textContent=String(lineCount);
-   $('fd-pulse-week').textContent='NFL '+forecast.season+' · WEEK '+forecast.week;
-   const start=schedule.start,end=schedule.end;
-   const dateLabel=x=>x&&String(x).length>=8?String(x).slice(4,6)+'/'+String(x).slice(6,8):'';
-   $('fd-pulse-dates').textContent=dateLabel(start)+' – '+dateLabel(end)+' · CENTRAL TIME';
-   const upcoming=games.filter(g=>Date.parse(g.kickoff_utc)>now).sort((a,b)=>Date.parse(a.kickoff_utc)-Date.parse(b.kickoff_utc));
-   const card=$('fd-pulse-next');
-   if(upcoming.length){
-    const g=upcoming[0];nextKickoff=Date.parse(g.kickoff_utc);
-    const when=ct(g.kickoff_utc,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
-    card.innerHTML='<div class="fd-pulse-next-kicker">NEXT KICKOFF <span id="fd-pulse-countdown">'+fmtCountdown(nextKickoff-now)+'</span></div><div class="fd-pulse-matchup"><div><img src="'+esc(logo(g.away))+'" alt="" loading="lazy"><strong>'+esc(canon(g.away))+'</strong></div><span>@</span><div><img src="'+esc(logo(g.home))+'" alt="" loading="lazy"><strong>'+esc(canon(g.home))+'</strong></div></div><div class="fd-pulse-kick-time">'+esc(when)+'</div><a href="#scoreboard">Open game center <span aria-hidden="true">↗</span></a>';
-   }else{
-    nextKickoff=null;
-    card.innerHTML='<div class="fd-pulse-next-kicker">SLATE STATUS</div><strong class="fd-pulse-no-next">All scheduled games have kicked off.</strong><p>The scoreboard has the latest game status and results.</p><a href="#scoreboard">Open game center <span aria-hidden="true">↗</span></a>';
-   }
-   $('fd-pulse-updated').textContent='Forecast feed '+ct(fAt,{hour:'numeric',minute:'2-digit',timeZoneName:'short'})+' · DK lines checked '+ct(qAt,{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
-  }catch(e){
-   nextKickoff=null;
-   $('fd-pulse-ring').style.setProperty('--coverage','0%');
-   $('fd-pulse-ring').setAttribute('aria-label','Current slate coverage unavailable');
-   $('fd-pulse-coverage').textContent='—';$('fd-pulse-ready').textContent='—';$('fd-pulse-games').textContent='—';$('fd-pulse-lines').textContent='—';
-   $('fd-pulse-week').textContent='SLATE FEED';
-   $('fd-pulse-dates').textContent='CURRENT STATUS UNAVAILABLE';
-   $('fd-pulse-next').innerHTML='<div class="fd-pulse-next-kicker">NEXT KICKOFF</div><strong class="fd-pulse-no-next">Waiting for fresh forecast and line feeds.</strong><a href="#scoreboard">Open game center <span aria-hidden="true">↗</span></a>';
-   $('fd-pulse-updated').textContent='The slate overview will return when fresh matched feeds are available.';
-  }
+ let forecasts=[];
+ function projectionFor(g){
+  return forecasts.find(p=>{
+   const same=(canon(p.home)===canon(g.home.abbr)&&canon(p.away)===canon(g.away.abbr))||(canon(p.away)===canon(g.home.abbr)&&canon(p.home)===canon(g.away.abbr));
+   return same&&Math.abs(Date.parse(p.kickoff_utc)-Date.parse(g.date))<12*3600000;
+  });
  }
- refresh();setInterval(refresh,60000);setInterval(renderClock,15000);
+ function card(g,state,index){
+  const live=state==='in',final=state==='post',projection=projectionFor(g),kick=Date.parse(g.date);
+  const label=live?'LIVE':final?'FINAL':Number.isFinite(kick)?ct(g.date,{weekday:'short',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'UPCOMING';
+  const projected=projection&&n(projection.projected_away_score)&&n(projection.projected_home_score);
+  const aux=live?(g.status||'In progress'):final?'Final':projected?'MODEL · '+Number(projection.projected_away_score).toFixed(1)+' – '+Number(projection.projected_home_score).toFixed(1):label;
+  const score=live||final;
+  return '<button type="button" class="fd-live-board-card '+(live?'is-live':final?'is-final':'is-upcoming')+'" data-game-id="'+esc(g.id)+'" aria-label="'+esc((live?'Open live matchup: ':final?'Open final matchup: ':'Open matchup: ')+g.away.abbr+' at '+g.home.abbr+(live||final?', '+g.away.score+' to '+g.home.score:'') )+'">'+
+   '<span class="fd-live-card-kicker"><span class="fd-live-state">'+esc(label)+'</span><span class="fd-live-card-number">#'+(index+1)+'</span></span>'+
+   '<span class="fd-live-scoreline">'+teamMarkup(g.away,g.away.score,score)+'<span class="fd-live-at">@</span>'+teamMarkup(g.home,g.home.score,score)+'</span>'+
+   '<span class="fd-live-card-detail">'+esc(aux)+'</span><span class="fd-live-card-link">Open matchup <b aria-hidden="true">↗</b></span></button>';
+ }
+ function render(){
+  const all=Array.isArray(window.fdAllGames)?window.fdAllGames:[];
+  const live=all.filter(g=>g.state==='in').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
+  const upcoming=all.filter(g=>g.state==='pre').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
+  const finals=all.filter(g=>g.state==='post').sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+  const chosen=live.length?live.slice(0,5):upcoming.length?upcoming.slice(0,4):finals.slice(0,4);
+  const mode=live.length?'LIVE NOW':upcoming.length?'UP NEXT':'FINAL SCORES';
+  $('fd-live-board-kicker').textContent=mode+' · NFL WEEK '+(forecasts[0]?.week||'');
+  $('fd-live-board-status').textContent=live.length?live.length+' game'+(live.length===1?'':'s')+' in progress · Scores refresh with the live scoreboard feed.':upcoming.length?'No games live right now · Showing the next kickoffs.':'No live or upcoming games · Latest finals shown.';
+  $('fd-live-board-cards').innerHTML=chosen.length?chosen.map((g,i)=>card(g,g.state,i)).join(''):'<p class="fd-live-board-empty">Waiting for the live scoreboard feed…</p>';
+ }
+ root.addEventListener('click',event=>{
+  const button=event.target.closest('[data-game-id]');
+  if(!button)return;
+  const game=(window.fdAllGames||[]).find(g=>String(g.id)===button.dataset.gameId);
+  if(!game)return;
+  if(typeof window.fdOpenMatchup==='function')window.fdOpenMatchup(game);
+  else document.getElementById('scoreboard')?.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+ async function loadForecasts(){
+  try{
+   const r=await fetch('data/live-v2.json?t='+Date.now(),{cache:'no-store'});
+   if(r.ok){const data=await r.json();forecasts=Array.isArray(data.games)?data.games:[];}
+  }catch(_){}
+  render();
+ }
+ render();
+ loadForecasts();
+ window.addEventListener('fd-scoreboard-updated',render);
+ setInterval(render,15000);
 })();
