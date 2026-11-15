@@ -61,7 +61,7 @@ jobs:
                       break
               if not game_today:
                   with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-                      output.write("run=false\\n")
+                      output.write("run=false\n")
                   print("No NFL game scheduled today")
                   raise SystemExit(0)
               schedule = os.environ["SCHEDULE_EXPR"].split()
