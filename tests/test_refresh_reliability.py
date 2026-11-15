@@ -12,7 +12,17 @@ class RefreshReliabilityTests(unittest.TestCase):
         self.assertIn("cron: '17 22,23 * * *'", publish)
         self.assertIn("kickoff.astimezone(central).date()==today", publish)
         self.assertIn("cron: '40 21,22 * * *'", daily_lines)
-        self.assertIn("cron: '7 * * * 0,1,4,5,6'", publish)
+        # The old hourly forecast cron was retired; Sunday now uses the
+        # ordered DK -> forecast reusable workflow chain with a safe backstop.
+        sunday=(ROOT/'.github/workflows/sunday-preset-game-day-refresh.yml').read_text()
+        backstop=(ROOT/'.github/workflows/sunday-preset-backstop.yml').read_text()
+        self.assertNotIn("cron: '7 * * * 0,1,4,5,6'", publish)
+        self.assertIn("cron: '17 22,23 * * *'", publish)
+        self.assertIn('uses: ./.github/workflows/daily-dk-player-props.yml', sunday)
+        self.assertIn('uses: ./.github/workflows/publish-v2.yml', sunday)
+        self.assertIn('needs: refresh-lines', sunday)
+        self.assertIn('recovery_mode:', sunday)
+        self.assertIn('Sunday preset game-day refresh', backstop)
         self.assertIn('TZ=America/Chicago',publish)
         self.assertIn('!= "17"',publish)
         self.assertNotIn('  schedule:',odds)
