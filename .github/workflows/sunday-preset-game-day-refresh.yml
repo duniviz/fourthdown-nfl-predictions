@@ -1,0 +1,76 @@
+name: Sunday preset game-day refresh
+on:
+  schedule:
+    # These paired UTC schedules resolve to 8:00, 11:30, 14:30, and 18:45 Central year-round.
+    - cron: '0 13 * * 0'
+    - cron: '0 14 * * 0'
+    - cron: '30 16 * * 0'
+    - cron: '30 17 * * 0'
+    - cron: '30 19 * * 0'
+    - cron: '30 20 * * 0'
+    - cron: '45 23 * * 0'
+    - cron: '45 0 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: sunday-preset-pregame-refresh
+  cancel-in-progress: false
+jobs:
+  check-window:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.guard.outputs.run }}
+    steps:
+      - name: Confirm this is the Central Time schedule
+        id: guard
+        env:
+          SCHEDULE_EXPR: ${{ github.event.schedule }}
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import os
+          from zoneinfo import ZoneInfo
+
+          if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
+              print("run=true")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+                  output.write("run=true\\n")
+              raise SystemExit(0)
+
+          central = ZoneInfo("America/Chicago")
+          now = dt.datetime.now(central)
+          if now.weekday() != 6:
+              reason = "Not Sunday in Central Time"
+          else:
+              schedule = os.environ["SCHEDULE_EXPR"].split()
+              minute, hour, _, _, day_of_week = schedule
+              slots = [(8, 0), (11, 30), (14, 30), (18, 45)]
+              valid = False
+              for target_hour, target_minute in slots:
+                  local = dt.datetime.combine(
+                      now.date(),
+                      dt.time(target_hour, target_minute),
+                      tzinfo=central,
+                  )
+                  utc = local.astimezone(dt.timezone.utc)
+                  cron_day = (utc.weekday() + 1) % 7
+                  allowed_days = {int(value) for value in day_of_week.split(",")}
+                  if int(minute) == target_minute and int(hour) == utc.hour and cron_day in allowed_days:
+                      valid = True
+                      break
+              reason = "Central Time preset matched" if valid else "This UTC schedule is the daylight-saving alternate"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"run={'true' if valid or now.weekday() != 6 else 'false'}\\n")
+          print(reason)
+          PY
+  refresh-lines:
+    needs: check-window
+    if: needs.check-window.outputs.run == 'true'
+    uses: ./.github/workflows/daily-dk-player-props.yml
+    secrets: inherit
+  refresh-forecasts:
+    needs: refresh-lines
+    if: needs.check-window.outputs.run == 'true'
+    uses: ./.github/workflows/publish-v2.yml
+    secrets: inherit
