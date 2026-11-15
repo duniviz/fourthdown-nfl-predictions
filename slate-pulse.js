@@ -22,9 +22,9 @@
    const [forecast,market]=await Promise.all([fr.json(),qr.json()]);
    const now=Date.now(),fAt=Date.parse(forecast.generated_at_utc),qAt=Date.parse(market.snapshot_date_utc);
    if(!Number.isFinite(fAt)||fAt>now+300000||now-fAt>36*3600000||!Number.isFinite(qAt)||qAt>now+300000||now-qAt>36*3600000)throw Error('Stale feed');
-   const window=window.fdScheduleWindow?.get(new Date());
-   if(!window)throw Error('Schedule unavailable');
-   const games=(forecast.games||[]).filter(g=>window.fdScheduleWindow.contains(window,g.kickoff_utc)&&Number.isFinite(Date.parse(g.kickoff_utc)));
+   const schedule=window.fdScheduleWindow?.get(new Date());
+   if(!schedule)throw Error('Schedule unavailable');
+   const games=(forecast.games||[]).filter(g=>window.fdScheduleWindow.contains(schedule,g.kickoff_utc)&&Number.isFinite(Date.parse(g.kickoff_utc)));
    const projected=games.filter(g=>num(g.projected_home_score)!==null&&num(g.projected_away_score)!==null);
    const quoteMap=new Map((market.games||[]).filter(q=>q.bookmaker==='draftkings'&&q.home&&q.away).map(q=>[canon(q.away)+'|'+canon(q.home),q]));
    const lineCount=games.filter(g=>{
@@ -42,7 +42,7 @@
    $('fd-pulse-games').textContent=String(games.length);
    $('fd-pulse-lines').textContent=String(lineCount);
    $('fd-pulse-week').textContent='NFL '+forecast.season+' · WEEK '+forecast.week;
-   const start=window.start,end=window.end;
+   const start=schedule.start,end=schedule.end;
    const dateLabel=x=>x&&String(x).length>=8?String(x).slice(4,6)+'/'+String(x).slice(6,8):'';
    $('fd-pulse-dates').textContent=dateLabel(start)+' – '+dateLabel(end)+' · CENTRAL TIME';
    const upcoming=games.filter(g=>Date.parse(g.kickoff_utc)>now).sort((a,b)=>Date.parse(a.kickoff_utc)-Date.parse(b.kickoff_utc));
