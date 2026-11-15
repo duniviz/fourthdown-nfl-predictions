@@ -22,7 +22,7 @@ class RefreshReliabilityTests(unittest.TestCase):
         self.assertIn('uses: ./.github/workflows/publish-v2.yml', sunday)
         self.assertIn('needs: refresh-lines', sunday)
         self.assertIn('recovery_mode:', sunday)
-        self.assertIn('Sunday preset game-day refresh', backstop)
+        self.assertIn("const workflow_id = 'sunday-preset-game-day-refresh.yml'", backstop)
         self.assertIn('TZ=America/Chicago',publish)
         self.assertIn('!= "17"',publish)
         self.assertNotIn('  schedule:',odds)
