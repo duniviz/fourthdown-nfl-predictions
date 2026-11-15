@@ -7,6 +7,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "VJ Payne",
+            "position": "S",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
             "player": "Adonai Mitchell",
             "position": "WR",
             "status": "Questionable",
@@ -35,10 +42,17 @@
           },
           {
             "detail": "questionable",
-            "player": "Harrison Phillips",
-            "position": "DT",
+            "player": "Jordan Hancock",
+            "position": "CB",
             "status": "Questionable",
-            "team": "NYJ"
+            "team": "BUF"
+          },
+          {
+            "detail": "out",
+            "player": "Tyrell Shavers",
+            "position": "WR",
+            "status": "Out",
+            "team": "BUF"
           },
           {
             "detail": "doubtful",
@@ -55,24 +69,10 @@
             "team": "BUF"
           },
           {
-            "detail": "out",
-            "player": "Tyrell Shavers",
-            "position": "WR",
-            "status": "Out",
-            "team": "BUF"
-          },
-          {
             "detail": "questionable",
             "player": "Sam Franklin Jr.",
             "position": "S",
             "status": "Questionable",
-            "team": "BUF"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Joshua Palmer",
-            "position": "WR",
-            "status": "Injured Reserve",
             "team": "BUF"
           }
         ],
@@ -232,10 +232,10 @@
         "event_id": "401873055",
         "players": [
           {
-            "detail": "Injured Reserve",
+            "detail": "questionable",
             "player": "Travis Etienne Jr.",
             "position": "RB",
-            "status": "Injured Reserve",
+            "status": "Questionable",
             "team": "NO"
           },
           {
@@ -246,10 +246,10 @@
             "team": "NO"
           },
           {
-            "detail": "out",
+            "detail": "Injured Reserve",
             "player": "Christen Miller",
             "position": "DT",
-            "status": "Out",
+            "status": "Injured Reserve",
             "team": "NO"
           },
           {
@@ -684,17 +684,17 @@
         "event_id": "401873057",
         "players": [
           {
-            "detail": "out",
-            "player": "Tommy Townsend",
-            "position": "P",
-            "status": "Out",
+            "detail": "Injured Reserve",
+            "player": "Peter Skoronski",
+            "position": "G",
+            "status": "Injured Reserve",
             "team": "TEN"
           },
           {
-            "detail": "out",
-            "player": "Peter Skoronski",
-            "position": "G",
-            "status": "Out",
+            "detail": "Injured Reserve",
+            "player": "Tommy Townsend",
+            "position": "P",
+            "status": "Injured Reserve",
             "team": "TEN"
           },
           {
@@ -910,10 +910,10 @@
         "event_id": "401873058",
         "players": [
           {
-            "detail": "doubtful",
+            "detail": "out",
             "player": "Divine Deablo",
             "position": "LB",
-            "status": "Doubtful",
+            "status": "Out",
             "team": "ATL"
           },
           {
@@ -1475,6 +1475,13 @@
           },
           {
             "detail": "out",
+            "player": "Darrell Baker Jr.",
+            "position": "CB",
+            "status": "Out",
+            "team": "MIA"
+          },
+          {
+            "detail": "out",
             "player": "Aaron Brewer",
             "position": "C",
             "status": "Out",
@@ -1492,13 +1499,6 @@
             "player": "Chris Bell",
             "position": "WR",
             "status": "Doubtful",
-            "team": "MIA"
-          },
-          {
-            "detail": "out",
-            "player": "Darrell Baker Jr.",
-            "position": "CB",
-            "status": "Out",
             "team": "MIA"
           },
           {
@@ -1670,6 +1670,27 @@
         "event_id": "401873060",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Josh Whyle",
+            "position": "TE",
+            "status": "Injured Reserve",
+            "team": "GB"
+          },
+          {
+            "detail": "questionable",
+            "player": "Chris Brooks",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "GB"
+          },
+          {
+            "detail": "questionable",
+            "player": "Skyy Moore",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "GB"
+          },
+          {
             "detail": "out",
             "player": "Josh Jacobs",
             "position": "RB",
@@ -1684,25 +1705,11 @@
             "team": "GB"
           },
           {
-            "detail": "questionable",
-            "player": "Travis Glover",
-            "position": "OT",
-            "status": "Questionable",
-            "team": "GB"
-          },
-          {
             "detail": "out",
-            "player": "Sean Rhyan",
-            "position": "G",
+            "player": "Kyler Murray",
+            "position": "QB",
             "status": "Out",
-            "team": "GB"
-          },
-          {
-            "detail": "questionable",
-            "player": "Lukas Van Ness",
-            "position": "DE",
-            "status": "Questionable",
-            "team": "GB"
+            "team": "MIN"
           },
           {
             "detail": "out",
@@ -1729,13 +1736,6 @@
             "detail": "out",
             "player": "Jauan Jennings",
             "position": "WR",
-            "status": "Out",
-            "team": "MIN"
-          },
-          {
-            "detail": "out",
-            "player": "Kyler Murray",
-            "position": "QB",
             "status": "Out",
             "team": "MIN"
           }
@@ -1937,6 +1937,27 @@
           },
           {
             "detail": "questionable",
+            "player": "Reggie Gilliam",
+            "position": "FB",
+            "status": "Questionable",
+            "team": "NE"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "TreVeyon Henderson",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "NE"
+          },
+          {
+            "detail": "questionable",
+            "player": "Greg Van Roten",
+            "position": "G",
+            "status": "Questionable",
+            "team": "NE"
+          },
+          {
+            "detail": "questionable",
             "player": "Brenden Schooler",
             "position": "S",
             "status": "Questionable",
@@ -1946,27 +1967,6 @@
             "detail": "questionable",
             "player": "Charles Woods",
             "position": "CB",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "Kevin Byard",
-            "position": "S",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "Rhamondre Stevenson",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "A.J. Brown",
-            "position": "WR",
             "status": "Questionable",
             "team": "NE"
           }
@@ -2547,6 +2547,20 @@
           },
           {
             "detail": "Injured Reserve",
+            "player": "C.J. West",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "SF"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Nate Hobbs",
+            "position": "CB",
+            "status": "Injured Reserve",
+            "team": "SF"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Gracen Halton",
             "position": "DT",
             "status": "Injured Reserve",
@@ -2563,20 +2577,6 @@
             "detail": "questionable",
             "player": "Renardo Green",
             "position": "CB",
-            "status": "Questionable",
-            "team": "SF"
-          },
-          {
-            "detail": "questionable",
-            "player": "Deommodore Lenoir",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "SF"
-          },
-          {
-            "detail": "questionable",
-            "player": "Dre Greenlaw",
-            "position": "LB",
             "status": "Questionable",
             "team": "SF"
           }
@@ -2883,6 +2883,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-14T19:55:14Z",
+  "generated_at_utc": "2026-11-15T01:00:21Z",
   "schema_version": 1
 }
