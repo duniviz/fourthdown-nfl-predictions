@@ -10,7 +10,7 @@ assert.equal(decide(late,[{head_branch:'main',event:'schedule',created_at:'2026-
 assert.equal(decide(late,[{head_branch:'main',event:'workflow_dispatch',created_at:'2026-11-15T16:59:00Z'}],[game]).action,'ignore');
 assert.equal(decide(late,[{head_branch:'feature',event:'schedule',created_at:'2026-11-15T17:01:00Z'}],[game]).action,'dispatch');
 assert.equal(decide(late,[],[]).action,'ignore');
-assert.equal(decide(at('2026-11-15T17:20:00Z'),[],[game]).action,'alert'); // Less than 25m to kickoff
+assert.equal(decide(at('2026-11-15T17:20:00Z'),[],[{kickoff_utc:'2026-11-15T17:30:00Z'}]).action,'alert'); // Less than 25m to kickoff
 assert.equal(decide(at('2026-11-15T17:37:00Z'),[],[game]).action,'ignore'); // Outside recovery window
 assert.equal(decide(at('2026-11-15T18:05:00Z'),[],[game]).action,'ignore'); // Already kicked
 assert.equal(decide(at('2026-11-16T17:07:00Z'),[],[game]).action,'ignore');
