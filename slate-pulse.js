@@ -58,8 +58,7 @@
   if(!button)return;
   const game=(window.fdAllGames||[]).find(g=>String(g.id)===button.dataset.gameId)||fallbackById.get(button.dataset.gameId);
   if(!game)return;
-  if(typeof window.fdOpenMatchup==='function')window.fdOpenMatchup(game);
-  else document.getElementById('scoreboard')?.scrollIntoView({behavior:'smooth',block:'start'});
+  window.dispatchEvent(new CustomEvent('fd-open-matchup',{detail:game}));
  });
  async function loadForecasts(){
   try{
