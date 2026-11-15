@@ -24,6 +24,8 @@ on:
       - 'tools/train_deployable_game_ml.py'
       - 'tests/test_deployable_game_ml.py'
       - 'tests/test_weekly_learning_evidence.py'
+      - 'scripts/audit_ml_evidence.py'
+      - 'tests/test_audit_ml_evidence.py'
       - 'tests/test_ml_pipeline_integration.py'
   push:
     branches: [main]
@@ -106,11 +108,28 @@ jobs:
           python -m live.player_research
           python - <<'PYCHECK'
           import json
+          from live.player_ml_runtime import forecast
           rows=json.load(open('data/player-research.json'))['players']
+          runtime=json.load(open('data/player-ml-runtime.json'))
+          slate=json.load(open('data/live-v2.json'))
+          season, week=int(slate['season']), int(slate['week'])
+          supported={'passing_yards','rushing_yards','receiving_yards'}
           active=[r for r in rows if (r.get('player_ml_shadow') or {}).get('active')]
           changed=[r for r in active if r['projection'] != r['player_ml_shadow']['baseline']]
-          print(f'Active ML forecasts: {len(active)}; changed forecasts: {len(changed)}')
-          assert changed, 'No active ML forecasts reached the publication pipeline'
+          eligible=[r for r in rows if r.get('stat_key') in supported
+                    and forecast(runtime,r['stat_key'],r['projection'],season,week) is not None]
+          print(f'Eligible baseline rows: {len(eligible)}; active ML forecasts: {len(active)}; changed: {len(changed)}')
+          if eligible:
+              assert active, 'Eligible earlier-week ML forecasts did not reach publication'
+              # Some valid candidates may equal the baseline after rounding/clamping.
+              for r in active:
+                  shadow=r['player_ml_shadow']
+                  assert r['projection']==shadow['candidate'], 'Active ML candidate was not published'
+                  assert (shadow['trained_season'],shadow['trained_week']) < (season,week), 'Same-week model leaked into publication'
+          else:
+              assert not active, 'Ineligible same-week/stale ML models must remain inactive'
+              assert all(r.get('player_ml_shadow') is None for r in rows if r.get('stat_key') in supported), 'Rejected ML model emitted a shadow forecast'
+              print('ML correctly failed closed: no eligible earlier-week inference models')
           PYCHECK
           python -m live.validate_props
           python -m live.simulate
@@ -184,6 +203,10 @@ jobs:
         run: python research/grade_all_markets_paired.py
       - name: Prove prior-week forecast evaluation sample
         run: python -m scripts.verify_weekly_learning_evidence
+      - name: Check ML evidence audit guardrails
+        run: |
+          python -m unittest discover -s tests -p 'test_audit_ml_evidence.py' -v
+          python -m scripts.audit_ml_evidence
       - name: Publish paired weekly leaderboards for Model Lab
         run: python scripts/publish_weekly_lab.py
       - name: Preserve research-only champion selection
