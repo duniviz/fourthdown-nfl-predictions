@@ -1,16 +1,23 @@
 name: Sunday preset game-day refresh
 on:
   schedule:
-    # These paired UTC schedules resolve to 8:00, 11:30, 14:30, and 18:45 Central year-round.
+    # These paired UTC schedules resolve to 8:00, 11:00, 14:30, and 18:45 Central year-round.
+    # The noon-game refresh starts at 11 AM to leave a validation/lock buffer.
     - cron: '0 13 * * 0'
     - cron: '0 14 * * 0'
-    - cron: '30 16 * * 0'
-    - cron: '30 17 * * 0'
+    - cron: '0 16 * * 0'
+    - cron: '0 17 * * 0'
     - cron: '30 19 * * 0'
     - cron: '30 20 * * 0'
     - cron: '45 23 * * 0'
     - cron: '45 0 * * 1'
   workflow_dispatch:
+    inputs:
+      recovery_mode:
+        description: 'Automated missed-run recovery (safety-gated before kickoff)'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -29,6 +36,7 @@ jobs:
         id: guard
         env:
           SCHEDULE_EXPR: ${{ github.event.schedule }}
+          RECOVERY_MODE: ${{ inputs.recovery_mode }}
         run: |
           python - <<'PY'
           import datetime as dt
@@ -38,6 +46,25 @@ jobs:
           from zoneinfo import ZoneInfo
 
           if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
+              if os.environ.get("RECOVERY_MODE", "").lower() == "true":
+                  central = ZoneInfo("America/Chicago")
+                  now = dt.datetime.now(central)
+                  games = json.loads(Path("data/live-v2.json").read_text()).get("games", [])
+                  future = []
+                  for game in games:
+                      try:
+                          kickoff = dt.datetime.fromisoformat(game["kickoff_utc"].replace("Z", "+00:00")).astimezone(central)
+                      except (KeyError, TypeError, ValueError, AttributeError):
+                          continue
+                      if kickoff.date() == now.date() and kickoff > now:
+                          future.append(kickoff)
+                  # Even a queued recovery must not begin its full pipeline close to kickoff.
+                  valid = now.weekday() == 6 and future and min(
+                      (kickoff-now).total_seconds() for kickoff in future) >= 20*60
+                  print("Recovery kickoff safety gate:", "passed" if valid else "blocked")
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+                      output.write(f"run={'true' if valid else 'false'}\n")
+                  raise SystemExit(0)
               print("run=true")
               with open(os.environ["GITHUB_OUTPUT"], "a") as output:
                   output.write("run=true\n")
@@ -66,7 +93,7 @@ jobs:
                   raise SystemExit(0)
               schedule = os.environ["SCHEDULE_EXPR"].split()
               minute, hour, _, _, day_of_week = schedule
-              slots = [(8, 0), (11, 30), (14, 30), (18, 45)]
+              slots = [(8, 0), (11, 0), (14, 30), (18, 45)]
               valid = False
               for target_hour, target_minute in slots:
                   local = dt.datetime.combine(
