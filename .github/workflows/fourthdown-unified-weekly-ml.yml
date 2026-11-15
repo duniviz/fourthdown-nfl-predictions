@@ -27,6 +27,8 @@ on:
       - 'scripts/audit_ml_evidence.py'
       - 'tests/test_audit_ml_evidence.py'
       - 'tests/test_ml_pipeline_integration.py'
+      - 'research/grade_all_markets_paired.py'
+      - 'tests/test_multiweek_paired_learning.py'
   push:
     branches: [main]
     paths: ['.github/workflows/fourthdown-unified-weekly-ml.yml']
@@ -55,6 +57,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_ml_pipeline_integration.py' -v
           python -m unittest discover -s tests -p 'test_weekly_learning_evidence.py' -v
           python -m unittest discover -s tests -p 'test_official_game_lock_ml_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_multiweek_paired_learning.py' -v
           python -m unittest discover -s tests -p 'test_weekly_learning_evidence.py' -v
 
       - name: Test completed-game filtering and chronological splits

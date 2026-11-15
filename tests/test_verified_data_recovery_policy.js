@@ -17,4 +17,6 @@ assert.equal(policy(id,[{...run,created_at:'2026-11-15T16:00:00Z'}],now).action,
 assert.equal(policy(id,[run,{...run,id:24,status:'in_progress',created_at:'2026-11-15T19:48:00Z'}],now).action,'ignore');
 assert.equal(policy('refresh-game-context.yml',[{...run,name:'Refresh verified game context'}],now).action,'retry');
 assert.equal(policy(id,[],now).action,'ignore'); // Missed schedule: alert separately; never blindly dispatch writer.
+assert.equal(policy(id,[run,{...run,id:25,event:'workflow_dispatch',status:'completed',conclusion:'success',created_at:'2026-11-15T19:55:00Z'}],now).action,'ignore');
+assert.equal(policy(id,[run,{...run,id:26,event:'workflow_dispatch',status:'completed',conclusion:'failure',created_at:'2026-11-15T19:55:00Z'}],now).action,'ignore');
 console.log('Verified-data recovery allowlist, bounded retries, and exclusions passed');
