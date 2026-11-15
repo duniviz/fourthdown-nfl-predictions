@@ -60,10 +60,11 @@ jobs:
                       game_today = True
                       break
               if not game_today:
-                  valid = False
-                  reason = "No NFL game scheduled today"
-              else:
-                  schedule = os.environ["SCHEDULE_EXPR"].split()
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+                      output.write("run=false\\n")
+                  print("No NFL game scheduled today")
+                  raise SystemExit(0)
+              schedule = os.environ["SCHEDULE_EXPR"].split()
               minute, hour, _, _, day_of_week = schedule
               slots = [(8, 0), (11, 30), (14, 30), (18, 45)]
               valid = False
