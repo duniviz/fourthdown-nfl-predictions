@@ -1,0 +1,82 @@
+name: FOURTHDOWN watchdog self-healing
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/watchdog-self-heal.yml'
+      - 'scripts/self_heal_policy.js'
+      - 'tests/test_self_heal_policy.js'
+permissions:
+  contents: read
+  actions: write
+  issues: write
+concurrency:
+  group: fourthdown-watchdog-recovery
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test bounded retry policy
+        run: node tests/test_self_heal_policy.js
+      - name: Retry one failed read-only watchdog and escalate persistent failures
+        if: github.event_name != 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { decide, missing, NAME } = require(process.env.GITHUB_WORKSPACE + '/scripts/self_heal_policy.js');
+            const now = Date.now();
+            const { owner, repo } = context.repo;
+            const workflow_id = 'operations-watchdog.yml';
+            const response = await github.rest.actions.listWorkflowRuns({
+              owner, repo, workflow_id, branch: 'main', per_page: 30
+            });
+            const runs = response.data.workflow_runs;
+            const active = runs.filter(r => r.name === NAME);
+            const newest = active[0];
+            const title = '[Automation] Pipeline watchdog needs manual attention';
+            async function issue(message) {
+              const all = await github.paginate(github.rest.issues.listForRepo, {
+                owner, repo, state: 'open', per_page: 100
+              });
+              const current = all.find(i => !i.pull_request && i.title === title);
+              if (current) {
+                await github.rest.issues.createComment({owner, repo, issue_number: current.number, body: message});
+              } else {
+                await github.rest.issues.create({owner, repo, title, body: message});
+              }
+            }
+            if (missing(active, now)) {
+              // Dispatch only the read-only monitor, never a publication or locking job.
+              core.warning('No watchdog run detected in four hours; dispatching one safety check');
+              try {
+                await github.rest.actions.createWorkflowDispatch({owner, repo, workflow_id, ref: 'main'});
+              } catch (err) {
+                await issue('Watchdog was missing for over four hours and a recovery dispatch failed: ' + err.message);
+                throw err;
+              }
+              return;
+            }
+            if (!newest) return;
+            const action = decide(newest, now);
+            if (action === 'retry') {
+              core.warning('Retrying failed jobs once for watchdog run ' + newest.id);
+              try {
+                await github.rest.actions.reRunWorkflowFailedJobs({owner, repo, run_id: newest.id});
+              } catch (err) {
+                await issue('Could not retry read-only watchdog: ' + newest.html_url + '\\n' + err.message);
+                throw err;
+              }
+            } else if (action === 'escalate') {
+              await issue('The watchdog failed again after its one allowed recovery attempt.\\n\\nRun: ' + newest.html_url +
+                '\\n\\nPublished predictions and model promotions have not been changed.');
+              core.setFailed('Watchdog failed after one retry; manual investigation required');
+            } else {
+              core.info('No eligible failure to retry');
+            }
