@@ -12,29 +12,38 @@
  const marketNames={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards'};
  const quoteMarkets={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
  const nameOf=x=>teams[canon(x)]||String(x||'');
+ const teamMatches=(value,abbr)=>canon(value)===canon(abbr)||norm(value)===norm(nameOf(abbr))||norm(value).includes(norm(nameOf(abbr)));
+ function sideRates(sim,line){
+  const stored=number(sim?.dk_line),over=pct(sim?.over_pct),under=pct(sim?.under_pct);
+  if(stored!==null&&Math.abs(stored-line)<.0001&&over!==null&&under!==null)return {over,under};
+  const draws=Array.isArray(sim?.sorted_draws)?sim.sorted_draws.map(number).filter(x=>x!==null):[];
+  if(!draws.length)return {over:null,under:null};
+  return {over:100*draws.filter(x=>x>line).length/draws.length,under:100*draws.filter(x=>x<line).length/draws.length};
+ }
  const number=x=>x!==null&&x!==''&&x!==undefined&&Number.isFinite(Number(x))?Number(x):null;
  const pct=x=>number(x)!==null&&Number(x)>=0&&Number(x)<=100?Number(x):null;
  function render(){
   const rows=boards[active]||[];
-  root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p><div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>Projection gap · no matched simulation</strong>')+'<span>'+esc(x.game||'')+'</span></div></article>').join(''):'<p class="fd-top-pick-empty">No eligible current-slate picks are available from fresh feeds. The board will update when matching forecasts, lines, and simulations are published.</p>';
+  root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p>'+(Number.isFinite(x.overPct)&&Number.isFinite(x.underPct)?'<div class="fd-top-pick-prob"><div class="fd-top-pick-prob-bar"><i style="width:'+x.overPct+'%"></i><b style="width:'+x.underPct+'%"></b></div><div><span>Over '+x.overPct.toFixed(1)+'% sim</span><span>Under '+x.underPct.toFixed(1)+'% sim</span></div></div>':'')+'<div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>'+(x.line===null?'Projection only':'No matched simulation')+'</strong>')+'<span>'+esc(x.game||'')+'</span></div></article>').join(''):'<p class="fd-top-pick-empty">No current-slate yardage projections or eligible scoring picks are available yet. Yardage projections remain visible when a live DK prop line is unavailable.</p>';
   tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdTopPicksTab===active)));
-  status.textContent=active==='players'?'Passing, rushing, and receiving yards only. Player cards show projection gaps; exact-line simulation rates appear when available.':active==='scoring'?'One leading O/U, outright-winner, and spread pick, when current DraftKings lines and matching simulations support them.':'Top five across O/U, winner, spread, and player yardage picks with an exact matching simulation above 50%.';
+  status.textContent=active==='players'?'Passing, rushing, and receiving yards only. Player cards show yardage projections, DK lines, and simulated over/under rates when available.':active==='scoring'?'One leading O/U, outright-winner, and spread pick, when current DraftKings lines and matching simulations support them.':'Top five across O/U, winner, spread, and player yardage picks with an exact matching simulation above 50%.';
  }
  tabs.forEach(b=>b.addEventListener('click',()=>{active=b.dataset.fdTopPicksTab;render();}));
  async function refresh(){
   try{
    const paths=['data/live-v2.json','data/dk-game-odds.json','data/simulations.json','data/dk-odds.json','data/research-prop-desk.json'];
    const rs=await Promise.all(paths.map(p=>fetch(p+'?t='+Date.now(),{cache:'no-store'})));
-   if(rs.some(r=>!r.ok))throw Error('Feed unavailable');
-   const [forecast,market,sim,dk,desk]=await Promise.all(rs.map(r=>r.json()));
+   if(!rs[0].ok||!rs[4].ok)throw Error('Forecast or yardage feed unavailable');
+   const [forecast,market,sim,dk,desk]=await Promise.all(rs.map(r=>r.ok?r.json():Promise.resolve({})));
    const now=Date.now(),stamp=Date.parse(forecast.generated_at_utc),quoteStamp=Date.parse(market.snapshot_date_utc),simStamp=Date.parse(sim.generated_at_utc);
-   if(!Number.isFinite(stamp)||stamp>now+300000||now-stamp>36*3600000||!Number.isFinite(quoteStamp)||quoteStamp>now+300000||now-quoteStamp>36*3600000)throw Error('Stale current-slate feed');
+   if(!Number.isFinite(stamp)||stamp>now+300000||now-stamp>36*3600000)throw Error('Stale forecast feed');
+   const gameOddsFresh=Number.isFinite(quoteStamp)&&quoteStamp<=now+300000&&now-quoteStamp<=36*3600000;
    const simulationFresh=Number.isFinite(simStamp)&&simStamp<=now+300000&&now-simStamp<=36*3600000;
    const slate=window.fdScheduleWindow?.get(new Date());
    if(!slate)throw Error('Schedule window unavailable');
    const upcoming=(forecast.games||[]).filter(g=>g.kickoff_utc&&Date.parse(g.kickoff_utc)>now&&window.fdScheduleWindow.contains(slate,g.kickoff_utc));
    const quotes=new Map();
-   for(const q of market.games||[]){
+   for(const q of (gameOddsFresh?market.games||[]:[])){
     if(q.bookmaker!=='draftkings'||!q.home||!q.away)continue;
     const key=canon(q.away)+'|'+canon(q.home),prior=quotes.get(key),stampQ=Date.parse(q.updated_at_utc||q.observed_at_utc||market.snapshot_date_utc);
     if(!prior||stampQ>Date.parse(prior.updated_at_utc||prior.observed_at_utc||market.snapshot_date_utc))quotes.set(key,q);
@@ -75,24 +84,28 @@
      if(!marketKey||!game)continue;
      const start=Date.parse(game.kickoff_utc);
      const quote=(dk.rows||[]).filter(q=>norm(q.player)===norm(x.player_name)&&q.market_key===marketKey&&
-       norm(q.away_team).includes(norm(nameOf(game.away)))&&norm(q.home_team).includes(norm(nameOf(game.home)))&&
+       teamMatches(q.away_team||q.away,game.away)&&teamMatches(q.home_team||q.home,game.home)&&
        Math.abs(Date.parse(q.commence_time)-start)<3600000)
       .filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;})
       .sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
      const projection=number(x.projected_yards),line=number(quote?.line);
-     if(line===null||projection===null||line===projection)continue;
-     const gap=projection-line,side=gap>0?'Over':'Under';
-     const playerSim=playerSims.find(s=>String(s.game_id)===String(game.game_id)&&String(s.player_id)===String(x.player_id)&&s.stat_key===key);
-     const simLine=number(playerSim?.dk_line),confidence=simLine!==null&&Math.abs(simLine-line)<.0001?pct(side==='Over'?playerSim.over_pct:playerSim.under_pct):null;
-     const item={kind:marketNames[key],pick:x.player_name+' · '+side+' '+line.toFixed(1),game:canon(game.away)+' @ '+canon(game.home),
-      detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(confidence===null?' · simulation unavailable':''),
-      confidence,rank:Math.abs(gap)/Math.max(1,Math.abs(line))};
+     if(projection===null)continue;
+     const gap=line===null?null:projection-line;
+     const playerSim=playerSims.find(s=>String(s.game_id)===String(game.game_id)&&s.stat_key===key&&
+      ((String(s.player_id)===String(x.player_id))||(norm(s.player)===norm(x.player_name))));
+     const rates=line===null?{over:null,under:null}:sideRates(playerSim,line);
+     let side=rates.over!==null&&rates.under!==null?(rates.over>=rates.under?'Over':'Under'):gap===null?null:gap>0?'Over':gap<0?'Under':null;
+     const confidence=side==='Over'?rates.over:side==='Under'?rates.under:null;
+     if(line!==null&&!side)continue;
+     const item={kind:marketNames[key],pick:x.player_name+' · '+(line===null?projection.toFixed(1)+' projected yards':side+' '+line.toFixed(1)),game:canon(game.away)+' @ '+canon(game.home),
+      detail:line===null?'Model yardage projection · current DK prop line unavailable':'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(rates.over===null?' · simulation unavailable':''),
+      confidence,overPct:rates.over,underPct:rates.under,line,rank:line===null?projection:Math.abs(gap)/Math.max(1,Math.abs(line))};
      playerCandidates.push(item);
      if(confidence!==null&&confidence>50)blend.push(item);
     }
    }
    const seen=new Set();
-   boards.players=playerCandidates.sort((a,b)=>b.rank-a.rank).filter(x=>{const k=x.pick+'|'+x.kind;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,5);
+   boards.players=playerCandidates.sort((a,b)=>(b.confidence??-1)-(a.confidence??-1)||b.rank-a.rank).filter(x=>{const k=x.pick+'|'+x.kind;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,5);
    boards.blended=blend.sort((a,b)=>b.confidence-a.confidence).slice(0,5);
    render();
    status.textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'numeric',minute:'2-digit',timeZoneName:'short'})+' · Current slate only.';
