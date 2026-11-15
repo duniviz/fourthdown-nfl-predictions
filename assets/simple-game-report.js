@@ -90,6 +90,40 @@ function learn(status,evidence){
  html+='<p><b>Simple takeaway:</b> We can identify where projected scores and picks were off. A model change counts as learned and deployed only when the saved validation says it was approved; otherwise it is still being tested.</p>';
  return html;
 }
+function drawPlayerAnalytics(rows,selectedGameIds,market){
+ const container=document.getElementById("fd-player-market-analytics"),summary=document.getElementById("fd-player-dataset");
+ if(!container||!summary)return;
+ // Only rows from verified graded games, to match the week selector.
+ const eligible=rows.filter(r=>selectedGameIds.has(r.game_id)&&num(r.projection)&&num(r.actual)&&["passing_yards","rushing_yards","receiving_yards","completions","attempts","carries","receptions"].includes(r.stat_key));
+ const filtered=eligible.filter(r=>market==="all"||r.stat_key===market);
+ const picked=filtered.filter(r=>r.recommended_side==="over"||r.recommended_side==="under");
+ const graded=picked.filter(r=>r.recommendation_result==="hit"||r.recommendation_result==="miss");
+ const hits=graded.filter(r=>r.recommendation_result==="hit").length;
+ const mae=filtered.length?filtered.reduce((sum,r)=>sum+Math.abs(r.actual-r.projection),0)/filtered.length:null;
+ const bias=filtered.length?filtered.reduce((sum,r)=>sum+r.actual-r.projection,0)/filtered.length:null;
+ const withQuote=filtered.filter(r=>num(r.dk_line)).length;
+ const paired=filtered.filter(r=>r.ml_comparison&&num(r.ml_comparison.baseline_absolute_error)&&num(r.ml_comparison.ml_absolute_error));
+ const improved=paired.filter(r=>r.ml_comparison.ml_absolute_error<r.ml_comparison.baseline_absolute_error).length;
+ const stats=[["Forecasts",filtered.length],["Avg absolute error",fmt(mae)+(market==="all"?" mixed units":market.endsWith("_yards")?" yards":" counts")],["Average actual − predicted",fmt(bias)+(market==="all"?" mixed units":market.endsWith("_yards")?" yards":" counts")],["With DK line",withQuote],["Verified picks",graded.length],["Pick hit rate",graded.length?fmt(100*hits/graded.length)+"%":"Not available"],["Paired ML player tests",paired.length],["ML closer",paired.length?improved+"/"+paired.length:"Not available"]];
+ // Never represent cross-unit MAE / bias as a valid aggregate.
+ if(market==="all"){
+  stats[1][1]="See market breakdown";
+  stats[2][1]="See market breakdown";
+ }
+ summary.innerHTML=stats.map(([k,v])=>'<span>'+esc(k)+'<b>'+esc(v)+'</b></span>').join("");
+ const group={};for(const r of filtered)(group[r.stat_key]??=[]).push(r);
+ const table=Object.entries(group).sort(([a],[b])=>a.localeCompare(b)).map(([key,entries])=>{
+  const avg=entries.reduce((sum,r)=>sum+Math.abs(r.actual-r.projection),0)/entries.length;
+  const dir=entries.reduce((sum,r)=>sum+r.actual-r.projection,0)/entries.length;
+  const quote=entries.filter(r=>num(r.dk_line)).length;
+  const picks=entries.filter(r=>r.recommendation_result==="hit"||r.recommendation_result==="miss");
+  const success=picks.filter(r=>r.recommendation_result==="hit").length;
+  const ml=entries.filter(r=>r.ml_comparison&&num(r.ml_comparison.baseline_absolute_error)&&num(r.ml_comparison.ml_absolute_error));
+  const mlWins=ml.filter(r=>r.ml_comparison.ml_absolute_error<r.ml_comparison.baseline_absolute_error).length;
+  return '<tr><td>'+esc(key.replace(/_/g," "))+'</td><td>'+entries.length+'</td><td>'+fmt(avg)+'</td><td>'+fmt(dir)+'</td><td>'+quote+'</td><td>'+(picks.length?success+"/"+picks.length+" ("+fmt(100*success/picks.length)+"%)":"Not graded")+'</td><td>'+(ml.length?mlWins+"/"+ml.length:"Not paired")+'</td></tr>';
+ }).join("");
+ container.innerHTML=table?'<div class="fd-player-table-wrap"><table><thead><tr><th>Market</th><th>n</th><th>MAE</th><th>Bias (actual − model)</th><th>DK lines</th><th>Pick hits</th><th>ML closer</th></tr></thead><tbody>'+table+'</tbody></table></div><small>MAE = mean absolute prediction error. Positive bias means the model underestimated actual production. Hit rate is based only on saved pregame recommendations, not a retrospective pick inferred from the DK line. ML closer measures saved paired challenger results, not deployment eligibility. Different market units are not combined.</small>':'<p class="muted">No verified archived player stats in the chosen games and market.</p>';
+}
 function playerLearning(calibration,rows){
  const markets=(calibration&&Array.isArray(calibration.markets)?calibration.markets:[]).filter(m=>["passing_yards","rushing_yards","receiving_yards","completions","attempts","carries","receptions"].includes(m.stat_key));
  const paired=rows.filter(p=>p.ml_comparison&&num(p.ml_comparison.baseline_absolute_error)&&num(p.ml_comparison.ml_absolute_error));
@@ -115,8 +149,9 @@ Promise.allSettled([read("data/game-official-results.json"),read("data/game-lear
  const chosen=week.value,selected=rows.filter(r=>chosen==="all"||String(r.season)+" Week "+String(r.week)===chosen).sort((a,b)=>String(b.kickoff_utc).localeCompare(String(a.kickoff_utc)));
  overview.textContent=selected.length+' verified graded games · Winner '+selected.filter(r=>r.winner_result==="hit").length+' right · Spread '+selected.filter(r=>r.ats_result==="hit").length+' right · O/U '+selected.filter(r=>r.ou_result==="hit").length+' right. Missing grades do not count as wins.';
  list.innerHTML=selected.length?selected.map(drawGame).join(""):'No verified games in this selection.';
+ drawPlayerAnalytics(playerRows,new Set(selected.map(g=>g.game_id)),document.getElementById("fd-player-market-filter")?.value||"all");
  };
- week.addEventListener("change",render);render();
+ week.addEventListener("change",render);document.getElementById("fd-player-market-filter")?.addEventListener("change",render);render();
  learning.innerHTML=learn(results[1].status==="fulfilled"?results[1].value:null,results[2].status==="fulfilled"?results[2].value:null)+playerLearning(results[4].status==="fulfilled"?results[4].value:null,playerRows);
  if(results[1].status!=="fulfilled"||results[2].status!=="fulfilled")learning.innerHTML+='<p>Some ML evidence files could not be retrieved. No learning conclusions are assumed.</p>';
 }).catch(e=>{overview.textContent="Game report cards unavailable; existing History results are unchanged.";learning.textContent="No ML learning status available.";list.textContent=String(e.message)});
