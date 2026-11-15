@@ -24,6 +24,8 @@ on:
       - 'tools/train_deployable_game_ml.py'
       - 'tests/test_deployable_game_ml.py'
       - 'tests/test_weekly_learning_evidence.py'
+      - 'scripts/audit_ml_evidence.py'
+      - 'tests/test_audit_ml_evidence.py'
       - 'tests/test_ml_pipeline_integration.py'
   push:
     branches: [main]
@@ -184,6 +186,10 @@ jobs:
         run: python research/grade_all_markets_paired.py
       - name: Prove prior-week forecast evaluation sample
         run: python -m scripts.verify_weekly_learning_evidence
+      - name: Check ML evidence audit guardrails
+        run: |
+          python -m unittest discover -s tests -p 'test_audit_ml_evidence.py' -v
+          python -m scripts.audit_ml_evidence
       - name: Publish paired weekly leaderboards for Model Lab
         run: python scripts/publish_weekly_lab.py
       - name: Preserve research-only champion selection
