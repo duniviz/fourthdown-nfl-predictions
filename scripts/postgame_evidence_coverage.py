@@ -104,9 +104,20 @@ def evaluate(schedules, locks, game_results, player_results, shadows, now, windo
         elif not any(finite(p.get("dk_line")) and finite(p.get("actual")) for p in players):
             issues.append("paired_player_actual_and_dk_line_missing")
         shadows_here = by_shadow[gid]
-        if not shadows_here:
-            # Game challenger may be embedded in frozen observations, but this archive alone
-            # cannot prove paired challenger coverage. Do not invent a baseline.
+        paired_models = defaultdict(set)
+        for shadow in shadows_here:
+            predicted_at = stamp(shadow.get("predicted_at_utc"))
+            frozen_kickoff = stamp(shadow.get("kickoff_utc"))
+            if not (predicted_at and frozen_kickoff == kickoff and predicted_at < kickoff
+                    and finite(shadow.get("projection"))):
+                continue
+            key = (str(shadow.get("player_id")), str(shadow.get("stat_key")))
+            paired_models[key].add(str(shadow.get("model")))
+        paired = any("live" in models and len(models - {"live"}) > 0
+                     for models in paired_models.values())
+        if not paired:
+            # Game challenger may also be embedded in observations, but without an
+            # identical frozen market/player key this archive does not prove pairing.
             issues.append("paired_shadow_archive_unverified")
         rows.append({
             "game_id": gid, "kickoff_utc": kickoff.isoformat(),
@@ -138,6 +149,14 @@ def read(name, key):
     return rows
 
 
+def optional_shadow_archive():
+    path = DATA / "weekly-shadow-forecasts.json"
+    try:
+        return read(path.name, "rows"), None
+    except (OSError, ValueError, TypeError) as exc:
+        return [], f"Frozen shadow archive could not be validated: {type(exc).__name__}"
+
+
 def render(report):
     lines = ["## Postgame evidence coverage (read-only)",
              f"Audited: {report['audited_games']} games; fully verified: {report['complete_games']}",
@@ -147,6 +166,8 @@ def render(report):
         lines.append(f"| {game['matchup']} | {game['status']} | {', '.join(game['issues']) or 'none'} |")
     if not report["games"]:
         lines.append("No games are at least 4 hours past kickoff in the current audit window.")
+    for warning in report.get("source_warnings", []):
+        lines.append(f"Source warning: {warning}")
     lines.append("This audit does not grade missing data, alter frozen predictions, or authorize model promotion.")
     return "\n".join(lines) + "\n"
 
@@ -165,9 +186,10 @@ def main():
     schedules = []
     for season in sorted(season_set):
         schedules.extend(nfl.load_schedules([season]).to_dicts())
+    shadow_rows, shadow_warning = optional_shadow_archive()
     report = evaluate(schedules, locks, read("game-official-results.json", "rows"),
-                      read("player-results.json", "rows"),
-                      read("weekly-shadow-forecasts.json", "rows"), now)
+                      read("player-results.json", "rows"), shadow_rows, now)
+    report["source_warnings"] = [shadow_warning] if shadow_warning else []
     OUT.parent.mkdir(exist_ok=True, parents=True)
     OUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     summary = render(report)
