@@ -66,11 +66,26 @@
    const countStamp=Date.parse(count.generated_at_utc);
    if(Number.isFinite(countStamp)&&countStamp<=now&&now-countStamp<=36*3600000){
     for(const x of count.players||[]){
-     const team=canon(x.team),opp=canon(x.opponent),marketKey=propAliases[x.market_key]||x.market_key;
-     if(!upcoming.some(g=>String(g.game_id)===String(x.game_id)))continue;
-     const quote=oddsRows.filter(q=>norm(q.player)===norm(x.player_name)&&q.market_key===marketKey&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-start)<3600000).filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;}).sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
+     const team=canon(x.team),opponent=canon(x.opponent),marketKey=propAliases[x.market_key]||x.market_key,start=kickoffById.get(String(x.game_id));
+     if(!marketNames[marketKey]||!start)continue;
+     const quote=oddsRows.filter(q=>norm(q.player)===norm(x.player)&&q.market_key===marketKey&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-start)<3600000)
+      .filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;})
+      .sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
+     const line=number(quote?.line),projection=number(x.projection);
+     if(line!==null&&projection!==null&&line!==projection){const gap=projection-line;playerCandidates.push({kind:marketNames[marketKey],pick:x.player+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:team+' @ '+opponent,detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap',confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});}
+    }
+   }
+   const yardStamp=Date.parse(desk.generated_at_utc);
+   if(Number.isFinite(yardStamp)&&yardStamp<=now&&now-yardStamp<=36*3600000){
+    const keys={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
+    for(const x of desk.comparisons||[]){
+     const marketKey=keys[x.market],team=canon(x.team),start=kickoffById.get(String(x.game_id));
+     if(!marketKey||!start)continue;
+     const quote=oddsRows.filter(q=>norm(q.player)===norm(x.player_name)&&q.market_key===marketKey&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-start)<3600000)
+      .filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;})
+      .sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
      const projection=number(x.projected_yards),line=number(quote?.line);
-     if(line!==null&&projection!==null&&line!==projection){const gap=projection-line;playerCandidates.push({kind:marketNames[marketKey],pick:x.player_name+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:canon(x.team)+' · '+canon(g?.away===team?g.home:g?.away),detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(x.ranking_status==='eligible'?'':' · status unverified'),confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});}
+     if(line!==null&&projection!==null&&line!==projection){const gap=projection-line,g=upcoming.find(game=>String(game.game_id)===String(x.game_id));playerCandidates.push({kind:marketNames[marketKey],pick:x.player_name+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:team+' @ '+canon(g?.home===team?g?.away:g?.home),detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(x.ranking_status==='eligible'?'':' · status unverified'),confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});}
     }
    }
    const seen=new Set();boards.players=playerCandidates.sort((a,b)=>b.rank-a.rank).filter(x=>{const k=x.pick+'|'+x.kind;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,5);
