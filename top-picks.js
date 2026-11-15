@@ -17,7 +17,7 @@
   const rows=boards[active]||[];
   root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p><div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>Projection gap · no probability</strong>')+'<span>'+esc(x.game||'')+'</span></div></article>').join(''):'<p class="fd-top-pick-empty">No eligible current-slate picks are available from fresh feeds. The board will update when matching forecasts, lines, and simulations are published.</p>';
   tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdTopPicksTab===active)));
-  status.textContent=active==='players'?'Largest current player model-to-DK differences. These are not calibrated probabilities or betting recommendations.':active==='scoring'?'Game total picks ranked by the published simulation rate for the exact current DraftKings total.':'Game winner, spread, and total picks ranked by published simulation rates for matched current DraftKings lines. Player props stay separate because player hit rates are not calibrated.';
+  status.textContent=active==='players'?'Largest current player model-to-DK differences. These are not calibrated probabilities or betting recommendations.':active==='scoring'?'One leading pick each for O/U, outright winner, and spread, when exact-line simulations support the pick.':'The five strongest eligible winner, spread, and O/U picks ranked by matched simulation rates. Player props stay separate because player hit rates are not calibrated.';
  }
  tabs.forEach(b=>b.addEventListener('click',()=>{active=b.dataset.fdTopPicksTab;render();}));
  async function refresh(){
@@ -49,15 +49,15 @@
     const total=number(q.total),projected=home!==null&&away!==null?home+away:null,simTotal=number(s.dk_total);
     if(total!==null&&projected!==null&&simTotal===total&&projected!==total){
      const over=projected>total,confidence=pct(over?s.over_cover_pct:s.under_cover_pct);
-     if(confidence!==null&&confidence>50){const item={...base,kind:'Game total',pick:(over?'Over ':'Under ')+total.toFixed(1),confidence,detail:'Projected total '+projected.toFixed(1)+' · DK total '+total.toFixed(1)};boards.scoring.push(item);candidates.push(item);}
+     if(confidence!==null&&confidence>50){const item={...base,kind:'O/U',pick:(over?'Over ':'Under ')+total.toFixed(1),confidence,detail:'Projected total '+projected.toFixed(1)+' · DK total '+total.toFixed(1)};candidates.push(item);}
     }
     const spread=number(q.home_spread),simSpread=number(s.dk_home_spread);
     if(spread!==null&&simSpread===spread&&home!==null&&away!==null){
      const edge=(home-away)+spread;
-     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null&&confidence>50)candidates.push({...base,kind:'Against the spread',pick:homePick?p.home+' '+(spread>0?'+':'')+spread.toFixed(1):p.away+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
+     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null&&confidence>50)candidates.push({...base,kind:'Spread',pick:homePick?p.home+' '+(spread>0?'+':'')+spread.toFixed(1):p.away+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
     }
    }
-   boards.scoring=boards.scoring.sort((a,b)=>b.confidence-a.confidence).slice(0,5);
+   boards.scoring=['O/U','Winner','Spread'].map(kind=>candidates.filter(x=>x.kind===kind).sort((a,b)=>b.confidence-a.confidence)[0]).filter(Boolean).sort((a,b)=>b.confidence-a.confidence);
    boards.blended=candidates.sort((a,b)=>b.confidence-a.confidence).slice(0,5);
    boards.players=[];
    const kickoffById=new Map(upcoming.map(g=>[String(g.game_id),Date.parse(g.kickoff_utc)]));
