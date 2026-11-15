@@ -48,7 +48,7 @@
     const qtime=Date.parse(q.updated_at_utc||q.observed_at_utc||market.snapshot_date_utc),kick=Date.parse(p.kickoff_utc);
     if(!Number.isFinite(qtime)||qtime>now||now-qtime>36*3600000||qtime>=kick)continue;
     const home=number(p.projected_home_score),away=number(p.projected_away_score);
-    const base={game:p.away+' @ '+p.home,detail:'Projected score '+(home===null?'—':away.toFixed(1)+'–'+home.toFixed(1))};
+    const base={game:p.away+' @ '+p.home,detail:'Projected score '+(home===null||away===null?'—':away.toFixed(1)+'–'+home.toFixed(1))};
     if(home!==null&&away!==null&&home!==away){
      const team=home>away?p.home:p.away,confidence=pct(team===p.home?s.home_win_pct:s.away_win_pct);
      if(confidence!==null&&confidence>50)gamePicks.push({...base,kind:'Winner',pick:team+' to win',confidence});
