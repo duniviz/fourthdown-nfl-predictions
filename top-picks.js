@@ -43,17 +43,17 @@
     const base={game:p.away+' @ '+p.home,detail:'Projected score '+away?.toFixed(1)+'–'+home?.toFixed(1)};
     if(home!==null&&away!==null&&home!==away){
      const team=home>away?p.home:p.away,confidence=pct(team===p.home?s.home_win_pct:s.away_win_pct);
-     if(confidence!==null)candidates.push({...base,kind:'Winner',pick:team+' to win',confidence});
+     if(confidence!==null&&confidence>50)candidates.push({...base,kind:'Winner',pick:team+' to win',confidence});
     }
     const total=number(q.total),projected=home!==null&&away!==null?home+away:null,simTotal=number(s.dk_total);
     if(total!==null&&projected!==null&&simTotal===total&&projected!==total){
      const over=projected>total,confidence=pct(over?s.over_cover_pct:s.under_cover_pct);
-     if(confidence!==null){const item={...base,kind:'Game total',pick:(over?'Over ':'Under ')+total.toFixed(1),confidence,detail:'Projected total '+projected.toFixed(1)+' · DK total '+total.toFixed(1)};boards.scoring.push(item);candidates.push(item);}
+     if(confidence!==null&&confidence>50){const item={...base,kind:'Game total',pick:(over?'Over ':'Under ')+total.toFixed(1),confidence,detail:'Projected total '+projected.toFixed(1)+' · DK total '+total.toFixed(1)};boards.scoring.push(item);candidates.push(item);}
     }
     const spread=number(q.home_spread),simSpread=number(s.dk_home_spread);
     if(spread!==null&&simSpread===spread&&home!==null&&away!==null){
      const edge=(home-away)+spread;
-     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null)candidates.push({...base,kind:'Against the spread',pick:homePick?p.home+' '+(spread>0?'+':'')+spread.toFixed(1):p.away+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
+     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null&&confidence>50)candidates.push({...base,kind:'Against the spread',pick:homePick?p.home+' '+(spread>0?'+':'')+spread.toFixed(1):p.away+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
     }
    }
    boards.scoring=boards.scoring.sort((a,b)=>b.confidence-a.confidence).slice(0,5);
@@ -62,35 +62,11 @@
    const kickoffById=new Map(upcoming.map(g=>[String(g.game_id),Date.parse(g.kickoff_utc)]));
    const oddsRows=Array.isArray(dk.rows)?dk.rows:[];
    const playerCandidates=[];
-   const addPlayer=(x,player,team,marketKey,projection,provisional=false)=>{
-    if(!marketNames[marketKey]||number(projection)===null)return;
-    const start=kickoffById.get(String(x.game_id));if(!start)return;
-    const quote=oddsRows.filter(q=>norm(q.player)===norm(player)&&q.market_key===marketKey&&norm(q.away_team).includes(norm(nameOf(x.opponent===team?x.team:x.team)))&&Date.parse(q.commence_time)>now&&Math.abs(Date.parse(q.commence_time)-start)<3600000)
-      .filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;})
-      .sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
-    if(!quote)return;
-    const line=number(quote.line);if(line===null||line===number(projection))return;
-    const gap=number(projection)-line;
-    playerCandidates.push({kind:marketNames[marketKey],pick:player+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:team,detail:'Model '+number(projection).toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(provisional?' · status unverified':''),confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});
-   };
    const countStamp=Date.parse(count.generated_at_utc);
    if(Number.isFinite(countStamp)&&countStamp<=now&&now-countStamp<=36*3600000){
     for(const x of count.players||[]){
      const team=canon(x.team),opp=canon(x.opponent);
      if(!upcoming.some(g=>String(g.game_id)===String(x.game_id)))continue;
-     const quotesFor=oddsRows.filter(q=>norm(q.player)===norm(x.player)&&q.market_key===x.market_key&&canon(q.commence_time&&x.game_id.split('_').slice(2).join('_'))&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-(kickoffById.get(String(x.game_id))||0))<3600000);
-     const quote=quotesFor.filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<Date.parse(q.commence_time);}).sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
-     const line=number(quote?.line),projection=number(x.projection);
-     if(line!==null&&projection!==null&&line!==projection){const gap=projection-line;playerCandidates.push({kind:marketNames[x.market_key]||x.market_key,pick:x.player+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:canon(x.team)+' · '+canon(x.opponent),detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap',confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});}
-    }
-   }
-   const yardStamp=Date.parse(desk.generated_at_utc);
-   if(Number.isFinite(yardStamp)&&yardStamp<=now&&now-yardStamp<=36*3600000){
-    const keys={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
-    for(const x of desk.comparisons||[]){
-     const marketKey=keys[x.market],team=canon(x.team);
-     if(!marketKey||!upcoming.some(g=>String(g.game_id)===String(x.game_id)))continue;
-     const g=upcoming.find(g=>String(g.game_id)===String(x.game_id)),start=kickoffById.get(String(x.game_id));
      const quote=oddsRows.filter(q=>norm(q.player)===norm(x.player_name)&&q.market_key===marketKey&&norm(q.away_team+' '+q.home_team).includes(norm(nameOf(team)))&&Math.abs(Date.parse(q.commence_time)-start)<3600000).filter(q=>{const t=Date.parse(q.last_update||q.updated_at_utc);return Number.isFinite(t)&&t<=now&&now-t<=36*3600000&&t<start;}).sort((a,b)=>Date.parse(b.last_update||b.updated_at_utc)-Date.parse(a.last_update||a.updated_at_utc))[0];
      const projection=number(x.projected_yards),line=number(quote?.line);
      if(line!==null&&projection!==null&&line!==projection){const gap=projection-line;playerCandidates.push({kind:marketNames[marketKey],pick:x.player_name+' · '+(gap>0?'Over ':'Under ')+line.toFixed(1),game:canon(x.team)+' · '+canon(g?.away===team?g.home:g?.away),detail:'Model '+projection.toFixed(1)+' vs DK '+line.toFixed(1)+' · '+(gap>0?'+':'')+gap.toFixed(1)+' gap'+(x.ranking_status==='eligible'?'':' · status unverified'),confidence:null,rank:Math.abs(gap)/Math.max(1,Math.abs(line))});}
