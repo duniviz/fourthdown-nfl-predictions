@@ -35,7 +35,7 @@ jobs:
           if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
               print("run=true")
               with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-                  output.write("run=true\\n")
+                  output.write("run=true\n")
               raise SystemExit(0)
 
           central = ZoneInfo("America/Chicago")
