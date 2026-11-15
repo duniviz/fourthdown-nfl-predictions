@@ -46,10 +46,14 @@ class AuditTests(unittest.TestCase):
         game = {**GAME, "home_score": None}
         lock = {**LOCK, "dk_total": None, "dk_home_spread": None}
         r = self.evaluate(games=[game], locks=[lock], grades=[], players=[], shadows=[])
-        for issue in ("final_score_unavailable", "game_grading_row_missing",
+        for issue in ("final_score_unavailable",
                       "frozen_dk_total_missing", "frozen_dk_spread_missing",
                       "player_grading_evidence_missing", "paired_shadow_archive_unverified"):
             self.assertIn(issue, r["games"][0]["issues"])
+
+    def test_completed_game_without_grade_is_reported(self):
+        r = self.evaluate(grades=[])
+        self.assertIn("game_grading_row_missing", r["games"][0]["issues"])
 
     def test_postkickoff_lock_excluded(self):
         late = {**LOCK, "captured_at_utc": (KICK+timedelta(minutes=3)).isoformat()}
