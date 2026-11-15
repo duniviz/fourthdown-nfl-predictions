@@ -47,19 +47,21 @@ function drawGame(r){
  '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div>'+drawPlayers(props)+'</div></details>';
 }
 function drawPlayers(props){
- const markets=["passing_yards","rushing_yards","receiving_yards"];
+ const markets=["passing_yards","rushing_yards","receiving_yards","completions","attempts","carries","receptions"];
  const eligible=props.filter(p=>markets.includes(p.stat_key)&&num(p.projection)&&num(p.actual));
- if(!eligible.length)return '<p class="fd-grade-source">No completed archived passing, rushing, or receiving yardage forecasts for this matchup.</p>';
+ if(!eligible.length)return '<p class="fd-grade-source">No completed archived yardage or count-prop forecasts for this matchup.</p>';
  const graded=eligible.filter(p=>p.recommendation_result==="hit"||p.recommendation_result==="miss"||p.recommendation_result==="push");
- const mae=eligible.reduce((sum,p)=>sum+Math.abs(p.actual-p.projection),0)/eligible.length;
- const summary='<p class="fd-grade-source">'+eligible.length+' archived player yardage forecasts · Average miss '+fmt(mae)+' yards · '+graded.length+' verified DK pick results. An archived DK line alone does not prove a pick was recommended.</p>';
+ const yardage=eligible.filter(p=>p.stat_key.endsWith("_yards"));
+ const yardageMae=yardage.length?yardage.reduce((sum,p)=>sum+Math.abs(p.actual-p.projection),0)/yardage.length:null;
+ const summary='<p class="fd-grade-source">'+eligible.length+' archived player forecasts · Average yardage miss '+fmt(yardageMae)+' yards · '+graded.length+' verified DK pick results. A saved DK line alone does not prove a pick was recommended.</p>';
  const sections=markets.map(market=>{
   const rows=eligible.filter(p=>p.stat_key===market).sort((a,b)=>Math.abs(b.actual-b.projection)-Math.abs(a.actual-a.projection));
   if(!rows.length)return '';
-  const title=market.replace("_yards","").replace(/^./,c=>c.toUpperCase())+" yards";
+  const title=market.endsWith("_yards")?market.replace("_yards","").replace(/^./,c=>c.toUpperCase())+" yards":market.replace(/^./,c=>c.toUpperCase());
+  const units=market.endsWith("_yards")?"yards":"counts";
   const avg=rows.reduce((sum,p)=>sum+p.actual-p.projection,0)/rows.length;
   const direction=avg>0?"underestimated actual production":avg<0?"overestimated actual production":"was unbiased in this sample";
-  return '<details class="fd-player-market"><summary><b>'+title+'</b><small>'+rows.length+' players · Average error '+fmt(Math.abs(avg))+' yards ('+direction+')</small></summary><div class="fd-player-items">'+rows.map(p=>{
+  return '<details class="fd-player-market"><summary><b>'+title+'</b><small>'+rows.length+' players · Average error '+fmt(Math.abs(avg))+' '+units+' ('+direction+')</small></summary><div class="fd-player-items">'+rows.map(p=>{
     const diff=p.actual-p.projection;
     const verdict=p.recommendation_result||"not_available";
     const recommendation=p.recommended_side==="over"?"OVER":p.recommended_side==="under"?"UNDER":null;
