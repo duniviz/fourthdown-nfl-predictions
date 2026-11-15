@@ -41,6 +41,7 @@ jobs:
           central = ZoneInfo("America/Chicago")
           now = dt.datetime.now(central)
           if now.weekday() != 6:
+              valid = False
               reason = "Not Sunday in Central Time"
           else:
               schedule = os.environ["SCHEDULE_EXPR"].split()
@@ -61,7 +62,7 @@ jobs:
                       break
               reason = "Central Time preset matched" if valid else "This UTC schedule is the daylight-saving alternate"
           with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-              output.write(f"run={'true' if valid or now.weekday() != 6 else 'false'}\\n")
+              output.write(f"run={'true' if valid else 'false'}\\n")
           print(reason)
           PY
   refresh-lines:
