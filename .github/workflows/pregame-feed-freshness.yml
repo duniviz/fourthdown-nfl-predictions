@@ -1,0 +1,25 @@
+name: FOURTHDOWN pregame feed freshness audit
+on:
+  schedule:
+    - cron: '51 */2 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/pregame-feed-freshness.yml'
+      - 'scripts/audit_pregame_freshness.py'
+      - 'tests/test_audit_pregame_freshness.py'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic feed freshness tests
+        run: python -m unittest discover -s tests -p 'test_audit_pregame_freshness.py' -v
+      - name: Inspect upcoming data without modifying predictions
+        if: github.event_name != 'pull_request'
+        run: python -m scripts.audit_pregame_freshness
