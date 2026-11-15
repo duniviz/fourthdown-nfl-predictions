@@ -60,18 +60,20 @@ def audit(slate, odds, starters, now):
             continue
         matched += 1
         row = same[0]
-        verified = max(filter(None, [date(row.get("home_spread_last_verified_at_utc")),
-                                     date(row.get("total_last_verified_at_utc")),
-                                     date(row.get("observed_at_utc"))]), default=None)
-        # Snapshot observation is not proof a provider quote was freshly updated.
-        quote = max(filter(None, [date(row.get("home_spread_last_verified_at_utc")),
-                                  date(row.get("total_last_verified_at_utc"))]), default=None)
-        if quote and quote <= now + timedelta(minutes=10) and now - quote <= timedelta(hours=12):
+        # Check the two markets independently: a fresh total does not imply a fresh spread.
+        spread = date(row.get("home_spread_last_verified_at_utc"))
+        total = date(row.get("total_last_verified_at_utc"))
+        observed = date(row.get("observed_at_utc"))
+        for label, quote in (("spread", spread), ("total", total)):
+            if quote and quote > now + timedelta(minutes=10):
+                errors.append(f"{game.get('game_id')}: DK {label} timestamp is in the future")
+            elif not quote or now - quote > timedelta(hours=12):
+                warnings.append(f"{game.get('game_id')}: DK {label} quote not verified in 12 hours")
+        if observed and observed > now + timedelta(minutes=10):
+            errors.append(f"{game.get('game_id')}: DK observation timestamp is in the future")
+        if all(t and t <= now + timedelta(minutes=10)
+               and now - t <= timedelta(hours=12) for t in (spread, total)):
             fresh += 1
-        else:
-            warnings.append(f"{game.get('game_id')}: DK spread/total quote not verified in 12 hours")
-        if verified and verified > now + timedelta(minutes=10):
-            errors.append(f"{game.get('game_id')}: odds timestamp is in the future")
 
     if not matched:
         warnings.append("No matched DK game lines for next-24-hour slate")

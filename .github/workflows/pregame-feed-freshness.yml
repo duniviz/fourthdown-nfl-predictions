@@ -10,6 +10,7 @@ on:
       - 'tests/test_audit_pregame_freshness.py'
 permissions:
   contents: read
+  issues: write
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -23,3 +24,35 @@ jobs:
       - name: Inspect upcoming data without modifying predictions
         if: github.event_name != 'pull_request'
         run: python -m scripts.audit_pregame_freshness
+      - name: Escalate genuine data-integrity errors
+        if: failure() && github.event_name != 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner,repo} = context.repo;
+            const title = '[Automation] Pregame data integrity audit failed';
+            const link = context.serverUrl + '/' + owner + '/' + repo + '/actions/runs/' + context.runId;
+            const marker = '<!-- pregame-data-integrity:' + context.runId + ' -->';
+            const body = [
+              'The pregame data audit detected a malformed feed, contradictory confirmed QB, or impossible timestamp.',
+              'Warnings for stale or unavailable market quotes remain non-blocking.',
+              '',
+              'Audit run: ' + link,
+              'No predictions, lines, or immutable pregame locks were changed.',
+              marker
+            ].join('\\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,repo,state:'open',per_page:100
+            });
+            const existing = issues.find(i => !i.pull_request && i.title === title);
+            if (!existing) {
+              await github.rest.issues.create({owner,repo,title,body});
+              return;
+            }
+            if ((existing.body || '').includes(marker)) return;
+            const comments = await github.paginate(github.rest.issues.listComments,{
+              owner,repo,issue_number:existing.number,per_page:100
+            });
+            if (!comments.some(c => (c.body || '').includes(marker))) {
+              await github.rest.issues.createComment({owner,repo,issue_number:existing.number,body});
+            }
