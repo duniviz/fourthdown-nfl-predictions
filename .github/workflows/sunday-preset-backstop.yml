@@ -5,6 +5,11 @@ on:
     - cron: '7,37 13,14,16,17,19,20,23 * * 0'
     - cron: '7,37 0 * * 1'
   workflow_dispatch:
+  # Independent wake-up when GitHub skips the backstop cron itself.
+  # This only runs the existing read-only decision policy, never a second writer.
+  workflow_run:
+    workflows: [Capture last pregame projections and DK lines, Capture pregame projections and DraftKings lines]
+    types: [completed]
   pull_request:
     paths:
       - '.github/workflows/sunday-preset-backstop.yml'
