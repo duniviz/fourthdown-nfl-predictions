@@ -33,16 +33,17 @@
   try{
    const paths=['data/live-v2.json','data/dk-game-odds.json','data/simulations.json','data/dk-odds.json','data/research-prop-desk.json'];
    const rs=await Promise.all(paths.map(p=>fetch(p+'?t='+Date.now(),{cache:'no-store'})));
-   if(rs.some(r=>!r.ok))throw Error('Feed unavailable');
-   const [forecast,market,sim,dk,desk]=await Promise.all(rs.map(r=>r.json()));
+   if(!rs[0].ok||!rs[4].ok)throw Error('Forecast or yardage feed unavailable');
+   const [forecast,market,sim,dk,desk]=await Promise.all(rs.map(r=>r.ok?r.json():Promise.resolve({})));
    const now=Date.now(),stamp=Date.parse(forecast.generated_at_utc),quoteStamp=Date.parse(market.snapshot_date_utc),simStamp=Date.parse(sim.generated_at_utc);
-   if(!Number.isFinite(stamp)||stamp>now+300000||now-stamp>36*3600000||!Number.isFinite(quoteStamp)||quoteStamp>now+300000||now-quoteStamp>36*3600000)throw Error('Stale current-slate feed');
+   if(!Number.isFinite(stamp)||stamp>now+300000||now-stamp>36*3600000)throw Error('Stale forecast feed');
+   const gameOddsFresh=Number.isFinite(quoteStamp)&&quoteStamp<=now+300000&&now-quoteStamp<=36*3600000;
    const simulationFresh=Number.isFinite(simStamp)&&simStamp<=now+300000&&now-simStamp<=36*3600000;
    const slate=window.fdScheduleWindow?.get(new Date());
    if(!slate)throw Error('Schedule window unavailable');
    const upcoming=(forecast.games||[]).filter(g=>g.kickoff_utc&&Date.parse(g.kickoff_utc)>now&&window.fdScheduleWindow.contains(slate,g.kickoff_utc));
    const quotes=new Map();
-   for(const q of market.games||[]){
+   for(const q of (gameOddsFresh?market.games||[]:[])){
     if(q.bookmaker!=='draftkings'||!q.home||!q.away)continue;
     const key=canon(q.away)+'|'+canon(q.home),prior=quotes.get(key),stampQ=Date.parse(q.updated_at_utc||q.observed_at_utc||market.snapshot_date_utc);
     if(!prior||stampQ>Date.parse(prior.updated_at_utc||prior.observed_at_utc||market.snapshot_date_utc))quotes.set(key,q);
