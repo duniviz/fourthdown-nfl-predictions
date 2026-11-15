@@ -3,6 +3,7 @@ import json
 import os
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,19 @@ def stamp(value):
     try:
         value = datetime.fromisoformat(value.replace("Z", "+00:00"))
         return value.astimezone(timezone.utc) if value.tzinfo else None
+    except ValueError:
+        return None
+
+
+def game_kickoff(game):
+    if game.get("kickoff_utc"):
+        return stamp(game["kickoff_utc"])
+    day, clock = game.get("gameday"), game.get("gametime")
+    if not isinstance(day, str) or not isinstance(clock, str):
+        return None
+    try:
+        eastern = datetime.fromisoformat(day + "T" + clock).replace(tzinfo=ZoneInfo("America/New_York"))
+        return eastern.astimezone(timezone.utc)
     except ValueError:
         return None
 
@@ -60,7 +74,7 @@ def evaluate(schedules, locks, game_results, player_results, shadows, now, windo
     for game in schedules:
         if not isinstance(game, dict):
             continue
-        kickoff = stamp(game.get("gameday") or game.get("kickoff_utc"))
+        kickoff = game_kickoff(game)
         gid = str(game.get("game_id") or "")
         if not gid or not kickoff or not now - timedelta(days=window_days) <= kickoff <= now - timedelta(hours=4):
             continue
