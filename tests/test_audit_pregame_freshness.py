@@ -64,6 +64,25 @@ class AuditTest(unittest.TestCase):
         slate["games"][0]["kickoff_utc"] = iso(NOW - timedelta(days=8))
         self.assertEqual(audit(slate, odds, starters, NOW), ([], []))
 
+    def test_fresh_total_does_not_mask_stale_spread(self):
+        slate, odds, starters = fixtures()
+        odds["games"][0]["home_spread_last_verified_at_utc"] = iso(NOW - timedelta(hours=15))
+        errors, warnings = audit(slate, odds, starters, NOW)
+        self.assertFalse(errors)
+        self.assertTrue(any("DK spread quote not verified" in w for w in warnings))
+
+    def test_missing_total_does_not_mask_fresh_spread(self):
+        slate, odds, starters = fixtures()
+        del odds["games"][0]["total_last_verified_at_utc"]
+        errors, warnings = audit(slate, odds, starters, NOW)
+        self.assertFalse(errors)
+        self.assertTrue(any("DK total quote not verified" in w for w in warnings))
+
+    def test_future_spread_timestamp_is_error(self):
+        slate, odds, starters = fixtures()
+        odds["games"][0]["home_spread_last_verified_at_utc"] = iso(NOW + timedelta(hours=1))
+        self.assertTrue(any("DK spread timestamp" in e for e in audit(slate, odds, starters, NOW)[0]))
+
 
 if __name__ == "__main__":
     unittest.main()
