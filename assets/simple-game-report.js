@@ -90,7 +90,22 @@ function learn(status,evidence){
  html+='<p><b>Simple takeaway:</b> We can identify where projected scores and picks were off. A model change counts as learned and deployed only when the saved validation says it was approved; otherwise it is still being tested.</p>';
  return html;
 }
-Promise.allSettled([read("data/game-official-results.json"),read("data/game-learning-status.json"),read("data/weekly-learning-evidence.json"),read("data/player-results.json")]).then(results=>{
+function playerLearning(calibration,rows){
+ const markets=(calibration&&Array.isArray(calibration.markets)?calibration.markets:[]).filter(m=>["passing_yards","rushing_yards","receiving_yards","completions","attempts","carries","receptions"].includes(m.stat_key));
+ const paired=rows.filter(p=>p.ml_comparison&&num(p.ml_comparison.baseline_absolute_error)&&num(p.ml_comparison.ml_absolute_error));
+ const better=paired.filter(p=>p.ml_comparison.ml_absolute_error<p.ml_comparison.baseline_absolute_error).length;
+ let html='<div class="fd-player-learning"><h3>What player-prop ML has learned so far</h3>';
+ html+='<p><b>Archived head-to-head player comparisons:</b> '+paired.length+' valid pairs; challenger closer on '+better+'. A closer result for one player does not establish a better deployed model.</p>';
+ if(markets.length){
+ html+='<p><b>Measured player forecast errors:</b></p><div class="fd-player-learning-grid">'+markets.map(m=>{
+   const direction=num(m.mean_error)?m.mean_error>0?'Actual production averaged higher than projected':m.mean_error<0?'Actual production averaged lower than projected':'No average directional bias':'Unknown direction';
+   return '<div><b>'+esc(m.stat_key.replace(/_/g," "))+'</b><small>'+fmt(m.sample_size)+' archived forecasts · average absolute miss '+fmt(m.mae)+' '+(m.stat_key.endsWith("_yards")?'yards':'counts')+'</small><small>'+direction+'. '+(m.active?'Bias tracking has enough records for the configured threshold.':'Below the configured bias-tracking sample threshold.')+'</small></div>';
+ }).join("")+'</div>';
+ }else html+='<p>Player error calibration records unavailable.</p>';
+ html+='<small>These are archived error measurements, not calibrated betting probabilities or proof that a correction has been promoted to the live model.</small></div>';
+ return html;
+}
+Promise.allSettled([read("data/game-official-results.json"),read("data/game-learning-status.json"),read("data/weekly-learning-evidence.json"),read("data/player-results.json"),read("data/player-calibration.json")]).then(results=>{
  if(results[0].status!=="fulfilled")throw Error("Verified game grades unavailable");
  const grades=results[0].value,rows=Array.isArray(grades.rows)?grades.rows:[];
  playerRows=results[3].status==="fulfilled"&&Array.isArray(results[3].value.rows)?results[3].value.rows:[];
@@ -102,7 +117,7 @@ Promise.allSettled([read("data/game-official-results.json"),read("data/game-lear
  list.innerHTML=selected.length?selected.map(drawGame).join(""):'No verified games in this selection.';
  };
  week.addEventListener("change",render);render();
- learning.innerHTML=learn(results[1].status==="fulfilled"?results[1].value:null,results[2].status==="fulfilled"?results[2].value:null);
+ learning.innerHTML=learn(results[1].status==="fulfilled"?results[1].value:null,results[2].status==="fulfilled"?results[2].value:null)+playerLearning(results[4].status==="fulfilled"?results[4].value:null,playerRows);
  if(results[1].status!=="fulfilled"||results[2].status!=="fulfilled")learning.innerHTML+='<p>Some ML evidence files could not be retrieved. No learning conclusions are assumed.</p>';
 }).catch(e=>{overview.textContent="Game report cards unavailable; existing History results are unchanged.";learning.textContent="No ML learning status available.";list.textContent=String(e.message)});
 })();
