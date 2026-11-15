@@ -5,10 +5,13 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 class RefreshReliabilityTests(unittest.TestCase):
-    def test_one_nightly_forecast_owner(self):
+    def test_daily_non_game_forecast_and_dk_refresh_owners(self):
         publish=(ROOT/'.github/workflows/publish-v2.yml').read_text()
         odds=(ROOT/'.github/workflows/refresh-draftkings-odds.yml').read_text()
-        self.assertIn("cron: '17 22,23 * * 2,3,6'", publish)
+        daily_lines=(ROOT/'.github/workflows/daily-dk-player-props.yml').read_text()
+        self.assertIn("cron: '17 22,23 * * *'", publish)
+        self.assertIn("kickoff.astimezone(central).date()==today", publish)
+        self.assertIn("cron: '40 21,22 * * *'", daily_lines)
         self.assertIn("cron: '7 * * * 0,1,4,5,6'", publish)
         self.assertIn('TZ=America/Chicago',publish)
         self.assertIn('!= "17"',publish)
