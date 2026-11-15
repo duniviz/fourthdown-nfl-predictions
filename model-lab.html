@@ -21,6 +21,33 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 <body><header class="top"><div class="wrap nav"><a class="brand" href="index.html">FOURTH<b>DOWN</b></a><nav class="links" aria-label="Site navigation"><a href="index.html">Games</a><a href="bets.html">Player Prop Desk</a><a href="model-lab.html" class="active" aria-current="page">Model Lab</a><a href="history.html">History &amp; Accuracy</a></nav></div></header>
 <link rel="stylesheet" href="assets/fd-insights.css?v=1"><main class="wrap lab-clear"><section id="fd-weekly-report-card" class="fd-insight-panel" aria-live="polite"><h2>Weekly model report card</h2><p class="fd-insight-note">Checking graded weeks…</p></section><header class="clear-hero"><span class="eyebrow">FOURTHDOWN · WEEKLY LEARNING</span><h1>Model Lab</h1><p class="clear-lead">See what’s live, what’s being tested, and whether the changes are helping.</p><a class="clear-link" href="history.html">See actual game results →</a></header>
 <div class="clear-intro"><strong>How it works</strong><span>Models learn from completed games, then face the current forecast on the same saved pregame matchups. A sustained improvement can earn a switch; weaker results trigger a rollback.</span></div>
+<section class="fd-deep" id="fd-deep-diagnostics" aria-label="Advanced ML diagnostics and performance analysis">
+<style>
+.fd-deep{margin:25px 0;padding:20px;background:#0b2133;border:1px solid #36596c;border-radius:16px}
+.fd-deep h2{margin:0 0 5px;font-size:25px}.fd-deep h3{font-size:18px;margin:19px 0 7px}
+.fd-deep .fd-deep-note,.fd-deep #fd-deep-status{color:#aec5d2;font-size:13px;line-height:1.6}
+.fd-deep .fd-deep-overflow{overflow-x:auto;margin:10px 0}
+.fd-deep table{width:100%;min-width:760px;border-collapse:collapse;font-size:13px}
+.fd-deep td,.fd-deep th{padding:11px 9px;border-bottom:1px solid #2d4c60;text-align:left;white-space:nowrap}
+.fd-deep td{color:#e4f3fb}.fd-deep th{color:#a9c6d2;font-weight:750}
+.fd-deep .fd-deep-expand{padding:12px;border:1px solid #2d4c60;border-radius:10px;margin:14px 0}
+.fd-deep .fd-deep-expand summary{cursor:pointer;font-weight:850}
+.fd-deep .fd-deep-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.fd-deep .fd-deep-decision{background:#102c40;border:1px solid #365569;border-radius:12px;padding:12px}
+.fd-deep .fd-deep-decision h3{margin:0 0 10px}
+.fd-deep .fd-deep-decision p{border-bottom:1px solid #345064;padding-bottom:9px}
+.fd-deep .fd-deep-decision span{display:block;color:#baceda;font-size:12px;margin-top:3px}
+.fd-deep .fd-deep-positive{color:#8bf1c8}.fd-deep .fd-deep-muted{color:#ffcf83}
+.fd-deep .fd-deep-filter{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+.fd-deep select{padding:9px;background:#143249;color:#e8f5ff;border:1px solid #55768a;border-radius:9px}
+@media(max-width:600px){.fd-deep{padding:13px}.fd-deep h2{font-size:22px}}
+</style>
+<div class="fd-deep-filter"><div><span class="eyebrow">RESEARCH DETAIL · READ ONLY</span><h2>Accuracy &amp; ML Diagnostics</h2></div><label>Player market <select id="fd-deep-market"><option value="all">All player markets</option><option value="passing_yards">Passing yards</option><option value="rushing_yards">Rushing yards</option><option value="receiving_yards">Receiving yards</option><option value="completions">Completions</option><option value="attempts">Pass attempts</option><option value="carries">Rush attempts</option><option value="receptions">Receptions</option></select></label></div>
+<p class="fd-deep-note">Deep-dive into archived scores and props: weekly hit rates, forecast errors, directional bias, largest misses, experimental combinations and whether anything actually passed the live deployment gate.</p>
+<p id="fd-deep-status" aria-live="polite">Loading verified research and grading evidence…</p>
+<div id="fd-deep-content"></div><div id="fd-deep-player"></div><div id="fd-deep-challengers"></div><div id="fd-deep-decisions"></div>
+<p class="fd-deep-note">Do not assume the most accurate candidate over two games will be best next week. Observed bias, injuries, workload and weather require properly documented input evidence before they can explain a miss.</p>
+</section><script defer src="assets/fd-model-diagnostics.js?v=1"></script>
 <div class="clear-section-heading"><div><span class="eyebrow">YOUR LIVE MODELS</span><h2>What’s running now</h2></div><p>Updated after the weekly learning cycle.</p></div>
 <section class="card fd-lab-section"><span class="fd-lab-tag ml">PLAYER ML AUTO-DEPLOY</span><h2>Player yard projections</h2><p class="muted">Player cards show the existing projection and the ML candidate side by side. Labs grades both against the same final player stats using a week-by-week historical replay and saved pregame forecasts. ML currently covers passing, rushing, and receiving yards; other prop types will say when no ML estimate is available.</p><div id="player-ml-live-status">Waiting for the first weekly training run.</div></section>
 <section class="card fd-lab-section"><span class="fd-lab-tag ml">GAME ML AUTO-DEPLOY</span><h2>Game scores and picks</h2><p class="muted">Margin controls winner and spread picks; total controls over/under. Promotion requires matching pregame results, better score accuracy and no decline in the applicable pick results. Weak recent results trigger rollback.</p><div id="game-ml-live-status">Waiting for the first weekly training run.</div></section>
