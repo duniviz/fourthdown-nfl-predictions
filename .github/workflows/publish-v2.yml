@@ -1,6 +1,10 @@
 name: Publish weekly v2 forecasts
 'on':
   workflow_dispatch: {}
+  workflow_call: {}
+  workflow_run:
+    workflows: [Daily DraftKings player prop refresh]
+    types: [completed]
   push:
     paths:
       - '.github/forecast-refresh.txt'
@@ -10,8 +14,8 @@ name: Publish weekly v2 forecasts
     # Run the full forecast refresh every day at about 5 PM Central; skip dates with NFL games.
     # The guard selects the correct UTC hour for daylight/standard time.
     - cron: '17 22,23 * * *'
-    # Game-day forecasts run 45–115 minutes before kickoff when the slate check is due.
-    - cron: '7 * * * 0,1,4,5,6'
+    # Hourly forecast checks remain for non-Sunday game days; Sunday is triggered after each preset DK refresh.
+    - cron: '7 * * * 1,4,5,6'
     # Monday Night Football: one forecast check every half hour, gated to the kickoff window.
     - cron: '30 0,1,2 * * 2'
 permissions:
@@ -32,6 +36,45 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Skipping forecast because the preceding DK refresh did not succeed"
+              exit 0
+            fi
+            # Sunday preset runs always refresh after DK; other days keep the kickoff-window guard.
+            if [[ "$(TZ=America/Chicago date +%u)" == "7" ]]; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if [[ "$(TZ=America/Chicago date +%H)" == "16" ]]; then
+              if python - <<'PY'
+          import datetime as dt, json
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          central=ZoneInfo("America/Chicago")
+          today=dt.datetime.now(central).date()
+          games=json.loads(Path("data/live-v2.json").read_text()).get("games", [])
+          if not games:
+              raise SystemExit("No slate available to verify a non-game day")
+          for game in games:
+              try:
+                  kickoff=dt.datetime.fromisoformat(game["kickoff_utc"].replace("Z","+00:00"))
+              except (KeyError,TypeError,ValueError):
+                  continue
+              if kickoff.astimezone(central).date()==today:
+                  raise SystemExit("NFL game scheduled today; use the game-day forecast window")
+          PY
+              then
+                echo "run=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
+            if ! python -m scripts.check_pregame_forecast_window; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
           if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17 22,23 * * *" ]]; then
             if [[ "$(TZ=America/Chicago date +%H)" != "17" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
@@ -67,7 +110,7 @@ jobs:
               exit 0
             fi
           fi
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7 * * * 0,1,4,5,6" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7 * * * 1,4,5,6" ]]; then
             if ! python -m scripts.check_pregame_forecast_window; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
