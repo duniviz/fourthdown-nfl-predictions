@@ -1,6 +1,6 @@
 {
   "status": "timestamped_pregame_accuracy_only",
-  "generated_at_utc": "2026-11-14T18:48:45.956949+00:00",
+  "generated_at_utc": "2026-11-15T19:55:44.169022+00:00",
   "graded_weeks": 3,
   "weekly_reports": [
     {
@@ -8,19 +8,19 @@
       "week": 10,
       "locked_at_utc": "2026-11-10T20:33:28.729429+00:00",
       "status": "graded_observed_only",
-      "completed_games": 1,
+      "completed_games": 2,
       "game_metrics": {
         "home_margin": {
-          "samples": 1,
-          "mae": 6.54,
-          "rmse": 6.54,
-          "bias": 6.54
+          "samples": 2,
+          "mae": 14.21,
+          "rmse": 16.14,
+          "bias": -7.67
         },
         "total": {
-          "samples": 1,
-          "mae": 0.66,
-          "rmse": 0.66,
-          "bias": 0.66
+          "samples": 2,
+          "mae": 1.71,
+          "rmse": 2.01,
+          "bias": 1.71
         }
       },
       "player_metrics": {
@@ -44,9 +44,9 @@
         }
       },
       "market_diagnostics": {
-        "spread_lines_present_not_graded": 1,
-        "total_lines_present": 1,
-        "total_side_correct": 1
+        "spread_lines_present_not_graded": 2,
+        "total_lines_present": 2,
+        "total_side_correct": 2
       },
       "note": "Only timestamped pre-kickoff snapshots are graded. Missing players/lines are not counted as misses. ATS omitted until sportsbook line sign and timestamp are verified."
     },
@@ -167,14 +167,14 @@
     },
     "game_metrics": {
       "home_margin": {
-        "samples": 30,
-        "mae": 11.38,
-        "rmse": 13.71
+        "samples": 31,
+        "mae": 11.71,
+        "rmse": 14.05
       },
       "total": {
-        "samples": 30,
-        "mae": 11.19,
-        "rmse": 14.94
+        "samples": 31,
+        "mae": 10.92,
+        "rmse": 14.7
       }
     }
   },
