@@ -1,0 +1,70 @@
+name: FOURTHDOWN safe verified-data recovery
+on:
+  schedule:
+    - cron: '29,59 * * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/verified-data-recovery.yml'
+      - 'scripts/verified_data_recovery_policy.js'
+      - 'tests/test_verified_data_recovery_policy.js'
+permissions:
+  contents: read
+  actions: write
+  issues: write
+concurrency:
+  group: fourthdown-verified-data-recovery
+  cancel-in-progress: false
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test recovery safety policy
+        run: node tests/test_verified_data_recovery_policy.js
+      - name: Retry eligible failed verified-data jobs only
+        if: github.event_name != 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { ALLOWED, policy } = require(process.env.GITHUB_WORKSPACE + '/scripts/verified_data_recovery_policy.js');
+            const {owner,repo} = context.repo;
+            const now = Date.now();
+            let retried = 0;
+            for (const workflow_id of Object.keys(ALLOWED)) {
+              const response = await github.rest.actions.listWorkflowRuns({owner,repo,workflow_id,branch:'main',per_page:30});
+              const result = policy(workflow_id,response.data.workflow_runs,now);
+              core.info(workflow_id + ': ' + result.action + ' (' + result.reason + ')');
+              if (result.action === 'retry' && retried < 1) {
+                try {
+                  await github.rest.actions.reRunWorkflowFailedJobs({owner,repo,run_id:result.run.id});
+                  retried++;
+                  core.warning('One safe retry requested: ' + result.run.html_url);
+                } catch (err) {
+                  core.error('Retry failed: ' + err.message);
+                  await report(result.run,'GitHub refused the recovery retry: ' + err.message);
+                  throw err;
+                }
+              } else if (result.action === 'escalate') {
+                await report(result.run,'Verified-data refresh failed after its allowed retry');
+              }
+            }
+            async function report(run,reason) {
+              const title='[Automation] Verified data recovery needs attention';
+              const marker='<!-- verified-data-recovery:'+run.id+' -->';
+              const message=reason+'\\n\\nRun: '+run.html_url+'\\n\\nNo predictions, DK quotes, or pregame locks were edited.\\n'+marker;
+              const issues=await github.paginate(github.rest.issues.listForRepo,{owner,repo,state:'open',per_page:100});
+              const existing=issues.find(i=>!i.pull_request && i.title===title);
+              if (!existing) {
+                await github.rest.issues.create({owner,repo,title,body:message});
+                return;
+              }
+              if ((existing.body||'').includes(marker)) return;
+              const comments=await github.paginate(github.rest.issues.listComments,{owner,repo,issue_number:existing.number,per_page:100});
+              if (!comments.some(c=>(c.body||'').includes(marker))) {
+                await github.rest.issues.createComment({owner,repo,issue_number:existing.number,body:message});
+              }
+            }
