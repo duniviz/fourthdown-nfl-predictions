@@ -54,10 +54,10 @@ async function load(){
     ['gameOdds','data/dk-game-odds.json'],
     ['playerOdds','data/dk-odds.json'],
     ['locks','data/game-official-pregame-locks.json'],
-    ['runs',API+'/actions/workflows/sunday-preset-game-day-refresh.yml/runs?per_page=50'],
+    ['runs',API+'/actions/workflows/sunday-preset-game-day-refresh.yml/runs?per_page=100'],
     ['recent',API+'/actions/runs?per_page=30']
   ];
-  const results=await Promise.all(sources.map(async ([k,url])=>{try{return [k,{value:await json(url+'?health='+Date.now())}]}catch(e){return[k,{error:e.message}]}}));
+  const results=await Promise.all(sources.map(async ([k,url])=>{try{return [k,{value:await json(url+(url.includes('?')?'&':'?')+'health='+Date.now())}]}catch(e){return[k,{error:e.message}]}}));
   const result=Object.fromEntries(results);const get=k=>result[k].value;
   const forecast=get('forecast'),odds=get('gameOdds'),player=get('playerOdds'),locks=get('locks');
   const forecastAt=timeStamp(forecast?.generated_at_utc);
@@ -76,19 +76,68 @@ async function load(){
   const slots=sundayTimes(Date.now());
   if(!slots){by('slots').innerHTML='Sunday schedule evaluation is only active on Sundays in Central Time. <a href="'+API+'/actions/workflows/sunday-preset-game-day-refresh.yml/runs">View run history</a>.'}
   else if(!Array.isArray(workflows)){by('slots').innerHTML=badge('unknown','Cannot verify GitHub runs')+' '+escapeHtml(result.runs.error||'Unavailable')}
-  else by('slots').innerHTML=slots.map(s=>{
-    const due=Date.now()>=s.ms+5*60000;
-    // A primary or recovered run may start a few minutes off its scheduled target.
-    const candidates=workflows.filter(r=>['schedule','workflow_dispatch'].includes(r.event)&&r.head_branch==='main'&&Math.abs((timeStamp(r.created_at)||0)-s.ms)<=25*60000);
-    const run=candidates.sort((a,b)=>Math.abs(timeStamp(a.created_at)-s.ms)-Math.abs(timeStamp(b.created_at)-s.ms))[0];
-    const complete=run?.status==='completed'&&run.conclusion==='success';
-    const newerForecast=forecastAt!==null&&forecastAt>=s.ms-5*60000;
-    const newerOdds=oddsAt!==null&&oddsAt>=s.ms-5*60000;
-    const state=!due?'unknown':!run?'bad':!complete?'warn':newerForecast&&newerOdds?'ok':'bad';
-    const label=!due?'Upcoming':!run?'Missing run':!complete?'Pending or failed':newerForecast&&newerOdds?'Verified run + artifacts':'Run succeeded; published data stale';
-    const detail=run?'<a href="'+escapeHtml(run.html_url)+'">View workflow</a> • '+escapeHtml(run.conclusion||run.status):'No matching preset run found';
-    return '<div class="slot"><strong>'+escapeHtml(s.label)+'</strong><div>'+badge(state,label)+' <span class="detail">'+detail+'</span><div class="detail">Forecast: '+escapeHtml(centralTime(forecastAt))+' • DK odds: '+escapeHtml(centralTime(oddsAt))+'</div></div></div>';
-  }).join('');
+  else {
+    // A successful wrapper can contain skipped refresh jobs. Check child jobs too.
+    // Prefer a verified recovery over a failed primary; never equate a green
+    // GitHub run with published data when the current artifact has no run provenance.
+    const slotRows=await Promise.all(slots.map(async slot=>{
+      const due=Date.now()>=slot.ms+5*60000;
+      const candidates=workflows.filter(r=>
+        ['schedule','workflow_dispatch'].includes(r.event)&&
+        r.head_branch==='main'&&
+        Number.isFinite(timeStamp(r.created_at))&&
+        timeStamp(r.created_at)>=slot.ms-15*60000&&
+        timeStamp(r.created_at)<=slot.ms+40*60000
+      ).sort((a,b)=>timeStamp(b.created_at)-timeStamp(a.created_at));
+      let good=null,unverified=false,failed=null,partial=false;
+      for(const run of candidates.slice(0,8)){
+        if(run.status!=='completed'){unverified=true;continue}
+        if(run.conclusion!=='success'){failed=failed||run;continue}
+        try{
+          const jobs=(await json(API+'/actions/runs/'+run.id+'/jobs?per_page=100')).jobs||[];
+          const lines=jobs.find(j=>j.name.includes('refresh-lines /'));
+          const forecastJob=jobs.find(j=>j.name.includes('refresh-forecasts /'));
+          if(lines?.conclusion==='success'&&forecastJob?.conclusion==='success'){
+            good=run;break;
+          }
+          // Wrapper-level success with skipped child jobs is not a refresh.
+          if(!lines||!forecastJob||lines.conclusion==='skipped'||forecastJob.conclusion==='skipped'){
+            partial=true;
+          }else failed=failed||run;
+        }catch(_){unverified=true}
+      }
+      const chosen=good||failed||candidates[0];
+      const runLink=chosen?'<a href="'+escapeHtml(chosen.html_url)+'">View workflow</a>':'No matching preset run found';
+      let state,label,detail;
+      if(!due){state='unknown';label='Upcoming';detail='Scheduled slot has not passed'}
+      else if(good){
+        // Latest artifact timestamps cannot prove that every earlier slot published
+        // new data; a later refresh may have overwritten the same files.
+        const at=timeStamp(good.created_at);
+        const nextSlot=slots.find(s=>s.ms>slot.ms)?.ms||Infinity;
+        const artifactsMatch=forecastAt!==null&&oddsAt!==null&&
+          forecastAt>=at-5*60000&&oddsAt>=at-5*60000&&
+          forecastAt<nextSlot+40*60000&&oddsAt<nextSlot+40*60000;
+        state=artifactsMatch?'ok':'warn';
+        label=artifactsMatch?'Refresh completed + latest data verified':'Refresh steps completed';
+        detail=runLink+' • '+(artifactsMatch?'Published feed timestamps align with this window':'Earlier slot output cannot be verified from latest files alone');
+      }else if(unverified){
+        state='unknown';label='Checking or unavailable';detail=runLink+' • Run jobs not yet verified';
+      }else if(partial){
+        state='warn';label='No refresh performed';detail=runLink+' • Workflow completed but refresh steps were skipped';
+      }else if(failed){
+        state='bad';label='Failed refresh';detail=runLink+' • No successful retry verified';
+      }else{
+        state='bad';label='Missing run';detail='No matching preset run found';
+      }
+      return '<div class="slot"><strong>'+escapeHtml(slot.label)+'</strong><div>'+
+        badge(state,label)+' <span class="detail">'+detail+'</span>'+
+        '<div class="detail">Latest forecast: '+escapeHtml(centralTime(forecastAt))+
+        ' • Latest DK odds: '+escapeHtml(centralTime(oddsAt))+
+        '</div></div></div>';
+    }));
+    by('slots').innerHTML=slotRows.join('');
+  }
   if(!Array.isArray(all))by('runs').innerHTML=badge('unknown','GitHub runs unavailable')+' '+escapeHtml(result.recent.error||'');
   else by('runs').innerHTML=all.filter(r=>/Sunday|DraftKings|publish|forecast|pregame|watchdog|integrity|snapshot|pipeline/i.test(r.name)).slice(0,12).map(r=>'<div class="slot"><span class="detail">'+escapeHtml(centralTime(r.created_at))+'</span><div><strong>'+escapeHtml(r.name)+'</strong> '+badge(r.conclusion==='success'?'ok':r.status!=='completed'?'warn':'bad',r.conclusion||r.status)+'<div class="detail"><a href="'+escapeHtml(r.html_url)+'">GitHub workflow details</a> • '+escapeHtml(r.event)+'</div></div></div>').join('')||'No matching recent runs';
   by('checked').textContent='Checked '+centralTime(Date.now())+' • All times Central';
