@@ -46,8 +46,38 @@
     const bottom = document.createElement('nav');
     bottom.className = 'fd2-bottom';
     bottom.setAttribute('aria-label', 'Mobile navigation');
-    bottom.innerHTML = items.map(([href, label]) => link(href, label)).join('') + menu('fd-more-menu');
-    document.body.appendChild(bottom);
+    bottom.innerHTML = items.map(([href, label]) => link(href, label)).join('') +
+      '<button type="button" class="fd2-bottom-more" aria-controls="fd2-bottom-menu" aria-expanded="false">More<span class="fd2-bottom-chevron" aria-hidden="true"></span></button>';
+    const bottomMenu = document.createElement('div');
+    bottomMenu.id = 'fd2-bottom-menu';
+    bottomMenu.className = 'fd2-bottom-menu';
+    bottomMenu.hidden = true;
+    bottomMenu.innerHTML = more.map(([href, label]) =>
+      '<a href="' + href + '"' + (current(href) ? ' aria-current="page"' : '') + '>' + label + '</a>'
+    ).join('');
+    document.body.append(bottom, bottomMenu);
+    const moreButton = bottom.querySelector('.fd2-bottom-more');
+    if (moreCurrent()) moreButton.setAttribute('aria-current', 'page');
+    const setMoreOpen = open => {
+      moreButton.setAttribute('aria-expanded', String(open));
+      bottomMenu.hidden = !open;
+    };
+    moreButton.addEventListener('click', event => {
+      event.stopPropagation();
+      setMoreOpen(moreButton.getAttribute('aria-expanded') !== 'true');
+    });
+    bottom.addEventListener('click', event => {
+      if (event.target.closest('a')) setMoreOpen(false);
+    });
+    bottomMenu.addEventListener('click', event => {
+      if (event.target.closest('a')) setMoreOpen(false);
+    });
+    document.addEventListener('click', event => {
+      if (!bottom.contains(event.target) && !bottomMenu.contains(event.target)) setMoreOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMoreOpen(false);
+    });
     const hero = document.querySelector('.hero,.page-intro');
     if (hero) hero.classList.add('fd2-hero');
     if (onHome()) {
