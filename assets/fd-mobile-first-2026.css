@@ -1,0 +1,87 @@
+/* Mobile-first fan pass: presentation only. Loaded last to resolve legacy overrides. */
+@media (max-width:760px) {
+  html {scroll-padding-top:72px;scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  body {overflow-x:clip}
+  .wrap {min-width:0}
+  main.wrap > section,main.wrap > div,#scoreboard,#fd-top-picks {min-width:0;max-width:100%}
+  .section-head {gap:8px;align-items:flex-start;flex-wrap:wrap}
+  .section-head h2 {font-size:clamp(21px,6vw,25px)!important;line-height:1.17}
+  .section-head .caption,.fd-live-board-head p {font-size:13px;line-height:1.4}
+  .fd-app-nav {gap:3px;padding:6px 7px calc(7px + env(safe-area-inset-bottom))}
+  .fd-app-nav a {min-height:52px;gap:4px;font-size:11px}
+  .fd-app-nav svg {width:22px;height:22px}
+  .fd-command {padding-block:12px!important}
+  .fd-command-main {padding:17px 15px!important}
+  .fd-command h1 {font-size:clamp(29px,8vw,38px)!important;line-height:1.08!important}
+  .fd-command-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .fd-command-actions > * {min-width:0;text-align:center;display:flex;justify-content:center;align-items:center;padding:10px!important;font-size:13px!important}
+  .fd-command-actions > :last-child:nth-child(odd) {grid-column:1/-1}
+  .fd-live-board {padding:13px!important;margin:12px 0!important}
+  .fd-live-board-head h2 {font-size:22px!important}
+  .fd-live-board-head > a {min-height:44px;align-items:center}
+  .fd-live-board-card {flex:0 0 min(290px,86vw);padding:14px!important;min-height:142px;scroll-snap-align:center}
+  .fd-live-board-cards {scroll-padding-inline:5px;gap:9px}
+  .fd-live-team img {width:30px;height:30px}
+  .fd-live-team b {font-size:24px}
+  .fd-live-card-link {font-size:12px}
+  .fd-top-picks {padding:12px!important;margin:12px 0 18px!important}
+  .fd-top-picks-tabs {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+  .fd-top-picks-tabs button,.fd-top-picks-tabs button:last-child {grid-column:auto!important;min-width:0;min-height:48px;padding:9px 4px!important;font-size:12px!important;line-height:1.15;white-space:normal;overflow-wrap:break-word}
+  .fd-top-picks-list {grid-template-columns:minmax(0,1fr)!important;gap:9px}
+  .fd-top-pick {padding:13px!important}
+  .fd-top-pick h3 {font-size:19px!important;line-height:1.25}
+  .fd-top-pick p,.fd-top-pick-matchup {font-size:13px}
+  .fd-top-pick-meta {font-size:12px;gap:12px}
+  .fd-top-picks-note {font-size:12px!important;line-height:1.45}
+  #scoreboard-cards {grid-template-columns:minmax(0,1fr)!important}
+  #scoreboard-cards > .scorecard {padding:12px!important;margin:0;max-width:100%}
+  #scoreboard-cards .score-head {display:flex;flex-wrap:wrap;gap:6px!important}
+  #scoreboard-cards .score-head .caption {font-size:12px;line-height:1.35}
+  #scoreboard-cards .hybrid-teamlogos {margin:7px 0 9px!important}
+  #scoreboard-cards .hybrid-teamlogos img {width:34px;height:34px}
+  #scoreboard-cards .score-team {min-height:60px!important;padding:8px!important}
+  #scoreboard-cards .score-team img {width:34px!important;height:34px!important}
+  #scoreboard-cards .score-team .name {font-size:16px!important}
+  #scoreboard-cards .projection-panel {padding:11px!important;margin-top:8px!important}
+  #scoreboard-cards .fd-pick-head strong {font-size:18px!important;line-height:1.25}
+  #scoreboard-cards .fd-forecast-score {font-size:15px!important;font-weight:800;line-height:1.4}
+  #scoreboard-cards .fd-market-picks {grid-template-columns:minmax(0,1fr)!important;gap:6px!important}
+  #scoreboard-cards .fd-market-picks > div {font-size:13px!important;line-height:1.38;min-height:44px;padding:10px!important;overflow-wrap:anywhere}
+  #scoreboard-cards .fd-modal-open {min-height:48px!important;font-size:14px!important}
+  #fd-modal {padding:6px!important;overscroll-behavior:contain}
+  #fd-modal .fd-modal-inner {width:100%!important;max-height:calc(100dvh - 12px)!important;border-radius:15px!important;overscroll-behavior:contain;overflow-y:auto}
+  #fd-modal .fd-modal-top {padding:10px 8px!important}
+  #fd-modal .fd-detail-teams {gap:5px!important}
+  #fd-modal .fd-detail-team strong {font-size:clamp(22px,7vw,31px)!important}
+  #fd-modal .fd-detail-primary {grid-template-columns:minmax(0,1fr)!important}
+  #fd-modal .fd-detail-market .fd-market-picks {grid-template-columns:minmax(0,1fr)!important}
+  #fd-modal .fd-detail-market .fd-market-picks > div {font-size:13px!important;padding:11px!important;min-height:44px}
+  #fd-modal .fd-detail-more > summary {font-size:14px!important;min-height:48px}
+  #fd-modal .fd-detail-more-body {min-width:0}
+  .fd-merged-player-props .fd-mobile-prop-name strong {font-size:15px}
+  .fd-merged-player-props .fd-mobile-prop-numbers {grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .fd-merged-player-props .fd-mobile-prop-numbers > div {padding:10px 6px!important;min-height:65px}
+  .fd-merged-player-props .fd-mobile-prop-numbers small {font-size:11px!important;line-height:1.25}
+  .fd-merged-player-props .fd-mobile-prop-numbers b {font-size:20px!important}
+  .fd-merged-player-props .fd-prop-analysis > summary {min-height:44px;display:flex;align-items:center}
+  .bet-grid {grid-template-columns:minmax(0,1fr)!important}
+  .bet-card .bet-name {font-size:18px}
+  .bet-card .bet-metrics > div {min-width:0}
+  .bet-card .bet-metrics strong {font-size:20px}
+  .fd-accuracy-grid,.fd-lab-board-grid {gap:8px}
+  .fd-accuracy-tile,.fd-lab-board-card {min-width:0}
+  .fd-accuracy-summary,.summary-grid {grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  :where(.table-wrap,.tablewrap) {max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  button,summary,select,.fd-app-nav a,.fd-modal-open {touch-action:manipulation}
+}
+@media(max-width:360px) {
+  .fd-command-actions {grid-template-columns:1fr}
+  .fd-command-actions > :last-child:nth-child(odd) {grid-column:auto}
+  .fd-top-picks-tabs button {font-size:11px!important}
+  .fd-app-nav a {font-size:10px}
+  .fd-live-board-card {flex-basis:87vw}
+  #scoreboard-cards .score-team .name {font-size:14px!important}
+}
+@media(prefers-reduced-motion:reduce) {
+  .fd-live-board-cards {scroll-behavior:auto}
+}
