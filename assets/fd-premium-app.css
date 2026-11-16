@@ -59,3 +59,6 @@ body{background:radial-gradient(ellipse at 8% 10%,#17374866 0,transparent 36%),r
  #scoreboard-cards .fd-market-picks>div{min-height:62px!important;padding:10px 12px!important;font-size:14px!important}
 }
 @media(prefers-reduced-motion:no-preference) and (hover:hover) and (pointer:fine){.scorecard:hover{transform:translateY(-3px);box-shadow:0 20px 46px #0008,0 0 0 1px #63d9d344!important}.fd-mobile-prop-card:hover{transform:translateY(-2px);border-color:#63d9d388!important}}
+
+/* fd2-shell.js owns current navigation; suppress the retired overlapping mobile bar. */
+@media(max-width:850px){.fd-app-nav{display:none!important}}
