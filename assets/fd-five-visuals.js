@@ -56,7 +56,7 @@
  }
  function meter(label,pct){
    const v=n(pct);if(v===null||v<0||v>100)return "";
-   return '<div class="fd-v5-gauge" role="img" aria-label="'+esc(label)+': '+v.toFixed(1)+' percent in matched simulations"><div class="fd-v5-dial" style="--fd-v5-pct:'+clamp(v).toFixed(1)+'"><span>'+v.toFixed(0)+'<small>%</small></span></div><div><b>'+esc(label)+'</b><small>Simulated outcome rate<br>Not calibrated betting confidence</small></div></div>';
+   return '<div class="fd-v5-gauge" role="img" aria-label="'+esc(label)+': '+v.toFixed(1)+' percent in matched simulations"><div class="fd-v5-dial" style="--fd-v5-pct:'+clamp(v).toFixed(1)+'%"><span>'+v.toFixed(0)+'<small>%</small></span></div><div><b>'+esc(label)+'</b><small>Simulated outcome rate<br>Not calibrated betting confidence</small></div></div>';
  }
  function scoreboardVisual(game,live,sims){
    const paired=gameSimulation(game,live,sims);
