@@ -20,7 +20,24 @@
     const requestEnd = addDays(end.date.getUTCFullYear(), end.date.getUTCMonth() + 1, end.date.getUTCDate(), 1);
     return {start: start.key, end: end.key, requestEnd: requestEnd.key, query: start.key + '-' + requestEnd.key};
   }
+  // ESPN's site scoreboard returns HTTP 400 for dates=YYYYMMDD-YYYYMMDD.
+  // Each request has to be one calendar day. Thursday and Monday night games
+  // are filed under that US slate day, so start through end is the full window.
+  function scoreboardDates(window) {
+    const keys = [];
+    let year = Number(window.start.slice(0, 4)), month = Number(window.start.slice(4, 6)), day = Number(window.start.slice(6, 8));
+    for (let i = 0; i < 8; i++) {
+      const key = year + String(month).padStart(2, '0') + String(day).padStart(2, '0');
+      keys.push(key);
+      if (key === window.end) break;
+      const next = addDays(year, month, day, 1);
+      year = next.date.getUTCFullYear();
+      month = next.date.getUTCMonth() + 1;
+      day = next.date.getUTCDate();
+    }
+    return keys;
+  }
   function centralDateKey(value) { const time = Date.parse(value); if (!Number.isFinite(time)) return ''; const p = parts(new Date(time)); return p.year + String(p.month).padStart(2, '0') + String(p.day).padStart(2, '0'); }
   function contains(window, value) { const key = centralDateKey(value); return !!key && key >= window.start && key <= window.end; }
-  return {ZONE, get, contains, centralDateKey};
+  return {ZONE, get, contains, centralDateKey, scoreboardDates};
 });
