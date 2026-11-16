@@ -8,19 +8,73 @@ on:
     workflows: [Publish weekly v2 forecasts, Publish count prop projections, Sunday preset game-day refresh]
     types: [completed]
   schedule:
-    # More opportunities to hit the strict T-15-to-kickoff lock window when
-    # GitHub Actions starts a scheduled run late or skips a cron invocation.
-    # pregame_cycle remains no-op unless a refresh or lock window is due.
-    - cron: '2,12,22,32,42,52 * * * *'
+    # America/Chicago, so the same clock times hold in CST and CDT.
+    # Each kickoff has several off-peak ticks. The first tick that lands in
+    # the T-45 window refreshes DraftKings lines and waits until T-15 to lock.
+    # Later ticks are idempotent. GitHub dropped almost every every-10-minute
+    # tick on Nov 12-16, so these are slot-shaped instead of continuous.
+    # Thursday night, 7:15 PM CT: 6:37, 6:47, 7:02, 7:08.
+    - cron: '37,47 18 * * 4'
+      timezone: America/Chicago
+    - cron: '2,8 19 * * 4'
+      timezone: America/Chicago
+    # Saturday/Sunday early and international, 8:30 AM CT: 7:52, 8:02, 8:12, 8:22.
+    - cron: '52 7 * * 0,6'
+      timezone: America/Chicago
+    - cron: '2,12,22 8 * * 0,6'
+      timezone: America/Chicago
+    # Sunday 12:00 PM CT (1:00 PM ET): 11:22, 11:32, 11:42, 11:52.
+    - cron: '22,32,42,52 11 * * 0'
+      timezone: America/Chicago
+    # Sunday 3:05 PM CT (4:05 PM ET) and 3:25 PM CT (4:25 PM ET).
+    - cron: '27,37,47,57 14 * * 0'
+      timezone: America/Chicago
+    - cron: '7,17 15 * * 0'
+      timezone: America/Chicago
+    # Sunday night, 7:20 PM CT: 6:42, 6:52, 7:02, 7:12.
+    - cron: '42,52 18 * * 0'
+      timezone: America/Chicago
+    - cron: '2,12 19 * * 0'
+      timezone: America/Chicago
+    # Monday night, 7:15 PM CT: 6:37, 6:47, 7:02, 7:08.
+    - cron: '37,47 18 * * 1'
+      timezone: America/Chicago
+    - cron: '2,8 19 * * 1'
+      timezone: America/Chicago
+    # Any other kickoff still gets an hourly look from 8 AM through 11 PM CT.
+    - cron: '22 8-23 * * *'
+      timezone: America/Chicago
 permissions:
   contents: write
-concurrency:
-  group: pregame-pipeline
-  cancel-in-progress: false
 jobs:
-  capture:
+  preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
+    outputs:
+      due: ${{ steps.guard.outputs.due }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check kickoff window outside the shared writer queue
+        id: guard
+        run: |
+          if python -m live.pregame_capture_guard --mode cycle; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "due=false" >> "$GITHUB_OUTPUT"
+          fi
+  capture:
+    needs: preflight
+    if: needs.preflight.outputs.due == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: pregame-pipeline
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:

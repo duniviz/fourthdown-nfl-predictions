@@ -45,11 +45,11 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "run=false" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ github.event_name }}" != "schedule" ]] || [[ "$(TZ=America/Chicago date +%H)" == "23" ]]; then
+          elif python -m live.game_official_results --due --event "${{ github.event_name }}"; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping the duplicate UTC schedule; the other cron entry is the 11 PM Central run."
+            echo "Skipping nightly grading; a grade has already been published since 11 PM Central."
           fi
       - name: Grade completed games against frozen pregame forecasts
         if: steps.window.outputs.run == 'true'
