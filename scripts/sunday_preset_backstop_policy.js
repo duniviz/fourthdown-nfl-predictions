@@ -4,7 +4,8 @@
  */
 const SLOT_MINUTES = [8 * 60, 11 * 60, 14 * 60 + 30, 18 * 60 + 45];
 const MIN_DELAY_MINUTES = 5;
-const MAX_DELAY_MINUTES = 24;
+// Include slower failed primary jobs while keeping the independent kickoff lead gate.
+const MAX_DELAY_MINUTES = 39;
 const MIN_KICKOFF_LEAD_MINUTES = 25;
 
 function localParts(value) {
