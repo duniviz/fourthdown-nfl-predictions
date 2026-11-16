@@ -1,0 +1,35 @@
+name: Test fan declutter
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - 'pipeline-health.html'
+      - 'top-picks.js'
+      - 'assets/feed-freshness.js'
+      - 'assets/fd2-shell.js'
+      - 'assets/fd-app-shell.js'
+      - 'assets/fd-appeal.js'
+      - 'assets/fd-declutter.js'
+      - 'assets/fd-declutter.css'
+      - 'assets/fd-model-diagnostics.js'
+      - 'tests/test_declutter.js'
+      - 'tests/test_declutter_browser.js'
+      - '.github/workflows/test-declutter.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright
+      - run: node tests/test_declutter.js
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-declutter-server.log 2>&1 &
+          node tests/test_declutter_browser.js

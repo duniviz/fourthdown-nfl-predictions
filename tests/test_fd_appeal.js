@@ -218,6 +218,8 @@ const markup = appeal.labMarkup({
 assert.match(markup, /76\.0%/);
 assert.match(markup, /25 graded/);
 assert.match(markup, /<svg/);
+assert.match(markup, /<rect /);
+assert.doesNotMatch(markup, /polyline/);
 assert.match(markup, /Week 9/);
 assert.match(markup, /Detailed accuracy and ML tables|long comparison tables/);
 
