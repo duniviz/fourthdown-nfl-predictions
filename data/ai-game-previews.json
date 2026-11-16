@@ -1,32 +1,6 @@
 {
   "schema_version": 1,
   "games": {
-    "2026_10_PIT_CIN": {
-      "headline": "PIT at CIN: a forecast with almost no separation",
-      "stories": [
-        {
-          "title": "The narrowest of margins",
-          "body": "FOURTHDOWN has CIN ahead in this matchup, projecting PIT 23.4 and CIN 25.9, a 2.5-point difference. A single red-zone stop or short-field possession could matter more than the projected edge. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "CIN ranks 1 of 32 on offense and 23 on defense in the model; PIT ranks 11 offensively and 11 defensively. Across their latest 5 and 5 games, respectively, CIN won 4 and PIT won 4. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-10T23:52:50.728225+00:00",
-      "kickoff_utc": "2026-11-16T01:20:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": -0.0347, \"defense_rank\": 11, \"games_used\": 8, \"offense_epa_rating\": 0.0167, \"offense_rank\": 11, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 8.6, \"avg_points_against\": 16.8, \"avg_points_for\": 25.4, \"games\": 5, \"results\": [{\"points_against\": 27, \"points_for\": 24, \"result\": \"L\", \"week\": 4}, {\"points_against\": 22, \"points_for\": 34, \"result\": \"W\", \"week\": 5}, {\"points_against\": 19, \"points_for\": 26, \"result\": \"W\", \"week\": 6}, {\"points_against\": 10, \"points_for\": 16, \"result\": \"W\", \"week\": 7}, {\"points_against\": 6, \"points_for\": 27, \"result\": \"W\", \"week\": 8}], \"wins\": 4}, \"team\": \"PIT\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": 0.0312, \"defense_rank\": 23, \"games_used\": 8, \"offense_epa_rating\": 0.1047, \"offense_rank\": 1, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 9.6, \"avg_points_against\": 22.4, \"avg_points_for\": 32.0, \"games\": 5, \"results\": [{\"points_against\": 22, \"points_for\": 17, \"result\": \"L\", \"week\": 4}, {\"points_against\": 24, \"points_for\": 31, \"result\": \"W\", \"week\": 5}, {\"points_against\": 13, \"points_for\": 35, \"result\": \"W\", \"week\": 7}, {\"points_against\": 36, \"points_for\": 43, \"result\": \"W\", \"week\": 8}, {\"points_against\": 17, \"points_for\": 34, \"result\": \"W\", \"week\": 9}], \"wins\": 4}, \"team\": \"CIN\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 5, \"value\": 18.0}, \"away_offense\": {\"rank\": 17, \"value\": 22.5}, \"category\": \"total\", \"home_defense\": {\"rank\": 14, \"value\": 21.88}, \"home_offense\": {\"rank\": 2, \"value\": 30.0}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 7, \"value\": 5.04}, \"away_offense\": {\"rank\": 17, \"value\": 5.34}, \"category\": \"total\", \"home_defense\": {\"rank\": 24, \"value\": 5.79}, \"home_offense\": {\"rank\": 4, \"value\": 6.14}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 7, \"value\": -0.07}, \"away_offense\": {\"rank\": 19, \"value\": -0.03}, \"category\": \"epa\", \"home_defense\": {\"rank\": 18, \"value\": 0.01}, \"home_offense\": {\"rank\": 3, \"value\": 0.14}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 7, \"value\": -0.06}, \"away_offense\": {\"rank\": 25, \"value\": -0.12}, \"category\": \"epa\", \"home_defense\": {\"rank\": 13, \"value\": -0.01}, \"home_offense\": {\"rank\": 2, \"value\": 0.25}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 5, \"value\": -0.09}, \"away_offense\": {\"rank\": 1, \"value\": 0.12}, \"category\": \"epa\", \"home_defense\": {\"rank\": 29, \"value\": 0.03}, \"home_offense\": {\"rank\": 21, \"value\": -0.06}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 4, \"value\": 3.25}, \"away_offense\": {\"rank\": 23, \"value\": 2.88}, \"category\": \"negative\", \"home_defense\": {\"rank\": 9, \"value\": 2.88}, \"home_offense\": {\"rank\": 10, \"value\": 1.88}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 7, \"value\": 1.5}, \"away_offense\": {\"rank\": 10, \"value\": 1.0}, \"category\": \"negative\", \"home_defense\": {\"rank\": 5, \"value\": 1.5}, \"home_offense\": {\"rank\": 17, \"value\": 1.12}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 7, \"value\": 35.2}, \"away_offense\": {\"rank\": 15, \"value\": 39.2}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 28, \"value\": 48.5}, \"home_offense\": {\"rank\": 1, \"value\": 55.7}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 22, \"value\": 61.5}, \"away_offense\": {\"rank\": 19, \"value\": 50.0}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 1, \"value\": 22.2}, \"home_offense\": {\"rank\": 13, \"value\": 60.0}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 2, \"value\": 37.5}, \"away_offense\": {\"rank\": 28, \"value\": 48.0}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 4, \"value\": 41.4}, \"home_offense\": {\"rank\": 5, \"value\": 65.6}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": 2.16, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 3.15, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"PIT\", \"home\": \"CIN\", \"kickoff\": \"2026-11-16T01:20:00+00:00\", \"scores\": [25.9, 23.4]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": []
-    },
     "2026_10_LAC_BAL": {
       "headline": "LAC at BAL: the details behind the projected edge",
       "stories": [

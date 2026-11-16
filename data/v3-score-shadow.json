@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-16T01:16:19.953579+00:00",
+  "generated_at_utc": "2026-11-16T01:23:58.571582+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_10_PIT_CIN",
-      "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-16T01:20:00+00:00",
-      "home": "CIN",
-      "away": "PIT",
-      "projected_home_score": 26.3,
-      "projected_away_score": 23.0,
-      "projected_margin_home": 3.39,
-      "projected_total": 49.29,
-      "predicted_winner": "CIN",
-      "v2_reference": {
-        "projected_margin_home": 2.49,
-        "projected_total": 49.31
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.016,
-        "margin_from_success_and_pass_proxy": 0.9,
-        "home_features": {
-          "plays_per_game": 61.6,
-          "success_rate": 0.539,
-          "neutral_pass_proxy": 0.656
-        },
-        "away_features": {
-          "plays_per_game": 62.0,
-          "success_rate": 0.439,
-          "neutral_pass_proxy": 0.606
-        }
-      }
-    },
     {
       "game_id": "2026_10_LAC_BAL",
       "season": 2026,
