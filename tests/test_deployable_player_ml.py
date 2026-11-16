@@ -1,6 +1,6 @@
 import unittest
 from live.player_ml_runtime import forecast, use_projection, MODEL_FAMILY
-from tools.train_deployable_player_ml import decide, train
+from tools.train_deployable_player_ml import decide, train, eligible_training_rows, _result_before_target
 
 
 def runtime(active=False):
@@ -45,6 +45,19 @@ class DeployableMLTests(unittest.TestCase):
         rows=observations()
         for r in rows:r['player_ml_pair']['trained_season']=2026;r['player_ml_pair']['trained_week']=8
         self.assertFalse(decide(rows,{})['passing_yards']['active'])
+    def test_training_never_uses_current_slate_results(self):
+        rows=[{'season':'2026','week':'9','market':'passing_yards','new':'200','actual':'210'},
+              {'season':'2026','week':'10','market':'passing_yards','new':'230','actual':'240'},
+              {'season':'2025','week':'18','market':'rushing_yards','new':'50','actual':'55'},
+              {'season':'2026','week':'11','market':'receiving_yards','new':'60','actual':'70'}]
+        allowed=eligible_training_rows(rows,2026,10)
+        self.assertEqual([(x['season'],x['week']) for x in allowed],[('2026','9'),('2025','18')])
+        self.assertEqual(len(eligible_training_rows(rows,2026,11)),3)
+        self.assertEqual(len(eligible_training_rows(rows,2026,9)),1)
+        self.assertTrue(_result_before_target({'game_id':'2026_09_A_B'},2026,10))
+        self.assertFalse(_result_before_target({'game_id':'2026_10_A_B'},2026,10))
+        self.assertFalse(_result_before_target({'game_id':'garbage'},2026,10))
+
     def test_train_and_inference_match(self):
         rows=[{'season':2026,'week':str(i%8+1),'market':'passing_yards','new':str(100+i),'actual':str(110+i)} for i in range(150)]
         model=train(rows)['passing_yards'];r={'family':MODEL_FAMILY,'models':{'passing_yards':model}}

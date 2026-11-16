@@ -24,6 +24,33 @@ PROMOTION_GAIN=.03
 ROLLBACK_LOSS=.10
 
 
+def eligible_training_rows(rows, target_season, target_week):
+    """Training and evaluation must end before the target NFL week.
+
+    The raw retrospective CSV can contain completed games from the current
+    Thursday-Monday slate. Never use those to fit a model or decide whether
+    that model should be promoted for the same slate.
+    """
+    cutoff=(int(target_season),int(target_week))
+    result=[]
+    for row in rows:
+        try:
+            week=(int(row['season']),int(row['week']))
+            if week < cutoff:
+                result.append(row)
+        except (KeyError, TypeError, ValueError):
+            continue
+    return result
+
+
+def _result_before_target(row, season, week):
+    try:
+        parts=str(row['game_id']).split('_')
+        return (int(parts[0]),int(parts[1])) < (int(season),int(week))
+    except (KeyError,ValueError,TypeError,IndexError):
+        return False
+
+
 def train(rows):
     groups=defaultdict(list)
     for r in rows:
@@ -191,12 +218,21 @@ def main():
     import argparse
     p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);a=p.parse_args()
     with a.input.open(newline='',encoding='utf-8-sig') as f: source_rows=list(csv.DictReader(f))
+    target=json.loads(Path('data/live-v2.json').read_text())
+    season,week=int(target['season']),int(target['week'])
+    source_rows=eligible_training_rows(source_rows,season,week)
+    print(f'PLAYER_ML_TRAINING_CUTOFF: target {season} Week {week}, '
+          f'only prior-week retrospective rows: {len(source_rows)}')
     models=train(source_rows)
     if not models: raise SystemExit('No deployable models trained; previous runtime retained')
     path=Path('data/player-ml-runtime.json')
     try: previous=json.loads(path.read_text())
     except (OSError,ValueError):previous={}
     results=json.loads(Path('data/player-results.json').read_text()).get('rows',[])
+    # Promotion evidence must also exclude outcomes from the target week.
+    results=[r for r in results if isinstance(r,dict) and
+             len(str(r.get('game_id','')).split('_'))>=2 and
+             _result_before_target(r,season,week)]
     historical=historical_walk_forward(source_rows)
     decisions=decide(results,previous.get('decisions',{}) if previous.get('family')==MODEL_FAMILY else {},historical)
     # Missing model cannot be active.
