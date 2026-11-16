@@ -1,3 +1,6 @@
+/* Guard against decorative pseudo-elements adding a few pixels of page overflow.
+   Cards/tables keep their own horizontal scroll containers. */
+html,body {max-width:100%;overflow-x:clip}
 /* Betting Board polish — layout and colors only; no predictions are recalculated. */
 body.fd-props-board {
   background:radial-gradient(900px 320px at 95% -100px,#ff5a1f22,transparent 65%),#05070d!important;
