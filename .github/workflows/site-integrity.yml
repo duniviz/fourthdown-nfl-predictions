@@ -20,6 +20,9 @@ on:
       - '.github/workflows/site-integrity.yml'
       - '.github/workflows/capture-game-pregame.yml'
       - 'tests/test_pregame_workflow_schedule.py'
+      - 'assets/fd-five-visuals.js'
+      - 'assets/fd-five-visuals.css'
+      - 'tests/test_fd_five_visuals.js'
   pull_request:
     paths:
       - '*.html'
@@ -52,6 +55,8 @@ jobs:
           done
       - name: Test player-name ambiguity safeguards
         run: node tests/test_dk_identity_browser.js
+      - name: Test five premium visualization data safeguards
+        run: node tests/test_fd_five_visuals.js
       - name: Test current and archived DraftKings game-line display
         run: node tests/test_game_line_display.js
       - name: Validate published JSON feeds
