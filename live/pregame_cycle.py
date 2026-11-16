@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -11,7 +12,7 @@ from live import game_official_pregame_locks as locks, game_pregame_observations
 from live import line_history
 from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
-from live.pregame_capture_guard import due_lock, due_refresh, slates
+from live.pregame_capture_guard import cycle_due, due_refresh, evening_key, lock_wait_seconds, slates
 from scripts.capture_pregame_snapshots import collect, STATS
 from tools.projection_change_tracker import main as build_projection_changes
 
@@ -50,11 +51,9 @@ def artifact_time(name,field):
 
 def slots(games, done, stamp):
     due=[k.isoformat() for k in due_refresh(games,done,stamp)]
-    local=stamp.astimezone(CENTRAL)
-    night="evening:"+str(local.date())
-    if (games and local.hour==19 and night not in done and
-            all(k.astimezone(CENTRAL).date()!=local.date() for k in slates(games))):
-        due.append(night)
+    evening=evening_key(games, done, stamp)
+    if evening:
+        due.append(evening)
     return due
 
 def backup_needed(games, keys, stamp):
@@ -184,19 +183,17 @@ def main():
         key=kickoff.isoformat()
         if key in done and not slate_done(refresh_state,key):
             done.discard(key)
-    keys=slots(games,done,stamp)
-    lock_due=due_lock(games,stamp)
-    if not keys and not lock_due:
+    if not cycle_due(games, done, stamp):
         print("No pregame refresh or official-lock window is due")
         return
-
+    keys=slots(games,done,stamp)
     if keys:
-        # Persist available inputs before any provider request can fail.
-        checkpoint(games)
+        # Fetch the window's lines before writing the lock, so a T-15 snapshot
+        # cannot freeze the quote this run is about to replace.
         refresh(keys,games,stamp)
-        # Reload completion markers in case the provider refresh failed.
-        done=set(read("dk-slate-refreshes",{"slates":[]}).get("slates",[]))
-    # This scheduled run is intentionally short. The next cron run checks
-    # again, so the shared writer queue is released between kickoff windows.
+    wait=lock_wait_seconds(games, now())
+    if wait:
+        print(f"Waiting {int(wait)}s until the T-15 lock for the active kickoff")
+        time.sleep(wait)
     checkpoint(games)
 if __name__=="__main__":main()

@@ -1,7 +1,9 @@
 """Decide whether to fetch odds once per kickoff slate, or check T-15 locks.
 
-No API calls are made by this module. Refresh marker is committed only after
-a successful provider refresh and observation capture.
+No API calls are made by this module. The paid refresh opens 45 minutes before
+kickoff and stays available until 5 minutes before kickoff if it has not
+succeeded yet, because GitHub often drops or delays the cron tick that was
+aimed at T-30. The lock itself is still the T-15 snapshot.
 """
 import argparse
 import json
@@ -12,34 +14,60 @@ from live.game_pregame_observations import dt
 
 MARKER=Path("data/dk-slate-refreshes.json")
 GAMES=Path("data/live-v2.json")
+ACTIVE_WINDOW=timedelta(minutes=45)
+LOCK_LEAD=timedelta(minutes=15)
+REFRESH_LATE=timedelta(minutes=5)
+QUOTE_MAX_AGE=timedelta(minutes=50)
+LOCK_TOLERANCE=timedelta(seconds=45)
+EVENING_CLEARANCE=timedelta(hours=36)
 
 def slates(games):
     starts=sorted({dt(g.get("kickoff_utc")) for g in games if dt(g.get("kickoff_utc"))})
     return starts
 
 def due_refresh(games, done, now):
-    # Allow delayed scheduled runs through T-15; never refresh after the
-    # official cutoff. This protects against a late GitHub Actions start.
+    # One paid refresh per kickoff. A late tick can still refresh after the
+    # ideal T-30 moment, until five minutes before kickoff.
     return [k for k in slates(games)
-            if timedelta(minutes=15) <= k-now <= timedelta(minutes=30)
+            if REFRESH_LATE <= k-now <= ACTIVE_WINDOW
             and k.isoformat() not in done]
 
+def due_followthrough(games, done, now):
+    """Refresh already succeeded; stay awake until the T-15 lock is written."""
+    return any(LOCK_LEAD < k-now <= ACTIVE_WINDOW and k.isoformat() in done
+               for k in slates(games))
+
 def evening_key(games, done, now):
-    """One 7 PM America/Chicago refresh only when no game kicks off that day."""
+    """One 7 PM America/Chicago refresh only when no game is that day or soon."""
     local=now.astimezone(ZoneInfo("America/Chicago"))
     key="evening:"+local.date().isoformat()
     if key in done or local.hour != 19 or local.minute >= 15:
         return None
-    if any(k.astimezone(ZoneInfo("America/Chicago")).date()==local.date() for k in slates(games)):
+    upcoming=slates(games)
+    if any(k.astimezone(ZoneInfo("America/Chicago")).date()==local.date() for k in upcoming):
+        return None
+    if any(timedelta(0) < k-now <= EVENING_CLEARANCE for k in upcoming):
         return None
     return key
 
 def due_lock(games, now):
-    return any(timedelta(0)<k-now<=timedelta(minutes=15) for k in slates(games))
+    return any(timedelta(0) < k-now <= LOCK_LEAD for k in slates(games))
+
+def cycle_due(games, done, now):
+    return bool(due_refresh(games, done, now) or due_lock(games, now)
+                or due_followthrough(games, done, now) or evening_key(games, done, now))
+
+def lock_wait_seconds(games, now, limit=30*60):
+    """Sleep until just before T-15 when no game has reached its lock window yet."""
+    active=[k for k in slates(games) if timedelta(0) < k-now <= ACTIVE_WINDOW]
+    if not active or any(k-now <= LOCK_LEAD for k in active):
+        return 0
+    waits=[(k-LOCK_LEAD-now).total_seconds()-20 for k in active]
+    return max(0, min(min(waits), limit))
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--mode",choices=("refresh","lock"),default="refresh")
+    parser.add_argument("--mode",choices=("refresh","lock","cycle"),default="refresh")
     parser.add_argument("--mark",action="store_true")
     parser.add_argument("--slate-only",action="store_true",help="Skip non-game evening refresh; main forecast owns nightly updates")
     args=parser.parse_args()
@@ -55,7 +83,12 @@ def main():
         data["slates"]=sorted(done|{k.isoformat() for k in pending}|({evening} if evening else set()))
         MARKER.write_text(json.dumps(data,indent=2)+"\n")
         return
-    eligible=(bool(pending) or bool(evening)) if args.mode=="refresh" else due_lock(games,now)
+    if args.mode=="cycle":
+        eligible=cycle_due(games,done,now)
+    elif args.mode=="refresh":
+        eligible=bool(pending) or bool(evening)
+    else:
+        eligible=due_lock(games,now)
     print(f"Pregame {args.mode}: {'due' if eligible else 'not due'}")
     if not eligible:
         raise SystemExit(1)

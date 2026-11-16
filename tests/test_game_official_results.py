@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime,timedelta,timezone
-from live.game_official_results import grade,summarize
+from live.game_official_results import grade,nightly_grade_due,summarize
 from scripts.check_pregame_forecast_window import due
 
 class OfficialResultsTests(unittest.TestCase):
@@ -38,6 +38,32 @@ class OfficialResultsTests(unittest.TestCase):
         self.assertEqual(result["winner_result"],"hit")
         self.assertEqual(result["ats_result"],"not_available")
 
+    def test_pit_cin_lock_grades_when_the_final_score_is_present(self):
+        lock={"game_id":"2026_10_PIT_CIN","season":2026,"week":10,"home":"CIN","away":"PIT",
+              "kickoff_utc":"2026-11-16T01:20:00+00:00","lock_status":"last_available",
+              "lock_cutoff_utc":"2026-11-16T01:05:00+00:00",
+              "forecast_at_utc":"2026-11-16T00:05:11+00:00",
+              "captured_at_utc":"2026-11-16T01:13:01+00:00",
+              "dk_at_utc":"2026-11-15T20:39:09+00:00",
+              "projected_margin_home":2.49,"projected_total":49.31,
+              "dk_home_spread":-3.5,"dk_total":49.5}
+        game={"game_id":"2026_10_PIT_CIN","home_team":"CIN","away_team":"PIT",
+              "home_score":20,"away_score":17}
+        rows=grade([lock],[game])
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]["winner_result"],"hit")
+        self.assertEqual(rows[0]["ats_result"],"hit")
+    def test_delayed_nightly_run_grades_the_missed_sunday_final(self):
+        last=datetime(2026,11,16,4,15,tzinfo=timezone.utc)
+        morning=datetime(2026,11,16,12,31,tzinfo=timezone.utc)
+        self.assertTrue(nightly_grade_due(morning,last,"schedule"))
+        on_time=datetime(2026,11,17,5,5,tzinfo=timezone.utc)
+        self.assertTrue(nightly_grade_due(on_time,last,"schedule"))
+        graded=datetime(2026,11,17,5,10,tzinfo=timezone.utc)
+        later_morning=datetime(2026,11,17,12,30,tzinfo=timezone.utc)
+        self.assertFalse(nightly_grade_due(later_morning,graded,"schedule"))
+        self.assertFalse(nightly_grade_due(morning,last,"pull_request"))
+        self.assertTrue(nightly_grade_due(morning,last,"workflow_dispatch"))
     def test_kickoff_guard(self):
         now=datetime(2026,11,8,20,tzinfo=timezone.utc)
         game=lambda m:{"kickoff_utc":(now+timedelta(minutes=m)).isoformat()}

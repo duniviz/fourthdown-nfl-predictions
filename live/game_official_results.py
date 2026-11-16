@@ -1,8 +1,12 @@
 """Grade valid pregame game forecasts against verified completed scores."""
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from live.game_pregame_observations import dt, number
+
+CENTRAL=ZoneInfo("America/Chicago")
+GRADEABLE=("official","forecast_only","last_available","early_pregame")
 
 ROOT=Path("data")
 LOCKS=ROOT/"game-official-pregame-locks.json"
@@ -11,12 +15,50 @@ OUT=ROOT/"game-official-results.json"
 def side(value):
     return "home" if value>0 else "away" if value<0 else "push"
 
+def nightly_grade_due(now, last_graded_at, event_name, pending_kickoffs=()):
+    """Grade at 11 PM Central, and also when that cron starts hours late.
+
+    GitHub often delivers the 11 PM Central schedule the next morning. A
+    morning run still grades when nothing has been published since 11 PM, so
+    a Sunday-night final is not left until the following night.
+    """
+    if event_name=="pull_request":
+        return False
+    if event_name!="schedule":
+        return True
+    local=now.astimezone(CENTRAL)
+    if local.hour==23:
+        return True
+    last_eleven=local.replace(hour=23, minute=0, second=0, microsecond=0)
+    if local<last_eleven:
+        last_eleven-=timedelta(days=1)
+    graded=last_graded_at.astimezone(CENTRAL) if last_graded_at else None
+    if graded is None or graded<last_eleven:
+        return True
+    for kickoff in pending_kickoffs:
+        if kickoff<=now-timedelta(hours=3) and graded<kickoff:
+            return True
+    return False
+
+def ungraded_kickoffs(locks, graded_rows):
+    graded={str(r.get("game_id")) for r in graded_rows if isinstance(r,dict)}
+    kickoffs=[]
+    for row in locks:
+        if not isinstance(row,dict) or str(row.get("game_id")) in graded:
+            continue
+        if row.get("lock_status") not in GRADEABLE:
+            continue
+        kickoff=dt(row.get("kickoff_utc"))
+        if kickoff:
+            kickoffs.append(kickoff)
+    return kickoffs
+
 def grade(locks,schedules):
     completed={str(g.get("game_id")):g for g in schedules
                if g.get("home_score") is not None and g.get("away_score") is not None}
     results=[]
     for row in locks:
-        if not isinstance(row,dict) or row.get("lock_status") not in ("official","forecast_only","last_available","early_pregame"):
+        if not isinstance(row,dict) or row.get("lock_status") not in GRADEABLE:
             continue
         gid=str(row.get("game_id",""))
         game=completed.get(gid)
@@ -75,6 +117,18 @@ def summarize(rows):
     return summary
 
 def main():
+    import sys
+    if "--due" in sys.argv:
+        event="schedule"
+        if "--event" in sys.argv:
+            event=sys.argv[sys.argv.index("--event")+1]
+        now=datetime.now(timezone.utc)
+        locks=json.loads(LOCKS.read_text()).get("records",[]) if LOCKS.exists() else []
+        saved=json.loads(OUT.read_text()) if OUT.exists() else {}
+        due=nightly_grade_due(now, dt(saved.get("generated_at_utc")), event,
+                              ungraded_kickoffs(locks, saved.get("rows") or []))
+        print("Nightly grading due" if due else "Nightly grading not due")
+        raise SystemExit(0 if due else 1)
     import nflreadpy as nfl
     locks=json.loads(LOCKS.read_text()).get("records",[]) if LOCKS.exists() else []
     seasons=sorted({int(r["season"]) for r in locks if r.get("season") is not None})
