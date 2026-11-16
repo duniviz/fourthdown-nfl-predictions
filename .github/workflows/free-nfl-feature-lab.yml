@@ -5,6 +5,10 @@ on:
     paths:
       - '.github/workflows/free-nfl-feature-lab.yml'
       - 'research/free_nfl_feature_lab.py'
+      - 'research/publish_advanced_player_ml.py'
+      - 'live/advanced_player_ml.py'
+      - 'live/player_research.py'
+      - 'tests/test_advanced_player_ml_cards.py'
       - 'research/select_market_ml.py'
       - 'tests/test_select_market_ml.py'
       - 'tests/test_free_nfl_feature_lab.py'
@@ -36,6 +40,7 @@ jobs:
           python -m unittest discover -s tests -p test_free_nfl_feature_lab.py -v
           python -m unittest discover -s tests -p test_free_nfl_lab_workflow.py -v
           python -m unittest discover -s tests -p test_select_market_ml.py -v
+          python -m unittest discover -s tests -p test_advanced_player_ml_cards.py -v
       - name: Build completed-game historical baseline training rows
         if: github.event_name != 'pull_request'
         run: |
@@ -56,6 +61,8 @@ jobs:
           path: |
             data/research-free-nfl-features.json
             data/market-ml-research-selection.json
+            data/player-advanced-ml-runtime.json
+            data/player-advanced-ml-features.json
           if-no-files-found: warn
           retention-days: 30
       - name: Publish research results only, never live predictions
@@ -75,7 +82,19 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/research-free-nfl-features.json data/market-ml-research-selection.json
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          a=json.loads(Path('data/player-advanced-ml-runtime.json').read_text())
+          b=json.loads(Path('data/player-advanced-ml-features.json').read_text())
+          assert a['research_only'] is True and b['research_only'] is True
+          assert a['production_changed'] is False
+          assert (a['target_season'],a['target_week'],a['generated_at_utc']) == (b['target_season'],b['target_week'],b['generated_at_utc'])
+          assert a['models'] and b['players'], 'No advanced candidates for the published slate'
+          for m in a['models'].values():
+              assert m['active'] is False and (m['trained_season'],m['trained_week']) < (a['target_season'],a['target_week'])
+          PY
+          git add -f data/research-free-nfl-features.json data/market-ml-research-selection.json data/player-advanced-ml-runtime.json data/player-advanced-ml-features.json
           if ! git diff --cached --quiet; then
             git commit -m "Research: weekly free NFL feature coverage and ML ablation [skip ci]"
             git pull --rebase origin main
