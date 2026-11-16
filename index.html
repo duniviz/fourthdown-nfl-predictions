@@ -892,7 +892,7 @@ async function fdOpenMatchup(g){
      const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+unit+' · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+unit+'</div>':'';
      const shadow=x.player_ml_shadow||null,mlCandidate=shadow&&shadow.candidate!==null&&shadow.candidate!==undefined&&Number.isFinite(Number(shadow.candidate))?Number(shadow.candidate):null;
      const mlDelta=mlCandidate!==null&&validLine?mlCandidate-line:null,baseDelta=validLine?projection-line:null;
-     const mlState=mlCandidate===null?(countLabels[x.stat_key]?'Not available · yardage models only':'No matched ML estimate'):shadow.active?'Active model':'Candidate · research only';
+     const mlState=mlCandidate===null?(countLabels[x.stat_key]?'Unavailable · yardage ML does not cover count props':'No eligible saved ML estimate · model training cutoff protects against leakage'):shadow.active?'Active model':'Candidate · research only';
      const mlProjection='<div class="fd-modal-ml-compare"><div><small>CURRENT MODEL</small><strong>'+(validProjection?num(projection):'—')+'</strong><em>'+(baseDelta===null?'No verified DK line':(baseDelta>0?'+':'')+num(baseDelta)+' vs DK')+'</em></div><div><small>ML PROJECTION</small><strong>'+(mlCandidate===null?'—':num(mlCandidate))+'</strong><em>'+(mlDelta===null?'No matched estimate':(mlDelta>0?'+':'')+num(mlDelta)+' vs DK')+'</em><span>'+mlState+'</span></div></div>';
      const fantasyWeather=weatherScenario?window.FDWeatherTemplate?.adjustFantasy(x.market_key||x.stat_key,projection,weatherScenario,x.position):null;
      const generalWeather=weatherScenario?window.FDWeatherTemplate?.adjust(x.market_key||x.stat_key,projection,weatherScenario):null;
@@ -1440,7 +1440,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    const edgeText=(edge>0?'+':'')+fmt(edge);
    const last=x.last5!==null&&x.last5!==''&&Number.isFinite(Number(x.last5))?fmt(x.last5):'—';
    const shadow=x.player_ml_shadow,mlValue=shadow&&shadow.candidate!==null&&shadow.candidate!==undefined&&Number.isFinite(Number(shadow.candidate))?fmt(shadow.candidate):'Not available yet';
-   const mlStatus=mlValue==='Not available yet'?'Yardage models only':shadow.active?'Currently in use':'Candidate · not in use yet';
+   const mlStatus=mlValue==='Not available yet'?(['passing_yards','rushing_yards','receiving_yards'].includes(x.market_key)?'No eligible same-week ML candidate · training cutoff protection':'Count props do not have a trained yardage ML candidate'):shadow.active?'Currently in use':'Candidate · research only';
    const gameProjection=getProjection(g),kickoff=gameProjection?.kickoff_utc||g.date;
    const wx=window.FDWeatherTemplate?.scenario(savedWeather?.games?.[gameProjection?.game_id],savedWeather?.generated_at_utc,kickoff);
    const fantasyWeather=wx?window.FDWeatherTemplate.adjustFantasy(x.market_key,x.projection,wx,x.position):null;
@@ -2293,4 +2293,4 @@ main.wrap>#fd-more{margin:12px 0}
 </style>
 <script defer src="assets/fd2-shell.js?v=2"></script><link rel="stylesheet" href="assets/fourthdown-visual-v1.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-mockup-v2.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-v1.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-layout-v2.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-phase2.css?v=1"><script defer src="assets/feed-freshness.js?v=1"></script><link rel="stylesheet" href="assets/fd-final-visual-consistency.css?v=1"><script>(function(){function elevate(){const board=document.getElementById('scoreboard'),hero=document.querySelector('.fd-command'),nav=document.querySelector('.fd-fan-nav');if(board&&hero&&nav&&board.parentNode===hero.parentNode){nav.insertAdjacentElement('afterend',board);}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',elevate,{once:true});else elevate();})();</script><link rel="stylesheet" href="assets/fd-fan-first.css?v=1"><link rel="stylesheet" href="assets/fd-mobile-readability.css?v=1">
 <link rel="stylesheet" href="assets/fd-premium-app.css?v=5"><script defer src="assets/fd-app-shell.js?v=4"></script>
-<script defer src="assets/fd-insights.js?v=1"></script><script defer src="slate-pulse.js?v=2"></script><script defer src="top-picks.js?v=1"></script></body></html>
+<script defer src="assets/fd-insights.js?v=1"></script><script defer src="slate-pulse.js?v=2"></script><script defer src="top-picks.js?v=1"></script><link rel="stylesheet" href="assets/fd-five-visuals.css?v=1"><script defer src="assets/fd-five-visuals.js?v=1"></script></body></html>
