@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-15T20:43:42.468964+00:00",
+  "generated_at_utc": "2026-11-16T00:05:25.164803+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,99 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_10_LA_ARI",
-      "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-15T21:05:00+00:00",
-      "home": "ARI",
-      "away": "LA",
-      "projected_home_score": 17.7,
-      "projected_away_score": 24.1,
-      "projected_margin_home": -6.34,
-      "projected_total": 41.8,
-      "predicted_winner": "LA",
-      "v2_reference": {
-        "projected_margin_home": -5.85,
-        "projected_total": 40.84
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.964,
-        "margin_from_success_and_pass_proxy": -0.486,
-        "home_features": {
-          "plays_per_game": 68.2,
-          "success_rate": 0.411,
-          "neutral_pass_proxy": 0.642
-        },
-        "away_features": {
-          "plays_per_game": 65.2,
-          "success_rate": 0.485,
-          "neutral_pass_proxy": 0.589
-        }
-      }
-    },
-    {
-      "game_id": "2026_10_SEA_LV",
-      "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-15T21:05:00+00:00",
-      "home": "LV",
-      "away": "SEA",
-      "projected_home_score": 19.3,
-      "projected_away_score": 23.3,
-      "projected_margin_home": -3.97,
-      "projected_total": 42.61,
-      "predicted_winner": "SEA",
-      "v2_reference": {
-        "projected_margin_home": -4.39,
-        "projected_total": 42.71
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.096,
-        "margin_from_success_and_pass_proxy": 0.424,
-        "home_features": {
-          "plays_per_game": 57.8,
-          "success_rate": 0.419,
-          "neutral_pass_proxy": 0.651
-        },
-        "away_features": {
-          "plays_per_game": 65.0,
-          "success_rate": 0.388,
-          "neutral_pass_proxy": 0.563
-        }
-      }
-    },
-    {
-      "game_id": "2026_10_SF_DAL",
-      "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-15T21:25:00+00:00",
-      "home": "DAL",
-      "away": "SF",
-      "projected_home_score": 22.2,
-      "projected_away_score": 26.6,
-      "projected_margin_home": -4.45,
-      "projected_total": 48.81,
-      "predicted_winner": "SF",
-      "v2_reference": {
-        "projected_margin_home": -4.16,
-        "projected_total": 48.37
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.444,
-        "margin_from_success_and_pass_proxy": -0.292,
-        "home_features": {
-          "plays_per_game": 66.8,
-          "success_rate": 0.455,
-          "neutral_pass_proxy": 0.587
-        },
-        "away_features": {
-          "plays_per_game": 61.4,
-          "success_rate": 0.508,
-          "neutral_pass_proxy": 0.521
-        }
-      }
-    },
     {
       "game_id": "2026_10_PIT_CIN",
       "season": 2026,

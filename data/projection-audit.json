@@ -1,10 +1,10 @@
 {
-  "generated_at_utc": "2026-11-15T20:43:37.553984+00:00",
-  "players_checked": 732,
+  "generated_at_utc": "2026-11-16T00:05:19.524528+00:00",
+  "players_checked": 297,
   "summary": {
     "error": 0,
-    "warning": 1,
-    "info": 40
+    "warning": 0,
+    "info": 20
   },
   "flags": [
     {
@@ -90,46 +90,6 @@
     {
       "severity": "info",
       "code": "qb_starter_unverified",
-      "player": "Matthew Stafford",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Matthew Stafford",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Matthew Stafford",
-      "stat_key": "attempts",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Matthew Stafford",
-      "stat_key": "completions",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Matthew Stafford",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_LA_ARI",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
       "player": "Joe Burrow",
       "stat_key": "interceptions",
       "game_id": "2026_10_PIT_CIN",
@@ -205,134 +165,6 @@
       "player": "Aaron Rodgers",
       "stat_key": "passing_yards",
       "game_id": "2026_10_PIT_CIN",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "warning",
-      "code": "qb_starter_limited_history",
-      "player": "Fernando Mendoza",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Starter role with fewer than three current-season games; workload may not reflect a full game"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Sam Darnold",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Sam Darnold",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Sam Darnold",
-      "stat_key": "attempts",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Sam Darnold",
-      "stat_key": "completions",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Sam Darnold",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_SEA_LV",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Dak Prescott",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Dak Prescott",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Dak Prescott",
-      "stat_key": "attempts",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Dak Prescott",
-      "stat_key": "completions",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Dak Prescott",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Brock Purdy",
-      "stat_key": "interceptions",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Brock Purdy",
-      "stat_key": "passing_tds",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Brock Purdy",
-      "stat_key": "attempts",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Brock Purdy",
-      "stat_key": "completions",
-      "game_id": "2026_10_SF_DAL",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Brock Purdy",
-      "stat_key": "passing_yards",
-      "game_id": "2026_10_SF_DAL",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     }
   ],
