@@ -1,10 +1,10 @@
 /* Betting Board visual system. Presentation only. */
-@font-face{font-family:"Barlow Condensed";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/barlow-600.ttf") format("truetype");size-adjust:100%}
-@font-face{font-family:"Barlow Condensed";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/barlow-700.ttf") format("truetype")}
-@font-face{font-family:"Barlow Condensed";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/barlow-800.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/source-400.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/source-600.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/source-700.ttf") format("truetype")}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/barlow-600.woff2") format("woff2"),url("fonts/barlow-600.ttf") format("truetype");size-adjust:100%}
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/barlow-700.woff2") format("woff2"),url("fonts/barlow-700.ttf") format("truetype")}
+@font-face{font-family:"Barlow Condensed";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/barlow-800.woff2") format("woff2"),url("fonts/barlow-800.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/source-400.woff2") format("woff2"),url("fonts/source-400.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/source-600.woff2") format("woff2"),url("fonts/source-600.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/source-700.woff2") format("woff2"),url("fonts/source-700.ttf") format("truetype")}
 @font-face{font-family:"FD Barlow Fallback";src:local("Arial Narrow"),local("Arial");size-adjust:77%;ascent-override:95%;descent-override:25%;line-gap-override:0%}
 @font-face{font-family:"FD Source Fallback";src:local("Arial"),local("Segoe UI");size-adjust:96%;ascent-override:94%;descent-override:24%;line-gap-override:0%}
 :root{
