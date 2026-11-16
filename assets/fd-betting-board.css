@@ -89,3 +89,5 @@ body.fd-bb .fd-ml-tick{position:absolute;top:-3px;width:3px;height:16px;backgrou
 }
 @media(min-width:641px){.fd2-bottom{display:none!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.fd-bb-odds{display:block;color:#ffd27a;font:700 11px var(--bb-body);white-space:nowrap}

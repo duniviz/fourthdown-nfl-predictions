@@ -34,6 +34,17 @@ const path = require('node:path');
         const file = path.join(out, version+'-'+entry.name+'-'+width+'.png');
         await page.screenshot({path:file, fullPage:false, animations:'disabled'});
         console.log('Screenshot:',path.basename(file));
+        if(version==='after'&&entry.name==='games'){
+          const row=page.locator('#fd-bb-slate .fd-bb-row:not(.fd-bb-final)').first();
+          await row.waitFor({state:'visible',timeout:15000});
+          await row.locator('> summary').click();
+          const card=row.locator('.fd-bb-inline-matchup .scorecard').first();
+          await card.waitFor({state:'visible',timeout:15000});
+          await card.scrollIntoViewIfNeeded();
+          const inlineFile=path.join(out,'after-slate-open-'+width+'.png');
+          await page.screenshot({path:inlineFile,fullPage:false,animations:'disabled'});
+          console.log('Screenshot:',path.basename(inlineFile));
+        }
         await page.close();
       }
     }

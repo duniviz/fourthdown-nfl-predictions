@@ -2004,9 +2004,9 @@ function fdSavedLock(g){
    modal.classList.add('open');document.body.style.overflow='hidden';
   }
  }
- container.addEventListener('click',fdHandleMatchupClick);
+ document.addEventListener('click',fdHandleMatchupClick);
  document.getElementById('fd-game-spotlight')?.addEventListener('click',fdHandleMatchupClick);
- container.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-injuries')&&e.target.open)loadGameCardInjuries(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
+ document.addEventListener('toggle',e=>{if(e.target.matches('details.fd-recap')&&e.target.open)loadRecap(e.target);if(e.target.matches('details.fd-injuries')&&e.target.open)loadGameCardInjuries(e.target);if(e.target.matches('details.fd-player-results[data-game-id]')&&e.target.open)loadCompletedPlayerResults(e.target);else if(e.target.matches('details.fd-props[data-final]')&&e.target.open)loadPropResearch(e.target);},true);
  document.querySelectorAll('[data-fd-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.fdFilter;document.querySelectorAll('[data-fd-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));update();}));
  loadForecasts().then(update);setInterval(async()=>{await loadForecasts();update();},60000);
 })();

@@ -9,6 +9,7 @@
   const MARKET_KEY = {passing_yards:'player_passing_yards',rushing_yards:'player_rushing_yards',receiving_yards:'player_receiving_yards','Passing yards':'player_passing_yards','Rushing yards':'player_rushing_yards','Receiving yards':'player_receiving_yards'};
   const MARKET_LABEL = {passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_passing_yards:'Passing yards',player_rushing_yards:'Rushing yards',player_receiving_yards:'Receiving yards'};
 
+  function americanOdds(value) { const price=num(value); return Number.isInteger(price)&&price!==0?(price>0?'+':'')+String(price):null; }
   function num(value) {
     return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? Number(value) : null;
   }
@@ -67,7 +68,7 @@
         model: total.toFixed(1),
         ml: mlTotal === null ? null : mlTotal.toFixed(1),
         dk: dkTotal.toFixed(1),
-        edge: Math.abs(edge),
+        edge: Math.abs(edge), odds: americanOdds(quote[over ? 'over_price' : 'under_price']),
         unit: 'pts', marketLine: dkTotal,
         pct: num(sim && (over ? sim.over_cover_pct : sim.under_cover_pct)),
         tone: 'pos', direction: over ? 'over' : 'under'
@@ -83,7 +84,7 @@
         model: (margin >= 0 ? forecast.home : forecast.away) + ' by ' + Math.abs(margin).toFixed(1),
         ml: mlMargin === null ? null : (mlMargin >= 0 ? forecast.home : forecast.away) + ' by ' + Math.abs(mlMargin).toFixed(1),
         dk: (spread < 0 ? forecast.home : forecast.away) + ' ' + Math.abs(spread).toFixed(1),
-        edge: Math.abs(margin + spread),
+        edge: Math.abs(margin + spread), odds: americanOdds(quote[homePick ? 'home_spread_price' : 'away_spread_price']),
         unit: 'pts', marketLine: spread,
         pct: num(sim && (homePick ? sim.home_cover_pct : sim.away_cover_pct)),
         tone: 'pos'
@@ -98,7 +99,7 @@
         ml: mlMargin === null ? null : (mlMargin >= 0 ? forecast.home : forecast.away) + ' side',
         dk: 'Moneyline',
         edge: null,
-        unit: '',
+        unit: '', odds: americanOdds(quote[winner === forecast.home ? 'home_moneyline_price' : 'away_moneyline_price']),
         pct: num(sim && (winner === forecast.home ? sim.home_win_pct : sim.away_win_pct)),
         tone: 'pos'
       });
@@ -151,6 +152,7 @@
         edge: Math.abs(gap),
         unit: 'yds', marketLine: dk, gameId: player.game_id,
         lastFive: num(player.last_5_avg),
+        odds: americanOdds(quote[gap >= 0 ? 'over_price' : 'under_price']),
         pct: propSimulationRate(findPropSimulation(player, key, simulationRows), dk, gap >= 0 ? 'over' : 'under'),
         tone: 'pos', direction: gap >= 0 ? 'over' : 'under'
       });
@@ -188,7 +190,7 @@
       return '<tr class="fd-desk-edge-row" style="--fd-row-team:'+esc(teamTint)+'"><td><span class="fd-bb-kind">'+rowLogo+esc(row.kind || row.market)+'</span><div class="fd-bb-pick">' + esc(row.pick) + '</div><span class="fd-official">Official pick · current model</span>'+slip+'</td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">Model</span>' + esc(row.model) + '</td>' +
         '<td class="fd-bb-num fd-bb-ml"><span class="fd-bb-cell">ML</span>' + (row.ml === null ? '—' : esc(row.ml)) + '<small>ML projection, research</small></td>' +
-        '<td class="fd-bb-num"><span class="fd-bb-cell">DK</span>' + esc(row.dk) + '</td>' +
+        '<td class="fd-bb-num"><span class="fd-bb-cell">DK</span>' + esc(row.dk) + (row.odds ? '<small class="fd-bb-odds">DraftKings ' + esc(row.odds) + '</small>' : '') + '</td>' +
         '<td><span class="fd-bb-cell">Edge</span><div class="fd-bb-edge ' + row.tone + '">' + (row.edge === null ? '—' : row.edge.toFixed(1) + ' ' + row.unit) + '</div>' + (row.edge === null ? '' : meter(row.edge, max, Number.isFinite(mlEdge) ? mlEdge : null)) + (edgeHint?'<small class="fd-desk-edge-hint">'+esc(edgeHint)+'</small>':'') + '</td>' +
         '<td class="fd-bb-conf"><span class="fd-bb-cell">Confidence</span>' + (row.pct === null ? 'Simulation unavailable' : Number(row.pct).toFixed(1) + '% sim · exploratory') + '</td></tr>';
     }).join('');
@@ -285,7 +287,7 @@
           const edges = gameEdgeRows(game, quotes.find(row => row.home === game.home && row.away === game.away) || {}, simGames.find(row => row.game_id === game.game_id) || {});
           const lead = edges.find(row => row.edge !== null);
           const ml = ((game.game_ml_shadow || {}).markets || {});
-          return '<details class="fd-bb-row"><summary><span class="fd-bb-teams"><img alt="" src="' + esc(logo(game.away)) + '">' + esc(game.away) + ' @ <img alt="" src="' + esc(logo(game.home)) + '">' + esc(game.home) + '</span><span>Upcoming</span><b class="fd-bb-edge pos">' + (lead ? '+' + lead.edge.toFixed(1) : '—') + '</b></summary><div class="fd-bb-detail"><div><small>Official model</small><b>' + num(game.projected_away_score).toFixed(1) + ' – ' + num(game.projected_home_score).toFixed(1) + '</b></div><div><small>ML projection, research</small><b>' + (mlCandidate(ml.game_total) === null ? '—' : mlCandidate(ml.game_total).toFixed(1) + ' total') + '</b></div><div><small>Top official edge</small><b>' + esc(lead ? lead.pick : '—') + '</b></div></div></details>';
+          return '<details class="fd-bb-row" data-home-team="' + esc(game.home) + '" data-away-team="' + esc(game.away) + '"><summary><span class="fd-bb-teams"><img alt="" src="' + esc(logo(game.away)) + '">' + esc(game.away) + ' @ <img alt="" src="' + esc(logo(game.home)) + '">' + esc(game.home) + '</span><span>Upcoming</span><b class="fd-bb-edge pos">' + (lead ? '+' + lead.edge.toFixed(1) : '—') + '</b></summary><div class="fd-bb-detail"><div><small>Official model</small><b>' + num(game.projected_away_score).toFixed(1) + ' – ' + num(game.projected_home_score).toFixed(1) + '</b></div><div><small>ML projection, research</small><b>' + (mlCandidate(ml.game_total) === null ? '—' : mlCandidate(ml.game_total).toFixed(1) + ' total') + '</b></div><div><small>Top official edge</small><b>' + esc(lead ? lead.pick : '—') + '</b></div></div></details>';
         }).join('');
         const chip = (label, result) => '<span class="fd-bb-result-chip fd-bb-' + esc(result || 'none') + '" aria-label="' + esc(label + ': ' + (result === 'hit' ? 'Hit' : result === 'miss' ? 'Miss' : result === 'push' ? 'Push' : 'Not graded')) + '"><small>' + esc(label) + '</small><b>' + (result === 'hit' ? '✓ Hit' : result === 'miss' ? '✕ Miss' : result === 'push' ? '↔ Push' : '—') + '</b></span>';
         const finalHtml = finals.map(row => '<details class="fd-bb-row fd-bb-final"><summary><span class="fd-bb-teams"><img alt="" src="' + esc(logo(row.away)) + '">' + esc(row.away) + ' @ <img alt="" src="' + esc(logo(row.home)) + '">' + esc(row.home) + '</span><span class="fd-bb-final-score">Final ' + row.away_score + '–' + row.home_score + '</span><span class="fd-bb-result-group">' + chip('Winner', row.winner_result) + chip('Spread', row.ats_result) + chip('Total', row.ou_result) + '</span></summary><div class="fd-bb-final-help">Graded against the saved pregame predictions and lines. Tap to collapse.</div></details>').join('');
