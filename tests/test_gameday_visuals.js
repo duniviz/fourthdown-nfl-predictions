@@ -34,7 +34,7 @@ const assert=require('node:assert/strict');
   assert.match(advantageText,/#1 \(strongest\)/);
   assert.match(await advantage.locator('.fd-mini-track i').first().getAttribute('style'),/background-color:#f1788b/);
   assert.match(await scoreboard.innerText(),/LOCKED/);
-  assert.equal(await scoreboard.locator('.fd-team-game').count(),1);
+  assert.equal(await scoreboard.evaluate(node=>node.classList.contains('fd-team-game')),true);
   assert.match(await scoreboard.locator('.fd-ml-game-card').innerText(),/Research only, not the pick/);
   assert.match(await scoreboard.locator('.fd-ml-game-card').innerText(),/ATS vs DK spread/);
   await scoreboard.locator('.fd-modal-open').click();
