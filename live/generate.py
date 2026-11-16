@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from collections import defaultdict
 from live.injury_adjust import estimate
+from live.injuries import lookup_report
 from live.qb_starter_adjust import estimate_starter_adjustment, load_qb_starters
 
 def number(x):
@@ -237,7 +238,7 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
         away_points=max(0,(total-margin)/2)
         adjustments={}
         for team in (g["home_team"],g["away_team"]):
-            report=injury_reports.get(team,{})
+            report=lookup_report(injury_reports, team)
             if report.get("status")!="retrieved":
                 adjustments[team]={"points":0.0,"status":"injury_feed_unavailable","players":[]}
             else:
