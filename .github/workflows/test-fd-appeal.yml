@@ -10,6 +10,7 @@ on:
       - 'history.html'
       - 'model-lab.html'
       - 'tests/test_fd_appeal.js'
+      - 'tests/test_grade_labels_browser.js'
       - '.github/workflows/test-fd-appeal.yml'
   push:
     branches: [main]
@@ -22,6 +23,7 @@ on:
       - 'history.html'
       - 'model-lab.html'
       - 'tests/test_fd_appeal.js'
+      - 'tests/test_grade_labels_browser.js'
       - '.github/workflows/test-fd-appeal.yml'
 permissions:
   contents: read
@@ -36,3 +38,7 @@ jobs:
       - run: node --check assets/fd-appeal.js
       - run: node --check assets/fd-team-colors.js
       - run: node tests/test_fd_appeal.js
+      - run: npm install --no-save playwright
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-ui-server.log 2>&1 &
+          node tests/test_grade_labels_browser.js
