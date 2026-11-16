@@ -81,6 +81,22 @@
 }
 
 .fd-appeal-picks { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.fd-appeal-grades { margin: 8px 0; min-width: 0; }
+.fd-appeal-grades > .fd-appeal-picks { margin: 0; }
+.fd-appeal-grade-notes {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.fd-appeal-grade-notes li {
+  margin: 0;
+  color: #d7e6f1;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
 .fd-appeal-badge {
   display: inline-flex;
   align-items: center;
@@ -232,6 +248,17 @@
 .fd-appeal-fold > summary:focus-visible { outline: 2px solid #d6ff63; outline-offset: 3px; }
 .fd-appeal-fold[open] > summary { border-radius: 12px 12px 0 0; }
 .fd-appeal-fold > .fd-deep { margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+
+@media (max-width: 420px) {
+  .fd-appeal-grades .bet-final.is-hit,
+  .fd-appeal-grades .bet-final.is-miss,
+  .fd-appeal-grades .bet-final.is-push {
+    font-size: 11px;
+    letter-spacing: 0;
+    padding: 4px 7px;
+  }
+  .fd-appeal-grade-notes li { font-size: 11.5px; }
+}
 
 @media (min-width: 720px) {
   .fd-appeal-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }

@@ -130,12 +130,121 @@
       esc(kind) + " · " + esc(tag.tag) + "<small>" + esc(detail) + "</small></span>";
   }
 
-  function stamp(result) {
+  function gradeWord(result) {
     const value = String(result || "").toLowerCase();
     if (value !== "hit" && value !== "miss" && value !== "push") return "";
-    const text = value === "hit" ? "Hit" : value === "miss" ? "Miss" : "Push";
-    // Same Final badge the Prop Desk uses. Color says whether the graded pick hit.
-    return '<span class="bet-final is-' + value + '">' + text + "</span>";
+    return value === "hit" ? "Hit" : value === "miss" ? "Miss" : "Push";
+  }
+
+  // Same sign rules as live/game_official_results.py: positive is home (or Over).
+  function pickSide(value) {
+    const n = num(value);
+    if (n === null || n === 0) return "push";
+    return n > 0 ? "home" : "away";
+  }
+
+  function signedLine(value) {
+    const n = num(value);
+    if (n === null) return "";
+    const body = Math.abs(n).toFixed(1);
+    if (n > 0) return "+" + body;
+    if (n < 0) return "\u2212" + body;
+    return body;
+  }
+
+  function wholeish(value) {
+    const n = num(value);
+    if (n === null) return "";
+    const rounded = Math.round(n * 10) / 10;
+    if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return String(Math.round(rounded));
+    return rounded.toFixed(1);
+  }
+
+  function winnerStory(input) {
+    const result = gradeWord(input && input.winnerResult);
+    if (!result) return null;
+    const margin = num(input.gradeMargin);
+    const homeScore = num(input.actualHome);
+    const awayScore = num(input.actualAway);
+    const away = input.away || "Away";
+    const home = input.home || "Home";
+    if (margin === null || homeScore === null || awayScore === null) return { label: "Winner", result, detail: "" };
+    const picked = pickSide(margin);
+    const actual = pickSide(homeScore - awayScore);
+    const outcome = actual === "push"
+      ? "Tied " + wholeish(awayScore) + "\u2013" + wholeish(homeScore)
+      : actual === "home"
+        ? home + " won " + wholeish(homeScore) + "\u2013" + wholeish(awayScore)
+        : away + " won " + wholeish(awayScore) + "\u2013" + wholeish(homeScore);
+    const pick = picked === "push"
+      ? "No winner side"
+      : "Picked " + (picked === "home" ? home : away) + " by " + Math.abs(margin).toFixed(1);
+    return { label: "Winner", result, detail: pick + " \u00b7 " + outcome };
+  }
+
+  function spreadStory(input) {
+    const result = gradeWord(input && input.spreadResult);
+    if (!result) return null;
+    const margin = num(input.gradeMargin);
+    const spread = num(input.gradeSpread);
+    const homeScore = num(input.actualHome);
+    const awayScore = num(input.actualAway);
+    if (margin === null || spread === null || homeScore === null || awayScore === null) return { label: "Spread", result, detail: "" };
+    // model_ats = side(projected_margin_home + dk_home_spread). Away's number is the opposite spread.
+    const picked = pickSide(margin + spread);
+    if (picked === "push") return { label: "Spread", result, detail: "" };
+    const away = input.away || "Away";
+    const home = input.home || "Home";
+    const team = picked === "home" ? home : away;
+    const teamSpread = picked === "home" ? spread : -spread;
+    const actual = pickSide((homeScore - awayScore) + spread);
+    const teamScore = picked === "home" ? homeScore : awayScore;
+    const oppScore = picked === "home" ? awayScore : homeScore;
+    const outcome = actual === "push"
+      ? "push"
+      : actual === picked
+        ? team + " covered"
+        : teamScore < oppScore
+          ? team + " lost"
+          : teamScore > oppScore
+            ? team + " didn't cover"
+            : team + " tied";
+    return {
+      label: "Spread",
+      result,
+      detail: "Picked " + team + " " + signedLine(teamSpread) + " (model margin " + Math.abs(margin).toFixed(1) + ") \u00b7 " + outcome
+    };
+  }
+
+  function totalStory(input) {
+    const result = gradeWord(input && input.totalResult);
+    if (!result) return null;
+    const modelTotal = num(input.gradeTotal);
+    const line = num(input.gradeLine);
+    const homeScore = num(input.actualHome);
+    const awayScore = num(input.actualAway);
+    if (modelTotal === null || line === null || homeScore === null || awayScore === null) return { label: "O/U", result, detail: "" };
+    // model_ou = side(projected_total - dk_total). Positive is Over.
+    const edge = modelTotal - line;
+    if (pickSide(edge) === "push") return { label: "O/U", result, detail: "" };
+    return {
+      label: "O/U",
+      result,
+      detail: "Picked " + (edge > 0 ? "Over" : "Under") + " " + line.toFixed(1) + " (model " + modelTotal.toFixed(1) + ") \u00b7 " + wholeish(homeScore + awayScore) + " total"
+    };
+  }
+
+  function gradeStories(input) {
+    return [winnerStory(input), spreadStory(input), totalStory(input)].filter(Boolean);
+  }
+
+  function stamp(result, label, detail) {
+    const value = String(result || "").toLowerCase();
+    const word = gradeWord(value);
+    if (!word) return "";
+    const text = label ? label + ": " + word : word;
+    const title = detail ? ' title="' + esc(detail) + '"' : "";
+    return '<span class="bet-final is-' + value + '"' + title + ">" + esc(text) + "</span>";
   }
 
   function winBar(game) {
@@ -234,16 +343,22 @@
     const spreadPct = spreadEdge === null ? null : (spreadEdge > 0.05 ? num(input.homeCover) : spreadEdge < -0.05 ? num(input.awayCover) : null);
     const totalEdge = num(input.totalEdge);
     const totalPct = totalEdge === null ? null : (totalEdge > 0.05 ? num(input.overCover) : totalEdge < -0.05 ? num(input.underCover) : null);
+    const stories = gradeStories(input);
+    const storyFor = (label) => stories.find((story) => story.label === label) || null;
     const chips = [
       badge("Winner", confidenceTag({ pct: winnerPct })),
-      stamp(input.winnerResult),
+      stamp(input.winnerResult, "Winner", storyFor("Winner") && storyFor("Winner").detail),
       badge("Spread", confidenceTag({ pct: spreadPct, edge: spreadEdge, allowEdge: spreadPct === null && spreadEdge !== null })),
-      stamp(input.spreadResult),
+      stamp(input.spreadResult, "Spread", storyFor("Spread") && storyFor("Spread").detail),
       badge("Total", confidenceTag({ pct: totalPct, edge: totalEdge, allowEdge: totalPct === null && totalEdge !== null })),
-      stamp(input.totalResult)
+      stamp(input.totalResult, "O/U", storyFor("O/U") && storyFor("O/U").detail)
     ].filter(Boolean);
-    if (!chips.length) return "";
-    return '<div class="fd-appeal fd-appeal-picks">' + chips.join("") + "</div>";
+    const notes = stories.map((story) => story.detail).filter(Boolean);
+    if (!chips.length && !notes.length) return "";
+    const noteHtml = notes.length
+      ? '<ul class="fd-appeal-grade-notes">' + notes.map((line) => "<li>" + esc(line) + "</li>").join("") + "</ul>"
+      : "";
+    return '<div class="fd-appeal fd-appeal-grades"><div class="fd-appeal fd-appeal-picks">' + chips.join("") + "</div>" + noteHtml + "</div>";
   }
 
   function gamePanel(input) {
@@ -509,7 +624,14 @@
         : null,
       winnerResult: showStamps && grade ? grade.winner_result : "",
       spreadResult: showStamps && grade ? grade.ats_result : "",
-      totalResult: showStamps && grade ? grade.ou_result : ""
+      totalResult: showStamps && grade ? grade.ou_result : "",
+      // Explain the published grade with the same locked numbers the grader used.
+      gradeMargin: num(grade && grade.projected_margin_home),
+      gradeSpread: num(grade && grade.dk_home_spread),
+      gradeTotal: num(grade && grade.projected_total),
+      gradeLine: num(grade && grade.dk_total),
+      actualHome: num(grade && grade.home_score),
+      actualAway: num(grade && grade.away_score)
     };
   }
 
@@ -737,7 +859,7 @@
 
   return {
     STRONG_PCT, LEAN_PCT, STRONG_EDGE, LEAN_EDGE, LARGE_GAP,
-    canon, colorOf, confidenceTag, winBar, numberLine, linesBlock, pickRow, gamePanel,
+    canon, colorOf, confidenceTag, winBar, numberLine, linesBlock, pickRow, gamePanel, gradeStories,
     sparkline, sparkBlock, headshot, recentValues, labView, labMarkup, buildGameInput, mount
   };
 });

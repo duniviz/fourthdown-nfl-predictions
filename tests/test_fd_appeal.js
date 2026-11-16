@@ -71,7 +71,100 @@ const graded = appeal.gamePanel({
 assert.match(graded, /class="bet-final is-hit"/);
 assert.match(graded, /class="bet-final is-miss"/);
 assert.match(graded, /class="bet-final is-push"/);
+assert.match(graded, /Winner: Hit/);
+assert.match(graded, /Spread: Miss/);
+assert.match(graded, /O\/U: Push/);
+assert.doesNotMatch(graded, /Picked /, "No pick line when the locked numbers are missing");
 assert.doesNotMatch(graded, /Winner · /, "No winner tag without a published win percentage");
+
+const wasNyg = appeal.gamePanel({
+  away: "WAS",
+  home: "NYG",
+  winnerResult: "miss",
+  spreadResult: "miss",
+  totalResult: "hit",
+  gradeMargin: 3.71,
+  gradeSpread: -2.5,
+  gradeTotal: 41.31,
+  gradeLine: 40.5,
+  actualHome: 21,
+  actualAway: 24
+});
+assert.match(wasNyg, /Winner: Miss/);
+assert.match(wasNyg, /Spread: Miss/);
+assert.match(wasNyg, /O\/U: Hit/);
+assert.match(wasNyg, /Picked NYG by 3\.7 · WAS won 24–21/);
+assert.match(wasNyg, /Picked NYG −2\.5 \(model margin 3\.7\) · NYG lost/);
+assert.match(wasNyg, /Picked Over 40\.5 \(model 41\.3\) · 45 total/);
+assert.match(wasNyg, /title="Picked NYG by 3\.7 · WAS won 24–21"/);
+
+const awayUnder = appeal.gradeStories({
+  away: "WAS",
+  home: "NYG",
+  winnerResult: "hit",
+  spreadResult: "miss",
+  totalResult: "hit",
+  gradeMargin: -4.2,
+  gradeSpread: 1.5,
+  gradeTotal: 37.2,
+  gradeLine: 44.5,
+  actualHome: 20,
+  actualAway: 17
+});
+assert.equal(awayUnder[0].detail, "Picked WAS by 4.2 · NYG won 20–17");
+assert.equal(awayUnder[1].detail, "Picked WAS −1.5 (model margin 4.2) · WAS lost");
+assert.equal(awayUnder[2].detail, "Picked Under 44.5 (model 37.2) · 37 total");
+
+const coveredDog = appeal.gradeStories({
+  away: "WAS",
+  home: "NYG",
+  winnerResult: "miss",
+  spreadResult: "hit",
+  totalResult: "push",
+  gradeMargin: -1,
+  gradeSpread: 6.5,
+  gradeTotal: 51,
+  gradeLine: 51,
+  actualHome: 24,
+  actualAway: 27
+});
+assert.equal(coveredDog[0].detail, "Picked WAS by 1.0 · WAS won 27–24");
+assert.equal(coveredDog[1].detail, "Picked NYG +6.5 (model margin 1.0) · NYG covered");
+assert.equal(coveredDog[2].detail, "", "A model total equal to the DK total is not an over or under");
+
+const shortWin = appeal.gradeStories({
+  away: "WAS",
+  home: "NYG",
+  spreadResult: "miss",
+  gradeMargin: 6,
+  gradeSpread: -3,
+  actualHome: 22,
+  actualAway: 20
+});
+assert.equal(shortWin[0].detail, "Picked NYG −3.0 (model margin 6.0) · NYG didn't cover");
+
+const fromLedger = appeal.buildGameInput("WAS", "NYG", {
+  projected_away_score: 99,
+  projected_home_score: 1,
+  projected_margin_home: -50,
+  projected_total: 9,
+  predicted_winner: "WAS"
+}, { dk_home_spread: 9, dk_total: 9 }, { home_spread: 8, total: 8 }, {
+  projected_margin_home: 3.71,
+  projected_total: 41.31,
+  dk_home_spread: -2.5,
+  dk_total: 40.5,
+  home_score: 21,
+  away_score: 24,
+  winner_result: "miss",
+  ats_result: "miss",
+  ou_result: "hit"
+}, true);
+assert.deepEqual(appeal.gradeStories(fromLedger).map((story) => story.detail), [
+  "Picked NYG by 3.7 · WAS won 24–21",
+  "Picked NYG −2.5 (model margin 3.7) · NYG lost",
+  "Picked Over 40.5 (model 41.3) · 45 total"
+]);
 
 assert.equal(appeal.sparkline([12], 10), "");
 assert.equal(appeal.sparkline([], 10), "");
@@ -128,4 +221,4 @@ assert.match(markup, /<svg/);
 assert.match(markup, /Week 9/);
 assert.match(markup, /Detailed accuracy and ML tables|long comparison tables/);
 
-console.log("Appeal visuals: team colors, confidence thresholds, spread label, sparkline, and lab tiles passed");
+console.log("Appeal visuals: team colors, confidence thresholds, grade labels, spread label, sparkline, and lab tiles passed");
