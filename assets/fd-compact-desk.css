@@ -240,3 +240,42 @@ html.fd-mobile-layout[data-fd-view="mobile"] .fd2-header .fd2-shell{display:grid
 html[data-fd-view="desktop"] .fd2-bottom,
 html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
 html[data-fd-view="desktop"] body{padding-bottom:0!important}
+
+
+/* Desktop header: reserve independent space for navigation, view selector, and freshness. */
+@media(min-width:851px){
+ .fd2-header{position:sticky!important;top:0!important;z-index:120!important}
+ .fd2-shell{
+  display:grid!important;
+  grid-template-columns:minmax(190px,1fr) auto auto auto!important;
+  align-items:center!important;justify-content:initial!important;
+  gap:18px!important;width:min(1380px,calc(100% - 48px))!important;
+  max-width:none!important;margin-inline:auto!important;padding:10px 0!important;
+  box-sizing:border-box!important;min-height:76px!important
+ }
+ .fd2-shell>.fd2-brand{grid-column:1;min-width:0}
+ .fd2-shell>.fd2-links{
+  grid-column:2;display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  gap:6px!important;min-width:0;width:auto!important;white-space:nowrap
+ }
+ .fd2-shell>.fd-view-picker{grid-column:3;display:flex!important;margin:0!important}
+ .fd2-shell>#fd-freshness-badge{
+  grid-column:4;justify-self:end;max-width:230px!important;margin:0!important;
+  white-space:normal!important;text-align:center;font-size:11px!important;line-height:1.25
+ }
+ .fd2-shell .fd-more{position:relative!important;display:block!important;flex:none!important}
+ .fd2-shell .fd-more>summary{display:flex!important;align-items:center!important;justify-content:center!important;min-height:38px!important;padding:8px 12px!important;white-space:nowrap;cursor:pointer}
+ .fd2-shell .fd-more-menu{
+  position:absolute!important;top:calc(100% + 8px)!important;right:0!important;left:auto!important;
+  z-index:150!important;width:190px!important;min-width:190px!important;
+  display:grid!important;gap:4px!important;padding:8px!important;
+  border:1px solid #34465b!important;border-radius:12px!important;
+  background:#101a29!important;box-shadow:0 14px 34px #0009!important
+ }
+ .fd2-shell .fd-more-menu>a{display:flex!important;align-items:center!important;min-height:40px!important;padding:8px 10px!important;border-radius:8px!important;white-space:nowrap}
+}
+@media(min-width:851px) and (max-width:1050px){
+ .fd2-shell{grid-template-columns:minmax(150px,1fr) auto auto!important;gap:10px!important;width:calc(100% - 28px)!important}
+ .fd2-shell>.fd-view-picker{grid-column:3}
+ .fd2-shell>#fd-freshness-badge{grid-column:1/-1;justify-self:end;grid-row:2}
+}
