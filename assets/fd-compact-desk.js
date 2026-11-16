@@ -37,14 +37,14 @@
     if(scoreboard)games.append(scoreboard);
     layout.append(games);
     const more=details('fd-desk-more','More this week','Top picks · featured matchups · player differences');
-    for(const selector of ['#fd-top-picks','.hybrid-spot','#fd-watch','#confidence-pool']){
+    for(const selector of ['#fd-top-picks','#fd-opportunities','.hybrid-spot','#fd-watch','#confidence-pool','.fd-command']){
       const node=document.querySelector(selector);
       if(node&&!more.contains(node))more.append(node);
     }
     // A prior presentation pass may have already nested these inside Top Picks.
     layout.append(more);
     const research=details('fd-desk-research','Research & archived examples','Past forecasts · historic comparisons · how our picks work');
-    for(const selector of ['#reading-guide','#picks','#markets','#props','#parlays']){
+    for(const selector of ['#tracking','#reading-guide','#model-v2','#picks','#markets','#props','#parlays']){
       appendIf(research,document.querySelector(selector));
     }
     const links=document.createElement('p');links.className='fd-desk-research-links';
