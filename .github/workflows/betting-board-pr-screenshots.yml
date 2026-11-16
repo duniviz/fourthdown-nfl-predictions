@@ -1,0 +1,47 @@
+name: Betting Board PR screenshots
+on:
+  pull_request:
+    paths:
+      - 'assets/fd-betting-board*'
+      - 'assets/fd2-shell.js'
+      - 'bets.html'
+      - 'index.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - 'tests/capture_betting_board_screenshots.js'
+      - '.github/workflows/betting-board-pr-screenshots.yml'
+permissions:
+  contents: read
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout proposed PR
+        uses: actions/checkout@v4
+        with:
+          path: after
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: before
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless browser driver
+        run: npm install --no-save playwright
+      - name: Capture fresh before and after views at 1440px and 400px
+        shell: bash
+        run: |
+          python3 -m http.server 8123 --bind 127.0.0.1 --directory before >/tmp/fd-before.log 2>&1 &
+          python3 -m http.server 8124 --bind 127.0.0.1 --directory after >/tmp/fd-after.log 2>&1 &
+          node after/tests/capture_betting_board_screenshots.js
+      - name: Upload twelve screenshots for PR review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: betting-board-before-after-1440-400
+          path: betting-board-screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 30
