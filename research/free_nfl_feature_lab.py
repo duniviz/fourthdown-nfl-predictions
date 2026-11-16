@@ -214,5 +214,22 @@ def main():
   ]}
  a.output.parent.mkdir(parents=True,exist_ok=True)
  a.output.write_text(json.dumps(report,indent=2)+'\n')
+ # Export model coefficients and strictly prior-week player source vectors for
+ # matching live ML card *research estimates* (never change production picks).
+ from research.select_market_ml import select
+ from research.publish_advanced_player_ml import write_outputs
+ target=json.loads(Path('data/live-v2.json').read_text())
+ season,week=int(target['season']),int(target['week'])
+ game_runtime=json.loads(Path('data/game-ml-runtime.json').read_text())
+ selection=select(report,game_runtime)
+ Path('data/market-ml-research-selection.json').write_text(json.dumps(selection,indent=2)+'\n')
+ player_feed=json.loads(Path('data/player-research.json').read_text())
+ pids=[r.get('player_id') for r in player_feed.get('players',[])
+       if r.get('stat_key') in MARKET_SOURCE
+       and r.get('game_id') in {g.get('game_id') for g in target.get('games',[])}]
+ runtime,snapshot=write_outputs(rows,series,pfr,selection,season,week,pids,
+    Path('data/player-advanced-ml-runtime.json'),Path('data/player-advanced-ml-features.json'))
+ print('Advanced ML shadow models:',list(runtime['models']),
+       'current player feature vectors:',len(snapshot['players']))
  print(json.dumps({'markets':report['markets'],'source_coverage':coverage},indent=2))
 if __name__=='__main__':main()
