@@ -1,66 +1,66 @@
 {
-  "generated_at_utc": "2026-11-16T00:05:03.763995+00:00",
+  "generated_at_utc": "2026-11-16T01:09:25.969933+00:00",
   "method": "Market-level mean residual from archived pregame forecasts. This is not probability calibration; recommendation probability gates remain off until separately validated.",
   "markets": [
     {
       "stat_key": "attempts",
-      "sample_size": 48,
-      "mean_error": -1.19,
-      "mae": 7.41,
+      "sample_size": 54,
+      "mean_error": -0.71,
+      "mae": 7.58,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "carries",
-      "sample_size": 239,
-      "mean_error": 0.02,
-      "mae": 2.09,
+      "sample_size": 270,
+      "mean_error": 0.1,
+      "mae": 2.1,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "completions",
-      "sample_size": 50,
-      "mean_error": -0.6,
-      "mae": 4.68,
+      "sample_size": 56,
+      "mean_error": -0.43,
+      "mae": 4.71,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "passing_yards",
-      "sample_size": 75,
-      "mean_error": -4.28,
-      "mae": 66.63,
+      "sample_size": 81,
+      "mean_error": 1.08,
+      "mae": 66.97,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "receiving_yards",
-      "sample_size": 531,
-      "mean_error": 2.91,
-      "mae": 18.91,
+      "sample_size": 577,
+      "mean_error": 3.23,
+      "mae": 19.1,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "receptions",
-      "sample_size": 418,
+      "sample_size": 465,
       "mean_error": 0.02,
-      "mae": 1.22,
+      "mae": 1.21,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."
     },
     {
       "stat_key": "rushing_yards",
-      "sample_size": 305,
-      "mean_error": 0.85,
-      "mae": 12.45,
+      "sample_size": 336,
+      "mean_error": 1.25,
+      "mae": 12.53,
       "active": true,
       "probability_calibrated": false,
       "note": "Residual bias is tracked after 40 forecasts. Probability calibration for betting recommendations is not established by residual MAE alone."

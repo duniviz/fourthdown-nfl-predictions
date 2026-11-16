@@ -1,6 +1,6 @@
 {
   "family": "game-score-ridge-v1",
-  "generated_at_utc": "2026-11-15T18:25:54.553076+00:00",
+  "generated_at_utc": "2026-11-16T01:10:47.091978+00:00",
   "models": {
     "game_total": {
       "coefficients": [
@@ -31,37 +31,37 @@
     "game_margin_home": {
       "active": false,
       "reason": "awaiting_paired_evidence",
-      "paired": 2,
+      "paired": 12,
       "weeks": 1,
-      "baseline_mae": 14.18,
-      "candidate_mae": 15.08,
-      "recent_paired": 2,
+      "baseline_mae": 10.958,
+      "candidate_mae": 12.394,
+      "recent_paired": 12,
       "pick_checks": {
         "winner": {
-          "games": 2,
-          "baseline_hits": 1,
-          "candidate_hits": 1
+          "games": 12,
+          "baseline_hits": 7,
+          "candidate_hits": 7
         },
         "ats": {
-          "games": 2,
-          "baseline_hits": 1,
-          "candidate_hits": 0
+          "games": 12,
+          "baseline_hits": 5,
+          "candidate_hits": 4
         }
       }
     },
     "game_total": {
       "active": false,
       "reason": "awaiting_paired_evidence",
-      "paired": 2,
+      "paired": 12,
       "weeks": 1,
-      "baseline_mae": 3.945,
-      "candidate_mae": 2.04,
-      "recent_paired": 2,
+      "baseline_mae": 8.788,
+      "candidate_mae": 8.737,
+      "recent_paired": 12,
       "pick_checks": {
         "ou": {
-          "games": 2,
-          "baseline_hits": 2,
-          "candidate_hits": 2
+          "games": 12,
+          "baseline_hits": 8,
+          "candidate_hits": 9
         }
       }
     }

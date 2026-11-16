@@ -1,28 +1,28 @@
 {
-  "generated_at_utc": "2026-11-16T00:05:04.233238+00:00",
+  "generated_at_utc": "2026-11-16T01:09:26.422831+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 24,
+  "graded_games": 25,
   "summary": {
     "winner": {
-      "hits": 18,
+      "hits": 19,
       "misses": 6,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 75.0
+      "hit_pct": 76.0
     },
     "ats": {
       "hits": 10,
-      "misses": 14,
+      "misses": 15,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 41.7
+      "hit_pct": 40.0
     },
     "ou": {
       "hits": 13,
-      "misses": 11,
+      "misses": 12,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 54.2
+      "hit_pct": 52.0
     }
   },
   "rows": [
@@ -526,6 +526,27 @@
       "projected_total": 42.71,
       "dk_home_spread": 6.5,
       "dk_total": 40.5,
+      "winner_result": "hit",
+      "ats_result": "miss",
+      "ou_result": "miss"
+    },
+    {
+      "game_id": "2026_10_SF_DAL",
+      "season": 2026,
+      "week": 10,
+      "home": "DAL",
+      "away": "SF",
+      "kickoff_utc": "2026-11-15T21:25:00+00:00",
+      "lock_status": "early_pregame",
+      "lock_cutoff_utc": "2026-11-15T21:10:00+00:00",
+      "forecast_at_utc": "2026-11-15T20:43:26.826822+00:00",
+      "dk_at_utc": "2026-11-15T20:39:09.902149+00:00",
+      "home_score": 40.0,
+      "away_score": 46.0,
+      "projected_margin_home": -4.16,
+      "projected_total": 48.37,
+      "dk_home_spread": 4.5,
+      "dk_total": 55.5,
       "winner_result": "hit",
       "ats_result": "miss",
       "ou_result": "miss"
