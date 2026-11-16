@@ -53,6 +53,7 @@ function chromePath() {
     assert.match(await page.locator('#fd-pick-scope').innerText(), /Props also includes/);
 
     await page.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+    await page.locator('#fd-desk-games > summary').click();
     await page.waitForFunction(() => /games/.test(document.querySelector('#score-status')?.innerText || ''));
     await page.waitForFunction(() => {
       const text = document.querySelector('#fd-live-board-status')?.innerText || '';
