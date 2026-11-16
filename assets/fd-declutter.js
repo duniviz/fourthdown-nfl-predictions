@@ -23,8 +23,7 @@
       ':scope .projection-panel > .fd-weather-game-candidate',
       ':scope .projection-panel > .fd-score-share',
       ':scope .projection-panel > .fd-score-share-note',
-      ':scope .projection-panel > details.fd-changes',
-      ':scope > .fd-appeal-panel'
+      ':scope .projection-panel > details.fd-changes'
     ];
     selectors.forEach(selector => {
       card.querySelectorAll(selector).forEach(node => {

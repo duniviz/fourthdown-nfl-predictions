@@ -681,9 +681,7 @@
       if (!html) return;
       const anchor = card.querySelector(".projection-panel") || card.querySelector(".score-teams");
       if (!anchor) return;
-      const detail = card.querySelector(":scope > details.fd-card-detail");
-      if (detail) detail.insertAdjacentHTML("beforeend", html);
-      else anchor.insertAdjacentHTML("afterend", html);
+      anchor.insertAdjacentHTML("afterend", html);
       const box = card.querySelector(".fd-v5-score-box");
       if (box && card.querySelector(".fd-appeal-win")) box.classList.add("fd-appeal-hide-dup");
     });
