@@ -36,7 +36,7 @@ class RefreshReliabilityTests(unittest.TestCase):
         self.assertIn('group: pregame-pipeline',capture)
         self.assertIn('python -m live.pregame_cycle',capture)
         self.assertIn('timeout-minutes: 10',capture)
-        self.assertIn("cron: '7,22,37,52 * * * *'", capture)
+        # Keep this expectation aligned with the ten-minute T-15 capture schedule.\n        # Exact cadence and guard boundaries are independently tested in\n        # tests/test_pregame_workflow_schedule.py.\n        self.assertIn("cron: '2,12,22,32,42,52 * * * *'", capture)
         self.assertNotIn('freeze_pregame_game_challengers',capture)
 
     def test_homepage_displays_actual_feed_timestamps(self):
