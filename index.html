@@ -808,44 +808,27 @@ async function fdOpenMatchup(g){
    const positionRank=n(positionContext?.rank),positionTeams=n(positionContext?.ranked_teams),positionTies=n(positionContext?.tie_count)||1;
    const positionSeason=n(positionContext?.season_allowed_per_game),positionAllowed=n(positionContext?.last_5_allowed_per_game);
    const positionGames=n(positionContext?.games),positionRecentGames=n(positionContext?.last_5_games);
-   const ordinal=value=>{const v=Math.abs(Math.trunc(value)),mod100=v%100,suffix=mod100>=11&&mod100<=13?'th':({1:'st',2:'nd',3:'rd'})[v%10]||'th';return v+suffix;};
-   const positionFromFewest=positionRank,positionFromMost=positionTeams!==null&&positionRank!==null?positionTeams-positionRank+1:null;
-   const rankDirection=positionFromMost!==null&&positionFromMost<positionFromFewest?'most':'fewest';
-   const relativeRank=rankDirection==='most'?positionFromMost:positionFromFewest;
-   const rankDescription=positionRank!==null&&positionTeams!==null
-     ? (positionTies>1?'tied for '+(relativeRank===1?'the '+rankDirection:ordinal(relativeRank)+'-'+rankDirection):ordinal(relativeRank)+'-'+rankDirection)
-     : '';
-   if(positionRank!==null&&positionTeams!==null&&positionSeason!==null){
-     const rankSentence=positionTies>1
-       ? opponent+' allowed '+positionSeason.toFixed(1)+' '+marketLabel+' to '+positionPlural+' per game, '+rankDescription+' among '+positionTeams+' teams'
-       : opponent+' has allowed the '+rankDescription+' '+marketLabel+' to '+positionPlural+' ('+positionSeason.toFixed(1)+' per game), ranking '+positionRank+' of '+positionTeams+' teams';
-     parts.push(rankSentence+' through '+(positionGames??'the available number of')+' completed games'+(positionAllowed!==null&&positionRecentGames!==null?'. Over the most recent '+positionRecentGames+' games, that was '+positionAllowed.toFixed(1)+' per game':'')+'.');
-   }else if(positionAllowed!==null){
-     parts.push(opponent+' has allowed about '+positionAllowed.toFixed(1)+' '+marketLabel+' per game to '+positionPlural+' over '+(positionGames??'the available number of')+' completed games; a league rank is not available yet.');
-   }else if(d&&n(d.rank)!==null&&n(d.ranked_teams)!==null){
-     const rank=n(d.rank),teams=n(d.ranked_teams),allowed=n(d.season_allowed_per_game),recentAllowed=n(d.last_3_allowed_per_game);
-     const teamStat=market==='rushing_yards'?'team rushing yards allowed':market==='receiving_yards'?'team receiving yards allowed':'team passing yards allowed';
-     const defenseLabel=rank<=Math.ceil(teams/3)?'one of the toughest':rank>=Math.floor(teams*2/3)?'one of the most generous':'around the middle of the pack';
-     parts.push(opponent+' is '+defenseLabel+' by '+teamStat+', ranking '+rank+' of '+teams+(allowed!==null?' at '+allowed.toFixed(1)+' per game':'')+(recentAllowed!==null&&n(d.last_3_games)!==null?'. Over its last '+n(d.last_3_games)+' games, it allowed '+recentAllowed.toFixed(1)+' per game':'')+'. This is team-wide context; a '+target+'-specific rank is not available yet.');
-   }else parts.push('Opponent-specific '+target+' data are not available in the current feed.');
-   if(verifiedContext)parts.push('Defensive matchup source: nflverse completed-game player stats, calculated before this matchup week. This is context only; no projection change was made by this display.');
-   const adj=n(x.opponent_adjustment);
-   const adjDescription=x.opponent_adjustment_basis==='position_market'?'position-specific opponent adjustment':x.opponent_adjustment_basis==='team_market'?'team-wide (not position-specific) opponent adjustment':'opponent adjustment';
-   if(adj!==null&&Math.abs(adj-1)>=0.0005)parts.push('The '+adjDescription+' '+(adj>1?'raises':'lowers')+' this '+target+' projection by '+Math.abs((adj-1)*100).toFixed(1)+'%.');
-   const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
-   if(vol!==null&&avg!==null)parts.push('We project about '+vol.toFixed(1)+' '+esc(x.opportunity_type||'opportunities')+' for '+player+' in this matchup, compared with '+avg.toFixed(1)+' per game over the last five. '+(vol>avg+0.5?'That is a higher expected workload.':vol<avg-0.5?'That is a lighter expected workload.':'That is close to the recent workload.'));
-   const script=n(x.game_script_adjustment);
-   if(script!==null&&Math.abs(script-1)>=0.0005)parts.push('The expected game flow '+(script>1?'adds':'takes away')+' about '+Math.abs((script-1)*100).toFixed(1)+'% from this '+target+' projection.');
+   // Display a short, plain-English explanation; raw ranks and provenance live in data.
+   const matchupAverage=positionSeason!==null?positionSeason:positionAllowed;
+   const matchupPeriod=positionSeason!==null?'per game this season':'per game recently';
+   if(matchupAverage!==null){
+     let sentence=opponent+' allows '+matchupAverage.toFixed(1)+' '+marketLabel+' to '+positionPlural+' '+matchupPeriod;
+     if(positionSeason!==null&&positionAllowed!==null&&positionRecentGames!==null&&positionRecentGames>0)
+       sentence+=' ('+positionAllowed.toFixed(1)+' over the last '+positionRecentGames+' games)';
+     parts.push(sentence+'.');
+   }else if(d&&n(d.season_allowed_per_game)!==null){
+     parts.push(opponent+' allows '+n(d.season_allowed_per_game).toFixed(1)+' team-wide '+marketLabel+' per game.');
+   }
    const last3=n(x.last_3_avg),last5=n(x.last_5_avg);
-   if(last3!==null&&last5!==null)parts.push('For '+target+', '+player+' has averaged '+last3.toFixed(1)+' yards over the last three games and '+last5.toFixed(1)+' over the last five. '+(last3>last5+2?'The shorter-term trend has been stronger.':last3<last5-2?'The shorter-term trend has cooled.':'Those averages have been fairly steady.'));
-   if(edge!==null)parts.push('Putting it together, our '+target+' projection is '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'right at')+' the saved DraftKings line. '+(Math.abs(edge)<10?'That gap alone is not enough to establish a betting edge.':'The projection difference is worth reviewing, but it does not establish a betting edge by itself.'));
-   const risks=[];
-   if(n(x.games_used)!==null&&n(x.games_used)<5)risks.push('limited recent-game sample');
-   if(n(x.expected_opportunities)!==null&&n(x.last_5_opportunities_avg)!==null&&Math.abs(n(x.expected_opportunities)-n(x.last_5_opportunities_avg))>Math.max(2,n(x.last_5_opportunities_avg)*0.25))risks.push('projected workload differs substantially from recent usage');
-   if(n(x.role_share)!==null&&n(x.role_share)<0.35)risks.push('uncertain or shared team opportunity volume');
-   if(n(x.last_3_avg)!==null&&n(x.last_5_avg)!==null&&Math.abs(n(x.last_3_avg)-n(x.last_5_avg))>Math.max(10,n(x.last_5_avg)*0.25))risks.push('recent production has been volatile');
-   if(risks.length)parts.push('What could make this projection miss: '+risks.map(esc).join('; ')+'. These are risk indicators, not changes to the model.');
-   if(x.sample_warning)parts.push('<small>'+esc(x.sample_warning)+'</small>');
+   if(last3!==null&&last5!==null){
+     parts.push(player+' averages '+last3.toFixed(1)+' yards over the last three games versus '+last5.toFixed(1)+' over the last five'+(last3>last5+2?' — trending up.':last3<last5-2?' — trending down.':'.'));
+   }
+   const vol=n(x.expected_opportunities),avg=n(x.last_5_opportunities_avg);
+   if(vol!==null&&avg!==null&&Math.abs(vol-avg)>0.5)
+     parts.push('Expected '+esc(x.opportunity_type||'opportunities')+': '+vol.toFixed(1)+' versus '+avg.toFixed(1)+' recently.');
+   if(edge!==null)
+     parts.push('Our projection is '+Math.abs(edge).toFixed(1)+' yards '+(edge>0?'above':edge<0?'below':'from')+' the saved DraftKings line'+(Math.abs(edge)<0.05?' (essentially even)':'')+'.');
+   if(!parts.length)parts.push('Not enough recent matchup data for a reliable breakdown.');
    return '<details class="fd-prop-why"><summary>Our take on '+player+' · '+target+' · '+(edge>0?'Why the projection is higher':edge<0?'Why the projection is lower':'Matchup and recent form')+'</summary><div>'+parts.map(t=>'<p>'+t+'</p>').join('')+'</div></details>';
  };
  // Include count-based props in the same unified player cards, not a second panel.

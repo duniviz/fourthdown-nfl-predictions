@@ -22,6 +22,13 @@ class RelevantPlayerCardsTests(unittest.TestCase):
         self.assertIn("const basePlayers=started?archivedPlayers:playerResearch.filter(", self.html)
         self.assertNotIn("&&!unavailablePlayer(x)&&x.dk_line!==null", self.html)
 
+    def test_prop_analysis_is_short_and_without_duplicate_rankings(self):
+        self.assertIn("Display a short, plain-English explanation", self.html)
+        self.assertIn("Our projection is ", self.html)
+        self.assertNotIn("ranking '+positionRank+' of '+positionTeams", self.html)
+        self.assertNotIn("Defensive matchup source:", self.html)
+        self.assertNotIn("Putting it together, our ", self.html)
+
     def test_no_changes_to_model_research(self):
         self.assertIn("Presentation-only relevance filter",self.html)
         self.assertIn("const allPropEntries=",self.html)
