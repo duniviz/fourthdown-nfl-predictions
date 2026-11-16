@@ -29,7 +29,7 @@ body.fd-compact-desk main.wrap {max-width:1480px}
 .fd-compact-desk .fd-bb-table {border-spacing:0 5px}
 .fd-compact-desk .fd-bb-table th {padding:0 8px;font-size:10px}
 .fd-compact-desk .fd-bb-table td {padding:9px 8px;background:linear-gradient(115deg,#18283f,#101a2b)}
-.fd-compact-desk .fd-bb-table tr td:first-child {box-shadow:inset 4px 0 #ff5a1f}
+.fd-compact-desk .fd-bb-table tr td:first-child {box-shadow:inset 4px 0 var(--fd-row-team,#ff5a1f)}
 .fd-compact-desk .fd-bb-pick {font-size:clamp(21px,2vw,27px);line-height:1.05;overflow-wrap:anywhere}
 .fd-compact-desk .fd-bb-num {font-size:27px}
 .fd-compact-desk .fd-bb-edge {font-size:29px;color:var(--bb-positive)}
@@ -66,7 +66,7 @@ body.fd-compact-desk main.wrap {max-width:1480px}
  .fd-compact-desk #fd-bb-results article {flex:0 0 auto;min-width:130px;scroll-snap-align:start}
  .fd-compact-desk #fd-betting-board {padding:11px}
  .fd-compact-desk #fd-betting-board .fd-bb-table td {padding:8px 11px}
- .fd-compact-desk .fd-bb-table tr td:first-child {border-left:4px solid #ff5a1f}
+ .fd-compact-desk .fd-bb-table tr td:first-child {border-left:4px solid var(--fd-row-team,#ff5a1f)}
  .fd-compact-desk .fd-bb-pick {font-size:25px}
  .fd-compact-desk .fd-desk-slip-link {margin-left:0}
  .fd-desk-fold>summary strong {font-size:22px}
