@@ -1,0 +1,86 @@
+/* Current-week sports desk: presentational density; never modifies forecasts or lines. */
+body.fd-compact-desk main.wrap {max-width:1480px}
+.fd-compact-desk #fd-betting-board {
+ overflow:visible;margin:8px 0 10px;padding:14px 16px;
+ background:linear-gradient(150deg,#131e31,#0b1322 75%);
+ border:1px solid #304563;border-radius:17px;
+}
+.fd-compact-desk #fd-bb-title {font-size:clamp(36px,4.2vw,58px);line-height:.95;margin:0 0 3px}
+.fd-compact-desk #fd-betting-board .fd-bb-kicker {margin:0 0 4px}
+.fd-compact-desk #fd-betting-board .fd-bb-lede {margin:5px 0 9px;font-size:12px;line-height:1.4}
+.fd-compact-desk #fd-bb-results .fd-bb-strip {border-top:1px solid #3b506b;padding-top:9px;margin:7px 0 8px}
+.fd-compact-desk #fd-bb-results .fd-bb-kicker {font-size:10px;letter-spacing:.05em;color:#b9c8d9}
+.fd-compact-desk #fd-bb-results .fd-bb-strip-row {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:5px 0}
+.fd-compact-desk #fd-bb-results article {
+ background:#17253a;border:1px solid #3b516c;
+ padding:7px 10px;border-radius:9px;
+ display:flex;align-items:center;gap:7px;min-height:40px;flex-wrap:wrap;
+}
+.fd-compact-desk #fd-bb-results article small {font:700 11px var(--bb-body);color:#ced8e7}
+.fd-compact-desk #fd-bb-results article strong {font:800 23px/.9 var(--bb-display);color:#f8fbff}
+.fd-compact-desk #fd-bb-results article span {font:650 11px var(--bb-body);color:#aebfd1}
+.fd-compact-desk #fd-bb-results article.fd-bb-even strong {color:#ffd36b}
+.fd-compact-desk .fd-bb-tabs {margin:6px 0;align-items:center;gap:7px;flex-wrap:wrap}
+.fd-compact-desk .fd-bb-tabs button {padding:7px 16px;min-height:38px;font-size:13px}
+.fd-compact-desk .fd-desk-slip-link {margin-left:auto;font:800 12px var(--bb-body);padding:8px 12px;border:1px solid #c14c27;border-radius:9px;color:#ffbc94;background:#3b211c;text-decoration:none;min-height:38px}
+.fd-compact-desk .fd-desk-slip-link span {color:#fff;margin-left:6px;font-weight:600}
+.fd-compact-desk .fd-desk-slip-link:hover {border-color:#ff955d;background:#542918}
+.fd-compact-desk .fd-desk-sort-note {color:#b9c9de;font-size:11px;line-height:1.3;margin:0 0 4px}
+.fd-compact-desk .fd-bb-table {border-spacing:0 5px}
+.fd-compact-desk .fd-bb-table th {padding:0 8px;font-size:10px}
+.fd-compact-desk .fd-bb-table td {padding:9px 8px;background:linear-gradient(115deg,#18283f,#101a2b)}
+.fd-compact-desk .fd-bb-table tr td:first-child {box-shadow:inset 4px 0 #ff5a1f}
+.fd-compact-desk .fd-bb-pick {font-size:clamp(21px,2vw,27px);line-height:1.05;overflow-wrap:anywhere}
+.fd-compact-desk .fd-bb-num {font-size:27px}
+.fd-compact-desk .fd-bb-edge {font-size:29px;color:var(--bb-positive)}
+.fd-compact-desk .fd-bb-meter {height:11px;background:#0b1220;box-shadow:inset 0 0 0 1px #61738a}
+.fd-compact-desk .fd-bb-meter>i {background:linear-gradient(90deg,#198d72 0%,#3dffb0 65%,#c4ffe3 100%);box-shadow:0 0 13px #3dffb069}
+.fd-desk-row-logo {width:21px;height:21px;object-fit:contain;vertical-align:middle;margin-right:6px}
+.fd-desk-edge-hint {display:block;margin-top:3px;color:#d0e0e8;font-size:11px;font-weight:700;white-space:nowrap}
+.fd-desk-add {min-height:34px;margin:6px 0 0;border:1px solid #e1693b;background:#422417;color:#ffcaab;border-radius:7px;padding:6px 10px;font-weight:800;font-size:11px;cursor:pointer}
+.fd-desk-add:hover {background:#69321c;color:white}
+.fd-desk-add:focus-visible,.fd-desk-fold summary:focus-visible,.fd-desk-slip-link:focus-visible {outline:3px solid #ffc857!important;outline-offset:3px}
+.fd-compact-desk .fd-bb-ml {color:#80ddff}
+.fd-compact-desk .fd-bb-conf {font-size:12px;line-height:1.3;color:#d1dff0}
+.fd-weekly-desk {display:grid;gap:8px;margin:9px 0 18px}
+.fd-desk-fold {background:#111b2c;border:1px solid #324762;border-radius:13px;min-width:0;overflow:clip}
+.fd-desk-fold>summary {list-style:none;display:flex;align-items:center;justify-content:space-between;gap:9px;cursor:pointer;padding:11px 15px;min-height:52px;color:#f8fafc}
+.fd-desk-fold>summary::-webkit-details-marker {display:none}
+.fd-desk-fold>summary strong {display:block;font-family:var(--bb-display);font-size:23px;line-height:1}
+.fd-desk-fold>summary small {display:block;color:#beccdd;font-size:12px;margin-top:3px}
+.fd-desk-chevron {width:10px;height:10px;border-right:2px solid #ff9a6b;border-bottom:2px solid #ff9a6b;transform:rotate(45deg);flex:none}
+.fd-desk-fold[open] .fd-desk-chevron {transform:rotate(225deg)}
+.fd-desk-fold>h3 {font:800 23px var(--bb-display);padding:4px 14px;margin:0}
+.fd-desk-fold>#fd-bb-slate,.fd-desk-fold>#fd-slate-pulse,.fd-desk-fold>#scoreboard {margin:10px 12px!important;max-width:calc(100% - 24px);scroll-margin-top:100px}
+.fd-desk-fold>#fd-bb-slate {display:grid;gap:6px}
+.fd-desk-fold .fd-bb-row {margin:0 0 5px}
+.fd-desk-fold #fd-top-picks,.fd-desk-fold #fd-watch,.fd-desk-fold .hybrid-spot,.fd-desk-fold #parlays {margin:10px 12px!important}
+.fd-desk-research-links {display:flex;gap:14px;padding:5px 14px 14px;flex-wrap:wrap}
+.fd-desk-research-links a {font-weight:800;font-size:13px;color:#ffbb94}
+.fd-compact-desk #fd-more[hidden] {display:none!important}
+.fd-compact-desk #fd-freshness-badge {margin:5px 0 8px!important;font-weight:800;box-shadow:0 0 0 1px #ff9a4a55}
+.fd-compact-desk #fd-betting-board .fd-bb-table td:hover {border-top-color:#ff7e4c}
+.fd-compact-desk #fd-betting-board .fd-bb-table tr:hover td {background:#1b2b40}
+@media(max-width:800px){
+ .fd-compact-desk #fd-bb-results .fd-bb-strip-row {display:flex;overflow-x:auto;scroll-snap-type:x proximity}
+ .fd-compact-desk #fd-bb-results article {flex:0 0 auto;min-width:130px;scroll-snap-align:start}
+ .fd-compact-desk #fd-betting-board {padding:11px}
+ .fd-compact-desk #fd-betting-board .fd-bb-table td {padding:8px 11px}
+ .fd-compact-desk .fd-bb-table tr td:first-child {border-left:4px solid #ff5a1f}
+ .fd-compact-desk .fd-bb-pick {font-size:25px}
+ .fd-compact-desk .fd-desk-slip-link {margin-left:0}
+ .fd-desk-fold>summary strong {font-size:22px}
+ .fd-desk-fold>summary small {font-size:11px}
+}
+@media(max-width:430px){
+ .fd-compact-desk #fd-bb-title {font-size:40px}
+ .fd-compact-desk .fd-bb-tabs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .fd-compact-desk .fd-bb-tabs button {width:100%;min-width:0}
+ .fd-compact-desk .fd-desk-slip-link {grid-column:1/-1;text-align:center}
+ .fd-compact-desk .fd-bb-table tr {border-radius:10px}
+ .fd-compact-desk .fd-bb-table td {padding:7px 10px}
+ .fd-compact-desk .fd-bb-meter {height:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .fd-desk-fold *,.fd-desk-add {transition:none!important;scroll-behavior:auto!important}
+}
