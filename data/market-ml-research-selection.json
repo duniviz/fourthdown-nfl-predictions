@@ -1,0 +1,94 @@
+{
+  "generated_at_utc": "2026-11-16T02:17:50.729314+00:00",
+  "research_only": true,
+  "production_changed": false,
+  "player": {
+    "passing_yards": {
+      "research_winner": "baseline_features",
+      "heldout_mae": 63.911,
+      "baseline_mae": 66.137,
+      "relative_improvement_pct": 3.37,
+      "samples": 200,
+      "weeks": 8,
+      "source_coverage": {
+        "ngs": 1363,
+        "snap": 1364,
+        "pfr": 0
+      },
+      "card_model_changed": false,
+      "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
+    },
+    "rushing_yards": {
+      "research_winner": "combined",
+      "heldout_mae": 23.22,
+      "baseline_mae": 23.857,
+      "relative_improvement_pct": 2.67,
+      "samples": 396,
+      "weeks": 8,
+      "source_coverage": {
+        "ngs": 2204,
+        "snap": 2936,
+        "pfr": 0
+      },
+      "card_model_changed": false,
+      "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
+    },
+    "receiving_yards": {
+      "research_winner": "combined",
+      "heldout_mae": 23.968,
+      "baseline_mae": 24.424,
+      "relative_improvement_pct": 1.86,
+      "samples": 932,
+      "weeks": 8,
+      "source_coverage": {
+        "ngs": 5235,
+        "snap": 6504,
+        "pfr": 0
+      },
+      "card_model_changed": false,
+      "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
+    }
+  },
+  "game": {
+    "winner": {
+      "research_winner": "baseline",
+      "paired_games": 12,
+      "weeks": 1,
+      "graded_picks": 12,
+      "baseline_hits": 7,
+      "ml_hits": 7,
+      "accuracy_baseline_pct": 58.33,
+      "accuracy_ml_pct": 58.33,
+      "evidence_status": "insufficient_paired_game_evidence",
+      "active_in_production": false,
+      "card_model_changed": false
+    },
+    "ats": {
+      "research_winner": "baseline",
+      "paired_games": 12,
+      "weeks": 1,
+      "graded_picks": 12,
+      "baseline_hits": 5,
+      "ml_hits": 4,
+      "accuracy_baseline_pct": 41.67,
+      "accuracy_ml_pct": 33.33,
+      "evidence_status": "insufficient_paired_game_evidence",
+      "active_in_production": false,
+      "card_model_changed": false
+    },
+    "ou": {
+      "research_winner": "baseline",
+      "paired_games": 12,
+      "weeks": 1,
+      "graded_picks": 12,
+      "baseline_hits": 8,
+      "ml_hits": 9,
+      "accuracy_baseline_pct": 66.67,
+      "accuracy_ml_pct": 75.0,
+      "evidence_status": "insufficient_paired_game_evidence",
+      "active_in_production": false,
+      "card_model_changed": false
+    }
+  },
+  "explanation": "Research winners are not new live ML card projections. Exact live as-of feature parity and frozen evidence are required before activation."
+}

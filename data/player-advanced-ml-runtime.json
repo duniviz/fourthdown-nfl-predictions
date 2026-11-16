@@ -1,0 +1,105 @@
+{
+  "family": "free-nfl-advanced-ridge-v1",
+  "generated_at_utc": "2026-11-16T02:17:50.119863+00:00",
+  "target_season": 2026,
+  "target_week": 10,
+  "research_only": true,
+  "production_changed": false,
+  "models": {
+    "passing_yards": {
+      "variant": "baseline_features",
+      "feature_groups": [],
+      "coefficients": [
+        0.33359643063052585,
+        0.18757106798047093,
+        0.6185438430349035,
+        -1.1291995785052924,
+        0.06279059391320553,
+        -0.4467521346206602,
+        50.9984248821689,
+        -1.1977462393904028
+      ],
+      "intercept": 101.74151654410858,
+      "trained_season": 2026,
+      "trained_week": 9,
+      "training_rows": 1343,
+      "holdout_rows": 200,
+      "holdout_weeks": 8,
+      "holdout_improvement_pct": 3.37,
+      "active": false
+    },
+    "rushing_yards": {
+      "variant": "combined",
+      "feature_groups": [
+        "ngs",
+        "snap",
+        "pfr"
+      ],
+      "coefficients": [
+        0.34830055292963297,
+        0.1578431272056011,
+        0.3181169535361203,
+        0.8726175704502562,
+        0.10044075496399879,
+        -0.7297914707816857,
+        13.90206336162224,
+        -0.05633724843880749,
+        1.1131002427575585,
+        -0.8089135374184662,
+        1.8734023215121571,
+        3.2857837606024516,
+        6.48259937264812,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "intercept": 3.937010383929561,
+      "trained_season": 2026,
+      "trained_week": 9,
+      "training_rows": 2897,
+      "holdout_rows": 396,
+      "holdout_weeks": 8,
+      "holdout_improvement_pct": 2.67,
+      "active": false
+    },
+    "receiving_yards": {
+      "variant": "combined",
+      "feature_groups": [
+        "ngs",
+        "snap",
+        "pfr"
+      ],
+      "coefficients": [
+        0.3697986736002271,
+        0.009808375016172195,
+        0.11313863912283251,
+        2.2583625221428507,
+        0.11986349137136718,
+        -0.5204161709145997,
+        8.31981574815611,
+        -0.07299127924133009,
+        -0.24086210677862055,
+        0.4485459441975621,
+        0.058308513055466506,
+        5.3027456306294365,
+        11.843259170788574,
+        5.970889711179238,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "intercept": -4.313448590022283,
+      "trained_season": 2026,
+      "trained_week": 9,
+      "training_rows": 6407,
+      "holdout_rows": 932,
+      "holdout_weeks": 8,
+      "holdout_improvement_pct": 1.86,
+      "active": false
+    }
+  },
+  "promotion_policy": "shadow only; evaluate exact matched frozen live pairs before any production promotion"
+}
