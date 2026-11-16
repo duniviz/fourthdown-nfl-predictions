@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-16T02:21:21.702332+00:00",
+  "generated_at_utc": "2026-11-16T04:15:17.414066+00:00",
   "season": 2026,
   "week": 10,
   "status": "research_uncalibrated",
@@ -21,17 +21,64 @@
       "injury_adjustments": {
         "BAL": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "reported_out": 3,
+          "unmodeled_injuries": [
+            {
+              "player": "Adam Randall",
+              "position": "RB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Jaylinn Hawkins",
+              "position": "S",
+              "status": "Out"
+            }
+          ]
         },
         "LAC": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
+          "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "reported_out": 7,
+          "unmodeled_injuries": [
+            {
+              "player": "Ladd McConkey",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Branson Taylor",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Trey Pipkins III",
+              "position": "OT",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Kendall Williamson",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Isas Waxter",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Denzel Perryman",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "David Njoku",
+              "position": "TE",
+              "status": "Injured Reserve"
+            }
+          ]
         }
       },
       "qb_starter_adjustments": {
