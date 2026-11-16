@@ -10,6 +10,8 @@ import json
 import os
 import sys
 import urllib.request
+import urllib.error
+import time
 from pathlib import Path
 
 API="https://api.github.com/repos/nflverse/nflverse-data/releases/tags/stats_player"
@@ -19,8 +21,17 @@ def fetch(url):
     if token and url.startswith("https://api.github.com/"):
         headers["Authorization"]="Bearer "+token
     req=urllib.request.Request(url,headers=headers)
-    with urllib.request.urlopen(req,timeout=90) as response:
-        return response.read()
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req,timeout=90) as response:
+                return response.read()
+        except urllib.error.HTTPError as exc:
+            # Temporary GitHub secondary rate limits and upstream 5xx can
+            # recover. Do not retry auth errors (401), missing assets (404),
+            # or malformed requests; the workflow must fail visibly.
+            if exc.code not in (403, 429, 500, 502, 503, 504) or attempt == 2:
+                raise
+            time.sleep(2 ** attempt)
 
 def main():
     p=argparse.ArgumentParser()
