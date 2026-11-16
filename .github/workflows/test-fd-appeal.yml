@@ -1,0 +1,38 @@
+name: Test fan-facing visuals
+on:
+  pull_request:
+    paths:
+      - 'assets/fd-appeal.js'
+      - 'assets/fd-appeal.css'
+      - 'assets/fd-team-colors.js'
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - 'tests/test_fd_appeal.js'
+      - '.github/workflows/test-fd-appeal.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'assets/fd-appeal.js'
+      - 'assets/fd-appeal.css'
+      - 'assets/fd-team-colors.js'
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - 'tests/test_fd_appeal.js'
+      - '.github/workflows/test-fd-appeal.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --check assets/fd-appeal.js
+      - run: node --check assets/fd-team-colors.js
+      - run: node tests/test_fd_appeal.js

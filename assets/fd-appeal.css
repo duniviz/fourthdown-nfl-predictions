@@ -1,0 +1,247 @@
+/* Visual layer for game cards, player cards, and Model Lab.
+ * Dark theme stays. Team color is a strip and a tint, not the text background.
+ */
+
+.fd-appeal-tinted.scorecard,
+#scoreboard-cards > .scorecard.fd-appeal-tinted {
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--away-color, #3d6280) 32%, #0c1722), #0c1722 48%, color-mix(in srgb, var(--home-color, #3d6280) 32%, #0c1722)) !important;
+  border-color: color-mix(in srgb, var(--away-color, #6d8ea6) 55%, var(--home-color, #6d8ea6)) !important;
+}
+
+.fd-appeal-tinted.scorecard::before,
+#scoreboard-cards > .scorecard.fd-appeal-tinted::before {
+  height: 6px !important;
+  opacity: 1 !important;
+  background: linear-gradient(90deg, var(--away-color, #7ec8ff), var(--home-color, #d6ff63)) !important;
+}
+
+.fd-live-board-card.fd-appeal-tinted {
+  border-top: 5px solid var(--away-color, #7ec8ff) !important;
+  border-bottom: 5px solid var(--home-color, #d6ff63) !important;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--away-color, #7ec8ff) 30%, #121b22), #121b22 52%, color-mix(in srgb, var(--home-color, #d6ff63) 30%, #121b22)) !important;
+}
+
+#games > .card.fd-appeal-tinted {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--away-color) 28%, #10243a), #10243a 50%, color-mix(in srgb, var(--home-color) 28%, #10243a));
+  border-color: color-mix(in srgb, var(--away-color) 45%, var(--home-color));
+  padding-top: 20px;
+}
+
+#games > .card.fd-appeal-tinted::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--away-color), var(--home-color));
+}
+
+.fd-appeal-panel { margin: 12px 0; min-width: 0; }
+.fd-appeal-win { margin: 0 0 10px; }
+.fd-appeal-win-labels,
+.fd-appeal-line-key {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #e7f3fb;
+  font-size: 13px;
+  font-weight: 750;
+}
+.fd-appeal-win-labels b {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin: 0 4px;
+  border-radius: 50%;
+}
+.fd-appeal-win-track {
+  display: flex;
+  height: 16px;
+  margin: 6px 0 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #243644;
+}
+.fd-appeal-win-track i { display: block; height: 100%; min-width: 2px; }
+.fd-appeal-win-track i.is-tie { background: #9aabba !important; }
+.fd-appeal-win small,
+.fd-appeal-line p,
+.fd-appeal-sparkline small {
+  display: block;
+  margin: 4px 0 0;
+  color: #c5d5e2;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.fd-appeal-picks { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.fd-appeal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.fd-appeal-badge small { font-weight: 650; font-size: 10px; opacity: 0.9; }
+.fd-appeal-badge.is-strong { background: #24380a; color: #e7ff9a; }
+.fd-appeal-badge.is-lean { background: #123044; color: #d7f1ff; }
+.fd-appeal-badge.is-pass { background: #1c2832; color: #e8eef3; }
+.bet-final.is-hit,
+.bet-final.is-miss,
+.bet-final.is-push { display: inline-block; margin-left: 0; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: 0.03em; }
+.bet-final.is-hit { background: #145c3a; color: #e9fff4; border-color: #1f8a58; }
+.bet-final.is-miss { background: #6e2430; color: #ffe8ea; border-color: #a34454; }
+.bet-final.is-push { background: #3a3420; color: #fff1c2; border-color: #8a7340; }
+
+.fd-appeal-lines { display: grid; gap: 10px; margin-top: 8px; }
+.fd-appeal-line {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #345066;
+  border-radius: 12px;
+  background: #0d1c2a;
+}
+.fd-appeal-line.is-large { border-color: #e0b15a; box-shadow: inset 0 0 0 1px #e0b15a55; }
+.fd-appeal-line-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.fd-appeal-line-head span { color: #f2f8fc; font-weight: 800; }
+.fd-appeal-line-head strong { color: #d5e7f3; font-size: 13px; }
+.fd-appeal-line-head strong.is-large,
+.fd-appeal-line.is-large .fd-appeal-line-head strong { color: #ffe3a8; }
+.fd-appeal-line-key { margin: 6px 0; font-size: 12px; color: #d5e4ef; }
+.fd-appeal-line-key i,
+.fd-appeal-legend i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-radius: 50%;
+}
+.fd-appeal-line-key i.is-us,
+.fd-appeal-axis i.is-us { background: #d6ff63; }
+.fd-appeal-line-key i.is-dk,
+.fd-appeal-axis i.is-dk { background: #8ecbff; }
+.fd-appeal-axis {
+  position: relative;
+  height: 18px;
+  margin: 4px 6px 2px;
+  border-radius: 999px;
+  background: #24384a;
+}
+.fd-appeal-span {
+  position: absolute;
+  top: 7px;
+  height: 4px;
+  border-radius: 999px;
+  background: #8ea6b8;
+}
+.fd-appeal-line.is-large .fd-appeal-span { background: #f0c14a; height: 6px; top: 6px; }
+.fd-appeal-axis i {
+  position: absolute;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #0d1c2a;
+}
+
+.fd-appeal-player { box-shadow: inset 4px 0 0 var(--fd-team, #6d8ea6); }
+.bet-name, .fd-opp-identity, .fd-unified-prop-head > div { display: flex; align-items: center; gap: 10px; }
+.fd-appeal-headshot,
+.bet-name img,
+.fd-opp-avatar {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 50%;
+  background: #173044;
+  border: 2px solid color-mix(in srgb, var(--fd-team, #8ecbff) 70%, #fff);
+}
+.fd-lastfive:has(.fd-appeal-spark) .fd-fivebars,
+.fd-lastfive:has(.fd-appeal-spark) > small,
+.fd-lastfive:has(.fd-appeal-spark) > strong { display: none; }
+.fd-appeal-sparkline { margin: 8px 0; min-width: 0; }
+.fd-appeal-spark-caption { color: #e7f2fa; font-size: 12px; font-weight: 750; }
+.fd-appeal-spark { display: block; width: 100%; max-width: 220px; height: 42px; }
+.fd-appeal-spark polyline { fill: none; stroke: #e7f6ff; stroke-width: 2; }
+.fd-appeal-spark circle { fill: #d6ff63; }
+.fd-appeal-spark circle.is-under { fill: #8ecbff; }
+.fd-appeal-spark-line { stroke: #f0c14a; stroke-width: 1.5; stroke-dasharray: 3 2; }
+
+.fd-appeal-hide-dup { display: none !important; }
+
+.fd-appeal-lab { margin: 8px 0 18px; }
+.fd-appeal-kicker {
+  margin: 0 0 4px;
+  color: #d6ff63;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.fd-appeal-lab h2 { margin: 0 0 6px; font-size: clamp(26px, 5vw, 36px); }
+.fd-appeal-lab h3 { margin: 16px 0 8px; font-size: 18px; }
+.fd-appeal-lab p { color: #c5d6e4; }
+.fd-appeal-tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.fd-appeal-tile {
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid #35556c;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #143049, #0e1c2c);
+}
+.fd-appeal-tile small { color: #b7cde0; font-size: 12px; font-weight: 750; }
+.fd-appeal-tile strong { display: block; margin: 4px 0; color: #f4fbff; font-size: clamp(32px, 8vw, 44px); line-height: 1; }
+.fd-appeal-tile span { color: #d5e4ef; font-size: 13px; }
+.fd-appeal-trend { margin: 0; min-width: 0; }
+.fd-appeal-trend svg { display: block; width: 100%; height: auto; }
+.fd-appeal-trend text { fill: #c5d5e2; font-size: 12px; font-family: system-ui, sans-serif; }
+.fd-appeal-grid { stroke: #2c4558; stroke-width: 1; }
+.fd-appeal-trend polyline { fill: none; stroke-width: 3; }
+.fd-appeal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; color: #e7f2fa; font-size: 13px; font-weight: 750; }
+.fd-appeal-week-list { margin: 8px 0 0; padding-left: 18px; color: #d5e4ef; }
+.fd-appeal-lab-note { font-size: 13px; }
+.fd-appeal-fold { margin: 16px 0; }
+.fd-appeal-fold > summary {
+  cursor: pointer;
+  padding: 12px 14px;
+  border: 1px solid #3c6178;
+  border-radius: 12px;
+  background: #10283a;
+  color: #e9f7ff;
+  font-weight: 800;
+}
+.fd-appeal-fold > summary:focus-visible { outline: 2px solid #d6ff63; outline-offset: 3px; }
+.fd-appeal-fold[open] > summary { border-radius: 12px 12px 0 0; }
+.fd-appeal-fold > .fd-deep { margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+
+@media (min-width: 720px) {
+  .fd-appeal-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-appeal-tinted,
+  .fd-live-board-card.fd-appeal-tinted,
+  .fd-appeal-badge,
+  .bet-final.is-hit,
+  .bet-final.is-miss,
+  .bet-final.is-push,
+  .fd-appeal-spark { animation: none !important; transition: none !important; }
+}
