@@ -1,0 +1,1074 @@
+{
+  "timestamp": "2026-11-16T04:00:37Z",
+  "status": "success",
+  "season": {
+    "year": 2026,
+    "type": 2,
+    "name": "Regular Season",
+    "displayName": "2026"
+  },
+  "injuries": [
+    {
+      "id": "33",
+      "displayName": "Baltimore Ravens",
+      "injuries": [
+        {
+          "id": "647757",
+          "status": "Injured Reserve",
+          "date": "2026-11-14T23:40Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Adam Randall",
+            "shortName": "A. Randall",
+            "position": {
+              "abbreviation": "RB",
+              "displayName": "Running Back"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Neck",
+            "detail": "Not Specified",
+            "location": "Head"
+          }
+        },
+        {
+          "id": "647722",
+          "status": "Out",
+          "date": "2026-11-14T19:16Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Jaylinn Hawkins",
+            "shortName": "J. Hawkins",
+            "position": {
+              "abbreviation": "S",
+              "displayName": "Safety"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Knee",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647590",
+          "status": "Active",
+          "date": "2026-11-13T23:22Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Rashod Bateman",
+            "shortName": "R. Bateman",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_ACTIVE",
+            "description": "active",
+            "abbreviation": "A"
+          },
+          "details": {
+            "type": null,
+            "detail": null,
+            "location": null
+          }
+        },
+        {
+          "id": "647494",
+          "status": "Injured Reserve",
+          "date": "2026-11-13T14:48Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Lamar Jackson",
+            "shortName": "L. Jackson",
+            "position": {
+              "abbreviation": "QB",
+              "displayName": "Quarterback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Thumb",
+            "detail": "Surgery",
+            "location": "Arm"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "displayName": "Jacksonville Jaguars",
+      "injuries": [
+        {
+          "id": "648100",
+          "status": "Active",
+          "date": "2026-11-16T03:46Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Chris Rodriguez Jr.",
+            "shortName": "C. Rodriguez Jr.",
+            "position": {
+              "abbreviation": "RB",
+              "displayName": "Running Back"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_ACTIVE",
+            "description": "active",
+            "abbreviation": "A"
+          },
+          "details": {
+            "type": null,
+            "detail": null,
+            "location": null
+          }
+        },
+        {
+          "id": "647944",
+          "status": "Questionable",
+          "date": "2026-11-15T20:19Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Robert Hainsey",
+            "shortName": "R. Hainsey",
+            "position": {
+              "abbreviation": "C",
+              "displayName": "Center"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Knee",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647905",
+          "status": "Questionable",
+          "date": "2026-11-15T19:14Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Danny Striggow",
+            "shortName": "D. Striggow",
+            "position": {
+              "abbreviation": "DE",
+              "displayName": "Defensive End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Concussion",
+            "detail": "Concussion",
+            "location": "Head"
+          }
+        },
+        {
+          "id": "647830",
+          "status": "Out",
+          "date": "2026-11-15T16:42Z",
+          "athlete": {
+            "id": null,
+            "displayName": "CJ Williams",
+            "shortName": "C. Williams",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078140",
+          "status": "Out",
+          "date": "2026-11-15T16:36Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Wesley Williams",
+            "shortName": "W. Williams",
+            "position": {
+              "abbreviation": "DE",
+              "displayName": "Defensive End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078132",
+          "status": "Out",
+          "date": "2026-11-15T16:36Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Albert Regis",
+            "shortName": "A. Regis",
+            "position": {
+              "abbreviation": "DT",
+              "displayName": "Defensive Tackle"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078119",
+          "status": "Out",
+          "date": "2026-11-15T16:36Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Jessie Bates III",
+            "shortName": "J. Bates III",
+            "position": {
+              "abbreviation": "S",
+              "displayName": "Safety"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "647666",
+          "status": "Injured Reserve",
+          "date": "2026-11-14T02:12Z",
+          "athlete": {
+            "id": null,
+            "displayName": "B.J. Green II",
+            "shortName": "B.J. Green II",
+            "position": {
+              "abbreviation": "DE",
+              "displayName": "Defensive End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Forearm",
+            "detail": "Not Specified",
+            "location": "Arm"
+          }
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "displayName": "Los Angeles Chargers",
+      "injuries": [
+        {
+          "id": "647923",
+          "status": "Out",
+          "date": "2026-11-15T19:52Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Ladd McConkey",
+            "shortName": "L. McConkey",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Back",
+            "detail": "Spasms",
+            "location": "Torso"
+          }
+        },
+        {
+          "id": "647779",
+          "status": "Out",
+          "date": "2026-11-15T01:24Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Branson Taylor",
+            "shortName": "B. Taylor",
+            "position": {
+              "abbreviation": "G",
+              "displayName": "Guard"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Ankle",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647778",
+          "status": "Injured Reserve",
+          "date": "2026-11-15T01:22Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Trey Pipkins III",
+            "shortName": "T. Pipkins III",
+            "position": {
+              "abbreviation": "OT",
+              "displayName": "Offensive Tackle"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Knee",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647777",
+          "status": "Questionable",
+          "date": "2026-11-15T01:18Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Kayode Awosika",
+            "shortName": "K. Awosika",
+            "position": {
+              "abbreviation": "G",
+              "displayName": "Guard"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Lower Leg",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647776",
+          "status": "Out",
+          "date": "2026-11-15T01:14Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Kendall Williamson",
+            "shortName": "K. Williamson",
+            "position": {
+              "abbreviation": "S",
+              "displayName": "Safety"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Calf",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647775",
+          "status": "Out",
+          "date": "2026-11-15T01:11Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Isas Waxter",
+            "shortName": "I. Waxter",
+            "position": {
+              "abbreviation": "CB",
+              "displayName": "Cornerback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Ankle",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647774",
+          "status": "Active",
+          "date": "2026-11-15T01:08Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Deane Leonard",
+            "shortName": "D. Leonard",
+            "position": {
+              "abbreviation": "CB",
+              "displayName": "Cornerback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_ACTIVE",
+            "description": "active",
+            "abbreviation": "A"
+          },
+          "details": {
+            "type": null,
+            "detail": null,
+            "location": null
+          }
+        },
+        {
+          "id": "647759",
+          "status": "Questionable",
+          "date": "2026-11-14T23:58Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Justin Eboigbe",
+            "shortName": "J. Eboigbe",
+            "position": {
+              "abbreviation": "DT",
+              "displayName": "Defensive Tackle"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Ankle",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647758",
+          "status": "Injured Reserve",
+          "date": "2026-11-14T23:54Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Denzel Perryman",
+            "shortName": "D. Perryman",
+            "position": {
+              "abbreviation": "LB",
+              "displayName": "Linebacker"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Pectoral",
+            "detail": "Not Specified",
+            "location": "Torso"
+          }
+        },
+        {
+          "id": "647739",
+          "status": "Injured Reserve",
+          "date": "2026-11-14T21:37Z",
+          "athlete": {
+            "id": null,
+            "displayName": "David Njoku",
+            "shortName": "D. Njoku",
+            "position": {
+              "abbreviation": "TE",
+              "displayName": "Tight End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Lower Leg",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "-2077599",
+          "status": "Doubtful",
+          "date": "2026-11-14T21:28Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Brenen Thompson",
+            "shortName": "B. Thompson",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_DOUBTFUL",
+            "description": "doubtful",
+            "abbreviation": "D"
+          },
+          "details": {
+            "type": "Hamstring",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "displayName": "Los Angeles Rams",
+      "injuries": [
+        {
+          "id": "648094",
+          "status": "Active",
+          "date": "2026-11-16T03:15Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Xavier Smith",
+            "shortName": "X. Smith",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_ACTIVE",
+            "description": "active",
+            "abbreviation": "A"
+          },
+          "details": {
+            "type": null,
+            "detail": null,
+            "location": null
+          }
+        },
+        {
+          "id": "647998",
+          "status": "Questionable",
+          "date": "2026-11-15T22:54Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Coleman Shelton",
+            "shortName": "C. Shelton",
+            "position": {
+              "abbreviation": "C",
+              "displayName": "Center"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Hamstring",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647996",
+          "status": "Questionable",
+          "date": "2026-11-15T22:52Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Dylan McMahon",
+            "shortName": "D. McMahon",
+            "position": {
+              "abbreviation": "C",
+              "displayName": "Center"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_QUESTIONABLE",
+            "description": "questionable",
+            "abbreviation": "Q"
+          },
+          "details": {
+            "type": "Knee",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647951",
+          "status": "Out",
+          "date": "2026-11-15T20:29Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Joe Cardona",
+            "shortName": "J. Cardona",
+            "position": {
+              "abbreviation": "LS",
+              "displayName": "Long Snapper"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Ankle",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647934",
+          "status": "Out",
+          "date": "2026-11-15T20:04Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Ty Simpson",
+            "shortName": "T. Simpson",
+            "position": {
+              "abbreviation": "QB",
+              "displayName": "Quarterback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078596",
+          "status": "Out",
+          "date": "2026-11-15T19:44Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Keagen Trost",
+            "shortName": "K. Trost",
+            "position": {
+              "abbreviation": "OT",
+              "displayName": "Offensive Tackle"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078592",
+          "status": "Out",
+          "date": "2026-11-15T19:44Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Darryl Peterson III",
+            "shortName": "D. Peterson III",
+            "position": {
+              "abbreviation": "LB",
+              "displayName": "Linebacker"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078594",
+          "status": "Out",
+          "date": "2026-11-15T19:44Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Maximus Pulley",
+            "shortName": "M. Pulley",
+            "position": {
+              "abbreviation": "S",
+              "displayName": "Safety"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078591",
+          "status": "Out",
+          "date": "2026-11-15T19:44Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Desjuan Johnson",
+            "shortName": "D. Johnson",
+            "position": {
+              "abbreviation": "DE",
+              "displayName": "Defensive End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2078589",
+          "status": "Out",
+          "date": "2026-11-15T19:44Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Steve Avila",
+            "shortName": "S. Avila",
+            "position": {
+              "abbreviation": "G",
+              "displayName": "Guard"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Hamstring",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647815",
+          "status": "Injured Reserve",
+          "date": "2026-11-15T16:06Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Davante Adams",
+            "shortName": "D. Adams",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Hamstring",
+            "detail": "Surgery",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "647814",
+          "status": "Injured Reserve",
+          "date": "2026-11-15T16:00Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Puka Nacua",
+            "shortName": "P. Nacua",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Knee - MCL",
+            "detail": "Sprain",
+            "location": "Leg"
+          }
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "displayName": "Washington Commanders",
+      "injuries": [
+        {
+          "id": "647690",
+          "status": "Active",
+          "date": "2026-11-14T02:57Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Jeremy Reaves",
+            "shortName": "J. Reaves",
+            "position": {
+              "abbreviation": "S",
+              "displayName": "Safety"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_ACTIVE",
+            "description": "active",
+            "abbreviation": "A"
+          },
+          "details": {
+            "type": null,
+            "detail": null,
+            "location": null
+          }
+        },
+        {
+          "id": "647433",
+          "status": "Out",
+          "date": "2026-11-12T23:59Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Athan Kaliakmanis",
+            "shortName": "A. Kaliakmanis",
+            "position": {
+              "abbreviation": "QB",
+              "displayName": "Quarterback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2076219",
+          "status": "Out",
+          "date": "2026-11-12T23:47Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Isaac Yiadom",
+            "shortName": "I. Yiadom",
+            "position": {
+              "abbreviation": "CB",
+              "displayName": "Cornerback"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2076215",
+          "status": "Out",
+          "date": "2026-11-12T23:47Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Tanoa Togiai",
+            "shortName": "T. Togiai",
+            "position": {
+              "abbreviation": "G",
+              "displayName": "Guard"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "-2076211",
+          "status": "Out",
+          "date": "2026-11-12T23:47Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Ricky Barber",
+            "shortName": "R. Barber",
+            "position": {
+              "abbreviation": "DT",
+              "displayName": "Defensive Tackle"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Coach's Decision",
+            "detail": "Not Specified",
+            "location": "Other"
+          }
+        },
+        {
+          "id": "647273",
+          "status": "Out",
+          "date": "2026-11-12T01:09Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Lucas Patrick",
+            "shortName": "L. Patrick",
+            "position": {
+              "abbreviation": "G",
+              "displayName": "Guard"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Concussion",
+            "detail": "Concussion",
+            "location": "Head"
+          }
+        },
+        {
+          "id": "647155",
+          "status": "Out",
+          "date": "2026-11-11T20:21Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Colson Yankoff",
+            "shortName": "C. Yankoff",
+            "position": {
+              "abbreviation": "TE",
+              "displayName": "Tight End"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "type": "Knee",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        },
+        {
+          "id": "646450",
+          "status": "Injured Reserve",
+          "date": "2026-11-07T23:15Z",
+          "athlete": {
+            "id": null,
+            "displayName": "Dyami Brown",
+            "shortName": "D. Brown",
+            "position": {
+              "abbreviation": "WR",
+              "displayName": "Wide Receiver"
+            }
+          },
+          "type": {
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "type": "Calf",
+            "detail": "Not Specified",
+            "location": "Leg"
+          }
+        }
+      ]
+    }
+  ]
+}
