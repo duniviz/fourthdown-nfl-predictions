@@ -28,6 +28,8 @@ function chromePath() {
     assert.doesNotMatch(lab, /2 completed games graded/);
 
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
+    assert.equal(await page.locator('.fd-about-data').evaluate(node => node.open), false);
+    await page.locator('.fd-about-data > summary').click();
     await page.waitForFunction(() => /907/.test(document.querySelector('#bet-record')?.innerText || '') && /History only counts/.test(document.querySelector('#bet-pick-scope')?.innerText || ''));
     const props = await page.locator('#bet-record').innerText();
     assert.match(props, /907/);

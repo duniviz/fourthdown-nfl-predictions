@@ -52,7 +52,9 @@ const assert = require('node:assert/strict');
   await page.goto('http://127.0.0.1:8123/model-lab.html', {waitUntil: 'domcontentloaded'});
   await page.waitForSelector('#fd-appeal-lab svg rect');
   assert.equal(await page.locator('#fd-appeal-lab polyline').count(), 0);
+  await page.locator('.fd2-links .fd-more > summary').click();
   assert.match(await page.locator('.fd2-links').innerText(), /Model Lab/);
+  await page.locator('.fd2-links .fd-more > summary').click();
   assert.equal(await page.locator('.clear-advanced').evaluate(node => node.open), false);
 
   await page.goto('http://127.0.0.1:8123/pipeline-health.html', {waitUntil: 'domcontentloaded'});

@@ -1,15 +1,17 @@
 /* Betting Board visual system. Presentation only. */
-@font-face{font-family:"Barlow Condensed";font-weight:600;font-style:normal;font-display:optional;src:url("fonts/barlow-600.ttf") format("truetype");size-adjust:100%}
-@font-face{font-family:"Barlow Condensed";font-weight:700;font-style:normal;font-display:optional;src:url("fonts/barlow-700.ttf") format("truetype")}
-@font-face{font-family:"Barlow Condensed";font-weight:800;font-style:normal;font-display:optional;src:url("fonts/barlow-800.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:400;font-style:normal;font-display:optional;src:url("fonts/source-400.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:600;font-style:normal;font-display:optional;src:url("fonts/source-600.ttf") format("truetype")}
-@font-face{font-family:"Source Sans 3";font-weight:700;font-style:normal;font-display:optional;src:url("fonts/source-700.ttf") format("truetype")}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/barlow-600.woff2") format("woff2"),url("fonts/barlow-600.ttf") format("truetype");size-adjust:100%}
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/barlow-700.woff2") format("woff2"),url("fonts/barlow-700.ttf") format("truetype")}
+@font-face{font-family:"Barlow Condensed";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/barlow-800.woff2") format("woff2"),url("fonts/barlow-800.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:400;font-style:normal;font-display:swap;src:url("fonts/source-400.woff2") format("woff2"),url("fonts/source-400.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:600;font-style:normal;font-display:swap;src:url("fonts/source-600.woff2") format("woff2"),url("fonts/source-600.ttf") format("truetype")}
+@font-face{font-family:"Source Sans 3";font-weight:700;font-style:normal;font-display:swap;src:url("fonts/source-700.woff2") format("woff2"),url("fonts/source-700.ttf") format("truetype")}
+@font-face{font-family:"FD Barlow Fallback";src:local("Arial Narrow"),local("Arial");size-adjust:77%;ascent-override:95%;descent-override:25%;line-gap-override:0%}
+@font-face{font-family:"FD Source Fallback";src:local("Arial"),local("Segoe UI");size-adjust:96%;ascent-override:94%;descent-override:24%;line-gap-override:0%}
 :root{
   --bb-bg:#05070d;--bb-surface:#121c2f;--bb-surface-2:#18263f;--bb-line:#314564;--bb-ink:#f5f8fc;--bb-muted:#c5d2e2;
   --bb-accent:#ff5a1f;--bb-accent-ink:#1a0d08;--bb-accent-2:#ffb020;--bb-positive:#3dffb0;--bb-negative:#ff5b78;--bb-push:#ffc857;--bb-info:#5ad7ff;
-  --bb-display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
-  --bb-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --bb-display:"Barlow Condensed","FD Barlow Fallback","Arial Narrow",Impact,sans-serif;
+  --bb-body:"Source Sans 3","FD Source Fallback","Segoe UI",system-ui,sans-serif;
 }
 body.fd-bb,body.fd-bb-plain{background:radial-gradient(900px 380px at 100% -10%,#ff5a1f22,transparent 50%),var(--bb-bg)!important;color:var(--bb-ink)!important;font-family:var(--bb-body)!important}
 body.fd-bb-plain{background:var(--bb-bg)!important}
