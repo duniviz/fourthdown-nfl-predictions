@@ -89,12 +89,14 @@ function chromePath() {
   await failed.route('https://site.api.espn.com/**', route => route.abort());
   await failed.route('**/espn-scoreboard-backup.json*', route => route.fulfill({status: 500, body: 'nope'}));
   await failed.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+  await failed.locator('#fd-desk-games > summary').click();
   await failed.waitForFunction(() => /Live scores are unavailable/.test(document.querySelector('#fd-live-board-status')?.innerText || ''), null, {timeout: 20000});
   assert.match(await failed.locator('#score-status').innerText(), /unavailable/);
   await failed.close();
 
   const finalsOnly = await browser.newPage({viewport: {width: 1200, height: 800}});
   await finalsOnly.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+  await finalsOnly.locator('#fd-desk-games > summary').click();
   await finalsOnly.waitForFunction(() => Array.isArray(window.fdAllGames) && window.fdAllGames.length > 0);
   await finalsOnly.evaluate(() => {
     window.fdAllGames = window.fdAllGames.filter(game => game.state === 'post');
