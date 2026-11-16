@@ -36,7 +36,13 @@ const assert = require('node:assert/strict');
     assert.match(await nav.innerText(), /Results/);
     assert.match(await nav.evaluate(node => node.textContent), /Model Lab/);
     assert.match(await nav.evaluate(node => node.textContent), /How to read/);
-    if (width === 400) assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'grid');
+    if (width === 400) {
+      assert.equal(await nav.evaluate(node => getComputedStyle(node).display), 'flex', 'mobile navigation should be in the header');
+      assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none', 'fixed bottom navigation should be hidden');
+      const results = page.locator('#fd-bb-results .fd-bb-strip-row');
+      assert.equal(await results.evaluate(node => getComputedStyle(node).display), 'grid', 'mobile results should fit without horizontal scrolling');
+      assert.equal(await page.locator('#fd-bb-results article').filter({hasText: 'O/U'}).isVisible(), true, 'O/U result should be visible');
+    }
     if (width === 1440) assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none');
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     await page.waitForSelector('#bet-cards .fd-bet-ml-projection');
