@@ -134,7 +134,10 @@
      const target=win.document.getElementById(id);
      if(target)new MutationObserver(schedule).observe(target,{childList:true,subtree:false});
    }
-   redraw();load().catch(()=>{});win.setInterval(()=>load().catch(()=>{}),300000);
+   redraw();
+   if(win.document.getElementById("scoreboard-cards")||win.document.getElementById("fd-top-picks-list")){
+     load().catch(()=>{});win.setInterval(()=>load().catch(()=>{}),300000);
+   }
  }
  return {mount,gameSimulation,linePoints,sparkline,historyChart};
 });
