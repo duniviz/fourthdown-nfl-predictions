@@ -1,0 +1,313 @@
+{
+  "generated_at_utc": "2026-11-16T01:58:19.765859+00:00",
+  "research_only": true,
+  "production_changed": false,
+  "automatic_promotion": false,
+  "training_data_start": 2023,
+  "training_data_end": 2026,
+  "source_coverage": {
+    "ngs_passing_2023": {
+      "rows": 620,
+      "eligible_rows": 549
+    },
+    "ngs_passing_2024": {
+      "rows": 614,
+      "eligible_rows": 545
+    },
+    "ngs_passing_2025": {
+      "rows": 605,
+      "eligible_rows": 537
+    },
+    "ngs_passing_2026": {
+      "rows": 313,
+      "eligible_rows": 276
+    },
+    "ngs_rushing_2023": {
+      "rows": 623,
+      "eligible_rows": 551
+    },
+    "ngs_rushing_2024": {
+      "rows": 601,
+      "eligible_rows": 533
+    },
+    "ngs_rushing_2025": {
+      "rows": 648,
+      "eligible_rows": 569
+    },
+    "ngs_rushing_2026": {
+      "rows": 318,
+      "eligible_rows": 273
+    },
+    "ngs_receiving_2023": {
+      "rows": 1473,
+      "eligible_rows": 1295
+    },
+    "ngs_receiving_2024": {
+      "rows": 1435,
+      "eligible_rows": 1253
+    },
+    "ngs_receiving_2025": {
+      "rows": 1402,
+      "eligible_rows": 1213
+    },
+    "ngs_receiving_2026": {
+      "rows": 760,
+      "eligible_rows": 642
+    },
+    "snap_2023": {
+      "rows": 26540,
+      "eligible_rows": 25329
+    },
+    "injuries_2023": {
+      "rows": 5599,
+      "eligible_rows": 0
+    },
+    "depth_2023": {
+      "rows": 37327,
+      "eligible_rows": 0
+    },
+    "players_2023": {
+      "rows": 24869,
+      "eligible_rows": 0
+    },
+    "pfr_pass_2023": {
+      "rows": 700,
+      "eligible_rows": 0
+    },
+    "pfr_rush_2023": {
+      "rows": 2380,
+      "eligible_rows": 0
+    },
+    "pfr_rec_2023": {
+      "rows": 4594,
+      "eligible_rows": 0
+    },
+    "pfr_def_2023": {
+      "rows": 7902,
+      "eligible_rows": 0
+    },
+    "snap_2024": {
+      "rows": 26615,
+      "eligible_rows": 25398
+    },
+    "injuries_2024": {
+      "rows": 6215,
+      "eligible_rows": 0
+    },
+    "depth_2024": {
+      "rows": 37312,
+      "eligible_rows": 0
+    },
+    "pfr_pass_2024": {
+      "rows": 697,
+      "eligible_rows": 0
+    },
+    "pfr_rush_2024": {
+      "rows": 2359,
+      "eligible_rows": 0
+    },
+    "pfr_rec_2024": {
+      "rows": 4453,
+      "eligible_rows": 0
+    },
+    "pfr_def_2024": {
+      "rows": 7992,
+      "eligible_rows": 0
+    },
+    "snap_2025": {
+      "rows": 26613,
+      "eligible_rows": 25396
+    },
+    "injuries_2025": {
+      "rows": 6068,
+      "eligible_rows": 0
+    },
+    "depth_2025": {
+      "rows": 554215,
+      "eligible_rows": 0
+    },
+    "pfr_pass_2025": {
+      "rows": 684,
+      "eligible_rows": 0
+    },
+    "pfr_rush_2025": {
+      "rows": 2355,
+      "eligible_rows": 0
+    },
+    "pfr_rec_2025": {
+      "rows": 4533,
+      "eligible_rows": 0
+    },
+    "pfr_def_2025": {
+      "rows": 7926,
+      "eligible_rows": 0
+    },
+    "snap_2026": {
+      "rows": 12785,
+      "eligible_rows": 12785
+    },
+    "injuries_2026": {
+      "rows": 3168,
+      "eligible_rows": 0
+    },
+    "depth_2026": {
+      "rows": 794146,
+      "eligible_rows": 0
+    },
+    "pfr_pass_2026": {
+      "rows": 315,
+      "eligible_rows": 0
+    },
+    "pfr_rush_2026": {
+      "rows": 1085,
+      "eligible_rows": 0
+    },
+    "pfr_rec_2026": {
+      "rows": 2167,
+      "eligible_rows": 0
+    },
+    "pfr_def_2026": {
+      "rows": 3901,
+      "eligible_rows": 0
+    }
+  },
+  "markets": {
+    "passing_yards": {
+      "holdout_weeks": 8,
+      "holdout_rows": 200,
+      "source_coverage": {
+        "ngs": 1363,
+        "snap": 1364,
+        "pfr": 0
+      },
+      "models": {
+        "baseline_features": {
+          "status": "evaluated",
+          "samples": 200,
+          "baseline_mae": 66.137,
+          "challenger_mae": 63.911,
+          "improvement_pct": 3.37,
+          "eligible_for_production": false
+        },
+        "ngs": {
+          "status": "evaluated",
+          "samples": 200,
+          "baseline_mae": 66.137,
+          "challenger_mae": 64.243,
+          "improvement_pct": 2.86,
+          "eligible_for_production": false
+        },
+        "snap_counts": {
+          "status": "evaluated",
+          "samples": 200,
+          "baseline_mae": 66.137,
+          "challenger_mae": 63.931,
+          "improvement_pct": 3.34,
+          "eligible_for_production": false
+        },
+        "combined": {
+          "status": "evaluated",
+          "samples": 200,
+          "baseline_mae": 66.137,
+          "challenger_mae": 64.199,
+          "improvement_pct": 2.93,
+          "eligible_for_production": false
+        }
+      }
+    },
+    "rushing_yards": {
+      "holdout_weeks": 8,
+      "holdout_rows": 396,
+      "source_coverage": {
+        "ngs": 2204,
+        "snap": 2936,
+        "pfr": 0
+      },
+      "models": {
+        "baseline_features": {
+          "status": "evaluated",
+          "samples": 396,
+          "baseline_mae": 23.857,
+          "challenger_mae": 23.375,
+          "improvement_pct": 2.02,
+          "eligible_for_production": false
+        },
+        "ngs": {
+          "status": "evaluated",
+          "samples": 396,
+          "baseline_mae": 23.857,
+          "challenger_mae": 23.23,
+          "improvement_pct": 2.63,
+          "eligible_for_production": false
+        },
+        "snap_counts": {
+          "status": "evaluated",
+          "samples": 396,
+          "baseline_mae": 23.857,
+          "challenger_mae": 23.381,
+          "improvement_pct": 2.0,
+          "eligible_for_production": false
+        },
+        "combined": {
+          "status": "evaluated",
+          "samples": 396,
+          "baseline_mae": 23.857,
+          "challenger_mae": 23.22,
+          "improvement_pct": 2.67,
+          "eligible_for_production": false
+        }
+      }
+    },
+    "receiving_yards": {
+      "holdout_weeks": 8,
+      "holdout_rows": 932,
+      "source_coverage": {
+        "ngs": 5235,
+        "snap": 6504,
+        "pfr": 0
+      },
+      "models": {
+        "baseline_features": {
+          "status": "evaluated",
+          "samples": 932,
+          "baseline_mae": 24.424,
+          "challenger_mae": 24.127,
+          "improvement_pct": 1.22,
+          "eligible_for_production": false
+        },
+        "ngs": {
+          "status": "evaluated",
+          "samples": 932,
+          "baseline_mae": 24.424,
+          "challenger_mae": 24.025,
+          "improvement_pct": 1.63,
+          "eligible_for_production": false
+        },
+        "snap_counts": {
+          "status": "evaluated",
+          "samples": 932,
+          "baseline_mae": 24.424,
+          "challenger_mae": 24.042,
+          "improvement_pct": 1.56,
+          "eligible_for_production": false
+        },
+        "combined": {
+          "status": "evaluated",
+          "samples": 932,
+          "baseline_mae": 24.424,
+          "challenger_mae": 23.968,
+          "improvement_pct": 1.86,
+          "eligible_for_production": false
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Only NGS, PFR snap counts and advanced weekly PFR stats are fitted in this first ablation.",
+    "Injury and depth-chart records are inventoried but excluded without verified pregame as-of timestamps.",
+    "NOAA historical observations and NWS forecast snapshots are not fitted without a timestamp-safe weather history join.",
+    "NGS reports only players meeting activity thresholds; missing is not zero performance.",
+    "PFR joins use official GSIS/PFR mapping only; player names are never used to force identity.",
+    "Retrospective prior-week features are not frozen live forecasts and cannot directly promote production."
+  ]
+}
