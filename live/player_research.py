@@ -8,6 +8,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from live.player_ml_runtime import load_runtime, use_projection
+from live.advanced_player_ml import load_pair as load_advanced_ml_pair, candidate as advanced_ml_candidate
 from live.qb_starter_eligibility import verified_qb_starter
 try:
     import nflreadpy as nfl
@@ -482,6 +483,7 @@ def generate():
     verified_starters=load_verified_starters(season,week)
     qb_trial_enabled=trial_enabled(season, week)
     player_ml_runtime=load_runtime()
+    advanced_ml_runtime,advanced_ml_features=load_advanced_ml_pair()
     for game in games:
         context=game_context.get((str(game["home_team"]),str(game["away_team"])),{})
         home_score=num(context.get("projected_home_score"))
@@ -674,6 +676,17 @@ def generate():
                     ml_shadow=None
                     if metric in ("passing_yards", "rushing_yards", "receiving_yards"):
                         baseline, ml_shadow=use_projection(player_ml_runtime, metric, baseline, season, week)
+                        # Display the best historical advanced-data *research* estimate
+                        # on the ML card, but never replace production projections.
+                        # Exactly the same lagged inputs/feature ordering as training.
+                        recent_yards=sum(values)/len(values)
+                        old_projection=0.55*sum(values[-3:])/len(values[-3:])+0.45*sum(values)/len(values)
+                        advanced_shadow=advanced_ml_candidate(
+                            advanced_ml_runtime,advanced_ml_features,metric,player,
+                            season,week,baseline,old_projection,len(stats),
+                            sum(v)/len(v),recent_yards,team_targets.get(volume,0),ratio)
+                        if advanced_shadow is not None:
+                            ml_shadow=advanced_shadow
                     results.append({
                         "game_id":str(game["game_id"]),"team":team,"opponent":opp,
                         "player_id":player,
