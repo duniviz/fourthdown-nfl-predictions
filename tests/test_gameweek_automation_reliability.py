@@ -35,6 +35,15 @@ class CountSourceReliabilityTests(unittest.TestCase):
                 fetch('https://api.github.com/x')
             self.assertEqual(open_url.call_count,1)
 
+    def test_failed_count_projections_are_retried_once_before_alerting(self):
+        workflow=(ROOT/'.github/workflows/automation-failure-alerts.yml').read_text()
+        self.assertIn('actions: write',workflow)
+        self.assertIn("run.name === 'Publish count prop projections'",workflow)
+        self.assertIn("run.head_branch === 'main'",workflow)
+        self.assertIn('Number(run.run_attempt || 1) === 1',workflow)
+        self.assertIn('reRunWorkflowFailedJobs',workflow)
+        self.assertIn('const title =',workflow)
+
     def test_backstop_wakes_on_failed_sunday_preset(self):
         workflow=(ROOT/'.github/workflows/sunday-preset-backstop.yml').read_text()
         self.assertIn('Sunday preset game-day refresh]',workflow)
