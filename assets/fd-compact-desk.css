@@ -55,6 +55,9 @@ body.fd-compact-desk main.wrap {max-width:1480px}
 .fd-desk-fold>#fd-bb-slate {display:grid;gap:6px}
 .fd-desk-fold .fd-bb-row {margin:0 0 5px}
 .fd-desk-fold #fd-top-picks,.fd-desk-fold #fd-watch,.fd-desk-fold .hybrid-spot,.fd-desk-fold #parlays {margin:10px 12px!important}
+.fd-compact-desk #fd-desk-research[open] #reading-guide {display:block!important;padding:8px 14px}
+.fd-compact-desk #fd-desk-research[open] :is(#picks,#markets,#props,#parlays,#model-v2,#tracking) {display:block}
+.fd-compact-desk #fd-desk-more[open] :is(#fd-top-picks,#fd-opportunities,#fd-watch,#confidence-pool,.hybrid-spot,.fd-command) {display:block}
 .fd-desk-research-links {display:flex;gap:14px;padding:5px 14px 14px;flex-wrap:wrap}
 .fd-desk-research-links a {font-weight:800;font-size:13px;color:#ffbb94}
 .fd-compact-desk #fd-more[hidden] {display:none!important}
