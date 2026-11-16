@@ -69,6 +69,7 @@ function chromePath() {
     assert.ok(finalTexts.length > 0, 'expected at least one final game card');
     assert.ok(finalTexts.every(text => !/Matching game simulation unavailable/.test(text)));
     assert.ok(finalTexts.some(text => /No win simulation was saved for this finished game/.test(text) && /archived forecast and grade/.test(text)));
+    await page.locator('#fd-desk-more > summary').click();
     await page.waitForFunction(() => document.querySelectorAll('#fd-top-picks-list .fd-top-pick').length > 0);
     const pickCount = await page.locator('#fd-top-picks-list .fd-top-pick').count();
     const title = await page.locator('#fd-top-picks-title').innerText();
