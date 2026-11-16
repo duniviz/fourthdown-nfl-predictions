@@ -158,6 +158,9 @@ def assess(rows,min_train=100,min_test=30):
    for name,groups_selected in {'baseline_features':(),
       'ngs':('ngs',),'snap_counts':('snap',),'pfr_advanced':('pfr',),
       'combined':('ngs','snap','pfr')}.items():
+    # Do not call a dataset a feature improvement when it was unavailable.
+    if groups_selected and not any(r[g][-1] for r in train for g in groups_selected):
+     continue
     def vec(x):return x['base']+[v for group in groups_selected for v in x[group]]
     model=make_pipeline(StandardScaler(),Ridge(alpha=100))
     model.fit(np.asarray([vec(r) for r in train]),np.asarray([r['actual'] for r in train]))
@@ -166,8 +169,9 @@ def assess(rows,min_train=100,min_test=30):
      pred=max(0,float(p))
      pred=min(r['baseline']*1.25,max(r['baseline']*.75,pred))
      outcomes[name].append((key,abs(pred-r['actual']),abs(r['baseline']-r['actual'])))
-  market_report={'holdout_weeks':len(set(k for k,_,_ in outcomes['combined'])),
-    'holdout_rows':len(outcomes['combined']),
+  scored_rows=outcomes['combined'] if outcomes['combined'] else outcomes['baseline_features']
+  market_report={'holdout_weeks':len(set(k for k,_,_ in scored_rows)),
+    'holdout_rows':len(scored_rows),
     'source_coverage':{k:sum(r[k][-1]>0 for r in items) for k in ('ngs','snap','pfr')},
     'models':{}}
   for name,scored in outcomes.items():
