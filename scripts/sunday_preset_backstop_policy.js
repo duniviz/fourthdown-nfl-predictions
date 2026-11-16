@@ -4,7 +4,8 @@
  */
 const SLOT_MINUTES = [8 * 60, 11 * 60, 14 * 60 + 30, 18 * 60 + 45];
 const MIN_DELAY_MINUTES = 5;
-const MAX_DELAY_MINUTES = 24;
+// Include slower failed primary jobs while keeping the independent kickoff lead gate.
+const MAX_DELAY_MINUTES = 39;
 const MIN_KICKOFF_LEAD_MINUTES = 25;
 
 function localParts(value) {
@@ -26,7 +27,7 @@ function decide(nowMs, runs, games) {
   if (slot === undefined) return {action:'ignore',reason:'not a Sunday recovery window'};
   const name = current.date + '/' + String(Math.floor(slot / 60)).padStart(2,'0') +
     ':' + String(slot % 60).padStart(2,'0');
-  const existing = (runs || []).some(r => {
+  const slotRuns = (runs || []).filter(r => {
     if (!r || r.head_branch !== 'main' || !['schedule','workflow_dispatch'].includes(r.event)) return false;
     const started = Date.parse(r.created_at || '');
     if (!Number.isFinite(started) || started > nowMs) return false;
@@ -35,7 +36,21 @@ function decide(nowMs, runs, games) {
       startedLocal.minuteOfDay >= slot - 20 &&
       startedLocal.minuteOfDay <= current.minuteOfDay;
   });
-  if (existing) return {action:'ignore',reason:'preset already started',slot:name};
+  // A started but failed run cannot satisfy the slot. Dispatch at most one
+  // recovery, however: never retrigger a recovery that already attempted this
+  // slot, and do not compete with queued/in-progress or successful runs.
+  const recovery = slotRuns.find(r => r.event === 'workflow_dispatch');
+  if (recovery) {
+    return recovery.conclusion === 'failure' || recovery.conclusion === 'timed_out' ||
+      recovery.conclusion === 'cancelled'
+      ? {action:'alert',reason:'single recovery already failed; no automatic second dispatch',slot:name}
+      : {action:'ignore',reason:'preset recovery already started',slot:name};
+  }
+  const primary = slotRuns.find(r => r.event === 'schedule');
+  if (primary && (primary.status !== 'completed' ||
+      !['failure','timed_out','cancelled'].includes(primary.conclusion))) {
+    return {action:'ignore',reason:'preset already started',slot:name};
+  }
   const kickoffs = (games || []).map(g => Date.parse(g?.kickoff_utc || ''))
     .filter(t => Number.isFinite(t) && t > nowMs)
     .filter(t => localParts(t).date === current.date);

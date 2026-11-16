@@ -20,7 +20,7 @@ on:
       - Publish weekly v2 forecasts
     types: [completed]
 permissions:
-  actions: read
+  actions: write
   issues: write
 jobs:
   alert:
@@ -32,6 +32,22 @@ jobs:
         with:
           script: |
             const run = context.payload.workflow_run;
+            // A transient nflverse/GitHub 403 is recoverable. Retry just the
+            // failed count-prop job once; preserve the exact original run
+            // and alert only after recovery also fails.
+            if (run.name === 'Publish count prop projections' &&
+                run.head_branch === 'main' && Number(run.run_attempt || 1) === 1) {
+              try {
+                await github.rest.actions.reRunWorkflowFailedJobs({
+                  ...context.repo, run_id: run.id
+                });
+                core.warning('Automatic one-time count-prop retry dispatched: ' + run.html_url);
+                return;
+              } catch (err) {
+                core.warning('Automatic count-prop retry failed: ' + err.message);
+                // Fall through to the actionable issue instead of hiding failure.
+              }
+            }
             const title = '[Automation] ' + run.name + ' failed';
             const body = [
               'FOURTHDOWN pipeline needs attention.',
@@ -41,6 +57,8 @@ jobs:
               '- Branch: ' + run.head_branch,
               '- Commit: ' + run.head_sha,
               '- Run: ' + run.html_url,
+              '- Attempt: ' + (run.run_attempt || 1),
+              '- Count-prop recovery: one failed-job retry is automatic; further errors need review.',
               '',
               'Live model promotions remain disabled unless independently validated.',
               'Review logs, correct the error, then rerun the workflow.'

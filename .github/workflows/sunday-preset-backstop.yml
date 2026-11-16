@@ -8,7 +8,7 @@ on:
   # Independent wake-up when GitHub skips the backstop cron itself.
   # This only runs the existing read-only decision policy, never a second writer.
   workflow_run:
-    workflows: [Capture last pregame projections and DK lines, Capture pregame projections and DraftKings lines]
+    workflows: [Capture last pregame projections and DK lines, Capture pregame projections and DraftKings lines, Sunday preset game-day refresh]
     types: [completed]
   pull_request:
     paths:
@@ -60,7 +60,7 @@ jobs:
                 throw error;
               }
             } else if (result.action === 'alert') {
-              await notify('Sunday scheduled refresh was missing, but the full pipeline is now too close to kickoff. No unsafe retry attempted.');
+              await notify('Sunday preset recovery needs attention: ' + result.reason + '. No unsafe or duplicate retry attempted.');
             }
             async function notify(message) {
               const title='[Automation] Sunday pregame refresh missed';

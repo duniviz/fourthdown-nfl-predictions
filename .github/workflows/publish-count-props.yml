@@ -35,7 +35,11 @@ jobs:
           python-version: '3.11'
       - name: Test completed-game filtering
         run: python -m unittest discover -s tests -p 'test_count_feed_sync.py' -v
+      - name: Test rate-limit and authentication fallback safeguards
+        run: python -m unittest discover -s tests -p 'test_gameweek_automation_reliability.py' -v
       - name: Validate next-week count generation with current data
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           mkdir -p staging
           curl --fail --location --retry 3 --max-time 90 --silent --show-error https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv -o staging/games.csv
@@ -77,6 +81,10 @@ jobs:
           PY
       - name: Download schedule and current player stats
         if: steps.freshness.outputs.run == 'true'
+        env:
+          # Authenticated GitHub API has a much larger rate-limit allowance
+          # than anonymous release discovery; the downloader never prints it.
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p staging data
