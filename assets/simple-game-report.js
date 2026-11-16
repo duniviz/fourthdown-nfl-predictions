@@ -28,21 +28,21 @@ function sideLabel(a,b,low,high){
 }
 let playerRows=[];
 function drawGame(r){
- const score=esc(r.away)+" "+fmt(r.away_score)+" – "+esc(r.home)+" "+fmt(r.home_score);
+ const team=x=>window.fdTeams?window.fdTeams.label(x):String(x||"");
+ const score=esc(team(r.away))+" "+fmt(r.away_score)+" – "+esc(team(r.home))+" "+fmt(r.home_score);
  const predictedHome=num(r.projected_margin_home)&&num(r.projected_total)?(r.projected_total+r.projected_margin_home)/2:null;
  const predictedAway=num(r.projected_margin_home)&&num(r.projected_total)?(r.projected_total-r.projected_margin_home)/2:null;
- const winner=num(r.projected_margin_home)?(r.projected_margin_home>0?r.home:r.projected_margin_home<0?r.away:"Tie"):"Unavailable";
- const actualWinner=num(r.home_score)&&num(r.away_score)?(r.home_score>r.away_score?r.home:r.home_score<r.away_score?r.away:"Tie"):"Unavailable";
- const ats=known(r.projected_margin_home,r.dk_home_spread)?r.projected_margin_home+r.dk_home_spread:null;
+ const winner=num(r.projected_margin_home)?(r.projected_margin_home>0?team(r.home):r.projected_margin_home<0?team(r.away):"Tie"):"Unavailable";
+ const actualWinner=num(r.home_score)&&num(r.away_score)?(r.home_score>r.away_score?team(r.home):r.home_score<r.away_score?team(r.away):"Tie"):"Unavailable";
  const line=r.dk_total;
  const ou=known(r.projected_total,line)?sideLabel(r.projected_total,line,"Under","Over"):"Not available";
- const spread=ats==null?"Not available":ats>0?esc(r.home)+" + "+fmt(r.dk_home_spread):ats<0?esc(r.away)+" (vs spread)":"No pick";
+ const spread=num(r.dk_home_spread)?window.fdTeams.homeSpread(r.home, r.dk_home_spread):"Not available";
  const notes=reason(r);
  const props=playerRows.filter(p=>p.game_id===r.game_id&&num(p.projection)&&num(p.actual));
  const status=r.lock_status==="official"?"Official T-15 lock":"Earlier saved pregame forecast ("+esc(r.lock_status||"unknown")+")";
- return '<details class="fd-grade-game"><summary><span><b>'+esc(r.away)+' at '+esc(r.home)+'</b><small>Week '+esc(r.week)+' · Actual '+score+'</small></span><span class="fd-grade-tags"><b class="'+gradeClass(r.winner_result)+'">Winner '+grade(r.winner_result)+'</b><b class="'+gradeClass(r.ats_result)+'">ATS '+grade(r.ats_result)+'</b><b class="'+gradeClass(r.ou_result)+'">O/U '+grade(r.ou_result)+'</b></span></summary>'+
+ return '<details class="fd-grade-game"><summary><span><b>'+esc(team(r.away))+' at '+esc(team(r.home))+'</b><small>Week '+esc(r.week)+' · Actual '+score+'</small></span><span class="fd-grade-tags"><b class="'+gradeClass(r.winner_result)+'">Winner '+grade(r.winner_result)+'</b><b class="'+gradeClass(r.ats_result)+'">ATS '+grade(r.ats_result)+'</b><b class="'+gradeClass(r.ou_result)+'">O/U '+grade(r.ou_result)+'</b></span></summary>'+
  '<div class="fd-grade-detail"><p class="fd-grade-source">'+status+' · Forecast saved before kickoff. This is not a postgame prediction.</p>'+
- '<div class="fd-grade-columns"><div><small>Before the game</small><strong>Projected '+fmt(predictedAway)+' – '+fmt(predictedHome)+'</strong><span>Pick to win: '+esc(winner)+'</span><span>Spread side: '+spread+'</span><span>O/U: '+ou+(num(line)?' '+fmt(line):'')+'</span></div>'+
+ '<div class="fd-grade-columns"><div><small>Before the game</small><strong>Projected '+esc(team(r.away))+' '+fmt(predictedAway)+' – '+esc(team(r.home))+' '+fmt(predictedHome)+'</strong><span>Pick to win: '+esc(winner)+'</span><span>DK spread: '+esc(spread)+'</span><span>O/U: '+ou+(num(line)?' '+fmt(line):'')+'</span></div>'+
  '<div><small>After the game</small><strong>'+score+'</strong><span>Winner: '+esc(actualWinner)+'</span><span>Actual total: '+fmt(r.home_score+r.away_score)+'</span><span>Actual margin (home): '+fmt(r.home_score-r.away_score)+'</span></div></div>'+
  '<div class="fd-grade-lesson"><b>What this game tells us</b><p>'+notes.map(esc).join(" ")+'</p><small>Observed errors—not proof of a cause or automatic model learning.</small></div>'+drawPlayers(props)+'</div></details>';
 }
@@ -70,7 +70,7 @@ function drawPlayers(props){
       ? 'ML shadow: '+(p.ml_comparison.ml_absolute_error<p.ml_comparison.baseline_absolute_error?'closer than live by ':p.ml_comparison.ml_absolute_error>p.ml_comparison.baseline_absolute_error?'farther from actual by ':'tied live; difference ')+fmt(Math.abs(p.ml_comparison.ml_absolute_error-p.ml_comparison.baseline_absolute_error))+' '+units+' (research only).'
       : 'No verified paired ML comparison for this player.';
     const explanation=Math.abs(diff)<0.05?'Forecast matched the final '+units+'.':diff>0?'Player gained '+fmt(diff)+' more yards than projected.':'Player gained '+fmt(Math.abs(diff))+' fewer yards than projected.';
-    return '<article class="fd-player-item"><div class="fd-player-item-head"><b>'+esc(p.player||"Unknown player")+'</b><span class="'+gradeClass(verdict)+'">'+esc(recLabel)+'</span></div><small>'+esc(p.team||"")+' · '+title+'</small><div class="fd-player-figures"><span>Projected <b>'+fmt(p.projection)+'</b></span><span>Actual <b>'+fmt(p.actual)+'</b></span><span>DK line <b>'+fmt(p.dk_line)+'</b></span></div><p>'+esc(explanation)+'</p><small>'+esc(model)+'</small></article>';
+    return '<article class="fd-player-item"><div class="fd-player-item-head"><b>'+esc(p.player||"Unknown player")+'</b><span class="'+gradeClass(verdict)+'">'+esc(recLabel)+'</span></div><small>'+esc(window.fdTeams?window.fdTeams.label(p.team||""):p.team||"")+' · '+title+'</small><div class="fd-player-figures"><span>Projected <b>'+fmt(p.projection)+'</b></span><span>Actual <b>'+fmt(p.actual)+'</b></span><span>DK line <b>'+fmt(p.dk_line)+'</b></span></div><p>'+esc(explanation)+'</p><small>'+esc(model)+'</small></article>';
   }).join("")+'</div></details>';
  }).join("");
  return '<div class="fd-player-reports"><h3>Player yards &amp; props report cards</h3>'+summary+sections+'</div>';

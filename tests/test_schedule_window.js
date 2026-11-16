@@ -11,4 +11,6 @@ assert.strictEqual(slate.contains(at('2026-11-10T06:00:00Z'), '2026-11-17T02:15:
 assert.strictEqual(slate.contains(at('2026-11-10T06:00:00Z'), '2026-11-10T02:15:00Z'), false);
 assert.strictEqual(at('2026-09-08T04:59:59Z').start, '20260903'); // daylight time boundary
 assert.strictEqual(at('2026-09-08T05:00:00Z').start, '20260910');
+assert.deepStrictEqual(slate.scoreboardDates(at('2026-11-10T06:00:00Z')), ['20261112', '20261113', '20261114', '20261115', '20261116']);
+assert.ok(slate.scoreboardDates(at('2026-11-10T06:00:00Z')).every(day => /^\d{8}$/.test(day)));
 console.log('schedule-window tests passed');

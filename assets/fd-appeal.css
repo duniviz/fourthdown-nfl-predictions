@@ -180,7 +180,8 @@
 .fd-appeal-spark circle.is-under { fill: #8ecbff; }
 .fd-appeal-spark-line { stroke: #f0c14a; stroke-width: 1.5; stroke-dasharray: 3 2; }
 
-.fd-appeal-hide-dup { display: none !important; }
+.fd-appeal-hide-dup,
+#scoreboard-cards .scorecard:has(.fd-appeal-win) .fd-v5-score-box { display: none !important; }
 
 .fd-appeal-lab { margin: 8px 0 18px; }
 .fd-appeal-kicker {

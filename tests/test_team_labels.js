@@ -1,0 +1,14 @@
+const assert = require('assert');
+const teams = require('../assets/fd-teams.js');
+assert.strictEqual(teams.label('WSH'), 'WAS');
+assert.strictEqual(teams.label('was'), 'WAS');
+assert.strictEqual(teams.label('JAX'), 'JAC');
+assert.strictEqual(teams.label('jac'), 'JAC');
+assert.strictEqual(teams.label('LA'), 'LAR');
+assert.strictEqual(teams.label('LAR'), 'LAR');
+assert.strictEqual(teams.label('bal'), 'BAL');
+assert.strictEqual(teams.homeSpread('BAL', -3.5), 'BAL -3.5');
+assert.strictEqual(teams.homeSpread('wsh', 3), 'WAS +3.0');
+assert.strictEqual(teams.homeSpread('DAL', 0), 'DAL 0.0');
+assert.strictEqual(teams.homeSpread('DAL', null), '');
+console.log('team label tests passed');

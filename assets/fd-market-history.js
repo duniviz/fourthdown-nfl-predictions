@@ -1,7 +1,7 @@
 /* Display saved pregame spread and total snapshots for this matchup only. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.FDMarketHistory=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const canon=x=>({WSH:'WAS',JAX:'JAC',LA:'LAR'}[String(x||'').toUpperCase()]||String(x||'').toUpperCase());
+ const canon=x=>((typeof globalThis!=='undefined'&&globalThis.fdTeams)||require('./fd-teams.js')).label(x);
  const num=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
  const time=x=>{const d=new Date(x);return Number.isFinite(d.getTime())?d.toLocaleString('en-US',{timeZone:'America/Chicago',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'Time unavailable';};
  const signed=x=>Number(x)===0?'PK':(Number(x)>0?'+':'')+Number(x).toFixed(1);
@@ -20,7 +20,7 @@
   return out.sort((a,b)=>Date.parse(a.captured_at_utc)-Date.parse(b.captured_at_utc)).filter((x,i,a)=>!i||Date.parse(x.captured_at_utc)!==Date.parse(a[i-1].captured_at_utc)||x.spread!==a[i-1].spread||x.total!==a[i-1].total);
  }
  function render(game,history,opening,current,observedAt,now){
-  const records=collect(game,history,opening,current,observedAt,now),home=game?.home?.abbr||'',away=game?.away?.abbr||'';
+  const records=collect(game,history,opening,current,observedAt,now),home=canon(game?.home?.abbr||''),away=canon(game?.away?.abbr||'');
   const summary=(field,label,format)=>{const xs=records.filter(x=>x[field]!==null);if(!xs.length)return '<div class="fd-history-team"><h4>'+esc(label)+'</h4><p>No saved pregame snapshots available.</p></div>';const first=xs[0],last=xs[xs.length-1];return '<div class="fd-history-team"><h4>'+esc(label)+'</h4><p>First saved: <strong>'+esc(format(first[field]))+'</strong> · '+esc(time(first.captured_at_utc))+'</p><p>Latest saved: <strong>'+esc(format(last[field]))+'</strong> · '+esc(time(last.captured_at_utc))+'</p>'+(xs.length===1?'<small>One snapshot saved; movement is not yet available.</small>':'')+'</div>';};
   const a=summary('spread','Spread · '+away,x=>signed(-x)),h=summary('spread','Spread · '+home,signed),total=summary('total','Game total',x=>Number(x).toFixed(1));
   const entries=records.slice(-12).reverse().map(q=>'<div class="fd-market-history-game"><strong>'+esc(time(q.captured_at_utc))+'</strong><span>'+(q.spread===null?'Spread unavailable':esc(away)+' '+esc(signed(-q.spread))+' · '+esc(home)+' '+esc(signed(q.spread)))+' · '+(q.total===null?'Total unavailable':'O/U '+q.total.toFixed(1))+'</span></div>').join('');
