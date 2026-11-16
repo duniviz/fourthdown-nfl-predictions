@@ -6,6 +6,8 @@ on:
       - '.github/workflows/free-nfl-feature-lab.yml'
       - 'research/free_nfl_feature_lab.py'
       - 'tests/test_free_nfl_feature_lab.py'
+      - 'tests/test_free_nfl_lab_workflow.py'
+      - 'tools/refresh_weekly_player_ml_data.py'
   schedule:
     # Thursday: after Wednesday ML retraining, research only; no live writer.
     - cron: '30 15 * * 4'
@@ -28,7 +30,9 @@ jobs:
       - name: Install existing open-data and machine learning dependencies
         run: python -m pip install -r requirements-backtest.txt
       - name: Test prior-week feature safeguards
-        run: python -m unittest discover -s tests -p test_free_nfl_feature_lab.py -v
+        run: |
+          python -m unittest discover -s tests -p test_free_nfl_feature_lab.py -v
+          python -m unittest discover -s tests -p test_free_nfl_lab_workflow.py -v
       - name: Build completed-game historical baseline training rows
         if: github.event_name != 'pull_request'
         run: |
