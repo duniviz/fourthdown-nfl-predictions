@@ -30,7 +30,7 @@
   }
   function menu(className) {
     const links = more.map(([href, label]) => '<a href="' + href + '"' + (current(href) ? ' aria-current="page"' : '') + '>' + label + '</a>').join('');
-    return '<details class="fd-more' + (moreCurrent() ? ' fd-more-here' : '') + '"' + (moreCurrent() ? ' open' : '') + '><summary' + (moreCurrent() ? ' aria-current="page"' : '') + '>More</summary><div class="' + className + '">' + links + '</div></details>';
+    return '<details class="fd-more' + (moreCurrent() ? ' fd-more-here' : '') + '"' + '><summary' + (moreCurrent() ? ' aria-current="page"' : '') + '>More</summary><div class="' + className + '">' + links + '</div></details>';
   }
   function render() {
     if (document.querySelector('.fd2-header')) return;
