@@ -70,7 +70,7 @@
         edge: Math.abs(edge),
         unit: 'pts',
         pct: num(sim && (over ? sim.over_cover_pct : sim.under_cover_pct)),
-        tone: over ? 'pos' : 'neg'
+        tone: 'pos', direction: over ? 'over' : 'under'
       });
     }
     if (spread !== null && Math.abs(margin + spread) >= 0.05) {
@@ -105,7 +105,29 @@
     }
     return rows.sort((a, b) => (b.edge || 0) - (a.edge || 0));
   }
-  function propEdgeRows(players, lines) {
+  // Use only same-game, same-player, same-market pregame simulation draws.
+  // The sampled distribution is exploratory, not a calibrated win probability.
+  function propSimulationRate(row, line, direction) {
+    if (!row || !Array.isArray(row.sorted_draws) || row.sorted_draws.length < 50 ||
+        !Number.isFinite(Number(line))) return null;
+    const nums = row.sorted_draws.map(Number);
+    if (nums.some(x => !Number.isFinite(x))) return null;
+    let hits = 0, valid = 0;
+    for (const value of nums) {
+      valid += 1;
+      if (direction === 'over' ? value > Number(line) : value < Number(line)) hits += 1;
+    }
+    return valid ? 100 * hits / valid : null;
+  }
+  function findPropSimulation(player, key, simulationRows) {
+    const id = String(player.game_id || '');
+    const name = norm(player.player_name || player.player);
+    const market = key.replace(/^player_/, '');
+    if (!id || !name) return null; // Do not mix players from different games.
+    return (simulationRows || []).find(row =>
+      row.game_id === id && norm(row.player) === name && row.stat_key === market) || null;
+  }
+  function propEdgeRows(players, lines, simulationRows) {
     const rows = [];
     for (const player of players || []) {
       const key = MARKET_KEY[player.market] || MARKET_KEY[player.stat_key] || MARKET_KEY[player.market_key];
@@ -128,8 +150,8 @@
         dk: dk.toFixed(1),
         edge: Math.abs(gap),
         unit: 'yds',
-        pct: null,
-        tone: gap >= 0 ? 'pos' : 'neg'
+        pct: propSimulationRate(findPropSimulation(player, key, simulationRows), dk, gap >= 0 ? 'over' : 'under'),
+        tone: 'pos', direction: gap >= 0 ? 'over' : 'under'
       });
     }
     const seen = new Set();
@@ -154,7 +176,7 @@
         '<td class="fd-bb-num fd-bb-ml"><span class="fd-bb-cell">ML</span>' + (row.ml === null ? '—' : esc(row.ml)) + '<small>ML projection, research</small></td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">DK</span>' + esc(row.dk) + '</td>' +
         '<td><span class="fd-bb-cell">Edge</span><div class="fd-bb-edge ' + row.tone + '">' + (row.edge === null ? '—' : row.edge.toFixed(1) + ' ' + row.unit) + '</div>' + (row.edge === null ? '' : meter(row.edge, max, Number.isFinite(mlEdge) ? mlEdge : null)) + '</td>' +
-        '<td class="fd-bb-conf"><span class="fd-bb-cell">Confidence</span>' + esc(confidenceWords(row.pct)) + (row.pct === null ? '' : ' · ' + Number(row.pct).toFixed(1) + '% sim') + '</td></tr>';
+        '<td class="fd-bb-conf"><span class="fd-bb-cell">Confidence</span>' + (row.pct === null ? 'Simulation unavailable' : Number(row.pct).toFixed(1) + '% sim · exploratory') + '</td></tr>';
     }).join('');
     return '<table class="fd-bb-table"><thead><tr><th>Pick</th><th>Model</th><th>ML</th><th>DK</th><th>Edge</th><th>Confidence</th></tr></thead><tbody>' + body + '</tbody></table>';
   }
@@ -201,7 +223,7 @@
       }).sort((a, b) => (b.edge || 0) - (a.edge || 0));
       const slateIds = new Set(upcoming.map(game => String(game.kickoff_utc).slice(0, 16)));
       const lines = (dk.rows || []).filter(row => slateIds.has(String(row.commence_time).slice(0, 16)));
-      props = propEdgeRows(research.players || research.rows || [], lines);
+      props = propEdgeRows(research.players || research.rows || [], lines, sims.players || []);
       const week = latestWeek(official.rows || []);
       const weekRows = week ? (official.rows || []).filter(row => Number(row.season) === week.season && Number(row.week) === week.week) : [];
       const propRows = week ? (playerResults.rows || []).filter(row => String(row.game_id || '').startsWith(week.season + '_' + String(week.week).padStart(2, '0') + '_') && (row.recommendation_result === 'hit' || row.recommendation_result === 'miss')) : [];
@@ -230,5 +252,5 @@
     }).catch(() => { if (tableNode) tableNode.textContent = 'Best edges are waiting for the published forecast.'; });
     draw();
   }
-  return {confidenceWords, mlCandidate, gameEdgeRows, propEdgeRows, gradeRate, latestWeek, meter, table, mount};
+  return {confidenceWords, mlCandidate, gameEdgeRows, propEdgeRows, propSimulationRate, findPropSimulation, gradeRate, latestWeek, meter, table, mount};
 });
