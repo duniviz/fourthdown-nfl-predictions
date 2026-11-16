@@ -1,0 +1,43 @@
+/* FourthDown: five premium visual upgrades, existing interactive cards retained */
+#scoreboard-cards>.fd-v5-broadcast-card{position:relative;overflow:hidden;background-image:radial-gradient(circle at 95% 0%,#baff2510,transparent 37%),linear-gradient(145deg,#16262b,#0b151d)!important;border:1px solid #415762!important;box-shadow:0 12px 32px #0008,inset 0 1px #ffffff13!important}
+#scoreboard-cards>.fd-v5-broadcast-card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#baff25,#65d8fd,#baff25);opacity:.86}
+.fd-v5-score-box{margin:12px 0 17px;min-width:0}
+.fd-v5-score-graphic{background:linear-gradient(115deg,#0b2022,#122435);border:1px solid #375961;border-radius:15px;padding:13px;min-width:0}
+.fd-v5-score-graphic.fd-v5-muted{font-size:12px;color:#a5bdc7}
+.fd-v5-forecast{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;text-align:center}
+.fd-v5-forecast span{font-size:13px;color:#b6d2d7;font-weight:800;letter-spacing:.08em}
+.fd-v5-forecast b{display:block;color:#fff;font-size:clamp(24px,3vw,34px);line-height:1.15;font-variant-numeric:tabular-nums;letter-spacing:-.05em}
+.fd-v5-forecast i{font-style:normal;font-size:9px;color:#92abb9;letter-spacing:.1em}
+.fd-v5-split{height:11px;overflow:hidden;border-radius:99px;display:flex;background:#314351;margin:13px 0 4px}
+.fd-v5-split i:first-child{background:linear-gradient(90deg,#91ebff,#46aeda)}.fd-v5-split i:last-child{background:linear-gradient(90deg,#a2ce39,#baff25)}
+.fd-v5-prob-labels{display:flex;justify-content:space-between;gap:8px;color:#b7c8d4;font-size:11px;font-variant-numeric:tabular-nums}
+.fd-v5-gauge{display:flex;align-items:center;gap:12px;margin:12px 0 2px;min-width:0}
+.fd-v5-gauge b{display:block;font-size:12px;color:#e9f9ec}.fd-v5-gauge small{display:block;color:#aac0c9;font-size:10px;line-height:1.5;margin-top:2px}
+.fd-v5-dial{--fd-v5-pct:0%;position:relative;width:66px;height:66px;flex:0 0 66px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#baff25 var(--fd-v5-pct),#32454d 0)}
+.fd-v5-dial:before{content:"";position:absolute;inset:7px;background:#0d2529;border-radius:50%}
+.fd-v5-dial>span{position:relative;color:#eaffc4;font-size:23px;font-weight:950;font-variant-numeric:tabular-nums}
+.fd-v5-dial>span small{display:inline;color:#eaffc4;font-size:11px}
+.fd-v5-spot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;border-radius:10px;padding:10px;background:linear-gradient(95deg,#baff2530,#152620);border:1px solid #9cd536;color:#dfffad;margin:0 0 13px;font-weight:900;font-size:11px;letter-spacing:.05em}
+.fd-v5-spot small{color:#b6d3bb;font-weight:500;letter-spacing:0}
+#fd-top-picks-list>.fd-top-pick:first-child{border:2px solid #a5d943;box-shadow:0 0 22px #baff2524,0 14px 35px #0008;position:relative}
+#fd-top-picks-list>.fd-top-pick:first-child h3{font-size:clamp(20px,2.3vw,28px)}
+#fd-top-picks-list>.fd-top-pick .fd-v5-gauge{border-top:1px solid #426044;padding-top:10px}
+#scoreboard-cards .fd-v5-line-plots{margin:12px 0 4px}
+.fd-v5-trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.fd-v5-trend-card{padding:12px;border:1px solid #355d65;border-radius:12px;background:linear-gradient(145deg,#122932,#0b1c29);min-width:0}
+.fd-v5-trend-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.fd-v5-trend-head b{font-size:12px;color:#c7e6df}.fd-v5-trend-head span{font-size:20px;color:#d4ff8b;font-weight:900}
+.fd-v5-trend-card small,.fd-v5-caveat{display:block;font-size:11px;color:#b5c9d2;line-height:1.5}
+.fd-v5-spark{display:block;width:100%;height:70px;overflow:visible;margin:6px 0}
+.fd-v5-spark polyline{fill:none;stroke:#baff25;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fd-v5-spark circle{fill:#baff25}.fd-v5-spark .fd-v5-axis{stroke:#56717a;stroke-width:1}
+.fd-v5-no-trend{padding:20px 0;color:#a9bdc9;font-size:11px}
+.fd-v5-prop-card{position:relative;border-radius:15px!important;box-shadow:0 9px 30px #0006,inset 0 1px #ffffff14!important;overflow:hidden}
+.fd-v5-prop-card .fd-v5-player-name{font-weight:900;letter-spacing:-.02em}
+.fd-v5-prop-card .bet-metrics{font-variant-numeric:tabular-nums}
+.fd-v5-prop-card .bet-metrics>div{border:1px solid #3b5d60!important;background:#10242c!important}
+.fd-v5-prop-card .bet-metrics strong{font-size:clamp(18px,2.7vw,25px)!important}
+.fd-v5-prop-card .fd-v5-prop-chart{border-color:#6c8d55;background:#0b2423}
+.fd-v5-prop-card:focus-within{outline:2px solid #baff25;outline-offset:2px}
+@media(max-width:620px){.fd-v5-trend-grid{grid-template-columns:1fr}.fd-v5-score-graphic{padding:10px}.fd-v5-forecast b{font-size:24px}#fd-top-picks-list>.fd-top-pick:first-child{padding:15px}}
+@media(prefers-reduced-motion:reduce){.fd-v5-broadcast-card,.fd-v5-prop-card{transition:none!important}}
