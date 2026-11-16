@@ -184,7 +184,8 @@
         row.lastFive!==null&&Number.isFinite(Number(row.lastFive))?'Last 5 '+Number(row.lastFive).toFixed(1):'';
       const slip=row.edge!==null&&row.dk!=='Moneyline'
         ? '<button type="button" class="fd-desk-add" data-fd-add-slip="'+esc(row.slipKey||row.pick)+'" aria-label="Add '+esc(row.pick)+' to My slip">+ Add to slip</button>' : '';
-      return '<tr class="fd-desk-edge-row"><td><span class="fd-bb-kind">'+rowLogo+esc(row.kind || row.market)+'</span><div class="fd-bb-pick">' + esc(row.pick) + '</div><span class="fd-official">Official pick · current model</span>'+slip+'</td>' +
+      const teamTint=typeof window!=='undefined'&&window.FDTeamColors&&team ? window.FDTeamColors.color(team) : '#ff5a1f';
+      return '<tr class="fd-desk-edge-row" style="--fd-row-team:'+esc(teamTint)+'"><td><span class="fd-bb-kind">'+rowLogo+esc(row.kind || row.market)+'</span><div class="fd-bb-pick">' + esc(row.pick) + '</div><span class="fd-official">Official pick · current model</span>'+slip+'</td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">Model</span>' + esc(row.model) + '</td>' +
         '<td class="fd-bb-num fd-bb-ml"><span class="fd-bb-cell">ML</span>' + (row.ml === null ? '—' : esc(row.ml)) + '<small>ML projection, research</small></td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">DK</span>' + esc(row.dk) + '</td>' +
