@@ -1,0 +1,33 @@
+name: Test fan-review UI fixes
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'bets.html'
+      - 'history.html'
+      - 'model-lab.html'
+      - 'slate-pulse.js'
+      - 'top-picks.js'
+      - 'assets/fd-insights.js'
+      - 'assets/fd-prop-board.js'
+      - 'assets/fd-five-visuals.js'
+      - 'assets/fd-mobile-first-2026.css'
+      - 'assets/simple-game-report.js'
+      - 'tests/test_fan_review_fixes.js'
+      - 'tests/test_fan_review_browser.js'
+      - '.github/workflows/test-fan-review-fixes.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save playwright
+      - run: node tests/test_fan_review_fixes.js
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-fan-review-server.log 2>&1 &
+          node tests/test_fan_review_browser.js

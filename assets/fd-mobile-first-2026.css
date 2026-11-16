@@ -85,3 +85,19 @@
 @media(prefers-reduced-motion:reduce) {
   .fd-live-board-cards {scroll-behavior:auto}
 }
+/* Props filters at a phone width: show the selected value and a full search field. */
+@media (max-width:480px) {
+  .bet-toolbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+  .bet-toolbar select,
+  .bet-toolbar input[type="search"] {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    flex: none !important;
+    font-size: 15px !important;
+  }
+}
