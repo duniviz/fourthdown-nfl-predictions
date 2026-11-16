@@ -6,8 +6,7 @@
  let active='blended',boards={players:[],scoring:[],blended:[]};
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const norm=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
- const aliases={JAX:'JAC',LA:'LAR',WSH:'WAS'};
- const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
+ const canon=x=>window.fdTeams?window.fdTeams.label(x):({JAX:'JAC',LA:'LAR',WSH:'WAS'}[String(x||'').toUpperCase()]||String(x||'').toUpperCase());
  const teams={ARI:'arizona cardinals',ATL:'atlanta falcons',BAL:'baltimore ravens',BUF:'buffalo bills',CAR:'carolina panthers',CHI:'chicago bears',CIN:'cincinnati bengals',CLE:'cleveland browns',DAL:'dallas cowboys',DEN:'denver broncos',DET:'detroit lions',GB:'green bay packers',HOU:'houston texans',IND:'indianapolis colts',JAC:'jacksonville jaguars',KC:'kansas city chiefs',LV:'las vegas raiders',LAC:'los angeles chargers',LAR:'los angeles rams',MIA:'miami dolphins',MIN:'minnesota vikings',NE:'new england patriots',NO:'new orleans saints',NYG:'new york giants',NYJ:'new york jets',PHI:'philadelphia eagles',PIT:'pittsburgh steelers',SF:'san francisco 49ers',SEA:'seattle seahawks',TB:'tampa bay buccaneers',TEN:'tennessee titans',WAS:'washington commanders'};
  const marketNames={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards'};
  const quoteMarkets={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
@@ -57,10 +56,10 @@
     const qtime=Date.parse(q.updated_at_utc||q.observed_at_utc||market.snapshot_date_utc),kick=Date.parse(p.kickoff_utc);
     if(!Number.isFinite(qtime)||qtime>now||now-qtime>36*3600000||qtime>=kick)continue;
     const home=number(p.projected_home_score),away=number(p.projected_away_score);
-    const base={game:p.away+' @ '+p.home,detail:'Projected score '+(home===null||away===null?'—':away.toFixed(1)+'–'+home.toFixed(1))};
+    const base={game:canon(p.away)+' @ '+canon(p.home),detail:'Projected score '+(home===null||away===null?'—':canon(p.away)+' '+away.toFixed(1)+' – '+canon(p.home)+' '+home.toFixed(1))};
     if(home!==null&&away!==null&&home!==away){
      const team=home>away?p.home:p.away,confidence=pct(team===p.home?s.home_win_pct:s.away_win_pct);
-     if(confidence!==null&&confidence>50)gamePicks.push({...base,kind:'Winner',pick:team+' to win',confidence});
+     if(confidence!==null&&confidence>50)gamePicks.push({...base,kind:'Winner',pick:canon(team)+' to win',confidence});
     }
     const total=number(q.total),projected=home!==null&&away!==null?home+away:null;
     if(total!==null&&projected!==null&&number(s.dk_total)===total&&projected!==total){
@@ -70,7 +69,7 @@
     const spread=number(q.home_spread);
     if(spread!==null&&number(s.dk_home_spread)===spread&&home!==null&&away!==null){
      const edge=(home-away)+spread;
-     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null&&confidence>50)gamePicks.push({...base,kind:'Spread',pick:homePick?p.home+' '+(spread>0?'+':'')+spread.toFixed(1):p.away+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
+     if(edge!==0){const homePick=edge>0,confidence=pct(homePick?s.home_cover_pct:s.away_cover_pct);if(confidence!==null&&confidence>50)gamePicks.push({...base,kind:'Spread',pick:homePick?canon(p.home)+' '+(spread>0?'+':'')+spread.toFixed(1):canon(p.away)+' '+(-spread>0?'+':'')+(-spread).toFixed(1),confidence,detail:'Model spread edge '+Math.abs(edge).toFixed(1)+' pts'});}
     }
    }
    boards.scoring=['O/U','Winner','Spread'].map(kind=>gamePicks.filter(x=>x.kind===kind).sort((a,b)=>b.confidence-a.confidence)[0]).filter(Boolean).sort((a,b)=>b.confidence-a.confidence);

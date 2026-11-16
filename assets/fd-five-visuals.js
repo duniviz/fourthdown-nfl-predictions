@@ -10,7 +10,7 @@
  const n=x=>x!==null&&x!==undefined&&x!==""&&Number.isFinite(Number(x))?Number(x):null;
  const clamp=x=>Math.max(0,Math.min(100,x));
  const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- const canon=x=>({JAX:"JAC",LA:"LAR",WSH:"WAS"}[String(x||"").toUpperCase()]||String(x||"").toUpperCase());
+ const canon=x=>((typeof globalThis!=="undefined"&&globalThis.fdTeams)||{label:v=>({JAX:"JAC",LA:"LAR",WSH:"WAS"}[String(v||"").toUpperCase()]||String(v||"").toUpperCase())}).label(x);
  function gameSimulation(game,live,sims){
    const away=canon(game?.away?.abbr),home=canon(game?.home?.abbr),kick=Date.parse(game?.date);
    if(!away||!home||!Number.isFinite(kick))return null;

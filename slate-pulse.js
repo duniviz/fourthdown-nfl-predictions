@@ -8,7 +8,7 @@
  const canon=x=>aliases[String(x||'').toUpperCase()]||String(x||'').toUpperCase();
  const n=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x));
  const teamLogo=t=>'https://a.espncdn.com/i/teamlogos/nfl/500/'+encodeURIComponent(canon(t).toLowerCase())+'.png';
- const teamMarkup=(team,score,showScore)=>'<div class="fd-live-team"><img src="'+esc(teamLogo(team.abbr||team.name))+'" alt="" loading="lazy"><strong>'+esc(team.abbr||team.name)+'</strong><b>'+esc(showScore&&n(score)?score:'—')+'</b></div>';
+ const teamMarkup=(team,score,showScore)=>'<div class="fd-live-team"><img src="'+esc(teamLogo(team.abbr||team.name))+'" alt="'+esc(team.abbr||team.name||'Team')+' logo" loading="lazy"><strong>'+esc(window.fdTeams?window.fdTeams.label(team.abbr||team.name):team.abbr||team.name)+'</strong><b>'+esc(showScore&&n(score)?score:'—')+'</b></div>';
  const ct=(x,opts)=>new Date(x).toLocaleString('en-US',{timeZone:'America/Chicago',...opts});
  let forecasts=[];
  function projectionFor(g){
