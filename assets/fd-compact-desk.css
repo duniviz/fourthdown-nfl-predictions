@@ -222,7 +222,7 @@ html.fd-mobile-layout[data-fd-view="mobile"] .fd2-header .fd2-shell{display:grid
   border:1px solid #4b5d68!important;border-radius:14px!important;
   background:#111a24!important;box-shadow:0 14px 42px #000b!important;
  }
- .fd2-bottom-menu[hidden]{display:none!important}
+ 
  .fd2-bottom-menu>a{
   display:flex!important;align-items:center!important;min-height:44px!important;
   padding:9px 12px!important;border:0!important;border-radius:9px!important;
@@ -239,7 +239,7 @@ html.fd-mobile-layout[data-fd-view="mobile"] .fd2-header .fd2-shell{display:grid
 
 html[data-fd-view="desktop"] .fd2-bottom,
 html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
-html[data-fd-view="desktop"] body{padding-bottom:0!important}
+
 
 
 /* Desktop header: reserve independent space for navigation, view selector, and freshness. */
