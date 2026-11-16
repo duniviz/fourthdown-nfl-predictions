@@ -31,5 +31,6 @@ class FreeFeatureLabTests(unittest.TestCase):
  def test_insufficient_heldout_data_does_not_qualify(self):
   result=assess([])
   self.assertEqual(result['receiving_yards']['holdout_rows'],0)
-  self.assertEqual(result['receiving_yards']['models'],{})
+  self.assertEqual(result['receiving_yards']['models']['combined']['status'],'insufficient_holdout')
+  self.assertTrue(all(x.get('status')!='evaluated' for x in result['receiving_yards']['models'].values()))
 if __name__=='__main__':unittest.main()
