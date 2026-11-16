@@ -40,6 +40,8 @@
     document.body.insertBefore(header, document.body.firstChild);
     const badge = document.getElementById('fd-freshness-badge');
     const shell = header.querySelector('.fd2-shell');
+    const viewPicker = document.querySelector('.fd-view-picker');
+    if (viewPicker && shell) shell.append(viewPicker);
     if (badge && shell) shell.append(badge);
     const bottom = document.createElement('nav');
     bottom.className = 'fd2-bottom';
