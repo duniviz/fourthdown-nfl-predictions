@@ -29,6 +29,7 @@ const assert=require('node:assert/strict');
   assert.doesNotMatch(await page.locator('#bet-cards').innerText(),/Upcoming Player/);
   await page.clock.setFixedTime(new Date('2026-11-10T06:01:00Z'));
   await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});await page.locator('#fd-desk-games > summary').click();
+  await page.locator('#fd-bb-slate .fd-bb-row[data-home-team="NYG"][data-away-team="WAS"] > summary').click();
   const inlineGame=page.locator('#fd-bb-slate .fd-bb-row[data-home-team="NYG"][data-away-team="WAS"] .fd-bb-inline-matchup .scorecard');
   await inlineGame.waitFor({state:'visible'});
   assert.match(await inlineGame.innerText(),/WAS vs NYG/);
