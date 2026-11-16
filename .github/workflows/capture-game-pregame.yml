@@ -8,7 +8,10 @@ on:
     workflows: [Publish weekly v2 forecasts, Publish count prop projections, Sunday preset game-day refresh]
     types: [completed]
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    # More opportunities to hit the strict T-15-to-kickoff lock window when
+    # GitHub Actions starts a scheduled run late or skips a cron invocation.
+    # pregame_cycle remains no-op unless a refresh or lock window is due.
+    - cron: '2,12,22,32,42,52 * * * *'
 permissions:
   contents: write
 concurrency:
