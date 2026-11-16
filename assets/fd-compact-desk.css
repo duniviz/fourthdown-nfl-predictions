@@ -288,7 +288,7 @@ html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
   grid-template-areas:"brand picker" "status status" "links links"!important;
   gap:4px 10px!important;padding:8px 12px 9px!important
  }
- .fd2-shell>.fd2-links{
+ html.fd-mobile-layout .fd2-shell>.fd2-links{
   grid-area:links;display:flex!important;align-items:center!important;justify-content:flex-start!important;
   flex-wrap:wrap!important;gap:2px 18px!important;min-width:0;width:100%!important;
   margin:2px 0 0!important;padding:5px 0 0!important;
