@@ -15,6 +15,12 @@ on:
       - 'assets/fd-declutter.js'
       - 'assets/fd-declutter.css'
       - 'assets/fd-model-diagnostics.js'
+      - 'assets/fd-betting-board.js'
+      - 'assets/fd-betting-board.css'
+      - 'assets/fd2-shell.js'
+      - 'assets/fd-app-shell.js'
+      - 'tests/test_betting_board.js'
+      - 'tests/test_betting_board_browser.js'
       - 'tests/test_declutter.js'
       - 'tests/test_declutter_browser.js'
       - '.github/workflows/test-declutter.yml'
@@ -30,6 +36,8 @@ jobs:
           node-version: '20'
       - run: npm install --no-save playwright
       - run: node tests/test_declutter.js
+      - run: node tests/test_betting_board.js
       - run: |
           python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-declutter-server.log 2>&1 &
           node tests/test_declutter_browser.js
+          node tests/test_betting_board_browser.js
