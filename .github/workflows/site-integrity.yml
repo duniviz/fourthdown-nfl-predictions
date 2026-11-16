@@ -53,6 +53,10 @@ jobs:
             [ -f "$file" ] || continue
             node --check "$file"
           done
+      - name: Test odds display and inline matchup safeguards
+        run: node tests/test_odds_display.js
+      - name: Test DraftKings game market prices
+        run: python -m unittest discover -s tests -p 'test_dk_game_refresh.py' -v
       - name: Test player-name ambiguity safeguards
         run: node tests/test_dk_identity_browser.js
       - name: Test five premium visualization data safeguards
