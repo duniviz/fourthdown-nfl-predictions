@@ -53,6 +53,7 @@ function chromePath() {
     assert.match(await page.locator('#fd-pick-scope').innerText(), /Props also includes/);
 
     await page.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+    await page.locator('#fd-desk-games > summary').click();
     await page.waitForFunction(() => /games/.test(document.querySelector('#score-status')?.innerText || ''));
     await page.waitForFunction(() => {
       const text = document.querySelector('#fd-live-board-status')?.innerText || '';
@@ -68,6 +69,7 @@ function chromePath() {
     assert.ok(finalTexts.length > 0, 'expected at least one final game card');
     assert.ok(finalTexts.every(text => !/Matching game simulation unavailable/.test(text)));
     assert.ok(finalTexts.some(text => /No win simulation was saved for this finished game/.test(text) && /archived forecast and grade/.test(text)));
+    await page.locator('#fd-desk-more > summary').click();
     await page.waitForFunction(() => document.querySelectorAll('#fd-top-picks-list .fd-top-pick').length > 0);
     const pickCount = await page.locator('#fd-top-picks-list .fd-top-pick').count();
     const title = await page.locator('#fd-top-picks-title').innerText();
@@ -87,12 +89,14 @@ function chromePath() {
   await failed.route('https://site.api.espn.com/**', route => route.abort());
   await failed.route('**/espn-scoreboard-backup.json*', route => route.fulfill({status: 500, body: 'nope'}));
   await failed.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+  await failed.locator('#fd-desk-games > summary').click();
   await failed.waitForFunction(() => /Live scores are unavailable/.test(document.querySelector('#fd-live-board-status')?.innerText || ''), null, {timeout: 20000});
   assert.match(await failed.locator('#score-status').innerText(), /unavailable/);
   await failed.close();
 
   const finalsOnly = await browser.newPage({viewport: {width: 1200, height: 800}});
   await finalsOnly.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
+  await finalsOnly.locator('#fd-desk-games > summary').click();
   await finalsOnly.waitForFunction(() => Array.isArray(window.fdAllGames) && window.fdAllGames.length > 0);
   await finalsOnly.evaluate(() => {
     window.fdAllGames = window.fdAllGames.filter(game => game.state === 'post');

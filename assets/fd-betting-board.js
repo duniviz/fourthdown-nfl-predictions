@@ -68,7 +68,7 @@
         ml: mlTotal === null ? null : mlTotal.toFixed(1),
         dk: dkTotal.toFixed(1),
         edge: Math.abs(edge),
-        unit: 'pts',
+        unit: 'pts', marketLine: dkTotal,
         pct: num(sim && (over ? sim.over_cover_pct : sim.under_cover_pct)),
         tone: 'pos', direction: over ? 'over' : 'under'
       });
@@ -84,7 +84,7 @@
         ml: mlMargin === null ? null : (mlMargin >= 0 ? forecast.home : forecast.away) + ' by ' + Math.abs(mlMargin).toFixed(1),
         dk: (spread < 0 ? forecast.home : forecast.away) + ' ' + Math.abs(spread).toFixed(1),
         edge: Math.abs(margin + spread),
-        unit: 'pts',
+        unit: 'pts', marketLine: spread,
         pct: num(sim && (homePick ? sim.home_cover_pct : sim.away_cover_pct)),
         tone: 'pos'
       });
@@ -149,7 +149,8 @@
         ml: ml === null ? null : ml.toFixed(1),
         dk: dk.toFixed(1),
         edge: Math.abs(gap),
-        unit: 'yds',
+        unit: 'yds', marketLine: dk, gameId: player.game_id,
+        lastFive: num(player.last_5_avg),
         pct: propSimulationRate(findPropSimulation(player, key, simulationRows), dk, gap >= 0 ? 'over' : 'under'),
         tone: 'pos', direction: gap >= 0 ? 'over' : 'under'
       });
@@ -167,15 +168,28 @@
     const mark = mlEdge === null || mlEdge === undefined ? '' : '<b class="fd-bb-ml-mark" style="left:' + Math.max(4, Math.min(96, Number(mlEdge) / max * 100)).toFixed(1) + '%" title="ML projection, research"></b>';
     return '<div class="fd-bb-meter" role="img" aria-label="Official edge ' + esc(edge) + '.' + (mark ? ' ML projection, research, also marked.' : '') + '"><i style="width:' + width.toFixed(1) + '%"></i>' + mark + '</div>';
   }
+  function rankStrength(row){
+    // Cross-market sorting is by proportional MODEL/DK gap, not win probability.
+    if(row.edge === null || !Number.isFinite(Number(row.edge)))return -1;
+    const market=Number(row.marketLine);
+    return Number(row.edge)/Math.max(8,Number.isFinite(market)?Math.abs(market):8);
+  }
   function table(rows, max) {
     if (!rows.length) return '<p class="fd-bb-empty">No matched current-model edges for this tab yet.</p>';
     const body = rows.map(row => {
       const mlEdge = row.ml === null || row.dk === 'Moneyline' ? null : Math.abs(Number(row.ml) - Number(row.dk));
-      return '<tr><td><span class="fd-bb-kind">' + esc(row.kind || row.market) + '</span><div class="fd-bb-pick">' + esc(row.pick) + '</div><span class="fd-official">Official pick · current model</span></td>' +
+      const team=row.team || row.home || row.away;
+      const rowLogo=team ? '<img class="fd-desk-row-logo" loading="lazy" alt="" src="'+esc(logo(team))+'">' : '';
+      const edgeHint=row.pct!==null&&Number.isFinite(Number(row.pct)) ? Number(row.pct).toFixed(0)+'% sim' :
+        row.lastFive!==null&&Number.isFinite(Number(row.lastFive))?'Last 5 '+Number(row.lastFive).toFixed(1):'';
+      const slip=row.edge!==null&&row.dk!=='Moneyline'
+        ? '<button type="button" class="fd-desk-add" data-fd-add-slip="'+esc(row.slipKey||row.pick)+'" aria-label="Add '+esc(row.pick)+' to My slip">+ Add to slip</button>' : '';
+      const teamTint=typeof window!=='undefined'&&window.FDTeamColors&&team ? window.FDTeamColors.color(team) : '#ff5a1f';
+      return '<tr class="fd-desk-edge-row" style="--fd-row-team:'+esc(teamTint)+'"><td><span class="fd-bb-kind">'+rowLogo+esc(row.kind || row.market)+'</span><div class="fd-bb-pick">' + esc(row.pick) + '</div><span class="fd-official">Official pick · current model</span>'+slip+'</td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">Model</span>' + esc(row.model) + '</td>' +
         '<td class="fd-bb-num fd-bb-ml"><span class="fd-bb-cell">ML</span>' + (row.ml === null ? '—' : esc(row.ml)) + '<small>ML projection, research</small></td>' +
         '<td class="fd-bb-num"><span class="fd-bb-cell">DK</span>' + esc(row.dk) + '</td>' +
-        '<td><span class="fd-bb-cell">Edge</span><div class="fd-bb-edge ' + row.tone + '">' + (row.edge === null ? '—' : row.edge.toFixed(1) + ' ' + row.unit) + '</div>' + (row.edge === null ? '' : meter(row.edge, max, Number.isFinite(mlEdge) ? mlEdge : null)) + '</td>' +
+        '<td><span class="fd-bb-cell">Edge</span><div class="fd-bb-edge ' + row.tone + '">' + (row.edge === null ? '—' : row.edge.toFixed(1) + ' ' + row.unit) + '</div>' + (row.edge === null ? '' : meter(row.edge, max, Number.isFinite(mlEdge) ? mlEdge : null)) + (edgeHint?'<small class="fd-desk-edge-hint">'+esc(edgeHint)+'</small>':'') + '</td>' +
         '<td class="fd-bb-conf"><span class="fd-bb-cell">Confidence</span>' + (row.pct === null ? 'Simulation unavailable' : Number(row.pct).toFixed(1) + '% sim · exploratory') + '</td></tr>';
     }).join('');
     return '<table class="fd-bb-table"><thead><tr><th>Pick</th><th>Model</th><th>ML</th><th>DK</th><th>Edge</th><th>Confidence</th></tr></thead><tbody>' + body + '</tbody></table>';
@@ -194,14 +208,40 @@
     const tableNode = doc.getElementById('fd-bb-table');
     const resultsNode = doc.getElementById('fd-bb-results');
     const slateNode = doc.getElementById('fd-bb-slate');
-    let tab = 'games';
+    let tab = 'all';
+    const slipRows=new Map();
     let games = [];
     let props = [];
     const draw = () => {
-      if (tableNode) tableNode.innerHTML = table(tab === 'props' ? props : games, tab === 'props' ? 15 : 8);
+      const combined = [...games.filter(row=>row.edge!==null),...props]
+        .sort((a,b)=>rankStrength(b)-rankStrength(a));
+      const selected=tab==='props'?props:tab==='games'?games:combined;
+      if(tableNode)tableNode.innerHTML=table(selected,tab==='all'?12:tab==='props'?15:8);
+      slipRows.clear();
+      for(const item of selected)if(item.slipKey)slipRows.set(item.slipKey,item);
       doc.querySelectorAll('[data-fd-bb-tab]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.fdBbTab === tab)));
     };
     doc.querySelectorAll('[data-fd-bb-tab]').forEach(button => button.addEventListener('click', () => { tab = button.dataset.fdBbTab; draw(); }));
+    if(tableNode)tableNode.addEventListener('click',event=>{
+      const button=event.target.closest('[data-fd-add-slip]');
+      if(!button)return;
+      const row=slipRows.get(button.getAttribute('data-fd-add-slip'));
+      if(!row)return;
+      const item={
+        key:row.slipKey,name:row.player||row.game,market:row.market||row.kind,
+        side:row.direction==='under'?'UNDER':row.direction==='over'?'OVER':row.kind==='Spread'?'SPREAD':'PICK',
+        line:Number(row.marketLine),price:null,
+        gameId:row.gameId||'',savedAt:new Date().toISOString()
+      };
+      try{
+        const key='fd-my-slip-v1',old=JSON.parse(localStorage.getItem(key)||'[]');
+        const items=Array.isArray(old)?old.filter(x=>x&&x.key!==item.key):[];
+        items.push(item);localStorage.setItem(key,JSON.stringify(items.slice(-30)));
+        button.textContent='✓ Added';button.setAttribute('aria-label',row.pick+' added to My slip');
+        const count=doc.getElementById('fd-desk-slip-count');
+        if(count)count.textContent=items.length+' saved';
+      }catch(e){button.textContent='Slip unavailable';}
+    });
     const get = path => fetch(path + '?t=' + Date.now(), {cache: 'no-store'}).then(response => response.ok ? response.json() : {}).catch(() => ({}));
     Promise.all([
       get('data/live-v2.json'),
@@ -219,11 +259,14 @@
       games = upcoming.flatMap(game => {
         const quote = quotes.find(row => row.home === game.home && row.away === game.away) || {};
         const sim = simGames.find(row => row.game_id === game.game_id) || {};
-        return gameEdgeRows(game, quote, sim).map(row => Object.assign({game: game.away + ' @ ' + game.home}, row, {pick: row.pick + ' · ' + game.away + ' @ ' + game.home}));
+        return gameEdgeRows(game, quote, sim).map(row => Object.assign({
+          game:game.away+' @ '+game.home,gameId:game.game_id,
+          home:game.home,away:game.away,slipKey:'game|'+game.game_id+'|'+row.kind
+        },row,{pick:row.pick+' · '+game.away+' @ '+game.home}));
       }).sort((a, b) => (b.edge || 0) - (a.edge || 0));
       const slateIds = new Set(upcoming.map(game => String(game.kickoff_utc).slice(0, 16)));
       const lines = (dk.rows || []).filter(row => slateIds.has(String(row.commence_time).slice(0, 16)));
-      props = propEdgeRows(research.players || research.rows || [], lines, sims.players || []);
+      props = propEdgeRows(research.players || research.rows || [], lines, sims.players || []).map(row=>({...row,slipKey:'prop|'+row.gameId+'|'+row.player+'|'+row.market}));
       const week = latestWeek(official.rows || []);
       const weekRows = week ? (official.rows || []).filter(row => Number(row.season) === week.season && Number(row.week) === week.week) : [];
       const propRows = week ? (playerResults.rows || []).filter(row => String(row.game_id || '').startsWith(week.season + '_' + String(week.week).padStart(2, '0') + '_') && (row.recommendation_result === 'hit' || row.recommendation_result === 'miss')) : [];
@@ -252,5 +295,5 @@
     }).catch(() => { if (tableNode) tableNode.textContent = 'Best edges are waiting for the published forecast.'; });
     draw();
   }
-  return {confidenceWords, mlCandidate, gameEdgeRows, propEdgeRows, propSimulationRate, findPropSimulation, gradeRate, latestWeek, meter, table, mount};
+  return {confidenceWords, mlCandidate, gameEdgeRows, propEdgeRows, propSimulationRate, findPropSimulation, gradeRate, latestWeek, rankStrength, meter, table, mount};
 });

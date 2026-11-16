@@ -16,6 +16,7 @@ const assert=require('node:assert/strict');
    if(u.includes('weekly-model-performance.json'))d={generated_at_utc:'2026-11-10T12:00:00Z',weekly_reports:[{season:2026,week:9,status:'graded_observed_only',completed_games:2,game_metrics:{home_margin:{mae:10,samples:2}},player_metrics:{passing_yards:{mae:20,samples:4}}}]};
    return r.fulfill({json:d});});
   await page.goto('http://127.0.0.1:8123/index.html');
+  await page.locator('#fd-desk-games > summary').click();
   await page.waitForSelector('#fd-live-board-cards .fd-live-board-card');
   assert.match(await page.locator('#fd-slate-pulse').innerText(),/Game Day Scoreboard/);
   assert.match(await page.locator('#fd-live-board-cards').innerText(),/WAS|NYG/);
