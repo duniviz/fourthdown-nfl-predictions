@@ -1,10 +1,17 @@
 const {chromium} = require('playwright');
 const assert = require('node:assert/strict');
+const fs = require('fs');
+
+function chromePath() {
+  if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
+  const candidates = ['/usr/bin/google-chrome', '/usr/local/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'];
+  return candidates.find(path => fs.existsSync(path)) || '/usr/bin/google-chrome';
+}
 
 (async () => {
   const browser = await chromium.launch({
     headless: true,
-    executablePath: process.env.CHROME_PATH || '/usr/local/bin/google-chrome',
+    executablePath: chromePath(),
     args: ['--no-sandbox', '--disable-dev-shm-usage']
   });
   for (const width of [400, 1440]) {
