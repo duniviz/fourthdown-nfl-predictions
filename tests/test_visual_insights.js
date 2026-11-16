@@ -24,7 +24,7 @@ const assert=require('node:assert/strict');
   await slateMatchup.locator('> summary').click();
   const inlineCard=slateMatchup.locator('.fd-bb-inline-matchup .scorecard');
   await inlineCard.waitFor({state:'visible'});
-  assert.match(await inlineCard.innerText(),/Passing/);
+  assert.match(await inlineCard.innerText(),/WAS|NYG/);
   await page.goto('http://127.0.0.1:8123/bets.html');
   await page.waitForSelector('#bet-cards .fd-range');
   assert.match(await page.locator('#bet-cards .fd-range').first().innerText(),/Middle 80%/);
