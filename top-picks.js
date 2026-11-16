@@ -1,4 +1,9 @@
 /* Current-slate Top 5 board. Yardage picks join the blend only with an exact-line simulation. */
+function topPicksTabsCollapsed(boards){
+ const sig=rows=>(rows||[]).map(row=>[row.kind,row.pick].join('|')).join('\n');
+ const present=['players','scoring','blended'].map(key=>sig(boards&&boards[key])).filter(Boolean);
+ return present.length>0&&new Set(present).size===1;
+}
 function topPicksHeading(count){
  const n=Number(count)||0;
  if(n>=5) return {title:'Top 5 Picks', note:''};
@@ -30,11 +35,14 @@ function topPicksHeading(count){
  const number=x=>x!==null&&x!==''&&x!==undefined&&Number.isFinite(Number(x))?Number(x):null;
  const pct=x=>number(x)!==null&&Number(x)>=0&&Number(x)<=100?Number(x):null;
  function render(){
+  if(topPicksTabsCollapsed(boards)&&active!=='blended') active='blended';
   const rows=boards[active]||[];
   const heading=topPicksHeading(rows.length);
   const title=document.getElementById('fd-top-picks-title');
   if(title) title.textContent=heading.title;
-  root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><div class="fd-top-pick-matchup"><span>GAME</span><strong>'+esc(x.game||'Matchup unavailable')+'</strong></div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p>'+(Number.isFinite(x.overPct)&&Number.isFinite(x.underPct)?'<div class="fd-top-pick-prob"><div class="fd-top-pick-prob-bar"><i style="width:'+x.overPct+'%"></i><b style="width:'+x.underPct+'%"></b></div><div><span>Over '+x.overPct.toFixed(1)+'% sim</span><span>Under '+x.underPct.toFixed(1)+'% sim</span></div></div>':'')+'<div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>'+(x.line===null?'Projection only':'No matched simulation')+'</strong>')+'</div></article>').join(''):'<p class="fd-top-pick-empty">No current-slate yardage projections or eligible scoring picks are available yet. Yardage projections remain visible when a live DK prop line is unavailable.</p>';
+  root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><div class="fd-top-pick-matchup"><span>GAME</span><strong>'+esc(x.game||'Matchup unavailable')+'</strong></div><h3>'+esc(x.pick)+'</h3><details class="fd-pick-reason"><summary>Why this pick?</summary><p>'+esc(x.detail)+'</p></details>'+(Number.isFinite(x.overPct)&&Number.isFinite(x.underPct)?'<div class="fd-top-pick-prob"><div class="fd-top-pick-prob-bar"><i style="width:'+x.overPct+'%"></i><b style="width:'+x.underPct+'%"></b></div><div><span>Over '+x.overPct.toFixed(1)+'% sim</span><span>Under '+x.underPct.toFixed(1)+'% sim</span></div></div>':'')+'<div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>'+(x.line===null?'Projection only':'No matched simulation')+'</strong>')+'</div></article>').join(''):'<p class="fd-top-pick-empty">No current-slate yardage projections or eligible scoring picks are available yet. Yardage projections remain visible when a live DK prop line is unavailable.</p>';
+  const tabsWrap=document.querySelector('.fd-top-picks-tabs');
+  if(tabsWrap) tabsWrap.hidden=topPicksTabsCollapsed(boards);
   tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdTopPicksTab===active)));
   const base=active==='players'?'Passing, rushing, and receiving yards only. Player cards show yardage projections, DK lines, and simulated over/under rates when available.':active==='scoring'?'One leading O/U, outright-winner, and spread pick, when current DraftKings lines and matching simulations support them.':'Top five across O/U, winner, spread, and player yardage picks with an exact matching simulation above 50%.';
   status.textContent=(heading.note?heading.note+' ':'')+base;
@@ -127,4 +135,4 @@ function topPicksHeading(count){
  }
  render();refresh();setInterval(refresh,300000);
 })();
-if(typeof module==='object'&&module.exports) module.exports={topPicksHeading};
+if(typeof module==='object'&&module.exports) module.exports={topPicksHeading,topPicksTabsCollapsed};

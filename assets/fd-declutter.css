@@ -1,0 +1,26 @@
+/* Fan declutter. Keeps the existing dark theme; presentation only. */
+.fd-freshness-badge{display:inline-flex;align-items:center;margin:12px 0 4px;padding:6px 12px;border:1px solid #2f6b52;border-radius:999px;background:#10261c;color:#d7ffef;font-size:12px;font-weight:750;line-height:1.4}
+.fd-freshness-badge.is-stale{border-color:#a56b2d;background:#3b2918;color:#ffe0a8}
+.fd-record-strip{margin:8px 0 14px}
+.fd-record-strip h2{font-size:16px}
+.fd-record-strip .fd-breakeven{border:1px dashed #8d7442;background:#241c10}
+.fd-record-strip .fd-breakeven strong{color:#ffd18b}
+body.fd2-ready .fd-record-strip .fd-history-mini-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+@media(max-width:850px){body.fd2-ready .fd-record-strip .fd-history-mini-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:480px){body.fd2-ready .fd-record-strip .fd-history-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+.fd-card-detail{margin:10px 0;border:1px solid #35546b;border-radius:12px;background:#0d1c2b;padding:0 12px}
+.fd-card-detail>summary{cursor:pointer;color:#d7fff0;font-weight:800;padding:12px 0;min-height:44px}
+.fd-card-research{margin:0 0 8px;color:#ffd18b;font-size:12px;font-weight:750}
+.fd-folded-signals{margin-top:14px;border:1px solid #35546b;border-radius:12px;background:#0e1c2a;padding:4px 12px}
+.fd-folded-signals>summary{cursor:pointer;color:#d7fff0;font-weight:800;padding:12px 0;min-height:44px}
+.fd-pick-reason{margin-top:8px}
+.fd-pick-reason>summary{cursor:pointer;color:#9af5da;font-weight:750}
+.fd-prop-help{display:flex;justify-content:flex-end;margin:0 0 8px}
+.fd-help-tip{border:1px solid #3d6d62;border-radius:999px;background:#123028;color:#d7ffef;font-weight:800;min-height:36px;padding:6px 12px;cursor:pointer}
+.fd-prop-help{position:relative}
+#fd-prop-help-tip{display:none;position:absolute;right:0;top:42px;z-index:5;max-width:min(360px,90vw);padding:10px 12px;border:1px solid #3d6d62;border-radius:10px;background:#10261c;color:#e8fff6;font-size:13px;line-height:1.45;box-shadow:0 8px 24px #0006}
+.fd-prop-help:hover #fd-prop-help-tip,.fd-prop-help:focus-within #fd-prop-help-tip,.fd-help-tip[aria-expanded="true"]+#fd-prop-help-tip{display:block}
+.fd-about-data,.fd-workflow-log{margin:12px 0;border:1px solid #35546b;border-radius:12px;padding:4px 12px;background:#0e1c2a}
+.fd-about-data>summary,.fd-workflow-log>summary{cursor:pointer;font-weight:800;color:#d7fff0;padding:12px 0;min-height:44px}
+.fd2-bottom a span{text-align:center;line-height:1.15}
+@media(prefers-reduced-motion:reduce){.fd-card-detail,.fd-folded-signals{scroll-behavior:auto}}

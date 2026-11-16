@@ -227,8 +227,11 @@
 .fd-appeal-tile small { color: #b7cde0; font-size: 12px; font-weight: 750; }
 .fd-appeal-tile strong { display: block; margin: 4px 0; color: #f4fbff; font-size: clamp(32px, 8vw, 44px); line-height: 1; }
 .fd-appeal-tile span { color: #d5e4ef; font-size: 13px; }
-.fd-appeal-trend { margin: 0; min-width: 0; }
-.fd-appeal-trend svg { display: block; width: 100%; height: auto; }
+.fd-appeal-lab{max-width:100%;min-width:0;overflow-x:auto}
+.fd-appeal-trend { margin: 0; min-width: 0; max-width: 100%; }
+.fd-appeal-trend svg { display: block; width: 100%; max-width: 100%; height: auto; }
+.fd-week-bars{width:100%;max-width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px}
+.fd-week-bars th,.fd-week-bars td{padding:6px 4px;text-align:left;overflow-wrap:anywhere}
 .fd-appeal-trend text { fill: #c5d5e2; font-size: 12px; font-family: system-ui, sans-serif; }
 .fd-appeal-grid { stroke: #2c4558; stroke-width: 1; }
 .fd-appeal-trend polyline { fill: none; stroke-width: 3; }

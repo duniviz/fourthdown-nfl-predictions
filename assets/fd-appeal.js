@@ -540,7 +540,6 @@
     const innerW = width - left - right;
     const innerH = height - top - bottom;
     const yOf = (rate) => top + innerH * (1 - rate / 100);
-    const xOf = (index) => weeks.length === 1 ? left + innerW / 2 : left + innerW * index / (weeks.length - 1);
     const series = [
       { key: "winner", name: "Winner", color: "#d6ff63" },
       { key: "ats", name: "ATS", color: "#8ecbff" },
@@ -548,19 +547,28 @@
     ];
     const guides = [0, 50, 100].map((tick) => '<line x1="' + left + '" x2="' + (width - right) + '" y1="' + yOf(tick) + '" y2="' + yOf(tick) + '" class="fd-appeal-grid"></line>' +
       '<text x="' + (left - 6) + '" y="' + (yOf(tick) + 4) + '" text-anchor="end">' + tick + "</text>").join("");
-    const labels = weeks.map((week, index) => '<text x="' + xOf(index) + '" y="' + (height - 12) + '" text-anchor="middle">W' + week.week + "</text>").join("");
-    const paths = series.map((item) => {
-      const pts = [];
-      weeks.forEach((week, index) => {
+    const groupW = innerW / weeks.length;
+    const barW = Math.max(8, Math.min(28, (groupW - 18) / series.length));
+    const bars = weeks.map((week, index) => {
+      const origin = left + groupW * index;
+      const shapes = series.map((item, seriesIndex) => {
         const rated = rateOf(week[item.key]);
-        if (rated) pts.push([xOf(index), yOf(rated.rate), rated]);
-      });
-      if (!pts.length) return "";
-      const poly = pts.length > 1 ? '<polyline points="' + pts.map((pt) => pt[0].toFixed(1) + "," + pt[1].toFixed(1)).join(" ") + '" stroke="' + item.color + '"></polyline>' : "";
-      const dots = pts.map((pt) => '<circle cx="' + pt[0].toFixed(1) + '" cy="' + pt[1].toFixed(1) + '" r="4.5" fill="' + item.color + '"><title>' +
-        item.name + " week " + " " + pt[2].rate.toFixed(1) + "% of " + pt[2].sample + "</title></circle>").join("");
-      return poly + dots;
+        if (!rated) return "";
+        const y = yOf(rated.rate);
+        const barHeight = Math.max(1, top + innerH - y);
+        const x = origin + 8 + seriesIndex * (barW + 3);
+        return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + barHeight.toFixed(1) + '" fill="' + item.color + '"><title>' +
+          item.name + " week " + week.week + " " + rated.rate.toFixed(1) + "% of " + rated.sample + "</title></rect>";
+      }).join("");
+      return shapes + '<text x="' + (origin + groupW / 2).toFixed(1) + '" y="' + (height - 12) + '" text-anchor="middle">W' + week.week + "</text>";
     }).join("");
+    const cell = (week, key) => {
+      const rated = rateOf(week[key]);
+      return rated ? rated.rate.toFixed(0) + "% of " + rated.sample : "n/a";
+    };
+    const table = '<table class="fd-week-bars"><caption>Week by week hit rates</caption><thead><tr><th scope="col">Week</th><th scope="col">Winner</th><th scope="col">ATS</th><th scope="col">O/U</th></tr></thead><tbody>' +
+      weeks.map((week) => "<tr><th scope=\"row\">Week " + week.week + "</th><td>" + esc(cell(week, "winner")) + "</td><td>" + esc(cell(week, "ats")) + "</td><td>" + esc(cell(week, "ou")) + "</td></tr>").join("") +
+      "</tbody></table>";
     const summary = series.map((item) => {
       const bits = weeks.map((week) => {
         const rated = rateOf(week[item.key]);
@@ -570,7 +578,7 @@
     }).join(". ");
     const legend = series.map((item) => '<span><i style="background:' + item.color + '"></i>' + item.name + "</span>").join("");
     return '<figure class="fd-appeal-trend"><svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="Week by week hit rates. ' + esc(summary) + '">' +
-      guides + paths + labels + '</svg><figcaption class="fd-appeal-legend">' + legend + "</figcaption></figure>";
+      guides + bars + '</svg><figcaption class="fd-appeal-legend">' + legend + "</figcaption></figure>" + table;
   }
 
   function near(a, b, hours) {
@@ -802,7 +810,7 @@
       const details = doc.createElement("details");
       details.className = "fd-appeal-fold";
       const summary = doc.createElement("summary");
-      summary.textContent = "Detailed accuracy and ML tables";
+      summary.textContent = "Advanced · average miss and leans high/low";
       deep.before(details);
       details.append(summary, deep);
     }

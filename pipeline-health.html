@@ -12,6 +12,7 @@ p,.muted{color:var(--dim)}.grid{display:grid;grid-template-columns:repeat(2,minm
 button{border:1px solid #397b76;background:#1c524d;color:#e8fff9;border-radius:10px;padding:10px 15px;font-weight:800;cursor:pointer}
 .slot{display:grid;grid-template-columns:115px 1fr;gap:13px;align-items:start;border-top:1px solid var(--line);padding:14px 0}.slot:first-child{border-top:0}
 footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);padding-top:20px;margin-top:28px}
+details.fd-workflow-log{margin-top:8px}details.fd-workflow-log>summary{cursor:pointer;font-size:21px;font-weight:800;padding:12px 0}
 @media(max-width:650px){.grid{grid-template-columns:1fr}.slot{grid-template-columns:1fr;gap:4px}}
 </style></head><body><main>
 <header><a class="brand" href="index.html">FOURTH<b>DOWN</b></a><a href="index.html">← Prediction Center</a></header>
@@ -22,7 +23,7 @@ footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);padding-
 <h2>Sunday scheduled refreshes</h2>
 <p class="detail">8:00 AM, 11:00 AM, 2:30 PM and 6:45 PM CT. A slot is verified only when a successful preset run and both newer DK game-odds and score forecast artifacts exist. Other game-day workflows may update independently.</p>
 <div class="panel" id="slots" aria-live="polite">Checking schedule…</div>
-<h2>Recent automation</h2><div class="panel" id="runs">Loading workflow runs…</div>
+<details class="fd-workflow-log"><summary>Recent automation log</summary><div class="panel" id="runs">Loading workflow runs…</div></details>
 <footer>Read-only status page. No predictions, odds, model weights or official locks are modified. GitHub's public API may be rate-limited or delayed; an unavailable check is marked unknown, never healthy. DraftKings refresh success is not proof that the bookmaker provided a changed quote. <a href="https://github.com/duniviz/fourthdown-nfl-predictions/actions">Open GitHub Actions</a>.</footer>
 </main><script>
 'use strict';

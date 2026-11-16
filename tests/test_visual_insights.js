@@ -19,7 +19,7 @@ const assert=require('node:assert/strict');
   await page.waitForSelector('#fd-live-board-cards .fd-live-board-card');
   assert.match(await page.locator('#fd-slate-pulse').innerText(),/Game Day Scoreboard/);
   assert.match(await page.locator('#fd-live-board-cards').innerText(),/WAS|NYG/);
-  await page.waitForSelector('#scoreboard-cards .fd-adv-card');
+  await page.waitForSelector('#scoreboard-cards .fd-adv-card', {state:'attached'});
   assert.match(await page.locator('#scoreboard-cards .fd-adv-card').first().textContent(),/Passing/);
   await page.goto('http://127.0.0.1:8123/bets.html');
   await page.waitForSelector('#bet-cards .fd-range');
