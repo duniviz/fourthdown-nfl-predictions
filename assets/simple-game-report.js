@@ -143,6 +143,8 @@ Promise.allSettled([read("data/game-official-results.json"),read("data/game-lear
  if(results[0].status!=="fulfilled")throw Error("Verified game grades unavailable");
  const grades=results[0].value,rows=Array.isArray(grades.rows)?grades.rows:[];
  playerRows=results[3].status==="fulfilled"&&Array.isArray(results[3].value.rows)?results[3].value.rows:[];
+ const scope=document.getElementById("fd-pick-scope");
+ if(scope&&window.fdPropBoard&&typeof window.fdPropBoard.ledgerGap==="function") scope.textContent=window.fdPropBoard.ledgerGap(playerRows,rows).historyNote||"";
  const weeks=[...new Set(rows.map(r=>String(r.season)+" Week "+String(r.week)))].sort((a,b)=>b.localeCompare(a,undefined,{numeric:true}));
  week.innerHTML='<option value="all">All graded games</option>'+weeks.map(w=>'<option value="'+esc(w)+'">'+esc(w)+'</option>').join("");
  const render=()=>{

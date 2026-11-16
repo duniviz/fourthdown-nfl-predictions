@@ -58,9 +58,15 @@
    const v=n(pct);if(v===null||v<0||v>100)return "";
    return '<div class="fd-v5-gauge" role="img" aria-label="'+esc(label)+': '+v.toFixed(1)+' percent in matched simulations"><div class="fd-v5-dial" style="--fd-v5-pct:'+clamp(v).toFixed(1)+'%"><span>'+v.toFixed(0)+'<small>%</small></span></div><div><b>'+esc(label)+'</b><small>Simulated outcome rate<br>Not calibrated betting confidence</small></div></div>';
  }
+ function missingSimulationMessage(game){
+   const finished=!!(game&&(game.state==="post"||/final/i.test(String(game.status||""))));
+   return finished
+     ? "No win simulation was saved for this finished game. Use the archived forecast and grade on this card."
+     : "No win simulation was saved for this game. The score projection is still on this card.";
+ }
  function scoreboardVisual(game,live,sims){
    const paired=gameSimulation(game,live,sims);
-   if(!paired)return '<div class="fd-v5-score-graphic fd-v5-muted">Matching game simulation unavailable · prediction numbers remain in the card below.</div>';
+   if(!paired)return '<div class="fd-v5-score-graphic fd-v5-muted">'+esc(missingSimulationMessage(game))+'</div>';
    const p=paired.projection,away=n(p.projected_away_score),home=n(p.projected_home_score);
    const projected=away!==null&&home!==null?
       '<div class="fd-v5-forecast"><span>'+esc(canon(game.away.abbr))+'<b>'+away.toFixed(1)+'</b></span><i>PROJECTED</i><span>'+esc(canon(game.home.abbr))+'<b>'+home.toFixed(1)+'</b></span></div>':"";
@@ -139,5 +145,5 @@
      load().catch(()=>{});win.setInterval(()=>load().catch(()=>{}),300000);
    }
  }
- return {mount,gameSimulation,linePoints,sparkline,historyChart};
+ return {mount,gameSimulation,linePoints,sparkline,historyChart,missingSimulationMessage};
 });

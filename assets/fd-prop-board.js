@@ -56,5 +56,43 @@
     }
     return {hits, graded: graded.length, window};
   }
-  return {YARDS, tabOf, matchesTab, countKey, marketOptions, gameTag, recordedHits};
+  function gameLabel(gameId) {
+    const parts = String(gameId || '').split('_');
+    return parts.length >= 4 ? parts[2] + ' at ' + parts[3] : String(gameId || 'a game');
+  }
+  function joinGames(labels) {
+    if (labels.length <= 1) return labels[0] || '';
+    if (labels.length === 2) return labels[0] + ' and ' + labels[1];
+    return labels.slice(0, -1).join(', ') + ', and ' + labels[labels.length - 1];
+  }
+  // Props counts every saved over/under grade. History counts that same grade only when
+  // the game also has a row on the verified score ledger.
+  function ledgerGap(rows, officialRows) {
+    const ids = new Set((officialRows || []).map(row => row && row.game_id).filter(Boolean));
+    const graded = (rows || []).filter(row => ['hit', 'miss', 'push'].includes(row.recommendation_result));
+    const onLedger = ids.size ? graded.filter(row => ids.has(row.game_id)) : graded;
+    const outside = ids.size ? graded.filter(row => !ids.has(row.game_id)) : [];
+    const games = [...new Set(outside.map(row => row.game_id))].map(gameLabel);
+    const summary = recordedHits(graded);
+    const empty = {
+      propsGraded: graded.length,
+      historyGraded: onLedger.length,
+      outside: outside.length,
+      games,
+      propsNote: '',
+      historyNote: ''
+    };
+    if (!outside.length) return empty;
+    const list = joinGames(games);
+    const windowLabel = summary.window ? 'This ' + summary.window + ' total' : 'This total';
+    return {
+      propsGraded: graded.length,
+      historyGraded: onLedger.length,
+      outside: outside.length,
+      games,
+      propsNote: windowLabel + ' counts every saved over/under grade, including ' + outside.length + ' from ' + list + '. History only counts games with a verified final score, so it shows ' + onLedger.length + '.',
+      historyNote: 'Verified picks count saved over/under grades for games with a final score on this ledger (' + onLedger.length + ' when all weeks are selected). Props also includes ' + outside.length + ' graded picks from ' + list + ', which do not have a game-score row here.'
+    };
+  }
+  return {YARDS, tabOf, matchesTab, countKey, marketOptions, gameTag, recordedHits, ledgerGap};
 });

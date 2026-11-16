@@ -1,5 +1,13 @@
 /* Current-slate Top 5 board. Yardage picks join the blend only with an exact-line simulation. */
+function topPicksHeading(count){
+ const n=Number(count)||0;
+ if(n>=5) return {title:'Top 5 Picks', note:''};
+ if(n<=0) return {title:'Top Picks', note:''};
+ const noun=n===1?'pick':'picks';
+ return {title:'Top Picks', note:n+' qualifying '+noun+' this week. A pick needs a matching simulation above 50%, so fewer than five can qualify.'};
+}
 (function(){
+ if(typeof document==='undefined') return;
  const root=document.getElementById('fd-top-picks-list'),status=document.getElementById('fd-top-picks-status');
  if(!root||!status)return;
  const tabs=[...document.querySelectorAll('[data-fd-top-picks-tab]')];
@@ -23,9 +31,13 @@
  const pct=x=>number(x)!==null&&Number(x)>=0&&Number(x)<=100?Number(x):null;
  function render(){
   const rows=boards[active]||[];
+  const heading=topPicksHeading(rows.length);
+  const title=document.getElementById('fd-top-picks-title');
+  if(title) title.textContent=heading.title;
   root.innerHTML=rows.length?rows.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><div class="fd-top-pick-matchup"><span>GAME</span><strong>'+esc(x.game||'Matchup unavailable')+'</strong></div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p>'+(Number.isFinite(x.overPct)&&Number.isFinite(x.underPct)?'<div class="fd-top-pick-prob"><div class="fd-top-pick-prob-bar"><i style="width:'+x.overPct+'%"></i><b style="width:'+x.underPct+'%"></b></div><div><span>Over '+x.overPct.toFixed(1)+'% sim</span><span>Under '+x.underPct.toFixed(1)+'% sim</span></div></div>':'')+'<div class="fd-top-pick-meta">'+(x.confidence!==null?'<strong>'+Number(x.confidence).toFixed(1)+'% simulated</strong>':'<strong>'+(x.line===null?'Projection only':'No matched simulation')+'</strong>')+'</div></article>').join(''):'<p class="fd-top-pick-empty">No current-slate yardage projections or eligible scoring picks are available yet. Yardage projections remain visible when a live DK prop line is unavailable.</p>';
   tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdTopPicksTab===active)));
-  status.textContent=active==='players'?'Passing, rushing, and receiving yards only. Player cards show yardage projections, DK lines, and simulated over/under rates when available.':active==='scoring'?'One leading O/U, outright-winner, and spread pick, when current DraftKings lines and matching simulations support them.':'Top five across O/U, winner, spread, and player yardage picks with an exact matching simulation above 50%.';
+  const base=active==='players'?'Passing, rushing, and receiving yards only. Player cards show yardage projections, DK lines, and simulated over/under rates when available.':active==='scoring'?'One leading O/U, outright-winner, and spread pick, when current DraftKings lines and matching simulations support them.':'Top five across O/U, winner, spread, and player yardage picks with an exact matching simulation above 50%.';
+  status.textContent=(heading.note?heading.note+' ':'')+base;
  }
  tabs.forEach(b=>b.addEventListener('click',()=>{active=b.dataset.fdTopPicksTab;render();}));
  async function refresh(){
@@ -107,10 +119,12 @@
    boards.players=playerCandidates.sort((a,b)=>(b.confidence??-1)-(a.confidence??-1)||b.rank-a.rank).filter(x=>{const k=x.pick+'|'+x.kind;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,5);
    boards.blended=blend.sort((a,b)=>b.confidence-a.confidence).slice(0,5);
    render();
-   status.textContent='Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'numeric',minute:'2-digit',timeZoneName:'short'})+' · Current slate only.';
+   const heading=topPicksHeading((boards[active]||[]).length);
+   status.textContent=(heading.note?heading.note+' ':'')+'Updated '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'numeric',minute:'2-digit',timeZoneName:'short'})+' · Current slate only.';
   }catch(e){
    boards={players:[],scoring:[],blended:[]};render();status.textContent='Current Top 5 unavailable: waiting for fresh, matching forecast, DraftKings, and simulation feeds.';
   }
  }
  render();refresh();setInterval(refresh,300000);
 })();
+if(typeof module==='object'&&module.exports) module.exports={topPicksHeading};

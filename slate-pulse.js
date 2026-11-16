@@ -1,5 +1,24 @@
 /* Compact live scoreboard that opens the existing matchup detail view. */
+function scoreboardStatus(state){
+  const live = Number(state && state.live) || 0;
+  const upcoming = Number(state && state.upcoming) || 0;
+  const finals = Number(state && state.finals) || 0;
+  const feed = state && state.feed || 'loading';
+  const forecastFallback = !!(state && state.forecastFallback);
+  if (feed === 'failed') {
+    return forecastFallback
+      ? 'Live scores are unavailable · Showing upcoming matchups with published projections.'
+      : 'Live scores are unavailable.';
+  }
+  if ((feed === 'loading' || !feed) && !live && !upcoming && !finals) return 'Loading live games…';
+  if (live) return live + ' game' + (live === 1 ? '' : 's') + ' in progress · Scores refresh with the live scoreboard feed.';
+  if (upcoming && !forecastFallback) return 'No games in progress · Showing the next kickoffs.';
+  if (finals) return 'No games in progress · Latest finals shown.';
+  if (forecastFallback) return 'No games in progress · Showing the next published kickoff.';
+  return 'No live or upcoming games.';
+}
 (()=>{
+ if(typeof document==='undefined') return;
  const root=document.getElementById('fd-slate-pulse');
  if(!root)return;
  const $=id=>root.querySelector('#'+id);
@@ -31,12 +50,13 @@
  let fallbackById=new Map(),showingForecastFallback=false;
  function render(){
   const all=Array.isArray(window.fdAllGames)?window.fdAllGames:[];
+  const feed=window.fdScoreboardFeed||(all.length?'ok':'loading');
   const live=all.filter(g=>g.state==='in').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
   let upcoming=all.filter(g=>g.state==='pre').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
   const finals=all.filter(g=>g.state==='post').sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
   fallbackById=new Map();
   showingForecastFallback=false;
-  if(!live.length&&!upcoming.length){
+  if(feed==='failed'&&!live.length&&!upcoming.length){
    const now=Date.now();
    upcoming=forecasts.filter(p=>Date.parse(p.kickoff_utc)>now).map(p=>{
     const g={id:String(p.game_id),date:p.kickoff_utc,state:'pre',status:'Scheduled',broadcast:'NFL',link:null,
@@ -48,9 +68,9 @@
    showingForecastFallback=upcoming.length>0;
   }
   const chosen=live.length?live.slice(0,5):upcoming.length?upcoming.slice(0,4):finals.slice(0,4);
-  const mode=live.length?'LIVE NOW':upcoming.length?'UP NEXT':'FINAL SCORES';
+  const mode=feed==='loading'&&!all.length?'LIVE SCOREBOARD':live.length?'LIVE NOW':upcoming.length?'UP NEXT':finals.length?'FINAL SCORES':'LIVE SCOREBOARD';
   $('fd-live-board-kicker').textContent=mode+' · NFL WEEK '+(forecasts[0]?.week||'');
-  $('fd-live-board-status').textContent=live.length?live.length+' game'+(live.length===1?'':'s')+' in progress · Scores refresh with the live scoreboard feed.':showingForecastFallback?'Live scores are unavailable · Showing upcoming matchups with published projections.':upcoming.length?'No games live right now · Showing the next kickoffs.':'No live or upcoming games · Latest finals shown.';
+  $('fd-live-board-status').textContent=scoreboardStatus({live:live.length,upcoming:showingForecastFallback?0:upcoming.length,finals:finals.length,feed,forecastFallback:showingForecastFallback});
   $('fd-live-board-cards').innerHTML=chosen.length?chosen.map((g,i)=>card(g,g.state,i)).join(''):'<p class="fd-live-board-empty">Waiting for the live scoreboard and forecast feeds…</p>';
  }
  root.addEventListener('click',event=>{
@@ -72,3 +92,4 @@
  window.addEventListener('fd-scoreboard-updated',render);
  setInterval(render,15000);
 })();
+if(typeof module==='object'&&module.exports) module.exports={scoreboardStatus};
