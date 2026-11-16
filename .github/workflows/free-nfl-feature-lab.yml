@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/free-nfl-feature-lab.yml'
       - 'research/free_nfl_feature_lab.py'
+      - 'research/select_market_ml.py'
+      - 'tests/test_select_market_ml.py'
       - 'tests/test_free_nfl_feature_lab.py'
       - 'tests/test_free_nfl_lab_workflow.py'
       - 'tools/refresh_weekly_player_ml_data.py'
@@ -33,6 +35,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -p test_free_nfl_feature_lab.py -v
           python -m unittest discover -s tests -p test_free_nfl_lab_workflow.py -v
+          python -m unittest discover -s tests -p test_select_market_ml.py -v
       - name: Build completed-game historical baseline training rows
         if: github.event_name != 'pull_request'
         run: |
@@ -42,12 +45,17 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           python -m research.free_nfl_feature_lab --start 2023 --input data/weekly-player-ml-training.csv --output data/research-free-nfl-features.json
+      - name: Select best research feature combination for each player and game market
+        if: github.event_name != 'pull_request'
+        run: python -m research.select_market_ml
       - name: Upload feature coverage and results
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: free-nfl-feature-research
-          path: data/research-free-nfl-features.json
+          path: |
+            data/research-free-nfl-features.json
+            data/market-ml-research-selection.json
           if-no-files-found: warn
           retention-days: 30
       - name: Publish research results only, never live predictions
@@ -67,7 +75,7 @@ jobs:
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/research-free-nfl-features.json
+          git add -f data/research-free-nfl-features.json data/market-ml-research-selection.json
           if ! git diff --cached --quiet; then
             git commit -m "Research: weekly free NFL feature coverage and ML ablation [skip ci]"
             git pull --rebase origin main
