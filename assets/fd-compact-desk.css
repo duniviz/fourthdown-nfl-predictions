@@ -236,3 +236,7 @@ html.fd-mobile-layout[data-fd-view="mobile"] .fd2-header .fd2-shell{display:grid
  body{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}
 }
 @media(min-width:851px){.fd2-bottom-menu{display:none!important}}
+
+html[data-fd-view="desktop"] .fd2-bottom,
+html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
+html[data-fd-view="desktop"] body{padding-bottom:0!important}
