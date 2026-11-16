@@ -16,6 +16,12 @@
     document.body.classList.add('fd-compact-desk');
     const results=document.getElementById('fd-bb-results');
     const tabs=home.querySelector('.fd-bb-tabs');
+    const savedCount=document.getElementById('fd-desk-slip-count');
+    if(savedCount){try{
+      const list=JSON.parse(localStorage.getItem('fd-my-slip-v1')||'[]');
+      if(Array.isArray(list))savedCount.textContent=list.length+' saved';
+    }catch(e){savedCount.textContent='Slip unavailable'}}
+
     if(results&&tabs)home.insertBefore(results,tabs);
     const layout=document.createElement('div');
     layout.id='fd-weekly-desk';
