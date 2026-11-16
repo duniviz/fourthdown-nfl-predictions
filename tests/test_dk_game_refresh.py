@@ -12,12 +12,19 @@ class DKGameRefreshTests(unittest.TestCase):
             "commence_time":kick,"bookmakers":[
               {"key":"other","last_update":stamp,"markets":[]},
               {"key":"draftkings","last_update":stamp,"markets":[
-                {"key":"spreads","outcomes":[{"name":"Green Bay Packers","point":-3.5}]},
-                {"key":"totals","outcomes":[{"name":"Over","point":44.5}]}]}]}
+                {"key":"spreads","outcomes":[{"name":"Green Bay Packers","point":-3.5,"price":-110},{"name":"Chicago Bears","point":3.5,"price":-105}]},
+                {"key":"totals","outcomes":[{"name":"Over","point":44.5,"price":105},{"name":"Under","point":44.5,"price":-125}]},
+                {"key":"h2h","outcomes":[{"name":"Green Bay Packers","price":-180},{"name":"Chicago Bears","price":155}]}]}]}
         rows=parse({"data":[event]},now)
         self.assertEqual(len(rows),1)
         self.assertEqual(rows[0]["home_spread"],-3.5)
         self.assertEqual(rows[0]["total"],44.5)
+        self.assertEqual(rows[0]["home_spread_price"],-110)
+        self.assertEqual(rows[0]["away_spread_price"],-105)
+        self.assertEqual(rows[0]["over_price"],105)
+        self.assertEqual(rows[0]["under_price"],-125)
+        self.assertEqual(rows[0]["home_moneyline_price"],-180)
+        self.assertEqual(rows[0]["away_moneyline_price"],155)
         self.assertEqual(rows[0]["observed_at_utc"],now.isoformat())
         self.assertEqual(rows[0]["updated_at_utc"],stamp)
         history=history_entry(rows[0])

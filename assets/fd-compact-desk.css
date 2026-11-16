@@ -87,3 +87,5 @@ body.fd-compact-desk main.wrap {max-width:1480px}
 @media(prefers-reduced-motion:reduce){
  .fd-desk-fold *,.fd-desk-add {transition:none!important;scroll-behavior:auto!important}
 }
+
+.fd-bb-inline-matchup{padding:10px 12px 12px}.fd-bb-inline-matchup:empty{display:none}.fd-bb-inline-matchup>.scorecard{margin:0!important;max-width:none!important}

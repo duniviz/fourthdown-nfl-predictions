@@ -51,15 +51,24 @@ def parse(payload, now):
             provider_valid=bool(provider_updated and provider_updated<=now and provider_updated<kickoff)
             updated=provider_updated if provider_valid else now
             markets={m.get("key"):m for m in book.get("markets",[]) if isinstance(m,dict)}
-            spread=next((finite(x.get("point")) for x in markets.get("spreads",{}).get("outcomes",[])
-                         if isinstance(x,dict) and x.get("name")==home),None)
-            total=next((finite(x.get("point")) for x in markets.get("totals",{}).get("outcomes",[])
-                        if isinstance(x,dict) and str(x.get("name","")).lower()=="over"),None)
-            if spread is None and total is None:
+            spread_outcomes=[x for x in markets.get("spreads",{}).get("outcomes",[]) if isinstance(x,dict)]
+            total_outcomes=[x for x in markets.get("totals",{}).get("outcomes",[]) if isinstance(x,dict)]
+            moneyline_outcomes=[x for x in markets.get("h2h",{}).get("outcomes",[]) if isinstance(x,dict)]
+            spread=next((finite(x.get("point")) for x in spread_outcomes if x.get("name")==home),None)
+            total=next((finite(x.get("point")) for x in total_outcomes if str(x.get("name","")).lower()=="over"),None)
+            def price(outcomes,name):
+                return next((finite(x.get("price")) for x in outcomes if str(x.get("name","")).casefold()==str(name).casefold()),None)
+            home_spread_price,away_spread_price=price(spread_outcomes,home),price(spread_outcomes,away)
+            over_price,under_price=price(total_outcomes,"over"),price(total_outcomes,"under")
+            home_moneyline_price,away_moneyline_price=price(moneyline_outcomes,home),price(moneyline_outcomes,away)
+            if spread is None and total is None and home_moneyline_price is None and away_moneyline_price is None:
                 continue
             out.append({"game_id":event.get("id"),"home_team":home,"away_team":away,
                         "commence_time":kickoff.isoformat(),"bookmaker":"draftkings",
-                        "home_spread":spread,"total":total,"updated_at_utc":updated.isoformat(),
+                        "home_spread":spread,"total":total,"home_spread_price":home_spread_price,"away_spread_price":away_spread_price,
+                        "over_price":over_price,"under_price":under_price,
+                        "home_moneyline_price":home_moneyline_price,"away_moneyline_price":away_moneyline_price,
+                        "updated_at_utc":updated.isoformat(),
                         "observed_at_utc":now.isoformat(),
                         "quote_timestamp_source":"provider" if provider_valid else "retrieval",
                         "provider_timestamp_status":("valid" if provider_valid else
@@ -116,7 +125,7 @@ def response_diagnostics(payload, now):
         if not valid:
             counts["invalid_book_timestamp"]+=1
             continue
-        if not any(isinstance(m,dict) and m.get("key") in ("spreads","totals")
+        if not any(isinstance(m,dict) and m.get("key") in ("spreads","totals","h2h")
                    and isinstance(m.get("outcomes"),list)
                    for b in valid for m in b.get("markets",[])):
             counts["no_usable_spread_or_total"]+=1
@@ -171,7 +180,7 @@ def main():
     if not key:
         raise RuntimeError("PARLAY_API_KEY missing; cannot refresh DraftKings game odds")
     params=urllib.parse.urlencode({"bookmakers":"draftkings","regions":"us",
-        "markets":"spreads,totals","oddsFormat":"american","dateFormat":"iso"})
+        "markets":"spreads,totals,h2h","oddsFormat":"american","dateFormat":"iso"})
     req=urllib.request.Request(BASE+"?"+params,headers={"X-API-Key":key,"Accept":"application/json"})
     with urllib.request.urlopen(req,timeout=35) as response:
         # These headers are included in the existing paid response; no extra request.
@@ -268,7 +277,7 @@ def main():
         key = (row["away"], row["home"], row["commence_time"])
         old = previous_by_game.get(key, {})
         combined = dict(row)
-        for field in ("home_spread", "total"):
+        for field in ("home_spread", "total", "home_spread_price", "away_spread_price", "over_price", "under_price", "home_moneyline_price", "away_moneyline_price"):
             if combined.get(field) is None and old.get(field) is not None:
                 combined[field] = old[field]
                 # Keep provenance of an older market-level quote.

@@ -63,6 +63,25 @@
       if(!node)return;
       for(const fold of [games,more,research])if(fold.contains(node))fold.open=true;
     }
+    function attachSlateCards(){
+      const visible=Array.isArray(window.fdVisibleGames)?window.fdVisibleGames:[];
+      const rows=document.querySelectorAll('#fd-bb-slate .fd-bb-row[data-home-team][data-away-team]:not(.fd-bb-final)');
+      for(const row of rows){
+        let slot=row.querySelector(':scope > .fd-bb-inline-matchup');
+        if(!slot){slot=document.createElement('div');slot.className='fd-bb-inline-matchup';slot.setAttribute('aria-label','Complete live matchup card');row.insertBefore(slot,row.querySelector(':scope > .fd-bb-detail'));}
+        const match=visible.find(g=>String(g.home?.abbr||'').toUpperCase()===row.dataset.homeTeam.toUpperCase()&&String(g.away?.abbr||'').toUpperCase()===row.dataset.awayTeam.toUpperCase());
+        if(!match){slot.replaceChildren();continue;}
+        const button=[...document.querySelectorAll('#scoreboard-cards [data-matchup-id]')].find(el=>el.dataset.matchupId===String(match.id));
+        const card=button&&button.closest('.scorecard');
+        if(card)slot.replaceChildren(card);
+      }
+    }
+    const scoreboardCards=document.getElementById('scoreboard-cards');
+    if(scoreboardCards)new MutationObserver(attachSlateCards).observe(scoreboardCards,{childList:true,subtree:true});
+    const slateHost=document.getElementById('fd-bb-slate');
+    if(slateHost)new MutationObserver(attachSlateCards).observe(slateHost,{childList:true,subtree:true});
+    window.addEventListener('fd-scoreboard-updated',attachSlateCards);
+    attachSlateCards();
     window.addEventListener('hashchange',revealHash);revealHash();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
