@@ -218,9 +218,10 @@
       const combined = [...games.filter(row=>row.edge!==null),...props]
         .sort((a,b)=>rankStrength(b)-rankStrength(a));
       const selected=tab==='props'?props:tab==='games'?games:combined;
-      if(tableNode)tableNode.innerHTML=table(selected,tab==='all'?12:tab==='props'?15:8);
+      const topFive=selected.slice(0,5);
+      if(tableNode)tableNode.innerHTML=table(topFive,5);
       slipRows.clear();
-      for(const item of selected)if(item.slipKey)slipRows.set(item.slipKey,item);
+      for(const item of topFive)if(item.slipKey)slipRows.set(item.slipKey,item);
       doc.querySelectorAll('[data-fd-bb-tab]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.fdBbTab === tab)));
     };
     doc.querySelectorAll('[data-fd-bb-tab]').forEach(button => button.addEventListener('click', () => { tab = button.dataset.fdBbTab; draw(); }));
