@@ -11,7 +11,7 @@ assert.equal(decide(late,[{head_branch:'main',event:'workflow_dispatch',created_
 assert.equal(decide(late,[{head_branch:'feature',event:'schedule',created_at:'2026-11-15T17:01:00Z'}],[game]).action,'dispatch');
 assert.equal(decide(late,[],[]).action,'ignore');
 assert.equal(decide(at('2026-11-15T17:20:00Z'),[],[{kickoff_utc:'2026-11-15T17:30:00Z'}]).action,'alert'); // Less than 25m to kickoff
-assert.equal(decide(at('2026-11-15T17:37:00Z'),[],[game]).action,'ignore'); // Outside recovery window
+assert.equal(decide(at('2026-11-15T17:45:00Z'),[],[game]).action,'ignore'); // Outside recovery window
 assert.equal(decide(at('2026-11-15T18:05:00Z'),[],[game]).action,'ignore'); // Already kicked
 assert.equal(decide(at('2026-11-16T17:07:00Z'),[],[game]).action,'ignore');
 assert.equal(decide(at('2026-07-12T16:07:00Z'),[],[{kickoff_utc:'2026-07-12T17:00:00Z'}]).action,'dispatch'); // CDT
@@ -23,6 +23,8 @@ const good={...failed,conclusion:'success'};
 const active={...failed,status:'in_progress',conclusion:null};
 const recovery={...failed,event:'workflow_dispatch',created_at:'2026-11-15T17:06:00Z'};
 assert.equal(decide(late,[failed],[game]).action,'dispatch');
+assert.equal(decide(at('2026-11-15T17:32:00Z'),[failed],
+  [{kickoff_utc:'2026-11-15T18:30:00Z'}]).action,'dispatch'); // Failed 30m job
 assert.equal(decide(late,[good],[game]).action,'ignore');
 assert.equal(decide(late,[active],[game]).action,'ignore');
 assert.equal(decide(late,[failed,{...recovery,conclusion:'success'}],[game]).action,'ignore');
