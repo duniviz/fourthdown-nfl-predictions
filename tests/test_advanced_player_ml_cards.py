@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 from research.publish_advanced_player_ml import fit_selected,features_for_player
 from live.advanced_player_ml import candidate,load_pair,FAMILY
 
-BASE=[100.,95.,7.,28.,110.,65.,1.,10.]
+BASE=[100.,95.,7.,28.,110.,65.,1.]
 MODEL={"variant":"baseline_features","feature_groups":[],
        "coefficients":[1.0]+[0.0]*7,"intercept":1.0,
        "trained_season":2026,"trained_week":9,"active":False}
