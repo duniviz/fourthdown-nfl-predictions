@@ -11,10 +11,10 @@
   }
   function dateKey(date) { return date.getUTCFullYear() + String(date.getUTCMonth() + 1).padStart(2, '0') + String(date.getUTCDate()).padStart(2, '0'); }
   function addDays(year, month, day, days) { const date = new Date(Date.UTC(year, month - 1, day + days)); return {date, key: dateKey(date)}; }
-  // A new slate begins at midnight Tuesday in Central time, after Monday's games.
+  // A new slate begins at 6 a.m. Tuesday in Central time, after Monday's games.
   function get(now) {
     now = now || new Date(); const p = parts(now), weekday = DAY[p.weekday];
-    const startOffset = weekday === DAY.Tue ? 2 : weekday === DAY.Wed ? 1 : -((weekday - DAY.Thu + 7) % 7);
+    const startOffset = weekday === DAY.Tue ? (Number(p.hour) >= 6 ? 2 : -5) : weekday === DAY.Wed ? 1 : -((weekday - DAY.Thu + 7) % 7);
     const start = addDays(Number(p.year), Number(p.month), Number(p.day), startOffset);
     const end = addDays(start.date.getUTCFullYear(), start.date.getUTCMonth() + 1, start.date.getUTCDate(), 4);
     const requestEnd = addDays(end.date.getUTCFullYear(), end.date.getUTCMonth() + 1, end.date.getUTCDate(), 1);
