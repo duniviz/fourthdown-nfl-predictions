@@ -99,7 +99,7 @@ jobs:
           target=json.loads(Path("staging/backtest-target.json").read_text())
           if target["through_week"]<4:
               output={"status":"insufficient_completed_weeks","season":target["season"],"through_week":target["through_week"],"markets":{},"note":"At least four completed weeks required; no metrics fabricated."}
-              Path("staging/results/player-walkforward-backtest.json").write_text(json.dumps(output,indent=2)+"\\n")
+              Path("staging/results/player-walkforward-backtest.json").write_text(json.dumps(output,indent=2)+"\n")
               print("Backtest skipped: insufficient completed weeks")
           else:
               subprocess.run([sys.executable,"tools/backtest_player_yards_walkforward.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output","staging/results/player-walkforward-backtest.json"],check=True)
@@ -118,7 +118,7 @@ jobs:
           target=json.loads(Path("staging/backtest-target.json").read_text())
           output=Path("staging/results/passing-yards-model-lab.json")
           if target["through_week"]<6:
-              output.write_text(json.dumps({"status":"insufficient_history","production_change_approved":False,"results":{}},indent=2)+"\\n")
+              output.write_text(json.dumps({"status":"insufficient_history","production_change_approved":False,"results":{}},indent=2)+"\n")
           else:
               subprocess.run([sys.executable,"tools/passing_yards_model_lab.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--holdout-weeks","2","--output",str(output)],check=True)
               result=json.loads(output.read_text())
@@ -195,7 +195,7 @@ jobs:
           target=json.loads(Path("staging/backtest-target.json").read_text())
           output=Path("staging/results/player-residual-calibration.json")
           if target["through_week"]<5:
-              output.write_text(json.dumps({"status":"insufficient_history","markets":{}})+"\\n")
+              output.write_text(json.dumps({"status":"insufficient_history","markets":{}})+"\n")
           else:
               subprocess.run([sys.executable,"tools/calibrate_player_residuals.py","--weekly-csv","staging/player_stats.csv","--season",str(target["season"]),"--through-week",str(target["through_week"]),"--output",str(output)],check=True)
           PY
@@ -245,7 +245,7 @@ jobs:
           if not data.get("comparisons") or not data.get("counts",{}).get("total"):
               raise SystemExit("No player comparisons; skipping publication")
           target=Path("data/research-dk-comparisons.json")
-          target.write_text(json.dumps(data,indent=2)+"\\n")
+          target.write_text(json.dumps(data,indent=2)+"\n")
           print("Published research-only comparison snapshot:",data["counts"])
           PY
           python tools/publish_prop_desk_research.py --ranking-json staging/results/prop-ranking-diagnostics.json --calibration-json staging/results/player-residual-calibration.json --output data/research-prop-desk.json
@@ -259,7 +259,7 @@ jobs:
           data=json.loads(source.read_text())
           if data.get("status")!="supplemental_research_only":
               raise SystemExit("Unexpected injury flag status")
-          Path("data/research-injury-flags.json").write_text(json.dumps(data,indent=2)+"\\n")
+          Path("data/research-injury-flags.json").write_text(json.dumps(data,indent=2)+"\n")
           print("Published supplemental injury flags:",data.get("flagged_markets",0))
           PY
           fi
