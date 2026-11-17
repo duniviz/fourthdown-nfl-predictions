@@ -24,17 +24,23 @@ function scoreboardStatus(state){
  const allGamesToggle=root.querySelector('.fd-live-board-head>a');
  const fullScoreboard=document.getElementById('scoreboard');
  if(allGamesToggle&&fullScoreboard){
+  const setAllGamesVisible=(visible,scroll=false)=>{
+   fullScoreboard.hidden=!visible;
+   allGamesToggle.setAttribute('aria-expanded',String(visible));
+   allGamesToggle.innerHTML=visible?'Hide games <span aria-hidden="true">↙</span>':'All games <span aria-hidden="true">↗</span>';
+   if(visible&&scroll)requestAnimationFrame(()=>fullScoreboard.scrollIntoView({behavior:'smooth',block:'start'}));
+  };
   fullScoreboard.hidden=true;
   allGamesToggle.setAttribute('aria-controls','scoreboard');
   allGamesToggle.setAttribute('aria-expanded','false');
   allGamesToggle.addEventListener('click',event=>{
    event.preventDefault();
-   const opening=fullScoreboard.hidden;
-   fullScoreboard.hidden=!opening;
-   allGamesToggle.setAttribute('aria-expanded',String(opening));
-   allGamesToggle.innerHTML=opening?'Hide games <span aria-hidden="true">↙</span>':'All games <span aria-hidden="true">↗</span>';
-   if(opening)fullScoreboard.scrollIntoView({behavior:'smooth',block:'start'});
+   setAllGamesVisible(fullScoreboard.hidden,true);
   });
+  window.addEventListener('hashchange',()=>{
+   if(location.hash==='#scoreboard')setAllGamesVisible(true,true);
+  });
+  if(location.hash==='#scoreboard')setAllGamesVisible(true);
  }
  const $=id=>root.querySelector('#'+id);
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
