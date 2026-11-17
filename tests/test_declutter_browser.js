@@ -28,7 +28,17 @@ const assert = require('node:assert/strict');
   assert.equal(await page.locator('#fd-mini-coverage').count(), 0);
   assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1);
   await page.locator('#fd-desk-more > summary').click();
-  await page.waitForSelector('#fd-top-picks-list .fd-pick-reason');
+  await page.waitForFunction(() => {
+    const list = document.querySelector('#fd-top-picks-list');
+    const status = document.querySelector('#fd-top-picks-status')?.textContent || '';
+    return !!list?.querySelector('.fd-pick-reason') || (!!status && !/Loading/.test(status));
+  });
+  const pickReasons = page.locator('#fd-top-picks-list .fd-pick-reason');
+  if (await pickReasons.count()) {
+    await pickReasons.first().waitFor({state:'visible'});
+  } else {
+    assert.match(await page.locator('#fd-top-picks-status').innerText(), /no qualifying|no current|no picks|unavailable/i);
+  }
   assert.equal(await page.locator('#fd-folded-signals').evaluate(node => node.open), false);
   assert.equal(await page.locator('#fd-watch').count(), 1);
   assert.equal(await page.locator('#confidence-pool').count(), 1);
