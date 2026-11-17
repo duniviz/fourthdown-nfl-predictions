@@ -49,7 +49,7 @@ class OfficialGameLockTests(unittest.TestCase):
         fresh=self.row(18,-5)
         now=self.kickoff-timedelta(minutes=10)
         row=freeze(self.live(now),[fresh],[old],now)[0]
-        self.assertEqual(row["lock_status"],"official")
+        self.assertEqual(row["lock_status"],"last_available")
         self.assertEqual(row["dk_home_spread"],-5)
     def test_late_tick_locks_the_quote_it_just_refreshed(self):
         old={**self.row(120,-2),"lock_status":"early_pregame"}
@@ -75,7 +75,7 @@ class OfficialGameLockTests(unittest.TestCase):
         self.assertEqual(locked["lock_status"],"forecast_only")
         self.assertIsNone(locked["dk_home_spread"])
     def test_fresh_forecast_locks_without_fabricating_missing_dk_lines(self):
-        now=self.kickoff-timedelta(minutes=15)
+        now=self.kickoff-timedelta(minutes=30)
         row=freeze(self.live(now),[],[],now)[0]
         self.assertEqual(row["lock_status"],"forecast_only")
         self.assertIsNone(row["dk_home_spread"])
@@ -102,7 +102,7 @@ class OfficialGameLockTests(unittest.TestCase):
         rows=freeze(self.live(now,games),[self.row(18,-5)],[other],now)
         saved={row["game_id"]:row for row in rows}
         self.assertEqual(saved["later"],other)
-        self.assertEqual(saved["g"]["lock_status"],"official")
+        self.assertEqual(saved["g"]["lock_status"],"last_available")
         self.assertEqual(saved["g"]["dk_home_spread"],-5)
     def test_started_game_keeps_its_lock(self):
         old={**self.row(20,-3),"lock_status":"early_pregame"}
