@@ -3,7 +3,7 @@ import re
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from live.pregame_capture_guard import due_lock, due_refresh
+from live.pregame_capture_guard import due_lock, due_refresh, lock_wait_seconds
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/capture-game-pregame.yml"
@@ -96,6 +96,12 @@ class CaptureTimingTests(unittest.TestCase):
         self.assertTrue(due_lock(games, kickoff-timedelta(minutes=3)))
         self.assertFalse(due_lock(games, kickoff))
         self.assertFalse(due_lock(games, kickoff+timedelta(minutes=1)))
+
+    def test_wait_targets_t30_and_not_the_old_t15_boundary(self):
+        kickoff=datetime(2026,11,16,1,20,tzinfo=timezone.utc)
+        games=[{"kickoff_utc":kickoff.isoformat()}]
+        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),580)
+        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=30)),0)
 
     def test_refresh_chain_finishes_before_observation_and_lock_save(self):
         source=(ROOT / "live/pregame_cycle.py").read_text(encoding="utf-8")
