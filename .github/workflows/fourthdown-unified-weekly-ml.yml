@@ -32,6 +32,7 @@ on:
       - 'tests/test_ml_pipeline_integration.py'
       - 'research/grade_all_markets_paired.py'
       - 'tests/test_multiweek_paired_learning.py'
+      - 'tests/test_pregame_workflow_schedule.py'
   push:
     branches: [main]
     paths:

@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/capture-game-pregame.yml"
 GRADING = ROOT / ".github/workflows/nightly-game-grading.yml"
 FORECAST = ROOT / ".github/workflows/publish-v2.yml"
+WEEKLY_ML = ROOT / ".github/workflows/fourthdown-unified-weekly-ml.yml"
 
 
 def field(expr, lo, hi):
@@ -125,9 +126,12 @@ class CaptureTimingTests(unittest.TestCase):
 
     def test_tuesday_forecast_follows_successful_evaluation(self):
         source = FORECAST.read_text(encoding="utf-8")
-        self.assertIn("workflows: [Daily DraftKings player prop refresh, Tuesday pre-forecast evaluation]", source)
-        self.assertIn('github.event.workflow_run.name }}" == "Tuesday pre-forecast evaluation', source)
+        ml = WEEKLY_ML.read_text(encoding="utf-8")
+        self.assertIn("workflows: [Daily DraftKings player prop refresh, FOURTHDOWN unified weekly ML cycle]", source)
+        self.assertIn('github.event.workflow_run.name }}" == "FOURTHDOWN unified weekly ML cycle', source)
         self.assertLess(source.index('github.event.workflow_run.conclusion'), source.index('github.event.workflow_run.name'))
+        self.assertIn("workflows: [Tuesday pre-forecast evaluation]", ml)
+        self.assertNotIn("45 16 * * 3", ml)
 
     def test_nightly_grade_accepts_a_delayed_cron(self):
         source = GRADING.read_text(encoding="utf-8")
