@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-17T19:31:32.444434+00:00",
+  "generated_at_utc": "2026-11-17T23:42:35.485928+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -41,8 +41,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Jaylon Carlies",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Akeem Davis-Gaither",
               "position": "LB",
@@ -431,8 +436,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 2,
           "unmodeled_injuries": [
+            {
+              "player": "Ar'maj Reed-Adams",
+              "position": "G",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Tyrell Shavers",
               "position": "WR",
@@ -444,12 +454,17 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Jordan Phillips",
+              "position": "DT",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Zeek Biggers",
               "position": "DT",
-              "status": "Out"
+              "status": "Injured Reserve"
             },
             {
               "player": "Darrell Baker Jr.",
@@ -1687,8 +1702,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Wan'Dale Robinson",
+              "position": "WR",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Tommy Townsend",
               "position": "P",
@@ -2080,13 +2100,13 @@
           "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Aidan Hutchinson",
-              "position": "DE",
+              "player": "Kerby Joseph",
+              "position": "S",
               "status": "Out"
             },
             {
-              "player": "Kerby Joseph",
-              "position": "S",
+              "player": "Aidan Hutchinson",
+              "position": "DE",
               "status": "Out"
             },
             {
@@ -2513,12 +2533,12 @@
             {
               "player": "Jordan Burch",
               "position": "LB",
-              "status": "Out"
+              "status": "Injured Reserve"
             },
             {
               "player": "Andrew Wingard",
               "position": "S",
-              "status": "Out"
+              "status": "Injured Reserve"
             },
             {
               "player": "Zachary Carter",
@@ -2879,398 +2899,6 @@
           "game_total": {
             "baseline": 44.79,
             "candidate": 43.91,
-            "active": false,
-            "trained_season": 2026,
-            "trained_week": 10
-          }
-        }
-      }
-    },
-    {
-      "game_id": "2026_11_JAX_NYG",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "home": "NYG",
-      "away": "JAX",
-      "projected_home_score": 21.1,
-      "projected_away_score": 24.8,
-      "projected_margin_home": -3.73,
-      "projected_total": 45.84,
-      "predicted_winner": "JAX",
-      "injury_adjustments": {
-        "NYG": {
-          "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
-          "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
-        },
-        "JAX": {
-          "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
-          "players": [],
-          "reported_out": 1,
-          "unmodeled_injuries": [
-            {
-              "player": "B.J. Green II",
-              "position": "DE",
-              "status": "Injured Reserve"
-            }
-          ]
-        }
-      },
-      "qb_starter_adjustments": {
-        "NYG": {
-          "points": 0.0,
-          "status": "starter_already_in_team_baseline",
-          "players": [],
-          "confidence": "low"
-        },
-        "JAX": {
-          "points": 0.0,
-          "status": "starter_already_in_team_baseline",
-          "players": [],
-          "confidence": "low"
-        }
-      },
-      "analysis": {
-        "home": {
-          "team": "NYG",
-          "games_used": 9,
-          "offense_epa_rating": 0.0045,
-          "defense_epa_rating": -0.0087,
-          "offense_rank": 14,
-          "defense_rank": 13,
-          "ranked_teams": 32,
-          "recent_form": {
-            "games": 5,
-            "wins": 2,
-            "avg_points_for": 24.2,
-            "avg_points_against": 23.4,
-            "avg_margin": 0.8,
-            "results": [
-              {
-                "week": 5,
-                "points_for": 27,
-                "points_against": 27,
-                "result": "T"
-              },
-              {
-                "week": 6,
-                "points_for": 27,
-                "points_against": 34,
-                "result": "L"
-              },
-              {
-                "week": 7,
-                "points_for": 27,
-                "points_against": 21,
-                "result": "W"
-              },
-              {
-                "week": 9,
-                "points_for": 19,
-                "points_against": 11,
-                "result": "W"
-              },
-              {
-                "week": 10,
-                "points_for": 21,
-                "points_against": 24,
-                "result": "L"
-              }
-            ]
-          }
-        },
-        "away": {
-          "team": "JAX",
-          "games_used": 9,
-          "offense_epa_rating": 0.0724,
-          "defense_epa_rating": -0.0572,
-          "offense_rank": 3,
-          "defense_rank": 5,
-          "ranked_teams": 32,
-          "recent_form": {
-            "games": 5,
-            "wins": 4,
-            "avg_points_for": 33.0,
-            "avg_points_against": 18.2,
-            "avg_margin": 14.8,
-            "results": [
-              {
-                "week": 5,
-                "points_for": 19,
-                "points_against": 17,
-                "result": "W"
-              },
-              {
-                "week": 6,
-                "points_for": 31,
-                "points_against": 34,
-                "result": "L"
-              },
-              {
-                "week": 8,
-                "points_for": 42,
-                "points_against": 7,
-                "result": "W"
-              },
-              {
-                "week": 9,
-                "points_for": 33,
-                "points_against": 10,
-                "result": "W"
-              },
-              {
-                "week": 10,
-                "points_for": 40,
-                "points_against": 23,
-                "result": "W"
-              }
-            ]
-          }
-        },
-        "matchup_metrics": [
-          {
-            "category": "total",
-            "label": "Points / game",
-            "unit": "pts/g",
-            "away_offense": {
-              "rank": 4,
-              "value": 29.89
-            },
-            "home_defense": {
-              "rank": 12,
-              "value": 21.78
-            },
-            "home_offense": {
-              "rank": 14,
-              "value": 22.56
-            },
-            "away_defense": {
-              "rank": 2,
-              "value": 16.0
-            }
-          },
-          {
-            "category": "total",
-            "label": "Yards / play",
-            "unit": "yds/play",
-            "away_offense": {
-              "rank": 6,
-              "value": 6.06
-            },
-            "home_defense": {
-              "rank": 7,
-              "value": 5.12
-            },
-            "home_offense": {
-              "rank": 19,
-              "value": 5.29
-            },
-            "away_defense": {
-              "rank": 20,
-              "value": 5.5
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / play",
-            "unit": "EPA/play",
-            "away_offense": {
-              "rank": 3,
-              "value": 0.14
-            },
-            "home_defense": {
-              "rank": 13,
-              "value": -0.0
-            },
-            "home_offense": {
-              "rank": 12,
-              "value": 0.02
-            },
-            "away_defense": {
-              "rank": 4,
-              "value": -0.09
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / pass",
-            "unit": "EPA/pass",
-            "away_offense": {
-              "rank": 2,
-              "value": 0.27
-            },
-            "home_defense": {
-              "rank": 11,
-              "value": -0.01
-            },
-            "home_offense": {
-              "rank": 13,
-              "value": 0.06
-            },
-            "away_defense": {
-              "rank": 5,
-              "value": -0.09
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / rush",
-            "unit": "EPA/rush",
-            "away_offense": {
-              "rank": 12,
-              "value": 0.0
-            },
-            "home_defense": {
-              "rank": 25,
-              "value": 0.01
-            },
-            "home_offense": {
-              "rank": 21,
-              "value": -0.04
-            },
-            "away_defense": {
-              "rank": 3,
-              "value": -0.09
-            }
-          },
-          {
-            "category": "negative",
-            "label": "Sacks / game",
-            "unit": "sacks/g",
-            "away_offense": {
-              "rank": 6,
-              "value": 1.56
-            },
-            "home_defense": {
-              "rank": 26,
-              "value": 1.89
-            },
-            "home_offense": {
-              "rank": 27,
-              "value": 3.11
-            },
-            "away_defense": {
-              "rank": 25,
-              "value": 1.89
-            }
-          },
-          {
-            "category": "negative",
-            "label": "Turnovers / game",
-            "unit": "TO/g",
-            "away_offense": {
-              "rank": 5,
-              "value": 0.78
-            },
-            "home_defense": {
-              "rank": 16,
-              "value": 1.22
-            },
-            "home_offense": {
-              "rank": 22,
-              "value": 1.33
-            },
-            "away_defense": {
-              "rank": 3,
-              "value": 1.67
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "3rd down conversion",
-            "unit": "%",
-            "away_offense": {
-              "rank": 3,
-              "value": 47.3
-            },
-            "home_defense": {
-              "rank": 14,
-              "value": 39.5
-            },
-            "home_offense": {
-              "rank": 12,
-              "value": 41.0
-            },
-            "away_defense": {
-              "rank": 5,
-              "value": 33.7
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "4th down conversion",
-            "unit": "%",
-            "away_offense": {
-              "rank": 15,
-              "value": 57.1
-            },
-            "home_defense": {
-              "rank": 9,
-              "value": 44.4
-            },
-            "home_offense": {
-              "rank": 3,
-              "value": 80.0
-            },
-            "away_defense": {
-              "rank": 6,
-              "value": 40.0
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "Red-zone TD rate",
-            "unit": "%",
-            "away_offense": {
-              "rank": 13,
-              "value": 62.1
-            },
-            "home_defense": {
-              "rank": 32,
-              "value": 81.0
-            },
-            "home_offense": {
-              "rank": 15,
-              "value": 60.7
-            },
-            "away_defense": {
-              "rank": 6,
-              "value": 47.8
-            }
-          }
-        ],
-        "estimated_home_advantage_points": 1.5,
-        "scoring_edge_components": {
-          "home_offense_vs_away_defense": -2.37,
-          "away_offense_vs_home_defense": 2.86,
-          "home_field_points": 1.5,
-          "home_qb_adjustment_points": 0.0,
-          "away_qb_adjustment_points": 0.0
-        },
-        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
-      },
-      "weekly_learning": {
-        "version": "bias-v1",
-        "margin_adjustment": 0.0,
-        "total_adjustment": 1.355
-      },
-      "game_ml_shadow": {
-        "family": "game-score-ridge-v1",
-        "markets": {
-          "game_margin_home": {
-            "baseline": -3.73,
-            "candidate": -4.06,
-            "active": false,
-            "trained_season": 2026,
-            "trained_week": 10
-          },
-          "game_total": {
-            "baseline": 45.84,
-            "candidate": 48.27,
             "active": false,
             "trained_season": 2026,
             "trained_week": 10
@@ -3668,6 +3296,398 @@
           "game_total": {
             "baseline": 43.93,
             "candidate": 43.31,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          }
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_JAX_NYG",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "home": "NYG",
+      "away": "JAX",
+      "projected_home_score": 21.1,
+      "projected_away_score": 24.8,
+      "projected_margin_home": -3.73,
+      "projected_total": 45.84,
+      "predicted_winner": "JAX",
+      "injury_adjustments": {
+        "NYG": {
+          "points": 0.0,
+          "status": "no_confirmed_out_in_feed",
+          "players": [],
+          "reported_out": 0,
+          "unmodeled_injuries": []
+        },
+        "JAX": {
+          "points": 0.0,
+          "status": "insufficient_verified_replacement_data",
+          "players": [],
+          "reported_out": 1,
+          "unmodeled_injuries": [
+            {
+              "player": "B.J. Green II",
+              "position": "DE",
+              "status": "Injured Reserve"
+            }
+          ]
+        }
+      },
+      "qb_starter_adjustments": {
+        "NYG": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        },
+        "JAX": {
+          "points": 0.0,
+          "status": "starter_already_in_team_baseline",
+          "players": [],
+          "confidence": "low"
+        }
+      },
+      "analysis": {
+        "home": {
+          "team": "NYG",
+          "games_used": 9,
+          "offense_epa_rating": 0.0045,
+          "defense_epa_rating": -0.0087,
+          "offense_rank": 14,
+          "defense_rank": 13,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 2,
+            "avg_points_for": 24.2,
+            "avg_points_against": 23.4,
+            "avg_margin": 0.8,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 27,
+                "points_against": 27,
+                "result": "T"
+              },
+              {
+                "week": 6,
+                "points_for": 27,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 7,
+                "points_for": 27,
+                "points_against": 21,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 19,
+                "points_against": 11,
+                "result": "W"
+              },
+              {
+                "week": 10,
+                "points_for": 21,
+                "points_against": 24,
+                "result": "L"
+              }
+            ]
+          }
+        },
+        "away": {
+          "team": "JAX",
+          "games_used": 9,
+          "offense_epa_rating": 0.0724,
+          "defense_epa_rating": -0.0572,
+          "offense_rank": 3,
+          "defense_rank": 5,
+          "ranked_teams": 32,
+          "recent_form": {
+            "games": 5,
+            "wins": 4,
+            "avg_points_for": 33.0,
+            "avg_points_against": 18.2,
+            "avg_margin": 14.8,
+            "results": [
+              {
+                "week": 5,
+                "points_for": 19,
+                "points_against": 17,
+                "result": "W"
+              },
+              {
+                "week": 6,
+                "points_for": 31,
+                "points_against": 34,
+                "result": "L"
+              },
+              {
+                "week": 8,
+                "points_for": 42,
+                "points_against": 7,
+                "result": "W"
+              },
+              {
+                "week": 9,
+                "points_for": 33,
+                "points_against": 10,
+                "result": "W"
+              },
+              {
+                "week": 10,
+                "points_for": 40,
+                "points_against": 23,
+                "result": "W"
+              }
+            ]
+          }
+        },
+        "matchup_metrics": [
+          {
+            "category": "total",
+            "label": "Points / game",
+            "unit": "pts/g",
+            "away_offense": {
+              "rank": 4,
+              "value": 29.89
+            },
+            "home_defense": {
+              "rank": 12,
+              "value": 21.78
+            },
+            "home_offense": {
+              "rank": 14,
+              "value": 22.56
+            },
+            "away_defense": {
+              "rank": 2,
+              "value": 16.0
+            }
+          },
+          {
+            "category": "total",
+            "label": "Yards / play",
+            "unit": "yds/play",
+            "away_offense": {
+              "rank": 6,
+              "value": 6.06
+            },
+            "home_defense": {
+              "rank": 7,
+              "value": 5.12
+            },
+            "home_offense": {
+              "rank": 19,
+              "value": 5.29
+            },
+            "away_defense": {
+              "rank": 20,
+              "value": 5.5
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / play",
+            "unit": "EPA/play",
+            "away_offense": {
+              "rank": 3,
+              "value": 0.14
+            },
+            "home_defense": {
+              "rank": 13,
+              "value": -0.0
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 0.02
+            },
+            "away_defense": {
+              "rank": 4,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / pass",
+            "unit": "EPA/pass",
+            "away_offense": {
+              "rank": 2,
+              "value": 0.27
+            },
+            "home_defense": {
+              "rank": 11,
+              "value": -0.01
+            },
+            "home_offense": {
+              "rank": 13,
+              "value": 0.06
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "epa",
+            "label": "EPA / rush",
+            "unit": "EPA/rush",
+            "away_offense": {
+              "rank": 12,
+              "value": 0.0
+            },
+            "home_defense": {
+              "rank": 25,
+              "value": 0.01
+            },
+            "home_offense": {
+              "rank": 21,
+              "value": -0.04
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": -0.09
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Sacks / game",
+            "unit": "sacks/g",
+            "away_offense": {
+              "rank": 6,
+              "value": 1.56
+            },
+            "home_defense": {
+              "rank": 26,
+              "value": 1.89
+            },
+            "home_offense": {
+              "rank": 27,
+              "value": 3.11
+            },
+            "away_defense": {
+              "rank": 25,
+              "value": 1.89
+            }
+          },
+          {
+            "category": "negative",
+            "label": "Turnovers / game",
+            "unit": "TO/g",
+            "away_offense": {
+              "rank": 5,
+              "value": 0.78
+            },
+            "home_defense": {
+              "rank": 16,
+              "value": 1.22
+            },
+            "home_offense": {
+              "rank": 22,
+              "value": 1.33
+            },
+            "away_defense": {
+              "rank": 3,
+              "value": 1.67
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "3rd down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 3,
+              "value": 47.3
+            },
+            "home_defense": {
+              "rank": 14,
+              "value": 39.5
+            },
+            "home_offense": {
+              "rank": 12,
+              "value": 41.0
+            },
+            "away_defense": {
+              "rank": 5,
+              "value": 33.7
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "4th down conversion",
+            "unit": "%",
+            "away_offense": {
+              "rank": 15,
+              "value": 57.1
+            },
+            "home_defense": {
+              "rank": 9,
+              "value": 44.4
+            },
+            "home_offense": {
+              "rank": 3,
+              "value": 80.0
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 40.0
+            }
+          },
+          {
+            "category": "conversion",
+            "label": "Red-zone TD rate",
+            "unit": "%",
+            "away_offense": {
+              "rank": 13,
+              "value": 62.1
+            },
+            "home_defense": {
+              "rank": 32,
+              "value": 81.0
+            },
+            "home_offense": {
+              "rank": 15,
+              "value": 60.7
+            },
+            "away_defense": {
+              "rank": 6,
+              "value": 47.8
+            }
+          }
+        ],
+        "estimated_home_advantage_points": 1.5,
+        "scoring_edge_components": {
+          "home_offense_vs_away_defense": -2.37,
+          "away_offense_vs_home_defense": 2.86,
+          "home_field_points": 1.5,
+          "home_qb_adjustment_points": 0.0,
+          "away_qb_adjustment_points": 0.0
+        },
+        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
+      },
+      "weekly_learning": {
+        "version": "bias-v1",
+        "margin_adjustment": 0.0,
+        "total_adjustment": 1.355
+      },
+      "game_ml_shadow": {
+        "family": "game-score-ridge-v1",
+        "markets": {
+          "game_margin_home": {
+            "baseline": -3.73,
+            "candidate": -4.06,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          },
+          "game_total": {
+            "baseline": 45.84,
+            "candidate": 48.27,
             "active": false,
             "trained_season": 2026,
             "trained_week": 10
