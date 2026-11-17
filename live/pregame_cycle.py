@@ -186,7 +186,7 @@ def checkpoint(games):
     validate_due_locks(games,now())
 
 def next_wake(games,done,stamp):
-    times={k-timedelta(minutes=n) for k in slates(games) for n in (30,15) if n!=30 or k.isoformat() not in done}
+    times={k-LOCK_LEAD for k in slates(games) if stamp<k-LOCK_LEAD<=stamp+timedelta(hours=4)}
     return min((t for t in times if stamp<t<=stamp+timedelta(hours=4)),default=None)
 
 def main():
