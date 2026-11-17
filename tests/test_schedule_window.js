@@ -2,7 +2,7 @@ const assert = require('assert');
 const slate = require('../schedule-window.js');
 function at(iso) { return slate.get(new Date(iso)); }
 assert.strictEqual(at('2026-11-10T05:59:59Z').query, '20261105-20261110'); // Monday 11:59 PM CT
-assert.deepStrictEqual(at('2026-11-10T06:00:00Z'), {start: '20261112', end: '20261116', requestEnd: '20261117', query: '20261112-20261117'});
+assert.deepStrictEqual(at('2026-11-10T06:00:00Z'), {start: '20261105', end: '20261109', requestEnd: '20261110', query: '20261105-20261110'}); // Tuesday midnight CT stays on prior slate
 assert.strictEqual(at('2026-11-10T13:00:00Z').query, '20261112-20261117');
 assert.strictEqual(at('2026-11-11T18:00:00Z').query, '20261112-20261117');
 assert.strictEqual(at('2026-11-16T18:00:00Z').query, '20261112-20261117');
