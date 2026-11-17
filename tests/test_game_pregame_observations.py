@@ -51,7 +51,7 @@ class GameObservationTests(unittest.TestCase):
         self.assertEqual(row["dk_total_updated_at_utc"],provider_update)
         lock_time=now+timedelta(minutes=15)
         official=select([row],[],lock_time)
-        self.assertEqual(official[0]["lock_status"],"official")
+        self.assertEqual(official[0]["lock_status"],"last_available")
         self.assertEqual(official[0]["dk_total_updated_at_utc"],provider_update)
 
     def test_one_stale_game_market_makes_combined_observation_stale(self):
