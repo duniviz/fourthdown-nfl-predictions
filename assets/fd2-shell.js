@@ -109,7 +109,21 @@
   function scrollScoreboard() {
     const board = document.getElementById('scoreboard');
     if (!board) return false;
-    board.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    // The compact home page keeps the scoreboard inside a collapsed Games disclosure.
+    // Open every disclosure ancestor before scrolling so the Games link works even
+    // when the page is already on #scoreboard and no hashchange event will fire.
+    let parent = board.parentElement;
+    while (parent) {
+      if (parent.tagName === 'DETAILS') parent.open = true;
+      parent = parent.parentElement;
+    }
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    const scroll = () => board.scrollIntoView({behavior, block: 'start'});
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(scroll));
+    } else {
+      setTimeout(scroll, 0);
+    }
     return true;
   }
   document.addEventListener('click', event => {
