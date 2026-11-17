@@ -1,6 +1,9 @@
 name: FOURTHDOWN unified weekly ML cycle
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Tuesday pre-forecast evaluation]
+    types: [completed]
   pull_request:
     paths:
       - '.github/workflows/fourthdown-unified-weekly-ml.yml'
@@ -34,8 +37,6 @@ on:
     paths:
       - '.github/workflows/fourthdown-unified-weekly-ml.yml'
       - 'tools/train_deployable_player_ml.py'
-  schedule:
-    - cron: '45 16 * * 3'
 permissions:
   contents: write
 concurrency:
@@ -141,7 +142,7 @@ jobs:
           python -m live.validate_published
 
   weekly:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -264,9 +265,9 @@ jobs:
           if-no-files-found: warn
 
   historical-2016-2026:
-    # Keep the optional 2016-2026 sweep for the normal Wednesday cycle; do
-    # not duplicate that expensive sweep for a targeted training-code hotfix.
-    if: github.event_name != 'push'
+    # Keep the optional 2016-2026 sweep manual; the Tuesday weekly cycle
+    # should focus on current paired grading and deployment evidence.
+    if: github.event_name == 'workflow_dispatch'
     name: Extended history 2016-2026 (independent research)
     runs-on: ubuntu-latest
     timeout-minutes: 90
