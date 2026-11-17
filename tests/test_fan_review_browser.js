@@ -49,7 +49,7 @@ function chromePath() {
     await page.waitForFunction(() => /Verified picks/.test(document.querySelector('#fd-player-dataset')?.innerText || ''));
     await page.waitForFunction(() => /game-score row/.test(document.querySelector('#fd-pick-scope')?.innerText || ''));
     assert.match(await page.locator('#fd-player-dataset').innerText(), /838/);
-    assert.match(await page.locator('#fd-pick-scope').innerText(), /907|69/);
+    assert.match(await page.locator('#fd-pick-scope').innerText(), /993|155/);
     assert.match(await page.locator('#fd-pick-scope').innerText(), /Props also includes/);
 
     await page.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
