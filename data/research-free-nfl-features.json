@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-16T02:20:00.088048+00:00",
+  "generated_at_utc": "2026-11-17T23:41:58.818490+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
@@ -19,8 +19,8 @@
       "eligible_rows": 537
     },
     "ngs_passing_2026": {
-      "rows": 313,
-      "eligible_rows": 276
+      "rows": 340,
+      "eligible_rows": 303
     },
     "ngs_rushing_2023": {
       "rows": 623,
@@ -35,8 +35,8 @@
       "eligible_rows": 569
     },
     "ngs_rushing_2026": {
-      "rows": 318,
-      "eligible_rows": 273
+      "rows": 350,
+      "eligible_rows": 299
     },
     "ngs_receiving_2023": {
       "rows": 1473,
@@ -51,8 +51,8 @@
       "eligible_rows": 1213
     },
     "ngs_receiving_2026": {
-      "rows": 760,
-      "eligible_rows": 642
+      "rows": 813,
+      "eligible_rows": 688
     },
     "snap_2023": {
       "rows": 26540,
@@ -143,160 +143,160 @@
       "eligible_rows": 0
     },
     "snap_2026": {
-      "rows": 12785,
-      "eligible_rows": 12785
+      "rows": 14004,
+      "eligible_rows": 14004
     },
     "injuries_2026": {
       "rows": 3168,
       "eligible_rows": 0
     },
     "depth_2026": {
-      "rows": 794146,
+      "rows": 803510,
       "eligible_rows": 0
     },
     "pfr_pass_2026": {
-      "rows": 315,
+      "rows": 317,
       "eligible_rows": 0
     },
     "pfr_rush_2026": {
-      "rows": 1085,
+      "rows": 1093,
       "eligible_rows": 0
     },
     "pfr_rec_2026": {
-      "rows": 2167,
+      "rows": 2180,
       "eligible_rows": 0
     },
     "pfr_def_2026": {
-      "rows": 3901,
+      "rows": 3928,
       "eligible_rows": 0
     }
   },
   "markets": {
     "passing_yards": {
       "holdout_weeks": 8,
-      "holdout_rows": 200,
+      "holdout_rows": 203,
       "source_coverage": {
-        "ngs": 1363,
-        "snap": 1364,
+        "ngs": 1366,
+        "snap": 1367,
         "pfr": 0
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 200,
-          "baseline_mae": 66.137,
-          "challenger_mae": 63.911,
-          "improvement_pct": 3.37,
+          "samples": 203,
+          "baseline_mae": 66.579,
+          "challenger_mae": 64.529,
+          "improvement_pct": 3.08,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 200,
-          "baseline_mae": 66.137,
-          "challenger_mae": 64.243,
-          "improvement_pct": 2.86,
+          "samples": 203,
+          "baseline_mae": 66.579,
+          "challenger_mae": 64.871,
+          "improvement_pct": 2.57,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 200,
-          "baseline_mae": 66.137,
-          "challenger_mae": 63.931,
-          "improvement_pct": 3.34,
+          "samples": 203,
+          "baseline_mae": 66.579,
+          "challenger_mae": 64.561,
+          "improvement_pct": 3.03,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 200,
-          "baseline_mae": 66.137,
-          "challenger_mae": 64.199,
-          "improvement_pct": 2.93,
+          "samples": 203,
+          "baseline_mae": 66.579,
+          "challenger_mae": 64.839,
+          "improvement_pct": 2.61,
           "eligible_for_production": false
         }
       }
     },
     "rushing_yards": {
       "holdout_weeks": 8,
-      "holdout_rows": 396,
+      "holdout_rows": 406,
       "source_coverage": {
-        "ngs": 2204,
-        "snap": 2936,
+        "ngs": 2212,
+        "snap": 2946,
         "pfr": 0
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 396,
-          "baseline_mae": 23.857,
-          "challenger_mae": 23.375,
-          "improvement_pct": 2.02,
+          "samples": 406,
+          "baseline_mae": 24.027,
+          "challenger_mae": 23.589,
+          "improvement_pct": 1.82,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 396,
-          "baseline_mae": 23.857,
-          "challenger_mae": 23.23,
-          "improvement_pct": 2.63,
+          "samples": 406,
+          "baseline_mae": 24.027,
+          "challenger_mae": 23.46,
+          "improvement_pct": 2.36,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 396,
-          "baseline_mae": 23.857,
-          "challenger_mae": 23.381,
-          "improvement_pct": 2.0,
+          "samples": 406,
+          "baseline_mae": 24.027,
+          "challenger_mae": 23.595,
+          "improvement_pct": 1.8,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 396,
-          "baseline_mae": 23.857,
-          "challenger_mae": 23.22,
-          "improvement_pct": 2.67,
+          "samples": 406,
+          "baseline_mae": 24.027,
+          "challenger_mae": 23.443,
+          "improvement_pct": 2.43,
           "eligible_for_production": false
         }
       }
     },
     "receiving_yards": {
       "holdout_weeks": 8,
-      "holdout_rows": 932,
+      "holdout_rows": 950,
       "source_coverage": {
-        "ngs": 5235,
-        "snap": 6504,
+        "ngs": 5250,
+        "snap": 6522,
         "pfr": 0
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 932,
-          "baseline_mae": 24.424,
-          "challenger_mae": 24.127,
-          "improvement_pct": 1.22,
+          "samples": 950,
+          "baseline_mae": 24.431,
+          "challenger_mae": 24.144,
+          "improvement_pct": 1.18,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 932,
-          "baseline_mae": 24.424,
-          "challenger_mae": 24.025,
-          "improvement_pct": 1.63,
+          "samples": 950,
+          "baseline_mae": 24.431,
+          "challenger_mae": 24.047,
+          "improvement_pct": 1.57,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 932,
-          "baseline_mae": 24.424,
-          "challenger_mae": 24.042,
-          "improvement_pct": 1.56,
+          "samples": 950,
+          "baseline_mae": 24.431,
+          "challenger_mae": 24.068,
+          "improvement_pct": 1.49,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 932,
-          "baseline_mae": 24.424,
-          "challenger_mae": 23.968,
-          "improvement_pct": 1.86,
+          "samples": 950,
+          "baseline_mae": 24.431,
+          "challenger_mae": 23.992,
+          "improvement_pct": 1.8,
           "eligible_for_production": false
         }
       }
