@@ -1,16 +1,108 @@
 {
-  "generated_at_utc": "2026-11-16T04:15:23.453158+00:00",
+  "generated_at_utc": "2026-11-17T15:58:42.894212+00:00",
   "source": "US National Weather Service hourly forecast",
   "model_adjusted": false,
   "games": {
-    "2026_10_LAC_BAL": {
+    "2026_11_IND_HOU": {
+      "status": "roofed_stadium",
+      "roof": "covered_or_retractable",
+      "note": "Roof position not verified; outdoor forecast may not apply"
+    },
+    "2026_11_MIA_BUF": {
       "status": "forecast",
-      "temperature_f": 45,
+      "temperature_f": 60,
+      "wind_speed": "10 mph",
+      "wind_direction": "SW",
+      "precipitation_probability": 43,
+      "conditions": "Chance Rain Showers",
+      "forecast_period_start": "2026-11-22T13:00:00-05:00"
+    },
+    "2026_11_BAL_CAR": {
+      "status": "forecast",
+      "temperature_f": 69,
+      "wind_speed": "6 mph",
+      "wind_direction": "N",
+      "precipitation_probability": 5,
+      "conditions": "Mostly Sunny",
+      "forecast_period_start": "2026-11-22T13:00:00-05:00"
+    },
+    "2026_11_NO_CHI": {
+      "status": "forecast",
+      "temperature_f": 48,
+      "wind_speed": "10 mph",
+      "wind_direction": "WNW",
+      "precipitation_probability": 8,
+      "conditions": "Mostly Sunny",
+      "forecast_period_start": "2026-11-22T12:00:00-06:00"
+    },
+    "2026_11_TEN_DAL": {
+      "status": "roofed_stadium",
+      "roof": "covered_or_retractable",
+      "note": "Roof position not verified; outdoor forecast may not apply"
+    },
+    "2026_11_TB_DET": {
+      "status": "roofed_stadium",
+      "roof": "covered_or_retractable",
+      "note": "Roof position not verified; outdoor forecast may not apply"
+    },
+    "2026_11_ARI_KC": {
+      "status": "forecast",
+      "temperature_f": 48,
+      "wind_speed": "8 mph",
+      "wind_direction": "NNW",
+      "precipitation_probability": 1,
+      "conditions": "Sunny",
+      "forecast_period_start": "2026-11-22T12:00:00-06:00"
+    },
+    "2026_11_JAX_NYG": {
+      "status": "forecast",
+      "temperature_f": 60,
+      "wind_speed": "6 mph",
+      "wind_direction": "S",
+      "precipitation_probability": 30,
+      "conditions": "Chance Light Rain",
+      "forecast_period_start": "2026-11-22T13:00:00-05:00"
+    },
+    "2026_11_NYJ_LAC": {
+      "status": "roofed_stadium",
+      "roof": "covered_or_retractable",
+      "note": "Roof position not verified; outdoor forecast may not apply"
+    },
+    "2026_11_LV_DEN": {
+      "status": "forecast",
+      "temperature_f": 47,
       "wind_speed": "5 mph",
-      "wind_direction": "NW",
+      "wind_direction": "NE",
       "precipitation_probability": 0,
-      "conditions": "Mostly Clear",
-      "forecast_period_start": "2026-11-16T20:00:00-05:00"
+      "conditions": "Mostly Sunny",
+      "forecast_period_start": "2026-11-22T14:00:00-07:00"
+    },
+    "2026_11_PIT_PHI": {
+      "status": "forecast",
+      "temperature_f": 63,
+      "wind_speed": "5 mph",
+      "wind_direction": "N",
+      "precipitation_probability": 33,
+      "conditions": "Chance Light Rain",
+      "forecast_period_start": "2026-11-22T16:00:00-05:00"
+    },
+    "2026_11_MIN_SF": {
+      "status": "forecast",
+      "temperature_f": 54,
+      "wind_speed": "5 mph",
+      "wind_direction": "SSW",
+      "precipitation_probability": 39,
+      "conditions": "Chance Light Rain",
+      "forecast_period_start": "2026-11-22T17:00:00-08:00"
+    },
+    "2026_11_CIN_WAS": {
+      "status": "forecast",
+      "temperature_f": 48,
+      "wind_speed": "9 mph",
+      "wind_direction": "N",
+      "precipitation_probability": 5,
+      "conditions": "Partly Cloudy",
+      "forecast_period_start": "2026-11-23T20:00:00-05:00"
     }
   }
 }

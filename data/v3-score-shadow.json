@@ -1,8 +1,8 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-16T04:15:25.805221+00:00",
+  "generated_at_utc": "2026-11-17T15:58:49.025156+00:00",
   "season": 2026,
-  "week": 10,
+  "week": 11,
   "status": "research_only_not_for_live_or_betting_use",
   "production_change_approved": false,
   "coefficients": {
@@ -20,33 +20,405 @@
   ],
   "games": [
     {
-      "game_id": "2026_10_LAC_BAL",
+      "game_id": "2026_11_IND_HOU",
       "season": 2026,
-      "week": 10,
-      "kickoff_utc": "2026-11-17T01:15:00+00:00",
-      "home": "BAL",
-      "away": "LAC",
-      "projected_home_score": 18.7,
-      "projected_away_score": 15.4,
-      "projected_margin_home": 3.3,
-      "projected_total": 34.04,
-      "predicted_winner": "BAL",
+      "week": 11,
+      "kickoff_utc": "2026-11-20T01:15:00+00:00",
+      "home": "HOU",
+      "away": "IND",
+      "projected_home_score": 25.1,
+      "projected_away_score": 18.2,
+      "projected_margin_home": 6.98,
+      "projected_total": 43.31,
+      "predicted_winner": "HOU",
       "v2_reference": {
-        "projected_margin_home": 2.83,
-        "projected_total": 34.1
+        "projected_margin_home": 6.85,
+        "projected_total": 43.43
       },
       "feature_adjustments": {
-        "total_from_pace": -0.056,
-        "margin_from_success_and_pass_proxy": 0.472,
+        "total_from_pace": -0.119,
+        "margin_from_success_and_pass_proxy": 0.134,
         "home_features": {
-          "plays_per_game": 59.2,
-          "success_rate": 0.382,
-          "neutral_pass_proxy": 0.537
+          "plays_per_game": 60.4,
+          "success_rate": 0.424,
+          "neutral_pass_proxy": 0.586
         },
         "away_features": {
+          "plays_per_game": 61.6,
+          "success_rate": 0.419,
+          "neutral_pass_proxy": 0.539
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_MIA_BUF",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "BUF",
+      "away": "MIA",
+      "projected_home_score": 27.8,
+      "projected_away_score": 16.6,
+      "projected_margin_home": 11.17,
+      "projected_total": 44.38,
+      "predicted_winner": "BUF",
+      "v2_reference": {
+        "projected_margin_home": 10.72,
+        "projected_total": 44.32
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.061,
+        "margin_from_success_and_pass_proxy": 0.448,
+        "home_features": {
           "plays_per_game": 64.0,
-          "success_rate": 0.319,
-          "neutral_pass_proxy": 0.553
+          "success_rate": 0.475,
+          "neutral_pass_proxy": 0.466
+        },
+        "away_features": {
+          "plays_per_game": 59.8,
+          "success_rate": 0.405,
+          "neutral_pass_proxy": 0.522
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_BAL_CAR",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "CAR",
+      "away": "BAL",
+      "projected_home_score": 24.1,
+      "projected_away_score": 18.3,
+      "projected_margin_home": 5.82,
+      "projected_total": 42.35,
+      "predicted_winner": "CAR",
+      "v2_reference": {
+        "projected_margin_home": 5.58,
+        "projected_total": 42.41
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.059,
+        "margin_from_success_and_pass_proxy": 0.244,
+        "home_features": {
+          "plays_per_game": 64.8,
+          "success_rate": 0.395,
+          "neutral_pass_proxy": 0.617
+        },
+        "away_features": {
+          "plays_per_game": 57.8,
+          "success_rate": 0.37,
+          "neutral_pass_proxy": 0.595
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_NO_CHI",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "CHI",
+      "away": "NO",
+      "projected_home_score": 24.9,
+      "projected_away_score": 19.0,
+      "projected_margin_home": 5.99,
+      "projected_total": 43.9,
+      "predicted_winner": "CHI",
+      "v2_reference": {
+        "projected_margin_home": 5.33,
+        "projected_total": 43.6
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.301,
+        "margin_from_success_and_pass_proxy": 0.662,
+        "home_features": {
+          "plays_per_game": 66.4,
+          "success_rate": 0.461,
+          "neutral_pass_proxy": 0.581
+        },
+        "away_features": {
+          "plays_per_game": 59.8,
+          "success_rate": 0.378,
+          "neutral_pass_proxy": 0.582
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_TEN_DAL",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "DAL",
+      "away": "TEN",
+      "projected_home_score": 28.7,
+      "projected_away_score": 24.1,
+      "projected_margin_home": 4.65,
+      "projected_total": 52.75,
+      "predicted_winner": "DAL",
+      "v2_reference": {
+        "projected_margin_home": 4.36,
+        "projected_total": 52.11
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.641,
+        "margin_from_success_and_pass_proxy": 0.288,
+        "home_features": {
+          "plays_per_game": 71.0,
+          "success_rate": 0.462,
+          "neutral_pass_proxy": 0.58
+        },
+        "away_features": {
+          "plays_per_game": 58.6,
+          "success_rate": 0.42,
+          "neutral_pass_proxy": 0.604
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_TB_DET",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "DET",
+      "away": "TB",
+      "projected_home_score": 22.4,
+      "projected_away_score": 18.7,
+      "projected_margin_home": 3.64,
+      "projected_total": 41.09,
+      "predicted_winner": "DET",
+      "v2_reference": {
+        "projected_margin_home": 2.86,
+        "projected_total": 40.71
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.381,
+        "margin_from_success_and_pass_proxy": 0.778,
+        "home_features": {
+          "plays_per_game": 63.4,
+          "success_rate": 0.486,
+          "neutral_pass_proxy": 0.498
+        },
+        "away_features": {
+          "plays_per_game": 63.6,
+          "success_rate": 0.415,
+          "neutral_pass_proxy": 0.393
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_ARI_KC",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "KC",
+      "away": "ARI",
+      "projected_home_score": 29.0,
+      "projected_away_score": 15.5,
+      "projected_margin_home": 13.52,
+      "projected_total": 44.55,
+      "predicted_winner": "KC",
+      "v2_reference": {
+        "projected_margin_home": 12.83,
+        "projected_total": 44.79
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.239,
+        "margin_from_success_and_pass_proxy": 0.692,
+        "home_features": {
+          "plays_per_game": 59.8,
+          "success_rate": 0.485,
+          "neutral_pass_proxy": 0.589
+        },
+        "away_features": {
+          "plays_per_game": 61.0,
+          "success_rate": 0.39,
+          "neutral_pass_proxy": 0.623
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_JAX_NYG",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "home": "NYG",
+      "away": "JAX",
+      "projected_home_score": 21.4,
+      "projected_away_score": 25.3,
+      "projected_margin_home": -3.89,
+      "projected_total": 46.64,
+      "predicted_winner": "JAX",
+      "v2_reference": {
+        "projected_margin_home": -3.73,
+        "projected_total": 45.84
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.801,
+        "margin_from_success_and_pass_proxy": -0.162,
+        "home_features": {
+          "plays_per_game": 68.4,
+          "success_rate": 0.424,
+          "neutral_pass_proxy": 0.602
+        },
+        "away_features": {
+          "plays_per_game": 62.8,
+          "success_rate": 0.465,
+          "neutral_pass_proxy": 0.519
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_NYJ_LAC",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T21:05:00+00:00",
+      "home": "LAC",
+      "away": "NYJ",
+      "projected_home_score": 21.5,
+      "projected_away_score": 22.3,
+      "projected_margin_home": -0.74,
+      "projected_total": 43.79,
+      "predicted_winner": "NYJ",
+      "v2_reference": {
+        "projected_margin_home": 0.63,
+        "projected_total": 43.93
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.139,
+        "margin_from_success_and_pass_proxy": -1.366,
+        "home_features": {
+          "plays_per_game": 61.2,
+          "success_rate": 0.32,
+          "neutral_pass_proxy": 0.526
+        },
+        "away_features": {
+          "plays_per_game": 60.6,
+          "success_rate": 0.472,
+          "neutral_pass_proxy": 0.601
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_LV_DEN",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "home": "DEN",
+      "away": "LV",
+      "projected_home_score": 26.2,
+      "projected_away_score": 20.5,
+      "projected_margin_home": 5.69,
+      "projected_total": 46.64,
+      "predicted_winner": "DEN",
+      "v2_reference": {
+        "projected_margin_home": 6.08,
+        "projected_total": 47.38
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.739,
+        "margin_from_success_and_pass_proxy": -0.392,
+        "home_features": {
+          "plays_per_game": 57.6,
+          "success_rate": 0.365,
+          "neutral_pass_proxy": 0.556
+        },
+        "away_features": {
+          "plays_per_game": 58.2,
+          "success_rate": 0.395,
+          "neutral_pass_proxy": 0.632
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_PIT_PHI",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "home": "PHI",
+      "away": "PIT",
+      "projected_home_score": 20.7,
+      "projected_away_score": 24.3,
+      "projected_margin_home": -3.58,
+      "projected_total": 44.95,
+      "predicted_winner": "PIT",
+      "v2_reference": {
+        "projected_margin_home": -3.02,
+        "projected_total": 44.91
+      },
+      "feature_adjustments": {
+        "total_from_pace": 0.041,
+        "margin_from_success_and_pass_proxy": -0.56,
+        "home_features": {
+          "plays_per_game": 63.2,
+          "success_rate": 0.339,
+          "neutral_pass_proxy": 0.649
+        },
+        "away_features": {
+          "plays_per_game": 60.4,
+          "success_rate": 0.424,
+          "neutral_pass_proxy": 0.589
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_MIN_SF",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-23T01:20:00+00:00",
+      "home": "SF",
+      "away": "MIN",
+      "projected_home_score": 25.0,
+      "projected_away_score": 17.5,
+      "projected_margin_home": 7.49,
+      "projected_total": 42.47,
+      "predicted_winner": "SF",
+      "v2_reference": {
+        "projected_margin_home": 6.77,
+        "projected_total": 43.09
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.619,
+        "margin_from_success_and_pass_proxy": 0.716,
+        "home_features": {
+          "plays_per_game": 61.6,
+          "success_rate": 0.506,
+          "neutral_pass_proxy": 0.536
+        },
+        "away_features": {
+          "plays_per_game": 55.4,
+          "success_rate": 0.408,
+          "neutral_pass_proxy": 0.57
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_CIN_WAS",
+      "season": 2026,
+      "week": 11,
+      "kickoff_utc": "2026-11-24T01:15:00+00:00",
+      "home": "WAS",
+      "away": "CIN",
+      "projected_home_score": 23.3,
+      "projected_away_score": 28.3,
+      "projected_margin_home": -4.94,
+      "projected_total": 51.57,
+      "predicted_winner": "CIN",
+      "v2_reference": {
+        "projected_margin_home": -4.05,
+        "projected_total": 51.95
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.379,
+        "margin_from_success_and_pass_proxy": -0.89,
+        "home_features": {
+          "plays_per_game": 59.4,
+          "success_rate": 0.458,
+          "neutral_pass_proxy": 0.593
+        },
+        "away_features": {
+          "plays_per_game": 60.0,
+          "success_rate": 0.56,
+          "neutral_pass_proxy": 0.63
         }
       }
     }
