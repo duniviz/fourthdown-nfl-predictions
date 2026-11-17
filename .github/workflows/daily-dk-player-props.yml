@@ -1,9 +1,14 @@
 name: Daily DraftKings player prop refresh
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/daily-dk-player-props.yml'
+      - 'live/dk_game_refresh.py'
   schedule:
     # Refresh DraftKings player props and game lines daily around 4 PM Central.
     - cron: '40 21,22 * * *'
-    # Preserve hourly line refreshes for non-Sunday game days; Sunday uses the preset pipeline below.
+    # Preserve hourly player-line refreshes for non-Sunday game days; Sunday uses the preset pipeline below.
     - cron: '37 * * * 1,4,5,6'
   workflow_dispatch:
   workflow_call:
@@ -64,6 +69,12 @@ jobs:
             fi
           fi
           echo "run=true" >> "$GITHUB_OUTPUT"
+      - name: Refresh upcoming DK game spreads, totals, and moneylines
+        if: steps.schedule_guard.outputs.run == 'true' && github.event.schedule != '37 * * * 1,4,5,6'
+        continue-on-error: true
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: python -m live.dk_game_refresh
       - name: Refresh DK player props from primary feed
         if: steps.schedule_guard.outputs.run == 'true'
         continue-on-error: true
@@ -80,12 +91,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/dk-odds.json data/dk-opening-odds.json data/dk-game-odds.json
+          git add -f data/dk-odds.json data/dk-opening-odds.json data/dk-game-odds.json data/dk-game-line-history.json
           if [ -f data/sportsgameodds-usage.json ]; then
             git add -f data/sportsgameodds-usage.json
           fi
           if ! git diff --cached --quiet; then
-            git commit -m "data: refresh daily DraftKings player prop lines"
+            git commit -m "data: refresh daily DraftKings player and game lines"
             git pull --rebase origin main
             git push origin HEAD:main
           else
