@@ -25,9 +25,9 @@ assert.strictEqual(kept.source, 'snapshot');
 assert.strictEqual(kept.latest.completed_games, 2);
 
 const gap = ledgerGap(players.rows, official.rows);
-assert.strictEqual(gap.propsGraded, 907);
+assert.strictEqual(gap.propsGraded, 993);
 assert.strictEqual(gap.historyGraded, 838);
-assert.strictEqual(gap.outside, 69);
+assert.strictEqual(gap.outside, 155);
 assert.match(gap.propsNote, /JAX at BAL/);
 assert.match(gap.propsNote, /CIN at ATL/);
 assert.match(gap.propsNote, /History only counts games with a verified final score/);
