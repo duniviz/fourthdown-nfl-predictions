@@ -21,6 +21,21 @@ function scoreboardStatus(state){
  if(typeof document==='undefined') return;
  const root=document.getElementById('fd-slate-pulse');
  if(!root)return;
+ const allGamesToggle=root.querySelector('.fd-live-board-head>a');
+ const fullScoreboard=document.getElementById('scoreboard');
+ if(allGamesToggle&&fullScoreboard){
+  fullScoreboard.hidden=true;
+  allGamesToggle.setAttribute('aria-controls','scoreboard');
+  allGamesToggle.setAttribute('aria-expanded','false');
+  allGamesToggle.addEventListener('click',event=>{
+   event.preventDefault();
+   const opening=fullScoreboard.hidden;
+   fullScoreboard.hidden=!opening;
+   allGamesToggle.setAttribute('aria-expanded',String(opening));
+   allGamesToggle.innerHTML=opening?'Hide games <span aria-hidden="true">↙</span>':'All games <span aria-hidden="true">↗</span>';
+   if(opening)fullScoreboard.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+ }
  const $=id=>root.querySelector('#'+id);
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const aliases={JAX:'JAC',LA:'LAR',WSH:'WAS'};
@@ -45,7 +60,7 @@ function scoreboardStatus(state){
   return '<button type="button" class="fd-live-board-card '+(live?'is-live':final?'is-final':'is-upcoming')+'" data-game-id="'+esc(g.id)+'" aria-label="'+esc((live?'Open live matchup: ':final?'Open final matchup: ':'Open matchup: ')+g.away.abbr+' at '+g.home.abbr+(live||final?', '+g.away.score+' to '+g.home.score:'') )+'">'+
    '<span class="fd-live-card-kicker"><span class="fd-live-state">'+esc(label)+'</span><span class="fd-live-card-number">#'+(index+1)+'</span></span>'+
    '<span class="fd-live-scoreline">'+teamMarkup(g.away,g.away.score,score)+'<span class="fd-live-at">@</span>'+teamMarkup(g.home,g.home.score,score)+'</span>'+
-   '<span class="fd-live-card-detail">'+esc(aux)+'</span><span class="fd-live-card-link">Open matchup <b aria-hidden="true">↗</b></span></button>';
+   '<span class="fd-live-card-detail">'+esc(aux)+'</span><span class="fd-live-card-link">View full matchup <b aria-hidden="true">↗</b></span></button>';
  }
  let fallbackById=new Map(),showingForecastFallback=false;
  function render(){
