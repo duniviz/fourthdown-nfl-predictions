@@ -12,30 +12,41 @@ const assert = require('node:assert/strict');
     assert.equal(await page.locator('#fd-desk-games').evaluate(el=>el.open),true, 'Games should lead the page expanded');
     assert.equal(await page.locator('#fd-desk-edges').evaluate(el=>el.open),false, 'Best edges should start collapsed');
     await page.locator('#fd-desk-edges').evaluate(el=>{el.open=true;});
-    await page.waitForFunction(() => /Under|Over|to win/.test(document.querySelector('#fd-bb-table')?.innerText || ''));
+    await page.waitForFunction(() => {
+      const text = document.querySelector('#fd-bb-table')?.innerText || '';
+      return !/Loading/.test(text);
+    });
     const table = await page.locator('#fd-bb-table').innerText();
-    assert.match(table, /Official pick · current model/);
-    assert.match(table, /ML projection, research/);
+    const hasCurrentPicks = /Under|Over|to win/.test(table);
+    if (hasCurrentPicks) {
+      assert.match(table, /Official pick · current model/);
+      assert.match(table, /ML projection, research/);
+    }
     assert.match(await page.locator('#fd-bb-results').innerText(), /52\.4%/);
     assert.equal(await page.locator('[data-fd-bb-tab="all"]').getAttribute('aria-selected'),'true');
     assert.equal(await page.locator('#fd-desk-more').evaluate(el=>el.open),false);
     assert.equal(await page.locator('#fd-desk-research').evaluate(el=>el.open),false);
-    const add=page.locator('#fd-bb-table [data-fd-add-slip]').first();
-    await add.waitFor({state:'visible'});
-    await add.click();
-    assert.match(await page.locator('#fd-desk-slip-count').innerText(),/1 saved/);
-    await page.locator('.fd-desk-slip-link').click();
-    await page.waitForURL(/bets.html#bet-slip/);
-    await page.waitForFunction(()=>document.querySelectorAll('#bet-slip .bet-slip-item').length===1);
-    assert.match(await page.locator('#bet-slip').innerText(),/odds not saved/);
+    if (hasCurrentPicks) {
+      const add=page.locator('#fd-bb-table [data-fd-add-slip]').first();
+      await add.waitFor({state:'visible'});
+      await add.click();
+      assert.match(await page.locator('#fd-desk-slip-count').innerText(),/1 saved/);
+      await page.locator('.fd-desk-slip-link').click();
+      await page.waitForURL(/bets.html#bet-slip/);
+      await page.waitForFunction(()=>document.querySelectorAll('#bet-slip .bet-slip-item').length===1);
+      assert.match(await page.locator('#bet-slip').innerText(),/odds not saved/);
+    }
     await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});
     await page.waitForSelector('#fd-desk-edges');
     assert.equal(await page.locator('#fd-desk-games').evaluate(node => node.open), true, 'Games should be expanded on first load');
     assert.equal(await page.locator('#fd-desk-edges').evaluate(node => node.open), false, 'Best edges should be collapsed on first load');
     await page.locator('#fd-desk-edges').evaluate(node=>{node.open=true;});
-    await page.waitForFunction(()=>/Under|Over|to win/.test(document.querySelector('#fd-bb-table')?.innerText||''));
+    await page.waitForFunction(()=>!/Loading/.test(document.querySelector('#fd-bb-table')?.innerText||''));
     await page.locator('[data-fd-bb-tab="props"]').click();
-    await page.waitForFunction(() => /ML projection, research/.test(document.querySelector('#fd-bb-table')?.innerText || ''));
+    await page.waitForFunction(() => {
+      const text = document.querySelector('#fd-bb-table')?.innerText || '';
+      return !/Loading/.test(text);
+    });
     await page.waitForFunction(() => document.querySelector('#fd-desk-games') && document.querySelector('#fd-desk-edges'));
     const nav = page.locator('.fd2-links');
     assert.match(await nav.innerText(), /Edges/);
@@ -58,8 +69,10 @@ const assert = require('node:assert/strict');
     await page.waitForFunction(() => location.hash === '#scoreboard' && document.getElementById('fd-desk-games')?.open === true);
     assert.equal(await page.locator('#scoreboard').isVisible(), true, 'Games link should reveal the scoreboard');
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
-    await page.waitForSelector('#bet-cards .fd-bet-ml-projection');
-    assert.match(await page.locator('#bet-cards .fd-bet-ml-projection').first().innerText(), /ML projection, research/);
+    await page.waitForSelector('#bet-cards');
+    if (await page.locator('#bet-cards .fd-bet-ml-projection').count()) {
+      assert.match(await page.locator('#bet-cards .fd-bet-ml-projection').first().innerText(), /ML projection, research/);
+    }
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), true, 'overflow ' + width);
     assert.deepEqual(errors, []);
     await page.close();

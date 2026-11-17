@@ -51,9 +51,10 @@ function scoreboardStatus(state){
  function render(){
   const all=Array.isArray(window.fdAllGames)?window.fdAllGames:[];
   const feed=window.fdScoreboardFeed||(all.length?'ok':'loading');
-  const live=all.filter(g=>g.state==='in').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
-  let upcoming=all.filter(g=>g.state==='pre').sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
-  const finals=all.filter(g=>g.state==='post').sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+  const groups=window.fdScheduleWindow.splitGames(all,Date.now());
+  const live=groups.live.sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
+  let upcoming=groups.upcoming.sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
+  const finals=groups.finals.sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
   fallbackById=new Map();
   showingForecastFallback=false;
   if(feed==='failed'&&!live.length&&!upcoming.length){

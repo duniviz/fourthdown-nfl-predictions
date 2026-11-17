@@ -1928,14 +1928,16 @@ function fdSavedLock(g){
    if(document.getElementById('fd-accuracy'))document.getElementById('fd-accuracy').textContent=graded.length?(100*correct/graded.length).toFixed(1)+'%':'—';
    if(document.getElementById('fd-error'))document.getElementById('fd-error').textContent=graded.length?(graded.reduce((a,x)=>a+x.error,0)/graded.length).toFixed(1)+' pts':'—';
    if(document.getElementById('fd-grade-status'))document.getElementById('fd-grade-status').textContent=graded.length?'Graded '+graded.length+' completed games in the currently loaded scoreboard window. Older weeks will require historical results integration.':'No completed games with eligible archived pregame v2 forecasts in the current scoreboard window yet. The first saved archive will be published by the next successful v2 workflow run.';
-   const live=data.games.filter(g=>g.state==='in');
-   const final=data.games.filter(g=>g.state==='post');
-   const upcoming=data.games.filter(g=>g.state!=='in'&&g.state!=='post');
+   const groups=window.fdScheduleWindow.splitGames(data.games,Date.now());
+   const live=groups.live;
+   const final=groups.finals;
+   const upcoming=groups.upcoming;
+   const currentGames=[...live,...upcoming,...final];
    try{renderHybridSpotlight();}catch(widgetError){console.warn('Optional player spotlight unavailable',widgetError);}
    // Filter by Central calendar date to avoid hard-coding a CST UTC offset.
    const inSlate=g=>window.fdScheduleWindow.contains(slate,g.date);
    const visibleGames=[...live.filter(inSlate),...upcoming.filter(inSlate),...final.filter(inSlate)];
-   window.fdAllGames=data.games;window.fdScoreboardFeed='ok';window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));const sorted=visibleGames.filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(visibleGames);
+   window.fdAllGames=currentGames;window.fdScoreboardFeed='ok';window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));const sorted=visibleGames.filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(visibleGames);
    status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString('en-US',{timeZone:'America/Chicago'})+(age>45?' · DELAYED DATA':'');
    label.textContent=age<1?'Updated just now':'Updated '+age+'m ago';
    window.fdVisibleGames=sorted;

@@ -13,4 +13,14 @@ assert.strictEqual(at('2026-09-08T04:59:59Z').start, '20260903'); // daylight ti
 assert.strictEqual(at('2026-09-08T05:00:00Z').start, '20260910');
 assert.deepStrictEqual(slate.scoreboardDates(at('2026-11-10T06:00:00Z')), ['20261112', '20261113', '20261114', '20261115', '20261116']);
 assert.ok(slate.scoreboardDates(at('2026-11-10T06:00:00Z')).every(day => /^\d{8}$/.test(day)));
+const splitNow = Date.parse('2026-11-17T13:17:00Z'); // Tuesday morning CT
+const groups = slate.splitGames([
+  {id:'last-night',state:'pre',date:'2026-11-17T01:15:00Z'},
+  {id:'next-game',state:'pre',date:'2026-11-20T01:15:00Z'},
+  {id:'in-progress',state:'in',date:'2026-11-17T12:00:00Z'},
+  {id:'final',state:'post',date:'2026-11-16T18:00:00Z'}
+], splitNow);
+assert.deepStrictEqual(groups.live.map(g=>g.id), ['in-progress']);
+assert.deepStrictEqual(groups.upcoming.map(g=>g.id), ['next-game']);
+assert.deepStrictEqual(groups.finals.map(g=>g.id), ['final']);
 console.log('schedule-window tests passed');

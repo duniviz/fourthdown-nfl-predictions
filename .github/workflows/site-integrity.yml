@@ -23,6 +23,7 @@ on:
       - 'assets/fd-five-visuals.js'
       - 'assets/fd-five-visuals.css'
       - 'tests/test_fd_five_visuals.js'
+      - 'tests/test_schedule_window.js'
   pull_request:
     paths:
       - '*.html'
@@ -33,6 +34,7 @@ on:
       - '.github/workflows/capture-game-pregame.yml'
       - 'tests/test_pregame_workflow_schedule.py'
       - 'tests/test_dk_market_consistency.py'
+      - 'tests/test_schedule_window.js'
       - 'scripts/verify_nflverse_matchup_coverage.py'
       - '.github/workflows/site-integrity.yml'
 permissions:
@@ -55,6 +57,8 @@ jobs:
           done
       - name: Test odds display and inline matchup safeguards
         run: node tests/test_odds_display.js
+      - name: Test expired games stay out of the upcoming scoreboard
+        run: node tests/test_schedule_window.js
       - name: Test DraftKings game market prices
         run: python -m unittest discover -s tests -p 'test_dk_game_refresh.py' -v
       - name: Test player-name ambiguity safeguards

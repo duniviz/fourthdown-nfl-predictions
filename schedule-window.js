@@ -39,5 +39,14 @@
   }
   function centralDateKey(value) { const time = Date.parse(value); if (!Number.isFinite(time)) return ''; const p = parts(new Date(time)); return p.year + String(p.month).padStart(2, '0') + String(p.day).padStart(2, '0'); }
   function contains(window, value) { const key = centralDateKey(value); return !!key && key >= window.start && key <= window.end; }
-  return {ZONE, get, contains, centralDateKey, scoreboardDates};
+  function splitGames(games, now) {
+    now = Number.isFinite(Number(now)) ? Number(now) : Date.now();
+    const rows = Array.isArray(games) ? games : [];
+    return {
+      live: rows.filter(g => g && g.state === 'in'),
+      upcoming: rows.filter(g => g && g.state === 'pre' && Number.isFinite(Date.parse(g.date)) && Date.parse(g.date) > now),
+      finals: rows.filter(g => g && g.state === 'post')
+    };
+  }
+  return {ZONE, get, contains, centralDateKey, scoreboardDates, splitGames};
 });
