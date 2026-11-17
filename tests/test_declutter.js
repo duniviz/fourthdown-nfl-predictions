@@ -47,7 +47,7 @@ assert.match(home, /Research only, not the pick/);
 const shell = fs.readFileSync('assets/fd2-shell.js', 'utf8');
 assert.doesNotMatch(shell, /PREGAME INTELLIGENCE/);
 assert.match(shell, /Model Lab/);
-assert.match(shell, /#scoreboard/);
+assert.match(shell, /#fd-slate-pulse/);
 
 const bets = fs.readFileSync('bets.html', 'utf8');
 assert.doesNotMatch(bets, /Start here:/);

@@ -26,7 +26,9 @@ const assert = require('node:assert/strict');
   assert.ok(strip, 'Best edges results are available when expanded');
   assert.match(await page.locator('#fd-bb-results').innerText(), /52\.4%/);
   assert.equal(await page.locator('#fd-mini-coverage').count(), 0);
-  assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1);
+  await page.locator('#fd-desk-games').evaluate(node => { node.open = true; });
+  await page.locator('#fd-slate-pulse .fd-live-board-head>a').click();
+  assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1, 'All games reveals scoreboard filters');
   await page.locator('#fd-desk-more > summary').click();
   await page.waitForFunction(() => {
     const list = document.querySelector('#fd-top-picks-list');
@@ -43,12 +45,13 @@ const assert = require('node:assert/strict');
   assert.equal(await page.locator('#fd-watch').count(), 1);
   assert.equal(await page.locator('#confidence-pool').count(), 1);
   const games = page.locator('a', {hasText: /^Games$/});
-  assert.match(await games.first().getAttribute('href'), /#scoreboard/);
+  assert.match(await games.first().getAttribute('href'), /#fd-slate-pulse/);
   await page.locator('#fd-desk-games').evaluate(node => { node.open = false; });
   await games.first().click();
   await page.waitForFunction(() => {
     const box = document.getElementById('scoreboard')?.getBoundingClientRect();
-    return location.hash === '#scoreboard' && box && box.top < 320 && box.top > -40;
+    const board = document.getElementById('fd-slate-pulse')?.getBoundingClientRect();
+    return location.hash === '#fd-slate-pulse' && board && board.top < 320 && board.top > -40;
   });
 
   await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
