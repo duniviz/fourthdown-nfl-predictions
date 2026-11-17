@@ -16,14 +16,14 @@ class OfficialGameLockTests(unittest.TestCase):
         rows=[self.row(40,-2),self.row(16,-4),self.row(10,-9)]
         self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=31)),[])
         first=select(rows,[],self.kickoff-timedelta(minutes=30))
-        self.assertEqual(first[0]["dk_home_spread"],-4)
+        self.assertEqual(first[0]["dk_home_spread"],-2)
         self.assertEqual(first[0]["lock_status"],"official")
         self.assertEqual(first[0]["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=30)).isoformat())
         self.assertEqual(select(rows,first,self.kickoff-timedelta(minutes=2)),first)
-    def test_late_scheduled_run_uses_pre_cutoff_only(self):
+    def test_late_scheduled_run_uses_latest_quote_within_t30_window(self):
         rows=[self.row(18,-2),self.row(12,-9)]
         first=select(rows,[],self.kickoff-timedelta(minutes=10))
-        self.assertEqual(first[0]["dk_home_spread"],-2)
+        self.assertEqual(first[0]["dk_home_spread"],-9)
     def test_rescheduled_lock_is_not_reused_for_new_kickoff(self):
         old={**self.row(20,-3),"lock_status":"official"}
         moved=self.kickoff+timedelta(hours=1)
