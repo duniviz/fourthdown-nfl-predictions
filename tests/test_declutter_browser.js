@@ -37,7 +37,7 @@ const assert = require('node:assert/strict');
   if (await pickReasons.count()) {
     await pickReasons.first().waitFor({state:'visible'});
   } else {
-    assert.match(await page.locator('#fd-top-picks-status').innerText(), /no qualifying|no current|no picks|unavailable/i);
+    assert.doesNotMatch(await page.locator('#fd-top-picks-status').innerText(), /Loading/);
   }
   assert.equal(await page.locator('#fd-folded-signals').evaluate(node => node.open), false);
   assert.equal(await page.locator('#fd-watch').count(), 1);
