@@ -27,8 +27,14 @@ const assert = require('node:assert/strict');
   assert.match(await page.locator('#fd-bb-results').innerText(), /52\.4%/);
   assert.equal(await page.locator('#fd-mini-coverage').count(), 0);
   await page.locator('#fd-desk-games').evaluate(node => { node.open = true; });
+  await page.evaluate(() => { window.__openedMatchup = null; window.addEventListener('fd-open-matchup', event => { window.__openedMatchup = event.detail; }, {once:true}); });
   await page.locator('#fd-slate-pulse .fd-live-board-head>a').click();
-  assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1, 'All games reveals scoreboard filters');
+  assert.equal(await page.locator('#fd-slate-pulse .fd-live-board-head>a').getAttribute('aria-expanded'), 'true');
+  assert.equal(await page.locator('#scoreboard').isHidden(), true, 'All games expands compact cards without restoring the duplicate lower list');
+  assert.ok(await page.locator('#fd-live-board-cards [data-game-id]').count() > 4, 'All games shows the full slate in the top scoreboard');
+  await page.locator('#fd-live-board-cards [data-game-id]').first().click();
+  await page.waitForFunction(() => !!window.__openedMatchup?.id, null, {timeout:10000});
+  assert.ok(await page.evaluate(() => window.__openedMatchup.id), 'A scoreboard card opens its complete matchup');
   await page.locator('#fd-desk-more > summary').click();
   await page.waitForFunction(() => {
     const list = document.querySelector('#fd-top-picks-list');
