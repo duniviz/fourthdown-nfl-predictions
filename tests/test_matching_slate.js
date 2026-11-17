@@ -17,7 +17,7 @@ const assert=require('node:assert/strict');
     if(path.includes('simulations.json'))data={games:[{game_id:'2026_10_WAS_NYG',home_win_pct:60,away_win_pct:39,tie_pct:1,simulations:10000}],players:[]};
     return r.fulfill({json:data});
   });
-  await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});
+  await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});await page.locator('#fd-desk-edges').evaluate(node=>{node.open=true;});
   const shown = selector => page.locator(selector).evaluate(node => node.textContent || '');
   await page.waitForFunction(()=>document.querySelector('#scoreboard-cards')?.innerText.includes('BUF'));
   await page.waitForFunction(()=>(document.querySelector('#fd-watch-grid')?.textContent || '').includes('current scoreboard slate'));
