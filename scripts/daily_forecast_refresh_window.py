@@ -16,12 +16,15 @@ def daily_run_allowed(games, now, minimum_buffer=MIN_KICKOFF_BUFFER_MINUTES):
     if not games:
         return False, "No slate available to verify forecast timing"
 
+    parsed_kickoffs = [kickoff for game in games if (kickoff := dt(game.get("kickoff_utc"))) is not None]
+    if not parsed_kickoffs:
+        return False, "No valid kickoff found in the slate"
+
     today = now.astimezone(CENTRAL).date()
-    today_kickoffs = []
-    for game in games:
-        kickoff = dt(game.get("kickoff_utc"))
-        if kickoff is not None and kickoff.astimezone(CENTRAL).date() == today:
-            today_kickoffs.append(kickoff)
+    today_kickoffs = [
+        kickoff for kickoff in parsed_kickoffs
+        if kickoff.astimezone(CENTRAL).date() == today
+    ]
 
     if not today_kickoffs:
         return True, "No NFL game scheduled today"
