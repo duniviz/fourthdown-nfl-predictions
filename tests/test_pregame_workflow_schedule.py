@@ -88,14 +88,24 @@ class CaptureTimingTests(unittest.TestCase):
         self.assertIn("group: pregame-pipeline", source)
         self.assertIn("cancel-in-progress: false", source)
 
-    def test_lock_only_after_t15_and_before_kickoff(self):
+    def test_lock_only_inside_t30_window_before_kickoff(self):
         kickoff = datetime(2026, 11, 16, 1, 20, tzinfo=timezone.utc)
         games = [{"kickoff_utc": kickoff.isoformat()}]
-        self.assertFalse(due_lock(games, kickoff-timedelta(minutes=16)))
-        self.assertTrue(due_lock(games, kickoff-timedelta(minutes=15)))
+        self.assertFalse(due_lock(games, kickoff-timedelta(minutes=31)))
+        self.assertTrue(due_lock(games, kickoff-timedelta(minutes=30)))
         self.assertTrue(due_lock(games, kickoff-timedelta(minutes=3)))
         self.assertFalse(due_lock(games, kickoff))
         self.assertFalse(due_lock(games, kickoff+timedelta(minutes=1)))
+
+    def test_refresh_chain_finishes_before_observation_and_lock_save(self):
+        source=(ROOT / "live/pregame_cycle.py").read_text(encoding="utf-8")
+        refresh=source[source.index("def refresh("):source.index("def checkpoint(")]
+        self.assertLess(refresh.index('run_primary("game_odds"'), refresh.index('run_primary("player_props"'))
+        self.assertLess(refresh.index('run_primary("player_props"'), refresh.index('if backup_needed('))
+        self.assertLess(refresh.index('if backup_needed('), refresh.index('line_history.main()'))
+        checkpoint=source[source.index("def checkpoint("):source.index("def next_wake(")]
+        self.assertLess(checkpoint.index("observations.main()"), checkpoint.index("locks.main()"))
+        self.assertLess(checkpoint.index("locks.main()"), checkpoint.index('publish("Save pregame'))
 
     def test_paid_refresh_survives_a_late_tick(self):
         kickoff = datetime(2026, 11, 16, 1, 20, tzinfo=timezone.utc)
