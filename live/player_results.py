@@ -8,7 +8,7 @@ import nflreadpy as nfl
 from live.player_research import METRICS
 
 def select_frozen_ml_pairs(observations):
-    """Select the latest verified pair saved no later than 15 minutes pregame."""
+    """Select the latest verified pair saved within 30 minutes before kickoff."""
     def parsed(value):
         try:
             t=datetime.fromisoformat(str(value).replace("Z","+00:00"))
@@ -23,8 +23,8 @@ def select_frozen_ml_pairs(observations):
         forecast=parsed(row.get("forecast_captured_at_utc") or row.get("captured_at"))
         saved=parsed(row.get("saved_at_utc"))
         if not kickoff or not forecast or not saved: continue
-        cutoff=kickoff-timedelta(minutes=15)
-        if not forecast<=saved<=cutoff: continue
+        cutoff=kickoff-timedelta(minutes=30)
+        if not forecast<=saved<kickoff or saved<cutoff: continue
         when=(saved,forecast)
         if key not in found or when>found[key][0]:
             found[key]=(when,row["player_ml_shadow"])
