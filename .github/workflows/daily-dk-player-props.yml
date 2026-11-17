@@ -1,5 +1,10 @@
 name: Daily DraftKings player prop refresh
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/daily-dk-player-props.yml'
+      - 'live/dk_game_refresh.py'
   schedule:
     # Refresh DraftKings player props and game lines daily around 4 PM Central.
     - cron: '40 21,22 * * *'
