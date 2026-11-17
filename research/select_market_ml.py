@@ -20,7 +20,9 @@ def choose_player(market,report):
     weeks=int(report.get("holdout_weeks",0))
     coverage=report.get("source_coverage",{})
     available={}
+    legacy_names=('baseline_features','ngs','snap_counts','combined','pfr_advanced')
     for name,model in report.get("models",{}).items():
+        if name not in legacy_names:continue
         if model.get("status")!="evaluated" or int(model.get("samples",0))!=samples:
             continue
         # A dataset that was not observed cannot win a feature experiment.
@@ -37,11 +39,39 @@ def choose_player(market,report):
     # Prefer fewer sources in a near-tie; exclude missing PFR from "combined" provenance.
     order=("baseline_features","ngs","snap_counts","combined","pfr_advanced")
     winner=min(available,key=lambda x:(available[x],order.index(x)))
+    # Choose a new variant only by its earlier matched selection weeks. The
+    # final four weeks independently confirm that same candidate against the
+    # strongest established model on identical eligible player/game rows.
+    new_candidates=[]
+    for name,comparison in report.get('new_feature_comparisons',{}).items():
+        model=report.get('models',{}).get(name,{})
+        selected=comparison.get('selection') or {}
+        confirmed=comparison.get('confirmation') or {}
+        if model.get('status')!='evaluated' or int(model.get('samples',0))!=samples:continue
+        if int(selected.get('samples',0))<100 or int(selected.get('weeks',0))<4:continue
+        if int(confirmed.get('samples',0))<50 or int(confirmed.get('weeks',0))<3:continue
+        try:
+            ref=float(selected['reference_mae']); new=float(selected['candidate_mae'])
+            if ref<=0 or new>=ref or float(model.get('improvement_pct') or 0)<=0:continue
+            new_candidates.append(((ref-new)/ref,name,comparison))
+        except (KeyError,TypeError,ValueError):continue
+    selected_comparison=None
+    if new_candidates:
+        _,candidate,comparison=max(new_candidates,key=lambda x:x[0])
+        final=comparison['confirmation']
+        try:
+            if (float(final['candidate_mae']) < float(final['reference_mae'])
+                    and float(final['candidate_rmse']) <= float(final['reference_rmse'])):
+                winner=candidate
+                selected_comparison=comparison
+        except (KeyError,TypeError,ValueError):
+            pass
     gain=report["models"][winner].get("improvement_pct")
-    return {"research_winner":winner,"heldout_mae":round(available[winner],3),
+    return {"research_winner":winner,"heldout_mae":round(float(report['models'][winner]['challenger_mae']),3),
             "baseline_mae":report["models"][winner].get("baseline_mae"),
             "relative_improvement_pct":gain,"samples":samples,"weeks":weeks,
             "source_coverage":coverage,"card_model_changed":False,
+            "matched_new_feature_comparison":selected_comparison,
             "notes":"Retrospective weekly walk-forward result, not matched frozen live evidence"}
 
 def choose_games(runtime):

@@ -684,7 +684,7 @@ def generate():
                         advanced_shadow=advanced_ml_candidate(
                             advanced_ml_runtime,advanced_ml_features,metric,player,
                             season,week,baseline,old_projection,len(stats),
-                            sum(v)/len(v),recent_yards,team_targets.get(volume,0),ratio)
+                            sum(v)/len(v),recent_yards,team_targets.get(volume,0),ratio,opponent=opp)
                         if advanced_shadow is not None:
                             ml_shadow=advanced_shadow
                     results.append({

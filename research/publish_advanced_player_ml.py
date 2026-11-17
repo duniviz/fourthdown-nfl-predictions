@@ -15,7 +15,12 @@ from research.free_nfl_feature_lab import MARKET_SOURCE,lagged_values
 
 FAMILY="free-nfl-advanced-ridge-v1"
 GROUPS={"baseline_features":(),"ngs":("ngs",),"snap_counts":("snap",),
-        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr")}
+        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr"),
+        "weekly_workload":("workload",),"opponent_efficiency":("matchup",),
+        "workload_matchup":("workload","matchup"),
+        "advanced_workload":("ngs","snap","pfr","workload"),
+        "advanced_matchup":("ngs","snap","pfr","matchup"),
+        "advanced_all":("ngs","snap","pfr","workload","matchup")}
 LIMIT=0.25
 
 def feature_vector(row,groups):
@@ -55,18 +60,30 @@ def fit_selected(rows,report,target):
             "active":False}
     return selected
 
-def features_for_player(series,pfr_ids,pid,market,target):
+def features_for_player(series,pfr_ids,pid,market,target,opponent=None):
     if market not in MARKET_SOURCE:return None
     pfr=pfr_ids.get(str(pid))
     ngs=lagged_values(series,MARKET_SOURCE[market],pid,target,3)
     snap=lagged_values(series,"snap",pfr,target,1) if pfr else ([0.0],0.0)
     pfr_features=lagged_values(series,"pfr_"+{"passing_yards":"pass","rushing_yards":"rush","receiving_yards":"rec"}[market],pfr,target,3) if pfr else ([0.0]*3,0.0)
-    return {"ngs":ngs[0]+[ngs[1]],"snap":snap[0]+[snap[1]],"pfr":pfr_features[0]+[pfr_features[1]]}
+    workload=lagged_values(series,"workload_"+market,pid,target,3)
+    matchup=lagged_values(series,"matchup_"+market,opponent,target,3)
+    return {"ngs":ngs[0]+[ngs[1]],"snap":snap[0]+[snap[1]],"pfr":pfr_features[0]+[pfr_features[1]],
+            "workload":workload[0]+[workload[1]],"matchup":matchup[0]+[matchup[1]],"opponent":opponent}
 
-def build_source_features(series,pfr_ids,pids,target,models):
-    return {str(pid):{market:features_for_player(series,pfr_ids,pid,market,target)
-                      for market in models}
-            for pid in sorted({str(x) for x in pids if x})}
+def build_source_features(series,pfr_ids,players,target,models):
+    result={}
+    for player in players:
+        pid,market,opponent=player.get('player_id'),player.get('stat_key'),player.get('opponent')
+        if not pid or market not in models or not opponent:continue
+        feature=features_for_player(series,pfr_ids,pid,market,target,opponent)
+        entry=result.setdefault(str(pid),{})
+        # Same player/market in multiple matchups is ambiguous; exclude it.
+        if market in entry and entry[market] != feature:
+            entry[market]=None
+        elif market not in entry:
+            entry[market]=feature
+    return result
 
 def write_outputs(rows,series,pfr_ids,selection,season,week,player_ids,
                   runtime_path,features_path):

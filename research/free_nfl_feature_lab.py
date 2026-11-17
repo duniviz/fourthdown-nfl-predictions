@@ -12,6 +12,7 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from research.player_opportunity_features import add_weekly_features
 
 MARKET_SOURCE={'passing_yards':'passing','rushing_yards':'rushing','receiving_yards':'receiving'}
 NGS_METRICS={
@@ -46,6 +47,18 @@ def load_sources(nfl,seasons):
    except (Exception) as exc:
     print('SOURCE_UNAVAILABLE',name,type(exc).__name__,str(exc)[:170])
  for season in seasons:
+  try:
+   games=nfl.load_schedules([season]).to_dicts()
+   finals={str(g['game_id']) for g in games if g.get('game_type')=='REG' and g.get('game_id') and g.get('home_score') is not None and g.get('away_score') is not None}
+   frame=nfl.load_player_stats([season],summary_level='week')
+   columns=('season','week','season_type','game_id','player_id','team','opponent_team',
+            'target_share','air_yards_share','receiving_air_yards','receiving_yards','receiving_epa','receiving_20','targets',
+            'carries','rushing_yards','rushing_epa','rushing_10',
+            'attempts','passing_yards','passing_epa','passing_20')
+   stats=frame.select([c for c in columns if c in frame.columns]).to_dicts()
+   datasets[f'weekly_{season}']=[r for r in stats if str(r.get('game_id') or '') in finals]
+  except Exception as exc:
+   print('SOURCE_UNAVAILABLE',f'weekly_{season}',type(exc).__name__,str(exc)[:170])
   for key,loader in [
    ('snap',lambda:nfl.load_snap_counts([season])),
    ('injuries',lambda:nfl.load_injuries([season])),
@@ -106,6 +119,9 @@ def assemble_index(datasets):
     if pid and any(x is not None for x in vals):
      series[(f'pfr_{kind}',str(pid))].append((k,vals))
      coverage[source]['eligible_rows']+=1
+  if source.startswith('weekly_'):
+   completed={str(r.get('game_id')) for r in rows if r.get('game_id')}
+   coverage[source]['eligible_rows']=add_weekly_features(series,rows,completed)
  # Source rows can have duplicate player/week entries; reject those periods.
  for key,items in list(series.items()):
   counts=defaultdict(int)
@@ -138,10 +154,14 @@ def enriched_rows(base_rows,series,pfr_ids):
   pfr=pfr_ids.get(str(pid))
   snap,snap_seen=lagged_values(series,'snap',pfr,target,1) if pfr else ([0.0],0.0)
   pfr_data,pfr_seen=lagged_values(series,'pfr_'+MARKET_PFR[market],pfr,target,3) if pfr else ([0.0]*3,0.0)
+  workload,workload_seen=lagged_values(series,'workload_'+market,pid,target,3)
+  opponent,opponent_seen=lagged_values(series,'matchup_'+market,r.get('opponent'),target,3)
   base=[*values[:7],float(target[1])]
   out.append({'market':market,'key':target,'player_id':str(pid),'baseline':values[0],'actual':values[-1],
+              'team':str(r.get('team') or ''),'opponent':str(r.get('opponent') or ''),
               'base':base,'ngs':ngs+[ngs_seen],'snap':snap+[snap_seen],
-              'pfr':pfr_data+[pfr_seen]})
+              'pfr':pfr_data+[pfr_seen], 'workload':workload+[workload_seen],
+              'matchup':opponent+[opponent_seen]})
  return out
 
 def assess(rows,min_train=100,min_test=30):
@@ -149,7 +169,11 @@ def assess(rows,min_train=100,min_test=30):
  for market in MARKET_SOURCE:
   items=sorted([r for r in rows if r['market']==market],key=lambda r:(r['key'],r['player_id']))
   groups=sorted({r['key'] for r in items})
-  holdouts=groups[-8:]
+  # Reserve the final four weeks as an independent confirmation set for
+  # choosing new feature groups. Model fitting itself is strictly earlier-week.
+  holdouts=groups[-12:]
+  selection_keys=set(holdouts[:-4])
+  confirmation_keys=set(holdouts[-4:])
   outcomes=defaultdict(list)
   for key in holdouts:
    train=[r for r in items if r['key']<key]
@@ -157,22 +181,29 @@ def assess(rows,min_train=100,min_test=30):
    if len(train)<min_train or not test:continue
    for name,groups_selected in {'baseline_features':(),
       'ngs':('ngs',),'snap_counts':('snap',),'pfr_advanced':('pfr',),
-      'combined':('ngs','snap','pfr')}.items():
+      'combined':('ngs','snap','pfr'),
+      'weekly_workload':('workload',), 'opponent_efficiency':('matchup',),
+      'workload_matchup':('workload','matchup'),
+      'advanced_workload':('ngs','snap','pfr','workload'),
+      'advanced_matchup':('ngs','snap','pfr','matchup'),
+      'advanced_all':('ngs','snap','pfr','workload','matchup')}.items():
     # Do not call a dataset a feature improvement when it was unavailable.
-    if groups_selected and not any(r[g][-1] for r in train for g in groups_selected):
+    if any(not any(r.get(g,[0])[-1] for r in train) for g in groups_selected if g in ('workload','matchup')):
      continue
-    def vec(x):return x['base']+[v for group in groups_selected for v in x[group]]
+    if groups_selected and not any(r.get(g,[0])[-1] for r in train for g in groups_selected):
+     continue
+    def vec(x):return x['base']+[v for group in groups_selected for v in x.get(group,[0.0]*4)]
     model=make_pipeline(StandardScaler(),Ridge(alpha=100))
     model.fit(np.asarray([vec(r) for r in train]),np.asarray([r['actual'] for r in train]))
     pred=model.predict(np.asarray([vec(r) for r in test]))
     for r,p in zip(test,pred):
      pred=max(0,float(p))
      pred=min(r['baseline']*1.25,max(r['baseline']*.75,pred))
-     outcomes[name].append((key,abs(pred-r['actual']),abs(r['baseline']-r['actual'])))
+     outcomes[name].append((key,abs(pred-r['actual']),abs(r['baseline']-r['actual']),r))
   scored_rows=outcomes['combined'] if outcomes['combined'] else outcomes['baseline_features']
-  market_report={'holdout_weeks':len(set(k for k,_,_ in scored_rows)),
+  market_report={'holdout_weeks':len(set(z[0] for z in scored_rows)),
     'holdout_rows':len(scored_rows),
-    'source_coverage':{k:sum(r[k][-1]>0 for r in items) for k in ('ngs','snap','pfr')},
+    'source_coverage':{k:sum(r.get(k,[0])[-1]>0 for r in items) for k in ('ngs','snap','pfr','workload','matchup')},
     'models':{}}
   for name,scored in outcomes.items():
    if len(scored)<min_test:
@@ -180,10 +211,53 @@ def assess(rows,min_train=100,min_test=30):
     continue
    baseline=sum(z[2] for z in scored)/len(scored)
    mae=sum(z[1] for z in scored)/len(scored)
+   selection=[z for z in scored if z[0] in selection_keys]
+   confirmation=[z for z in scored if z[0] in confirmation_keys]
    market_report['models'][name]={'status':'evaluated','samples':len(scored),
       'baseline_mae':round(baseline,3),'challenger_mae':round(mae,3),
       'improvement_pct':round((baseline-mae)/baseline*100,2) if baseline else None,
+      'selection_samples':len(selection),
+      'selection_weeks':len({z[0] for z in selection}),
+      'selection_mae':round(sum(z[1] for z in selection)/len(selection),4) if selection else None,
+      'confirmation_samples':len(confirmation),
+      'confirmation_weeks':len({z[0] for z in confirmation}),
+      'confirmation_mae':round(sum(z[1] for z in confirmation)/len(confirmation),4) if confirmation else None,
       'eligible_for_production':False}
+  # Compare the new variants with each established feature variant on the
+  # exact same player/week rows where the new inputs exist. Select using the
+  # earlier holdout weeks; the final weeks are reserved for confirmation.
+  legacy=('baseline_features','ngs','snap_counts','combined','pfr_advanced')
+  novel={'weekly_workload':('workload',),'opponent_efficiency':('matchup',),
+         'workload_matchup':('workload','matchup'),
+         'advanced_workload':('workload',),'advanced_matchup':('matchup',),
+         'advanced_all':('workload','matchup')}
+  market_report['new_feature_comparisons']={}
+  for name,required in novel.items():
+   def identity(z):
+    return (z[0],z[3]['player_id'],z[3].get('team'),z[3].get('opponent'))
+   rows_by_key={identity(z):z for z in outcomes.get(name,[])
+                if all(z[3].get(group,[0])[-1]>0 for group in required)
+                and (not name.startswith('advanced_') or any(z[3].get(g,[0])[-1]>0 for g in ('ngs','snap','pfr')))}
+   comparisons=[]
+   for ref in legacy:
+    groups_for_ref={'ngs':('ngs',),'snap_counts':('snap',),'pfr_advanced':('pfr',),
+                    'combined':('ngs','snap','pfr')}.get(ref,())
+    reference={identity(z):z for z in outcomes.get(ref,[])
+               if not groups_for_ref or any(z[3].get(g,[0])[-1]>0 for g in groups_for_ref)}
+    same=set(rows_by_key)&set(reference)
+    def pair_metrics(keys):
+     if not keys:return None
+     return {'samples':len(keys),'weeks':len({k[0] for k in keys}),
+       'candidate_mae':sum(rows_by_key[k][1] for k in keys)/len(keys),
+       'reference_mae':sum(reference[k][1] for k in keys)/len(keys),
+       'candidate_rmse':math.sqrt(sum(rows_by_key[k][1]**2 for k in keys)/len(keys)),
+       'reference_rmse':math.sqrt(sum(reference[k][1]**2 for k in keys)/len(keys))}
+    sel=pair_metrics([k for k in same if k[0] in selection_keys])
+    conf=pair_metrics([k for k in same if k[0] in confirmation_keys])
+    if sel and conf:comparisons.append((sel['reference_mae'],ref,sel,conf))
+   if comparisons:
+    _,ref,sel,conf=min(comparisons,key=lambda x:x[0])
+    market_report['new_feature_comparisons'][name]={'reference':ref,'selection':sel,'confirmation':conf}
   report[market]=market_report
  return report
 
@@ -205,7 +279,7 @@ def main():
   'training_data_start':a.start,'training_data_end':a.end,
   'source_coverage':coverage,'markets':assess(rows),
   'limitations':[
-   'Only NGS, PFR snap counts and advanced weekly PFR stats are fitted in this first ablation.',
+   'Weekly opportunity and opponent efficiency are derived only from verified completed games and lagged before each forecast.',
    'Injury and depth-chart records are inventoried but excluded without verified pregame as-of timestamps.',
    'NOAA historical observations and NWS forecast snapshots are not fitted without a timestamp-safe weather history join.',
    'NGS reports only players meeting activity thresholds; missing is not zero performance.',
@@ -224,7 +298,7 @@ def main():
  selection=select(report,game_runtime)
  Path('data/market-ml-research-selection.json').write_text(json.dumps(selection,indent=2)+'\n')
  player_feed=json.loads(Path('data/player-research.json').read_text())
- pids=[r.get('player_id') for r in player_feed.get('players',[])
+ pids=[r for r in player_feed.get('players',[])
        if r.get('stat_key') in MARKET_SOURCE
        and r.get('game_id') in {g.get('game_id') for g in target.get('games',[])}]
  runtime,snapshot=write_outputs(rows,series,pfr,selection,season,week,pids,
