@@ -113,9 +113,14 @@ def build_team_matchup_metrics(schedules, plays, season, target_week):
         rankings[key]={"offense":{team:i+1 for i,(team,_) in enumerate(offense)},"defense":{team:i+1 for i,(team,_) in enumerate(defense)}}
     return values,rankings,definitions
 
-# NFL-confirmed Week 9 flex: LV @ SF moved from 4:05 to 4:25 ET.
+# NFL-confirmed kickoff overrides for flexed games. nflverse schedule times can
+# lag the NFL's official flex announcements; keep model predictions unchanged.
 # https://www.nfl.com/schedules/2026/by-week/week-9
-VERIFIED_KICKOFF_OVERRIDES = {("2026_09_LV_SF"): "2026-11-08T16:25:00"}
+# https://www.nfl.com/schedules/2026/by-week/week-11
+VERIFIED_KICKOFF_OVERRIDES = {
+    "2026_09_LV_SF": "2026-11-08T16:25:00",
+    "2026_11_JAX_NYG": "2026-11-22T16:25:00",
+}
 
 def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None, qb_starters=None):
     now=now or datetime.now(timezone.utc)
