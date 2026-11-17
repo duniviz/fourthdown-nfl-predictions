@@ -100,7 +100,7 @@ class CaptureTimingTests(unittest.TestCase):
     def test_wait_targets_t30_and_not_the_old_t15_boundary(self):
         kickoff=datetime(2026,11,16,1,20,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]
-        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),580)
+        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),600)
         self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=30)),0)
 
     def test_refresh_chain_finishes_before_observation_and_lock_save(self):
