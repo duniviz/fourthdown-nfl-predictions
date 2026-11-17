@@ -12,6 +12,7 @@ from urllib.request import Request, urlopen
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from live.dk_identity import quote_key
+from live.game_schedule_match import match_scheduled_game
 from tools.refresh_parlayapi_odds import ABBR, TEAMS, load, save, merge_player_quotes
 
 BASE = "https://api.sportsgameodds.com/v2/events"
@@ -155,6 +156,7 @@ def main():
     # Count every returned event even when no usable DraftKings market exists.
     save(LEDGER, {"month": month, "objects": used + len(events),
                   "last_checked_at_utc": now.isoformat()})
+    live_games=load("live-v2.json", {}).get("games", [])
     game_rows, prop_rows = [], []
     diagnostics = Counter()
     diagnostics["events_returned"] = len(events)
@@ -178,8 +180,14 @@ def main():
         odds = event.get("odds") or {}
         if not isinstance(odds, dict):
             continue
+        scheduled = match_scheduled_game(live_games, ABBR[home], ABBR[away], kickoff.isoformat())
+        if scheduled is None:
+            diagnostics["unmatched_published_kickoff"] += 1
+            continue
+        canonical_kickoff = date(scheduled.get("kickoff_utc"))
         game = {"game_id": event.get("eventID"), "home": ABBR[home], "away": ABBR[away],
-                "home_team": home, "away_team": away, "commence_time": kickoff.isoformat(),
+                "home_team": home, "away_team": away, "provider_commence_time_utc": kickoff.isoformat(),
+                "commence_time": canonical_kickoff.isoformat(),
                 "bookmaker": "draftkings", "home_spread": None, "total": None,
                 "source_provider": "SportsGameOdds", "observed_at_utc": now.isoformat()}
         diagnostics["upcoming_market_rows"] += len(odds)
