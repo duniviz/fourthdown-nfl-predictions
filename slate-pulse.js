@@ -38,10 +38,6 @@ function scoreboardStatus(state){
   const syncLegacyScoreboard=()=>{if(location.hash==='#scoreboard')fullScoreboard.hidden=false;};
   window.addEventListener('hashchange',syncLegacyScoreboard);
   syncLegacyScoreboard();
-  window.addEventListener('hashchange',()=>{
-   if(location.hash==='#scoreboard')setAllGamesVisible(true,true);
-  });
-  if(location.hash==='#scoreboard')setAllGamesVisible(true);
  }
  const $=id=>root.querySelector('#'+id);
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
