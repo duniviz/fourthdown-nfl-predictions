@@ -64,7 +64,7 @@ const assert = require('node:assert/strict');
     }
     if (width === 1440) assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none');
     await page.locator('#fd-desk-games').evaluate(node => { node.open = false; });
-    const gamesLink = nav.locator('a[href="index.html#scoreboard"]');
+    const gamesLink = nav.locator('a[href="index.html#fd-slate-pulse"]');
     await gamesLink.click();
     await page.waitForFunction(() => location.hash === '#scoreboard' && document.getElementById('fd-desk-games')?.open === true);
     assert.equal(await page.locator('#scoreboard').isVisible(), true, 'Games link should reveal the scoreboard');

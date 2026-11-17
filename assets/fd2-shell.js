@@ -5,7 +5,7 @@
   const onHome = () => { const name = file(); return name === '' || name === 'index.html'; };
   const items = [
     ['index.html', 'Edges'],
-    ['index.html#scoreboard', 'Games'],
+    ['index.html#fd-slate-pulse', 'Games'],
     ['bets.html', 'Props'],
     ['history.html', 'Results']
   ];
@@ -17,6 +17,7 @@
   function current(href) {
     const name = file();
     const home = name === '' || name === 'index.html';
+    if (href.indexOf('#fd-slate-pulse') !== -1) return home && location.hash === '#fd-slate-pulse';
     if (href.indexOf('#scoreboard') !== -1) return home && location.hash === '#scoreboard';
     if (href === 'index.html') return home && location.hash !== '#scoreboard';
     return href.split('#')[0] === name;
