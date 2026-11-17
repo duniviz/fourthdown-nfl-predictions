@@ -29,6 +29,9 @@ const assert = require('node:assert/strict');
     await page.waitForFunction(()=>/Under|Over|to win/.test(document.querySelector('#fd-bb-table')?.innerText||''));
     await page.locator('[data-fd-bb-tab="props"]').click();
     await page.waitForFunction(() => /ML projection, research/.test(document.querySelector('#fd-bb-table')?.innerText || ''));
+    await page.waitForFunction(() => document.querySelector('#fd-desk-games') && document.querySelector('#fd-desk-edges'));
+    assert.equal(await page.locator('#fd-desk-games').evaluate(node => node.open), true, 'Games should be expanded on first load');
+    assert.equal(await page.locator('#fd-desk-edges').evaluate(node => node.open), false, 'Best edges should be collapsed on first load');
     const nav = page.locator('.fd2-links');
     assert.match(await nav.innerText(), /Edges/);
     assert.match(await nav.innerText(), /Games/);
@@ -44,6 +47,7 @@ const assert = require('node:assert/strict');
       assert.equal(await page.locator('#fd-bb-results article').filter({hasText: 'O/U'}).isVisible(), true, 'O/U result should be visible');
     }
     if (width === 1440) assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none');
+    await page.locator('#fd-desk-games').evaluate(node => { node.open = false; });
     const gamesLink = nav.locator('a[href="index.html#scoreboard"]');
     await gamesLink.click();
     await page.waitForFunction(() => location.hash === '#scoreboard' && document.getElementById('fd-desk-games')?.open === true);
