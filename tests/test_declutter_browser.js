@@ -27,7 +27,17 @@ const assert = require('node:assert/strict');
   assert.match(await page.locator('#fd-bb-results').innerText(), /52\.4%/);
   assert.equal(await page.locator('#fd-mini-coverage').count(), 0);
   await page.locator('#fd-desk-games').evaluate(node => { node.open = true; });
-  await page.evaluate(() => { window.__openedMatchup = null; window.addEventListener('fd-open-matchup', event => { window.__openedMatchup = event.detail; }, {once:true}); });
+  await page.evaluate(() => {
+    window.__openedMatchup = null;
+    window.addEventListener('fd-open-matchup', event => { window.__openedMatchup = event.detail; }, {once:true});
+    window.fdAllGames = Array.from({length:6}, (_, index) => ({
+      id: 'browser-fixture-' + index, date: new Date(Date.now() + (index + 1) * 86400000).toISOString(),
+      state: 'pre', status: 'Scheduled', away: {abbr:'NE', name:'New England Patriots', score:null},
+      home: {abbr:'BUF', name:'Buffalo Bills', score:null}
+    }));
+    window.fdScoreboardFeed = 'ok';
+    window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));
+  });
   await page.locator('#fd-slate-pulse .fd-live-board-head>a').click();
   assert.equal(await page.locator('#fd-slate-pulse .fd-live-board-head>a').getAttribute('aria-expanded'), 'true');
   assert.equal(await page.locator('#scoreboard').isHidden(), true, 'All games expands compact cards without restoring the duplicate lower list');
