@@ -1,9 +1,9 @@
-"""Decide whether to fetch odds once per kickoff slate, or check T-15 locks.
+"""Decide whether to fetch odds once per kickoff slate, or check T-30 locks.
 
 No API calls are made by this module. The paid refresh opens 45 minutes before
 kickoff and stays available until 5 minutes before kickoff if it has not
 succeeded yet, because GitHub often drops or delays the cron tick that was
-aimed at T-30. The lock itself is still the T-15 snapshot.
+aimed at T-30. The final lock is taken at T-30, with late scheduled runs accepted through the last pre-kickoff window.
 """
 import argparse
 import json
@@ -15,7 +15,7 @@ from live.game_pregame_observations import dt
 MARKER=Path("data/dk-slate-refreshes.json")
 GAMES=Path("data/live-v2.json")
 ACTIVE_WINDOW=timedelta(minutes=45)
-LOCK_LEAD=timedelta(minutes=15)
+LOCK_LEAD=timedelta(minutes=30)
 REFRESH_LATE=timedelta(minutes=5)
 QUOTE_MAX_AGE=timedelta(minutes=50)
 LOCK_TOLERANCE=timedelta(seconds=45)
@@ -33,7 +33,7 @@ def due_refresh(games, done, now):
             and k.isoformat() not in done]
 
 def due_followthrough(games, done, now):
-    """Refresh already succeeded; stay awake until the T-15 lock is written."""
+    """Refresh already succeeded; stay awake until the T-30 lock is written."""
     return any(LOCK_LEAD < k-now <= ACTIVE_WINDOW and k.isoformat() in done
                for k in slates(games))
 
@@ -58,7 +58,7 @@ def cycle_due(games, done, now):
                 or due_followthrough(games, done, now) or evening_key(games, done, now))
 
 def lock_wait_seconds(games, now, limit=30*60):
-    """Sleep until just before T-15 when no game has reached its lock window yet."""
+    """Sleep until just before T-30 when no game has reached its lock window yet."""
     active=[k for k in slates(games) if timedelta(0) < k-now <= ACTIVE_WINDOW]
     if not active or any(k-now <= LOCK_LEAD for k in active):
         return 0
