@@ -8,6 +8,7 @@ from live.pregame_capture_guard import due_lock, due_refresh, lock_wait_seconds
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/capture-game-pregame.yml"
 GRADING = ROOT / ".github/workflows/nightly-game-grading.yml"
+FORECAST = ROOT / ".github/workflows/publish-v2.yml"
 
 
 def field(expr, lo, hi):
@@ -121,6 +122,12 @@ class CaptureTimingTests(unittest.TestCase):
         self.assertEqual(due_refresh(games, set(), kickoff-timedelta(minutes=10)), [kickoff])
         self.assertEqual(due_refresh(games, {kickoff.isoformat()}, kickoff-timedelta(minutes=30)), [])
         self.assertEqual(due_refresh(games, set(), kickoff-timedelta(minutes=4)), [])
+
+    def test_tuesday_forecast_follows_successful_evaluation(self):
+        source = FORECAST.read_text(encoding="utf-8")
+        self.assertIn("workflows: [Daily DraftKings player prop refresh, Tuesday pre-forecast evaluation]", source)
+        self.assertIn('github.event.workflow_run.name }}" == "Tuesday pre-forecast evaluation', source)
+        self.assertLess(source.index('github.event.workflow_run.conclusion'), source.index('github.event.workflow_run.name'))
 
     def test_nightly_grade_accepts_a_delayed_cron(self):
         source = GRADING.read_text(encoding="utf-8")
