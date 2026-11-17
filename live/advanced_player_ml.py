@@ -9,8 +9,13 @@ from pathlib import Path
 FAMILY="free-nfl-advanced-ridge-v1"
 MARKETS=("passing_yards","rushing_yards","receiving_yards")
 GROUPS={"baseline_features":(),"ngs":("ngs",),"snap_counts":("snap",),
-        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr")}
-DIMENSIONS={"ngs":4,"snap":2,"pfr":4}
+        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr"),
+        "weekly_workload":("workload",),"opponent_efficiency":("matchup",),
+        "workload_matchup":("workload","matchup"),
+        "advanced_workload":("ngs","snap","pfr","workload"),
+        "advanced_matchup":("ngs","snap","pfr","matchup"),
+        "advanced_all":("ngs","snap","pfr","workload","matchup")}
+DIMENSIONS={"ngs":4,"snap":2,"pfr":4,"workload":4,"matchup":4}
 
 def load_pair(runtime_path=Path("data/player-advanced-ml-runtime.json"),
               features_path=Path("data/player-advanced-ml-features.json")):
@@ -27,7 +32,7 @@ def load_pair(runtime_path=Path("data/player-advanced-ml-runtime.json"),
     except (OSError,ValueError,TypeError,AttributeError):return {},{}
 
 def candidate(runtime,features,market,player_id,season,week,base,old,
-              prior_games,recent_volume,recent_yards,team_volume,opponent_ratio):
+              prior_games,recent_volume,recent_yards,team_volume,opponent_ratio,opponent=None):
     try:
         if market not in MARKETS or runtime.get("family")!=FAMILY or features.get("family")!=FAMILY:
             return None
@@ -47,6 +52,9 @@ def candidate(runtime,features,market,player_id,season,week,base,old,
         groups=GROUPS[variant]
         if model.get("feature_groups")!=list(groups) or model.get("active") is not False:return None
         inputs=features["players"][str(player_id)][market]
+        if 'matchup' in groups and (not opponent or inputs.get('opponent')!=opponent):return None
+        if any(float(inputs[g][-1])<=0 for g in groups if g in ('workload','matchup')):return None
+        if variant.startswith('advanced_') and not any(float(inputs[g][-1])>0 for g in ('ngs','snap','pfr')):return None
         if groups and not any(float(inputs[g][-1])>0 for g in groups):return None
         base=float(base)
         vector=[base,float(old),float(prior_games),float(recent_volume),float(recent_yards),
@@ -67,4 +75,4 @@ def candidate(runtime,features,market,player_id,season,week,base,old,
                 "holdout_rows":model.get("holdout_rows"),
                 "holdout_improvement_pct":model.get("holdout_improvement_pct"),
                 "features_used":[g for g in groups if inputs[g][-1]>0]}
-    except (KeyError,TypeError,ValueError,OverflowError,IndexError):return None
+    except (KeyError,TypeError,ValueError,OverflowError,IndexError,AttributeError):return None
