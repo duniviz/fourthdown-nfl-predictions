@@ -41,7 +41,8 @@
     const scoreboard=document.getElementById('scoreboard');
     // Keep original node IDs, score refresh handlers, popups and live observers intact.
     if(live)games.append(live);
-    if(slate){const label=document.createElement('h3');label.textContent='This week’s slate';games.append(label,slate)}
+    // The top Game Day cards now open the full matchup, so do not repeat the slate rows below them.
+    if(slate)slate.hidden=true;
     if(scoreboard)games.append(scoreboard);
     layout.append(games);
     const more=details('fd-desk-more','More this week','Top picks · featured matchups · player differences');
