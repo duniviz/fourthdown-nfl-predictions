@@ -15,7 +15,7 @@ const path = require('node:path');
   const cases = [
     {name:'home', target:'index.html'},
     {name:'props', target:'bets.html', selector:'#bet-cards'},
-    {name:'games', target:'index.html#scoreboard', selector:'#scoreboard'}
+    {name:'games', target:'index.html#fd-slate-pulse', selector:'#fd-slate-pulse'}
   ];
   for (const [version, port] of [['before', 8123], ['after', 8124]]) {
     for (const width of [1440, 400]) {
@@ -35,18 +35,16 @@ const path = require('node:path');
         await page.screenshot({path:file, fullPage:false, animations:'disabled'});
         console.log('Screenshot:',path.basename(file));
         if(version==='after'&&entry.name==='games'){
-          const row=page.locator('#fd-bb-slate .fd-bb-row:not(.fd-bb-final)').first();
-          if (await row.count() && await row.isVisible()) {
-            await row.locator('> summary').click();
-            const card=row.locator('.fd-bb-inline-matchup .scorecard').first();
-            await card.waitFor({state:'visible',timeout:15000});
-            await card.scrollIntoViewIfNeeded();
-            const inlineFile=path.join(out,'after-slate-open-'+width+'.png');
-            await page.screenshot({path:inlineFile,fullPage:false,animations:'disabled'});
-            console.log('Screenshot:',path.basename(inlineFile));
-          } else {
-            console.log('No future slate rows to expand at '+width+'px; captured the empty/current scoreboard state.');
-          }
+          await page.locator('#fd-slate-pulse .fd-live-board-head>a').click();
+          await page.locator('#fd-live-board-cards [data-game-id]').first().waitFor({state:'visible',timeout:15000});
+          const allFile=path.join(out,'after-all-games-'+width+'.png');
+          await page.screenshot({path:allFile,fullPage:false,animations:'disabled'});
+          console.log('Screenshot:',path.basename(allFile));
+          await page.locator('#fd-live-board-cards [data-game-id]').first().click();
+          await page.locator('#fd-modal').waitFor({state:'visible',timeout:15000});
+          const modalFile=path.join(out,'after-full-matchup-'+width+'.png');
+          await page.screenshot({path:modalFile,fullPage:false,animations:'disabled'});
+          console.log('Screenshot:',path.basename(modalFile));
         }
         await page.close();
       }
