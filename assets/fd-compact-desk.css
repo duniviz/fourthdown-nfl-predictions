@@ -327,3 +327,33 @@ html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
  .fd-compact-desk #fd-bb-results article small,
  .fd-compact-desk #fd-bb-results article span{font-size:10px!important}
 }
+
+
+/* Games-first home: make the live slate the first expanded section. */
+.fd-weekly-desk>#fd-desk-games.fd-desk-games-primary{
+ border-color:#287e94;
+ background:linear-gradient(150deg,#102333,#101a29 75%);
+ box-shadow:0 10px 28px #0004,0 0 0 1px #43c8df22
+}
+.fd-desk-games-primary>summary{
+ min-height:62px;padding:14px 16px;
+ background:linear-gradient(100deg,#142c3b,#111b2c);
+}
+.fd-desk-games-primary>summary strong{font-size:25px;color:#effaff}
+.fd-desk-games-primary>summary small{font-size:12px}
+.fd-desk-games-primary[open]>summary{
+ border-bottom:1px solid #3d6171;border-radius:12px 12px 0 0
+}
+.fd-desk-edges-fold{margin:10px 0 18px}
+.fd-desk-edges-fold>summary{
+ min-height:48px;border-radius:10px;background:#111b2c;
+}
+.fd-desk-edges-fold>summary strong{font-size:19px;color:#c8d5e2}
+.fd-desk-edges-fold>summary small{font-size:11px}
+.fd-desk-edges-fold[open]>summary{border-bottom:1px solid #324762;border-radius:10px 10px 0 0}
+.fd-desk-edges-fold>#fd-betting-board{margin:0!important;border:0;border-radius:0 0 13px 13px}
+@media(max-width:850px){
+ .fd-desk-games-primary>summary{min-height:58px;padding:12px}
+ .fd-desk-games-primary>summary strong{font-size:22px}
+ .fd-desk-edges-fold>summary{padding:10px 12px;min-height:46px}
+}
