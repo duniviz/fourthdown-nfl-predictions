@@ -109,16 +109,20 @@ def freeze(live, observations, old, now):
             if _fresh(old_quote, kickoff) or not (quote and (old_quote is None or quote>old_quote)):
                 continue
         at_lock=now+LOCK_TOLERANCE>=cutoff
-        if not at_lock:
+        forecast_fresh=kickoff-timedelta(minutes=105)<=stamp<kickoff
+        quote_fresh=_fresh(quote, kickoff)
+        if not at_lock or not forecast_fresh:
             status="early_pregame"
-        elif _fresh(quote, kickoff) or kickoff-now<=timedelta(minutes=5):
-            status="last_available" if quote else "forecast_only"
+        elif quote_fresh:
+            status="last_available" if now>cutoff+LOCK_TOLERANCE else "official"
         else:
-            status="early_pregame"
+            # Preserve the pregame forecast when DK is unavailable, while
+            # leaving missing spread/total fields empty for honest grading.
+            status="forecast_only"
         row={k:g.get(k) for k in ("game_id","season","week","home","away","predicted_winner","projected_home_score",
              "projected_away_score","projected_margin_home","projected_total")}
         row.update(kickoff_utc=kickoff.isoformat(),forecast_at_utc=stamp.isoformat(),dk_total=None,dk_home_spread=None,dk_at_utc=None)
-        if quote and chosen:
+        if quote_fresh and chosen:
             row.update({k:chosen.get(k) for k in ("dk_total","dk_home_spread","dk_at_utc")})
         row.update(lock_status=status,lock_cutoff_utc=cutoff.isoformat(),captured_at_utc=now.isoformat(),
                    source="published pregame forecast and available verified DK observations")
