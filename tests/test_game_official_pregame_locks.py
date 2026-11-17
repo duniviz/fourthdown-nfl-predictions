@@ -12,18 +12,18 @@ class OfficialGameLockTests(unittest.TestCase):
                 "forecast_at_utc":t,"dk_at_utc":t,"captured_at_utc":capture,
                 "projected_margin_home":2,"projected_total":44,
                 "dk_home_spread":spread,"dk_total":43}
-    def test_t15_freeze_and_immutable(self):
+    def test_t30_freeze_and_immutable(self):
         rows=[self.row(40,-2),self.row(16,-4),self.row(10,-9)]
-        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=16)),[])
-        first=select(rows,[],self.kickoff-timedelta(minutes=15))
-        self.assertEqual(first[0]["dk_home_spread"],-4)
+        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=31)),[])
+        first=select(rows,[],self.kickoff-timedelta(minutes=30))
+        self.assertEqual(first[0]["dk_home_spread"],-2)
         self.assertEqual(first[0]["lock_status"],"official")
-        self.assertEqual(first[0]["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=15)).isoformat())
+        self.assertEqual(first[0]["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=30)).isoformat())
         self.assertEqual(select(rows,first,self.kickoff-timedelta(minutes=2)),first)
-    def test_late_scheduled_run_uses_pre_cutoff_only(self):
+    def test_late_scheduled_run_uses_latest_quote_within_t30_window(self):
         rows=[self.row(18,-2),self.row(12,-9)]
         first=select(rows,[],self.kickoff-timedelta(minutes=10))
-        self.assertEqual(first[0]["dk_home_spread"],-2)
+        self.assertEqual(first[0]["dk_home_spread"],-9)
     def test_rescheduled_lock_is_not_reused_for_new_kickoff(self):
         old={**self.row(20,-3),"lock_status":"official"}
         moved=self.kickoff+timedelta(hours=1)
@@ -49,7 +49,7 @@ class OfficialGameLockTests(unittest.TestCase):
         fresh=self.row(18,-5)
         now=self.kickoff-timedelta(minutes=10)
         row=freeze(self.live(now),[fresh],[old],now)[0]
-        self.assertEqual(row["lock_status"],"official")
+        self.assertEqual(row["lock_status"],"last_available")
         self.assertEqual(row["dk_home_spread"],-5)
     def test_late_tick_locks_the_quote_it_just_refreshed(self):
         old={**self.row(120,-2),"lock_status":"early_pregame"}
@@ -58,7 +58,7 @@ class OfficialGameLockTests(unittest.TestCase):
         row=freeze(self.live(now),[fresh],[old],now)[0]
         self.assertEqual(row["lock_status"],"last_available")
         self.assertEqual(row["dk_home_spread"],-5)
-        self.assertEqual(row["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=15)).isoformat())
+        self.assertEqual(row["lock_cutoff_utc"],(self.kickoff-timedelta(minutes=30)).isoformat())
         self.assertEqual(freeze(self.live(now),[fresh],[row],self.kickoff-timedelta(minutes=4)),[row])
     def test_fresh_final_lock_is_not_replaced(self):
         old={**self.row(25,-4),"lock_status":"last_available"}
@@ -75,7 +75,7 @@ class OfficialGameLockTests(unittest.TestCase):
         self.assertEqual(locked["lock_status"],"forecast_only")
         self.assertIsNone(locked["dk_home_spread"])
     def test_fresh_forecast_locks_without_fabricating_missing_dk_lines(self):
-        now=self.kickoff-timedelta(minutes=15)
+        now=self.kickoff-timedelta(minutes=30)
         row=freeze(self.live(now),[],[],now)[0]
         self.assertEqual(row["lock_status"],"forecast_only")
         self.assertIsNone(row["dk_home_spread"])
@@ -102,14 +102,14 @@ class OfficialGameLockTests(unittest.TestCase):
         rows=freeze(self.live(now,games),[self.row(18,-5)],[other],now)
         saved={row["game_id"]:row for row in rows}
         self.assertEqual(saved["later"],other)
-        self.assertEqual(saved["g"]["lock_status"],"official")
+        self.assertEqual(saved["g"]["lock_status"],"last_available")
         self.assertEqual(saved["g"]["dk_home_spread"],-5)
     def test_started_game_keeps_its_lock(self):
         old={**self.row(20,-3),"lock_status":"early_pregame"}
         now=self.kickoff+timedelta(minutes=5)
         self.assertEqual(freeze(self.live(now),[self.row(20,-3)],[old],now),[old])
     def test_reject_stale_and_post_cutoff_capture(self):
-        rows=[self.row(106,-2),self.row(16,-3,captured_minutes=12),self.row(14,-4)]
-        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=15)),[])
+        rows=[self.row(121,-2),self.row(16,-3,captured_minutes=14),self.row(29,-4)]
+        self.assertEqual(select(rows,[],self.kickoff-timedelta(minutes=30)),[])
 
 if __name__=="__main__":unittest.main()

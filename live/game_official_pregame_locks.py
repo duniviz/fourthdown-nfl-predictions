@@ -1,9 +1,9 @@
 """Freeze one official game forecast and DK quote from pre-kickoff observations.
 
 A qualifying official pair must be observed within 90 minutes before the
-15-minute cutoff. Otherwise the active kickoff window saves an early
+30-minute cutoff. Otherwise the active kickoff window saves an early
 checkpoint and replaces it, once, with the freshest pre-kickoff quote at
-about T-15 (last_available). Games outside that window, and every lock whose
+about T-30 (last_available). Games outside that window, and every lock whose
 kickoff has already passed, are left unchanged.
 """
 import json
@@ -27,11 +27,14 @@ def select(records, existing, now):
         forecast=dt(row.get("forecast_at_utc"))
         quote=dt(row.get("dk_at_utc"))
         captured=dt(row.get("captured_at_utc"))
-        if not kickoff or not forecast or not quote or not captured or not (kickoff-timedelta(minutes=15)<=now<kickoff):
+        if not kickoff or not forecast or not quote or not captured or not (kickoff-LOCK_LEAD<=now<kickoff):
             continue
-        cutoff=kickoff-timedelta(minutes=15)
+        cutoff=kickoff-LOCK_LEAD
         earliest=cutoff-timedelta(minutes=90)
-        if not (earliest<=forecast<=cutoff and earliest<=quote<=cutoff and captured<=cutoff):
+        # At the T-30 trigger, use the freshest observation captured by
+        # this run. A delayed runner can still lock a newer snapshot any time
+        # before kickoff; never include a post-kick observation.
+        if not (earliest<=forecast<=now and earliest<=quote<=now and captured<=now):
             continue
         if row.get("projected_margin_home") is None or row.get("projected_total") is None:
             continue
@@ -44,8 +47,10 @@ def select(records, existing, now):
         if key not in grouped or rank>grouped[key][0]:
             grouped[key]=(rank,row)
     for key,(_,row) in grouped.items():
-        locked[key]={**row,"lock_cutoff_utc":(dt(row["kickoff_utc"])-timedelta(minutes=15)).isoformat(),
-                     "lock_status":"official"}
+        kickoff=dt(row["kickoff_utc"])
+        cutoff=kickoff-LOCK_LEAD
+        status="last_available" if now>cutoff+LOCK_TOLERANCE else "official"
+        locked[key]={**row,"lock_cutoff_utc":cutoff.isoformat(),"lock_status":status}
     return sorted(locked.values(),key=lambda x:(str(x.get("kickoff_utc")),str(x.get("game_id"))))
 
 def _quote_at(row):
@@ -109,7 +114,7 @@ def freeze(live, observations, old, now):
             if _fresh(old_quote, kickoff) or not (quote and (old_quote is None or quote>old_quote)):
                 continue
         at_lock=now+LOCK_TOLERANCE>=cutoff
-        forecast_fresh=kickoff-timedelta(minutes=105)<=stamp<kickoff
+        forecast_fresh=kickoff-(LOCK_LEAD+timedelta(minutes=90))<=stamp<kickoff
         quote_fresh=_fresh(quote, kickoff)
         if not at_lock or not forecast_fresh:
             status="early_pregame"

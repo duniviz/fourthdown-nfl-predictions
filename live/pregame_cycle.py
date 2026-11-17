@@ -12,7 +12,7 @@ from live import game_official_pregame_locks as locks, game_pregame_observations
 from live import line_history
 from live.dk_archive import archive
 from live.dk_identity import QuoteIndex, market
-from live.pregame_capture_guard import cycle_due, due_refresh, evening_key, lock_wait_seconds, slates
+from live.pregame_capture_guard import LOCK_LEAD, cycle_due, due_refresh, evening_key, lock_wait_seconds, slates
 from scripts.capture_pregame_snapshots import collect, STATS
 from tools.projection_change_tracker import main as build_projection_changes
 
@@ -160,15 +160,15 @@ def validate_due_locks(games, stamp):
     missing=[]
     for game in games:
         kickoff=observations.dt(game.get("kickoff_utc"))
-        if not kickoff or not stamp<kickoff or kickoff-stamp>timedelta(minutes=15):
+        if not kickoff or not stamp<kickoff or kickoff-stamp>LOCK_LEAD:
             continue
         row=by_game.get((str(game.get("game_id")),kickoff))
         forecast=observations.dt(row.get("forecast_at_utc")) if row else None
-        fresh=bool(forecast and kickoff-timedelta(minutes=105)<=forecast<kickoff)
+        fresh=bool(forecast and kickoff-(LOCK_LEAD+timedelta(minutes=90))<=forecast<kickoff)
         if not row or row.get("lock_status") not in locks.FINAL_STATUSES or not fresh:
             missing.append(f"{game.get('away')} @ {game.get('home')} ({game.get('game_id')})")
     if missing:
-        raise RuntimeError("Pregame save incomplete: no fresh final lock for "+", ".join(missing))
+        raise RuntimeError("Pregame save incomplete: no fresh final lock by T-30 for "+", ".join(missing))
     if any(row.get("lock_status")=="forecast_only" for row in saved):
         print("::warning::One or more forecasts were saved without current DraftKings lines; missing odds remain blank.")
 
@@ -186,7 +186,7 @@ def checkpoint(games):
     validate_due_locks(games,now())
 
 def next_wake(games,done,stamp):
-    times={k-timedelta(minutes=n) for k in slates(games) for n in (30,15) if n!=30 or k.isoformat() not in done}
+    times={k-LOCK_LEAD for k in slates(games) if stamp<k-LOCK_LEAD<=stamp+timedelta(hours=4)}
     return min((t for t in times if stamp<t<=stamp+timedelta(hours=4)),default=None)
 
 def main():

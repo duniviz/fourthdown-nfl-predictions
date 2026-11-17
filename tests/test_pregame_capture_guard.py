@@ -17,17 +17,17 @@ class PregameScheduleTests(unittest.TestCase):
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=14)),[kickoff])
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=5)),[kickoff])
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=4)),[])
-    def test_followthrough_waits_for_the_lock_without_another_request(self):
+    def test_followthrough_runs_until_the_t30_lock_window(self):
         kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]
         done={kickoff.isoformat()}
-        self.assertTrue(due_followthrough(games,done,kickoff-timedelta(minutes=20)))
-        self.assertFalse(due_followthrough(games,set(),kickoff-timedelta(minutes=20)))
-        self.assertFalse(due_followthrough(games,done,kickoff-timedelta(minutes=10)))
+        self.assertTrue(due_followthrough(games,done,kickoff-timedelta(minutes=40)))
+        self.assertFalse(due_followthrough(games,set(),kickoff-timedelta(minutes=40)))
+        self.assertFalse(due_followthrough(games,done,kickoff-timedelta(minutes=20)))
     def test_lock_wait_bridges_one_delivered_tick(self):
         kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]
-        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),25*60-20)
+        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),10*60)
         self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=10)),0)
         self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=50)),0)
     def test_evening_skipped_when_a_game_is_soon(self):
@@ -46,11 +46,11 @@ class PregameScheduleTests(unittest.TestCase):
     def test_evening_outside_window(self):
         now=datetime(2026,11,7,2,tzinfo=timezone.utc)
         self.assertIsNone(evening_key([],set(),now))
-    def test_independent_t15_lock(self):
+    def test_independent_t30_lock(self):
         kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]
-        self.assertFalse(due_lock(games,kickoff-timedelta(minutes=16)))
-        self.assertTrue(due_lock(games,kickoff-timedelta(minutes=15)))
+        self.assertFalse(due_lock(games,kickoff-timedelta(minutes=31)))
+        self.assertTrue(due_lock(games,kickoff-timedelta(minutes=30)))
         self.assertFalse(due_lock(games,kickoff))
     def test_scoring_and_player_refresh_are_one_slate_checkpoint(self):
         key="2026-11-08T18:00:00+00:00"
