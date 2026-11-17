@@ -8,6 +8,8 @@ on:
       - '.github/workflows/pregame-feed-freshness.yml'
       - 'scripts/audit_pregame_freshness.py'
       - 'tests/test_audit_pregame_freshness.py'
+      - '.github/workflows/daily-dk-player-props.yml'
+      - 'tests/test_daily_dk_game_refresh.py'
 permissions:
   contents: read
   issues: write
@@ -21,6 +23,8 @@ jobs:
           python-version: '3.12'
       - name: Run deterministic feed freshness tests
         run: python -m unittest discover -s tests -p 'test_audit_pregame_freshness.py' -v
+      - name: Verify daily DraftKings game-line refresh wiring
+        run: python -m unittest discover -s tests -p 'test_daily_dk_game_refresh.py' -v
       - name: Inspect upcoming data without modifying predictions
         if: github.event_name != 'pull_request'
         run: python -m scripts.audit_pregame_freshness
