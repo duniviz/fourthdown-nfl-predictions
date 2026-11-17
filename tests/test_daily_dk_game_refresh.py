@@ -15,6 +15,8 @@ class DailyDraftKingsRefreshTests(unittest.TestCase):
         self.assertIn("github.event.schedule != '37 * * * 1,4,5,6'", step)
         self.assertIn("continue-on-error: true", step)
         self.assertIn("PARLAY_API_KEY:", step)
+        self.assertIn("branches: [main]", source)
+        self.assertIn(".github/workflows/daily-dk-player-props.yml", source)
 
     def test_game_line_snapshot_and_history_are_published(self):
         source = WORKFLOW.read_text(encoding="utf-8")
