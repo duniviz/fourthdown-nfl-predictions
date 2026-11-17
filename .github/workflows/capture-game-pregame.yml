@@ -10,7 +10,7 @@ on:
   schedule:
     # America/Chicago, so the same clock times hold in CST and CDT.
     # Each kickoff has several off-peak ticks. The first tick that lands in
-    # the T-45 window refreshes DraftKings lines and waits until T-15 to lock.
+    # the T-45 window refreshes DraftKings lines and waits until T-30 to lock.
     # Later ticks are idempotent. GitHub dropped almost every every-10-minute
     # tick on Nov 12-16, so these are slot-shaped instead of continuous.
     # Thursday night, 7:15 PM CT: 6:37, 6:47, 7:02, 7:08.
