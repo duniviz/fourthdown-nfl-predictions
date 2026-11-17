@@ -25,6 +25,16 @@ const path = require('node:path');
         await page.route('https://api.github.com/**', r => r.fulfill({json:{workflow_runs:[]}}));
         await page.goto('http://127.0.0.1:' + port + '/' + entry.target, {waitUntil:'domcontentloaded'});
         await page.waitForTimeout(1200);
+        if(version==='after'&&entry.name==='games'){
+          await page.evaluate(() => {
+            window.fdAllGames = Array.from({length:6}, (_, index) => ({
+              id:'screenshot-game-'+index, date:new Date(Date.now()+(index+1)*86400000).toISOString(), state:'pre', status:'Scheduled',
+              away:{abbr:'NE',name:'New England Patriots',score:null}, home:{abbr:'BUF',name:'Buffalo Bills',score:null}
+            }));
+            window.fdScoreboardFeed='ok';
+            window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));
+          });
+        }
         if(version==='after'&&entry.name==='games'&&!(await page.locator('#fd-desk-games').evaluate(el=>el.open))) await page.locator('#fd-desk-games > summary').click();
         if (entry.selector) {
           const loc = page.locator(entry.selector).first();
