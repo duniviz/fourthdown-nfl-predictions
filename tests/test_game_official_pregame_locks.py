@@ -73,6 +73,21 @@ class OfficialGameLockTests(unittest.TestCase):
         final=self.kickoff-timedelta(minutes=3)
         locked=freeze(self.live(final),[old],[old],final)[0]
         self.assertEqual(locked["lock_status"],"last_available")
+    def test_fresh_forecast_locks_without_fabricating_missing_dk_lines(self):
+        now=self.kickoff-timedelta(minutes=15)
+        row=freeze(self.live(now),[],[],now)[0]
+        self.assertEqual(row["lock_status"],"forecast_only")
+        self.assertIsNone(row["dk_home_spread"])
+        self.assertIsNone(row["dk_total"])
+
+    def test_stale_forecast_does_not_become_a_final_lock(self):
+        now=self.kickoff-timedelta(minutes=10)
+        live={"generated_at_utc":(self.kickoff-timedelta(hours=3)).isoformat(),
+              "games":[{"game_id":"g","kickoff_utc":self.kickoff.isoformat(),
+                        "projected_margin_home":2,"projected_total":44}]}
+        row=freeze(live,[],[],now)[0]
+        self.assertEqual(row["lock_status"],"early_pregame")
+
     def test_other_kickoffs_are_not_frozen_early(self):
         later=self.kickoff+timedelta(hours=5)
         other={**self.row(30,-7),"game_id":"later","kickoff_utc":later.isoformat(),
