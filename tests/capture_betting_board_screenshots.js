@@ -15,7 +15,7 @@ const path = require('node:path');
   const cases = [
     {name:'home', target:'index.html'},
     {name:'props', target:'bets.html', selector:'#bet-cards'},
-    {name:'games', target:'index.html#scoreboard', selector:'#scoreboard'}
+    {name:'games', target:'index.html#fd-slate-pulse', selector:'#fd-slate-pulse'}
   ];
   for (const [version, port] of [['before', 8123], ['after', 8124]]) {
     for (const width of [1440, 400]) {
@@ -25,6 +25,16 @@ const path = require('node:path');
         await page.route('https://api.github.com/**', r => r.fulfill({json:{workflow_runs:[]}}));
         await page.goto('http://127.0.0.1:' + port + '/' + entry.target, {waitUntil:'domcontentloaded'});
         await page.waitForTimeout(1200);
+        if(version==='after'&&entry.name==='games'){
+          await page.evaluate(() => {
+            window.fdAllGames = Array.from({length:6}, (_, index) => ({
+              id:'screenshot-game-'+index, date:new Date(Date.now()+(index+1)*86400000).toISOString(), state:'pre', status:'Scheduled',
+              away:{abbr:'NE',name:'New England Patriots',score:null}, home:{abbr:'BUF',name:'Buffalo Bills',score:null}
+            }));
+            window.fdScoreboardFeed='ok';
+            window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));
+          });
+        }
         if(version==='after'&&entry.name==='games'&&!(await page.locator('#fd-desk-games').evaluate(el=>el.open))) await page.locator('#fd-desk-games > summary').click();
         if (entry.selector) {
           const loc = page.locator(entry.selector).first();
@@ -35,18 +45,16 @@ const path = require('node:path');
         await page.screenshot({path:file, fullPage:false, animations:'disabled'});
         console.log('Screenshot:',path.basename(file));
         if(version==='after'&&entry.name==='games'){
-          const row=page.locator('#fd-bb-slate .fd-bb-row:not(.fd-bb-final)').first();
-          if (await row.count() && await row.isVisible()) {
-            await row.locator('> summary').click();
-            const card=row.locator('.fd-bb-inline-matchup .scorecard').first();
-            await card.waitFor({state:'visible',timeout:15000});
-            await card.scrollIntoViewIfNeeded();
-            const inlineFile=path.join(out,'after-slate-open-'+width+'.png');
-            await page.screenshot({path:inlineFile,fullPage:false,animations:'disabled'});
-            console.log('Screenshot:',path.basename(inlineFile));
-          } else {
-            console.log('No future slate rows to expand at '+width+'px; captured the empty/current scoreboard state.');
-          }
+          await page.locator('#fd-slate-pulse .fd-live-board-head>a').click();
+          await page.locator('#fd-live-board-cards [data-game-id]').first().waitFor({state:'visible',timeout:15000});
+          const allFile=path.join(out,'after-all-games-'+width+'.png');
+          await page.screenshot({path:allFile,fullPage:false,animations:'disabled'});
+          console.log('Screenshot:',path.basename(allFile));
+          await page.locator('#fd-live-board-cards [data-game-id]').first().click();
+          await page.locator('#fd-modal').waitFor({state:'visible',timeout:15000});
+          const modalFile=path.join(out,'after-full-matchup-'+width+'.png');
+          await page.screenshot({path:modalFile,fullPage:false,animations:'disabled'});
+          console.log('Screenshot:',path.basename(modalFile));
         }
         await page.close();
       }

@@ -10,7 +10,11 @@ class RefreshReliabilityTests(unittest.TestCase):
         odds=(ROOT/'.github/workflows/refresh-draftkings-odds.yml').read_text()
         daily_lines=(ROOT/'.github/workflows/daily-dk-player-props.yml').read_text()
         self.assertIn("cron: '17 22,23 * * *'", publish)
-        self.assertIn("kickoff.astimezone(central).date()==today", publish)
+        window=(ROOT/'scripts/check_pregame_forecast_window.py').read_text()
+        self.assertIn('python -m scripts.daily_forecast_refresh_window', publish)
+        self.assertIn('python -m scripts.check_pregame_forecast_window', publish)
+        self.assertIn('MIN_MINUTES = 80', window)
+        self.assertIn('MAX_MINUTES = 150', window)
         self.assertIn("cron: '40 21,22 * * *'", daily_lines)
         # The old hourly forecast cron was retired; Sunday now uses the
         # ordered DK -> forecast reusable workflow chain with a safe backstop.
@@ -45,10 +49,14 @@ class RefreshReliabilityTests(unittest.TestCase):
         homepage=(ROOT/'index.html').read_text()
         script=(ROOT/'assets/feed-freshness.js').read_text()
         self.assertIn('assets/feed-freshness.js',homepage)
-        self.assertIn('America/Chicago',script)
+        self.assertIn("fetch('data/live-v2.json?freshness='",script)
+        self.assertIn("fetch('data/dk-game-odds.json?freshness='",script)
+        self.assertIn('forecast.generated_at_utc',script)
+        self.assertIn('odds.snapshot_date_utc',script)
+        self.assertIn('FD_STALE_LINE_HOURS',script)
         self.assertIn('generated_at_utc',script)
         self.assertIn('snapshot_date_utc',script)
-        self.assertIn('data may be stale',script)
+        self.assertIn('Warning ·',script)
         self.assertIn('window.location.reload()',script)
 
 if __name__=='__main__':

@@ -7,11 +7,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class MobileFirstPresentationTests(unittest.TestCase):
     def test_all_main_pages_load_mobile_stylesheet(self):
-        tag = 'assets/fd-mobile-first-2026.css?v=1'
+        tag = 'assets/fd-mobile-first-2026.css'
         for page in ('index.html', 'bets.html', 'history.html', 'model-lab.html'):
             with self.subTest(page=page):
                 text = (ROOT / page).read_text(encoding='utf-8')
                 self.assertEqual(text.count(tag), 1)
+                self.assertRegex(text, r'assets/fd-mobile-first-2026\.css\?v=\d+')
                 self.assertLess(text.rfind(tag), text.rfind('</body>'))
 
     def test_mobile_rules_keep_predictions_visible_and_touchable(self):

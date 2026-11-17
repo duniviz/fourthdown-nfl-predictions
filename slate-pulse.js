@@ -23,24 +23,21 @@ function scoreboardStatus(state){
  if(!root)return;
  const allGamesToggle=root.querySelector('.fd-live-board-head>a');
  const fullScoreboard=document.getElementById('scoreboard');
+ let showAllGames=false;
  if(allGamesToggle&&fullScoreboard){
-  const setAllGamesVisible=(visible,scroll=false)=>{
-   fullScoreboard.hidden=!visible;
-   allGamesToggle.setAttribute('aria-expanded',String(visible));
-   allGamesToggle.innerHTML=visible?'Hide games <span aria-hidden="true">↙</span>':'All games <span aria-hidden="true">↗</span>';
-   if(visible&&scroll)requestAnimationFrame(()=>fullScoreboard.scrollIntoView({behavior:'smooth',block:'start'}));
-  };
   fullScoreboard.hidden=true;
-  allGamesToggle.setAttribute('aria-controls','scoreboard');
+  allGamesToggle.setAttribute('aria-controls','fd-live-board-cards');
   allGamesToggle.setAttribute('aria-expanded','false');
   allGamesToggle.addEventListener('click',event=>{
    event.preventDefault();
-   setAllGamesVisible(fullScoreboard.hidden,true);
+   showAllGames=!showAllGames;
+   allGamesToggle.setAttribute('aria-expanded',String(showAllGames));
+   allGamesToggle.innerHTML=showAllGames?'Show fewer <span aria-hidden="true">↗</span>':'All games <span aria-hidden="true">↗</span>';
+   render();
   });
-  window.addEventListener('hashchange',()=>{
-   if(location.hash==='#scoreboard')setAllGamesVisible(true,true);
-  });
-  if(location.hash==='#scoreboard')setAllGamesVisible(true);
+  const syncLegacyScoreboard=()=>{if(location.hash==='#scoreboard')fullScoreboard.hidden=false;};
+  window.addEventListener('hashchange',syncLegacyScoreboard);
+  syncLegacyScoreboard();
  }
  const $=id=>root.querySelector('#'+id);
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -89,7 +86,7 @@ function scoreboardStatus(state){
    }).sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
    showingForecastFallback=upcoming.length>0;
   }
-  const chosen=live.length?live.slice(0,5):upcoming.length?upcoming.slice(0,4):finals.slice(0,4);
+  const chosen=showAllGames?[...live,...upcoming,...finals]:(live.length?live.slice(0,5):upcoming.length?upcoming.slice(0,4):finals.slice(0,4));
   const mode=feed==='loading'&&!all.length?'LIVE SCOREBOARD':live.length?'LIVE NOW':upcoming.length?'UP NEXT':finals.length?'FINAL SCORES':'LIVE SCOREBOARD';
   $('fd-live-board-kicker').textContent=mode+' · NFL WEEK '+(forecasts[0]?.week||'');
   $('fd-live-board-status').textContent=scoreboardStatus({live:live.length,upcoming:showingForecastFallback?0:upcoming.length,finals:finals.length,feed,forecastFallback:showingForecastFallback});

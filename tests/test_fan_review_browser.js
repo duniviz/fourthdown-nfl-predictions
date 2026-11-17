@@ -30,9 +30,9 @@ function chromePath() {
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     assert.equal(await page.locator('.fd-about-data').evaluate(node => node.open), false);
     await page.locator('.fd-about-data > summary').click();
-    await page.waitForFunction(() => /907/.test(document.querySelector('#bet-record')?.innerText || '') && /History only counts/.test(document.querySelector('#bet-pick-scope')?.innerText || ''));
+    await page.waitForFunction(() => /993/.test(document.querySelector('#bet-record')?.innerText || '') && /History only counts/.test(document.querySelector('#bet-pick-scope')?.innerText || ''));
     const props = await page.locator('#bet-record').innerText();
-    assert.match(props, /907/);
+    assert.match(props, /993/);
     assert.match(await page.locator('#bet-pick-scope').innerText(), /838/);
     assert.match(await page.locator('#bet-pick-scope').innerText(), /JAX at BAL/);
     if (width === 400) {
@@ -49,7 +49,7 @@ function chromePath() {
     await page.waitForFunction(() => /Verified picks/.test(document.querySelector('#fd-player-dataset')?.innerText || ''));
     await page.waitForFunction(() => /game-score row/.test(document.querySelector('#fd-pick-scope')?.innerText || ''));
     assert.match(await page.locator('#fd-player-dataset').innerText(), /838/);
-    assert.match(await page.locator('#fd-pick-scope').innerText(), /907|69/);
+    assert.match(await page.locator('#fd-pick-scope').innerText(), /993|155/);
     assert.match(await page.locator('#fd-pick-scope').innerText(), /Props also includes/);
 
     await page.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
