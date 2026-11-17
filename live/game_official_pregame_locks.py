@@ -47,8 +47,10 @@ def select(records, existing, now):
         if key not in grouped or rank>grouped[key][0]:
             grouped[key]=(rank,row)
     for key,(_,row) in grouped.items():
-        locked[key]={**row,"lock_cutoff_utc":(dt(row["kickoff_utc"])-LOCK_LEAD).isoformat(),
-                     "lock_status":"official"}
+        kickoff=dt(row["kickoff_utc"])
+        cutoff=kickoff-LOCK_LEAD
+        status="last_available" if now>cutoff+LOCK_TOLERANCE else "official"
+        locked[key]={**row,"lock_cutoff_utc":cutoff.isoformat(),"lock_status":status}
     return sorted(locked.values(),key=lambda x:(str(x.get("kickoff_utc")),str(x.get("game_id"))))
 
 def _quote_at(row):
