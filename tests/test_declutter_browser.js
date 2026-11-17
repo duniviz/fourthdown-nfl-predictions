@@ -26,7 +26,9 @@ const assert = require('node:assert/strict');
   assert.ok(strip, 'Best edges results are available when expanded');
   assert.match(await page.locator('#fd-bb-results').innerText(), /52\.4%/);
   assert.equal(await page.locator('#fd-mini-coverage').count(), 0);
-  assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1);
+  await page.locator('#fd-desk-games').evaluate(node => { node.open = true; });
+  await page.locator('#fd-live-board .fd-live-board-head>a').click();
+  assert.equal(await page.getByRole('button', {name: 'With model picks'}).count(), 1, 'All games reveals scoreboard filters');
   await page.locator('#fd-desk-more > summary').click();
   await page.waitForFunction(() => {
     const list = document.querySelector('#fd-top-picks-list');
