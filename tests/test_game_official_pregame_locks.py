@@ -68,11 +68,12 @@ class OfficialGameLockTests(unittest.TestCase):
         old={**self.row(180,-2),"lock_status":"early_pregame"}
         early=self.kickoff-timedelta(minutes=10)
         row=freeze(self.live(early),[old],[old],early)[0]
-        self.assertEqual(row["lock_status"],"early_pregame")
-        self.assertEqual(row["dk_home_spread"],-2)
+        self.assertEqual(row["lock_status"],"forecast_only")
+        self.assertIsNone(row["dk_home_spread"])
         final=self.kickoff-timedelta(minutes=3)
         locked=freeze(self.live(final),[old],[old],final)[0]
-        self.assertEqual(locked["lock_status"],"last_available")
+        self.assertEqual(locked["lock_status"],"forecast_only")
+        self.assertIsNone(locked["dk_home_spread"])
     def test_fresh_forecast_locks_without_fabricating_missing_dk_lines(self):
         now=self.kickoff-timedelta(minutes=15)
         row=freeze(self.live(now),[],[],now)[0]
