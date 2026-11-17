@@ -19,6 +19,12 @@ def candidates():
             (0,.1,.2,.3))))
     return weights
 
+def eligible_actual_rows(rows, supported_markets=MARKETS):
+    """Keep weekly grading aligned with the markets V4 actually models."""
+    return [r for r in rows if r.get("season") == 2026
+            and r.get("market") in supported_markets]
+
+
 def main():
     rows=backtest(seasons=(2024,2026))
     pool=candidates()
@@ -27,8 +33,8 @@ def main():
         train=[r for r in rows if r["season"]==2024 and r["market"]==market]
         if not train:raise RuntimeError("Missing 2024 training observations: "+market)
         winners[market]=min(pool,key=lambda w:(sum(abs(prediction(r,w)-r["actual"]) for r in train)/len(train),sum(abs(v) for v in w)))
-    actual=[r for r in rows if r["season"]==2026]
-    if not actual:raise RuntimeError("No completed 2026 player observations")
+    actual=eligible_actual_rows(rows, winners)
+    if not actual:raise RuntimeError("No completed 2026 observations for supported V4 yardage markets")
     by_week=defaultdict(list)
     for r in actual:by_week[(r["week"],r["market"])].append(r)
     report=[]
