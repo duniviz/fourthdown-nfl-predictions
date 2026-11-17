@@ -44,6 +44,10 @@ const assert = require('node:assert/strict');
       assert.equal(await page.locator('#fd-bb-results article').filter({hasText: 'O/U'}).isVisible(), true, 'O/U result should be visible');
     }
     if (width === 1440) assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none');
+    const gamesLink = nav.locator('a[href="index.html#scoreboard"]');
+    await gamesLink.click();
+    await page.waitForFunction(() => location.hash === '#scoreboard' && document.getElementById('fd-desk-games')?.open === true);
+    assert.equal(await page.locator('#scoreboard').isVisible(), true, 'Games link should reveal the scoreboard');
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     await page.waitForSelector('#bet-cards .fd-bet-ml-projection');
     assert.match(await page.locator('#bet-cards .fd-bet-ml-projection').first().innerText(), /ML projection, research/);
