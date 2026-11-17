@@ -4,6 +4,11 @@ on:
   workflow_run:
     workflows: [Publish weekly v2 forecasts]
     types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/free-nfl-feature-lab.yml'
+      - 'scripts/advanced_ml_slate_guard.py'
   pull_request:
     paths:
       - '.github/workflows/free-nfl-feature-lab.yml'
