@@ -33,7 +33,6 @@ const assert = require("node:assert/strict");
   }));
 
   await page.goto("http://127.0.0.1:8123/index.html", { waitUntil: "domcontentloaded" });
-  await page.locator('#fd-desk-games > summary').click();
   const card = page.locator("#scoreboard-cards .scorecard").filter({ hasText: "WAS" }).filter({ hasText: "NYG" });
   await card.waitFor();
   await page.waitForFunction(() => {

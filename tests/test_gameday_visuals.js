@@ -15,6 +15,7 @@ const assert=require('node:assert/strict');
    if(u.includes('game-ml-runtime'))d={decisions:{game_total:{active:false,paired:110,weeks:6,baseline_mae:11,candidate_mae:12}}};
    return r.fulfill({json:d});});
   await page.goto('http://127.0.0.1:8123/index.html',{waitUntil:'domcontentloaded'});
+  await page.locator('#fd-desk-games').evaluate(node => { node.open = false; });
   await page.locator('#fd-desk-games > summary').click();
   const slateMatchup=page.locator('#fd-bb-slate .fd-bb-row:not(.fd-bb-final)').first();
   await slateMatchup.locator('> summary').click();
