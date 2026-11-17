@@ -23,11 +23,19 @@
     }catch(e){savedCount.textContent='Slip unavailable'}}
 
     if(results&&tabs)home.insertBefore(results,tabs);
+    // Keep Best edges available, but let this week's games lead the first page.
+    const edges=details('fd-desk-edges','Best edges this week','Top 5 picks · DraftKings comparisons');
+    edges.classList.add('fd-desk-edges-fold');
+    edges.open=false;
+    home.before(edges);
+    edges.append(home);
     const layout=document.createElement('div');
     layout.id='fd-weekly-desk';
     layout.className='fd-weekly-desk';
-    home.after(layout);
-    const games=details('fd-desk-games','Games & live scores','Live scoreboard · upcoming games · final results');
+    edges.before(layout);
+    const games=details('fd-desk-games','Games & live scores','This week’s slate · live scoreboard · final results');
+    games.classList.add('fd-desk-games-primary');
+    games.open=true;
     const live=document.getElementById('fd-slate-pulse');
     const slate=document.getElementById('fd-bb-slate');
     const scoreboard=document.getElementById('scoreboard');
