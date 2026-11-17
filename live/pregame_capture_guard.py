@@ -62,7 +62,7 @@ def lock_wait_seconds(games, now, limit=30*60):
     active=[k for k in slates(games) if timedelta(0) < k-now <= ACTIVE_WINDOW]
     if not active or any(k-now <= LOCK_LEAD for k in active):
         return 0
-    waits=[(k-LOCK_LEAD-now).total_seconds()-20 for k in active]
+    waits=[(k-LOCK_LEAD-now).total_seconds() for k in active]
     return max(0, min(min(waits), limit))
 
 def main():
