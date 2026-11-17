@@ -1,6 +1,14 @@
 name: Free NFL feature research lab
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Publish weekly v2 forecasts]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/free-nfl-feature-lab.yml'
+      - 'scripts/advanced_ml_slate_guard.py'
   pull_request:
     paths:
       - '.github/workflows/free-nfl-feature-lab.yml'
@@ -13,12 +21,15 @@ on:
       - 'tests/test_select_market_ml.py'
       - 'tests/test_free_nfl_feature_lab.py'
       - 'tests/test_free_nfl_lab_workflow.py'
+      - 'scripts/advanced_ml_slate_guard.py'
+      - 'tests/test_advanced_ml_slate_guard.py'
       - 'tools/refresh_weekly_player_ml_data.py'
   schedule:
     # Thursday: after Wednesday ML retraining, research only; no live writer.
     - cron: '30 15 * * 4'
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: fourthdown-free-nfl-feature-research
   cancel-in-progress: false
@@ -29,32 +40,51 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || 'main' }}
+      - name: Check whether the current slate needs advanced features
+        id: slate_guard
+        shell: bash
+        env:
+          EVENT: ${{ github.event_name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          SOURCE_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          if [[ "$EVENT" == "workflow_run" ]]; then
+            if [[ "$CONCLUSION" != "success" || "$SOURCE_BRANCH" != "main" ]] || ! python -m scripts.advanced_ml_slate_guard needs-refresh; then
+              echo 'run=false' >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo 'run=true' >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
+        if: steps.slate_guard.outputs.run == 'true'
         with:
           python-version: '3.11'
       - name: Install existing open-data and machine learning dependencies
+        if: steps.slate_guard.outputs.run == 'true'
         run: python -m pip install -r requirements-backtest.txt
       - name: Test prior-week feature safeguards
+        if: steps.slate_guard.outputs.run == 'true'
         run: |
           python -m unittest discover -s tests -p test_free_nfl_feature_lab.py -v
           python -m unittest discover -s tests -p test_free_nfl_lab_workflow.py -v
           python -m unittest discover -s tests -p test_select_market_ml.py -v
           python -m unittest discover -s tests -p test_advanced_player_ml_cards.py -v
+          python -m unittest discover -s tests -p test_advanced_ml_slate_guard.py -v
       - name: Build completed-game historical baseline training rows
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2023 --output data/weekly-player-ml-training.csv
           test -s data/weekly-player-ml-training.csv
       - name: Fetch free source archives and run research-only walk-forward ablations
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: |
           python -m research.free_nfl_feature_lab --start 2023 --input data/weekly-player-ml-training.csv --output data/research-free-nfl-features.json
       - name: Select best research feature combination for each player and game market
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: python -m research.select_market_ml
       - name: Upload feature coverage and results
-        if: always() && github.event_name != 'pull_request'
+        if: always() && github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: free-nfl-feature-research
@@ -66,7 +96,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
       - name: Publish research results only, never live predictions
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -94,9 +124,32 @@ jobs:
           for m in a['models'].values():
               assert m['active'] is False and (m['trained_season'],m['trained_week']) < (a['target_season'],a['target_week'])
           PY
+          git fetch origin main
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          from scripts.advanced_ml_slate_guard import matched
+          slate=json.loads(subprocess.check_output(['git','show','origin/main:data/live-v2.json']))
+          players=json.loads(subprocess.check_output(['git','show','origin/main:data/player-research.json']))
+          runtime=json.loads(Path('data/player-advanced-ml-runtime.json').read_text())
+          features=json.loads(Path('data/player-advanced-ml-features.json').read_text())
+          if not matched(slate,runtime,features) or (slate.get('season'),slate.get('week')) != (players.get('season'),players.get('week')):
+              raise SystemExit('Slate changed during feature training; refusing to publish stale candidates')
+          PY
           git add -f data/research-free-nfl-features.json data/market-ml-research-selection.json data/player-advanced-ml-runtime.json data/player-advanced-ml-features.json
           if ! git diff --cached --quiet; then
             git commit -m "Research: weekly free NFL feature coverage and ML ablation [skip ci]"
             git pull --rebase origin main
             git push origin HEAD:main
+          fi
+      - name: Refresh player cards with current advanced research candidates
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if python -m scripts.advanced_ml_slate_guard ready-to-publish && python -m scripts.daily_forecast_refresh_window; then
+            gh workflow run publish-v2.yml --ref main
+          else
+            echo 'No matching newer feature set or safe forecast window; the next normal forecast will use eligible features.'
           fi
