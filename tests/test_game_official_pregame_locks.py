@@ -64,7 +64,7 @@ class OfficialGameLockTests(unittest.TestCase):
         old={**self.row(25,-4),"lock_status":"last_available"}
         now=self.kickoff-timedelta(minutes=5)
         self.assertEqual(freeze(self.live(now),[self.row(8,-9)],[old],now),[old])
-    def test_stale_quote_stays_upgradeable_until_the_final_minutes(self):
+    def test_stale_quote_uses_forecast_only_when_forecast_is_fresh(self):
         old={**self.row(180,-2),"lock_status":"early_pregame"}
         early=self.kickoff-timedelta(minutes=10)
         row=freeze(self.live(early),[old],[old],early)[0]
