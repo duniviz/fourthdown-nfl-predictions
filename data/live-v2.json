@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-17T15:58:13.961243+00:00",
+  "generated_at_utc": "2026-11-17T17:03:15.563780+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -23,8 +23,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 2,
           "unmodeled_injuries": [
+            {
+              "player": "Azeez Al-Shaair",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Jaylin Smith",
               "position": "CB",
@@ -394,17 +399,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 6.85,
-            "candidate": 9.7,
+            "candidate": 9.69,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 43.43,
             "candidate": 47.43,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -797,17 +802,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 10.72,
-            "candidate": 10.09,
+            "candidate": 10.11,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 44.32,
             "candidate": 48.32,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -1214,17 +1219,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 5.58,
-            "candidate": 5.73,
+            "candidate": 5.68,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 42.41,
-            "candidate": 42.56,
+            "candidate": 42.52,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -1627,17 +1632,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 5.33,
-            "candidate": 4.22,
+            "candidate": 4.17,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 43.6,
             "candidate": 45.91,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -2045,17 +2050,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 4.36,
-            "candidate": 4.76,
+            "candidate": 4.78,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 52.11,
-            "candidate": 50.04,
+            "candidate": 50.03,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -2458,17 +2463,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 2.86,
-            "candidate": 5.16,
+            "candidate": 5.15,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 40.71,
             "candidate": 44.71,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -2874,14 +2879,14 @@
             "candidate": 10.23,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 44.79,
-            "candidate": 43.93,
+            "candidate": 43.91,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -3263,17 +3268,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": -3.73,
-            "candidate": -4.03,
+            "candidate": -4.06,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 45.84,
-            "candidate": 48.21,
+            "candidate": 48.27,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -3660,17 +3665,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 0.63,
-            "candidate": 0.46,
+            "candidate": 0.45,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 43.93,
-            "candidate": 43.32,
+            "candidate": 43.31,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -4052,17 +4057,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 6.08,
-            "candidate": 7.14,
+            "candidate": 7.21,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 47.38,
             "candidate": 47.68,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -4455,17 +4460,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": -3.02,
-            "candidate": -5.06,
+            "candidate": -5.15,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 44.91,
-            "candidate": 42.16,
+            "candidate": 42.19,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -4872,17 +4877,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": 6.77,
-            "candidate": 4.62,
+            "candidate": 4.51,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 43.09,
             "candidate": 47.09,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
@@ -5290,17 +5295,17 @@
         "markets": {
           "game_margin_home": {
             "baseline": -4.05,
-            "candidate": -4.35,
+            "candidate": -4.32,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           },
           "game_total": {
             "baseline": 51.95,
-            "candidate": 48.16,
+            "candidate": 48.24,
             "active": false,
             "trained_season": 2026,
-            "trained_week": 9
+            "trained_week": 10
           }
         }
       }
