@@ -66,8 +66,9 @@ const assert = require('node:assert/strict');
     await page.locator('#fd-desk-games').evaluate(node => { node.open = false; });
     const gamesLink = nav.locator('a[href="index.html#fd-slate-pulse"]');
     await gamesLink.click();
-    await page.waitForFunction(() => location.hash === '#scoreboard' && document.getElementById('fd-desk-games')?.open === true);
-    assert.equal(await page.locator('#scoreboard').isVisible(), true, 'Games link should reveal the scoreboard');
+    await page.waitForFunction(() => location.hash === '#fd-slate-pulse' && document.getElementById('fd-desk-games')?.open === true);
+    assert.equal(await page.locator('#fd-slate-pulse').isVisible(), true, 'Games link should reveal the Game Day Scoreboard');
+    assert.equal(await page.locator('#scoreboard').isHidden(), true, 'The full game list stays collapsed until requested');
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     await page.waitForSelector('#bet-cards');
     if (await page.locator('#bet-cards .fd-bet-ml-projection').count()) {
