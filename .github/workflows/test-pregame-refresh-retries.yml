@@ -18,6 +18,10 @@ on:
       - 'live/pregame_refresh_state.py'
       - 'live/dk_game_refresh.py'
       - 'tests/test_pregame_refresh_state.py'
+      - 'scripts/check_pregame_forecast_window.py'
+      - 'scripts/daily_forecast_refresh_window.py'
+      - 'tests/test_forecast_refresh_schedule.py'
+      - '.github/workflows/publish-v2.yml'
       - '.github/workflows/test-pregame-refresh-retries.yml'
 permissions:
   contents: read
