@@ -3,7 +3,7 @@ name: Publish weekly v2 forecasts
   workflow_dispatch: {}
   workflow_call: {}
   workflow_run:
-    workflows: [Daily DraftKings player prop refresh]
+    workflows: [Daily DraftKings player prop refresh, Tuesday pre-forecast evaluation]
     types: [completed]
   push:
     paths:
@@ -37,6 +37,12 @@ jobs:
             if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               echo "Skipping forecast because the preceding DK refresh did not succeed"
+              exit 0
+            fi
+            # The Tuesday evaluation must finish before this forecast run; do not race its grading/learning writes.
+            if [[ "${{ github.event.workflow_run.name }}" == "Tuesday pre-forecast evaluation" ]]; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Running the new-week forecast after Tuesday evaluation completed successfully"
               exit 0
             fi
             # Sunday preset runs always refresh after DK; other days keep the kickoff-window guard.

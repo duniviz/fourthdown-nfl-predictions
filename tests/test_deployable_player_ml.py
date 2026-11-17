@@ -72,7 +72,7 @@ class DeployableMLTests(unittest.TestCase):
 if __name__=='__main__': unittest.main()
 
 class FrozenPairTests(unittest.TestCase):
-    def test_only_saved_by_fifteen_minute_cutoff_and_latest(self):
+    def test_only_saved_within_t30_cutoff_and_latest(self):
         from live.player_results import select_frozen_ml_pairs
         def row(saved, forecast, candidate):
             return {'game_id':'2026_09_A_B','player_id':'p','stat_key':'passing_yards',
@@ -83,4 +83,4 @@ class FrozenPairTests(unittest.TestCase):
               row('2026-11-08T17:40:00+00:00','2026-11-08T17:35:00+00:00',110),
               row('2026-11-08T17:46:00+00:00','2026-11-08T17:30:00+00:00',120)]
         pairs=select_frozen_ml_pairs(rows)
-        self.assertEqual(pairs[('2026_09_A_B','p','passing_yards')][1]['candidate'],110)
+        self.assertEqual(pairs[('2026_09_A_B','p','passing_yards')][1]['candidate'],120)
