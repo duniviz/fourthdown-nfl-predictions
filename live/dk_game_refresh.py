@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from live.game_pregame_observations import dt
+from live.game_schedule_match import match_scheduled_game
 
 OUT=Path("data/dk-game-odds.json")
 HISTORY=Path("data/dk-game-line-history.json")
@@ -212,19 +213,8 @@ def main():
         return
     print(f"DK game odds: {len(rows)} eligible provider events; "+
           f"{sum(x['quote_timestamp_source']=='retrieval' for x in rows)} observed at retrieval with missing or invalid provider timestamp")
-    # Map the provider's full team names to published NFL team abbreviations,
-    # never infer from substrings or fabricate a game match.
     live=json.loads(Path("data/live-v2.json").read_text())
     mapped=[]
-    for row in rows:
-        match=next((g for g in live.get("games",[]) if
-            g.get("home_team")==row["home_team"] and g.get("away_team")==row["away_team"]
-            and dt(g.get("kickoff_utc"))==dt(row["commence_time"])),None)
-        if match is None:
-            # Published games currently store abbreviations, so use the known
-            # team names already present in the existing DK odds file.
-            continue
-        mapped.append({**row,"home":match["home"],"away":match["away"]})
     # Existing odds provide an explicit full-name -> abbreviation mapping.
     previous=json.loads(OUT.read_text()) if OUT.exists() else {}
     names={}
@@ -240,10 +230,14 @@ def main():
     for row in rows:
         if row["home_team"] not in names or row["away_team"] not in names:
             continue
-        item={**row,"home":names[row["home_team"]],"away":names[row["away_team"]]}
-        if any(g.get("home")==item["home"] and g.get("away")==item["away"] and
-               dt(g.get("kickoff_utc"))==dt(item["commence_time"]) for g in live.get("games",[])):
-            mapped.append(item)
+        home,away=names[row["home_team"]],names[row["away_team"]]
+        match=match_scheduled_game(live.get("games",[]),home,away,row["commence_time"])
+        if match is None:
+            continue
+        scheduled=dt(match.get("kickoff_utc"))
+        mapped.append({**row,"home":home,"away":away,
+                       "provider_commence_time_utc":row["commence_time"],
+                       "commence_time":scheduled.isoformat()})
     mapped=list({(x["home"],x["away"],x["commence_time"]):x for x in mapped}.values())
     matched_ids={x["game_id"] for x in mapped}
     unmatched=[x for x in rows if x["game_id"] not in matched_ids]

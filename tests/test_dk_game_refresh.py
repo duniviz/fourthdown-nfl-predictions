@@ -2,8 +2,17 @@ import unittest
 from datetime import datetime,timezone,timedelta
 from live.dk_game_refresh import parse, history_entry
 from tools.refresh_sportsgameodds_backup import merge_game_quotes
+from live.game_schedule_match import match_scheduled_game
 
 class DKGameRefreshTests(unittest.TestCase):
+    def test_provider_kickoff_drift_matches_one_published_game(self):
+        kickoff=datetime(2026,11,17,1,15,tzinfo=timezone.utc)
+        games=[{"game_id":"LAC_BAL","home":"BAL","away":"LAC","kickoff_utc":kickoff.isoformat()}]
+        matched=match_scheduled_game(games,"BAL","LAC",(kickoff+timedelta(minutes=6)).isoformat())
+        self.assertEqual(matched["game_id"],"LAC_BAL")
+        self.assertIsNone(match_scheduled_game(games,"BAL","LAC",(kickoff+timedelta(minutes=16)).isoformat()))
+        self.assertIsNone(match_scheduled_game(games,"BAL","LAC","not-a-time"))
+
     def test_verified_draftkings_only(self):
         now=datetime(2026,11,8,17,tzinfo=timezone.utc)
         kick=(now+timedelta(hours=1)).isoformat()

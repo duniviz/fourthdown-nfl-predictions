@@ -64,15 +64,31 @@ class OfficialGameLockTests(unittest.TestCase):
         old={**self.row(25,-4),"lock_status":"last_available"}
         now=self.kickoff-timedelta(minutes=5)
         self.assertEqual(freeze(self.live(now),[self.row(8,-9)],[old],now),[old])
-    def test_stale_quote_stays_upgradeable_until_the_final_minutes(self):
+    def test_stale_quote_uses_forecast_only_when_forecast_is_fresh(self):
         old={**self.row(180,-2),"lock_status":"early_pregame"}
         early=self.kickoff-timedelta(minutes=10)
         row=freeze(self.live(early),[old],[old],early)[0]
-        self.assertEqual(row["lock_status"],"early_pregame")
-        self.assertEqual(row["dk_home_spread"],-2)
+        self.assertEqual(row["lock_status"],"forecast_only")
+        self.assertIsNone(row["dk_home_spread"])
         final=self.kickoff-timedelta(minutes=3)
         locked=freeze(self.live(final),[old],[old],final)[0]
-        self.assertEqual(locked["lock_status"],"last_available")
+        self.assertEqual(locked["lock_status"],"forecast_only")
+        self.assertIsNone(locked["dk_home_spread"])
+    def test_fresh_forecast_locks_without_fabricating_missing_dk_lines(self):
+        now=self.kickoff-timedelta(minutes=15)
+        row=freeze(self.live(now),[],[],now)[0]
+        self.assertEqual(row["lock_status"],"forecast_only")
+        self.assertIsNone(row["dk_home_spread"])
+        self.assertIsNone(row["dk_total"])
+
+    def test_stale_forecast_does_not_become_a_final_lock(self):
+        now=self.kickoff-timedelta(minutes=10)
+        live={"generated_at_utc":(self.kickoff-timedelta(hours=3)).isoformat(),
+              "games":[{"game_id":"g","kickoff_utc":self.kickoff.isoformat(),
+                        "projected_margin_home":2,"projected_total":44}]}
+        row=freeze(live,[],[],now)[0]
+        self.assertEqual(row["lock_status"],"early_pregame")
+
     def test_other_kickoffs_are_not_frozen_early(self):
         later=self.kickoff+timedelta(hours=5)
         other={**self.row(30,-7),"game_id":"later","kickoff_utc":later.isoformat(),

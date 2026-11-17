@@ -153,6 +153,25 @@ def refresh(keys,games,stamp):
             state["slates"]=sorted(set(state.get("slates",[]))|{key})
     save("dk-slate-refreshes",state)
 
+def validate_due_locks(games, stamp):
+    saved=read("game-official-pregame-locks",{}).get("records",[])
+    by_game={(str(row.get("game_id")),observations.dt(row.get("kickoff_utc"))):row
+             for row in saved if isinstance(row,dict)}
+    missing=[]
+    for game in games:
+        kickoff=observations.dt(game.get("kickoff_utc"))
+        if not kickoff or not stamp<kickoff or kickoff-stamp>timedelta(minutes=15):
+            continue
+        row=by_game.get((str(game.get("game_id")),kickoff))
+        forecast=observations.dt(row.get("forecast_at_utc")) if row else None
+        fresh=bool(forecast and kickoff-timedelta(minutes=105)<=forecast<kickoff)
+        if not row or row.get("lock_status") not in locks.FINAL_STATUSES or not fresh:
+            missing.append(f"{game.get('away')} @ {game.get('home')} ({game.get('game_id')})")
+    if missing:
+        raise RuntimeError("Pregame save incomplete: no fresh final lock for "+", ".join(missing))
+    if any(row.get("lock_status")=="forecast_only" for row in saved):
+        print("::warning::One or more forecasts were saved without current DraftKings lines; missing odds remain blank.")
+
 def checkpoint(games):
     stamp=now()
     if any(k>stamp for k in slates(games)):
@@ -164,6 +183,7 @@ def checkpoint(games):
         locks.main()
     build_projection_changes(DATA,stamp)
     publish("Save pregame scoring, player projections and verified DK observations")
+    validate_due_locks(games,now())
 
 def next_wake(games,done,stamp):
     times={k-timedelta(minutes=n) for k in slates(games) for n in (30,15) if n!=30 or k.isoformat() not in done}
