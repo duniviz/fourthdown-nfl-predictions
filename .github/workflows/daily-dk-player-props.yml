@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/daily-dk-player-props.yml'
       - 'live/dk_game_refresh.py'
+      - 'data/live-v2.json'
   schedule:
     # Refresh DraftKings player props and game lines daily around 4 PM Central.
     - cron: '40 21,22 * * *'

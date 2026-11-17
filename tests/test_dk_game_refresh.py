@@ -3,8 +3,19 @@ from datetime import datetime,timezone,timedelta
 from live.dk_game_refresh import parse, history_entry
 from tools.refresh_sportsgameodds_backup import merge_game_quotes
 from live.game_schedule_match import match_scheduled_game
+from live.generate import VERIFIED_KICKOFF_OVERRIDES
 
 class DKGameRefreshTests(unittest.TestCase):
+    def test_official_flexed_jax_nyg_kickoff_matches_provider_time(self):
+        from zoneinfo import ZoneInfo
+        local = datetime.fromisoformat(VERIFIED_KICKOFF_OVERRIDES["2026_11_JAX_NYG"])
+        scheduled = local.replace(tzinfo=ZoneInfo("America/New_York")).astimezone(timezone.utc)
+        self.assertEqual(scheduled, datetime(2026, 11, 22, 21, 25, tzinfo=timezone.utc))
+        game = {"game_id": "2026_11_JAX_NYG", "home": "NYG", "away": "JAX",
+                "kickoff_utc": scheduled.isoformat()}
+        provider = datetime(2026, 11, 22, 21, 26, tzinfo=timezone.utc).isoformat()
+        self.assertEqual(match_scheduled_game([game], "NYG", "JAX", provider)["game_id"],
+                         "2026_11_JAX_NYG")
     def test_provider_kickoff_drift_matches_one_published_game(self):
         kickoff=datetime(2026,11,17,1,15,tzinfo=timezone.utc)
         games=[{"game_id":"LAC_BAL","home":"BAL","away":"LAC","kickoff_utc":kickoff.isoformat()}]
