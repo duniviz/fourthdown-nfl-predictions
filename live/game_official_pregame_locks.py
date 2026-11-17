@@ -31,7 +31,10 @@ def select(records, existing, now):
             continue
         cutoff=kickoff-LOCK_LEAD
         earliest=cutoff-timedelta(minutes=90)
-        if not (earliest<=forecast<=cutoff and earliest<=quote<=cutoff and captured<=cutoff):
+        # At the T-30 trigger, use the freshest observation captured by
+        # this run. A delayed runner can still lock a newer snapshot any time
+        # before kickoff; never include a post-kick observation.
+        if not (earliest<=forecast<=now and earliest<=quote<=now and captured<=now):
             continue
         if row.get("projected_margin_home") is None or row.get("projected_total") is None:
             continue
