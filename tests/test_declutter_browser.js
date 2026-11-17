@@ -44,7 +44,9 @@ const assert = require('node:assert/strict');
   assert.ok(await page.locator('#fd-live-board-cards [data-game-id]').count() > 4, 'All games shows the full slate in the top scoreboard');
   await page.locator('#fd-live-board-cards [data-game-id]').first().click();
   await page.waitForFunction(() => !!window.__openedMatchup?.id, null, {timeout:10000});
+  await page.locator('#fd-modal.open').waitFor({state:'visible',timeout:10000});
   assert.ok(await page.evaluate(() => window.__openedMatchup.id), 'A scoreboard card opens its complete matchup');
+  await page.locator('#fd-modal.open [data-close-matchup]').click();
   await page.locator('#fd-desk-more > summary').click();
   await page.waitForFunction(() => {
     const list = document.querySelector('#fd-top-picks-list');
