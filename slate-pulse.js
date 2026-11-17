@@ -35,6 +35,9 @@ function scoreboardStatus(state){
    allGamesToggle.innerHTML=showAllGames?'Show fewer <span aria-hidden="true">↗</span>':'All games <span aria-hidden="true">↗</span>';
    render();
   });
+  const syncLegacyScoreboard=()=>{if(location.hash==='#scoreboard')fullScoreboard.hidden=false;};
+  window.addEventListener('hashchange',syncLegacyScoreboard);
+  syncLegacyScoreboard();
   window.addEventListener('hashchange',()=>{
    if(location.hash==='#scoreboard')setAllGamesVisible(true,true);
   });
