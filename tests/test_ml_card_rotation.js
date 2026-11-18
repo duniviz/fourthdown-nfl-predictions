@@ -1,0 +1,12 @@
+const assert=require('assert');
+const {create}=require('../assets/fd-ml-rotation.js');
+const now=Date.parse('2026-11-18T12:00:00Z');
+const live={season:2026,week:11,generated_at_utc:'2026-11-18T11:00:00Z'};
+const players={generated_at_utc:'2026-11-18T11:01:00Z'},counts={generated_at_utc:'2026-11-18T10:00:00Z'};
+const rotation={research_only:true,season:2026,week:11,generated_at_utc:'2026-11-18T11:02:00Z',forecast_generated_at_utc:live.generated_at_utc,player_generated_at_utc:players.generated_at_utc,count_generated_at_utc:counts.generated_at_utc,decisions:{passing_yards:{model:'xgboost',samples:20,week:10,season:2026}},candidates:[{game_id:'g',player_id:'p',market:'passing_yards',selected:{model:'xgboost',samples:20,week:10,season:2026},kickoff_utc:'2026-11-19T18:00:00Z',predictions:{xgboost:245}}]};
+assert.strictEqual(create(rotation,live,players,counts,now)('g','p','passing_yards').candidate,245);
+assert.strictEqual(create(rotation,{...live,generated_at_utc:'different'},players,counts,now)('g','p','passing_yards'),null);
+assert.strictEqual(create(rotation,live,{generated_at_utc:'different'},counts,now)('g','p','passing_yards'),null);
+assert.strictEqual(create({...rotation,candidates:[...rotation.candidates,...rotation.candidates]},live,players,counts,now)('g','p','passing_yards'),null);
+assert.strictEqual(create(rotation,live,players,counts,Date.parse('2026-11-19T19:00:00Z'))('g','p','passing_yards'),null);
+console.log('ML card rotation tests passed');

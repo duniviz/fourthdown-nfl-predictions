@@ -17,14 +17,14 @@ def finite(x):
  try:
   n=float(x);return n if math.isfinite(n) else None
  except (TypeError,ValueError):return None
-def fit(rows):
+def fit(rows,target=(2026,1)):
  grouped=defaultdict(list)
  for r in rows:
   if r.get("market") not in ("passing_yards","rushing_yards","receiving_yards"):continue
   try:
    season=int(r["season"]);week=int(r["week"])
    old=finite(r["old"]);new=finite(r["new"]);actual=finite(r["actual"])
-   if season>=2026 or None in (old,new,actual) or min(old,new,actual)<0:continue
+   if (season,week)>=target or None in (old,new,actual) or min(old,new,actual)<0:continue
    grouped[r["market"]].append(([new,week],actual))
   except (KeyError,ValueError,TypeError):continue
  models={}
@@ -40,8 +40,9 @@ def fit(rows):
  return models
 def build(now=None):
  now=now or dt.datetime.now(UTC)
- with (DATA/"backtests/player-predictions.csv").open(newline="") as f:models=fit(csv.DictReader(f))
  games=json.loads((DATA/"live-v2.json").read_text());desk=json.loads((DATA/"research-prop-desk.json").read_text())
+ target=(int(games["season"]),int(games["week"]))
+ with (DATA/"backtests/player-predictions.csv").open(newline="") as f:models=fit(csv.DictReader(f),target)
  gs=stamp(games.get("generated_at_utc"));ds=stamp(desk.get("generated_at_utc"))
  archive=DATA/"weekly-shadow-forecasts.json"
  previous=json.loads(archive.read_text()) if archive.exists() else {"rows":[]}

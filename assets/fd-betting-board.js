@@ -253,10 +253,17 @@
       get('data/player-research.json'),
       get('data/dk-odds.json'),
       get('data/game-official-results.json'),
-      get('data/player-results.json')
-    ]).then(([forecast, odds, sims, research, dk, official, playerResults]) => {
+      get('data/player-results.json'),
+      get('data/count-projections.json'),
+      get('data/ml-card-rotation.json')
+    ]).then(([forecast, odds, sims, research, dk, official, playerResults, counts, rotation]) => {
       const now = Date.now();
-      const upcoming = (forecast.games || []).filter(game => Date.parse(game.kickoff_utc) > now);
+      const lookup=window.FDMlRotation?window.FDMlRotation.create(rotation,forecast,research,counts,now):()=>null;
+      const upcoming = (forecast.games || []).filter(game => Date.parse(game.kickoff_utc) > now).map(game=>{
+        const markets={...((game.game_ml_shadow||{}).markets||{})};
+        for(const market of ['game_margin_home','game_total']){const v=lookup(game.game_id,'GAME',market);if(v)markets[market]=v;}
+        return {...game,game_ml_shadow:{...(game.game_ml_shadow||{}),markets}};
+      });
       const quotes = odds.games || [];
       const simGames = sims.games || [];
       games = upcoming.flatMap(game => {
@@ -269,7 +276,8 @@
       }).sort((a, b) => (b.edge || 0) - (a.edge || 0));
       const slateIds = new Set(upcoming.map(game => String(game.kickoff_utc).slice(0, 16)));
       const lines = (dk.rows || []).filter(row => slateIds.has(String(row.commence_time).slice(0, 16)));
-      props = propEdgeRows(research.players || research.rows || [], lines, sims.players || []).map(row=>({...row,slipKey:'prop|'+row.gameId+'|'+row.player+'|'+row.market}));
+      const rotatedPlayers=(research.players || research.rows || []).map(p=>{const v=lookup(p.game_id,p.player_id,p.stat_key);return v?{...p,player_ml_shadow:v}:p;});
+      props = propEdgeRows(rotatedPlayers, lines, sims.players || []).map(row=>({...row,slipKey:'prop|'+row.gameId+'|'+row.player+'|'+row.market}));
       const week = latestWeek(official.rows || []);
       const weekRows = week ? (official.rows || []).filter(row => Number(row.season) === week.season && Number(row.week) === week.week) : [];
       const propRows = week ? (playerResults.rows || []).filter(row => String(row.game_id || '').startsWith(week.season + '_' + String(week.week).padStart(2, '0') + '_') && (row.recommendation_result === 'hit' || row.recommendation_result === 'miss')) : [];

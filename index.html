@@ -446,7 +446,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 .fd-prop-pick-copy{display:flex;flex-direction:column;min-width:0;line-height:1.2;gap:3px}.fd-prop-pick-copy small{font-size:10px;letter-spacing:.13em;color:#b7c9d7;font-weight:800}.fd-prop-pick-copy strong{font-size:22px;font-weight:950;letter-spacing:.06em}.fd-prop-pick-copy em{font-style:normal;font-size:11px;color:#c6d5df}
 .fd-prop-pick-stale{margin-left:auto;align-self:center;flex-shrink:0;border:1px solid #a1a947;border-radius:7px;padding:4px 6px;color:#d8e76b;font-size:9px;font-weight:900}
 @media(max-width:400px){.fd-prop-pick{gap:9px;padding:10px}.fd-prop-pick-stale{font-size:8px;padding:3px 4px}.fd-prop-pick-icon{flex-basis:39px;height:39px}.fd-prop-pick-copy strong{font-size:19px}}
-</style><link rel="stylesheet" href="assets/fd-visual-polish.css"><link rel="stylesheet" href="assets/fd-live-stat-card.css?v=1"><script src="assets/dk-lines.js"></script><style>.fd-changes{margin:10px 0;padding:9px 11px;border:1px solid #355c65;border-radius:9px;background:#0a2530;color:#cce8e6;font-size:12px;line-height:1.5}.fd-changes summary{cursor:pointer;color:#baff25;font-weight:750;overflow-wrap:anywhere}.fd-changes-body{padding-top:8px}.fd-changes-body p{color:#a9c0ce;margin:8px 0 0}</style><script src="assets/projection-changes.js?v=1"></script><link rel="stylesheet" href="assets/fd-gameday-visuals.css?v=1"><link rel="stylesheet" href="assets/fd-insights.css?v=3"><style id="fd-ml-player-card">.fd-unified-ml-projection{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:8px 0 2px;padding:8px 10px;border:1px solid #315268;border-radius:9px;background:#0b1c27;color:#bfd2d9;font-size:12px}.fd-unified-ml-projection span{font-weight:800;color:#8bd7fb}.fd-unified-ml-projection strong{font-size:15px;color:#eaf8fc}.fd-unified-ml-projection small{color:#91a9b2;margin-left:auto}@media(max-width:480px){.fd-unified-ml-projection{gap:6px}.fd-unified-ml-projection small{margin-left:0;width:100%}}</style><style id="fd-ml-matchup-cards">
+</style><link rel="stylesheet" href="assets/fd-visual-polish.css"><link rel="stylesheet" href="assets/fd-live-stat-card.css?v=1"><script src="assets/fd-ml-rotation.js?v=1"></script><script src="assets/dk-lines.js"></script><style>.fd-changes{margin:10px 0;padding:9px 11px;border:1px solid #355c65;border-radius:9px;background:#0a2530;color:#cce8e6;font-size:12px;line-height:1.5}.fd-changes summary{cursor:pointer;color:#baff25;font-weight:750;overflow-wrap:anywhere}.fd-changes-body{padding-top:8px}.fd-changes-body p{color:#a9c0ce;margin:8px 0 0}</style><script src="assets/projection-changes.js?v=1"></script><link rel="stylesheet" href="assets/fd-gameday-visuals.css?v=1"><link rel="stylesheet" href="assets/fd-insights.css?v=3"><style id="fd-ml-player-card">.fd-unified-ml-projection{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:8px 0 2px;padding:8px 10px;border:1px solid #315268;border-radius:9px;background:#0b1c27;color:#bfd2d9;font-size:12px}.fd-unified-ml-projection span{font-weight:800;color:#8bd7fb}.fd-unified-ml-projection strong{font-size:15px;color:#eaf8fc}.fd-unified-ml-projection small{color:#91a9b2;margin-left:auto}@media(max-width:480px){.fd-unified-ml-projection{gap:6px}.fd-unified-ml-projection small{margin-left:0;width:100%}}</style><style id="fd-ml-matchup-cards">
 .fd-ml-game-card{margin:12px 0;padding:12px;border:1px solid #35576b;border-radius:12px;background:linear-gradient(140deg,#0e1f2b,#102a3a);color:#e8f2f7}
 .fd-ml-game-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:9px}
 .fd-ml-game-heading>b{font-size:12px;letter-spacing:.04em;color:#9cebd8}.fd-ml-game-heading>small{color:#9db3c2}
@@ -626,11 +626,13 @@ renderParlays();
   }));
  }
  let forecasts=[];
+ let fdRotatedML=()=>null;
  let archived=[];
  let fdOfficialLocks=[];
  async function loadForecasts(){
   await window.FDProjectionChanges.ready;
-  let countFeed=null, simulationFeed=null;
+  let countFeed=null, simulationFeed=null, rotationFeed=null;
+  try{const r=await fetch('data/ml-card-rotation.json?ts='+Date.now(),{cache:'no-store'});if(r.ok)rotationFeed=await r.json();}catch(e){}
   try{const r=await fetch('data/count-projections.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countFeed=j;countProps=Array.isArray(j.players)?j.players:[];}catch(e){countProps=[];}
   try{const r=await fetch('data/dk-odds.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};countDkQuotes=j.bookmaker==='draftkings'&&Array.isArray(j.rows)?j.rows.filter(q=>Date.parse(j.generated_at_utc)<Date.parse(q.commence_time)):[];}catch(e){countDkQuotes=[];}
   try{const r=await fetch('data/game-official-pregame-locks.json?ts='+Date.now(),{cache:'no-store'});const j=r.ok?await r.json():{};fdOfficialLocks=Array.isArray(j.records)?j.records:[];}catch(e){fdOfficialLocks=[];}
@@ -654,13 +656,14 @@ renderParlays();
    const response=await fetch('data/live-v2.json?ts='+Date.now(),{cache:'no-store'});
    if(!response.ok)throw Error('No forecast');
    const d=await response.json();
+   fdRotatedML=window.FDMlRotation?.create(rotationFeed,d,playerFeed,countFeed)||(()=>null);
    const stamp=new Date(d.generated_at_utc);
    if(!Array.isArray(d.games)||!Number.isFinite(stamp.getTime())||Date.now()-stamp.getTime()>120*3600000){forecasts=[];return;}
    forecasts=d.games.filter(g=>Number.isFinite(Number(g.projected_home_score))&&Number.isFinite(Number(g.projected_away_score))).map(g=>({...g,home:window.fdTeams.label(g.home),away:window.fdTeams.label(g.away),predicted_winner:g.predicted_winner?window.fdTeams.label(g.predicted_winner):g.predicted_winner}));
    const starts=new Map(d.games.map(g=>[g.game_id,g.kickoff_utc]));
    const identityRoster=[...playerResearch,...countProps,...playerHistory].map(row=>({...row,kickoff_utc:row.kickoff_utc||starts.get(row.game_id)}));
    dkIndex=FDDraftKings.create(await FDDraftKings.ready,[...lockedPregameDkQuotes,...countDkQuotes],Date.now(),identityRoster);
-   playerResearch=playerResearch.map(x=>withSavedLine(x,starts.get(x.game_id)));
+   playerResearch=playerResearch.map(x=>{const shadow=fdRotatedML(x.game_id,x.player_id,x.stat_key);return withSavedLine(shadow?{...x,player_ml_shadow:shadow}:x,starts.get(x.game_id));});
    // Do not mix projections from different season/week snapshots. These feeds
    // have distinct models but must describe the same target slate.
    const matchesSlate=feed=>feed&&Number(feed.season)===Number(d.season)&&Number(feed.week)===Number(d.week);
@@ -875,7 +878,7 @@ async function fdOpenMatchup(g){
      const simNote=sim?'<div class="fd-modal-muted">10,000 simulations · Median '+num(sim.median)+unit+' · 10–90% range '+num(sim.p10)+'–'+num(sim.p90)+unit+'</div>':'';
      const shadow=x.player_ml_shadow||null,mlCandidate=shadow&&shadow.candidate!==null&&shadow.candidate!==undefined&&Number.isFinite(Number(shadow.candidate))?Number(shadow.candidate):null;
      const mlDelta=mlCandidate!==null&&validLine?mlCandidate-line:null,baseDelta=validLine?projection-line:null;
-     const mlState=mlCandidate===null?(countLabels[x.stat_key]?'Unavailable · yardage ML does not cover count props':'No eligible saved ML estimate · model training cutoff protects against leakage'):shadow.active?'Active model':'Candidate · research only';
+     const mlState=mlCandidate===null?(countLabels[x.stat_key]?'No eligible count ML candidate':'No eligible saved ML estimate · model training cutoff protects against leakage'):shadow.variant&&shadow.comparison_week?'Research · '+shadow.variant.replace(/_/g,' ')+' · week '+shadow.comparison_week+' ('+shadow.samples+' matched)':shadow.active?'Active model':'Candidate · research only';
      const mlProjection='<div class="fd-modal-ml-compare"><div><small>CURRENT MODEL</small><strong>'+(validProjection?num(projection):'—')+'</strong><em>'+(baseDelta===null?'No verified DK line':(baseDelta>0?'+':'')+num(baseDelta)+' vs DK')+'</em></div><div><small>ML PROJECTION</small><strong>'+(mlCandidate===null?'—':num(mlCandidate))+'</strong><em>'+(mlDelta===null?'No matched estimate':(mlDelta>0?'+':'')+num(mlDelta)+' vs DK')+'</em><span>'+mlState+'</span></div></div>';
      const fantasyWeather=weatherScenario?window.FDWeatherTemplate?.adjustFantasy(x.market_key||x.stat_key,projection,weatherScenario,x.position):null;
      const generalWeather=weatherScenario?window.FDWeatherTemplate?.adjust(x.market_key||x.stat_key,projection,weatherScenario):null;
@@ -1423,7 +1426,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')fdCloseMatchup();});
    const edgeText=(edge>0?'+':'')+fmt(edge);
    const last=x.last5!==null&&x.last5!==''&&Number.isFinite(Number(x.last5))?fmt(x.last5):'—';
    const shadow=x.player_ml_shadow,mlValue=shadow&&shadow.candidate!==null&&shadow.candidate!==undefined&&Number.isFinite(Number(shadow.candidate))?fmt(shadow.candidate):'Not available yet';
-   const mlStatus=mlValue==='Not available yet'?(['passing_yards','rushing_yards','receiving_yards'].includes(x.market_key)?'No eligible same-week ML candidate · training cutoff protection':'Count props do not have a trained yardage ML candidate'):shadow.active?'Currently in use':'Candidate · research only';
+   const mlStatus=mlValue==='Not available yet'?(['passing_yards','rushing_yards','receiving_yards'].includes(x.market_key)?'No eligible same-week ML candidate · training cutoff protection':'Count props do not have a trained yardage ML candidate'):shadow.comparison_week?'Research · '+shadow.variant.replace(/_/g,' ')+' · week '+shadow.comparison_week+' ('+shadow.samples+' matched)':shadow.active?'Currently in use':'Candidate · research only';
    const gameProjection=getProjection(g),kickoff=gameProjection?.kickoff_utc||g.date;
    const wx=window.FDWeatherTemplate?.scenario(savedWeather?.games?.[gameProjection?.game_id],savedWeather?.generated_at_utc,kickoff);
    const fantasyWeather=wx?window.FDWeatherTemplate.adjustFantasy(x.market_key,x.projection,wx,x.position):null;
@@ -1647,28 +1650,32 @@ function fdMarketPickLines(p){
  return '<div class="fd-market-picks" style="font-size:12px;line-height:1.5;margin-top:6px;color:#b9d5dc"><div>'+esc(ats)+'</div><div>'+esc(ou)+'</div></div>';
 }
 
-function fdMlGlance(p){const ml=p&&p.game_ml_shadow&&p.game_ml_shadow.markets||{};const bit=(market,label)=>{const n=market&&Number(market.candidate);return Number.isFinite(n)?label+' '+n.toFixed(1):'';};const parts=[bit(ml.game_total,'total'),bit(ml.game_margin_home,'home margin')].filter(Boolean);return '<p class="fd-ml-glance"><span class="fd-official">Official pick · current model</span><span class="fd-ml-research">ML projection, research: '+(parts.length?parts.join(' · '):'not published for this game')+'</span></p>';}
+function fdMlGlance(p){const original=p&&p.game_ml_shadow&&p.game_ml_shadow.markets||{},ml={...original};for(const market of ['game_margin_home','game_total']){const rotated=fdRotatedML(p.game_id,'GAME',market);if(rotated)ml[market]=rotated;}const bit=(market,label)=>{const n=market&&Number(market.candidate);return Number.isFinite(n)?label+' '+n.toFixed(1):'';};const parts=[bit(ml.game_total,'total'),bit(ml.game_margin_home,'home margin')].filter(Boolean);return '<p class="fd-ml-glance"><span class="fd-official">Official pick · current model</span><span class="fd-ml-research">ML projection, research: '+(parts.length?parts.join(' · '):'not published for this game')+'</span></p>';}
 function fdGameLineComparison(p){
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
- const latest=fdLatestPregameGameLine(p),ml=p.game_ml_shadow?.markets||{};
+ const latest=fdLatestPregameGameLine(p),original=p.game_ml_shadow?.markets||{},ml={...original};
+ for(const market of ['game_margin_home','game_total']){const rotated=fdRotatedML(p.game_id,'GAME',market);if(rotated)ml[market]=rotated;}
  const margin=Number(p.projected_home_score)-Number(p.projected_away_score);
  const total=Number.isFinite(Number(p.projected_total))?Number(p.projected_total):Number(p.projected_home_score)+Number(p.projected_away_score);
- const mlMargin=valid(ml.game_margin_home?.candidate)?Number(ml.game_margin_home.candidate):margin;
- const mlTotal=valid(ml.game_total?.candidate)?Number(ml.game_total.candidate):total;
- const hasMl=valid(ml.game_margin_home?.candidate)||valid(ml.game_total?.candidate),mlActive=!!(ml.game_margin_home?.active||ml.game_total?.active);
+ let mlMargin=valid(ml.game_margin_home?.candidate)?Number(ml.game_margin_home.candidate):margin;
+ let mlTotal=valid(ml.game_total?.candidate)?Number(ml.game_total.candidate):total;
+ const hasMl=valid(ml.game_margin_home?.candidate)||valid(ml.game_total?.candidate),mlActive=!!(ml.game_margin_home?.active||ml.game_total?.active)&&!ml.game_margin_home?.comparison_week&&!ml.game_total?.comparison_week;
  const sp=valid(latest?.home_spread)?Number(latest.home_spread):null,dkTotal=valid(latest?.total)?Number(latest.total):null;
  const score=(m,t)=>{const h=(t+m)/2,a=(t-m)/2;return esc(p.away)+' '+a.toFixed(1)+' · '+esc(p.home)+' '+h.toFixed(1);};
  const ats=m=>{if(sp===null)return 'No verified DK spread';const edge=m+sp;if(Math.abs(edge)<.05)return 'No edge · matches spread';const team=edge>0?p.home:p.away,line=team===p.home?sp:-sp;return team+' '+(line>0?'+':'')+line.toFixed(1)+' · '+Math.abs(edge).toFixed(1)+' pt edge';};
  const ou=t=>{if(dkTotal===null)return 'No verified DK total';const edge=t-dkTotal;if(Math.abs(edge)<.05)return 'No edge · matches total';return (edge>0?'OVER':'UNDER')+' · '+Math.abs(edge).toFixed(1)+' pts '+(edge>0?'above':'below');};
+ if(mlTotal<0||Math.abs(mlMargin)>mlTotal){mlMargin=margin;mlTotal=total;}
  const modelFavorite=margin>=0?p.home:p.away,dkSpread=sp===null?'Unavailable':sp===0?'Pick':(sp<0?p.home:p.away)+' '+(sp<0?sp:-sp).toFixed(1).replace(/^([0-9])/,'+$1');
  const captured=latest?.captured_at_utc?new Date(latest.captured_at_utc).toLocaleString('en-US',{timeZone:'America/Chicago'}):'No verified pregame quote';
  const kickoff=Date.parse(p.kickoff_utc),quoteAt=Date.parse(latest?.captured_at_utc||''),ageHours=Number.isFinite(kickoff)&&Number.isFinite(quoteAt)?(kickoff-quoteAt)/3600000:null;
  const staleNote=ageHours!==null&&ageHours>2?'<strong class="fd-quote-stale">Older quote · '+Math.round(ageHours)+' hours before kickoff. Not a verified closing line.</strong>':'';
  const column=(title,tag,m,t,kind)=>'<section class="fd-ml-compare-column '+kind+'"><header><strong>'+title+'</strong><small>'+tag+'</small></header><div class="fd-ml-compare-score"><small>PROJECTED SCORE</small><b>'+score(m,t)+'</b><span>Total '+t.toFixed(1)+'</span></div><div class="fd-ml-compare-pick"><small>ATS vs DK spread</small><b>'+esc(ats(m))+'</b></div><div class="fd-ml-compare-pick"><small>Over / under vs DK total</small><b>'+esc(ou(t))+'</b></div></section>';
  const unavailable='<section class="fd-ml-compare-column fd-ml-compare-unavailable"><header><strong>Machine learning</strong><small>NOT AVAILABLE</small></header><p>No current ML score candidate is available for this game.</p></section>';
+ const rotationNotes=['game_margin_home','game_total'].map(m=>{const r=ml[m];return r?.comparison_week?(m==='game_total'?'Total':'Margin')+': '+r.variant.replace(/_/g,' ')+' · week '+r.comparison_week+' · '+r.samples+' matched':'';}).filter(Boolean);
+ const rotatedNote=rotationNotes.length?'<p class="fd-ml-note">Weekly research selection · '+esc(rotationNotes.join(' | '))+'</p>':'';
  const dk='<div class="fd-ml-dk-lines"><div><small>DRAFTKINGS SPREAD</small><strong>'+esc(dkSpread)+'</strong></div><div><small>DRAFTKINGS TOTAL</small><strong>'+(dkTotal===null?'Unavailable':dkTotal.toFixed(1))+'</strong></div></div>';
  const partial=hasMl&&(!valid(ml.game_margin_home?.candidate)||!valid(ml.game_total?.candidate));
- return '<div class="fd-game-market fd-ml-game-card"><p class="fd-card-research">Research only, not the pick.</p><div class="fd-ml-game-heading"><b>FOURTHDOWN · MODEL COMPARISON</b><small>Current forecast vs ML estimate</small></div><div class="fd-ml-compare-grid">'+column('Current model','LIVE PROJECTION',margin,total,'fd-ml-current')+(hasMl?column('Machine learning',mlActive?'ACTIVE MODEL':'RESEARCH CANDIDATE',mlMargin,mlTotal,'fd-ml-candidate'):unavailable)+'</div>'+dk+'<p class="fd-pregame-quote">'+(latest?.captured_at_utc?'DK snapshot: '+esc(captured):'DK pregame lines unavailable')+'</p>'+(!hasMl?'<p class="fd-ml-note">The current model remains live until an ML candidate is promoted.</p>':'')+(partial?'<p class="fd-ml-note">For any market without an ML candidate, the estimate uses the current model.</p>':'')+staleNote+'</div>';
+ return '<div class="fd-game-market fd-ml-game-card"><p class="fd-card-research">Research only, not the pick.</p><div class="fd-ml-game-heading"><b>FOURTHDOWN · MODEL COMPARISON</b><small>Current forecast vs ML estimate</small></div><div class="fd-ml-compare-grid">'+column('Current model','LIVE PROJECTION',margin,total,'fd-ml-current')+(hasMl?column('Machine learning',mlActive?'ACTIVE MODEL':'RESEARCH CANDIDATE',mlMargin,mlTotal,'fd-ml-candidate'):unavailable)+'</div>'+dk+'<p class="fd-pregame-quote">'+(latest?.captured_at_utc?'DK snapshot: '+esc(captured):'DK pregame lines unavailable')+'</p>'+(!hasMl?'<p class="fd-ml-note">The current model remains live until an ML candidate is promoted.</p>':'')+(partial?'<p class="fd-ml-note">For any market without an ML candidate, the estimate uses the current model.</p>':'')+rotatedNote+staleNote+'</div>';
 }
 function fdTopModelSignals(p){
  const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
@@ -1706,7 +1713,7 @@ function fdCountPropRows(g){
  const markets={player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
  const rows=countProps.filter(p=>markets[p.market_key]&&[away,home].includes(canon(p.team))&&[away,home].includes(canon(p.opponent)))
    .map(p=>({p,q:dkIndex?.find(p,g.date)})).filter(x=>x.q);
- return rows.map(({p,q})=>({player:p.player,team:p.team,opponent:p.opponent,market_key:p.market_key,market:markets[p.market_key],projection:Number(p.projection),line:Number(q.line),last5:p.last_5_avg??p.last5_avg??null}));
+ return rows.map(({p,q})=>({player_id:p.player_id,game_id:p.game_id,player:p.player,team:p.team,opponent:p.opponent,market_key:p.market_key,market:markets[p.market_key],projection:Number(p.projection),line:Number(q.line),last5:p.last_5_avg??p.last5_avg??null,player_ml_shadow:fdRotatedML(p.game_id,p.player_id,p.market_key)}));
 }
 function fdMarketFilterControl(g,scope){
  const id='fd-market-'+scope+'-'+String(g.id).replace(/[^a-zA-Z0-9_-]/g,'');
