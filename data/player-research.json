@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-17T23:59:40.003864+00:00",
+  "generated_at_utc": "2026-11-18T00:01:18.056628+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_only_no_market_odds",
@@ -831,16 +831,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 142.6,
-        "candidate": 175.8,
+        "candidate": 178.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 6.9,
@@ -916,16 +920,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 0.8,
         "candidate": 1.0,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 2.3,
@@ -1858,8 +1865,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -1946,8 +1953,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -2034,8 +2041,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -2120,8 +2127,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -2208,8 +2215,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -2296,8 +2303,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -2384,8 +2391,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2471,8 +2478,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2555,8 +2562,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2642,8 +2649,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2725,8 +2732,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2812,8 +2819,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2899,8 +2906,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -2982,8 +2989,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -3065,8 +3072,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -3151,8 +3158,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -4520,8 +4527,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -4608,8 +4615,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -4696,8 +4703,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -4768,8 +4775,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -5398,16 +5405,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 254.4,
-        "candidate": 247.4,
+        "candidate": 244.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 68.1,
@@ -6149,8 +6160,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6237,8 +6248,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6325,8 +6336,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6412,8 +6423,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6500,8 +6511,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6588,8 +6599,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -6675,8 +6686,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -6762,8 +6773,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -6850,8 +6861,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -6937,8 +6948,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -7024,8 +7035,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -7111,8 +7122,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -8613,8 +8624,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -8701,8 +8712,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -8789,8 +8800,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -8949,8 +8960,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -9036,8 +9047,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -9112,8 +9123,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -9929,16 +9940,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 237.3,
-        "candidate": 223.2,
+        "candidate": 210.1,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 83.7,
@@ -10014,16 +10029,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 1.4,
         "candidate": 1.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 0.7,
@@ -10805,8 +10823,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -10893,8 +10911,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -10981,8 +10999,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -11069,8 +11087,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -11157,8 +11175,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11244,8 +11262,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -11328,8 +11346,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11414,8 +11432,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -11502,8 +11520,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11589,8 +11607,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11676,8 +11694,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11763,8 +11781,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -11850,8 +11868,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -13296,8 +13314,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -13384,8 +13402,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -13471,8 +13489,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -13558,8 +13576,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -13645,8 +13663,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -13721,8 +13739,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -14296,16 +14314,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 240.6,
-        "candidate": 225.0,
+        "candidate": 228.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 53.2,
@@ -14990,8 +15012,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15078,8 +15100,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15166,8 +15188,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15254,8 +15276,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -15341,8 +15363,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15426,8 +15448,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15514,8 +15536,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15602,8 +15624,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -15689,8 +15711,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -15777,8 +15799,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -15864,8 +15886,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -17213,8 +17235,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -17301,8 +17323,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -17388,8 +17410,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -17475,8 +17497,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -17551,8 +17573,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -17638,8 +17660,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -18213,16 +18235,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 318.6,
-        "candidate": 287.0,
+        "candidate": 285.3,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 96.6,
@@ -18900,8 +18926,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -18988,8 +19014,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -19076,8 +19102,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -19163,8 +19189,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -19251,8 +19277,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -19337,8 +19363,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -19425,8 +19451,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -19509,8 +19535,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -19597,8 +19623,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -19682,8 +19708,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -19766,8 +19792,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -20998,8 +21024,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -21086,8 +21112,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -21174,8 +21200,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -21261,8 +21287,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -21348,8 +21374,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -22011,16 +22037,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 226.3,
-        "candidate": 230.2,
+        "candidate": 237.0,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 64.3,
@@ -22919,8 +22949,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23007,8 +23037,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23095,8 +23125,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23183,8 +23213,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23271,8 +23301,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23356,8 +23386,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23444,8 +23474,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -23531,8 +23561,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -23618,8 +23648,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -23705,8 +23735,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -23788,8 +23818,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -23875,8 +23905,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -23961,8 +23991,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -24049,8 +24079,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -24136,8 +24166,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -25471,8 +25501,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -25559,8 +25589,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -25646,8 +25676,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -25729,8 +25759,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -26337,16 +26367,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 244.3,
-        "candidate": 238.2,
+        "candidate": 247.1,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 83.8,
@@ -27139,8 +27173,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27225,8 +27259,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27313,8 +27347,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27401,8 +27435,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27489,8 +27523,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27577,8 +27611,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27665,8 +27699,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -27753,8 +27787,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -27840,8 +27874,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -27925,8 +27959,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -28011,8 +28045,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -28098,8 +28132,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -28185,8 +28219,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -30072,8 +30106,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -30160,8 +30194,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -30247,8 +30281,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -30335,8 +30369,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30422,8 +30456,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30498,8 +30532,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30574,8 +30608,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30648,8 +30682,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30722,8 +30756,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -30809,8 +30843,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -31340,16 +31374,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 180.3,
-        "candidate": 203.3,
+        "candidate": 206.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 62.8,
@@ -31977,8 +32015,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -32062,8 +32100,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -32150,8 +32188,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -32237,8 +32275,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -32325,8 +32363,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -32413,8 +32451,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -32500,8 +32538,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -32587,8 +32625,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -32672,8 +32710,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -32759,8 +32797,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -34051,8 +34089,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -34139,8 +34177,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -34227,8 +34265,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -34314,8 +34352,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -34390,8 +34428,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -34466,8 +34504,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -35041,16 +35079,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 255.4,
-        "candidate": 244.3,
+        "candidate": 240.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 62.6,
@@ -35736,8 +35778,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -35824,8 +35866,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -35912,8 +35954,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -36000,8 +36042,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -36087,8 +36129,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -36175,8 +36217,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -36263,8 +36305,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -36350,8 +36392,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -36425,8 +36467,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -36512,8 +36554,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -36599,8 +36641,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -38169,8 +38211,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -38257,8 +38299,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -38345,8 +38387,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -38432,8 +38474,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -38519,8 +38561,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -38595,8 +38637,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -38671,8 +38713,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -38747,8 +38789,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -39311,16 +39353,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 213.2,
-        "candidate": 225.8,
+        "candidate": 223.3,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 107.4,
@@ -39948,8 +39994,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40036,8 +40082,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40124,8 +40170,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40212,8 +40258,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40300,8 +40346,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -40387,8 +40433,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40475,8 +40521,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -40558,8 +40604,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -40646,8 +40692,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -40732,8 +40778,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -41909,8 +41955,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -41997,8 +42043,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -42085,8 +42131,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -42169,8 +42215,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -42256,8 +42302,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -42831,16 +42877,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 197.0,
-        "candidate": 215.4,
+        "candidate": 215.9,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 56.0,
@@ -43582,8 +43632,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -43670,8 +43720,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -43758,8 +43808,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -43846,8 +43896,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -43933,8 +43983,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -44021,8 +44071,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -44109,8 +44159,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -44197,8 +44247,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -44283,8 +44333,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -44371,8 +44421,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -44458,8 +44508,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -44545,8 +44595,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -46160,8 +46210,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -46248,8 +46298,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -46336,8 +46386,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -46423,8 +46473,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -46499,8 +46549,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -46575,8 +46625,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -46651,8 +46701,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -46727,8 +46777,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -47529,16 +47579,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 136.9,
-        "candidate": 171.1,
+        "candidate": 155.5,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 50.1,
@@ -47614,16 +47668,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 1.0,
         "candidate": 1.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 4.4,
@@ -48409,8 +48466,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -48497,8 +48554,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -48585,8 +48642,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -48672,8 +48729,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -48759,8 +48816,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -48847,8 +48904,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -49015,8 +49072,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -49102,8 +49159,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -49189,8 +49246,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -49265,8 +49322,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -49352,8 +49409,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -49439,8 +49496,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -51004,8 +51061,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -51092,8 +51149,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -51177,8 +51234,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -51264,8 +51321,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -51340,8 +51397,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -51416,8 +51473,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -51492,8 +51549,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -52078,16 +52135,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 214.5,
-        "candidate": 227.1,
+        "candidate": 228.9,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 31.1,
@@ -52827,8 +52888,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -52915,8 +52976,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -53003,8 +53064,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -53091,8 +53152,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -53179,8 +53240,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53266,8 +53327,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -53354,8 +53415,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53438,8 +53499,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53525,8 +53586,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53612,8 +53673,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53699,8 +53760,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -53786,8 +53847,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -55191,8 +55252,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -55279,8 +55340,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -55366,8 +55427,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -55454,8 +55515,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -55542,8 +55603,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -55618,8 +55679,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -56679,16 +56740,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 219.8,
-        "candidate": 223.3,
+        "candidate": 214.5,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 1.2,
@@ -56764,16 +56829,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 4.2,
         "candidate": 5.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 15.7,
@@ -56838,16 +56906,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 2.1,
         "candidate": 2.6,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 11.5,
@@ -57733,8 +57804,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -57821,8 +57892,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -57909,8 +57980,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -57997,8 +58068,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -58085,8 +58156,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -58173,8 +58244,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58259,8 +58330,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -58347,8 +58418,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58432,8 +58503,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58515,8 +58586,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58602,8 +58673,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58689,8 +58760,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58772,8 +58843,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58859,8 +58930,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -58946,8 +59017,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -60609,8 +60680,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -60697,8 +60768,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -60781,8 +60852,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -60868,8 +60939,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -60955,8 +61026,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -61031,8 +61102,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -61107,8 +61178,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -61682,16 +61753,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 239.1,
-        "candidate": 234.3,
+        "candidate": 237.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 52.6,
@@ -62428,8 +62503,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -62516,8 +62591,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -62603,8 +62678,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -62691,8 +62766,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -62779,8 +62854,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -62866,8 +62941,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -62953,8 +63028,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -63040,8 +63115,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -63127,8 +63202,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -63212,8 +63287,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -63297,8 +63372,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -63384,8 +63459,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -64785,8 +64860,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -64873,8 +64948,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -64961,8 +65036,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -65048,8 +65123,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -65135,8 +65210,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -65211,8 +65286,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -65830,16 +65905,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 242.5,
-        "candidate": 241.3,
+        "candidate": 236.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 59.7,
@@ -66689,8 +66768,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -66777,8 +66856,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -66865,8 +66944,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -66953,8 +67032,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -67040,8 +67119,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67128,8 +67207,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67214,8 +67293,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67302,8 +67381,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67390,8 +67469,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -67466,8 +67545,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67553,8 +67632,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -67641,8 +67720,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -67728,8 +67807,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -67815,8 +67894,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -69439,8 +69518,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -69527,8 +69606,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -69615,8 +69694,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -69702,8 +69781,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -69778,8 +69857,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -69865,8 +69944,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -69941,8 +70020,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -70494,16 +70573,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 254.4,
-        "candidate": 245.2,
+        "candidate": 240.0,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 58.2,
@@ -71135,8 +71218,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -71223,8 +71306,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -71311,8 +71394,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -71399,8 +71482,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -71487,8 +71570,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -71573,8 +71656,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -71660,8 +71743,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -71747,8 +71830,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -71834,8 +71917,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -71921,8 +72004,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -73426,8 +73509,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -73514,8 +73597,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -73598,8 +73681,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -73685,8 +73768,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -73772,8 +73855,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -73860,8 +73943,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -73936,8 +74019,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -74012,8 +74095,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -74587,16 +74670,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 244.2,
-        "candidate": 227.6,
+        "candidate": 231.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 66.2,
@@ -75278,8 +75365,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -75363,8 +75450,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -75451,8 +75538,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -75539,8 +75626,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -75627,8 +75714,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -75713,8 +75800,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -75800,8 +75887,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -75888,8 +75975,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -75975,8 +76062,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -76061,8 +76148,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -76148,8 +76235,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -77369,8 +77456,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -77455,8 +77542,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -77543,8 +77630,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -77630,8 +77717,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -77714,8 +77801,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -78542,16 +78629,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 200.6,
-        "candidate": 209.8,
+        "candidate": 211.5,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 42.6,
@@ -78627,16 +78718,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 0.5,
         "candidate": 0.6,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 0.6,
@@ -79414,8 +79508,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -79502,8 +79596,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -79590,8 +79684,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -79676,8 +79770,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -79764,8 +79858,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -79852,8 +79946,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -80016,8 +80110,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -80103,8 +80197,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -80188,8 +80282,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -80276,8 +80370,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -80363,8 +80457,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -80449,8 +80543,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -82012,8 +82106,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -82100,8 +82194,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -82188,8 +82282,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -82275,8 +82369,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -82363,8 +82457,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -82439,8 +82533,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -82515,8 +82609,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -83112,16 +83206,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 218.8,
-        "candidate": 226.6,
+        "candidate": 223.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 71.7,
@@ -83857,8 +83955,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -83944,8 +84042,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84032,8 +84130,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84120,8 +84218,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -84207,8 +84305,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84295,8 +84393,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84380,8 +84478,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84468,8 +84566,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84556,8 +84654,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -84643,8 +84741,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -84731,8 +84829,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -84815,8 +84913,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -86215,8 +86313,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -86303,8 +86401,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -86391,8 +86489,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -86478,8 +86576,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -86565,8 +86663,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -86641,8 +86739,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -87625,8 +87723,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -87713,8 +87811,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -87801,8 +87899,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -87889,8 +87987,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -87975,8 +88073,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -88062,8 +88160,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -88149,8 +88247,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -88235,8 +88333,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -88320,8 +88418,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -88407,8 +88505,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -88490,8 +88588,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -88574,8 +88672,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -89740,8 +89838,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -89826,8 +89924,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -89913,8 +90011,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -89989,8 +90087,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -90564,16 +90662,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 197.8,
-        "candidate": 206.5,
+        "candidate": 212.9,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 52.5,
@@ -91255,8 +91357,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -91343,8 +91445,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -91431,8 +91533,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -91519,8 +91621,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -91606,8 +91708,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -91694,8 +91796,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -91782,8 +91884,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -91867,8 +91969,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -91953,8 +92055,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -92037,8 +92139,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -92124,8 +92226,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -93690,8 +93792,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -93778,8 +93880,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -93866,8 +93968,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -93953,8 +94055,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -94040,8 +94142,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -94127,8 +94229,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -94203,8 +94305,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -94279,8 +94381,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -95052,16 +95154,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 233.1,
-        "candidate": 233.3,
+        "candidate": 229.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 76.4,
@@ -95137,16 +95243,19 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 2.6,
         "candidate": 3.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 3.7,
@@ -95765,8 +95874,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -95853,8 +95962,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -95941,8 +96050,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -96029,8 +96138,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -96116,8 +96225,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -96204,8 +96313,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -96292,8 +96401,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -96377,8 +96486,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -96464,8 +96573,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -96550,8 +96659,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -97954,8 +98063,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -98042,8 +98151,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -98130,8 +98239,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -98217,8 +98326,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -98304,8 +98413,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -98380,8 +98489,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -98456,8 +98565,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -99031,16 +99140,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 205.6,
-        "candidate": 213.2,
+        "candidate": 205.9,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 89.8,
@@ -99722,8 +99835,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -99810,8 +99923,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -99898,8 +100011,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -99986,8 +100099,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -100074,8 +100187,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -100162,8 +100275,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -100249,8 +100362,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -100332,8 +100445,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -100418,8 +100531,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -100505,8 +100618,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -100592,8 +100705,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -102048,8 +102161,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -102136,8 +102249,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -102224,8 +102337,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -102312,8 +102425,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -102399,8 +102512,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -102475,8 +102588,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -102551,8 +102664,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -103126,16 +103239,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 279.9,
         "candidate": 258.7,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 54.8,
@@ -103869,8 +103986,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -103957,8 +104074,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -104045,8 +104162,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -104133,8 +104250,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -104221,8 +104338,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104308,8 +104425,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -104396,8 +104513,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104482,8 +104599,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104569,8 +104686,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104652,8 +104769,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104735,8 +104852,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -104822,8 +104939,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -106322,8 +106439,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -106410,8 +106527,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -106498,8 +106615,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -106581,8 +106698,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -106668,8 +106785,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -106755,8 +106872,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -106831,8 +106948,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -107362,16 +107479,20 @@
       "qb_replacement_trial": null,
       "player_ml_shadow": {
         "family": "free-nfl-advanced-ridge-v1",
-        "variant": "baseline_features",
+        "variant": "advanced_matchup",
         "baseline": 226.7,
-        "candidate": 225.8,
+        "candidate": 232.2,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 203,
-        "holdout_improvement_pct": 3.08,
-        "features_used": []
+        "holdout_rows": 314,
+        "holdout_improvement_pct": 3.33,
+        "features_used": [
+          "ngs",
+          "snap",
+          "matchup"
+        ]
       },
       "injury_scenarios": null,
       "uncertainty_yards": 54.7,
@@ -108001,8 +108122,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108089,8 +108210,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108177,8 +108298,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108265,8 +108386,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108353,8 +108474,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -108440,8 +108561,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108528,8 +108649,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -108615,8 +108736,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -108703,8 +108824,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "snap"
         ]
@@ -108787,8 +108908,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 950,
-        "holdout_improvement_pct": 1.8,
+        "holdout_rows": 1500,
+        "holdout_improvement_pct": 0.53,
         "features_used": [
           "ngs",
           "snap"
@@ -109862,8 +109983,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -109950,8 +110071,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
@@ -110037,8 +110158,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "ngs",
           "snap"
@@ -110125,8 +110246,8 @@
         "research_only": true,
         "trained_season": 2026,
         "trained_week": 10,
-        "holdout_rows": 406,
-        "holdout_improvement_pct": 2.43,
+        "holdout_rows": 665,
+        "holdout_improvement_pct": 1.82,
         "features_used": [
           "snap"
         ]
