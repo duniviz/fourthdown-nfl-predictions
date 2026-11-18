@@ -42,6 +42,13 @@
           },
           {
             "detail": "Injured Reserve",
+            "player": "Gardner Minshew II",
+            "position": "QB",
+            "status": "Injured Reserve",
+            "team": "ARI"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Jordan Burch",
             "position": "LB",
             "status": "Injured Reserve",
@@ -65,13 +72,6 @@
             "detail": "questionable",
             "player": "Jayden Williams",
             "position": "OT",
-            "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Hjalte Froholdt",
-            "position": "C",
             "status": "Questionable",
             "team": "ARI"
           }
@@ -186,7 +186,12 @@
       },
       "quarterbacks": {
         "ARI": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Gardner Minshew II",
+              "status": "Injured Reserve"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -2723,6 +2728,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-18T02:52:51Z",
+  "generated_at_utc": "2026-11-18T11:35:39Z",
   "schema_version": 1
 }
