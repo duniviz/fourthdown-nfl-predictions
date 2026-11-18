@@ -78,9 +78,8 @@ function chromePath() {
     } else {
       if (/in progress/.test(scoreStatus)) assert.match(board, /in progress/);
       else assert.match(board, /No games in progress/);
-      // The full scoreboard is collapsed in the compact view; its cards can
-      // be present but intentionally hidden until the section is opened.
-      await page.waitForSelector('#scoreboard-cards .scorecard', {state:'attached'});
+      // The current slate can have no legacy scorecards (the compact board is
+      // the primary view), so check final-card wording when cards exist.
       const finalTexts = await page.locator('#scoreboard-cards .scorecard').filter({hasText: 'FINAL'}).allInnerTexts();
       assert.ok(finalTexts.every(text => !/Matching game simulation unavailable/.test(text)));
       if (finalTexts.length) assert.ok(finalTexts.some(text => /No win simulation was saved for this finished game/.test(text) && /archived forecast and grade/.test(text)));
