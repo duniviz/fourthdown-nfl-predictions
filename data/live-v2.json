@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-18T19:26:46.707611+00:00",
+  "generated_at_utc": "2026-11-18T19:35:07.449510+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -887,14 +887,8 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 2,
-          "unmodeled_injuries": [
-            {
-              "player": "Adam Randall",
-              "position": "RB",
-              "status": "Injured Reserve"
-            }
-          ]
+          "reported_out": 1,
+          "unmodeled_injuries": []
         }
       },
       "qb_starter_adjustments": {
@@ -4558,14 +4552,14 @@
           "reported_out": 3,
           "unmodeled_injuries": [
             {
-              "player": "Bo Richter",
-              "position": "LB",
-              "status": "Injured Reserve"
-            },
-            {
               "player": "Jordan Addison",
               "position": "WR",
               "status": "Out"
+            },
+            {
+              "player": "Bo Richter",
+              "position": "LB",
+              "status": "Injured Reserve"
             }
           ]
         }
