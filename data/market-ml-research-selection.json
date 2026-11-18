@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-18T00:00:29.468587+00:00",
+  "generated_at_utc": "2026-11-18T01:31:29.335068+00:00",
   "research_only": true,
   "production_changed": false,
   "player": {
@@ -14,6 +14,9 @@
         "ngs": 1366,
         "snap": 1367,
         "pfr": 0,
+        "pfr_new": 1367,
+        "ftn": 1367,
+        "ftn_defense": 1367,
         "workload": 0,
         "matchup": 1367
       },
@@ -23,56 +26,98 @@
         "selection": {
           "samples": 211,
           "weeks": 8,
-          "candidate_mae": 63.87031976066448,
-          "reference_mae": 63.89030893658596,
-          "candidate_rmse": 79.91309533068487,
-          "reference_rmse": 79.86392021266775
+          "candidate_mae": 63.87031976066445,
+          "reference_mae": 63.89030893658595,
+          "candidate_rmse": 79.91309533068491,
+          "reference_rmse": 79.86392021266772
         },
         "confirmation": {
           "samples": 103,
           "weeks": 4,
-          "candidate_mae": 69.94881046451012,
-          "reference_mae": 70.24985887859391,
-          "candidate_rmse": 85.32592736812416,
+          "candidate_mae": 69.94881046451015,
+          "reference_mae": 70.24985887859394,
+          "candidate_rmse": 85.32592736812417,
           "reference_rmse": 85.7522967459528
         }
       },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     },
     "rushing_yards": {
-      "research_winner": "combined",
-      "heldout_mae": 23.434,
+      "research_winner": "pfr_plus",
+      "heldout_mae": 23.394,
       "baseline_mae": 23.868,
-      "relative_improvement_pct": 1.82,
+      "relative_improvement_pct": 1.98,
       "samples": 665,
       "weeks": 12,
       "source_coverage": {
         "ngs": 2212,
         "snap": 2946,
         "pfr": 0,
+        "pfr_new": 2946,
+        "ftn": 2946,
+        "ftn_defense": 2946,
         "workload": 2946,
         "matchup": 2946
       },
       "card_model_changed": false,
-      "matched_new_feature_comparison": null,
+      "matched_new_feature_comparison": {
+        "reference": "combined",
+        "selection": {
+          "samples": 465,
+          "weeks": 8,
+          "candidate_mae": 23.099838044057083,
+          "reference_mae": 23.13938681732628,
+          "candidate_rmse": 30.646739212818815,
+          "reference_rmse": 30.662182448289716
+        },
+        "confirmation": {
+          "samples": 200,
+          "weeks": 4,
+          "candidate_mae": 24.079317641350237,
+          "reference_mae": 24.11964892569901,
+          "candidate_rmse": 31.60433652645369,
+          "reference_rmse": 31.634952949988044
+        }
+      },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     },
     "receiving_yards": {
-      "research_winner": "combined",
-      "heldout_mae": 23.652,
+      "research_winner": "pfr_ftn_plus",
+      "heldout_mae": 23.618,
       "baseline_mae": 23.778,
-      "relative_improvement_pct": 0.53,
+      "relative_improvement_pct": 0.67,
       "samples": 1500,
       "weeks": 12,
       "source_coverage": {
         "ngs": 5250,
         "snap": 6522,
         "pfr": 0,
+        "pfr_new": 6522,
+        "ftn": 6525,
+        "ftn_defense": 6525,
         "workload": 6525,
         "matchup": 6525
       },
       "card_model_changed": false,
-      "matched_new_feature_comparison": null,
+      "matched_new_feature_comparison": {
+        "reference": "combined",
+        "selection": {
+          "samples": 1018,
+          "weeks": 8,
+          "candidate_mae": 23.4426650343979,
+          "reference_mae": 23.462902805146342,
+          "candidate_rmse": 30.408921702635563,
+          "reference_rmse": 30.388574431744363
+        },
+        "confirmation": {
+          "samples": 480,
+          "weeks": 4,
+          "candidate_mae": 24.030795939454773,
+          "reference_mae": 24.091365569174442,
+          "candidate_rmse": 32.06425754227986,
+          "reference_rmse": 32.16522413108276
+        }
+      },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     }
   },
