@@ -1,0 +1,10 @@
+const assert = require('assert');
+const sourceUrl = require('../assets/fd-starter-links.js');
+const api = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/34/depthcharts';
+assert.strictEqual(sourceUrl(api, 'HOU'), 'https://www.espn.com/nfl/team/depth/_/name/hou');
+assert.strictEqual(sourceUrl(api, 'JAC'), 'https://www.espn.com/nfl/team/depth/_/name/jax');
+assert.strictEqual(sourceUrl(api, 'LA'), 'https://www.espn.com/nfl/team/depth/_/name/lar');
+assert.strictEqual(sourceUrl(api, 'WAS'), 'https://www.espn.com/nfl/team/depth/_/name/wsh');
+assert.strictEqual(sourceUrl(api, 'unknown'), '');
+assert.strictEqual(sourceUrl('https://example.com/official-confirmation', 'HOU'), 'https://example.com/official-confirmation');
+console.log('Starter links verified');
