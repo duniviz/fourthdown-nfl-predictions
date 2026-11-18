@@ -15,7 +15,9 @@ class RefreshReliabilityTests(unittest.TestCase):
         self.assertIn('python -m scripts.check_pregame_forecast_window', publish)
         self.assertIn('MIN_MINUTES = 80', window)
         self.assertIn('MAX_MINUTES = 150', window)
-        self.assertIn("cron: '40 21,22 * * *'", daily_lines)
+        self.assertIn("cron: '40 16 * * *'", daily_lines)
+        self.assertIn("cron: '10,40 17 * * *'", daily_lines)
+        self.assertIn('timezone: America/Chicago', daily_lines)
         # The old hourly forecast cron was retired; Sunday now uses the
         # ordered DK -> forecast reusable workflow chain with a safe backstop.
         sunday=(ROOT/'.github/workflows/sunday-preset-game-day-refresh.yml').read_text()
