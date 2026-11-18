@@ -12,6 +12,7 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor,HistGradientBoostingRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBRegressor
 ROOT=Path(__file__).resolve().parents[1];DATA=ROOT/"data"
 MAP={"player_pass_completions":"completions","player_rush_attempts":"carries",
      "player_receptions":"receptions"}
@@ -51,6 +52,7 @@ def build(now=None):
  if not generated or generated>now:return old
  game_by_id={str(g.get("game_id")):g for g in games.get("games",[])}
  added=0
+ fitted={}
  for p in source.get("players",[]):
   market=p.get("market_key")
   if market not in MAP:continue
@@ -64,14 +66,20 @@ def build(now=None):
   if len(training)<30 or len({(x[0],x[1]) for x in training})<2:continue
   projection=finite(p.get("projection"))
   if projection is None:continue
-  x=np.array([[x[2],x[1]] for x in training]);y=np.array([x[3] for x in training])
-  models={"ml_count_ridge":make_pipeline(StandardScaler(),Ridge(alpha=100)),
-          "ml_count_random_forest":RandomForestRegressor(n_estimators=80,max_depth=4,min_samples_leaf=8,random_state=42,n_jobs=1),
-          "ml_count_gradient_boosting":HistGradientBoostingRegressor(max_iter=80,max_leaf_nodes=7,min_samples_leaf=8,l2_regularization=20,random_state=42)}
+  fit_key=(market,season,week)
+  if fit_key not in fitted:
+   x=np.array([[row[2],row[1]] for row in training]);y=np.array([row[3] for row in training])
+   models={"ml_count_ridge":make_pipeline(StandardScaler(),Ridge(alpha=100)),
+           "ml_count_random_forest":RandomForestRegressor(n_estimators=80,max_depth=4,min_samples_leaf=8,random_state=42,n_jobs=1),
+           "ml_count_gradient_boosting":HistGradientBoostingRegressor(max_iter=80,max_leaf_nodes=7,min_samples_leaf=8,l2_regularization=20,random_state=42),
+           "ml_count_xgboost":XGBRegressor(n_estimators=80,max_depth=3,learning_rate=0.05,min_child_weight=8,reg_lambda=20,random_state=42,n_jobs=1,tree_method="hist")}
+   for model in models.values():model.fit(x,y)
+   fitted[fit_key]=models
+  models=fitted[fit_key]
   for name,model in models.items():
    key=(str(p["game_id"]),str(p["player_id"]),market,name)
    if key in indexed:continue
-   pred=float(model.fit(x,y).predict([[projection,week]])[0])
+   pred=float(model.predict([[projection,week]])[0])
    recorded=dt.datetime.now(dt.timezone.utc)
    if recorded>=kickoff:continue
    indexed[key]={"game_id":key[0],"player_id":key[1],"stat_key":market,

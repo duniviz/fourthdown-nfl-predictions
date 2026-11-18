@@ -41,7 +41,7 @@ jobs:
           python-version: '3.12'
       - name: Install fitted ML inference dependencies
         if: needs.preflight.outputs.due == 'true'
-        run: python -m pip install numpy scikit-learn
+        run: python -m pip install 'xgboost-cpu>=2.1,<4' numpy scikit-learn
       - name: Freeze research-only count challenger predictions
         if: needs.preflight.outputs.due == 'true'
         run: python scripts/freeze_weekly_shadow_models.py
