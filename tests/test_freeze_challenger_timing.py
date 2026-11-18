@@ -31,3 +31,25 @@ class ChallengerTimingTests(unittest.TestCase):
         self.assertEqual(before,features(history2,2026,9,'A','B'))
 
 if __name__=='__main__':unittest.main()
+
+class XGBoostFreezeTests(unittest.TestCase):
+    def test_game_xgboost_is_trained_only_on_pre_target_games(self):
+        games=[]
+        for year in (2023,2024):
+            for week in range(1,19):
+                for i in range(10):
+                    games.append({'season':year,'week':week,'home_team':f'A{i}','away_team':f'B{i}',
+                                  'home_score':20+week%7,'away_score':14+week%5,'game_type':'REG'})
+        history,models=train(games,2024,18)
+        self.assertIn('ml_xgboost',models['game_total'])
+        self.assertIn('ml_xgboost',models['game_margin_home'])
+        from scripts.freeze_game_ml_predictions import features
+        x=features(history,2024,18,'A0','B0')
+        self.assertEqual(len(models['game_total']['ml_xgboost'].predict([x])),1)
+
+    def test_player_xgboost_uses_historical_yardage_rows(self):
+        from scripts.freeze_player_ml_predictions import fit
+        rows=[{'season':2025,'week':1+i%17,'market':'passing_yards','old':200,
+               'new':200+i%10,'actual':210+i%10} for i in range(120)]
+        model=fit(rows)['passing_yards']['xgboost']
+        self.assertEqual(len(model.predict([[210,10]])),1)
