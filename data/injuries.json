@@ -1,11 +1,17 @@
 {
-  "generated_at_utc": "2026-11-18T13:12:37.894318+00:00",
+  "generated_at_utc": "2026-11-18T19:26:39.537520+00:00",
   "source": "ESPN team injury reports",
   "model_adjusted": false,
   "teams": {
     "ARI": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Harrison Wallace III",
+          "position": "WR",
+          "status": "Active",
+          "detail": ""
+        },
         {
           "player": "Gardner Minshew II",
           "position": "QB",
@@ -149,12 +155,6 @@
           "position": "DT",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Dante Stills",
-          "position": "DT",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
@@ -317,6 +317,18 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Rasheen Ali",
+          "position": "RB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
+          "player": "Lamar Jackson",
+          "position": "QB",
+          "status": "Injured Reserve",
+          "detail": "Surgery"
+        },
+        {
           "player": "Roquan Smith",
           "position": "LB",
           "status": "Active",
@@ -443,12 +455,6 @@
           "detail": "Not Specified"
         },
         {
-          "player": "Lamar Jackson",
-          "position": "QB",
-          "status": "Injured Reserve",
-          "detail": "Surgery"
-        },
-        {
           "player": "Nate Wiggins",
           "position": "CB",
           "status": "Active",
@@ -459,18 +465,18 @@
           "position": "C",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Malaki Starks",
-          "position": "S",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
     "BUF": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Tyrell Shavers",
+          "position": "WR",
+          "status": "Active",
+          "detail": ""
+        },
         {
           "player": "Ty Johnson",
           "position": "RB",
@@ -596,12 +602,6 @@
           "position": "S",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Tyrell Shavers",
-          "position": "WR",
-          "status": "Out",
-          "detail": "Surgery"
         },
         {
           "player": "Alec Anderson",
@@ -937,6 +937,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Joe Flacco",
+          "position": "QB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Jordan Battle",
           "position": "S",
           "status": "Active",
@@ -1079,12 +1085,6 @@
           "position": "CB",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Bryan Cook",
-          "position": "S",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
@@ -1557,6 +1557,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Tyler Conklin",
+          "position": "TE",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Jacob Saylors",
           "position": "RB",
           "status": "Active",
@@ -1699,12 +1705,6 @@
           "position": "LB",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Seth McLaughlin",
-          "position": "C",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
@@ -2022,6 +2022,42 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Anthony Gould",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Bernhard Raimann",
+          "position": "OT",
+          "status": "Out",
+          "detail": "Concussion"
+        },
+        {
+          "player": "Jerry Tillery",
+          "position": "DT",
+          "status": "Out",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Jalen Travis",
+          "position": "OT",
+          "status": "Out",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Charvarius Ward",
+          "position": "CB",
+          "status": "Out",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Justin Walley",
+          "position": "CB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "CJ Allen",
           "position": "LB",
           "status": "Active",
@@ -2030,7 +2066,7 @@
         {
           "player": "Will Mallory",
           "position": "TE",
-          "status": "Questionable",
+          "status": "Out",
           "detail": "Not Specified"
         },
         {
@@ -2058,27 +2094,9 @@
           "detail": ""
         },
         {
-          "player": "Anthony Gould",
-          "position": "WR",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
           "player": "Luke Rhodes",
           "position": "LS",
           "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
-          "player": "Jerry Tillery",
-          "position": "DT",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
-          "player": "Jalen Travis",
-          "position": "OT",
-          "status": "Doubtful",
           "detail": "Not Specified"
         },
         {
@@ -2101,12 +2119,6 @@
         },
         {
           "player": "Sauce Gardner",
-          "position": "CB",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
-          "player": "Charvarius Ward",
           "position": "CB",
           "status": "Questionable",
           "detail": "Not Specified"
@@ -2142,12 +2154,6 @@
           "detail": ""
         },
         {
-          "player": "Bernhard Raimann",
-          "position": "OT",
-          "status": "Questionable",
-          "detail": "Concussion"
-        },
-        {
           "player": "Akeem Davis-Gaither",
           "position": "LB",
           "status": "Injured Reserve",
@@ -2164,18 +2170,18 @@
           "position": "TE",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "A.J. Haulcy",
-          "position": "S",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
     "JAX": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Robert Hainsey",
+          "position": "C",
+          "status": "Out",
+          "detail": "Sprain"
+        },
         {
           "player": "Foyesade Oluokun",
           "position": "LB",
@@ -2277,12 +2283,6 @@
           "position": "TE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Robert Hainsey",
-          "position": "C",
-          "status": "Questionable",
-          "detail": "Not Specified"
         },
         {
           "player": "Danny Striggow",
@@ -2332,6 +2332,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Robert Hainsey",
+          "position": "C",
+          "status": "Out",
+          "detail": "Sprain"
+        },
+        {
           "player": "Foyesade Oluokun",
           "position": "LB",
           "status": "Active",
@@ -2434,12 +2440,6 @@
           "detail": ""
         },
         {
-          "player": "Robert Hainsey",
-          "position": "C",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
           "player": "Danny Striggow",
           "position": "DE",
           "status": "Questionable",
@@ -2487,6 +2487,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Kenneth Walker III",
+          "position": "RB",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
           "player": "Drue Tranquill",
           "position": "LB",
           "status": "Active",
@@ -2515,12 +2521,6 @@
           "position": "DT",
           "status": "Questionable",
           "detail": "Stinger"
-        },
-        {
-          "player": "Kenneth Walker III",
-          "position": "RB",
-          "status": "Questionable",
-          "detail": "Not Specified"
         },
         {
           "player": "Jaylon Moore",
@@ -2952,6 +2952,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Max Klare",
+          "position": "TE",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Joe Cardona",
           "position": "LS",
           "status": "Out",
@@ -3094,12 +3100,6 @@
           "position": "DE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Davante Adams",
-          "position": "WR",
-          "status": "Injured Reserve",
-          "detail": "Surgery"
         }
       ]
     },
@@ -3107,6 +3107,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Max Klare",
+          "position": "TE",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Joe Cardona",
           "position": "LS",
           "status": "Out",
@@ -3249,18 +3255,18 @@
           "position": "DE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Davante Adams",
-          "position": "WR",
-          "status": "Injured Reserve",
-          "detail": "Surgery"
         }
       ]
     },
     "MIA": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Chris Bell",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
         {
           "player": "Jordyn Brooks",
           "position": "LB",
@@ -3311,12 +3317,6 @@
         },
         {
           "player": "Jared Wayne",
-          "position": "WR",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
-          "player": "Chris Bell",
           "position": "WR",
           "status": "Questionable",
           "detail": "Not Specified"
@@ -3417,6 +3417,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Bo Richter",
+          "position": "LB",
+          "status": "Injured Reserve",
+          "detail": "Not Specified"
+        },
+        {
           "player": "Tyrion Ingram-Dawkins",
           "position": "DE",
           "status": "Questionable",
@@ -3511,12 +3517,6 @@
           "position": "WR",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Bo Richter",
-          "position": "LB",
-          "status": "Questionable",
-          "detail": "Not Specified"
         },
         {
           "player": "Kyle Van Noy",
@@ -3882,6 +3882,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Jameis Winston",
+          "position": "QB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Malik Harrison",
           "position": "LB",
           "status": "Questionable",
@@ -4024,18 +4030,30 @@
           "position": "RB",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Colton Hood",
-          "position": "CB",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
     "NYJ": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Isaiah Williams",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Omar Cooper Jr.",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Geno Smith",
+          "position": "QB",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
         {
           "player": "Dane Belton",
           "position": "S",
@@ -4057,12 +4075,6 @@
         {
           "player": "Harrison Phillips",
           "position": "DT",
-          "status": "Active",
-          "detail": ""
-        },
-        {
-          "player": "Isaiah Williams",
-          "position": "WR",
           "status": "Active",
           "detail": ""
         },
@@ -4103,12 +4115,6 @@
           "detail": "Not Specified"
         },
         {
-          "player": "Geno Smith",
-          "position": "QB",
-          "status": "Questionable",
-          "detail": "Not Specified"
-        },
-        {
           "player": "Kenyon Sadiq",
           "position": "TE",
           "status": "Active",
@@ -4131,12 +4137,6 @@
           "position": "DE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Omar Cooper Jr.",
-          "position": "WR",
-          "status": "Questionable",
-          "detail": "Not Specified"
         },
         {
           "player": "Adonai Mitchell",
@@ -4192,12 +4192,6 @@
       "status": "retrieved",
       "players": [
         {
-          "player": "Jaydon Blue",
-          "position": "RB",
-          "status": "Active",
-          "detail": ""
-        },
-        {
           "player": "Dontayvion Wicks",
           "position": "WR",
           "status": "Questionable",
@@ -4208,6 +4202,18 @@
           "position": "WR",
           "status": "Questionable",
           "detail": "Not Specified"
+        },
+        {
+          "player": "Joe Milton",
+          "position": "QB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
+          "player": "Jaydon Blue",
+          "position": "RB",
+          "status": "Active",
+          "detail": ""
         },
         {
           "player": "Jonathan Jones",
@@ -4300,12 +4306,6 @@
           "detail": ""
         },
         {
-          "player": "Joe Milton",
-          "position": "QB",
-          "status": "Active",
-          "detail": ""
-        },
-        {
           "player": "Saquon Barkley",
           "position": "RB",
           "status": "Active",
@@ -4346,6 +4346,12 @@
     "PIT": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Mason McCormick",
+          "position": "G",
+          "status": "Out",
+          "detail": "Dislocated"
+        },
         {
           "player": "Jaquan Brisker",
           "position": "S",
@@ -4393,12 +4399,6 @@
           "position": "TE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Mason McCormick",
-          "position": "G",
-          "status": "Doubtful",
-          "detail": "Not Specified"
         },
         {
           "player": "Michael Pittman Jr.",
@@ -4502,6 +4502,18 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Mike Evans",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Tendinitis"
+        },
+        {
+          "player": "Brandon Aiyuk",
+          "position": "WR",
+          "status": "Out",
+          "detail": "Not Specified"
+        },
+        {
           "player": "Dre Greenlaw",
           "position": "LB",
           "status": "Active",
@@ -4548,12 +4560,6 @@
           "position": "CB",
           "status": "Questionable",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Mike Evans",
-          "position": "WR",
-          "status": "Questionable",
-          "detail": "Tendinitis"
         },
         {
           "player": "Enrique Cruz Jr.",
@@ -4644,12 +4650,6 @@
           "position": "CB",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Gracen Halton",
-          "position": "DT",
-          "status": "Injured Reserve",
-          "detail": "Surgery"
         }
       ]
     },
@@ -4818,16 +4818,16 @@
           "detail": "Strain"
         },
         {
+          "player": "Yaya Diaby",
+          "position": "LB",
+          "status": "Questionable",
+          "detail": "Sprain"
+        },
+        {
           "player": "Jalon Daniels",
           "position": "QB",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Yaya Diaby",
-          "position": "LB",
-          "status": "Doubtful",
-          "detail": "Sprain"
         },
         {
           "player": "Easton Stick",
@@ -4967,16 +4967,28 @@
       "status": "retrieved",
       "players": [
         {
-          "player": "Xavier Restrepo",
-          "position": "WR",
-          "status": "Active",
-          "detail": ""
-        },
-        {
           "player": "Wan'Dale Robinson",
           "position": "WR",
           "status": "Injured Reserve",
           "detail": "Not Specified"
+        },
+        {
+          "player": "Carnell Tate",
+          "position": "WR",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Julius Chestnut",
+          "position": "RB",
+          "status": "Active",
+          "detail": ""
+        },
+        {
+          "player": "Xavier Restrepo",
+          "position": "WR",
+          "status": "Active",
+          "detail": ""
         },
         {
           "player": "Anthony Hill Jr.",
@@ -5037,12 +5049,6 @@
           "position": "RB",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Carnell Tate",
-          "position": "WR",
-          "status": "Questionable",
-          "detail": "Not Specified"
         },
         {
           "player": "Gunnar Helm",
@@ -5109,18 +5115,18 @@
           "position": "G",
           "status": "Injured Reserve",
           "detail": "Not Specified"
-        },
-        {
-          "player": "Kevin Winston Jr.",
-          "position": "S",
-          "status": "Active",
-          "detail": ""
         }
       ]
     },
     "WAS": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Luke McCaffrey",
+          "position": "WR",
+          "status": "Active",
+          "detail": ""
+        },
         {
           "player": "Jacory Croskey-Merritt",
           "position": "RB",
@@ -5262,12 +5268,6 @@
         {
           "player": "Van Jefferson",
           "position": "WR",
-          "status": "Active",
-          "detail": ""
-        },
-        {
-          "player": "Jer'Zhan Newton",
-          "position": "DT",
           "status": "Active",
           "detail": ""
         }
@@ -5277,6 +5277,12 @@
       "status": "retrieved",
       "players": [
         {
+          "player": "Luke McCaffrey",
+          "position": "WR",
+          "status": "Active",
+          "detail": ""
+        },
+        {
           "player": "Jacory Croskey-Merritt",
           "position": "RB",
           "status": "Injured Reserve",
@@ -5417,12 +5423,6 @@
         {
           "player": "Van Jefferson",
           "position": "WR",
-          "status": "Active",
-          "detail": ""
-        },
-        {
-          "player": "Jer'Zhan Newton",
-          "position": "DT",
           "status": "Active",
           "detail": ""
         }
