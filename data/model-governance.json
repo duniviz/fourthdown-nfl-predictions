@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-10T02:29:01.096164+00:00",
+  "generated_at_utc": "2026-11-18T02:59:24.721645+00:00",
   "decisions": {
     "passing_yards": {
       "champion": "existing_live_model",
@@ -12,18 +12,18 @@
     },
     "receiving_yards": {
       "champion": "existing_live_model",
-      "best_challenger": "random_forest",
+      "best_challenger": "weekly_selected_mix",
       "holdout_samples": 1852,
-      "improvement_pct": -1.67,
+      "improvement_pct": 0.0,
       "research_candidate": false,
       "decision": "retain_champion",
       "production_changed": false
     },
     "rushing_yards": {
       "champion": "existing_live_model",
-      "best_challenger": "ridge",
+      "best_challenger": "baseline_ridge_50",
       "holdout_samples": 873,
-      "improvement_pct": -0.19,
+      "improvement_pct": 0.21,
       "research_candidate": false,
       "decision": "retain_champion",
       "production_changed": false

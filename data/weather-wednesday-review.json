@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-10T02:29:00.991491+00:00",
+  "generated_at_utc": "2026-11-18T02:59:24.606923+00:00",
   "version": "weather-template-v1",
   "research_only": true,
   "production_changed": false,
@@ -7,31 +7,31 @@
   "minimum_market_samples": 30,
   "markets": {
     "passing_yards": {
-      "samples": 19,
-      "baseline_mae": 45.7,
-      "weather_mae": 46.529,
-      "mae_improvement": -0.829,
-      "sufficient_for_review": false
+      "samples": 36,
+      "baseline_mae": 58.153,
+      "weather_mae": 58.455,
+      "mae_improvement": -0.302,
+      "sufficient_for_review": true
     },
     "receiving_yards": {
-      "samples": 146,
-      "baseline_mae": 16.029,
-      "weather_mae": 16.053,
-      "mae_improvement": -0.023,
+      "samples": 268,
+      "baseline_mae": 17.343,
+      "weather_mae": 17.356,
+      "mae_improvement": -0.013,
       "sufficient_for_review": true
     },
     "receptions": {
-      "samples": 156,
-      "baseline_mae": 1.2,
-      "weather_mae": 1.2,
-      "mae_improvement": -0.0,
+      "samples": 283,
+      "baseline_mae": 1.284,
+      "weather_mae": 1.284,
+      "mae_improvement": 0.0,
       "sufficient_for_review": true
     },
     "rushing_yards": {
-      "samples": 84,
-      "baseline_mae": 9.306,
-      "weather_mae": 9.313,
-      "mae_improvement": -0.007,
+      "samples": 160,
+      "baseline_mae": 10.251,
+      "weather_mae": 10.251,
+      "mae_improvement": 0.0,
       "sufficient_for_review": true
     }
   },
