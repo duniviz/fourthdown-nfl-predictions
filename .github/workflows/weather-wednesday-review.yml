@@ -56,6 +56,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # The ML audit is only an input to this review; the weekly ML cycle publishes it.
+          git restore -- data/ml-challenger-review.json
           git add data/weather-wednesday-review.json data/model-governance.json
           if ! git diff --cached --quiet; then
             git commit -m "data: publish Wednesday weather accuracy comparison"
