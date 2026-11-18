@@ -10,3 +10,9 @@ assert.strictEqual(create(rotation,live,{generated_at_utc:'different'},counts,no
 assert.strictEqual(create({...rotation,candidates:[...rotation.candidates,...rotation.candidates]},live,players,counts,now)('g','p','passing_yards'),null);
 assert.strictEqual(create(rotation,live,players,counts,Date.parse('2026-11-19T19:00:00Z'))('g','p','passing_yards'),null);
 console.log('ML card rotation tests passed');
+
+const recent={...rotation,candidates:[{...rotation.candidates[0],selected:{model:'xgboost_recent',samples:20,week:10,season:2026},predictions:{xgboost_recent:242}}]};
+assert.strictEqual(create(recent,live,players,counts,now)('g','p','passing_yards').candidate,242);
+
+const formRecent={...rotation,candidates:[{...rotation.candidates[0],selected:{model:'xgboost_form_recent',samples:20,week:10,season:2026},predictions:{xgboost_form_recent:240}}]};
+assert.strictEqual(create(formRecent,live,players,counts,now)('g','p','passing_yards').candidate,240);

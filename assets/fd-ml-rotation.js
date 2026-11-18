@@ -1,7 +1,8 @@
 /* Research-card display only; never modifies official forecasts or picks. */
 (function(root){
  'use strict';
- const algorithms=new Set(['ridge','random_forest','gradient_boosting','xgboost']);
+ const base=['ridge','random_forest','gradient_boosting','xgboost'];
+ const algorithms=new Set(base.flatMap(name=>[name,name+'_recent',name+'_form',name+'_form_recent']));
  function create(rotation,live,players,counts,now=Date.now()){
   const valid=rotation&&rotation.research_only===true&&Number(rotation.season)===Number(live?.season)&&Number(rotation.week)===Number(live?.week)&&rotation.forecast_generated_at_utc===live?.generated_at_utc;
   const stamp=Date.parse(rotation?.generated_at_utc||'');
