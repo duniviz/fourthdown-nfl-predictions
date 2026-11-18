@@ -5,17 +5,10 @@ from the walk-forward research trainer and source snapshots from before target w
 """
 import json,math
 from pathlib import Path
+from live.player_ml_feature_groups import GROUPS, DIMENSIONS
 
 FAMILY="free-nfl-advanced-ridge-v1"
 MARKETS=("passing_yards","rushing_yards","receiving_yards")
-GROUPS={"baseline_features":(),"ngs":("ngs",),"snap_counts":("snap",),
-        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr"),
-        "weekly_workload":("workload",),"opponent_efficiency":("matchup",),
-        "workload_matchup":("workload","matchup"),
-        "advanced_workload":("ngs","snap","pfr","workload"),
-        "advanced_matchup":("ngs","snap","pfr","matchup"),
-        "advanced_all":("ngs","snap","pfr","workload","matchup")}
-DIMENSIONS={"ngs":4,"snap":2,"pfr":4,"workload":4,"matchup":4}
 
 def load_pair(runtime_path=Path("data/player-advanced-ml-runtime.json"),
               features_path=Path("data/player-advanced-ml-features.json")):
@@ -52,8 +45,8 @@ def candidate(runtime,features,market,player_id,season,week,base,old,
         groups=GROUPS[variant]
         if model.get("feature_groups")!=list(groups) or model.get("active") is not False:return None
         inputs=features["players"][str(player_id)][market]
-        if 'matchup' in groups and (not opponent or inputs.get('opponent')!=opponent):return None
-        if any(float(inputs[g][-1])<=0 for g in groups if g in ('workload','matchup')):return None
+        if any(g in groups for g in ('matchup','ftn_defense')) and (not opponent or inputs.get('opponent')!=opponent):return None
+        if any(float(inputs[g][-1])<=0 for g in groups if g in ('workload','matchup','pfr_new','ftn','ftn_defense')):return None
         if variant.startswith('advanced_') and not any(float(inputs[g][-1])>0 for g in ('ngs','snap','pfr')):return None
         if groups and not any(float(inputs[g][-1])>0 for g in groups):return None
         base=float(base)

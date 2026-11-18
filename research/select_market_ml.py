@@ -66,6 +66,47 @@ def choose_player(market,report):
                 selected_comparison=comparison
         except (KeyError,TypeError,ValueError):
             pass
+    fresh_names={'pfr_fixed','ftn_player','ftn_opponent','pfr_ftn','pfr_plus',
+                 'ftn_plus','ftn_opponent_plus','pfr_ftn_plus','all_new'}
+    incumbent=report.get('pfr_ftn_incumbent')
+    retained=incumbent not in fresh_names
+    retention=report.get('pfr_ftn_retention') or {}
+    if incumbent in fresh_names:
+        model=report.get('models',{}).get(incumbent,{})
+        sel=retention.get('selection') or {};final=retention.get('confirmation') or {}
+        try:
+            retained=(model.get('status')=='evaluated' and int(model.get('samples',0))==samples
+                and float(model.get('improvement_pct') or 0)>0
+                and int(sel.get('samples',0))>=100 and int(sel.get('weeks',0))>=4
+                and int(final.get('samples',0))>=50 and int(final.get('weeks',0))>=3
+                and float(final['candidate_mae'])<=float(final['reference_mae'])
+                and float(final['candidate_rmse'])<=float(final['reference_rmse']))
+            if retained:
+                winner=incumbent
+                selected_comparison=retention
+        except (KeyError,TypeError,ValueError):retained=False
+    # Select PFR/FTN by the earlier period only and require the independent
+    # confirmation period to beat the pre-existing published ML-card variant.
+    fresh=[]
+    for name,comparison in report.get('pfr_ftn_comparisons',{}).items():
+        model=report.get('models',{}).get(name,{})
+        selected=comparison.get('selection') or {};confirmed=comparison.get('confirmation') or {}
+        if model.get('status')!='evaluated' or int(model.get('samples',0))!=samples:continue
+        if int(selected.get('samples',0))<100 or int(selected.get('weeks',0))<4:continue
+        if int(confirmed.get('samples',0))<50 or int(confirmed.get('weeks',0))<3:continue
+        try:
+            reference=float(selected['reference_mae']); candidate=float(selected['candidate_mae'])
+            if reference<=0 or candidate>=reference or float(model.get('improvement_pct') or 0)<=0:continue
+            fresh.append(((reference-candidate)/reference,name,comparison))
+        except (KeyError,TypeError,ValueError):continue
+    if fresh and retained:
+        _,candidate,comparison=max(fresh,key=lambda x:x[0])
+        final=comparison['confirmation']
+        try:
+            if float(final['candidate_mae'])<float(final['reference_mae']) and float(final['candidate_rmse'])<=float(final['reference_rmse']):
+                winner=candidate
+                selected_comparison=comparison
+        except (KeyError,TypeError,ValueError):pass
     gain=report["models"][winner].get("improvement_pct")
     return {"research_winner":winner,"heldout_mae":round(float(report['models'][winner]['challenger_mae']),3),
             "baseline_mae":report["models"][winner].get("baseline_mae"),

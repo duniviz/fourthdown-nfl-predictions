@@ -1,0 +1,10 @@
+const assert=require('assert');
+const {summarize}=require('../assets/fd-free-feature-lab.js');
+const rows=summarize({markets:{passing_yards:{source_coverage:{pfr_new:100},pfr_ftn_comparisons:{pfr_fixed:{reference:'advanced_matchup',selection:{samples:120},confirmation:{samples:60,candidate_mae:50}}}}}}, {player:{passing_yards:{research_winner:'pfr_fixed'}}});
+assert.equal(rows.length,3);
+assert.equal(rows[0].selected,'pfr_fixed');
+assert.equal(rows[0].trials[0].reference,'advanced_matchup');
+assert.equal(rows[0].trials[0].confirmation.samples,60);
+assert.equal(rows[1].trials.length,0);
+assert.equal(summarize(null,null)[0].selected,'Not available');
+console.log('FTN Lab display mapping passed');

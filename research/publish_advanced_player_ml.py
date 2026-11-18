@@ -11,16 +11,10 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-from research.free_nfl_feature_lab import MARKET_SOURCE,lagged_values
+from research.free_nfl_feature_lab import MARKET_SOURCE,lagged_values,complete_lagged_values
+from live.player_ml_feature_groups import GROUPS
 
 FAMILY="free-nfl-advanced-ridge-v1"
-GROUPS={"baseline_features":(),"ngs":("ngs",),"snap_counts":("snap",),
-        "pfr_advanced":("pfr",),"combined":("ngs","snap","pfr"),
-        "weekly_workload":("workload",),"opponent_efficiency":("matchup",),
-        "workload_matchup":("workload","matchup"),
-        "advanced_workload":("ngs","snap","pfr","workload"),
-        "advanced_matchup":("ngs","snap","pfr","matchup"),
-        "advanced_all":("ngs","snap","pfr","workload","matchup")}
 LIMIT=0.25
 
 def feature_vector(row,groups):
@@ -65,10 +59,14 @@ def features_for_player(series,pfr_ids,pid,market,target,opponent=None):
     pfr=pfr_ids.get(str(pid))
     ngs=lagged_values(series,MARKET_SOURCE[market],pid,target,3)
     snap=lagged_values(series,"snap",pfr,target,1) if pfr else ([0.0],0.0)
-    pfr_features=lagged_values(series,"pfr_"+{"passing_yards":"pass","rushing_yards":"rush","receiving_yards":"rec"}[market],pfr,target,3) if pfr else ([0.0]*3,0.0)
+    pfr_features=complete_lagged_values(series,"pfr_"+{"passing_yards":"pass","rushing_yards":"rush","receiving_yards":"rec"}[market],pfr,target,3) if pfr else ([0.0]*3,0.0)
     workload=lagged_values(series,"workload_"+market,pid,target,3)
     matchup=lagged_values(series,"matchup_"+market,opponent,target,3)
-    return {"ngs":ngs[0]+[ngs[1]],"snap":snap[0]+[snap[1]],"pfr":pfr_features[0]+[pfr_features[1]],
+    ftn=complete_lagged_values(series,"ftn_"+market,pid,target,3)
+    ftn_def=complete_lagged_values(series,"ftn_defense_"+market,opponent,target,3)
+    return {"ngs":ngs[0]+[ngs[1]],"snap":snap[0]+[snap[1]],"pfr":[0.0]*4,
+            "pfr_new":pfr_features[0]+[pfr_features[1]],"ftn":ftn[0]+[ftn[1]],
+            "ftn_defense":ftn_def[0]+[ftn_def[1]],
             "workload":workload[0]+[workload[1]],"matchup":matchup[0]+[matchup[1]],"opponent":opponent}
 
 def build_source_features(series,pfr_ids,players,target,models):
