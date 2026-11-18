@@ -37,10 +37,11 @@ function chromePath() {
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     assert.equal(await page.locator('.fd-about-data').evaluate(node => node.open), false);
     await page.locator('.fd-about-data > summary').click();
-    await page.waitForFunction(() => /Recorded|graded|hit/i.test(document.querySelector('#bet-record')?.innerText || ''));
+    await page.waitForFunction(n => (document.querySelector('#bet-record')?.innerText || '').includes(n), String(expectedGap.propsGraded));
     const props = await page.locator('#bet-record').innerText();
     assert.ok(props.includes(String(expectedGap.propsGraded)), 'props shows the current graded total');
     if (expectedGap.outside) {
+      await page.waitForFunction(() => /History only counts/.test(document.querySelector('#bet-pick-scope')?.innerText || ''));
       const note=await page.locator('#bet-pick-scope').innerText();
       assert.ok(note.includes(String(expectedGap.historyGraded)));
       assert.match(note, /History only counts/);
@@ -57,7 +58,7 @@ function chromePath() {
 
     await page.goto('http://127.0.0.1:8123/history.html', {waitUntil: 'domcontentloaded'});
     await page.waitForFunction(() => /Verified picks/.test(document.querySelector('#fd-player-dataset')?.innerText || ''));
-    assert.ok((await page.locator('#fd-player-dataset').innerText()).includes(String(expectedGap.historyGraded)));
+    await page.waitForFunction(n => (document.querySelector('#fd-player-dataset')?.innerText || '').includes(n), String(expectedGap.historyGraded));
     if (expectedGap.outside) {
       await page.waitForFunction(() => /game-score row/.test(document.querySelector('#fd-pick-scope')?.innerText || ''));
       const note=await page.locator('#fd-pick-scope').innerText();
