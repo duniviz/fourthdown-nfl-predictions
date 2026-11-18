@@ -25,6 +25,10 @@ function chromePath() {
     const page = await browser.newPage({viewport: {width, height: 900}});
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
+    const comparison={reference:'combined',selection:{samples:120,candidate_mae:22,reference_mae:23},
+      confirmation:{samples:60,candidate_mae:24,reference_mae:25,candidate_rmse:30,reference_rmse:31}};
+    await page.route('**/data/research-free-nfl-features.json*', route => route.fulfill({json:{markets:{rushing_yards:{source_coverage:{pfr_new:120,ftn:100,ftn_defense:90},pfr_ftn_comparisons:{pfr_plus:comparison}}}}}));
+    await page.route('**/data/market-ml-research-selection.json*', route => route.fulfill({json:{player:{rushing_yards:{research_winner:'pfr_plus'}}}}));
 
     await page.goto('http://127.0.0.1:8123/model-lab.html', {waitUntil: 'domcontentloaded'});
     await page.waitForFunction(() => document.querySelector('#fd-weekly-report-card')?.hasAttribute('data-fd-report-source'));
@@ -33,6 +37,11 @@ function chromePath() {
     assert.equal(await page.locator('#fd-weekly-report-card').getAttribute('data-fd-report-source'), expectedCard.source);
     assert.ok(lab.includes(String(expectedCard.latest.completed_games) + ' completed games'));
     if (expectedCard.source === 'official') assert.match(lab, /verified score ledger/);
+    const feature=page.locator('#fd-free-feature-lab details').nth(1);
+    await feature.locator('summary').waitFor();
+    await feature.locator('summary').click();
+    assert.match(await feature.innerText(), /Existing advanced \+ PFR vs combined/);
+    assert.match(await feature.innerText(), /later confirmation 24\.00 vs 25\.00 MAE/);
 
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     assert.equal(await page.locator('.fd-about-data').evaluate(node => node.open), false);
