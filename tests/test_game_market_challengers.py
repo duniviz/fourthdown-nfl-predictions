@@ -1,6 +1,6 @@
 import unittest
 
-from tools.game_market_challengers import build_examples, evaluate
+from tools.game_market_challengers import build_examples, evaluate, models, summarize
 
 
 class GameMarketChallengerTests(unittest.TestCase):
@@ -46,6 +46,16 @@ class GameMarketChallengerTests(unittest.TestCase):
         # Week two sees both completed week-one games for A.
         self.assertEqual(rows[2]["features"][1], 2)
         self.assertEqual(rows[2]["features"][2], 17)
+
+    def test_xgboost_is_scored_on_same_ats_and_total_games(self):
+        rows = build_examples(self.schedule)
+        for target, push in (("ats_residual", "spread_push"), ("ou_residual", "total_push")):
+            model = models()["xgboost"]
+            x = [r["features"] for r in rows]
+            pred = model.fit(x, [r[target] for r in rows]).predict(x)
+            result = summarize(rows, {"xgboost": pred}, target, push)
+            self.assertEqual(result["games"], len(rows))
+            self.assertIn("pick_accuracy", result["models"]["xgboost"])
 
     def test_insufficient_seasons_are_rejected(self):
         with self.assertRaises(ValueError):
