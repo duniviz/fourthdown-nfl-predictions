@@ -1,14 +1,14 @@
 {
   "family": "paired-ridge-v1",
-  "generated_at_utc": "2026-11-18T03:01:43.062128+00:00",
+  "generated_at_utc": "2026-11-18T19:37:44.769737+00:00",
   "policy": "Historical walk-forward: 300 held-out forecasts across 4 of the latest 8 weeks, at least 3% MAE gain and 20 recent forecasts; frozen live pairs take precedence after 100 pairs across 4 weeks; rollback if recent MAE worsens by 10%",
   "models": {
     "receiving_yards": {
       "coefficients": [
-        0.8349955793592112,
-        0.16030745057225607
+        0.8349955793592115,
+        0.1603074505722565
       ],
-      "intercept": 4.769197087795213,
+      "intercept": 4.769197087795199,
       "trained_season": 2026,
       "trained_week": 10,
       "training_rows": 19835
@@ -16,7 +16,7 @@
     "passing_yards": {
       "coefficients": [
         0.5256152328888039,
-        -0.8821875563074746
+        -0.8821875563074745
       ],
       "intercept": 121.34521229964459,
       "trained_season": 2026,
@@ -26,7 +26,7 @@
     "rushing_yards": {
       "coefficients": [
         0.8298917047898936,
-        0.232051297795409
+        0.23205129779540884
       ],
       "intercept": 5.94849692918573,
       "trained_season": 2026,
