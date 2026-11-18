@@ -42,6 +42,20 @@
           },
           {
             "detail": "Injured Reserve",
+            "player": "Jordan Burch",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "team": "ARI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Andrew Wingard",
+            "position": "S",
+            "status": "Injured Reserve",
+            "team": "ARI"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "James Conner",
             "position": "RB",
             "status": "Injured Reserve",
@@ -59,20 +73,6 @@
             "player": "Hjalte Froholdt",
             "position": "C",
             "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jon Gaines II",
-            "position": "G",
-            "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "out",
-            "player": "Jordan Burch",
-            "position": "LB",
-            "status": "Out",
             "team": "ARI"
           }
         ],
@@ -844,7 +844,7 @@
         "source": "ESPN team schedule",
         "status": "unavailable"
       },
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
       "model_metrics": {
         "away": {
           "defense_epa_rating": -0.0572,
@@ -1218,6 +1218,13 @@
         "event_id": "401873070",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Ar'maj Reed-Adams",
+            "position": "G",
+            "status": "Injured Reserve",
+            "team": "BUF"
+          },
+          {
             "detail": "questionable",
             "player": "Dorian Williams",
             "position": "LB",
@@ -1247,10 +1254,17 @@
           },
           {
             "detail": "Injured Reserve",
-            "player": "Joshua Palmer",
-            "position": "WR",
+            "player": "Zeek Biggers",
+            "position": "DT",
             "status": "Injured Reserve",
-            "team": "BUF"
+            "team": "MIA"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Jordan Phillips",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "MIA"
           },
           {
             "detail": "questionable",
@@ -1270,20 +1284,6 @@
             "detail": "questionable",
             "player": "Aaron Brewer",
             "position": "C",
-            "status": "Questionable",
-            "team": "MIA"
-          },
-          {
-            "detail": "out",
-            "player": "Zeek Biggers",
-            "position": "DT",
-            "status": "Out",
-            "team": "MIA"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jordan Phillips",
-            "position": "DT",
             "status": "Questionable",
             "team": "MIA"
           }
@@ -1605,15 +1605,15 @@
           },
           {
             "detail": "questionable",
-            "player": "Malik Muhammad II",
-            "position": "CB",
+            "player": "Kyle Monangai",
+            "position": "RB",
             "status": "Questionable",
             "team": "CHI"
           },
           {
             "detail": "questionable",
-            "player": "Kyle Monangai",
-            "position": "RB",
+            "player": "Malik Muhammad II",
+            "position": "CB",
             "status": "Questionable",
             "team": "CHI"
           },
@@ -2282,6 +2282,13 @@
             "team": "DET"
           },
           {
+            "detail": "out",
+            "player": "Kerby Joseph",
+            "position": "S",
+            "status": "Out",
+            "team": "DET"
+          },
+          {
             "detail": "questionable",
             "player": "D.J. Reed",
             "position": "CB",
@@ -2292,13 +2299,6 @@
             "detail": "out",
             "player": "Aidan Hutchinson",
             "position": "DE",
-            "status": "Out",
-            "team": "DET"
-          },
-          {
-            "detail": "out",
-            "player": "Kerby Joseph",
-            "position": "S",
             "status": "Out",
             "team": "DET"
           },
@@ -2536,6 +2536,13 @@
             "team": "DAL"
           },
           {
+            "detail": "Injured Reserve",
+            "player": "Wan'Dale Robinson",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "TEN"
+          },
+          {
             "detail": "questionable",
             "player": "Anthony Hill Jr.",
             "position": "LB",
@@ -2552,13 +2559,6 @@
           {
             "detail": "questionable",
             "player": "Carnell Tate",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Wan'Dale Robinson",
             "position": "WR",
             "status": "Questionable",
             "team": "TEN"
@@ -2723,6 +2723,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-17T18:32:04Z",
+  "generated_at_utc": "2026-11-18T02:52:51Z",
   "schema_version": 1
 }
