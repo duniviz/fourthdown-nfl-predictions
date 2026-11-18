@@ -7,8 +7,12 @@ on:
       - 'live/dk_game_refresh.py'
       - 'data/live-v2.json'
   schedule:
-    # Refresh DraftKings player props and game lines daily around 4 PM Central.
-    - cron: '40 21,22 * * *'
+    # The later ticks retry a missed or failed non-game-day refresh. A daily
+    # completion marker prevents extra feed calls after a successful run.
+    - cron: '40 16 * * *'
+      timezone: America/Chicago
+    - cron: '10,40 17 * * *'
+      timezone: America/Chicago
     # Preserve hourly player-line refreshes for non-Sunday game days; Sunday uses the preset pipeline below.
     - cron: '37 * * * 1,4,5,6'
   workflow_dispatch:
@@ -34,11 +38,9 @@ jobs:
         id: schedule_guard
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "40 21,22 * * *" ]]; then
-            if [[ "$(TZ=America/Chicago date +%H)" != "16" ]]; then
-              echo "run=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" != "37 * * * 1,4,5,6" ]]; then
+            echo "daily=true" >> "$GITHUB_OUTPUT"
+            echo "date=$(TZ=America/Chicago date +%F)" >> "$GITHUB_OUTPUT"
             # The daily non-game refresh must not create a fifth Sunday game-day run.
             if ! python - <<'PY'
           import datetime as dt, json
@@ -70,25 +72,33 @@ jobs:
             fi
           fi
           echo "run=true" >> "$GITHUB_OUTPUT"
+      - name: Check for a completed daily refresh
+        id: daily_completion
+        if: steps.schedule_guard.outputs.daily == 'true' && steps.schedule_guard.outputs.run == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .daily-dk-complete
+          key: daily-dk-complete-${{ steps.schedule_guard.outputs.date }}
       - name: Refresh upcoming DK game spreads, totals, and moneylines
-        if: steps.schedule_guard.outputs.run == 'true' && github.event.schedule != '37 * * * 1,4,5,6'
+        id: game_refresh
+        if: steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true' && github.event.schedule != '37 * * * 1,4,5,6'
         continue-on-error: true
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m live.dk_game_refresh
       - name: Refresh DK player props from primary feed
-        if: steps.schedule_guard.outputs.run == 'true'
+        if: steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true'
         continue-on-error: true
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: python -m tools.refresh_parlayapi_odds --props-only
       - name: Fill missing or stale DK props from backup feed
-        if: steps.schedule_guard.outputs.run == 'true'
+        if: steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true'
         env:
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
         run: python -m tools.refresh_sportsgameodds_backup
       - name: Publish refreshed DK player quotes and game lines
-        if: steps.schedule_guard.outputs.run == 'true'
+        if: steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -103,3 +113,12 @@ jobs:
           else
             echo "No new verified DK quotes; saved lines remain intact."
           fi
+      - name: Mark daily refresh complete
+        if: steps.schedule_guard.outputs.daily == 'true' && steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true' && steps.game_refresh.outcome == 'success'
+        run: echo "${{ steps.schedule_guard.outputs.date }}" > .daily-dk-complete
+      - name: Save daily completion marker
+        if: steps.schedule_guard.outputs.daily == 'true' && steps.schedule_guard.outputs.run == 'true' && steps.daily_completion.outputs.cache-hit != 'true' && steps.game_refresh.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: .daily-dk-complete
+          key: daily-dk-complete-${{ steps.schedule_guard.outputs.date }}
