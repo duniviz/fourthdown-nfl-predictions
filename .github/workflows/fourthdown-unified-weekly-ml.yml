@@ -76,6 +76,9 @@ jobs:
       - name: Rebuild and evaluate full historical player data
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2016
+          python -m tools.export_ml_card_history
+          python -m tools.evaluate_ml_card_history
+          python -m tools.ml_card_rotation
           python tools/ml_challengers.py --input data/weekly-player-ml-training.csv
           python -m tools.train_deployable_player_ml --input data/weekly-player-ml-training.csv
           python -m tools.train_deployable_game_ml
@@ -192,6 +195,15 @@ jobs:
         run: python -m research.import_player_locks
       - name: Refresh completed-season and current-season player backtests
         run: python -m tools.refresh_weekly_player_ml_data --start 2016
+      - name: Build validated full-history ML card training archive
+        id: card_history
+        continue-on-error: true
+        run: python -m tools.export_ml_card_history
+      - name: Compare expanded and recent player training history
+        id: card_history_evaluation
+        if: steps.card_history.outcome == 'success'
+        continue-on-error: true
+        run: python -m tools.evaluate_ml_card_history
       - name: Replay P3 position weather splits against 2016-2025 player forecasts
         run: python -m research.weather_player_backtest --start 2016 --end 2025
       - name: Retrain and evaluate historical player ML challengers
@@ -236,6 +248,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f data/game-ml-runtime.json data/player-ml-runtime.json data/ml-challenger-review.json data/ml-weekly-decisions.json data/weekly-shadow-forecasts.json data/weekly-learning-evidence.json data/player-results.json data/player-calibration.json data/game-official-results.json data/model-lab-yardage-game.json data/model-lab-weekly-shadow.json
+          if [[ "${{ steps.card_history.outcome }}" == "success" ]] && [ -s data/ml-card-training.csv.gz ] && [ -s data/ml-card-training-meta.json ]; then
+            git add -f data/ml-card-training.csv.gz data/ml-card-training-meta.json
+          else
+            # An incomplete archive must neither replace the previous version
+            # nor prevent the unrelated weekly results from rebasing.
+            for file in data/ml-card-training.csv.gz data/ml-card-training-meta.json; do
+              if git ls-files --error-unmatch "$file" >/dev/null 2>&1; then git restore --worktree -- "$file"; else rm -f "$file"; fi
+            done
+          fi
+          if [[ "${{ steps.card_history_evaluation.outcome }}" == "success" ]] && [ -s data/ml-card-history-evaluation.json ]; then
+            git add -f data/ml-card-history-evaluation.json
+          elif git ls-files --error-unmatch data/ml-card-history-evaluation.json >/dev/null 2>&1; then
+            git restore --worktree -- data/ml-card-history-evaluation.json
+          else
+            rm -f data/ml-card-history-evaluation.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m "Publish weekly ML Lab research summary [skip ci]"
             git pull --rebase origin main
