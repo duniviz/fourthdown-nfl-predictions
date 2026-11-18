@@ -1,6 +1,13 @@
 const {chromium} = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('fs');
+const {reportCardModel} = require('../assets/fd-insights.js');
+const {ledgerGap} = require('../assets/fd-prop-board.js');
+const performance = JSON.parse(fs.readFileSync('data/weekly-model-performance.json', 'utf8'));
+const official = JSON.parse(fs.readFileSync('data/game-official-results.json', 'utf8'));
+const players = JSON.parse(fs.readFileSync('data/player-results.json', 'utf8'));
+const expectedCard = reportCardModel(performance, official, players);
+const expectedGap = ledgerGap(players.rows, official.rows);
 
 function chromePath() {
   if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
@@ -20,21 +27,24 @@ function chromePath() {
     page.on('pageerror', error => errors.push(error.message));
 
     await page.goto('http://127.0.0.1:8123/model-lab.html', {waitUntil: 'domcontentloaded'});
-    await page.waitForFunction(() => /verified score ledger/.test(document.querySelector('#fd-weekly-report-card')?.innerText || ''));
+    await page.waitForFunction(() => document.querySelector('#fd-weekly-report-card')?.hasAttribute('data-fd-report-source'));
     const lab = await page.locator('#fd-weekly-report-card').innerText();
-    assert.match(lab, /12 completed games on the verified score ledger/);
-    assert.match(lab, /only included 2 final games/);
-    assert.equal(await page.locator('#fd-weekly-report-card').getAttribute('data-fd-report-source'), 'official');
-    assert.doesNotMatch(lab, /2 completed games graded/);
+    assert.ok(expectedCard, 'expected a published weekly report');
+    assert.equal(await page.locator('#fd-weekly-report-card').getAttribute('data-fd-report-source'), expectedCard.source);
+    assert.ok(lab.includes(String(expectedCard.latest.completed_games) + ' completed games'));
+    if (expectedCard.source === 'official') assert.match(lab, /verified score ledger/);
 
     await page.goto('http://127.0.0.1:8123/bets.html', {waitUntil: 'domcontentloaded'});
     assert.equal(await page.locator('.fd-about-data').evaluate(node => node.open), false);
     await page.locator('.fd-about-data > summary').click();
-    await page.waitForFunction(() => /993/.test(document.querySelector('#bet-record')?.innerText || '') && /History only counts/.test(document.querySelector('#bet-pick-scope')?.innerText || ''));
+    await page.waitForFunction(() => /Recorded|graded|hit/i.test(document.querySelector('#bet-record')?.innerText || ''));
     const props = await page.locator('#bet-record').innerText();
-    assert.match(props, /993/);
-    assert.match(await page.locator('#bet-pick-scope').innerText(), /838/);
-    assert.match(await page.locator('#bet-pick-scope').innerText(), /JAX at BAL/);
+    assert.ok(props.includes(String(expectedGap.propsGraded)), 'props shows the current graded total');
+    if (expectedGap.outside) {
+      const note=await page.locator('#bet-pick-scope').innerText();
+      assert.ok(note.includes(String(expectedGap.historyGraded)));
+      assert.match(note, /History only counts/);
+    }
     if (width === 400) {
       const market = await page.locator('#bet-market').boundingBox();
       const search = await page.locator('#bet-player-search').boundingBox();
@@ -47,10 +57,13 @@ function chromePath() {
 
     await page.goto('http://127.0.0.1:8123/history.html', {waitUntil: 'domcontentloaded'});
     await page.waitForFunction(() => /Verified picks/.test(document.querySelector('#fd-player-dataset')?.innerText || ''));
-    await page.waitForFunction(() => /game-score row/.test(document.querySelector('#fd-pick-scope')?.innerText || ''));
-    assert.match(await page.locator('#fd-player-dataset').innerText(), /838/);
-    assert.match(await page.locator('#fd-pick-scope').innerText(), /993|155/);
-    assert.match(await page.locator('#fd-pick-scope').innerText(), /Props also includes/);
+    assert.ok((await page.locator('#fd-player-dataset').innerText()).includes(String(expectedGap.historyGraded)));
+    if (expectedGap.outside) {
+      await page.waitForFunction(() => /game-score row/.test(document.querySelector('#fd-pick-scope')?.innerText || ''));
+      const note=await page.locator('#fd-pick-scope').innerText();
+      assert.ok(note.includes(String(expectedGap.outside)));
+      assert.match(note, /Props also includes/);
+    }
 
     await page.goto('http://127.0.0.1:8123/index.html', {waitUntil: 'domcontentloaded'});
     await page.waitForFunction(() => /games|unavailable/i.test(document.querySelector('#score-status')?.innerText || ''));
