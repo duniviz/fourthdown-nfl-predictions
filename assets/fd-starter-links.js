@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
-  const teams = new Set('ari atl bal buf car chi cin cle dal den det gb hou ind jax kc lv lac lar mia min ne no nyg nyj phi pit sf sea tb ten was'.split(' '));
-  const aliases = {jac: 'jax', la: 'lar', wsh: 'was'};
+  const teams = new Set('ari atl bal buf car chi cin cle dal den det gb hou ind jax kc lv lac lar mia min ne no nyg nyj phi pit sf sea tb ten wsh'.split(' '));
+  const aliases = {jac: 'jax', la: 'lar', was: 'wsh'};
 
   function starterSourceUrl(source, team) {
     const url = String(source || '');
