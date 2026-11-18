@@ -1,31 +1,50 @@
 {
   "family": "free-nfl-advanced-ridge-v1",
-  "generated_at_utc": "2026-11-17T23:41:59.746945+00:00",
+  "generated_at_utc": "2026-11-18T00:00:28.612247+00:00",
   "target_season": 2026,
   "target_week": 11,
   "research_only": true,
   "production_changed": false,
   "models": {
     "passing_yards": {
-      "variant": "baseline_features",
-      "feature_groups": [],
-      "coefficients": [
-        0.3382002085503828,
-        0.20933552419905138,
-        0.4716938313731903,
-        -1.1032504777748227,
-        0.048622797531601765,
-        -0.5409665429949795,
-        50.36041080509268,
-        -1.1012791347022797
+      "variant": "advanced_matchup",
+      "feature_groups": [
+        "ngs",
+        "snap",
+        "pfr",
+        "matchup"
       ],
-      "intercept": 102.10661680427162,
+      "coefficients": [
+        0.31024552567894204,
+        0.1732167015651813,
+        0.4294315829717105,
+        -1.4377781023293492,
+        0.03927840639707614,
+        -0.20301115568739972,
+        44.76580354371792,
+        -0.8920494246811286,
+        -31.887606986508796,
+        0.8977954968756299,
+        0.5731208367912436,
+        89.26095393487972,
+        47.313218908049286,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.8726743063124398,
+        1.0609614785035428,
+        42.889118816015994,
+        0.0
+      ],
+      "intercept": 54.960054960373014,
       "trained_season": 2026,
       "trained_week": 10,
       "training_rows": 1367,
-      "holdout_rows": 203,
-      "holdout_weeks": 8,
-      "holdout_improvement_pct": 3.08,
+      "holdout_rows": 314,
+      "holdout_weeks": 12,
+      "holdout_improvement_pct": 3.33,
       "active": false
     },
     "rushing_yards": {
@@ -59,9 +78,9 @@
       "trained_season": 2026,
       "trained_week": 10,
       "training_rows": 2946,
-      "holdout_rows": 406,
-      "holdout_weeks": 8,
-      "holdout_improvement_pct": 2.43,
+      "holdout_rows": 665,
+      "holdout_weeks": 12,
+      "holdout_improvement_pct": 1.82,
       "active": false
     },
     "receiving_yards": {
@@ -95,9 +114,9 @@
       "trained_season": 2026,
       "trained_week": 10,
       "training_rows": 6525,
-      "holdout_rows": 950,
-      "holdout_weeks": 8,
-      "holdout_improvement_pct": 1.8,
+      "holdout_rows": 1500,
+      "holdout_weeks": 12,
+      "holdout_improvement_pct": 0.53,
       "active": false
     }
   },

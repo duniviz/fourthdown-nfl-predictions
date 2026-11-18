@@ -1,51 +1,78 @@
 {
-  "generated_at_utc": "2026-11-17T23:42:00.578891+00:00",
+  "generated_at_utc": "2026-11-18T00:00:29.468587+00:00",
   "research_only": true,
   "production_changed": false,
   "player": {
     "passing_yards": {
-      "research_winner": "baseline_features",
-      "heldout_mae": 64.529,
-      "baseline_mae": 66.579,
-      "relative_improvement_pct": 3.08,
-      "samples": 203,
-      "weeks": 8,
+      "research_winner": "advanced_matchup",
+      "heldout_mae": 65.864,
+      "baseline_mae": 68.132,
+      "relative_improvement_pct": 3.33,
+      "samples": 314,
+      "weeks": 12,
       "source_coverage": {
         "ngs": 1366,
         "snap": 1367,
-        "pfr": 0
+        "pfr": 0,
+        "workload": 0,
+        "matchup": 1367
       },
       "card_model_changed": false,
+      "matched_new_feature_comparison": {
+        "reference": "ngs",
+        "selection": {
+          "samples": 211,
+          "weeks": 8,
+          "candidate_mae": 63.87031976066448,
+          "reference_mae": 63.89030893658596,
+          "candidate_rmse": 79.91309533068487,
+          "reference_rmse": 79.86392021266775
+        },
+        "confirmation": {
+          "samples": 103,
+          "weeks": 4,
+          "candidate_mae": 69.94881046451012,
+          "reference_mae": 70.24985887859391,
+          "candidate_rmse": 85.32592736812416,
+          "reference_rmse": 85.7522967459528
+        }
+      },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     },
     "rushing_yards": {
       "research_winner": "combined",
-      "heldout_mae": 23.443,
-      "baseline_mae": 24.027,
-      "relative_improvement_pct": 2.43,
-      "samples": 406,
-      "weeks": 8,
+      "heldout_mae": 23.434,
+      "baseline_mae": 23.868,
+      "relative_improvement_pct": 1.82,
+      "samples": 665,
+      "weeks": 12,
       "source_coverage": {
         "ngs": 2212,
         "snap": 2946,
-        "pfr": 0
+        "pfr": 0,
+        "workload": 2946,
+        "matchup": 2946
       },
       "card_model_changed": false,
+      "matched_new_feature_comparison": null,
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     },
     "receiving_yards": {
       "research_winner": "combined",
-      "heldout_mae": 23.992,
-      "baseline_mae": 24.431,
-      "relative_improvement_pct": 1.8,
-      "samples": 950,
-      "weeks": 8,
+      "heldout_mae": 23.652,
+      "baseline_mae": 23.778,
+      "relative_improvement_pct": 0.53,
+      "samples": 1500,
+      "weeks": 12,
       "source_coverage": {
         "ngs": 5250,
         "snap": 6522,
-        "pfr": 0
+        "pfr": 0,
+        "workload": 6525,
+        "matchup": 6525
       },
       "card_model_changed": false,
+      "matched_new_feature_comparison": null,
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
     }
   },
