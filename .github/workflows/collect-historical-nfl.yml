@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install official nflverse Python reader
-        run: python -m pip install 'nflreadpy>=0.1' 'polars>=1.0' numpy scikit-learn
+        run: python -m pip install 'xgboost-cpu>=2.1,<4' 'nflreadpy>=0.1' 'polars>=1.0' numpy scikit-learn
       - name: Download 2022 onward schedules player and team statistics
         run: python tools/collect_historical_nfl.py --start 2022
       - name: Validate historical tables and provenance

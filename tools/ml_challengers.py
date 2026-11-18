@@ -14,6 +14,7 @@ from sklearn.ensemble import RandomForestRegressor,HistGradientBoostingRegressor
 from sklearn.linear_model import Ridge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBRegressor
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/"data/backtests/player-predictions.csv"
@@ -83,7 +84,8 @@ def evaluate(rows):
             models={
                 "ridge":make_pipeline(StandardScaler(),Ridge(alpha=100.0)),
                 "random_forest":RandomForestRegressor(n_estimators=100,max_depth=5,min_samples_leaf=15,random_state=42,n_jobs=1),
-                "gradient_boosting":HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=25,l2_regularization=20,random_state=42)
+                "gradient_boosting":HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=25,l2_regularization=20,random_state=42),
+                "xgboost":XGBRegressor(n_estimators=100,max_depth=3,learning_rate=0.05,min_child_weight=15,reg_lambda=20,objective="reg:squarederror",random_state=42,n_jobs=1,tree_method="hist")
             }
             predictions={}
             for name,model in models.items():
@@ -97,7 +99,7 @@ def evaluate(rows):
                         "baseline_boost_50":(baseline+boost)/2,
                         "ml_equal_mix":(ridge+forest+boost)/3}
                 scored.append({"week":week,"actual":r["actual"],"baseline":baseline,
-                               "ridge":ridge,"random_forest":forest,"gradient_boosting":boost,
+                               "ridge":ridge,"random_forest":forest,"gradient_boosting":boost,"xgboost":float(predictions["xgboost"][i]),
                                **blends,"weekly_selected_mix": baseline if chosen=="baseline" else blends[chosen]})
             previous_weeks.update(r["week"] for r in train if r["season"]==holdout)
         if len(scored)<MIN_TEST:
@@ -105,7 +107,7 @@ def evaluate(rows):
             continue
         baseline=float(np.mean([abs(r["actual"]-r["baseline"]) for r in scored]))
         scores={}
-        for name in ("ridge","random_forest","gradient_boosting",*BLEND_NAMES,"weekly_selected_mix"):
+        for name in ("ridge","random_forest","gradient_boosting","xgboost",*BLEND_NAMES,"weekly_selected_mix"):
             mae=float(np.mean([abs(r["actual"]-r[name]) for r in scored]))
             scores[name]={"mae":round(mae,3),"improvement_vs_baseline":round(baseline-mae,3),"beats_baseline":mae<baseline}
         report[market]={"status":"evaluated","holdout":len(scored),"baseline_mae":round(baseline,3),

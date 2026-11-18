@@ -10,6 +10,7 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor,HistGradientBoostingRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBRegressor
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data/training"
@@ -67,7 +68,8 @@ def evaluate(rows):
  models={
   "ridge":lambda:make_pipeline(StandardScaler(),Ridge(alpha=100)),
   "random_forest":lambda:RandomForestRegressor(n_estimators=100,max_depth=5,min_samples_leaf=12,random_state=42,n_jobs=1),
-  "gradient_boosting":lambda:HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=20,l2_regularization=20,random_state=42)}
+  "gradient_boosting":lambda:HistGradientBoostingRegressor(max_iter=100,max_leaf_nodes=9,min_samples_leaf=20,l2_regularization=20,random_state=42),
+  "xgboost":lambda:XGBRegressor(n_estimators=100,max_depth=3,learning_rate=0.05,min_child_weight=15,reg_lambda=20,objective="reg:squarederror",random_state=42,n_jobs=1,tree_method="hist")}
  for target in ("total","margin"):
   y=np.asarray([r[target] for r in train],float)
   yt=np.asarray([r[target] for r in test],float)

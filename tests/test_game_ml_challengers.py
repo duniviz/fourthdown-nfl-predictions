@@ -11,6 +11,13 @@ class GameMLTests(unittest.TestCase):
   self.assertEqual(got[0]["features"][1],0)
   self.assertEqual(got[1]["features"][1],0)
   self.assertEqual(got[2]["features"][1],2)
+ def test_xgboost_scores_total_margin_and_winner_on_same_games(self):
+  rows=[{"season":season,"week":i%18+1,"features":[float(i%10),float(i%7)],"total":float(35+i%20),"margin":float(i%21-10),"winner":int(i%21>10)} for season in (2023,2024,2025) for i in range(160)]
+  result=evaluate(rows)
+  self.assertEqual(result["holdout_games"],160)
+  self.assertIn("xgboost",result["markets"]["total"]["challengers"])
+  self.assertIn("winner_accuracy_excluding_ties",result["markets"]["margin"]["challengers"]["xgboost"])
+  self.assertTrue(result["research_only"])
  def test_insufficient_seasons_rejected(self):
   with self.assertRaises(ValueError):evaluate([{"season":2024}])
 if __name__=="__main__":unittest.main()

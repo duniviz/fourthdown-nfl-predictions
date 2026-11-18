@@ -10,6 +10,7 @@ from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.linear_model import Ridge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBRegressor
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data" / "training" / "game-market-review.json"
@@ -89,6 +90,9 @@ def models():
         "hist_gradient_boosting": HistGradientBoostingRegressor(
             max_iter=120, max_leaf_nodes=7, min_samples_leaf=20,
             l2_regularization=10.0, random_state=42),
+        "xgboost": XGBRegressor(n_estimators=100, max_depth=3, learning_rate=0.05,
+            min_child_weight=15, reg_lambda=20, objective="reg:squarederror",
+            random_state=42, n_jobs=1, tree_method="hist"),
     }
 
 
