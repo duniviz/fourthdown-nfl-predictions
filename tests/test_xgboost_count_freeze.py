@@ -20,7 +20,7 @@ class XGBoostCountFreezeTests(unittest.TestCase):
             put('weekly-shadow-forecasts.json',{'rows':rows})
             put('player-results.json',{'rows':results})
             put('pregame-snapshots.json',{'records':[]})
-            put('live-v2.json',{'games':[{'game_id':'2026_03_A_B','season':2026,'week':3,'kickoff_utc':'2026-12-01T18:00:00+00:00'}]})
+            put('live-v2.json',{'games':[{'game_id':'2026_03_A_B','season':2026,'week':3,'kickoff_utc':'2099-12-01T18:00:00+00:00'}]})
             put('count-projections.json',{'generated_at_utc':'2026-11-01T10:00:00+00:00','players':[
                 {'game_id':'2026_03_A_B','player_id':p,'market_key':'player_receptions','projection':4} for p in ('one','two')]})
             with patch.object(freeze,'DATA',root):
