@@ -15,12 +15,14 @@ on:
       - 'research/free_nfl_feature_lab.py'
       - 'research/publish_advanced_player_ml.py'
       - 'research/player_opportunity_features.py'
+      - 'research/pbp_situational_features.py'
       - 'research/ftn_player_features.py'
       - 'live/player_ml_feature_groups.py'
       - 'live/advanced_player_ml.py'
       - 'live/player_research.py'
       - 'tests/test_advanced_player_ml_cards.py'
       - 'tests/test_player_opportunity_features.py'
+      - 'tests/test_pbp_situational_features.py'
       - 'tests/test_ftn_pfr_player_ml.py'
       - 'tests/test_ftn_lab_display.js'
       - 'assets/fd-free-feature-lab.js'
@@ -79,23 +81,24 @@ jobs:
           python -m unittest discover -s tests -p test_select_market_ml.py -v
           python -m unittest discover -s tests -p test_advanced_player_ml_cards.py -v
           python -m unittest discover -s tests -p test_player_opportunity_features.py -v
+          python -m unittest discover -s tests -p test_pbp_situational_features.py -v
           python -m unittest discover -s tests -p test_ftn_pfr_player_ml.py -v
           node tests/test_ftn_lab_display.js
           python -m unittest discover -s tests -p test_advanced_ml_slate_guard.py -v
       - name: Build completed-game historical baseline training rows
-        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
+        if: steps.slate_guard.outputs.run == 'true'
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2023 --output data/weekly-player-ml-training.csv
           test -s data/weekly-player-ml-training.csv
       - name: Fetch free source archives and run research-only walk-forward ablations
-        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
+        if: steps.slate_guard.outputs.run == 'true'
         run: |
           python -m research.free_nfl_feature_lab --start 2023 --input data/weekly-player-ml-training.csv --output data/research-free-nfl-features.json
       - name: Select best research feature combination for each player and game market
-        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
+        if: steps.slate_guard.outputs.run == 'true'
         run: python -m research.select_market_ml
       - name: Upload feature coverage and results
-        if: always() && github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
+        if: always() && steps.slate_guard.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: free-nfl-feature-research
