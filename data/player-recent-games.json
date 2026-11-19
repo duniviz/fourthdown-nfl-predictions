@@ -2,7 +2,7 @@
   "source": "ESPN final box scores",
   "season": 2026,
   "through_week": 10,
-  "updated_at_utc": "2026-11-18T21:28:50.091653+00:00",
+  "updated_at_utc": "2026-11-19T21:40:32.357772+00:00",
   "players": {
     "00-0023459|player_pass_completions": {
       "games": [
@@ -11509,66 +11509,6 @@
       ],
       "sample_size": 5
     },
-    "00-0039849|player_rec_yds": {
-      "games": [
-        {
-          "week": 3,
-          "actual": 40.0,
-          "opponent": null
-        },
-        {
-          "week": 4,
-          "actual": 12.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 34.0,
-          "opponent": null
-        },
-        {
-          "week": 7,
-          "actual": 6.0,
-          "opponent": null
-        },
-        {
-          "week": 9,
-          "actual": 20.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 5
-    },
-    "00-0040583|player_rec_yds": {
-      "games": [
-        {
-          "week": 5,
-          "actual": 23.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 25.0,
-          "opponent": null
-        },
-        {
-          "week": 7,
-          "actual": 15.0,
-          "opponent": null
-        },
-        {
-          "week": 9,
-          "actual": 4.0,
-          "opponent": null
-        },
-        {
-          "week": 10,
-          "actual": 15.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 5
-    },
     "00-0035685|player_rec_yds": {
       "games": [
         {
@@ -11644,21 +11584,6 @@
       ],
       "sample_size": 3
     },
-    "00-0036556|player_rec_yds": {
-      "games": [
-        {
-          "week": 4,
-          "actual": 13.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": -1.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 2
-    },
     "00-0034383|player_receptions": {
       "games": [
         {
@@ -11679,36 +11604,6 @@
         {
           "week": 9,
           "actual": 2.0,
-          "opponent": null
-        },
-        {
-          "week": 10,
-          "actual": 1.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 5
-    },
-    "00-0040583|player_receptions": {
-      "games": [
-        {
-          "week": 5,
-          "actual": 4.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 2.0,
-          "opponent": null
-        },
-        {
-          "week": 7,
-          "actual": 1.0,
-          "opponent": null
-        },
-        {
-          "week": 9,
-          "actual": 1.0,
           "opponent": null
         },
         {
@@ -11793,21 +11688,6 @@
         }
       ],
       "sample_size": 3
-    },
-    "00-0036556|player_receptions": {
-      "games": [
-        {
-          "week": 4,
-          "actual": 1.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 1.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 2
     },
     "00-0039163|player_rush_attempts": {
       "games": [
@@ -11923,36 +11803,6 @@
         }
       ],
       "sample_size": 2
-    },
-    "00-0040583|player_rush_yds": {
-      "games": [
-        {
-          "week": 5,
-          "actual": 62.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 56.0,
-          "opponent": null
-        },
-        {
-          "week": 7,
-          "actual": 66.0,
-          "opponent": null
-        },
-        {
-          "week": 9,
-          "actual": 70.0,
-          "opponent": null
-        },
-        {
-          "week": 10,
-          "actual": 50.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 5
     },
     "00-0035685|player_rush_yds": {
       "games": [
@@ -25983,6 +25833,36 @@
         }
       ],
       "sample_size": 3
+    },
+    "00-0040583|player_rush_yds": {
+      "games": [
+        {
+          "week": 5,
+          "actual": 62.0,
+          "opponent": null
+        },
+        {
+          "week": 6,
+          "actual": 56.0,
+          "opponent": null
+        },
+        {
+          "week": 7,
+          "actual": 66.0,
+          "opponent": null
+        },
+        {
+          "week": 9,
+          "actual": 70.0,
+          "opponent": null
+        },
+        {
+          "week": 10,
+          "actual": 50.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 5
     }
   },
   "by_name": {
@@ -59356,38 +59236,6 @@
       ],
       "sample_size": 3,
       "athlete_id": "4383396"
-    },
-    "brevinjordan|player_receptions": {
-      "games": [
-        {
-          "week": 4,
-          "actual": 1.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": 1.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 2,
-      "athlete_id": "4362504"
-    },
-    "brevinjordan|player_rec_yds": {
-      "games": [
-        {
-          "week": 4,
-          "actual": 13.0,
-          "opponent": null
-        },
-        {
-          "week": 6,
-          "actual": -1.0,
-          "opponent": null
-        }
-      ],
-      "sample_size": 2,
-      "athlete_id": "4362504"
     },
     "jalentolbert|player_receptions": {
       "games": [
