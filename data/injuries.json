@@ -1,11 +1,29 @@
 {
-  "generated_at_utc": "2026-11-18T23:47:51.384091+00:00",
+  "generated_at_utc": "2026-11-19T00:07:14.384389+00:00",
   "source": "ESPN team injury reports",
   "model_adjusted": false,
   "teams": {
     "ARI": {
       "status": "retrieved",
       "players": [
+        {
+          "player": "Max Melton",
+          "position": "CB",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Walter Nolen III",
+          "position": "DT",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
+        {
+          "player": "Roy Lopez",
+          "position": "DT",
+          "status": "Questionable",
+          "detail": "Not Specified"
+        },
         {
           "player": "James Conner",
           "position": "RB",
@@ -121,12 +139,6 @@
           "detail": ""
         },
         {
-          "player": "Roy Lopez",
-          "position": "DT",
-          "status": "Active",
-          "detail": ""
-        },
-        {
           "player": "Hunter Long",
           "position": "TE",
           "status": "Active",
@@ -143,18 +155,6 @@
           "position": "DE",
           "status": "Active",
           "detail": ""
-        },
-        {
-          "player": "Max Melton",
-          "position": "CB",
-          "status": "Active",
-          "detail": ""
-        },
-        {
-          "player": "Zachary Carter",
-          "position": "DT",
-          "status": "Injured Reserve",
-          "detail": "Not Specified"
         }
       ]
     },
@@ -4818,12 +4818,6 @@
           "detail": "Not Specified"
         },
         {
-          "player": "Baker Mayfield",
-          "position": "QB",
-          "status": "Questionable",
-          "detail": "Strain"
-        },
-        {
           "player": "Yaya Diaby",
           "position": "LB",
           "status": "Questionable",
@@ -4834,6 +4828,12 @@
           "position": "QB",
           "status": "Active",
           "detail": ""
+        },
+        {
+          "player": "Baker Mayfield",
+          "position": "QB",
+          "status": "Questionable",
+          "detail": "Strain"
         },
         {
           "player": "Easton Stick",
