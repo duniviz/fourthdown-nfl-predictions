@@ -46,7 +46,7 @@ def candidate(runtime,features,market,player_id,season,week,base,old,
         if model.get("feature_groups")!=list(groups) or model.get("active") is not False:return None
         inputs=features["players"][str(player_id)][market]
         if any(g in groups for g in ('matchup','ftn_defense')) and (not opponent or inputs.get('opponent')!=opponent):return None
-        if any(float(inputs[g][-1])<=0 for g in groups if g in ('workload','matchup','pfr_new','ftn','ftn_defense')):return None
+        if any(float(inputs[g][-1])<=0 for g in groups if g in ('workload','matchup','pfr_new','ftn','ftn_defense','situational')):return None
         if variant.startswith('advanced_') and not any(float(inputs[g][-1])>0 for g in ('ngs','snap','pfr')):return None
         if groups and not any(float(inputs[g][-1])>0 for g in groups):return None
         base=float(base)

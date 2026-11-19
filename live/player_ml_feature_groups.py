@@ -11,6 +11,7 @@ GROUPS={"baseline_features":(),"ngs":("ngs",),"snap_counts":("snap",),
         "ftn_plus":("ngs","snap","ftn"),
         "ftn_opponent_plus":("ngs","snap","matchup","ftn_defense"),
         "pfr_ftn_plus":("ngs","snap","pfr_new","ftn"),
-        "all_new":("ngs","snap","matchup","pfr_new","ftn","ftn_defense")}
+        "all_new":("ngs","snap","matchup","pfr_new","ftn","ftn_defense"),
+        "situational":("situational",), "situational_plus":("ngs","snap","pfr_new","situational")}
 DIMENSIONS={"ngs":4,"snap":2,"pfr":4,"workload":4,"matchup":4,
-            "pfr_new":4,"ftn":4,"ftn_defense":4}
+            "pfr_new":4,"ftn":4,"ftn_defense":4,"situational":4}

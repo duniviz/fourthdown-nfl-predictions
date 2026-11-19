@@ -67,7 +67,7 @@ def choose_player(market,report):
         except (KeyError,TypeError,ValueError):
             pass
     fresh_names={'pfr_fixed','ftn_player','ftn_opponent','pfr_ftn','pfr_plus',
-                 'ftn_plus','ftn_opponent_plus','pfr_ftn_plus','all_new'}
+                 'ftn_plus','ftn_opponent_plus','pfr_ftn_plus','all_new','situational','situational_plus'}
     incumbent=report.get('pfr_ftn_incumbent')
     retained=incumbent not in fresh_names
     retention=report.get('pfr_ftn_retention') or {}

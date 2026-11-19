@@ -15,12 +15,14 @@ on:
       - 'research/free_nfl_feature_lab.py'
       - 'research/publish_advanced_player_ml.py'
       - 'research/player_opportunity_features.py'
+      - 'research/pbp_situational_features.py'
       - 'research/ftn_player_features.py'
       - 'live/player_ml_feature_groups.py'
       - 'live/advanced_player_ml.py'
       - 'live/player_research.py'
       - 'tests/test_advanced_player_ml_cards.py'
       - 'tests/test_player_opportunity_features.py'
+      - 'tests/test_pbp_situational_features.py'
       - 'tests/test_ftn_pfr_player_ml.py'
       - 'tests/test_ftn_lab_display.js'
       - 'assets/fd-free-feature-lab.js'
@@ -79,6 +81,7 @@ jobs:
           python -m unittest discover -s tests -p test_select_market_ml.py -v
           python -m unittest discover -s tests -p test_advanced_player_ml_cards.py -v
           python -m unittest discover -s tests -p test_player_opportunity_features.py -v
+          python -m unittest discover -s tests -p test_pbp_situational_features.py -v
           python -m unittest discover -s tests -p test_ftn_pfr_player_ml.py -v
           node tests/test_ftn_lab_display.js
           python -m unittest discover -s tests -p test_advanced_ml_slate_guard.py -v

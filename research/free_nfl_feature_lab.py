@@ -14,6 +14,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from research.player_opportunity_features import add_weekly_features
 from research.ftn_player_features import load_joined,add_charted_features
+from research.pbp_situational_features import load_completed_pbp,add_situational_features
 from live.player_ml_feature_groups import GROUPS
 
 MARKET_SOURCE={'passing_yards':'passing','rushing_yards':'rushing','receiving_yards':'receiving'}
@@ -63,6 +64,9 @@ def load_sources(nfl,seasons):
   except Exception as exc:
    print('SOURCE_UNAVAILABLE',f'weekly_{season}',type(exc).__name__,str(exc)[:170])
   if finals:
+   try:datasets[f'situational_{season}']=load_completed_pbp(nfl,season,finals)
+   except Exception as exc:
+    print('SOURCE_UNAVAILABLE',f'situational_{season}',type(exc).__name__,str(exc)[:170])
    try:datasets[f'ftn_{season}']=load_joined(nfl,season,finals)
    except Exception as exc:
     print('SOURCE_UNAVAILABLE',f'ftn_{season}',type(exc).__name__,str(exc)[:170])
@@ -134,6 +138,8 @@ def assemble_index(datasets):
    coverage[source]['eligible_rows']=add_weekly_features(series,rows,completed)
   if source.startswith('ftn_'):
    coverage[source]['eligible_rows']=add_charted_features(series,rows)
+  if source.startswith('situational_'):
+   coverage[source]['eligible_rows']=add_situational_features(series,rows)
  # Source rows can have duplicate player/week entries; reject those periods.
  for key,items in list(series.items()):
   counts=defaultdict(int)
@@ -179,13 +185,14 @@ def enriched_rows(base_rows,series,pfr_ids):
   opponent,opponent_seen=lagged_values(series,'matchup_'+market,r.get('opponent'),target,3)
   ftn,ftn_seen=complete_lagged_values(series,'ftn_'+market,pid,target,3)
   ftn_def,ftn_def_seen=complete_lagged_values(series,'ftn_defense_'+market,r.get('opponent'),target,3)
+  situational,situational_seen=complete_lagged_values(series,'situational_'+market,pid,target,3)
   base=[*values[:7],float(target[1])]
   out.append({'market':market,'key':target,'player_id':str(pid),'baseline':values[0],'actual':values[-1],
               'team':str(r.get('team') or ''),'opponent':str(r.get('opponent') or ''),
               'base':base,'ngs':ngs+[ngs_seen],'snap':snap+[snap_seen],
               'pfr':[0.0]*4, 'pfr_new':pfr_data+[pfr_seen], 'workload':workload+[workload_seen],
               'matchup':opponent+[opponent_seen], 'ftn':ftn+[ftn_seen],
-              'ftn_defense':ftn_def+[ftn_def_seen]})
+              'ftn_defense':ftn_def+[ftn_def_seen], 'situational':situational+[situational_seen]})
  return out
 
 def assess(rows,min_train=100,min_test=30,incumbents=None):
@@ -205,7 +212,7 @@ def assess(rows,min_train=100,min_test=30,incumbents=None):
    if len(train)<min_train or not test:continue
    for name,groups_selected in GROUPS.items():
     # Do not call a dataset a feature improvement when it was unavailable.
-    if any(not any(r.get(g,[0])[-1] for r in train) for g in groups_selected if g in ('workload','matchup','pfr_new','ftn','ftn_defense')):
+    if any(not any(r.get(g,[0])[-1] for r in train) for g in groups_selected if g in ('workload','matchup','pfr_new','ftn','ftn_defense','situational')):
      continue
     if groups_selected and not any(r.get(g,[0])[-1] for r in train for g in groups_selected):
      continue
@@ -220,7 +227,7 @@ def assess(rows,min_train=100,min_test=30,incumbents=None):
   scored_rows=outcomes['combined'] if outcomes['combined'] else outcomes['baseline_features']
   market_report={'holdout_weeks':len(set(z[0] for z in scored_rows)),
     'holdout_rows':len(scored_rows),
-    'source_coverage':{k:sum(r.get(k,[0])[-1]>0 for r in items) for k in ('ngs','snap','pfr','pfr_new','ftn','ftn_defense','workload','matchup')},
+    'source_coverage':{k:sum(r.get(k,[0])[-1]>0 for r in items) for k in ('ngs','snap','pfr','pfr_new','ftn','ftn_defense','workload','matchup','situational')},
     'models':{}}
   for name,scored in outcomes.items():
    if len(scored)<min_test:
@@ -283,11 +290,11 @@ def assess(rows,min_train=100,min_test=30,incumbents=None):
   market_report['pfr_ftn_comparisons']={}
   market_report['pfr_ftn_incumbent']=incumbent
   fresh_names=('pfr_fixed','ftn_player','ftn_opponent','pfr_ftn','pfr_plus',
-               'ftn_plus','ftn_opponent_plus','pfr_ftn_plus','all_new')
+               'ftn_plus','ftn_opponent_plus','pfr_ftn_plus','all_new','situational','situational_plus')
   def ident(z):return (z[0],z[3]['player_id'],z[3].get('team'),z[3].get('opponent'))
   def eligible(z,variant):
    feature=z[3]; groups=GROUPS.get(variant,())
-   if any(feature.get(g,[0])[-1]<=0 for g in groups if g in ('workload','matchup','pfr_new','ftn','ftn_defense')):return False
+   if any(feature.get(g,[0])[-1]<=0 for g in groups if g in ('workload','matchup','pfr_new','ftn','ftn_defense','situational')):return False
    if variant.startswith('advanced_') and not any(feature.get(g,[0])[-1]>0 for g in ('ngs','snap','pfr')):return False
    return not groups or any(feature.get(g,[0])[-1]>0 for g in groups)
   reference={ident(z):z for z in outcomes.get(incumbent,[]) if eligible(z,incumbent)}
@@ -337,6 +344,7 @@ def main():
   'source_coverage':coverage,'markets':assess(rows,incumbents=incumbents),
   'limitations':[
    'Weekly opportunity and opponent efficiency are derived only from verified completed games and lagged before each forecast.',
+   'Situational play-by-play rates use uniquely identified completed-game plays and strictly prior weeks.',
    'Injury and depth-chart records are inventoried but excluded without verified pregame as-of timestamps.',
    'NOAA historical observations and NWS forecast snapshots are not fitted without a timestamp-safe weather history join.',
    'NGS reports only players meeting activity thresholds; missing is not zero performance.',
