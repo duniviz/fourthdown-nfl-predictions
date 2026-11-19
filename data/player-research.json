@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-19T00:07:20.534543+00:00",
+  "generated_at_utc": "2026-11-19T22:44:46.032921+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_only_no_market_odds",
@@ -286,7 +286,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -374,7 +374,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "questionable",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -424,7 +424,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.596,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.02,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -530,7 +530,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.596,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -636,7 +636,7 @@
       "calibration_sample_size": 60,
       "role_share": 0.596,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -742,7 +742,7 @@
       "calibration_sample_size": 62,
       "role_share": 0.596,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.63,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -880,7 +880,7 @@
       "calibration_sample_size": 87,
       "role_share": 0.596,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.48,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -1664,7 +1664,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.025,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -2971,7 +2971,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.025,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.79,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -3818,7 +3818,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.025,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.65,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -4240,7 +4240,7 @@
       "calibration_sample_size": 296,
       "role_share": 0.052,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -4511,7 +4511,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.052,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.03,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -4850,7 +4850,7 @@
       "calibration_sample_size": 360,
       "role_share": 0.052,
       "committee_risk": "high",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 4.01,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -10876,7 +10876,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 56.4,
-        "candidate": 55.6,
+        "candidate": 54.9,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -10966,7 +10966,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 28.1,
-        "candidate": 30.6,
+        "candidate": 31.6,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -11146,7 +11146,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 24.0,
-        "candidate": 28.7,
+        "candidate": 29.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -11236,7 +11236,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 19.2,
-        "candidate": 19.0,
+        "candidate": 19.1,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -11767,7 +11767,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 9.0,
-        "candidate": 7.1,
+        "candidate": 6.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -13393,7 +13393,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "pfr_plus",
         "baseline": 53.6,
-        "candidate": 57.2,
+        "candidate": 57.8,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -13417,7 +13417,7 @@
       "opponent_adjustment": 0.987,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -13482,7 +13482,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "pfr_plus",
         "baseline": 21.4,
-        "candidate": 23.3,
+        "candidate": 25.5,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -13505,7 +13505,7 @@
       "opponent_adjustment": 0.987,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -13593,7 +13593,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -13681,7 +13681,7 @@
       "opponent_adjustment": 0.987,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -13769,7 +13769,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -13846,7 +13846,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 22,
+        "rank": 23,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 65.7,
@@ -21723,7 +21723,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -21833,7 +21833,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "questionable",
+      "availability_status": "active",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -22554,7 +22554,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.104,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.05,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -22883,7 +22883,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.011,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -23580,7 +23580,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.104,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.09,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -24288,7 +24288,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.011,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.71,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -24704,7 +24704,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.104,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.64,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -25138,7 +25138,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.011,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.64,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -42039,7 +42039,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -43004,7 +43004,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.009,
       "committee_risk": "low",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -44067,7 +44067,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.009,
       "committee_risk": "low",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.02,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -44726,7 +44726,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.009,
       "committee_risk": "low",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.66,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -45166,7 +45166,7 @@
       "calibration_sample_size": 296,
       "role_share": 0.003,
       "committee_risk": "low",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -45606,7 +45606,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.003,
       "committee_risk": "low",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.03,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -46241,7 +46241,7 @@
       "calibration_sample_size": 360,
       "role_share": 0.003,
       "committee_risk": "high",
-      "availability_status": "unconfirmed",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 4.08,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -55332,7 +55332,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -55508,7 +55508,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -56650,7 +56650,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.133,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.03,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -57142,7 +57142,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.003,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -57514,7 +57514,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.133,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.28,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -58574,7 +58574,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.003,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.81,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -58739,7 +58739,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.133,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.65,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -59388,7 +59388,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.003,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.62,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -64890,7 +64890,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -65724,7 +65724,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.121,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.06,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -66630,7 +66630,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.121,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 9.4,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -67732,7 +67732,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.121,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.75,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -68334,7 +68334,7 @@
       "calibration_sample_size": 296,
       "role_share": 0.41,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -68719,7 +68719,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.41,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.06,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -69138,7 +69138,7 @@
       "calibration_sample_size": 360,
       "role_share": 0.41,
       "committee_risk": "moderate",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 4.27,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -77588,7 +77588,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "questionable",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -78443,7 +78443,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.108,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -79134,7 +79134,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 34.0,
-        "candidate": 38.4,
+        "candidate": 38.7,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -79542,7 +79542,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.108,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.71,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -79582,7 +79582,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 17.6,
-        "candidate": 21.9,
+        "candidate": 22.0,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -80014,7 +80014,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "situational_plus",
         "baseline": 8.7,
-        "candidate": 7.5,
+        "candidate": 7.4,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -80403,7 +80403,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.108,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.64,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -81276,7 +81276,7 @@
       "calibration_sample_size": 296,
       "role_share": 0.009,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -81606,7 +81606,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.009,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.03,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -81756,7 +81756,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "pfr_plus",
         "baseline": 59.4,
-        "candidate": 56.7,
+        "candidate": 56.3,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -81934,7 +81934,7 @@
         "family": "free-nfl-advanced-ridge-v1",
         "variant": "pfr_plus",
         "baseline": 23.3,
-        "candidate": 28.5,
+        "candidate": 29.0,
         "active": false,
         "research_only": true,
         "trained_season": 2026,
@@ -82225,7 +82225,7 @@
       "calibration_sample_size": 360,
       "role_share": 0.009,
       "committee_risk": "high",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 4.07,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -86505,7 +86505,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "questionable",
+      "availability_status": "active",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -86778,7 +86778,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.244,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.05,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -87458,7 +87458,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.244,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.21,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -88482,7 +88482,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.244,
       "committee_risk": "low",
-      "availability_status": "questionable",
+      "availability_status": "active",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.63,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -90027,7 +90027,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -90873,9 +90873,9 @@
       "espn_athlete_id": "4240577",
       "player": "Brandon Smith",
       "position": "WR",
-      "starter_status": "projected_starter",
-      "starter_source": "ESPN depth chart",
-      "starter_source_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/23/depthcharts",
+      "starter_status": "unconfirmed",
+      "starter_source": null,
+      "starter_source_url": null,
       "market": "Receiving TDs",
       "stat_key": "receiving_tds",
       "market_key": "player_rec_tds",
@@ -90913,7 +90913,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.051,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -91661,9 +91661,9 @@
       "espn_athlete_id": "4240577",
       "player": "Brandon Smith",
       "position": "WR",
-      "starter_status": "projected_starter",
-      "starter_source": "ESPN depth chart",
-      "starter_source_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/23/depthcharts",
+      "starter_status": "unconfirmed",
+      "starter_source": null,
+      "starter_source_url": null,
       "market": "Receiving yards",
       "stat_key": "receiving_yards",
       "market_key": "player_rec_yds",
@@ -91735,7 +91735,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.051,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.09,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -92396,9 +92396,9 @@
       "espn_athlete_id": "4240577",
       "player": "Brandon Smith",
       "position": "WR",
-      "starter_status": "projected_starter",
-      "starter_source": "ESPN depth chart",
-      "starter_source_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/23/depthcharts",
+      "starter_status": "unconfirmed",
+      "starter_source": null,
+      "starter_source_url": null,
       "market": "Receptions",
       "stat_key": "receptions",
       "market_key": "player_receptions",
@@ -92436,7 +92436,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.051,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.66,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -102639,7 +102639,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -102683,7 +102683,7 @@
       "last_5_avg": null,
       "last_3_avg": null,
       "injury_scenarios": null,
-      "availability_status": "active",
+      "availability_status": "questionable",
       "bet_recommendation": false,
       "method": "Derived from the model's rushing and receiving TD-rate forecasts; independent-event approximation; research only."
     },
@@ -103461,7 +103461,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.032,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -103626,7 +103626,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.029,
       "committee_risk": "low",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.04,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -104444,7 +104444,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.032,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 7.16,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -104533,7 +104533,7 @@
       "calibration_sample_size": 611,
       "role_share": 0.029,
       "committee_risk": "low",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 6.4,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -105176,7 +105176,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.032,
       "committee_risk": "low",
-      "availability_status": "active",
+      "availability_status": "questionable",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.66,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -105286,7 +105286,7 @@
       "calibration_sample_size": 501,
       "role_share": 0.029,
       "committee_risk": "low",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.61,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -105553,7 +105553,7 @@
       "calibration_sample_size": 296,
       "role_share": 0.24,
       "committee_risk": "low",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 1.0,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -105989,7 +105989,7 @@
       "calibration_sample_size": 0,
       "role_share": 0.24,
       "committee_risk": "low",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 0.02,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -106269,7 +106269,7 @@
       "opponent_adjustment": 1.011,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106358,7 +106358,7 @@
       "opponent_adjustment": 1.011,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106383,7 +106383,7 @@
       "calibration_sample_size": 360,
       "role_share": 0.24,
       "committee_risk": "high",
-      "availability_status": "injured reserve",
+      "availability_status": "unconfirmed",
       "team_opportunity_allocation": true,
       "expected_yards_per_opportunity": 4.18,
       "method": "Team-volume and teammate-share allocation, recency-weighted player efficiency, season shrinkage, capped opponent and game-script adjustments; calibration bias applies only after 40 archived forecasts"
@@ -106446,7 +106446,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106530,7 +106530,7 @@
       "opponent_adjustment": 1.011,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106618,7 +106618,7 @@
       "opponent_adjustment": 1.011,
       "opponent_adjustment_basis": "position_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106706,7 +106706,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
@@ -106783,7 +106783,7 @@
       "opponent_adjustment": 1.019,
       "opponent_adjustment_basis": "team_market",
       "opponent_defense_context": {
-        "rank": 23,
+        "rank": 22,
         "ranked_teams": 32,
         "season_allowed_per_game": 124.6,
         "last_3_allowed_per_game": 127.0,
