@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-19T00:06:40.569973+00:00",
+  "generated_at_utc": "2026-11-19T22:44:02.964649+00:00",
   "research_only": true,
   "production_changed": false,
   "player": {
@@ -28,7 +28,7 @@
           "samples": 211,
           "weeks": 8,
           "candidate_mae": 63.38363872179912,
-          "reference_mae": 63.87031976066448,
+          "reference_mae": 63.870319760664444,
           "candidate_rmse": 79.41988143017309,
           "reference_rmse": 79.9130953306849
         },
@@ -36,9 +36,9 @@
           "samples": 103,
           "weeks": 4,
           "candidate_mae": 68.90271792469012,
-          "reference_mae": 69.94881046451009,
-          "candidate_rmse": 84.84692132933404,
-          "reference_rmse": 85.32592736812417
+          "reference_mae": 69.94881046451012,
+          "candidate_rmse": 84.84692132933405,
+          "reference_rmse": 85.3259273681242
         }
       },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
@@ -67,18 +67,18 @@
         "selection": {
           "samples": 465,
           "weeks": 8,
-          "candidate_mae": 23.09983804405707,
-          "reference_mae": 23.139386817326304,
-          "candidate_rmse": 30.6467392128188,
-          "reference_rmse": 30.66218244828973
+          "candidate_mae": 23.099838044057037,
+          "reference_mae": 23.139386817326297,
+          "candidate_rmse": 30.64673921281881,
+          "reference_rmse": 30.66218244828972
         },
         "confirmation": {
           "samples": 200,
           "weeks": 4,
-          "candidate_mae": 24.079317641350258,
-          "reference_mae": 24.11964892569902,
+          "candidate_mae": 24.07931764135024,
+          "reference_mae": 24.119648925698996,
           "candidate_rmse": 31.604336526453682,
-          "reference_rmse": 31.63495294998803
+          "reference_rmse": 31.634952949988033
         }
       },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
@@ -103,22 +103,22 @@
       },
       "card_model_changed": false,
       "matched_new_feature_comparison": {
-        "reference": "pfr_ftn_plus",
+        "reference": "combined",
         "selection": {
           "samples": 1018,
           "weeks": 8,
-          "candidate_mae": 23.43284640208105,
-          "reference_mae": 23.442665034397876,
-          "candidate_rmse": 30.385412204530887,
-          "reference_rmse": 30.40892170263556
+          "candidate_mae": 23.432846402080994,
+          "reference_mae": 23.46290280514638,
+          "candidate_rmse": 30.3854122045309,
+          "reference_rmse": 30.38857443174438
         },
         "confirmation": {
           "samples": 480,
           "weeks": 4,
-          "candidate_mae": 23.988052133097217,
-          "reference_mae": 24.030795939454755,
-          "candidate_rmse": 32.0363401584719,
-          "reference_rmse": 32.06425754227985
+          "candidate_mae": 23.988052190104042,
+          "reference_mae": 24.09136562795138,
+          "candidate_rmse": 32.03634025737615,
+          "reference_rmse": 32.16522422717229
         }
       },
       "notes": "Retrospective weekly walk-forward result, not matched frozen live evidence"
