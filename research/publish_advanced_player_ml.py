@@ -64,9 +64,10 @@ def features_for_player(series,pfr_ids,pid,market,target,opponent=None):
     matchup=lagged_values(series,"matchup_"+market,opponent,target,3)
     ftn=complete_lagged_values(series,"ftn_"+market,pid,target,3)
     ftn_def=complete_lagged_values(series,"ftn_defense_"+market,opponent,target,3)
+    situational=complete_lagged_values(series,"situational_"+market,pid,target,3)
     return {"ngs":ngs[0]+[ngs[1]],"snap":snap[0]+[snap[1]],"pfr":[0.0]*4,
             "pfr_new":pfr_features[0]+[pfr_features[1]],"ftn":ftn[0]+[ftn[1]],
-            "ftn_defense":ftn_def[0]+[ftn_def[1]],
+            "ftn_defense":ftn_def[0]+[ftn_def[1]],"situational":situational[0]+[situational[1]],
             "workload":workload[0]+[workload[1]],"matchup":matchup[0]+[matchup[1]],"opponent":opponent}
 
 def build_source_features(series,pfr_ids,players,target,models):
