@@ -86,19 +86,19 @@ jobs:
           node tests/test_ftn_lab_display.js
           python -m unittest discover -s tests -p test_advanced_ml_slate_guard.py -v
       - name: Build completed-game historical baseline training rows
-        if: steps.slate_guard.outputs.run == 'true'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: |
           python -m tools.refresh_weekly_player_ml_data --start 2023 --output data/weekly-player-ml-training.csv
           test -s data/weekly-player-ml-training.csv
       - name: Fetch free source archives and run research-only walk-forward ablations
-        if: steps.slate_guard.outputs.run == 'true'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: |
           python -m research.free_nfl_feature_lab --start 2023 --input data/weekly-player-ml-training.csv --output data/research-free-nfl-features.json
       - name: Select best research feature combination for each player and game market
-        if: steps.slate_guard.outputs.run == 'true'
+        if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         run: python -m research.select_market_ml
       - name: Upload feature coverage and results
-        if: always() && steps.slate_guard.outputs.run == 'true'
+        if: always() && github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: free-nfl-feature-research
