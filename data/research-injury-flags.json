@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-11-17T21:52:52.394903+00:00",
+  "generated_at_utc": "2026-11-19T21:43:36.814962+00:00",
   "source": "Sleeper public player profiles",
   "status": "supplemental_research_only",
   "week_specific": false,
   "game_day_status_verified": false,
   "note": "Sleeper injury_status lacks an independently verified game-specific update timestamp. Flags are informational only and MUST NOT certify active/inactive game-day eligibility.",
-  "projection_markets": 154,
-  "flagged_markets": 11,
+  "projection_markets": 153,
+  "flagged_markets": 10,
   "flags": [
     {
       "player_id": "00-0034855",
@@ -24,7 +24,7 @@
       "team": "NYJ",
       "market": "passing_yards",
       "sleeper_id": "1373",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -49,6 +49,16 @@
       "game_day_status_verified": false
     },
     {
+      "player_id": "00-0034960",
+      "player_name": "Jakobi Meyers",
+      "team": "JAX",
+      "market": "receiving_yards",
+      "sleeper_id": "5947",
+      "injury_flag": "questionable",
+      "source": "Sleeper player profile",
+      "game_day_status_verified": false
+    },
+    {
       "player_id": "00-0033307",
       "player_name": "Kendrick Bourne",
       "team": "ARI",
@@ -64,7 +74,7 @@
       "team": "SF",
       "market": "receiving_yards",
       "sleeper_id": "2216",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -74,7 +84,7 @@
       "team": "MIN",
       "market": "receiving_yards",
       "sleeper_id": "5844",
-      "injury_flag": "out",
+      "injury_flag": "questionable",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },
@@ -85,26 +95,6 @@
       "market": "receiving_yards",
       "sleeper_id": "5927",
       "injury_flag": "injured_reserve",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0030506",
-      "player_name": "Travis Kelce",
-      "team": "KC",
-      "market": "receiving_yards",
-      "sleeper_id": "1466",
-      "injury_flag": "questionable",
-      "source": "Sleeper player profile",
-      "game_day_status_verified": false
-    },
-    {
-      "player_id": "00-0035685",
-      "player_name": "David Montgomery",
-      "team": "HOU",
-      "market": "rushing_yards",
-      "sleeper_id": "5892",
-      "injury_flag": "out",
       "source": "Sleeper player profile",
       "game_day_status_verified": false
     },

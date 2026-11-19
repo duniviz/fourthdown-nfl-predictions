@@ -1,23 +1,23 @@
 {
   "season": 2026,
   "week": 11,
-  "generated_at_utc": "2026-11-17T21:52:52.471149+00:00",
+  "generated_at_utc": "2026-11-19T21:43:36.896760+00:00",
   "status": "research_only_no_publication",
   "source": "DraftKings via existing ParlayAPI snapshot",
-  "odds_snapshot_generated_at": "2026-11-17T15:02:39.659076+00:00",
+  "odds_snapshot_generated_at": "2026-11-18T23:41:32.148823+00:00",
   "counts": {
-    "total": 154,
+    "total": 153,
     "matched": 0,
-    "missing": 123,
-    "stale": 31,
+    "missing": 56,
+    "stale": 97,
     "ambiguous": 0,
-    "unverified": 154
+    "unverified": 153
   },
   "coverage_diagnostics": {
     "market_inventory": {
-      "passing_yards": 10,
-      "rushing_yards": 17,
-      "receiving_yards": 25
+      "passing_yards": 25,
+      "rushing_yards": 60,
+      "receiving_yards": 102
     },
     "unmatched_examples": {
       "passing_yards": [
@@ -25,7 +25,7 @@
           "player": "Aaron Rodgers",
           "team": "PIT",
           "opponent": "PHI",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Baker Mayfield",
@@ -37,7 +37,7 @@
           "player": "Bo Nix",
           "team": "DEN",
           "opponent": "LV",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Brock Purdy",
@@ -49,7 +49,7 @@
           "player": "Bryce Young",
           "team": "CAR",
           "opponent": "BAL",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "C.J. Stroud",
@@ -61,13 +61,13 @@
           "player": "Caleb Williams",
           "team": "CHI",
           "opponent": "NO",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Cam Ward",
           "team": "TEN",
           "opponent": "DAL",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Carson Wentz",
@@ -79,7 +79,7 @@
           "player": "Dak Prescott",
           "team": "DAL",
           "opponent": "TEN",
-          "reason": "missing"
+          "reason": "stale"
         }
       ],
       "rushing_yards": [
@@ -93,7 +93,7 @@
           "player": "Ashton Jeanty",
           "team": "LV",
           "opponent": "DEN",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Austin Ekeler",
@@ -105,13 +105,13 @@
           "player": "Bam Knight",
           "team": "ARI",
           "opponent": "KC",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Bhayshul Tuten",
           "team": "JAX",
           "opponent": "NYG",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Braelon Allen",
@@ -129,13 +129,13 @@
           "player": "Bucky Irving",
           "team": "TB",
           "opponent": "DET",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Cam Skattebo",
           "team": "NYG",
           "opponent": "JAX",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Chase Brown",
@@ -155,19 +155,19 @@
           "player": "Alvin Kamara",
           "team": "NO",
           "opponent": "CHI",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Amon-Ra St. Brown",
           "team": "DET",
           "opponent": "TB",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Ashton Jeanty",
           "team": "LV",
           "opponent": "DEN",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Brock Bowers",
@@ -185,13 +185,13 @@
           "player": "Carnell Tate",
           "team": "TEN",
           "opponent": "DAL",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "CeeDee Lamb",
           "team": "DAL",
           "opponent": "TEN",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Chase Brown",
@@ -203,7 +203,7 @@
           "player": "Chig Okonkwo",
           "team": "WAS",
           "opponent": "CIN",
-          "reason": "missing"
+          "reason": "stale"
         }
       ]
     },
@@ -221,7 +221,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -249,7 +249,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -277,7 +277,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -305,7 +305,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -319,7 +319,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -347,7 +347,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -431,7 +431,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -459,7 +459,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -599,7 +599,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -655,7 +655,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -697,7 +697,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -711,7 +711,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -725,7 +725,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -767,7 +767,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -781,7 +781,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -809,7 +809,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -823,7 +823,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -851,7 +851,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -865,7 +865,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -893,7 +893,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -907,7 +907,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -921,7 +921,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1005,7 +1005,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1033,7 +1033,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1061,7 +1061,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1075,7 +1075,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1089,7 +1089,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1103,7 +1103,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1117,7 +1117,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1215,7 +1215,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1243,7 +1243,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1313,7 +1313,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1327,7 +1327,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1355,7 +1355,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1369,7 +1369,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1439,7 +1439,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1453,7 +1453,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1481,7 +1481,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1523,7 +1523,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1537,7 +1537,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1551,7 +1551,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1579,7 +1579,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1607,7 +1607,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1621,7 +1621,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1663,7 +1663,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1677,7 +1677,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1705,7 +1705,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1733,7 +1733,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1747,7 +1747,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1775,7 +1775,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1803,7 +1803,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1817,7 +1817,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1859,7 +1859,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1887,7 +1887,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1901,7 +1901,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1929,7 +1929,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1957,7 +1957,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1985,7 +1985,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2083,7 +2083,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2111,7 +2111,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2209,7 +2209,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2251,7 +2251,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2279,7 +2279,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2307,7 +2307,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2321,7 +2321,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2335,7 +2335,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2346,20 +2346,6 @@
       "opponent": "TEN",
       "market": "rushing_yards",
       "projected_yards": 28.5,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0040583",
-      "player_name": "Woody Marks",
-      "team": "HOU",
-      "opponent": "IND",
-      "market": "rushing_yards",
-      "projected_yards": 57.0,
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
