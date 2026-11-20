@@ -567,6 +567,50 @@
       "lock_cutoff_utc": "2026-11-17T01:00:00+00:00",
       "captured_at_utc": "2026-11-17T01:03:30.983393+00:00",
       "source": "published pregame forecast and available verified DK observations"
+    },
+    {
+      "game_id": "2026_11_IND_HOU",
+      "season": 2026,
+      "week": 11,
+      "home": "HOU",
+      "away": "IND",
+      "kickoff_utc": "2026-11-20T01:15:00+00:00",
+      "forecast_at_utc": "2026-11-19T23:46:36.242051+00:00",
+      "dk_at_utc": "2026-11-20T00:53:11.354816+00:00",
+      "captured_at_utc": "2026-11-20T00:53:28.011561+00:00",
+      "predicted_winner": "HOU",
+      "projected_margin_home": 6.85,
+      "projected_total": 43.43,
+      "dk_home_spread": -12.5,
+      "dk_total": 44.5,
+      "dk_home_spread_updated_at_utc": "2026-11-20T00:52:40+00:00",
+      "dk_total_updated_at_utc": "2026-11-20T00:52:40+00:00",
+      "dk_home_spread_observed_at_utc": "2026-11-20T00:53:11.354816+00:00",
+      "dk_total_observed_at_utc": "2026-11-20T00:53:11.354816+00:00",
+      "source": "DraftKings",
+      "projected_home_score": 25.1,
+      "projected_away_score": 18.3,
+      "game_ml_shadow": {
+        "family": "game-score-ridge-v1",
+        "markets": {
+          "game_margin_home": {
+            "baseline": 6.85,
+            "candidate": 9.69,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          },
+          "game_total": {
+            "baseline": 43.43,
+            "candidate": 47.43,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          }
+        }
+      },
+      "lock_cutoff_utc": "2026-11-20T00:45:00+00:00",
+      "lock_status": "last_available"
     }
   ]
 }
