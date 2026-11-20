@@ -36,4 +36,5 @@ jobs:
         run: python -m tools.weekly_card_comparison
       - name: Publish matched weekly results
         if: github.event_name != 'pull_request'
-        run: bash scripts/publish_data.sh 'data: publish weekly regular vs ML card results' data/weekly-card-comparison.json
+        run: |
+          bash scripts/publish_data.sh 'data: publish weekly regular vs ML card results' data/weekly-card-comparison.json
