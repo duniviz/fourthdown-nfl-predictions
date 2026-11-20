@@ -2,7 +2,7 @@
 import json
 import math
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 DATA = Path('data')
@@ -43,6 +43,7 @@ def batch_value(batch, incumbent, forecast_at, saved_at, kickoff):
     """Only use the same saved candidate as the captured source feed."""
     generated = stamp(batch.get('generated_at_utc')) if batch else None
     if not generated or not forecast_at or not saved_at or not (forecast_at <= generated <= saved_at < kickoff): return None
+    if saved_at - generated > timedelta(hours=120): return None
     predictions = batch.get('predictions') or {}
     current = number(predictions.get('current'))
     # Some count markets have no incumbent: the selected model must be saved.
@@ -51,6 +52,9 @@ def batch_value(batch, incumbent, forecast_at, saved_at, kickoff):
     model = selected.get('model')
     if not model: return (current, 'Existing ML estimate') if current is not None else None
     if model == 'current': return (current, 'Existing ML estimate') if current is not None else None
+    valid_models={n+s for n in ('ridge','random_forest','gradient_boosting','xgboost') for s in ('','_recent','_form','_form_recent')}
+    minimum=4 if str(batch.get('player_id'))=='GAME' else 10
+    if model not in valid_models or not isinstance(selected.get('samples'),int) or selected['samples']<minimum: return None
     value = number(predictions.get(model))
     return (value, model.replace('_', ' ')) if value is not None else None
 
