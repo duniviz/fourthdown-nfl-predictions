@@ -5,6 +5,9 @@ on:
     - cron: '3,13,23,33,43,53 23 * * 1,4'
     - cron: '3,13,23,33,43,53 0-3 * * 2,5'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/weeknight-pregame-backstop.yml']
   pull_request:
     paths:
       - '.github/workflows/weeknight-pregame-backstop.yml'
