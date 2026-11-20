@@ -1,0 +1,35 @@
+import unittest
+from tools.weekly_card_comparison import build
+
+class WeeklyCardComparisonTests(unittest.TestCase):
+    def setUp(self):
+        self.gid='2026_11_IND_HOU'; self.kick='2026-11-20T01:15:00+00:00'
+        self.forecast='2026-11-19T23:46:00+00:00'; self.saved='2026-11-20T00:53:00+00:00'
+        self.game={'game_id':self.gid,'home_score':26,'away_score':3}
+        self.lock={'game_id':self.gid,'away':'IND','home':'HOU','kickoff_utc':self.kick,'forecast_at_utc':self.forecast,'captured_at_utc':self.saved,'lock_status':'last_available','projected_margin_home':6.85,'projected_total':43.43,'game_ml_shadow':{'markets':{'game_margin_home':{'candidate':9.69},'game_total':{'candidate':47.43}}}}
+        self.batch={'game_id':self.gid,'player_id':'GAME','market':'game_total','kickoff_utc':self.kick,'generated_at_utc':'2026-11-20T00:00:00+00:00','predictions':{'current':47.43,'ridge':45},'selected':None}
+
+    def test_game_compares_frozen_card_estimates(self):
+        d=build([self.game],[self.lock],[],[],[],[self.batch]); m=d['weeks'][0]['markets'][0]
+        self.assertEqual((m['market'],m['winner'],m['samples']),('game_total','regular',1))
+        self.assertEqual((m['details'][0]['actual'],m['regular_mae'],m['ml_mae']),(29,14.43,18.43))
+
+    def test_selected_algorithm_and_missing_or_late_evidence(self):
+        self.batch['selected']={'model':'ridge'}
+        d=build([self.game],[self.lock],[],[],[],[self.batch]);self.assertEqual(d['weeks'][0]['markets'][0]['details'][0]['ml'],45)
+        self.batch['generated_at_utc']=self.kick
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch])['weeks'],[])
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[])['weeks'],[])
+
+    def test_player_requires_matching_history_snapshot_and_same_actual(self):
+        snap={'game_id':self.gid,'player_id':'p','player':'Player','market':'player_rush_yds','kickoff':self.kick,'captured_at':self.forecast,'saved_at_utc':self.saved,'projection':42}
+        hist={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
+        actual={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','projection':42,'actual':50}
+        batch={'game_id':self.gid,'player_id':'p','market':'rushing_yards','generated_at_utc':'2026-11-20T00:00:00+00:00','predictions':{'current':41.6},'selected':None}
+        d=build([],[],[actual],[snap],[hist],[batch]);self.assertEqual(d['weeks'][0]['markets'][0]['winner'],'regular')
+        actual['projection']=41
+        self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
+        actual['projection']=42;batch['predictions']['current']=30
+        self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
+
+if __name__=='__main__': unittest.main()
