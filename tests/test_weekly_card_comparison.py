@@ -15,7 +15,7 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         self.assertEqual((m['details'][0]['actual'],m['regular_mae'],m['ml_mae']),(29,14.43,18.43))
 
     def test_selected_algorithm_and_missing_or_late_evidence(self):
-        self.batch['selected']={'model':'ridge'}
+        self.batch['selected']={'model':'ridge','samples':4}
         d=build([self.game],[self.lock],[],[],[],[self.batch]);self.assertEqual(d['weeks'][0]['markets'][0]['details'][0]['ml'],45)
         self.batch['generated_at_utc']=self.kick
         self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch])['weeks'],[])
