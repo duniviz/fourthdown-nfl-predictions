@@ -1,0 +1,40 @@
+name: Publish weekly regular vs ML card results
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/weekly-card-comparison.yml', 'tools/weekly_card_comparison.py']
+  workflow_run:
+    workflows: [Publish weekly v2 forecasts, Grade completed NFL game predictions at 11 PM Central, Publish count prop projections]
+    types: [completed]
+  schedule:
+    - cron: '15 5,6,13 * * *'
+  pull_request:
+    paths: ['.github/workflows/weekly-card-comparison.yml', 'tools/weekly_card_comparison.py', 'tests/test_weekly_card_comparison.py', 'assets/fd-weekly-h2h.js', 'tests/test_weekly_card_comparison_ui.js', 'model-lab.html']
+permissions:
+  contents: write
+concurrency:
+  group: weekly-card-comparison
+  cancel-in-progress: false
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || 'main' }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test saved-pair and outcome safeguards
+        run: python -m unittest discover -s tests -p test_weekly_card_comparison.py -v
+      - name: Test weekly scoreboard rendering
+        run: node tests/test_weekly_card_comparison_ui.js
+      - name: Build matched weekly results
+        if: github.event_name != 'pull_request'
+        run: python -m tools.weekly_card_comparison
+      - name: Publish matched weekly results
+        if: github.event_name != 'pull_request'
+        run: |
+          bash scripts/publish_data.sh 'data: publish weekly regular vs ML card results' data/weekly-card-comparison.json

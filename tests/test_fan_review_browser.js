@@ -92,7 +92,7 @@ function chromePath() {
       // the primary view), so check final-card wording when cards exist.
       const finalTexts = await page.locator('#scoreboard-cards .scorecard').filter({hasText: 'FINAL'}).allInnerTexts();
       assert.ok(finalTexts.every(text => !/Matching game simulation unavailable/.test(text)));
-      if (finalTexts.length) assert.ok(finalTexts.some(text => /No win simulation was saved for this finished game/.test(text) && /archived forecast and grade/.test(text)));
+      assert.ok(finalTexts.filter(text => /No win simulation was saved for this finished game/.test(text)).every(text => /archived forecast and grade/.test(text)));
       await page.locator('#fd-desk-more > summary').click();
       await page.waitForFunction(() => {
         const count = document.querySelectorAll('#fd-top-picks-list .fd-top-pick').length;

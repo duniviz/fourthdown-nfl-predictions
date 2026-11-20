@@ -1,0 +1,62 @@
+{
+  "generated_at_utc": "2026-11-20T16:55:36.809620+00:00",
+  "weeks": [
+    {
+      "season": 2026,
+      "week": 11,
+      "markets": [
+        {
+          "market": "game_margin_home",
+          "label": "Game margin",
+          "samples": 1,
+          "regular_mae": 16.15,
+          "ml_mae": 13.31,
+          "winner": "ml",
+          "regular_wins": 0,
+          "ml_wins": 1,
+          "ties": 0,
+          "details": [
+            {
+              "game_id": "2026_11_IND_HOU",
+              "market": "game_margin_home",
+              "label": "IND @ HOU",
+              "actual": 23.0,
+              "regular": 6.85,
+              "ml": 9.69,
+              "regular_error": 16.15,
+              "ml_error": 13.31,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            }
+          ]
+        },
+        {
+          "market": "game_total",
+          "label": "Game total",
+          "samples": 1,
+          "regular_mae": 14.43,
+          "ml_mae": 18.43,
+          "winner": "regular",
+          "regular_wins": 1,
+          "ml_wins": 0,
+          "ties": 0,
+          "details": [
+            {
+              "game_id": "2026_11_IND_HOU",
+              "market": "game_total",
+              "label": "IND @ HOU",
+              "actual": 29.0,
+              "regular": 43.43,
+              "ml": 47.43,
+              "regular_error": 14.43,
+              "ml_error": 18.43,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Only matched, saved pregame card estimates with verified final results; incomplete markets remain absent."
+}
