@@ -67,7 +67,7 @@ jobs:
             fi
           fi
           if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "7,37 * * * *" ]]; then
-            if ! python -m scripts.check_pregame_forecast_window; then
+            if ! python -m scripts.check_pregame_forecast_window && ! python -m scripts.stale_forecast_recovery; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
