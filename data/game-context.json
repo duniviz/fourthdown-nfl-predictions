@@ -7,57 +7,57 @@
         "players": [
           {
             "detail": "questionable",
-            "player": "Kenneth Walker III",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "KC"
-          },
-          {
-            "detail": "questionable",
             "player": "Omarr Norman-Lott",
             "position": "DT",
             "status": "Questionable",
             "team": "KC"
           },
           {
-            "detail": "questionable",
+            "detail": "out",
+            "player": "Jaylon Moore",
+            "position": "OT",
+            "status": "Out",
+            "team": "KC"
+          },
+          {
+            "detail": "out",
             "player": "Trey Smith",
             "position": "G",
-            "status": "Questionable",
+            "status": "Out",
             "team": "KC"
           },
           {
             "detail": "questionable",
-            "player": "Jaylon Moore",
-            "position": "OT",
+            "player": "Peter Woods",
+            "position": "DT",
             "status": "Questionable",
             "team": "KC"
+          },
+          {
+            "detail": "out",
+            "player": "Kenneth Walker III",
+            "position": "RB",
+            "status": "Out",
+            "team": "KC"
+          },
+          {
+            "detail": "out",
+            "player": "Jon Gaines II",
+            "position": "G",
+            "status": "Out",
+            "team": "ARI"
           },
           {
             "detail": "Injured Reserve",
-            "player": "Jared Wiley",
-            "position": "TE",
+            "player": "Zachary Carter",
+            "position": "DT",
             "status": "Injured Reserve",
-            "team": "KC"
+            "team": "ARI"
           },
           {
             "detail": "questionable",
             "player": "Carson Beck",
             "position": "QB",
-            "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Hjalte Froholdt",
-            "position": "C",
-            "status": "Questionable",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Roy Lopez",
-            "position": "DT",
             "status": "Questionable",
             "team": "ARI"
           },
@@ -237,6 +237,20 @@
         "event_id": "401873068",
         "players": [
           {
+            "detail": "out",
+            "player": "Isaiah Simmons",
+            "position": "S",
+            "status": "Out",
+            "team": "CAR"
+          },
+          {
+            "detail": "questionable",
+            "player": "Tommy Tremble",
+            "position": "TE",
+            "status": "Questionable",
+            "team": "CAR"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "Mike Jackson",
             "position": "CB",
@@ -248,20 +262,6 @@
             "player": "Bobby Okereke",
             "position": "LB",
             "status": "Out",
-            "team": "CAR"
-          },
-          {
-            "detail": "out",
-            "player": "Isaiah Simmons",
-            "position": "S",
-            "status": "Out",
-            "team": "CAR"
-          },
-          {
-            "detail": "questionable",
-            "player": "Darren Waller",
-            "position": "TE",
-            "status": "Questionable",
             "team": "CAR"
           },
           {
@@ -771,20 +771,6 @@
         "event_id": "401873069",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Isaiah Likely",
-            "position": "TE",
-            "status": "Questionable",
-            "team": "NYG"
-          },
-          {
-            "detail": "questionable",
-            "player": "Nic Jones",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "NYG"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Tyrone Tracy Jr.",
             "position": "RB",
@@ -806,31 +792,24 @@
             "team": "NYG"
           },
           {
-            "detail": "questionable",
-            "player": "Bhayshul Tuten",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "JAX"
+            "detail": "Injured Reserve",
+            "player": "Chauncey Golston",
+            "position": "DE",
+            "status": "Injured Reserve",
+            "team": "NYG"
           },
           {
-            "detail": "questionable",
-            "player": "LeQuint Allen Jr.",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "JAX"
+            "detail": "Injured Reserve",
+            "player": "Jaxson Dart",
+            "position": "QB",
+            "status": "Injured Reserve",
+            "team": "NYG"
           },
           {
-            "detail": "questionable",
-            "player": "Chris Rodriguez Jr.",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "JAX"
-          },
-          {
-            "detail": "questionable",
-            "player": "Jakobi Meyers",
-            "position": "WR",
-            "status": "Questionable",
+            "detail": "Injured Reserve",
+            "player": "B.J. Green II",
+            "position": "DE",
+            "status": "Injured Reserve",
             "team": "JAX"
           },
           {
@@ -838,6 +817,27 @@
             "player": "Danny Striggow",
             "position": "DE",
             "status": "Questionable",
+            "team": "JAX"
+          },
+          {
+            "detail": "questionable",
+            "player": "Matt Dickerson",
+            "position": "DE",
+            "status": "Questionable",
+            "team": "JAX"
+          },
+          {
+            "detail": "out",
+            "player": "Robert Hainsey",
+            "position": "C",
+            "status": "Out",
+            "team": "JAX"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Eric Murray",
+            "position": "S",
+            "status": "Injured Reserve",
             "team": "JAX"
           }
         ],
@@ -958,7 +958,12 @@
           "status": "injury_report_only"
         },
         "NYG": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Jaxson Dart",
+              "status": "Injured Reserve"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -997,17 +1002,10 @@
         "event_id": "401873075",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Jaylen Waddle",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "DEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Riley Moss",
-            "position": "CB",
-            "status": "Questionable",
+            "detail": "Injured Reserve",
+            "player": "Caleb Lohner",
+            "position": "TE",
+            "status": "Injured Reserve",
             "team": "DEN"
           },
           {
@@ -1019,17 +1017,38 @@
           },
           {
             "detail": "Injured Reserve",
-            "player": "Caleb Lohner",
-            "position": "TE",
+            "player": "Eyioma Uwazurike",
+            "position": "DE",
             "status": "Injured Reserve",
             "team": "DEN"
           },
           {
             "detail": "Injured Reserve",
-            "player": "Eyioma Uwazurike",
-            "position": "DE",
+            "player": "RJ Harvey",
+            "position": "RB",
             "status": "Injured Reserve",
             "team": "DEN"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Tyler Badie",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "DEN"
+          },
+          {
+            "detail": "questionable",
+            "player": "Folorunso Fatukasi",
+            "position": "DT",
+            "status": "Questionable",
+            "team": "LV"
+          },
+          {
+            "detail": "out",
+            "player": "Tonka Hemingway",
+            "position": "DT",
+            "status": "Out",
+            "team": "LV"
           },
           {
             "detail": "questionable",
@@ -1046,24 +1065,10 @@
             "team": "LV"
           },
           {
-            "detail": "questionable",
-            "player": "Trey Zuhn III",
-            "position": "C",
-            "status": "Questionable",
-            "team": "LV"
-          },
-          {
-            "detail": "questionable",
-            "player": "Ian Thomas",
-            "position": "TE",
-            "status": "Questionable",
-            "team": "LV"
-          },
-          {
-            "detail": "questionable",
-            "player": "Tonka Hemingway",
-            "position": "DT",
-            "status": "Questionable",
+            "detail": "Injured Reserve",
+            "player": "Patrick Johnson",
+            "position": "DE",
+            "status": "Injured Reserve",
             "team": "LV"
           }
         ],
@@ -1223,6 +1228,20 @@
         "event_id": "401873070",
         "players": [
           {
+            "detail": "questionable",
+            "player": "Damar Hamlin",
+            "position": "S",
+            "status": "Questionable",
+            "team": "BUF"
+          },
+          {
+            "detail": "questionable",
+            "player": "Jackson Hawes",
+            "position": "TE",
+            "status": "Questionable",
+            "team": "BUF"
+          },
+          {
             "detail": "out",
             "player": "Dorian Williams",
             "position": "LB",
@@ -1244,31 +1263,10 @@
             "team": "BUF"
           },
           {
-            "detail": "questionable",
-            "player": "Dee Alford",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "BUF"
-          },
-          {
-            "detail": "questionable",
-            "player": "Ray Davis",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "BUF"
-          },
-          {
             "detail": "doubtful",
-            "player": "Dante Trader Jr.",
+            "player": "Jaylin Simpson",
             "position": "S",
             "status": "Doubtful",
-            "team": "MIA"
-          },
-          {
-            "detail": "questionable",
-            "player": "Caleb Douglas",
-            "position": "WR",
-            "status": "Questionable",
             "team": "MIA"
           },
           {
@@ -1280,16 +1278,23 @@
           },
           {
             "detail": "questionable",
-            "player": "Chris Bell",
-            "position": "WR",
+            "player": "Aaron Brewer",
+            "position": "C",
             "status": "Questionable",
             "team": "MIA"
           },
           {
             "detail": "questionable",
-            "player": "Andrew Meyer",
-            "position": "C",
+            "player": "Marcellas Dial Jr.",
+            "position": "CB",
             "status": "Questionable",
+            "team": "MIA"
+          },
+          {
+            "detail": "out",
+            "player": "Jared Wayne",
+            "position": "WR",
+            "status": "Out",
             "team": "MIA"
           }
         ],
@@ -1602,17 +1607,17 @@
         "event_id": "401873071",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Zavion Thomas",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "CHI"
-          },
-          {
             "detail": "out",
             "player": "Kyler Gordon",
             "position": "CB",
             "status": "Out",
+            "team": "CHI"
+          },
+          {
+            "detail": "questionable",
+            "player": "Zavion Thomas",
+            "position": "WR",
+            "status": "Questionable",
             "team": "CHI"
           },
           {
@@ -1638,8 +1643,8 @@
           },
           {
             "detail": "out",
-            "player": "Martin Emerson Jr.",
-            "position": "CB",
+            "player": "Asim Richards",
+            "position": "OT",
             "status": "Out",
             "team": "NO"
           },
@@ -1658,16 +1663,16 @@
             "team": "NO"
           },
           {
-            "detail": "questionable",
-            "player": "Pete Werner",
-            "position": "LB",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Martin Emerson Jr.",
+            "position": "CB",
+            "status": "Out",
             "team": "NO"
           },
           {
             "detail": "questionable",
-            "player": "Decamerion Richardson",
-            "position": "CB",
+            "player": "Pete Werner",
+            "position": "LB",
             "status": "Questionable",
             "team": "NO"
           }
@@ -1829,58 +1834,44 @@
         "players": [
           {
             "detail": "questionable",
-            "player": "Charlie Kolar",
-            "position": "TE",
-            "status": "Questionable",
-            "team": "LAC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Ladd McConkey",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "LAC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Daiyan Henley",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "LAC"
-          },
-          {
-            "detail": "questionable",
-            "player": "Donte Jackson",
+            "player": "Isas Waxter",
             "position": "CB",
             "status": "Questionable",
             "team": "LAC"
           },
           {
-            "detail": "questionable",
+            "detail": "out",
+            "player": "Rodney Shelley",
+            "position": "CB",
+            "status": "Out",
+            "team": "LAC"
+          },
+          {
+            "detail": "out",
             "player": "Kendall Williamson",
             "position": "S",
+            "status": "Out",
+            "team": "LAC"
+          },
+          {
+            "detail": "questionable",
+            "player": "Tarheeb Still",
+            "position": "CB",
             "status": "Questionable",
             "team": "LAC"
           },
           {
             "detail": "out",
-            "player": "Isaiah Williams",
-            "position": "WR",
+            "player": "Daiyan Henley",
+            "position": "LB",
             "status": "Out",
-            "team": "NYJ"
+            "team": "LAC"
           },
           {
             "detail": "questionable",
-            "player": "Geno Smith",
-            "position": "QB",
+            "player": "Dylan Parham",
+            "position": "G",
             "status": "Questionable",
-            "team": "NYJ"
-          },
-          {
-            "detail": "out",
-            "player": "Omar Cooper Jr.",
-            "position": "WR",
-            "status": "Out",
             "team": "NYJ"
           },
           {
@@ -1891,10 +1882,24 @@
             "team": "NYJ"
           },
           {
+            "detail": "Injured Reserve",
+            "player": "David Onyemata",
+            "position": "DT",
+            "status": "Injured Reserve",
+            "team": "NYJ"
+          },
+          {
             "detail": "questionable",
-            "player": "Joseph Ossai",
-            "position": "DE",
+            "player": "Trevin Wallace",
+            "position": "LB",
             "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "out",
+            "player": "Isaiah Williams",
+            "position": "WR",
+            "status": "Out",
             "team": "NYJ"
           }
         ],
@@ -2054,17 +2059,10 @@
         "event_id": "401873076",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Dontayvion Wicks",
-            "position": "WR",
-            "status": "Questionable",
-            "team": "PHI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Smael Mondon Jr.",
+            "detail": "out",
+            "player": "Zack Baun",
             "position": "LB",
-            "status": "Questionable",
+            "status": "Out",
             "team": "PHI"
           },
           {
@@ -2075,17 +2073,24 @@
             "team": "PHI"
           },
           {
-            "detail": "questionable",
-            "player": "Nolan Smith Jr.",
+            "detail": "doubtful",
+            "player": "Smael Mondon Jr.",
             "position": "LB",
-            "status": "Questionable",
+            "status": "Doubtful",
             "team": "PHI"
           },
           {
-            "detail": "questionable",
-            "player": "Zack Baun",
-            "position": "LB",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Dontayvion Wicks",
+            "position": "WR",
+            "status": "Out",
+            "team": "PHI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Jalen Hurts",
+            "position": "QB",
+            "status": "Injured Reserve",
             "team": "PHI"
           },
           {
@@ -2096,10 +2101,17 @@
             "team": "PIT"
           },
           {
-            "detail": "Injured Reserve",
-            "player": "Michael Pittman Jr.",
-            "position": "WR",
-            "status": "Injured Reserve",
+            "detail": "questionable",
+            "player": "Nick Herbig",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "PIT"
+          },
+          {
+            "detail": "questionable",
+            "player": "Patrick Queen",
+            "position": "LB",
+            "status": "Questionable",
             "team": "PIT"
           },
           {
@@ -2110,16 +2122,9 @@
             "team": "PIT"
           },
           {
-            "detail": "questionable",
-            "player": "Nick Herbig",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "PIT"
-          },
-          {
             "detail": "Injured Reserve",
-            "player": "Gennings Dunker",
-            "position": "G",
+            "player": "Michael Pittman Jr.",
+            "position": "WR",
             "status": "Injured Reserve",
             "team": "PIT"
           }
@@ -2234,7 +2239,12 @@
       },
       "quarterbacks": {
         "PHI": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Jalen Hurts",
+              "status": "Injured Reserve"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -2281,16 +2291,23 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "D.J. Reed",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "DET"
+          },
+          {
+            "detail": "questionable",
             "player": "Sione Vaki",
             "position": "RB",
             "status": "Questionable",
             "team": "DET"
           },
           {
-            "detail": "questionable",
-            "player": "D.J. Reed",
-            "position": "CB",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Cade Mays",
+            "position": "C",
+            "status": "Out",
             "team": "DET"
           },
           {
@@ -2308,20 +2325,6 @@
             "team": "DET"
           },
           {
-            "detail": "questionable",
-            "player": "Ennis Rakestraw Jr.",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "DET"
-          },
-          {
-            "detail": "questionable",
-            "player": "Baker Mayfield",
-            "position": "QB",
-            "status": "Questionable",
-            "team": "TB"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Josh Hayes",
             "position": "CB",
@@ -2330,15 +2333,22 @@
           },
           {
             "detail": "questionable",
-            "player": "Antoine Winfield Jr.",
-            "position": "S",
+            "player": "Yaya Diaby",
+            "position": "LB",
             "status": "Questionable",
             "team": "TB"
           },
           {
+            "detail": "out",
+            "player": "Antoine Winfield Jr.",
+            "position": "S",
+            "status": "Out",
+            "team": "TB"
+          },
+          {
             "detail": "questionable",
-            "player": "Yaya Diaby",
-            "position": "LB",
+            "player": "Baker Mayfield",
+            "position": "QB",
             "status": "Questionable",
             "team": "TB"
           },
@@ -2506,24 +2516,17 @@
         "event_id": "401873073",
         "players": [
           {
+            "detail": "out",
+            "player": "P.J. Locke",
+            "position": "S",
+            "status": "Out",
+            "team": "DAL"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "Jalen Thompson",
             "position": "S",
             "status": "Injured Reserve",
-            "team": "DAL"
-          },
-          {
-            "detail": "questionable",
-            "player": "Donovan Ezeiruaku",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "DAL"
-          },
-          {
-            "detail": "questionable",
-            "player": "Shavon Revel Jr.",
-            "position": "CB",
-            "status": "Questionable",
             "team": "DAL"
           },
           {
@@ -2535,10 +2538,38 @@
           },
           {
             "detail": "out",
-            "player": "Jake Ferguson",
-            "position": "TE",
+            "player": "Jonathan Mingo",
+            "position": "WR",
             "status": "Out",
             "team": "DAL"
+          },
+          {
+            "detail": "questionable",
+            "player": "Jaishawn Barham",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "DAL"
+          },
+          {
+            "detail": "questionable",
+            "player": "Micah Robinson",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "TEN"
+          },
+          {
+            "detail": "questionable",
+            "player": "Anthony Hill Jr.",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "TEN"
+          },
+          {
+            "detail": "questionable",
+            "player": "Tony Adams",
+            "position": "S",
+            "status": "Questionable",
+            "team": "TEN"
           },
           {
             "detail": "questionable",
@@ -2551,27 +2582,6 @@
             "detail": "questionable",
             "player": "Carnell Tate",
             "position": "WR",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Kevin Winston Jr.",
-            "position": "S",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Cody Barton",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Anthony Hill Jr.",
-            "position": "LB",
             "status": "Questionable",
             "team": "TEN"
           }
@@ -2728,6 +2738,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-20T20:10:19Z",
+  "generated_at_utc": "2026-11-21T02:11:32Z",
   "schema_version": 1
 }
