@@ -613,159 +613,6 @@
         }
       }
     },
-    "2026_11_IND_HOU": {
-      "availability": {
-        "source": "ESPN game summary",
-        "status": "unavailable"
-      },
-      "head_to_head": {
-        "games": [],
-        "source": "ESPN team schedule",
-        "status": "unavailable"
-      },
-      "kickoff_utc": "2026-11-20T01:15:00+00:00",
-      "model_metrics": {
-        "away": {
-          "defense_epa_rating": 0.0027,
-          "defense_rank": 15,
-          "offense_epa_rating": -0.0862,
-          "offense_rank": 31,
-          "recent_form": {
-            "avg_margin": -9.8,
-            "avg_points_against": 26.6,
-            "avg_points_for": 16.8,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 26,
-                "points_for": 20,
-                "result": "L",
-                "week": 6
-              },
-              {
-                "points_against": 16,
-                "points_for": 10,
-                "result": "L",
-                "week": 7
-              },
-              {
-                "points_against": 42,
-                "points_for": 7,
-                "result": "L",
-                "week": 8
-              },
-              {
-                "points_against": 27,
-                "points_for": 23,
-                "result": "L",
-                "week": 9
-              },
-              {
-                "points_against": 22,
-                "points_for": 24,
-                "result": "W",
-                "week": 10
-              }
-            ],
-            "wins": 1
-          }
-        },
-        "home": {
-          "defense_epa_rating": 0.0054,
-          "defense_rank": 17,
-          "offense_epa_rating": 0.0354,
-          "offense_rank": 9,
-          "recent_form": {
-            "avg_margin": 7.8,
-            "avg_points_against": 22.0,
-            "avg_points_for": 29.8,
-            "games": 5,
-            "results": [
-              {
-                "points_against": 3,
-                "points_for": 26,
-                "result": "W",
-                "week": 5
-              },
-              {
-                "points_against": 31,
-                "points_for": 34,
-                "result": "W",
-                "week": 6
-              },
-              {
-                "points_against": 27,
-                "points_for": 21,
-                "result": "L",
-                "week": 7
-              },
-              {
-                "points_against": 22,
-                "points_for": 44,
-                "result": "W",
-                "week": 9
-              },
-              {
-                "points_against": 27,
-                "points_for": 24,
-                "result": "L",
-                "week": 10
-              }
-            ],
-            "wins": 3
-          }
-        },
-        "scoring_edge_components": {
-          "away_offense_vs_home_defense": -3.64,
-          "away_qb_adjustment_points": 0.0,
-          "home_field_points": 1.5,
-          "home_offense_vs_away_defense": 1.72,
-          "home_qb_adjustment_points": 0.0
-        }
-      },
-      "quarterbacks": {
-        "HOU": {
-          "confirmed_out": [],
-          "expected_starter": null,
-          "source": "ESPN game summary",
-          "starter_verified": false,
-          "status": "unavailable"
-        },
-        "IND": {
-          "confirmed_out": [],
-          "expected_starter": null,
-          "source": "ESPN game summary",
-          "starter_verified": false,
-          "status": "unavailable"
-        }
-      },
-      "recent": {
-        "away": {
-          "source": "ESPN team schedule",
-          "status": "unavailable"
-        },
-        "home": {
-          "source": "ESPN team schedule",
-          "status": "unavailable"
-        }
-      },
-      "rest": {
-        "away": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-11-15T18:00:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        },
-        "home": {
-          "bye_week": false,
-          "days_since_last_game": 4,
-          "previous_game_utc": "2026-11-15T18:00:00Z",
-          "source": "ESPN team schedule",
-          "status": "verified"
-        }
-      }
-    },
     "2026_11_JAX_NYG": {
       "availability": {
         "event_id": "401873069",
@@ -1229,6 +1076,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Ed Oliver",
+            "position": "DT",
+            "status": "Questionable",
+            "team": "BUF"
+          },
+          {
+            "detail": "questionable",
             "player": "Damar Hamlin",
             "position": "S",
             "status": "Questionable",
@@ -1253,13 +1107,6 @@
             "player": "Christian Benford",
             "position": "CB",
             "status": "Out",
-            "team": "BUF"
-          },
-          {
-            "detail": "doubtful",
-            "player": "Dalton Kincaid",
-            "position": "TE",
-            "status": "Doubtful",
             "team": "BUF"
           },
           {
@@ -2094,16 +1941,16 @@
             "team": "PHI"
           },
           {
-            "detail": "questionable",
-            "player": "DeShon Elliott",
-            "position": "S",
-            "status": "Questionable",
+            "detail": "out",
+            "player": "Nick Herbig",
+            "position": "LB",
+            "status": "Out",
             "team": "PIT"
           },
           {
             "detail": "questionable",
-            "player": "Nick Herbig",
-            "position": "LB",
+            "player": "DeShon Elliott",
+            "position": "S",
             "status": "Questionable",
             "team": "PIT"
           },
@@ -2325,6 +2172,13 @@
             "team": "DET"
           },
           {
+            "detail": "questionable",
+            "player": "Baker Mayfield",
+            "position": "QB",
+            "status": "Questionable",
+            "team": "TB"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "Josh Hayes",
             "position": "CB",
@@ -2343,13 +2197,6 @@
             "player": "Antoine Winfield Jr.",
             "position": "S",
             "status": "Out",
-            "team": "TB"
-          },
-          {
-            "detail": "questionable",
-            "player": "Baker Mayfield",
-            "position": "QB",
-            "status": "Questionable",
             "team": "TB"
           },
           {
@@ -2551,6 +2398,20 @@
             "team": "DAL"
           },
           {
+            "detail": "Injured Reserve",
+            "player": "Tyjae Spears",
+            "position": "RB",
+            "status": "Injured Reserve",
+            "team": "TEN"
+          },
+          {
+            "detail": "questionable",
+            "player": "Carnell Tate",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "TEN"
+          },
+          {
             "detail": "questionable",
             "player": "Micah Robinson",
             "position": "CB",
@@ -2565,24 +2426,10 @@
             "team": "TEN"
           },
           {
-            "detail": "questionable",
-            "player": "Tony Adams",
-            "position": "S",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Tyjae Spears",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "questionable",
-            "player": "Carnell Tate",
-            "position": "WR",
-            "status": "Questionable",
+            "detail": "Injured Reserve",
+            "player": "Fernando Carmona",
+            "position": "G",
+            "status": "Injured Reserve",
             "team": "TEN"
           }
         ],
@@ -2738,6 +2585,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-21T10:56:39Z",
+  "generated_at_utc": "2026-11-21T19:11:25Z",
   "schema_version": 1
 }
