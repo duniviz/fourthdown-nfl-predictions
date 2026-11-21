@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-19T23:47:25.053463+00:00",
+  "generated_at_utc": "2026-11-21T15:04:28.761092+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_11_IND_HOU",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-20T01:15:00+00:00",
-      "home": "HOU",
-      "away": "IND",
-      "projected_home_score": 25.1,
-      "projected_away_score": 18.2,
-      "projected_margin_home": 6.98,
-      "projected_total": 43.31,
-      "predicted_winner": "HOU",
-      "v2_reference": {
-        "projected_margin_home": 6.85,
-        "projected_total": 43.43
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.119,
-        "margin_from_success_and_pass_proxy": 0.134,
-        "home_features": {
-          "plays_per_game": 60.4,
-          "success_rate": 0.424,
-          "neutral_pass_proxy": 0.586
-        },
-        "away_features": {
-          "plays_per_game": 61.6,
-          "success_rate": 0.419,
-          "neutral_pass_proxy": 0.539
-        }
-      }
-    },
     {
       "game_id": "2026_11_MIA_BUF",
       "season": 2026,

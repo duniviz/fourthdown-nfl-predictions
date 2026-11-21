@@ -1,459 +1,11 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-19T23:46:36.242051+00:00",
+  "generated_at_utc": "2026-11-21T15:03:43.892675+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
   "note": "Pregame EPA projections with capped, low-confidence incoming-QB adjustments when recent player data supports them; other injuries and weather not numerically adjusted.",
   "games": [
-    {
-      "game_id": "2026_11_IND_HOU",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-20T01:15:00+00:00",
-      "home": "HOU",
-      "away": "IND",
-      "projected_home_score": 25.1,
-      "projected_away_score": 18.3,
-      "projected_margin_home": 6.85,
-      "projected_total": 43.43,
-      "predicted_winner": "HOU",
-      "injury_adjustments": {
-        "HOU": {
-          "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
-          "players": [],
-          "reported_out": 5,
-          "unmodeled_injuries": [
-            {
-              "player": "Danielle Hunter",
-              "position": "DE",
-              "status": "Out"
-            },
-            {
-              "player": "Brevin Jordan",
-              "position": "TE",
-              "status": "Out"
-            },
-            {
-              "player": "Marvin Harrison Jr.",
-              "position": "WR",
-              "status": "Out"
-            },
-            {
-              "player": "Woody Marks",
-              "position": "RB",
-              "status": "Out"
-            },
-            {
-              "player": "Azeez Al-Shaair",
-              "position": "LB",
-              "status": "Injured Reserve"
-            }
-          ]
-        },
-        "IND": {
-          "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
-          "players": [],
-          "reported_out": 7,
-          "unmodeled_injuries": [
-            {
-              "player": "Jalen Travis",
-              "position": "OT",
-              "status": "Out"
-            },
-            {
-              "player": "Jerry Tillery",
-              "position": "DT",
-              "status": "Out"
-            },
-            {
-              "player": "Charvarius Ward",
-              "position": "CB",
-              "status": "Out"
-            },
-            {
-              "player": "Will Mallory",
-              "position": "TE",
-              "status": "Out"
-            },
-            {
-              "player": "Bernhard Raimann",
-              "position": "OT",
-              "status": "Out"
-            },
-            {
-              "player": "Jaylon Carlies",
-              "position": "LB",
-              "status": "Injured Reserve"
-            },
-            {
-              "player": "Akeem Davis-Gaither",
-              "position": "LB",
-              "status": "Injured Reserve"
-            }
-          ]
-        }
-      },
-      "qb_starter_adjustments": {
-        "HOU": {
-          "points": 0.0,
-          "status": "starter_already_in_team_baseline",
-          "players": [],
-          "confidence": "low"
-        },
-        "IND": {
-          "points": 0.0,
-          "status": "starter_already_in_team_baseline",
-          "players": [],
-          "confidence": "low"
-        }
-      },
-      "analysis": {
-        "home": {
-          "team": "HOU",
-          "games_used": 9,
-          "offense_epa_rating": 0.0354,
-          "defense_epa_rating": 0.0054,
-          "offense_rank": 9,
-          "defense_rank": 17,
-          "ranked_teams": 32,
-          "recent_form": {
-            "games": 5,
-            "wins": 3,
-            "avg_points_for": 29.8,
-            "avg_points_against": 22.0,
-            "avg_margin": 7.8,
-            "results": [
-              {
-                "week": 5,
-                "points_for": 26,
-                "points_against": 3,
-                "result": "W"
-              },
-              {
-                "week": 6,
-                "points_for": 34,
-                "points_against": 31,
-                "result": "W"
-              },
-              {
-                "week": 7,
-                "points_for": 21,
-                "points_against": 27,
-                "result": "L"
-              },
-              {
-                "week": 9,
-                "points_for": 44,
-                "points_against": 22,
-                "result": "W"
-              },
-              {
-                "week": 10,
-                "points_for": 24,
-                "points_against": 27,
-                "result": "L"
-              }
-            ]
-          }
-        },
-        "away": {
-          "team": "IND",
-          "games_used": 10,
-          "offense_epa_rating": -0.0862,
-          "defense_epa_rating": 0.0027,
-          "offense_rank": 31,
-          "defense_rank": 15,
-          "ranked_teams": 32,
-          "recent_form": {
-            "games": 5,
-            "wins": 1,
-            "avg_points_for": 16.8,
-            "avg_points_against": 26.6,
-            "avg_margin": -9.8,
-            "results": [
-              {
-                "week": 6,
-                "points_for": 20,
-                "points_against": 26,
-                "result": "L"
-              },
-              {
-                "week": 7,
-                "points_for": 10,
-                "points_against": 16,
-                "result": "L"
-              },
-              {
-                "week": 8,
-                "points_for": 7,
-                "points_against": 42,
-                "result": "L"
-              },
-              {
-                "week": 9,
-                "points_for": 23,
-                "points_against": 27,
-                "result": "L"
-              },
-              {
-                "week": 10,
-                "points_for": 24,
-                "points_against": 22,
-                "result": "W"
-              }
-            ]
-          }
-        },
-        "matchup_metrics": [
-          {
-            "category": "total",
-            "label": "Points / game",
-            "unit": "pts/g",
-            "away_offense": {
-              "rank": 23,
-              "value": 20.8
-            },
-            "home_defense": {
-              "rank": 18,
-              "value": 24.33
-            },
-            "home_offense": {
-              "rank": 9,
-              "value": 25.89
-            },
-            "away_defense": {
-              "rank": 29,
-              "value": 27.1
-            }
-          },
-          {
-            "category": "total",
-            "label": "Yards / play",
-            "unit": "yds/play",
-            "away_offense": {
-              "rank": 31,
-              "value": 4.59
-            },
-            "home_defense": {
-              "rank": 15,
-              "value": 5.35
-            },
-            "home_offense": {
-              "rank": 9,
-              "value": 5.7
-            },
-            "away_defense": {
-              "rank": 30,
-              "value": 6.07
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / play",
-            "unit": "EPA/play",
-            "away_offense": {
-              "rank": 30,
-              "value": -0.11
-            },
-            "home_defense": {
-              "rank": 16,
-              "value": 0.01
-            },
-            "home_offense": {
-              "rank": 9,
-              "value": 0.05
-            },
-            "away_defense": {
-              "rank": 23,
-              "value": 0.04
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / pass",
-            "unit": "EPA/pass",
-            "away_offense": {
-              "rank": 30,
-              "value": -0.19
-            },
-            "home_defense": {
-              "rank": 16,
-              "value": 0.03
-            },
-            "home_offense": {
-              "rank": 8,
-              "value": 0.13
-            },
-            "away_defense": {
-              "rank": 19,
-              "value": 0.04
-            }
-          },
-          {
-            "category": "epa",
-            "label": "EPA / rush",
-            "unit": "EPA/rush",
-            "away_offense": {
-              "rank": 11,
-              "value": 0.01
-            },
-            "home_defense": {
-              "rank": 16,
-              "value": -0.03
-            },
-            "home_offense": {
-              "rank": 24,
-              "value": -0.08
-            },
-            "away_defense": {
-              "rank": 32,
-              "value": 0.04
-            }
-          },
-          {
-            "category": "negative",
-            "label": "Sacks / game",
-            "unit": "sacks/g",
-            "away_offense": {
-              "rank": 21,
-              "value": 2.6
-            },
-            "home_defense": {
-              "rank": 2,
-              "value": 3.67
-            },
-            "home_offense": {
-              "rank": 10,
-              "value": 1.89
-            },
-            "away_defense": {
-              "rank": 16,
-              "value": 2.2
-            }
-          },
-          {
-            "category": "negative",
-            "label": "Turnovers / game",
-            "unit": "TO/g",
-            "away_offense": {
-              "rank": 30,
-              "value": 1.9
-            },
-            "home_defense": {
-              "rank": 23,
-              "value": 1.0
-            },
-            "home_offense": {
-              "rank": 1,
-              "value": 0.56
-            },
-            "away_defense": {
-              "rank": 31,
-              "value": 0.7
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "3rd down conversion",
-            "unit": "%",
-            "away_offense": {
-              "rank": 24,
-              "value": 37.1
-            },
-            "home_defense": {
-              "rank": 17,
-              "value": 40.8
-            },
-            "home_offense": {
-              "rank": 18,
-              "value": 38.6
-            },
-            "away_defense": {
-              "rank": 3,
-              "value": 32.2
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "4th down conversion",
-            "unit": "%",
-            "away_offense": {
-              "rank": 17,
-              "value": 55.6
-            },
-            "home_defense": {
-              "rank": 16,
-              "value": 53.8
-            },
-            "home_offense": {
-              "rank": 29,
-              "value": 33.3
-            },
-            "away_defense": {
-              "rank": 13,
-              "value": 46.7
-            }
-          },
-          {
-            "category": "conversion",
-            "label": "Red-zone TD rate",
-            "unit": "%",
-            "away_offense": {
-              "rank": 9,
-              "value": 65.4
-            },
-            "home_defense": {
-              "rank": 22,
-              "value": 63.0
-            },
-            "home_offense": {
-              "rank": 14,
-              "value": 61.8
-            },
-            "away_defense": {
-              "rank": 19,
-              "value": 61.5
-            }
-          }
-        ],
-        "estimated_home_advantage_points": 1.5,
-        "scoring_edge_components": {
-          "home_offense_vs_away_defense": 1.72,
-          "away_offense_vs_home_defense": -3.64,
-          "home_field_points": 1.5,
-          "home_qb_adjustment_points": 0.0,
-          "away_qb_adjustment_points": 0.0
-        },
-        "method": "Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games."
-      },
-      "weekly_learning": {
-        "version": "bias-v1",
-        "margin_adjustment": 0.0,
-        "total_adjustment": 1.355
-      },
-      "game_ml_shadow": {
-        "family": "game-score-ridge-v1",
-        "markets": {
-          "game_margin_home": {
-            "baseline": 6.85,
-            "candidate": 9.69,
-            "active": false,
-            "trained_season": 2026,
-            "trained_week": 10
-          },
-          "game_total": {
-            "baseline": 43.43,
-            "candidate": 47.43,
-            "active": false,
-            "trained_season": 2026,
-            "trained_week": 10
-          }
-        }
-      }
-    },
     {
       "game_id": "2026_11_MIA_BUF",
       "season": 2026,
@@ -471,8 +23,18 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Dorian Williams",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Christian Benford",
+              "position": "CB",
+              "status": "Out"
+            },
             {
               "player": "Ar'maj Reed-Adams",
               "position": "G",
@@ -484,8 +46,18 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 6,
           "unmodeled_injuries": [
+            {
+              "player": "Bradley Pinion",
+              "position": "P",
+              "status": "Out"
+            },
+            {
+              "player": "Jared Wayne",
+              "position": "WR",
+              "status": "Out"
+            },
             {
               "player": "Darrell Baker Jr.",
               "position": "CB",
@@ -879,8 +451,23 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 5,
           "unmodeled_injuries": [
+            {
+              "player": "Isaiah Simmons",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Mike Jackson",
+              "position": "CB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Bobby Okereke",
+              "position": "LB",
+              "status": "Out"
+            },
             {
               "player": "Jonathon Brooks",
               "position": "RB",
@@ -890,11 +477,6 @@
               "player": "Brady Christensen",
               "position": "G",
               "status": "Injured Reserve"
-            },
-            {
-              "player": "Mike Jackson",
-              "position": "CB",
-              "status": "Injured Reserve"
             }
           ]
         },
@@ -902,8 +484,18 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Jaylinn Hawkins",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Nnamdi Madubuike",
+              "position": "DT",
+              "status": "Out"
+            },
             {
               "player": "Marlon Humphrey",
               "position": "CB",
@@ -1296,8 +888,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Kyler Gordon",
+              "position": "CB",
+              "status": "Out"
+            },
             {
               "player": "Zavier Scott",
               "position": "RB",
@@ -1314,11 +911,26 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 5,
           "unmodeled_injuries": [
             {
               "player": "Asim Richards",
               "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Erik McCoy",
+              "position": "C",
+              "status": "Out"
+            },
+            {
+              "player": "Taliese Fuaga",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Martin Emerson Jr.",
+              "position": "CB",
               "status": "Out"
             },
             {
@@ -1704,12 +1316,22 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 6,
           "unmodeled_injuries": [
+            {
+              "player": "P.J. Locke",
+              "position": "S",
+              "status": "Out"
+            },
             {
               "player": "Jalen Thompson",
               "position": "S",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "Jonathan Mingo",
+              "position": "WR",
+              "status": "Out"
             },
             {
               "player": "Jake Ferguson",
@@ -2122,8 +1744,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 2,
           "unmodeled_injuries": [
+            {
+              "player": "Cade Mays",
+              "position": "C",
+              "status": "Out"
+            },
             {
               "player": "Aidan Hutchinson",
               "position": "DE",
@@ -2135,12 +1762,17 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 3,
           "unmodeled_injuries": [
             {
               "player": "Josh Hayes",
               "position": "CB",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "Antoine Winfield Jr.",
+              "position": "S",
+              "status": "Out"
             },
             {
               "player": "Jalen McMillan",
@@ -2525,8 +2157,23 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Jaylon Moore",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Trey Smith",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Kenneth Walker III",
+              "position": "RB",
+              "status": "Out"
+            },
             {
               "player": "Jared Wiley",
               "position": "TE",
@@ -2538,8 +2185,18 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 6,
           "unmodeled_injuries": [
+            {
+              "player": "Jon Gaines II",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Zachary Carter",
+              "position": "DT",
+              "status": "Injured Reserve"
+            },
             {
               "player": "James Conner",
               "position": "RB",
@@ -2933,8 +2590,23 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 5,
           "unmodeled_injuries": [
+            {
+              "player": "Rodney Shelley",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Kendall Williamson",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Daiyan Henley",
+              "position": "LB",
+              "status": "Out"
+            },
             {
               "player": "Trey Pipkins III",
               "position": "OT",
@@ -2951,12 +2623,22 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 3,
           "unmodeled_injuries": [
             {
               "player": "David Onyemata",
               "position": "DT",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "Isaiah Williams",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Omar Cooper Jr.",
+              "position": "WR",
+              "status": "Out"
             }
           ]
         }
@@ -3352,14 +3034,14 @@
           "reported_out": 2,
           "unmodeled_injuries": [
             {
-              "player": "Robert Hainsey",
-              "position": "C",
-              "status": "Out"
-            },
-            {
               "player": "B.J. Green II",
               "position": "DE",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "Robert Hainsey",
+              "position": "C",
+              "status": "Out"
             }
           ]
         }
@@ -3755,10 +3437,16 @@
         },
         "LV": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
+          "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "reported_out": 1,
+          "unmodeled_injuries": [
+            {
+              "player": "Tonka Hemingway",
+              "position": "DT",
+              "status": "Out"
+            }
+          ]
         }
       },
       "qb_starter_adjustments": {
@@ -4136,12 +3824,22 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Zack Baun",
+              "position": "LB",
+              "status": "Out"
+            },
             {
               "player": "Will Shipley",
               "position": "RB",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "Dontayvion Wicks",
+              "position": "WR",
+              "status": "Out"
             }
           ]
         },
@@ -4549,8 +4247,23 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 6,
           "unmodeled_injuries": [
+            {
+              "player": "C.J. West",
+              "position": "DT",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Nate Hobbs",
+              "position": "CB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Isaac Guerendo",
+              "position": "RB",
+              "status": "Out"
+            },
             {
               "player": "Christian Kirk",
               "position": "WR",
@@ -4974,13 +4687,13 @@
           "reported_out": 2,
           "unmodeled_injuries": [
             {
-              "player": "Jacory Croskey-Merritt",
-              "position": "RB",
+              "player": "Laremy Tunsil",
+              "position": "OT",
               "status": "Injured Reserve"
             },
             {
-              "player": "Laremy Tunsil",
-              "position": "OT",
+              "player": "Jacory Croskey-Merritt",
+              "position": "RB",
               "status": "Injured Reserve"
             }
           ]
@@ -4992,13 +4705,13 @@
           "reported_out": 2,
           "unmodeled_injuries": [
             {
-              "player": "Andrei Iosivas",
-              "position": "WR",
+              "player": "Swayze Bozeman",
+              "position": "LB",
               "status": "Injured Reserve"
             },
             {
-              "player": "Brian Parker II",
-              "position": "OT",
+              "player": "Andrei Iosivas",
+              "position": "WR",
               "status": "Injured Reserve"
             }
           ]
