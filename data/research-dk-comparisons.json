@@ -1,23 +1,23 @@
 {
   "season": 2026,
   "week": 11,
-  "generated_at_utc": "2026-11-19T21:43:36.896760+00:00",
+  "generated_at_utc": "2026-11-21T20:12:32.425009+00:00",
   "status": "research_only_no_publication",
   "source": "DraftKings via existing ParlayAPI snapshot",
-  "odds_snapshot_generated_at": "2026-11-18T23:41:32.148823+00:00",
+  "odds_snapshot_generated_at": "2026-11-21T15:37:22.623443+00:00",
   "counts": {
-    "total": 153,
+    "total": 147,
     "matched": 0,
-    "missing": 56,
-    "stale": 97,
+    "missing": 42,
+    "stale": 105,
     "ambiguous": 0,
-    "unverified": 153
+    "unverified": 147
   },
   "coverage_diagnostics": {
     "market_inventory": {
-      "passing_yards": 25,
-      "rushing_yards": 60,
-      "receiving_yards": 102
+      "passing_yards": 26,
+      "rushing_yards": 72,
+      "receiving_yards": 139
     },
     "unmatched_examples": {
       "passing_yards": [
@@ -31,7 +31,7 @@
           "player": "Baker Mayfield",
           "team": "TB",
           "opponent": "DET",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Bo Nix",
@@ -55,7 +55,7 @@
           "player": "C.J. Stroud",
           "team": "HOU",
           "opponent": "IND",
-          "reason": "stale"
+          "reason": "missing"
         },
         {
           "player": "Caleb Williams",
@@ -117,13 +117,13 @@
           "player": "Braelon Allen",
           "team": "NYJ",
           "opponent": "LAC",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Breece Hall",
           "team": "NYJ",
           "opponent": "LAC",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Bucky Irving",
@@ -149,7 +149,7 @@
           "player": "Adonai Mitchell",
           "team": "NYJ",
           "opponent": "LAC",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Alvin Kamara",
@@ -173,7 +173,7 @@
           "player": "Brock Bowers",
           "team": "LV",
           "opponent": "DEN",
-          "reason": "missing"
+          "reason": "stale"
         },
         {
           "player": "Caleb Douglas",
@@ -232,10 +232,10 @@
       "opponent": "DET",
       "market": "passing_yards",
       "projected_yards": 150.4,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -291,7 +291,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -361,7 +361,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -375,7 +375,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -515,7 +515,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -526,20 +526,6 @@
       "opponent": "DEN",
       "market": "passing_yards",
       "projected_yards": 266.0,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "SF",
-      "market": "passing_yards",
-      "projected_yards": 190.4,
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
@@ -683,7 +669,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -736,10 +722,10 @@
       "opponent": "DEN",
       "market": "receiving_yards",
       "projected_yards": 78.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -764,8 +750,8 @@
       "opponent": "DAL",
       "market": "receiving_yards",
       "projected_yards": 67.1,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
@@ -926,20 +912,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0038393",
-      "player_name": "Dontayvion Wicks",
-      "team": "PHI",
-      "opponent": "PIT",
-      "market": "receiving_yards",
-      "projected_yards": 45.2,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0040170",
       "player_name": "Elic Ayomanor",
       "team": "TEN",
@@ -949,7 +921,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -963,7 +935,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -977,7 +949,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1122,20 +1094,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0038994",
-      "player_name": "Jordan Addison",
-      "team": "MIN",
-      "opponent": "SF",
-      "market": "receiving_yards",
-      "projected_yards": 47.2,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0038997",
       "player_name": "Josh Downs",
       "team": "IND",
@@ -1159,7 +1117,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1268,10 +1226,10 @@
       "opponent": "MIN",
       "market": "receiving_yards",
       "projected_yards": 69.3,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1282,20 +1240,6 @@
       "opponent": "IND",
       "market": "receiving_yards",
       "projected_yards": 61.3,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "stale",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0041511",
-      "player_name": "Omar Cooper Jr.",
-      "team": "NYJ",
-      "opponent": "LAC",
-      "market": "receiving_yards",
-      "projected_yards": 77.2,
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
@@ -1338,8 +1282,8 @@
       "opponent": "PHI",
       "market": "receiving_yards",
       "projected_yards": 37.8,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "missing",
       "dk_line": null,
@@ -1397,7 +1341,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1495,7 +1439,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1523,7 +1467,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1635,7 +1579,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1649,7 +1593,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1775,7 +1719,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1845,7 +1789,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -1999,7 +1943,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2060,20 +2004,6 @@
       "difference_yards": null
     },
     {
-      "player_id": "00-0038134",
-      "player_name": "Kenneth Walker III",
-      "team": "KC",
-      "opponent": "ARI",
-      "market": "rushing_yards",
-      "projected_yards": 108.7,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
       "player_id": "00-0036919",
       "player_name": "Kenny Gainwell",
       "team": "TB",
@@ -2097,7 +2027,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2112,20 +2042,6 @@
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
       "match_status": "stale",
-      "dk_line": null,
-      "difference_yards": null
-    },
-    {
-      "player_id": "00-0035228",
-      "player_name": "Kyler Murray",
-      "team": "MIN",
-      "opponent": "SF",
-      "market": "rushing_yards",
-      "projected_yards": 28.3,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
-      "recommendation_eligible": false,
-      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2181,7 +2097,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "missing",
+      "match_status": "stale",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2265,7 +2181,7 @@
       "availability_status": "presumed_available",
       "provisional_research_eligible": true,
       "recommendation_eligible": false,
-      "match_status": "stale",
+      "match_status": "missing",
       "dk_line": null,
       "difference_yards": null
     },
@@ -2276,8 +2192,8 @@
       "opponent": "TB",
       "market": "rushing_yards",
       "projected_yards": 20.7,
-      "availability_status": "presumed_available",
-      "provisional_research_eligible": true,
+      "availability_status": "questionable",
+      "provisional_research_eligible": false,
       "recommendation_eligible": false,
       "match_status": "stale",
       "dk_line": null,
