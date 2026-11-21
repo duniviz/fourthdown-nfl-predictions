@@ -1,0 +1,46 @@
+name: Research coaching and defensive matchup features
+on:
+  pull_request:
+    paths:
+      - 'research/coach_matchup_context.py'
+      - 'research/coach_matchup_experiment.py'
+      - 'tests/test_coach_matchup_context.py'
+      - '.github/workflows/coach-matchup-research.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'research/coach_matchup_context.py'
+      - 'research/coach_matchup_experiment.py'
+      - '.github/workflows/coach-matchup-research.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '26 17 * * 3'
+permissions:
+  contents: write
+concurrency:
+  group: coach-matchup-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest tests.test_coach_matchup_context -v
+      - name: Install historical research dependencies
+        run: python -m pip install 'xgboost-cpu>=2.1,<4' numpy scikit-learn nflreadpy polars pyarrow
+      - name: Compare coaching and opponent features on matched future seasons
+        run: python -m research.coach_matchup_experiment
+      - name: Store research report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coach-matchup-research
+          path: data/coach-matchup-research.json
+          if-no-files-found: error
+      - name: Publish research-only report
+        if: github.event_name != 'pull_request'
+        run: |
+          bash scripts/publish_data.sh 'data: update coaching and matchup research' data/coach-matchup-research.json
