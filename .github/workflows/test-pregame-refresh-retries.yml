@@ -8,6 +8,8 @@ on:
       - 'tests/test_pregame_refresh_state.py'
       - 'scripts/check_pregame_forecast_window.py'
       - 'scripts/daily_forecast_refresh_window.py'
+      - 'scripts/stale_forecast_recovery.py'
+      - 'tests/test_stale_forecast_recovery.py'
       - 'tests/test_forecast_refresh_schedule.py'
       - '.github/workflows/publish-v2.yml'
       - '.github/workflows/test-pregame-refresh-retries.yml'
@@ -20,6 +22,8 @@ on:
       - 'tests/test_pregame_refresh_state.py'
       - 'scripts/check_pregame_forecast_window.py'
       - 'scripts/daily_forecast_refresh_window.py'
+      - 'scripts/stale_forecast_recovery.py'
+      - 'tests/test_stale_forecast_recovery.py'
       - 'tests/test_forecast_refresh_schedule.py'
       - '.github/workflows/publish-v2.yml'
       - '.github/workflows/test-pregame-refresh-retries.yml'
@@ -33,6 +37,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: python -m unittest tests.test_stale_forecast_recovery -v
       - run: python -m unittest tests.test_forecast_refresh_schedule -v
       - run: python -m unittest discover -s tests -p 'test_pregame_refresh_state.py' -v
       - run: python -m unittest discover -s tests -p 'test_pregame_capture_guard.py' -v
