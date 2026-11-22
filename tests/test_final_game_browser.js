@@ -10,7 +10,8 @@ const fs = require('fs');
   page.on('pageerror',error=>errors.push(error.message));
   const lock={game_id:'2026_11_ARI_KC',away:'ARI',home:'KC',kickoff_utc:'2026-11-22T18:00:00Z',
     forecast_at_utc:'2026-11-22T17:28:22Z',captured_at_utc:'2026-11-22T17:30:02Z',lock_status:'official',
-    projected_away_score:16,projected_home_score:28.8,
+    projected_away_score:16,projected_home_score:28.8,projected_margin_home:12.83,
+    dk_home_spread:-15.5,dk_total:40.5,dk_at_utc:'2026-11-22T17:29:36Z',
     game_ml_shadow:{markets:{game_total:{candidate:43.91},game_margin_home:{candidate:10.23}}}};
   await page.route('**/data/game-official-pregame-locks.json*',route=>route.fulfill({json:{records:[lock]}}));
   await page.route('**/data/player-history.json*',route=>route.fulfill({json:{players:[]}}));
@@ -24,6 +25,10 @@ const fs = require('fs');
   const text=await page.locator('#fd-modal .fd-final-result').innerText();
   assert.match(text,/ARI 16\.0 · KC 28\.8/);
   assert.match(text,/ARI 16\.8 · KC 27\.1/);
+  assert.match(text,/Saved DK spread: KC -15\.5/);
+  assert.equal((text.match(/ATS: ARI \+15\.5 · MISS/g)||[]).length,2);
+  assert.match(text,/Total: 40\.5/);
+  assert.equal((text.match(/O\/U: OVER 40\.5 · HIT/g)||[]).length,2);
   assert.match(text,/Final score/i);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true);
   assert.deepEqual(errors,[]);

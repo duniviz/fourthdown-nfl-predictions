@@ -1,9 +1,12 @@
 .fd-final-forecasts{margin-top:18px;padding-top:14px;border-top:1px solid #35535a}
 .fd-final-forecasts h4{margin:0 0 10px;color:#c1f66b;font-size:15px}
-.fd-final-forecast-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:12px;margin:8px 0;border:1px solid #35535a;border-radius:12px;background:#0d2028}
+.fd-final-forecast-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:12px 0;border-top:1px solid #35535a}
 .fd-final-forecast-row div{display:flex;flex-direction:column;gap:3px;min-width:0}
 .fd-final-forecast-row strong{color:#e8f5f5;font-size:15px}
 .fd-final-forecast-row small{color:#a7bdc3;font-size:10px;font-weight:800;letter-spacing:.06em}
 .fd-final-forecast-row b{color:#eef8fa;text-align:right;white-space:nowrap;font-size:16px}
 .fd-final-forecast-row span{grid-column:1/-1;color:#aac0c5;font-size:13px}
+.fd-final-forecast-row .fd-final-ats{color:#aac0c5}
+.fd-final-ats strong{color:#e6f6ed;font-size:14px}
+.fd-final-line{margin:0 0 8px;font-size:13px}
 @media(max-width:360px){.fd-final-forecast-row{grid-template-columns:1fr}.fd-final-forecast-row b{text-align:left}}
