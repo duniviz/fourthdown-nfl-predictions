@@ -122,3 +122,5 @@ jobs:
         with:
           path: .daily-dk-complete
           key: daily-dk-complete-${{ steps.schedule_guard.outputs.date }}
+
+# Manual game-day recovery requested on 2026-11-22.
