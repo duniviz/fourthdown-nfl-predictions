@@ -6,6 +6,15 @@ from live.game_schedule_match import match_scheduled_game
 from live.generate import VERIFIED_KICKOFF_OVERRIDES
 
 class DKGameRefreshTests(unittest.TestCase):
+    def test_official_flexed_pit_phi_noon_central(self):
+        from zoneinfo import ZoneInfo
+        local = datetime.fromisoformat(VERIFIED_KICKOFF_OVERRIDES['2026_11_PIT_PHI'])
+        scheduled = local.replace(tzinfo=ZoneInfo('America/New_York')).astimezone(timezone.utc)
+        self.assertEqual(scheduled, datetime(2026, 11, 22, 18, 0, tzinfo=timezone.utc))
+        game = {'game_id': '2026_11_PIT_PHI', 'home': 'PHI', 'away': 'PIT', 'kickoff_utc': scheduled.isoformat()}
+        provider = datetime(2026, 11, 22, 18, 1, tzinfo=timezone.utc).isoformat()
+        self.assertEqual(match_scheduled_game([game], 'PHI', 'PIT', provider)['game_id'], '2026_11_PIT_PHI')
+
     def test_official_flexed_jax_nyg_kickoff_matches_provider_time(self):
         from zoneinfo import ZoneInfo
         local = datetime.fromisoformat(VERIFIED_KICKOFF_OVERRIDES["2026_11_JAX_NYG"])
