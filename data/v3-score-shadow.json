@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-22T20:37:18.263587+00:00",
+  "generated_at_utc": "2026-11-22T23:55:54.172923+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,99 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_11_NYJ_LAC",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-22T21:05:00+00:00",
-      "home": "LAC",
-      "away": "NYJ",
-      "projected_home_score": 21.5,
-      "projected_away_score": 22.3,
-      "projected_margin_home": -0.74,
-      "projected_total": 43.79,
-      "predicted_winner": "NYJ",
-      "v2_reference": {
-        "projected_margin_home": 0.63,
-        "projected_total": 43.93
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.139,
-        "margin_from_success_and_pass_proxy": -1.366,
-        "home_features": {
-          "plays_per_game": 61.2,
-          "success_rate": 0.32,
-          "neutral_pass_proxy": 0.526
-        },
-        "away_features": {
-          "plays_per_game": 60.6,
-          "success_rate": 0.472,
-          "neutral_pass_proxy": 0.601
-        }
-      }
-    },
-    {
-      "game_id": "2026_11_JAX_NYG",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "home": "NYG",
-      "away": "JAX",
-      "projected_home_score": 21.4,
-      "projected_away_score": 25.3,
-      "projected_margin_home": -3.89,
-      "projected_total": 46.64,
-      "predicted_winner": "JAX",
-      "v2_reference": {
-        "projected_margin_home": -3.73,
-        "projected_total": 45.84
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.801,
-        "margin_from_success_and_pass_proxy": -0.162,
-        "home_features": {
-          "plays_per_game": 68.4,
-          "success_rate": 0.424,
-          "neutral_pass_proxy": 0.602
-        },
-        "away_features": {
-          "plays_per_game": 62.8,
-          "success_rate": 0.465,
-          "neutral_pass_proxy": 0.519
-        }
-      }
-    },
-    {
-      "game_id": "2026_11_LV_DEN",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "home": "DEN",
-      "away": "LV",
-      "projected_home_score": 26.2,
-      "projected_away_score": 20.5,
-      "projected_margin_home": 5.69,
-      "projected_total": 46.64,
-      "predicted_winner": "DEN",
-      "v2_reference": {
-        "projected_margin_home": 6.08,
-        "projected_total": 47.38
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.739,
-        "margin_from_success_and_pass_proxy": -0.392,
-        "home_features": {
-          "plays_per_game": 57.6,
-          "success_rate": 0.365,
-          "neutral_pass_proxy": 0.556
-        },
-        "away_features": {
-          "plays_per_game": 58.2,
-          "success_rate": 0.395,
-          "neutral_pass_proxy": 0.632
-        }
-      }
-    },
     {
       "game_id": "2026_11_MIN_SF",
       "season": 2026,

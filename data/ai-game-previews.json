@@ -1,91 +1,6 @@
 {
   "schema_version": 1,
   "games": {
-    "2026_11_NYJ_LAC": {
-      "headline": "NYJ at LAC: a forecast with almost no separation",
-      "stories": [
-        {
-          "title": "The narrowest of margins",
-          "body": "FOURTHDOWN has LAC ahead in this matchup, projecting NYJ 21.0 and LAC 21.6, a 0.6-point difference. A single red-zone stop or short-field possession could matter more than the projected edge. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "LAC ranks 32 of 32 on offense and 18 on defense in the model; NYJ ranks 19 offensively and 30 defensively. Across their latest 5 and 5 games, respectively, LAC won 1 and NYJ won 0. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-17T15:58:14.881244+00:00",
-      "kickoff_utc": "2026-11-22T21:05:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": 0.0642, \"defense_rank\": 30, \"games_used\": 10, \"offense_epa_rating\": -0.0136, \"offense_rank\": 19, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": -11.4, \"avg_points_against\": 31.6, \"avg_points_for\": 20.2, \"games\": 5, \"results\": [{\"points_against\": 26, \"points_for\": 19, \"result\": \"L\", \"week\": 6}, {\"points_against\": 28, \"points_for\": 25, \"result\": \"L\", \"week\": 7}, {\"points_against\": 38, \"points_for\": 33, \"result\": \"L\", \"week\": 8}, {\"points_against\": 35, \"points_for\": 12, \"result\": \"L\", \"week\": 9}, {\"points_against\": 31, \"points_for\": 12, \"result\": \"L\", \"week\": 10}], \"wins\": 0}, \"team\": \"NYJ\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": 0.0075, \"defense_rank\": 18, \"games_used\": 9, \"offense_epa_rating\": -0.0896, \"offense_rank\": 32, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": -11.2, \"avg_points_against\": 26.6, \"avg_points_for\": 15.4, \"games\": 5, \"results\": [{\"points_against\": 23, \"points_for\": 17, \"result\": \"L\", \"week\": 5}, {\"points_against\": 22, \"points_for\": 6, \"result\": \"L\", \"week\": 6}, {\"points_against\": 24, \"points_for\": 9, \"result\": \"L\", \"week\": 8}, {\"points_against\": 44, \"points_for\": 22, \"result\": \"L\", \"week\": 9}, {\"points_against\": 20, \"points_for\": 23, \"result\": \"W\", \"week\": 10}], \"wins\": 1}, \"team\": \"LAC\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 22, \"value\": 25.4}, \"away_offense\": {\"rank\": 26, \"value\": 19.4}, \"category\": \"total\", \"home_defense\": {\"rank\": 28, \"value\": 26.56}, \"home_offense\": {\"rank\": 32, \"value\": 16.0}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 19, \"value\": 5.43}, \"away_offense\": {\"rank\": 17, \"value\": 5.36}, \"category\": \"total\", \"home_defense\": {\"rank\": 27, \"value\": 5.78}, \"home_offense\": {\"rank\": 29, \"value\": 4.75}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 26, \"value\": 0.07}, \"away_offense\": {\"rank\": 17, \"value\": -0.01}, \"category\": \"epa\", \"home_defense\": {\"rank\": 18, \"value\": 0.01}, \"home_offense\": {\"rank\": 32, \"value\": -0.18}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 27, \"value\": 0.13}, \"away_offense\": {\"rank\": 17, \"value\": 0.03}, \"category\": \"epa\", \"home_defense\": {\"rank\": 20, \"value\": 0.05}, \"home_offense\": {\"rank\": 32, \"value\": -0.2}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 22, \"value\": -0.0}, \"away_offense\": {\"rank\": 23, \"value\": -0.06}, \"category\": \"epa\", \"home_defense\": {\"rank\": 14, \"value\": -0.04}, \"home_offense\": {\"rank\": 30, \"value\": -0.14}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 15, \"value\": 2.3}, \"away_offense\": {\"rank\": 28, \"value\": 3.2}, \"category\": \"negative\", \"home_defense\": {\"rank\": 31, \"value\": 1.67}, \"home_offense\": {\"rank\": 31, \"value\": 3.67}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 25, \"value\": 1.0}, \"away_offense\": {\"rank\": 8, \"value\": 0.9}, \"category\": \"negative\", \"home_defense\": {\"rank\": 9, \"value\": 1.44}, \"home_offense\": {\"rank\": 32, \"value\": 2.0}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 19, \"value\": 41.2}, \"away_offense\": {\"rank\": 28, \"value\": 35.2}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 8, \"value\": 35.8}, \"home_offense\": {\"rank\": 30, \"value\": 33.9}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 20, \"value\": 58.8}, \"away_offense\": {\"rank\": 19, \"value\": 53.8}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 29, \"value\": 75.0}, \"home_offense\": {\"rank\": 25, \"value\": 38.9}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 25, \"value\": 68.6}, \"away_offense\": {\"rank\": 32, \"value\": 35.7}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 13, \"value\": 54.3}, \"home_offense\": {\"rank\": 28, \"value\": 47.6}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -0.28, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": -1.14, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"NYJ\", \"home\": \"LAC\", \"kickoff\": \"2026-11-22T21:05:00+00:00\", \"scores\": [21.6, 21.0]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": []
-    },
-    "2026_11_JAX_NYG": {
-      "headline": "JAX at NYG: the details behind the projected edge",
-      "stories": [
-        {
-          "title": "A closer look at the forecast",
-          "body": "FOURTHDOWN has JAX ahead in this matchup, projecting JAX 24.1 and NYG 20.4, a 3.7-point difference. The projection is a starting point, not a guarantee; a few high-leverage possessions could change the result. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "NYG ranks 14 of 32 on offense and 13 on defense in the model; JAX ranks 3 offensively and 5 defensively. Across their latest 5 and 5 games, respectively, NYG won 2 and JAX won 4. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-17T23:42:36.249892+00:00",
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": -0.0572, \"defense_rank\": 5, \"games_used\": 9, \"offense_epa_rating\": 0.0724, \"offense_rank\": 3, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 14.8, \"avg_points_against\": 18.2, \"avg_points_for\": 33.0, \"games\": 5, \"results\": [{\"points_against\": 17, \"points_for\": 19, \"result\": \"W\", \"week\": 5}, {\"points_against\": 34, \"points_for\": 31, \"result\": \"L\", \"week\": 6}, {\"points_against\": 7, \"points_for\": 42, \"result\": \"W\", \"week\": 8}, {\"points_against\": 10, \"points_for\": 33, \"result\": \"W\", \"week\": 9}, {\"points_against\": 23, \"points_for\": 40, \"result\": \"W\", \"week\": 10}], \"wins\": 4}, \"team\": \"JAX\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.0087, \"defense_rank\": 13, \"games_used\": 9, \"offense_epa_rating\": 0.0045, \"offense_rank\": 14, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 0.8, \"avg_points_against\": 23.4, \"avg_points_for\": 24.2, \"games\": 5, \"results\": [{\"points_against\": 27, \"points_for\": 27, \"result\": \"T\", \"week\": 5}, {\"points_against\": 34, \"points_for\": 27, \"result\": \"L\", \"week\": 6}, {\"points_against\": 21, \"points_for\": 27, \"result\": \"W\", \"week\": 7}, {\"points_against\": 11, \"points_for\": 19, \"result\": \"W\", \"week\": 9}, {\"points_against\": 24, \"points_for\": 21, \"result\": \"L\", \"week\": 10}], \"wins\": 2}, \"team\": \"NYG\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 2, \"value\": 16.0}, \"away_offense\": {\"rank\": 4, \"value\": 29.89}, \"category\": \"total\", \"home_defense\": {\"rank\": 12, \"value\": 21.78}, \"home_offense\": {\"rank\": 14, \"value\": 22.56}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 20, \"value\": 5.5}, \"away_offense\": {\"rank\": 6, \"value\": 6.06}, \"category\": \"total\", \"home_defense\": {\"rank\": 7, \"value\": 5.12}, \"home_offense\": {\"rank\": 19, \"value\": 5.29}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 4, \"value\": -0.09}, \"away_offense\": {\"rank\": 3, \"value\": 0.14}, \"category\": \"epa\", \"home_defense\": {\"rank\": 13, \"value\": -0.0}, \"home_offense\": {\"rank\": 12, \"value\": 0.02}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 5, \"value\": -0.09}, \"away_offense\": {\"rank\": 2, \"value\": 0.27}, \"category\": \"epa\", \"home_defense\": {\"rank\": 11, \"value\": -0.01}, \"home_offense\": {\"rank\": 13, \"value\": 0.06}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 3, \"value\": -0.09}, \"away_offense\": {\"rank\": 12, \"value\": 0.0}, \"category\": \"epa\", \"home_defense\": {\"rank\": 25, \"value\": 0.01}, \"home_offense\": {\"rank\": 21, \"value\": -0.04}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 25, \"value\": 1.89}, \"away_offense\": {\"rank\": 6, \"value\": 1.56}, \"category\": \"negative\", \"home_defense\": {\"rank\": 26, \"value\": 1.89}, \"home_offense\": {\"rank\": 27, \"value\": 3.11}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 3, \"value\": 1.67}, \"away_offense\": {\"rank\": 5, \"value\": 0.78}, \"category\": \"negative\", \"home_defense\": {\"rank\": 16, \"value\": 1.22}, \"home_offense\": {\"rank\": 22, \"value\": 1.33}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 5, \"value\": 33.7}, \"away_offense\": {\"rank\": 3, \"value\": 47.3}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 14, \"value\": 39.5}, \"home_offense\": {\"rank\": 12, \"value\": 41.0}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 6, \"value\": 40.0}, \"away_offense\": {\"rank\": 15, \"value\": 57.1}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 9, \"value\": 44.4}, \"home_offense\": {\"rank\": 3, \"value\": 80.0}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 6, \"value\": 47.8}, \"away_offense\": {\"rank\": 13, \"value\": 62.1}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 32, \"value\": 81.0}, \"home_offense\": {\"rank\": 15, \"value\": 60.7}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": 2.86, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": -2.37, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"JAX\", \"home\": \"NYG\", \"kickoff\": \"2026-11-22T21:25:00+00:00\", \"scores\": [20.4, 24.1]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": []
-    },
-    "2026_11_LV_DEN": {
-      "headline": "LV at DEN: recent momentum meets the model",
-      "stories": [
-        {
-          "title": "Form versus forecast",
-          "body": "FOURTHDOWN has DEN ahead in this matchup, projecting LV 20.0 and DEN 26.0, a 6.0-point difference. The recent win totals are a useful cross-check, but a five-game sample cannot settle this matchup. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "DEN ranks 12 of 32 on offense and 16 on defense in the model; LV ranks 22 offensively and 31 defensively. Across their latest 5 and 5 games, respectively, DEN won 5 and LV won 1. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-17T15:58:14.881244+00:00",
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": 0.0647, \"defense_rank\": 31, \"games_used\": 10, \"offense_epa_rating\": -0.0327, \"offense_rank\": 22, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": -8.2, \"avg_points_against\": 32.0, \"avg_points_for\": 23.8, \"games\": 5, \"results\": [{\"points_against\": 33, \"points_for\": 30, \"result\": \"L\", \"week\": 6}, {\"points_against\": 35, \"points_for\": 21, \"result\": \"L\", \"week\": 7}, {\"points_against\": 33, \"points_for\": 38, \"result\": \"W\", \"week\": 8}, {\"points_against\": 38, \"points_for\": 17, \"result\": \"L\", \"week\": 9}, {\"points_against\": 21, \"points_for\": 13, \"result\": \"L\", \"week\": 10}], \"wins\": 1}, \"team\": \"LV\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": 0.0042, \"defense_rank\": 16, \"games_used\": 9, \"offense_epa_rating\": 0.0086, \"offense_rank\": 12, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 6.4, \"avg_points_against\": 18.4, \"avg_points_for\": 24.8, \"games\": 5, \"results\": [{\"points_against\": 17, \"points_for\": 23, \"result\": \"W\", \"week\": 5}, {\"points_against\": 14, \"points_for\": 17, \"result\": \"W\", \"week\": 6}, {\"points_against\": 16, \"points_for\": 30, \"result\": \"W\", \"week\": 7}, {\"points_against\": 24, \"points_for\": 28, \"result\": \"W\", \"week\": 8}, {\"points_against\": 21, \"points_for\": 26, \"result\": \"W\", \"week\": 9}], \"wins\": 5}, \"team\": \"DEN\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 32, \"value\": 28.9}, \"away_offense\": {\"rank\": 10, \"value\": 25.1}, \"category\": \"total\", \"home_defense\": {\"rank\": 9, \"value\": 20.67}, \"home_offense\": {\"rank\": 20, \"value\": 22.0}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 32, \"value\": 6.34}, \"away_offense\": {\"rank\": 20, \"value\": 5.19}, \"category\": \"total\", \"home_defense\": {\"rank\": 12, \"value\": 5.27}, \"home_offense\": {\"rank\": 26, \"value\": 4.86}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 30, \"value\": 0.09}, \"away_offense\": {\"rank\": 21, \"value\": -0.02}, \"category\": \"epa\", \"home_defense\": {\"rank\": 14, \"value\": 0.0}, \"home_offense\": {\"rank\": 16, \"value\": -0.0}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 29, \"value\": 0.16}, \"away_offense\": {\"rank\": 11, \"value\": 0.08}, \"category\": \"epa\", \"home_defense\": {\"rank\": 10, \"value\": -0.02}, \"home_offense\": {\"rank\": 19, \"value\": 0.02}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 23, \"value\": 0.0}, \"away_offense\": {\"rank\": 31, \"value\": -0.19}, \"category\": \"epa\", \"home_defense\": {\"rank\": 28, \"value\": 0.03}, \"home_offense\": {\"rank\": 20, \"value\": -0.04}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 17, \"value\": 2.2}, \"away_offense\": {\"rank\": 8, \"value\": 1.7}, \"category\": \"negative\", \"home_defense\": {\"rank\": 9, \"value\": 2.89}, \"home_offense\": {\"rank\": 1, \"value\": 1.22}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 5, \"value\": 1.6}, \"away_offense\": {\"rank\": 16, \"value\": 1.1}, \"category\": \"negative\", \"home_defense\": {\"rank\": 14, \"value\": 1.33}, \"home_offense\": {\"rank\": 3, \"value\": 0.67}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 31, \"value\": 48.3}, \"away_offense\": {\"rank\": 7, \"value\": 44.9}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 22, \"value\": 42.3}, \"home_offense\": {\"rank\": 31, \"value\": 33.6}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 21, \"value\": 60.0}, \"away_offense\": {\"rank\": 23, \"value\": 43.8}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 22, \"value\": 62.5}, \"home_offense\": {\"rank\": 2, \"value\": 83.3}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 28, \"value\": 70.0}, \"away_offense\": {\"rank\": 26, \"value\": 50.0}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 9, \"value\": 51.7}, \"home_offense\": {\"rank\": 10, \"value\": 65.4}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -1.28, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 3.3, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"LV\", \"home\": \"DEN\", \"kickoff\": \"2026-11-22T21:25:00+00:00\", \"scores\": [26.0, 20.0]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "What to know to set your lineup: Opportunity knocking for these Titans, Broncos",
-          "url": "https://www.espn.com/fantasy/football/story/_/id/50531472/fantasy-football-start-sit-week-11-need-know",
-          "published_at_utc": "2026-11-22T12:54:34+00:00",
-          "publisher": "ESPN"
-        }
-      ]
-    },
     "2026_11_MIN_SF": {
       "headline": "MIN at SF: contrasting offenses shape the outlook",
       "stories": [
@@ -112,10 +27,28 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "49ers' Fred Warner will represent his heritage in Mexico City",
-          "url": "https://www.espn.com/nfl/story/_/id/50535108/san-francisco-49ers-fred-warner-mexican-heritage-dpoy",
-          "published_at_utc": "2026-11-22T17:34:58+00:00",
-          "publisher": "ESPN"
+          "title": "Mike Evans Active, Dre Greenlaw OUT vs. Vikings; Inactives Week 11 #MINvsSF - San Francisco 49ers",
+          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPOVAyZmFqd3J2RWZYa2NjcF95MWJXXzFxMVV0UmVIcVBEYjQ3VkNXcG1kUWZXNmdjT0pjbTRtT25tZzhTZVhCdS1CSGZtVnkxT0ozd3ZLWTM3Q1BYeTVzdk9Ed240QWhnSGhjdFlSMGdBWEVzc0M3QTdfVmF0bE1BRG91RXp0T05GVkpoTk4tR3diVUNXeTNSMVFEemtzVU0?oc=5",
+          "published_at_utc": "2026-11-22T23:52:36+00:00",
+          "publisher": "San Francisco 49ers"
+        },
+        {
+          "title": "Sunday Night Football: How to watch the Minnesota Vikings vs. San Francisco 49ers international game tonight - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQMUJnbFpxRTRJQTJDelhlQzlTbVhtV3dzLXRmOU4tbXRVMk9kTEFSdlpuUjBUODNLakxTa2Y3OHdBQ1dEMlYwVW9yUjRHb2JWakZ2Nkp6SzhFTWhsSkkwcEpVZzJWQ0FDTEJ3eHU2ME90cXZ3d1IzY2xzUmxtVkV5azdRT1hldDJzTGJ1OXM4OXNobjZmMnNSV2dNT2FBamU5YVFkeldUaXVvUGlrYWdFcGx2Vl9tVkk4WWxKeG5nRXI3Z2lTZ3owcXRPYklYRUpXUE15QUdrU1dVSlFUX1VJaFlrdVMtT2VmSi1mc3dFZw?oc=5",
+          "published_at_utc": "2026-11-22T17:49:38+00:00",
+          "publisher": "Yahoo Sports"
+        },
+        {
+          "title": "Kalshi Promo Code AL55: Score a $55 bonus to trade SNF: Vikings vs. 49ers - AL.com",
+          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOWC1zaERwUnVoU3NaYTRwa290OXdoUG5CQkplazJLS3hKbHFPVEo0X1JfalpZMVhaRjNyMmdwSmpSZzllN1ZnM3hsYXU1MTk2M2o0VDdVOTdUektGU1VSdDBBWW5PbVU3eTFxaVcwYlNzWTNBM2RGYlZqeWp4UG1pWFhYRndnOE8xcW1QX1F1Yzh4eFVhVjFFclUybU1BZXdLdjZHNnVzT2pZNmI0VlE?oc=5",
+          "published_at_utc": "2026-11-22T23:45:00+00:00",
+          "publisher": "AL.com"
+        },
+        {
+          "title": "Vikings' No. 1 seed hopes could swing dramatically against the 49ers - The Viking Age",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOUW0xZFpPeXJKSHM4a0RVVmt5S2szSDl1VXhzd3BGSWVUc1U1VVB5VGtCcnFxbFpoZ29JUk1teHZnNWpKODJDX1BZRHp3TzFieFNwTWpSMVFvN2lZYjFDUWlzWmJJUWZpUUxKbVN1dnl4MVNFVlp0WlEyTFNYNUZvUXd1czVXNmRodGhybHRqTy0zckxoVmhzZ3lRcGRGY3JDNWxiaGNUTi1WRDlBNXhsNw?oc=5",
+          "published_at_utc": "2026-11-22T13:00:01+00:00",
+          "publisher": "The Viking Age"
         }
       ]
     },
@@ -145,10 +78,28 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "❤️ Bengals pay tribute to Fiona the hippo after her death",
-          "url": "https://www.espn.com/nfl/story/_/id/50534625/cincinnati-bengals-reds-fiona-hippo",
-          "published_at_utc": "2026-11-22T15:04:47+00:00",
-          "publisher": "ESPN"
+          "title": "'NFL GameDay Preview' take a closer look at Cincinnati Bengals-Washington Commanders Week 11 matchup - NFL.com",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQYXNOOWhqSXZTVjRxOVFPbmVnMHdONl9LdzdzUnBvU29VeldkSl8tWTI4azZlQzJjSjBFOTR5MjgyOUMwU1FSZ05jNkFmMEw4YlA2NjZyX2N1WjFGRkdVeHlQN2tJSk5ndTYzdk05RTFlaV8zZVBfdHEwQ0tBUExVN09xY2ZoZTVETmNWYTFleHYzSnREUUJuQVVfNDg5Z1hjMUJRQ1Z3?oc=5",
+          "published_at_utc": "2026-11-22T17:52:41+00:00",
+          "publisher": "NFL.com"
+        },
+        {
+          "title": "Practice notes | Croskey-Merritt says goal is to play vs. Bengals - Washington Commanders",
+          "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbGtXbUdFNmQ5bnNBTHhEajIxVXVvYVJERjhRWV9qQlp1Q3FfNkhKREhMZjFtWENxdGh5RGN5MDNtVHBVNWNEOEp3R1VoamN3N1RrM2k0ekM5ZzlHMmR6TGpzNnFVVjhUVW93ZXhjRnV2T0tyMC00SXJLY2RFLUZzRG13TkRaX0t2TlN0RVNfcnY5ZzU4S0tXZnlkUzFkeXZ6Mjg3Vw?oc=5",
+          "published_at_utc": "2026-11-20T20:42:28+00:00",
+          "publisher": "Washington Commanders"
+        },
+        {
+          "title": "Evan Silva’s Matchups: Bengals at Commanders - Establish The Run",
+          "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB1cFhQR000T0F0OGNaWW1jNjBBSjMtaTNfa1VfQ2Y5c2FxM2FFVmNpRHZDVDNhZTkyYXpNZjFaSjg2LWZCZzNQNWN2dVR5VzBsQUp3YmRobTh4dGNBZEJmWDdFZGtuQXJHcEtMeV91RXIzWmlRTEFkMURaYw?oc=5",
+          "published_at_utc": "2026-11-22T01:20:34+00:00",
+          "publisher": "Establish The Run"
+        },
+        {
+          "title": "Bengals provide injury update ahead of MNF matchup with Commanders - WLWT",
+          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQMjMwMlJ0UW9MZ180SUdZdUMwMldpZ3VKdEExWlZVUzR3eTIyQl8tcGU0cm5EWEJGX2stNld5T2trcWFpQmI4VENSMDNQN0FCMEN6X182ckx5a1c3S1V1a0xiVWxrZ1RKeEVVX1NxNUdabHFYNnNSeWlSWVF0NHpXQWZURmNjUS1WZXd1VWd3X0F3X2xqZWJYdTYxWGUzNE1XRnc?oc=5",
+          "published_at_utc": "2026-11-22T02:23:00+00:00",
+          "publisher": "WLWT"
         }
       ]
     }
