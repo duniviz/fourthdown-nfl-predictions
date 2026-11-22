@@ -3,7 +3,7 @@ name: Publish weekly v2 forecasts
   workflow_dispatch: {}
   workflow_call: {}
   workflow_run:
-    workflows: [Daily DraftKings player prop refresh, FOURTHDOWN unified weekly ML cycle]
+    workflows: [Daily DraftKings player prop refresh, FOURTHDOWN unified weekly ML cycle, Publish ESPN scoreboard backup]
     types: [completed]
   push:
     paths:
@@ -38,6 +38,16 @@ jobs:
             if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               echo "Skipping forecast because the preceding refresh or ML cycle did not succeed"
+              exit 0
+            fi
+            # An independently refreshed scoreboard can wake the pipeline if
+            # a future kickoff changed; do not wait for the old kickoff window.
+            if [[ "${{ github.event.workflow_run.name }}" == "Publish ESPN scoreboard backup" ]]; then
+              if python -m live.schedule_flex_check; then
+                echo "run=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "run=false" >> "$GITHUB_OUTPUT"
+              fi
               exit 0
             fi
             # The Tuesday ML cycle must finish before forecasting so its learned outputs are included.
