@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 from live.verified_scoreboard_kickoffs import scoreboard_kickoffs
+from live.generate import forecast
 
 
 class VerifiedScoreboardKickoffTests(unittest.TestCase):
@@ -14,6 +15,21 @@ class VerifiedScoreboardKickoffTests(unittest.TestCase):
                            'competitors': [{'homeAway': 'home', 'team': {'abbreviation': 'PHI'}},
                                            {'homeAway': 'away', 'team': {'abbreviation': 'PIT'}}]}]}
         self.feed = {'updated_at_utc': self.now.isoformat(), 'events': [self.event]}
+
+    def test_forecast_uses_scoreboard_kickoff_for_future_game(self):
+        self.schedules[0]['gametime'] = '16:25'
+        history, team_games = [], []
+        for week in (1, 2, 3):
+            history.append({'season': 2026, 'week': week, 'game_type': 'REG',
+                            'game_id': f'2026_{week:02d}_PIT_PHI', 'gameday': f'2026-09-{week:02d}',
+                            'gametime': '13:00', 'home_team': 'PHI', 'away_team': 'PIT',
+                            'home_score': 20, 'away_score': 10})
+            for name in ('PHI', 'PIT'):
+                team_games.append({'season': 2026, 'week': week, 'team': name,
+                                   'offense_epa': 0.0, 'defense_epa': 0.0})
+        kickoffs = scoreboard_kickoffs(self.schedules, self.feed, self.now)
+        result = forecast(history + self.schedules, team_games, self.now, kickoff_overrides=kickoffs)
+        self.assertEqual(result['games'][0]['kickoff_utc'], '2026-11-22T18:00:00+00:00')
 
     def test_detects_earlier_flex(self):
         result = scoreboard_kickoffs(self.schedules, self.feed, self.now)
