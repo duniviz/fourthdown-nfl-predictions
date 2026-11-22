@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-22T15:37:59.434663+00:00",
+  "generated_at_utc": "2026-11-22T17:28:22.755937+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -23,16 +23,41 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 8,
           "unmodeled_injuries": [
+            {
+              "player": "T.J. Sanders",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Skyler Bell",
+              "position": "WR",
+              "status": "Out"
+            },
             {
               "player": "Dorian Williams",
               "position": "LB",
               "status": "Out"
             },
             {
+              "player": "Mike Danna",
+              "position": "DE",
+              "status": "Out"
+            },
+            {
               "player": "Christian Benford",
               "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Jude Bowry",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Dalton Kincaid",
+              "position": "TE",
               "status": "Out"
             },
             {
@@ -46,16 +71,41 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 9,
           "unmodeled_injuries": [
+            {
+              "player": "Dante Trader Jr.",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Jaylin Simpson",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Caedan Wallace",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Jared Wayne",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Justin Joly",
+              "position": "TE",
+              "status": "Out"
+            },
             {
               "player": "Bradley Pinion",
               "position": "P",
               "status": "Out"
             },
             {
-              "player": "Jared Wayne",
-              "position": "WR",
+              "player": "Christian Haynes",
+              "position": "G",
               "status": "Out"
             },
             {
@@ -444,10 +494,40 @@
       "injury_adjustments": {
         "CAR": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 10,
           "unmodeled_injuries": [
+            {
+              "player": "Marco Wilson",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Ja'Tavion Sanders",
+              "position": "TE",
+              "status": "Out"
+            },
+            {
+              "player": "Bobby Okereke",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "AJ Dillon",
+              "position": "RB",
+              "status": "Out"
+            },
+            {
+              "player": "TeRah Edwards",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Sam Hecht",
+              "position": "C",
+              "status": "Out"
+            },
             {
               "player": "Brady Christensen",
               "position": "G",
@@ -462,11 +542,6 @@
               "player": "Jonathon Brooks",
               "position": "RB",
               "status": "Injured Reserve"
-            },
-            {
-              "player": "Bobby Okereke",
-              "position": "LB",
-              "status": "Out"
             }
           ]
         },
@@ -474,16 +549,31 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 8,
           "unmodeled_injuries": [
             {
-              "player": "Jaylinn Hawkins",
-              "position": "S",
+              "player": "Elijah Sarratt",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Adam Randall",
+              "position": "RB",
+              "status": "Out"
+            },
+            {
+              "player": "Emery Jones Jr.",
+              "position": "OT",
               "status": "Out"
             },
             {
               "player": "Nnamdi Madubuike",
               "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Jaylinn Hawkins",
+              "position": "S",
               "status": "Out"
             },
             {
@@ -876,31 +966,46 @@
       "injury_adjustments": {
         "CHI": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 5,
           "unmodeled_injuries": [
+            {
+              "player": "Jayden Loving",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Jordan McFadden",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Keyshaun Elliott",
+              "position": "LB",
+              "status": "Out"
+            },
             {
               "player": "Kyler Gordon",
               "position": "CB",
               "status": "Out"
-            },
-            {
-              "player": "Zavier Scott",
-              "position": "RB",
-              "status": "Injured Reserve"
             }
           ]
         },
         "NO": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 5,
+          "reported_out": 8,
           "unmodeled_injuries": [
             {
-              "player": "Asim Richards",
-              "position": "OT",
+              "player": "Pete Werner",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Audric Estime",
+              "position": "RB",
               "status": "Out"
             },
             {
@@ -909,13 +1014,18 @@
               "status": "Out"
             },
             {
-              "player": "Taliese Fuaga",
+              "player": "Asim Richards",
               "position": "OT",
               "status": "Out"
             },
             {
               "player": "Martin Emerson Jr.",
               "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Taliese Fuaga",
+              "position": "OT",
               "status": "Out"
             },
             {
@@ -1301,18 +1411,8 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 6,
+          "reported_out": 8,
           "unmodeled_injuries": [
-            {
-              "player": "Jalen Thompson",
-              "position": "S",
-              "status": "Injured Reserve"
-            },
-            {
-              "player": "DaRon Bland",
-              "position": "CB",
-              "status": "Injured Reserve"
-            },
             {
               "player": "P.J. Locke",
               "position": "S",
@@ -1329,9 +1429,29 @@
               "status": "Out"
             },
             {
+              "player": "Jaishawn Barham",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
               "player": "Tyler Booker",
               "position": "G",
               "status": "Out"
+            },
+            {
+              "player": "Jonathan Bullard",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Jalen Thompson",
+              "position": "S",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "DaRon Bland",
+              "position": "CB",
+              "status": "Injured Reserve"
             }
           ]
         },
@@ -1339,8 +1459,33 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 9,
           "unmodeled_injuries": [
+            {
+              "player": "Nicholas Singleton",
+              "position": "RB",
+              "status": "Out"
+            },
+            {
+              "player": "Jaylon Jones",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Jackie Marshall",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Brandon Crenshaw-Dickson",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
+              "player": "Mohamoud Diabate",
+              "position": "LB",
+              "status": "Out"
+            },
             {
               "player": "Jaylen Harrell",
               "position": "LB",
@@ -1739,8 +1884,38 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 8,
           "unmodeled_injuries": [
+            {
+              "player": "D.J. Reed",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Mekhi Wingo",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Tyrus Wheat",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Amen Ogbongbemiga",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Ennis Rakestraw Jr.",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Keith Abney II",
+              "position": "CB",
+              "status": "Out"
+            },
             {
               "player": "Cade Mays",
               "position": "C",
@@ -1755,19 +1930,39 @@
         },
         "TB": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 8,
           "unmodeled_injuries": [
-            {
-              "player": "Josh Hayes",
-              "position": "CB",
-              "status": "Injured Reserve"
-            },
             {
               "player": "Antoine Winfield Jr.",
               "position": "S",
               "status": "Out"
+            },
+            {
+              "player": "Billy Schrauth",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Trevor Keegan",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "DeMonte Capehart",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Ayden Garnes",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Josh Hayes",
+              "position": "CB",
+              "status": "Injured Reserve"
             },
             {
               "player": "Jalen McMillan",
@@ -2150,13 +2345,23 @@
       "injury_adjustments": {
         "KC": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 8,
           "unmodeled_injuries": [
             {
-              "player": "Jaylon Moore",
-              "position": "OT",
+              "player": "Omarr Norman-Lott",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Peter Woods",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Melvin Smith Jr.",
+              "position": "CB",
               "status": "Out"
             },
             {
@@ -2170,6 +2375,11 @@
               "status": "Out"
             },
             {
+              "player": "Jaylon Moore",
+              "position": "OT",
+              "status": "Out"
+            },
+            {
               "player": "Jared Wiley",
               "position": "TE",
               "status": "Injured Reserve"
@@ -2180,11 +2390,26 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 7,
+          "reported_out": 10,
           "unmodeled_injuries": [
+            {
+              "player": "Starling Thomas V",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Kingsley Eguakun",
+              "position": "C",
+              "status": "Out"
+            },
             {
               "player": "Jon Gaines II",
               "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Andrew Billings",
+              "position": "DT",
               "status": "Out"
             },
             {
@@ -3812,10 +4037,30 @@
       "injury_adjustments": {
         "PHI": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 7,
           "unmodeled_injuries": [
+            {
+              "player": "Smael Mondon Jr.",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Jake Majors",
+              "position": "C",
+              "status": "Out"
+            },
+            {
+              "player": "Mac McWilliams",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Ajani Cornelius",
+              "position": "OT",
+              "status": "Out"
+            },
             {
               "player": "Zack Baun",
               "position": "LB",
@@ -3830,10 +4075,30 @@
         },
         "PIT": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 4,
+          "reported_out": 10,
           "unmodeled_injuries": [
+            {
+              "player": "Kaden Wetjen",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Gabriel Rubio",
+              "position": "DE",
+              "status": "Out"
+            },
+            {
+              "player": "Sean Murphy-Bunting",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Eli Heidenreich",
+              "position": "RB",
+              "status": "Out"
+            },
             {
               "player": "Michael Pittman Jr.",
               "position": "WR",

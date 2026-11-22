@@ -77,14 +77,7 @@
       "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": 0.0087, \"defense_rank\": 19, \"games_used\": 9, \"offense_epa_rating\": -0.04, \"offense_rank\": 23, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": -2.2, \"avg_points_against\": 21.6, \"avg_points_for\": 19.4, \"games\": 5, \"results\": [{\"points_against\": 23, \"points_for\": 13, \"result\": \"L\", \"week\": 5}, {\"points_against\": 27, \"points_for\": 34, \"result\": \"W\", \"week\": 6}, {\"points_against\": 16, \"points_for\": 10, \"result\": \"L\", \"week\": 7}, {\"points_against\": 22, \"points_for\": 23, \"result\": \"W\", \"week\": 9}, {\"points_against\": 20, \"points_for\": 17, \"result\": \"L\", \"week\": 10}], \"wins\": 2}, \"team\": \"NO\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.022, \"defense_rank\": 10, \"games_used\": 9, \"offense_epa_rating\": 0.0144, \"offense_rank\": 11, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 2.0, \"avg_points_against\": 23.8, \"avg_points_for\": 25.8, \"games\": 5, \"results\": [{\"points_against\": 31, \"points_for\": 7, \"result\": \"L\", \"week\": 5}, {\"points_against\": 23, \"points_for\": 31, \"result\": \"W\", \"week\": 6}, {\"points_against\": 24, \"points_for\": 30, \"result\": \"W\", \"week\": 7}, {\"points_against\": 17, \"points_for\": 34, \"result\": \"W\", \"week\": 8}, {\"points_against\": 24, \"points_for\": 27, \"result\": \"W\", \"week\": 9}], \"wins\": 4}, \"team\": \"CHI\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 26, \"value\": 26.22}, \"away_offense\": {\"rank\": 16, \"value\": 22.44}, \"category\": \"total\", \"home_defense\": {\"rank\": 8, \"value\": 20.44}, \"home_offense\": {\"rank\": 7, \"value\": 26.78}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 23, \"value\": 5.69}, \"away_offense\": {\"rank\": 28, \"value\": 4.8}, \"category\": \"total\", \"home_defense\": {\"rank\": 29, \"value\": 5.94}, \"home_offense\": {\"rank\": 13, \"value\": 5.54}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 21, \"value\": 0.03}, \"away_offense\": {\"rank\": 22, \"value\": -0.04}, \"category\": \"epa\", \"home_defense\": {\"rank\": 8, \"value\": -0.02}, \"home_offense\": {\"rank\": 10, \"value\": 0.04}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 21, \"value\": 0.05}, \"away_offense\": {\"rank\": 20, \"value\": -0.0}, \"category\": \"epa\", \"home_defense\": {\"rank\": 9, \"value\": -0.02}, \"home_offense\": {\"rank\": 14, \"value\": 0.06}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 26, \"value\": 0.02}, \"away_offense\": {\"rank\": 27, \"value\": -0.1}, \"category\": \"epa\", \"home_defense\": {\"rank\": 20, \"value\": -0.03}, \"home_offense\": {\"rank\": 9, \"value\": 0.02}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 8, \"value\": 2.89}, \"away_offense\": {\"rank\": 20, \"value\": 2.56}, \"category\": \"negative\", \"home_defense\": {\"rank\": 6, \"value\": 2.89}, \"home_offense\": {\"rank\": 14, \"value\": 2.22}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 30, \"value\": 0.78}, \"away_offense\": {\"rank\": 27, \"value\": 1.67}, \"category\": \"negative\", \"home_defense\": {\"rank\": 19, \"value\": 1.11}, \"home_offense\": {\"rank\": 29, \"value\": 1.89}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 30, \"value\": 47.9}, \"away_offense\": {\"rank\": 9, \"value\": 43.0}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 1, \"value\": 22.8}, \"home_offense\": {\"rank\": 5, \"value\": 45.3}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 8, \"value\": 42.9}, \"away_offense\": {\"rank\": 6, \"value\": 72.2}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 3, \"value\": 30.8}, \"home_offense\": {\"rank\": 14, \"value\": 61.1}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 10, \"value\": 52.6}, \"away_offense\": {\"rank\": 5, \"value\": 67.7}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 14, \"value\": 56.0}, \"home_offense\": {\"rank\": 20, \"value\": 54.1}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -2.79, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 1.04, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"NO\", \"home\": \"CHI\", \"kickoff\": \"2026-11-22T18:00:00+00:00\", \"scores\": [23.8, 18.5]}",
       "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "Reid offers Saints farewell: 'Things don't always go the way you planned'",
-          "url": "https://www.espn.com/nfl/story/_/id/50543025/justin-reid-posts-saints-farewell-team-works-release",
-          "published_at_utc": "2026-11-21T09:01:06+00:00",
-          "publisher": "ESPN"
-        }
-      ]
+      "news": []
     },
     "2026_11_TEN_DAL": {
       "headline": "TEN at DAL: contrasting offenses shape the outlook",
@@ -112,15 +105,15 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Police investigating as man dies days after alleged incident at 49ers-Cowboys",
-          "url": "https://www.espn.com/nfl/story/_/id/50543613/police-investigate-man-death-incident-cowboys-game",
-          "published_at_utc": "2026-11-21T09:01:05+00:00",
+          "title": "Police investigating whether Titans' Harrell assaulted driver before crash",
+          "url": "https://www.espn.com/nfl/story/_/id/50558496/police-probing-whether-titans-de-harrell-assaulted-driver",
+          "published_at_utc": "2026-11-22T15:04:47+00:00",
           "publisher": "ESPN"
         },
         {
           "title": "What to know to set your lineup: Opportunity knocking for these Titans, Broncos",
           "url": "https://www.espn.com/fantasy/football/story/_/id/50531472/fantasy-football-start-sit-week-11-need-know",
-          "published_at_utc": "2026-11-21T12:54:01+00:00",
+          "published_at_utc": "2026-11-22T12:54:34+00:00",
           "publisher": "ESPN"
         }
       ]
@@ -175,14 +168,7 @@
       "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": 0.0547, \"defense_rank\": 29, \"games_used\": 10, \"offense_epa_rating\": -0.0778, \"offense_rank\": 30, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": -10.2, \"avg_points_against\": 25.4, \"avg_points_for\": 15.2, \"games\": 5, \"results\": [{\"points_against\": 16, \"points_for\": 18, \"result\": \"W\", \"week\": 6}, {\"points_against\": 30, \"points_for\": 16, \"result\": \"L\", \"week\": 7}, {\"points_against\": 30, \"points_for\": 33, \"result\": \"W\", \"week\": 8}, {\"points_against\": 17, \"points_for\": 3, \"result\": \"L\", \"week\": 9}, {\"points_against\": 34, \"points_for\": 6, \"result\": \"L\", \"week\": 10}], \"wins\": 2}, \"team\": \"ARI\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.0544, \"defense_rank\": 6, \"games_used\": 9, \"offense_epa_rating\": 0.065, \"offense_rank\": 5, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 8.0, \"avg_points_against\": 15.8, \"avg_points_for\": 23.8, \"games\": 5, \"results\": [{\"points_against\": 6, \"points_for\": 22, \"result\": \"W\", \"week\": 6}, {\"points_against\": 20, \"points_for\": 3, \"result\": \"L\", \"week\": 7}, {\"points_against\": 28, \"points_for\": 24, \"result\": \"L\", \"week\": 8}, {\"points_against\": 12, \"points_for\": 35, \"result\": \"W\", \"week\": 9}, {\"points_against\": 13, \"points_for\": 35, \"result\": \"W\", \"week\": 10}], \"wins\": 3}, \"team\": \"KC\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 31, \"value\": 28.9}, \"away_offense\": {\"rank\": 29, \"value\": 18.4}, \"category\": \"total\", \"home_defense\": {\"rank\": 3, \"value\": 17.33}, \"home_offense\": {\"rank\": 8, \"value\": 26.33}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 25, \"value\": 5.74}, \"away_offense\": {\"rank\": 30, \"value\": 4.71}, \"category\": \"total\", \"home_defense\": {\"rank\": 6, \"value\": 5.0}, \"home_offense\": {\"rank\": 2, \"value\": 6.47}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 31, \"value\": 0.09}, \"away_offense\": {\"rank\": 24, \"value\": -0.05}, \"category\": \"epa\", \"home_defense\": {\"rank\": 6, \"value\": -0.08}, \"home_offense\": {\"rank\": 5, \"value\": 0.12}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 32, \"value\": 0.22}, \"away_offense\": {\"rank\": 23, \"value\": -0.06}, \"category\": \"epa\", \"home_defense\": {\"rank\": 6, \"value\": -0.08}, \"home_offense\": {\"rank\": 6, \"value\": 0.15}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 13, \"value\": -0.04}, \"away_offense\": {\"rank\": 22, \"value\": -0.04}, \"category\": \"epa\", \"home_defense\": {\"rank\": 4, \"value\": -0.08}, \"home_offense\": {\"rank\": 4, \"value\": 0.08}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 21, \"value\": 2.1}, \"away_offense\": {\"rank\": 22, \"value\": 2.8}, \"category\": \"negative\", \"home_defense\": {\"rank\": 27, \"value\": 1.89}, \"home_offense\": {\"rank\": 2, \"value\": 1.33}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 28, \"value\": 0.8}, \"away_offense\": {\"rank\": 11, \"value\": 1.0}, \"category\": \"negative\", \"home_defense\": {\"rank\": 13, \"value\": 1.33}, \"home_offense\": {\"rank\": 2, \"value\": 0.67}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 25, \"value\": 44.5}, \"away_offense\": {\"rank\": 23, \"value\": 37.3}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 11, \"value\": 36.8}, \"home_offense\": {\"rank\": 14, \"value\": 40.7}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 14, \"value\": 46.7}, \"away_offense\": {\"rank\": 13, \"value\": 62.5}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 7, \"value\": 42.1}, \"home_offense\": {\"rank\": 16, \"value\": 57.1}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 27, \"value\": 69.4}, \"away_offense\": {\"rank\": 29, \"value\": 47.1}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 2, \"value\": 34.6}, \"home_offense\": {\"rank\": 7, \"value\": 66.7}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -5.95, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 5.39, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"ARI\", \"home\": \"KC\", \"kickoff\": \"2026-11-22T18:00:00+00:00\", \"scores\": [28.1, 15.3]}",
       "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "Chiefs again without RB Walker against Cardinals",
-          "url": "https://www.espn.com/nfl/story/_/id/50543014/chiefs-expect-kenneth-walker-iii-vs-cardinals",
-          "published_at_utc": "2026-11-21T09:01:06+00:00",
-          "publisher": "ESPN"
-        }
-      ]
+      "news": []
     },
     "2026_11_NYJ_LAC": {
       "headline": "NYJ at LAC: a forecast with almost no separation",
@@ -234,14 +220,7 @@
       "kickoff_utc": "2026-11-22T21:25:00+00:00",
       "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": -0.0572, \"defense_rank\": 5, \"games_used\": 9, \"offense_epa_rating\": 0.0724, \"offense_rank\": 3, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 14.8, \"avg_points_against\": 18.2, \"avg_points_for\": 33.0, \"games\": 5, \"results\": [{\"points_against\": 17, \"points_for\": 19, \"result\": \"W\", \"week\": 5}, {\"points_against\": 34, \"points_for\": 31, \"result\": \"L\", \"week\": 6}, {\"points_against\": 7, \"points_for\": 42, \"result\": \"W\", \"week\": 8}, {\"points_against\": 10, \"points_for\": 33, \"result\": \"W\", \"week\": 9}, {\"points_against\": 23, \"points_for\": 40, \"result\": \"W\", \"week\": 10}], \"wins\": 4}, \"team\": \"JAX\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.0087, \"defense_rank\": 13, \"games_used\": 9, \"offense_epa_rating\": 0.0045, \"offense_rank\": 14, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 0.8, \"avg_points_against\": 23.4, \"avg_points_for\": 24.2, \"games\": 5, \"results\": [{\"points_against\": 27, \"points_for\": 27, \"result\": \"T\", \"week\": 5}, {\"points_against\": 34, \"points_for\": 27, \"result\": \"L\", \"week\": 6}, {\"points_against\": 21, \"points_for\": 27, \"result\": \"W\", \"week\": 7}, {\"points_against\": 11, \"points_for\": 19, \"result\": \"W\", \"week\": 9}, {\"points_against\": 24, \"points_for\": 21, \"result\": \"L\", \"week\": 10}], \"wins\": 2}, \"team\": \"NYG\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 2, \"value\": 16.0}, \"away_offense\": {\"rank\": 4, \"value\": 29.89}, \"category\": \"total\", \"home_defense\": {\"rank\": 12, \"value\": 21.78}, \"home_offense\": {\"rank\": 14, \"value\": 22.56}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 20, \"value\": 5.5}, \"away_offense\": {\"rank\": 6, \"value\": 6.06}, \"category\": \"total\", \"home_defense\": {\"rank\": 7, \"value\": 5.12}, \"home_offense\": {\"rank\": 19, \"value\": 5.29}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 4, \"value\": -0.09}, \"away_offense\": {\"rank\": 3, \"value\": 0.14}, \"category\": \"epa\", \"home_defense\": {\"rank\": 13, \"value\": -0.0}, \"home_offense\": {\"rank\": 12, \"value\": 0.02}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 5, \"value\": -0.09}, \"away_offense\": {\"rank\": 2, \"value\": 0.27}, \"category\": \"epa\", \"home_defense\": {\"rank\": 11, \"value\": -0.01}, \"home_offense\": {\"rank\": 13, \"value\": 0.06}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 3, \"value\": -0.09}, \"away_offense\": {\"rank\": 12, \"value\": 0.0}, \"category\": \"epa\", \"home_defense\": {\"rank\": 25, \"value\": 0.01}, \"home_offense\": {\"rank\": 21, \"value\": -0.04}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 25, \"value\": 1.89}, \"away_offense\": {\"rank\": 6, \"value\": 1.56}, \"category\": \"negative\", \"home_defense\": {\"rank\": 26, \"value\": 1.89}, \"home_offense\": {\"rank\": 27, \"value\": 3.11}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 3, \"value\": 1.67}, \"away_offense\": {\"rank\": 5, \"value\": 0.78}, \"category\": \"negative\", \"home_defense\": {\"rank\": 16, \"value\": 1.22}, \"home_offense\": {\"rank\": 22, \"value\": 1.33}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 5, \"value\": 33.7}, \"away_offense\": {\"rank\": 3, \"value\": 47.3}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 14, \"value\": 39.5}, \"home_offense\": {\"rank\": 12, \"value\": 41.0}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 6, \"value\": 40.0}, \"away_offense\": {\"rank\": 15, \"value\": 57.1}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 9, \"value\": 44.4}, \"home_offense\": {\"rank\": 3, \"value\": 80.0}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 6, \"value\": 47.8}, \"away_offense\": {\"rank\": 13, \"value\": 62.1}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 32, \"value\": 81.0}, \"home_offense\": {\"rank\": 15, \"value\": 60.7}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": 2.86, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": -2.37, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"JAX\", \"home\": \"NYG\", \"kickoff\": \"2026-11-22T21:25:00+00:00\", \"scores\": [20.4, 24.1]}",
       "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "Giants' Abdul Carter on lack of sacks: 'I've got to do more'",
-          "url": "https://www.espn.com/nfl/story/_/id/50522936/giants-abdul-carter-lack-sacks",
-          "published_at_utc": "2026-11-21T12:54:07+00:00",
-          "publisher": "ESPN"
-        }
-      ]
+      "news": []
     },
     "2026_11_LV_DEN": {
       "headline": "LV at DEN: recent momentum meets the model",
@@ -269,15 +248,9 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Raiders TE Bowers (ankle, quad) questionable vs. Broncos",
-          "url": "https://www.espn.com/nfl/story/_/id/50543720/raiders-te-brock-bowers-ankle-quad-listed-questionable",
-          "published_at_utc": "2026-11-21T09:01:05+00:00",
-          "publisher": "ESPN"
-        },
-        {
           "title": "What to know to set your lineup: Opportunity knocking for these Titans, Broncos",
           "url": "https://www.espn.com/fantasy/football/story/_/id/50531472/fantasy-football-start-sit-week-11-need-know",
-          "published_at_utc": "2026-11-21T12:54:01+00:00",
+          "published_at_utc": "2026-11-22T12:54:34+00:00",
           "publisher": "ESPN"
         }
       ]
@@ -334,15 +307,9 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Police investigating as man dies days after alleged incident at 49ers-Cowboys",
-          "url": "https://www.espn.com/nfl/story/_/id/50543613/police-investigate-man-death-incident-cowboys-game",
-          "published_at_utc": "2026-11-21T09:01:05+00:00",
-          "publisher": "ESPN"
-        },
-        {
           "title": "49ers' Fred Warner will represent his heritage in Mexico City",
           "url": "https://www.espn.com/nfl/story/_/id/50535108/san-francisco-49ers-fred-warner-mexican-heritage-dpoy",
-          "published_at_utc": "2026-11-21T12:51:49+00:00",
+          "published_at_utc": "2026-11-22T15:41:22+00:00",
           "publisher": "ESPN"
         }
       ]
@@ -373,15 +340,9 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Back at practice again, Bengals QB Burrow should be at full strength for MNF",
-          "url": "https://www.espn.com/nfl/story/_/id/50544261/burrow-practices-again-full-strength-mnf",
-          "published_at_utc": "2026-11-21T09:01:06+00:00",
-          "publisher": "ESPN"
-        },
-        {
           "title": "❤️ Bengals pay tribute to Fiona the hippo after her death",
           "url": "https://www.espn.com/nfl/story/_/id/50534625/cincinnati-bengals-reds-fiona-hippo",
-          "published_at_utc": "2026-11-21T09:01:05+00:00",
+          "published_at_utc": "2026-11-22T15:04:47+00:00",
           "publisher": "ESPN"
         }
       ]
