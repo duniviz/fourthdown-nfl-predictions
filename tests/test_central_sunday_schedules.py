@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def events(name):
     text = (ROOT / '.github/workflows' / name).read_text()
-    return re.findall(r"- cron: '([^']+)'\\s*\\n\\s*timezone: (\\S+)", text)
+    return re.findall(r"- cron: '([^']+)'\s*\n\s*timezone: (\S+)", text)
 
 
 class SundayCentralScheduleTests(unittest.TestCase):
