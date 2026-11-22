@@ -89,3 +89,5 @@ jobs:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
         run: python -m live.pregame_cycle
+
+# Re-check pregame locks after the verified 2026-11-22 kickoff correction.
