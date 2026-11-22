@@ -6,6 +6,8 @@ on:
       - 'assets/fd-game-preview.js'
       - 'tests/test_game_preview.js'
       - 'tests/test_game_preview_browser.js'
+      - 'tests/test_matchup_news.py'
+      - 'tools/generate_free_game_previews.py'
       - '.github/workflows/test-game-preview.yml'
   push:
     branches: [main]
@@ -14,6 +16,8 @@ on:
       - 'assets/fd-game-preview.js'
       - 'tests/test_game_preview.js'
       - 'tests/test_game_preview_browser.js'
+      - 'tests/test_matchup_news.py'
+      - 'tools/generate_free_game_previews.py'
       - '.github/workflows/test-game-preview.yml'
 permissions:
   contents: read
@@ -26,6 +30,23 @@ jobs:
         with:
           node-version: '20'
       - run: node tests/test_game_preview.js
+      - run: python -m unittest discover -s tests -p test_matchup_news.py -v
+      - name: Check live matchup headline feed
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from tools.generate_free_game_previews import matchup_news
+          games=json.load(open('data/live-v2.json')).get('games',[])
+          now=datetime.now(timezone.utc)
+          upcoming=[g for g in games if datetime.fromisoformat(g['kickoff_utc'].replace('Z','+00:00'))>now]
+          if upcoming:
+              g=upcoming[0]
+              items=matchup_news(g,now)
+              print('Headline feed:', g['away'], '@', g['home'], 'matching headlines:', len(items))
+          else:
+              print('No upcoming games available for optional live feed check')
+          PY
       - run: npm install --no-save playwright
       - run: |
           python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-preview.log 2>&1 &

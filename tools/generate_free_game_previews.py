@@ -4,6 +4,8 @@ import json
 import urllib.request
 import xml.etree.ElementTree as ET
 import re
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlencode, urlparse
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
 from pathlib import Path
@@ -23,6 +25,42 @@ TEAM_NAMES = {
 "SEA":"Seattle Seahawks","SF":"San Francisco 49ers","TB":"Tampa Bay Buccaneers",
 "TEN":"Tennessee Titans","WSH":"Washington Commanders"
 }
+
+def matchup_news(game, now, fetch=None):
+    """Read recent matchup-specific Google News RSS headlines, not articles."""
+    aliases={"JAC":"JAX","WAS":"WSH","LAR":"LA"}
+    away=TEAM_NAMES.get(aliases.get(game.get("away"),game.get("away")))
+    home=TEAM_NAMES.get(aliases.get(game.get("home"),game.get("home")))
+    if not away or not home: return []
+    query=urlencode({"q":away+" "+home+" NFL matchup", "hl":"en-US", "gl":"US", "ceid":"US:en"})
+    url="https://news.google.com/rss/search?"+query
+    try:
+        if fetch is None:
+            req=urllib.request.Request(url,headers={"User-Agent":"FOURTHDOWN-News/1.0"})
+            with urllib.request.urlopen(req,timeout=5) as response:
+                raw=response.read(400000)
+        else: raw=fetch(url)
+        root=ET.fromstring(raw)
+        result=[]; seen=set()
+        for item in root.findall(".//item"):
+            title=(item.findtext("title") or "").strip()
+            link=(item.findtext("link") or "").strip()
+            publisher=(item.findtext("source") or "News").strip()
+            try: published=parsedate_to_datetime(item.findtext("pubDate") or "").astimezone(timezone.utc)
+            except (TypeError,ValueError,OverflowError): continue
+            if not 0 <= (now-published).total_seconds() <= 7*86400: continue
+            parsed=urlparse(link)
+            if parsed.scheme!="https" or parsed.hostname!="news.google.com": continue
+            # Both nicknames in the title avoid unrelated single-team articles.
+            title_lower=title.lower()
+            if not all(re.search(r"(?<!\w)"+re.escape(name.split()[-1].lower())+r"(?!\w)",title_lower) for name in (away,home)): continue
+            if not title or title_lower in seen: continue
+            seen.add(title_lower)
+            result.append({"title":title[:180],"url":link,"published_at_utc":published.isoformat(),"publisher":publisher[:100]})
+            if len(result)>=4: break
+        return result
+    except (OSError,ET.ParseError,ValueError):
+        return []
 
 def fetch_news(now):
     """Public RSS headlines only; never copy articles or infer injury facts."""
@@ -103,23 +141,33 @@ def main():
     updated={}
     now=datetime.now(timezone.utc)
     articles=fetch_news(now)
+    upcoming=[]
+    for game in forecasts.get("games",[]):
+        try:
+            kickoff=datetime.fromisoformat(game.get("kickoff_utc","").replace("Z","+00:00"))
+            if kickoff > now and game.get("game_id"): upcoming.append(game)
+        except (TypeError,ValueError): continue
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        found=list(pool.map(lambda game: matchup_news(game,now),upcoming))
+    matchup_articles={game["game_id"]:news for game,news in zip(upcoming,found)}
     for game in forecasts.get("games",[]):
         gid=game.get("game_id")
         if not gid or not game.get("kickoff_utc") or not game.get("analysis"):
             continue
         kickoff=datetime.fromisoformat(game["kickoff_utc"].replace("Z","+00:00"))
         prior=old.get(gid)
-        news=relevant_news(game,articles)
+        news=matchup_articles.get(gid,[])+relevant_news(game,articles)
+        news=news[:4]
         # Preserve existing editorial writing when projections and kickoff have not changed.
         signature=json.dumps({"kickoff":game["kickoff_utc"],"home":game["home"],
           "away":game["away"],"scores":[game["projected_home_score"],game["projected_away_score"]],
           "analysis":game["analysis"]},sort_keys=True)
-        if prior and (prior.get("free_evidence_signature")==signature or
-                      (not prior.get("free_evidence_signature") and prior.get("kickoff_utc")==game["kickoff_utc"])):
-            updated[gid]={**prior,"news":news if articles else prior.get("news",[])}
-            continue
         if kickoff <= now:
             if prior: updated[gid]=prior
+            continue
+        if prior and (prior.get("free_evidence_signature")==signature or
+                      (not prior.get("free_evidence_signature") and prior.get("kickoff_utc")==game["kickoff_utc"])):
+            updated[gid]={**prior,"news":news if news else prior.get("news",[])}
             continue
         updated[gid]={**describe(game),"generated_at_utc":now.isoformat(),
             "kickoff_utc":game["kickoff_utc"],"free_evidence_signature":signature,
@@ -133,3 +181,4 @@ def main():
 
 if __name__=="__main__":
     main()
+
