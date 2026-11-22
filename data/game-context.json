@@ -42,6 +42,13 @@
           },
           {
             "detail": "out",
+            "player": "Carson Beck",
+            "position": "QB",
+            "status": "Out",
+            "team": "ARI"
+          },
+          {
+            "detail": "out",
             "player": "Jon Gaines II",
             "position": "G",
             "status": "Out",
@@ -52,13 +59,6 @@
             "player": "Zachary Carter",
             "position": "DT",
             "status": "Injured Reserve",
-            "team": "ARI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Carson Beck",
-            "position": "QB",
-            "status": "Questionable",
             "team": "ARI"
           },
           {
@@ -188,6 +188,10 @@
         "ARI": {
           "confirmed_out": [
             {
+              "player": "Carson Beck",
+              "status": "Out"
+            },
+            {
               "player": "Gardner Minshew II",
               "status": "Injured Reserve"
             }
@@ -237,36 +241,36 @@
         "event_id": "401873068",
         "players": [
           {
-            "detail": "out",
+            "detail": "Injured Reserve",
+            "player": "Brady Christensen",
+            "position": "G",
+            "status": "Injured Reserve",
+            "team": "CAR"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Isaiah Simmons",
             "position": "S",
-            "status": "Out",
+            "status": "Injured Reserve",
             "team": "CAR"
           },
           {
             "detail": "questionable",
-            "player": "Tommy Tremble",
-            "position": "TE",
+            "player": "Mike Jackson",
+            "position": "CB",
             "status": "Questionable",
             "team": "CAR"
           },
           {
             "detail": "Injured Reserve",
-            "player": "Mike Jackson",
-            "position": "CB",
+            "player": "Jonathon Brooks",
+            "position": "RB",
             "status": "Injured Reserve",
             "team": "CAR"
           },
           {
-            "detail": "out",
-            "player": "Bobby Okereke",
-            "position": "LB",
-            "status": "Out",
-            "team": "CAR"
-          },
-          {
             "detail": "questionable",
-            "player": "Darren Waller",
+            "player": "Tommy Tremble",
             "position": "TE",
             "status": "Questionable",
             "team": "CAR"
@@ -653,17 +657,17 @@
             "team": "NYG"
           },
           {
+            "detail": "out",
+            "player": "Danny Striggow",
+            "position": "DE",
+            "status": "Out",
+            "team": "JAX"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "B.J. Green II",
             "position": "DE",
             "status": "Injured Reserve",
-            "team": "JAX"
-          },
-          {
-            "detail": "questionable",
-            "player": "Danny Striggow",
-            "position": "DE",
-            "status": "Questionable",
             "team": "JAX"
           },
           {
@@ -1110,6 +1114,13 @@
             "team": "BUF"
           },
           {
+            "detail": "questionable",
+            "player": "Darrell Baker Jr.",
+            "position": "CB",
+            "status": "Questionable",
+            "team": "MIA"
+          },
+          {
             "detail": "doubtful",
             "player": "Jaylin Simpson",
             "position": "S",
@@ -1135,13 +1146,6 @@
             "player": "Marcellas Dial Jr.",
             "position": "CB",
             "status": "Questionable",
-            "team": "MIA"
-          },
-          {
-            "detail": "out",
-            "player": "Jared Wayne",
-            "position": "WR",
-            "status": "Out",
             "team": "MIA"
           }
         ],
@@ -1680,17 +1684,24 @@
         "event_id": "401873074",
         "players": [
           {
-            "detail": "questionable",
-            "player": "Isas Waxter",
+            "detail": "Injured Reserve",
+            "player": "Rodney Shelley",
             "position": "CB",
+            "status": "Injured Reserve",
+            "team": "LAC"
+          },
+          {
+            "detail": "questionable",
+            "player": "Trey Pipkins III",
+            "position": "OT",
             "status": "Questionable",
             "team": "LAC"
           },
           {
-            "detail": "out",
-            "player": "Rodney Shelley",
+            "detail": "questionable",
+            "player": "Isas Waxter",
             "position": "CB",
-            "status": "Out",
+            "status": "Questionable",
             "team": "LAC"
           },
           {
@@ -1705,13 +1716,6 @@
             "player": "Tarheeb Still",
             "position": "CB",
             "status": "Questionable",
-            "team": "LAC"
-          },
-          {
-            "detail": "out",
-            "player": "Daiyan Henley",
-            "position": "LB",
-            "status": "Out",
             "team": "LAC"
           },
           {
@@ -1906,16 +1910,23 @@
         "event_id": "401873076",
         "players": [
           {
-            "detail": "out",
+            "detail": "Injured Reserve",
             "player": "Zack Baun",
             "position": "LB",
-            "status": "Out",
+            "status": "Injured Reserve",
+            "team": "PHI"
+          },
+          {
+            "detail": "questionable",
+            "player": "Will Shipley",
+            "position": "RB",
+            "status": "Questionable",
             "team": "PHI"
           },
           {
             "detail": "Injured Reserve",
-            "player": "Will Shipley",
-            "position": "RB",
+            "player": "Dontayvion Wicks",
+            "position": "WR",
             "status": "Injured Reserve",
             "team": "PHI"
           },
@@ -1927,18 +1938,25 @@
             "team": "PHI"
           },
           {
-            "detail": "out",
-            "player": "Dontayvion Wicks",
-            "position": "WR",
-            "status": "Out",
-            "team": "PHI"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Jalen Hurts",
             "position": "QB",
             "status": "Injured Reserve",
             "team": "PHI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Michael Pittman Jr.",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "PIT"
+          },
+          {
+            "detail": "questionable",
+            "player": "Roman Wilson",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "PIT"
           },
           {
             "detail": "out",
@@ -1959,20 +1977,6 @@
             "player": "Patrick Queen",
             "position": "LB",
             "status": "Questionable",
-            "team": "PIT"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Roman Wilson",
-            "position": "WR",
-            "status": "Injured Reserve",
-            "team": "PIT"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Michael Pittman Jr.",
-            "position": "WR",
-            "status": "Injured Reserve",
             "team": "PIT"
           }
         ],
@@ -2137,6 +2141,13 @@
         "event_id": "401873072",
         "players": [
           {
+            "detail": "Injured Reserve",
+            "player": "Cade Mays",
+            "position": "C",
+            "status": "Injured Reserve",
+            "team": "DET"
+          },
+          {
             "detail": "questionable",
             "player": "D.J. Reed",
             "position": "CB",
@@ -2148,13 +2159,6 @@
             "player": "Sione Vaki",
             "position": "RB",
             "status": "Questionable",
-            "team": "DET"
-          },
-          {
-            "detail": "out",
-            "player": "Cade Mays",
-            "position": "C",
-            "status": "Out",
             "team": "DET"
           },
           {
@@ -2363,17 +2367,24 @@
         "event_id": "401873073",
         "players": [
           {
-            "detail": "out",
-            "player": "P.J. Locke",
-            "position": "S",
-            "status": "Out",
-            "team": "DAL"
-          },
-          {
             "detail": "Injured Reserve",
             "player": "Jalen Thompson",
             "position": "S",
             "status": "Injured Reserve",
+            "team": "DAL"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "DaRon Bland",
+            "position": "CB",
+            "status": "Injured Reserve",
+            "team": "DAL"
+          },
+          {
+            "detail": "out",
+            "player": "P.J. Locke",
+            "position": "S",
+            "status": "Out",
             "team": "DAL"
           },
           {
@@ -2391,11 +2402,11 @@
             "team": "DAL"
           },
           {
-            "detail": "questionable",
-            "player": "Jaishawn Barham",
+            "detail": "Injured Reserve",
+            "player": "Jaylen Harrell",
             "position": "LB",
-            "status": "Questionable",
-            "team": "DAL"
+            "status": "Injured Reserve",
+            "team": "TEN"
           },
           {
             "detail": "Injured Reserve",
@@ -2423,13 +2434,6 @@
             "player": "Anthony Hill Jr.",
             "position": "LB",
             "status": "Questionable",
-            "team": "TEN"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Fernando Carmona",
-            "position": "G",
-            "status": "Injured Reserve",
             "team": "TEN"
           }
         ],
@@ -2585,6 +2589,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-21T19:11:25Z",
+  "generated_at_utc": "2026-11-22T01:15:19Z",
   "schema_version": 1
 }
