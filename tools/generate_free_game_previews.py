@@ -9,6 +9,10 @@ from urllib.parse import urlencode, urlparse
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
 from pathlib import Path
+try:
+    from tools.sourced_matchup_context import collect as collect_sourced_context
+except ModuleNotFoundError:
+    from sourced_matchup_context import collect as collect_sourced_context
 
 ROOT = Path(__file__).resolve().parents[1]
 FORECAST = ROOT / "data/live-v2.json"
@@ -150,6 +154,13 @@ def main():
     with ThreadPoolExecutor(max_workers=4) as pool:
         found=list(pool.map(lambda game: matchup_news(game,now),upcoming))
     matchup_articles={game["game_id"]:news for game,news in zip(upcoming,found)}
+    try:
+        scoreboard=json.loads((ROOT/"data/espn-scoreboard-backup.json").read_text())
+        sourced=collect_sourced_context(upcoming,scoreboard,now)
+        print("ESPN sourced matchups:",sum(bool(x) for x in sourced.values()))
+    except Exception as exc:  # Optional context must never block the forecast refresh.
+        print("Optional ESPN context unavailable:",type(exc).__name__)
+        sourced={}
     for game in forecasts.get("games",[]):
         gid=game.get("game_id")
         if not gid or not game.get("kickoff_utc") or not game.get("analysis"):
@@ -167,11 +178,13 @@ def main():
             continue
         if prior and (prior.get("free_evidence_signature")==signature or
                       (not prior.get("free_evidence_signature") and prior.get("kickoff_utc")==game["kickoff_utc"])):
-            updated[gid]={**prior,"news":news if news else prior.get("news",[])}
+            updated[gid]={**prior,"news":news if news else prior.get("news",[]),
+                          "external_context":sourced.get(gid) or prior.get("external_context")}
             continue
         updated[gid]={**describe(game),"generated_at_utc":now.isoformat(),
             "kickoff_utc":game["kickoff_utc"],"free_evidence_signature":signature,
-            "source":"Free evidence-based model commentary (not generative AI)","news":news}
+            "source":"Free evidence-based model commentary (not generative AI)","news":news,
+            "external_context":sourced.get(gid) or (prior or {}).get("external_context")}
     result={"schema_version":1,"games":updated}
     serialized=json.dumps(result,indent=2,ensure_ascii=False)+"\n"
     if not OUTPUT.exists() or OUTPUT.read_text()!=serialized:
@@ -181,4 +194,5 @@ def main():
 
 if __name__=="__main__":
     main()
+
 

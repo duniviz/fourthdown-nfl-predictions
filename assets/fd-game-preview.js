@@ -47,6 +47,18 @@ function render(id,data,now=Date.now()){
  html+='<section class="card"><h2>Model projection</h2><div class="scores"><div class="score">'+away+'<strong>'+num(p.projected_away_score)+'</strong></div><div class="score">'+home+'<strong>'+num(p.projected_home_score)+'</strong></div></div><p>Projected total: <b>'+num(p.projected_total)+'</b> · Projected margin: <b>'+home+' '+signed(p.projected_margin_home)+'</b></p><p class="muted">Research forecast; scores are estimates, not guaranteed outcomes.</p></section>';
  const ml=p.game_ml_shadow?.markets||{}, mm=ml.game_margin_home?.candidate, mt=ml.game_total?.candidate;
  if(finite(mm)&&finite(mt)&&Number(mt)>=Math.abs(Number(mm))){html+='<section class="card"><h2>ML research estimate</h2><div class="scores"><div class="score">'+away+'<strong>'+num((Number(mt)-Number(mm))/2)+'</strong></div><div class="score">'+home+'<strong>'+num((Number(mt)+Number(mm))/2)+'</strong></div></div><p>Projected total: <b>'+num(mt)+'</b></p><p class="muted">This research estimate may differ from the ML model selected for the game card.</p></section>';}
+ const external=editor?.external_context, extKick=Date.parse(external?.kickoff_utc||'');
+ if(Number.isFinite(extKick)&&Math.abs(extKick-kick)<=900000){
+  const ep=external.predictor,at=Date.parse(ep?.retrieved_at_utc||'');
+  const safeUrl=url=>{try{const u=new URL(url);return u.protocol==='https:'&&u.hostname==='www.espn.com'}catch(e){return false}};
+  if(ep?.source==='ESPN Matchup Predictor'&&finite(ep.home_pct)&&finite(ep.away_pct)&&Number(ep.home_pct)>=0&&Number(ep.home_pct)<=100&&Number(ep.away_pct)>=0&&Number(ep.away_pct)<=100&&Math.abs(Number(ep.home_pct)+Number(ep.away_pct)-100)<=2&&Number.isFinite(at)&&at<=now&&at<kick&&safeUrl(ep.url)){
+   html+='<section class="card"><h2>ESPN’s matchup predictor</h2><div class="scores"><div class="score">'+away+'<strong>'+num(ep.away_pct)+'%</strong></div><div class="score">'+home+'<strong>'+num(ep.home_pct)+'%</strong></div></div><p class="muted">ESPN’s estimate of each team’s chance to win · retrieved '+esc(time(ep.retrieved_at_utc))+' · <a href="'+esc(ep.url)+'" target="_blank" rel="noopener noreferrer">View source</a></p></section>';
+  }
+  const article=external.article, published=Date.parse(article?.published_at_utc||''),modified=Date.parse(article?.updated_at_utc||'');
+  if(article&&typeof article.excerpt==='string'&&article.excerpt.trim().split(/\s+/).length<=20&&Number.isFinite(published)&&Number.isFinite(modified)&&published<=now&&modified<=now&&modified<kick&&safeUrl(article.url)){
+   html+='<section class="card"><h2>From the game preview</h2><p>“'+esc(article.excerpt)+'”</p><p class="muted">'+esc(article.source||'ESPN')+' · updated '+esc(time(article.updated_at_utc))+' · <a href="'+esc(article.url)+'" target="_blank" rel="noopener noreferrer">Read the preview</a></p></section>';
+  }
+ }
  const odds=(data.odds?.games||[]).find(o=>canon(o.home)===canon(p.home)&&canon(o.away)===canon(p.away)&&Math.abs(Date.parse(o.commence_time)-kick)<=15*60000&&Date.parse(o.observed_at_utc)<kick&&Date.parse(o.observed_at_utc)<=now);
  if(odds){html+='<section class="card"><h2>DraftKings lines</h2><div class="cols"><div>Spread<br><strong>'+home+' '+(finite(odds.home_spread)?(Number(odds.home_spread)===0?'PK':signed(odds.home_spread)):'Unavailable')+'</strong></div><div>Total<br><strong>'+(finite(odds.total)?num(odds.total):'Unavailable')+'</strong></div></div><p class="muted">Observed '+esc(time(odds.observed_at_utc))+' · Lines can change; verify before use.</p></section>';}
  const rank=v=>finite(v)?'#'+esc(v):'—';
@@ -60,3 +72,4 @@ function render(id,data,now=Date.now()){
 async function start(){const id=new URLSearchParams(location.search).get('game')||'';const paths=['live-v2','ai-game-previews','dk-game-odds','injuries'];const values=await Promise.all(paths.map(p=>fetch('data/'+p+'.json?ts='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));document.getElementById('preview').innerHTML=render(id,{live:values[0],editorial:values[1],odds:values[2],injuries:values[3]});}
 return {render,start,overview};
 });
+

@@ -1,0 +1,39 @@
+name: Test sourced matchup previews
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/test-sourced-matchup.yml'
+      - 'tools/sourced_matchup_context.py'
+      - 'tools/generate_free_game_previews.py'
+      - 'tests/test_sourced_matchup_context.py'
+      - 'assets/fd-game-preview.js'
+      - 'tests/test_game_preview.js'
+      - 'game-preview.html'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_sourced_matchup_context.py' -v
+      - run: python -m unittest discover -s tests -p 'test_matchup_news.py' -v
+      - run: node tests/test_game_preview.js
+      - name: Check current external source
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from tools.sourced_matchup_context import collect
+          now=datetime.now(timezone.utc)
+          games=json.load(open('data/live-v2.json')).get('games',[])
+          upcoming=[g for g in games if datetime.fromisoformat(g['kickoff_utc'].replace('Z','+00:00'))>now]
+          if upcoming:
+              game=upcoming[0]
+              r=collect([game],json.load(open('data/espn-scoreboard-backup.json')),now).get(game['game_id'])
+              print('Game:',game['game_id'],'prediction available:',bool(r and r['predictor']),'article extract available:',bool(r and r['article']))
+          else: print('No upcoming game to inspect')
+          PY

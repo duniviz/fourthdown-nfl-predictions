@@ -17,6 +17,11 @@ const editorial={games:{[p.game_id]:{source:'Free evidence-based model commentar
 assert.doesNotMatch(render(p.game_id,{...data,editorial},now),/OLD TEMPLATE/);
 editorial.games[p.game_id].source='AI editorial draft';
 assert.match(render(p.game_id,{...data,editorial},now),/OLD TEMPLATE/);
+editorial.games[p.game_id].external_context={kickoff_utc:p.kickoff_utc,predictor:{source:'ESPN Matchup Predictor',home_pct:63,away_pct:37,retrieved_at_utc:'2026-11-22T19:00:00Z',url:'https://www.espn.com/nfl/game/_/gameId/123'},article:{source:'AP',excerpt:'Minnesota uses a blitz to pressure opposing passers.',published_at_utc:'2026-11-21T19:00:00Z',updated_at_utc:'2026-11-21T20:00:00Z',url:'https://www.espn.com/nfl/preview?gameId=123'}};
+assert.match(render(p.game_id,{...data,editorial},now),/ESPN’s matchup predictor/);
+assert.match(render(p.game_id,{...data,editorial},now),/Minnesota uses a blitz/);
+editorial.games[p.game_id].external_context.predictor.retrieved_at_utc='2026-11-23T02:00:00Z';
+assert.doesNotMatch(render(p.game_id,{...data,editorial},now),/ESPN’s matchup predictor/);
 editorial.games[p.game_id].news=[{title:'Matchup preview',url:'https://news.google.com/rss/articles/example',publisher:'News Outlet',published_at_utc:'2026-11-22T19:00:00Z'},{title:'Bad link',url:'https://news.google.com.evil.test/x'}];
 assert.match(render(p.game_id,{...data,editorial},now),/Matchup preview/);
 assert.doesNotMatch(render(p.game_id,{...data,editorial},now),/Bad link/);
@@ -25,3 +30,4 @@ assert.match(render('unknown',data,now),/Preview unavailable/);
 assert.match(render(p.game_id,data,Date.parse('2026-11-23T02:00:00Z')),/game has started/);
 data.odds.games[0].observed_at_utc='2026-11-23T01:21:00Z';assert.doesNotMatch(render(p.game_id,data,now),/DraftKings lines/);
 console.log('Game preview checks passed');
+
