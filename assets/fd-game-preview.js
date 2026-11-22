@@ -4,7 +4,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const finite=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
 const num=v=>finite(v)?Number(v).toFixed(1):'—';
 const canon=v=>({JAC:'JAX',LAR:'LA',WAS:'WSH'}[String(v||'').toUpperCase()]||String(v||'').toUpperCase());
-const time=v=>{const d=new Date(v);return Number.isFinite(d.getTime())?d.toLocaleString('en-US',{timeZone:'America/Chicago',dateStyle:'medium',timeStyle:'short'})+' CT':'Unavailable'};
+const time=v=>{if(!v)return 'Unavailable';const d=new Date(v);return Number.isFinite(d.getTime())?d.toLocaleString('en-US',{timeZone:'America/Chicago',dateStyle:'medium',timeStyle:'short'})+' CT':'Unavailable'};
 const signed=v=>Number(v)>0?'+'+num(v):num(v);
 function render(id,data,now=Date.now()){
  const p=(data.live?.games||[]).find(g=>g.game_id===id);
