@@ -11,6 +11,17 @@ WORKFLOW = ROOT / ".github/workflows/publish-v2.yml"
 
 
 class ForecastRefreshScheduleTests(unittest.TestCase):
+    def test_clock_specific_jobs_declare_central_time(self):
+        expected = {
+            'publish-v2.yml': "cron: '17 17 * * *'",
+            'tuesday-preforecast-evaluation.yml': "cron: '0 6 * * 2'",
+            'nightly-game-grading.yml': "cron: '0 23 * * *'",
+            'daily-dk-player-props.yml': "cron: '37 * * * 1,4,5,6'",
+        }
+        for filename, cron in expected.items():
+            source = (ROOT / '.github/workflows' / filename).read_text()
+            self.assertIn(cron + "\\n      timezone: America/Chicago", source)
+
     def test_daily_forecast_runs_on_game_day_with_safe_buffer(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
         games = [{"kickoff_utc": kickoff.isoformat()}]
