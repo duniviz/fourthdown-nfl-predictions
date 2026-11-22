@@ -1,16 +1,15 @@
 name: Sunday preset game-day refresh
 on:
   schedule:
-    # These paired UTC schedules resolve to 8:00, 11:00, 14:30, and 18:45 Central year-round.
-    # The noon-game refresh starts at 11 AM to leave a validation/lock buffer.
-    - cron: '0 13 * * 0'
-    - cron: '0 14 * * 0'
-    - cron: '0 16 * * 0'
-    - cron: '0 17 * * 0'
-    - cron: '30 19 * * 0'
-    - cron: '30 20 * * 0'
-    - cron: '45 23 * * 0'
-    - cron: '45 0 * * 1'
+    # Fixed Sunday clock times in Central Time, including daylight saving.
+    - cron: '0 8 * * 0'
+      timezone: America/Chicago
+    - cron: '0 11 * * 0'
+      timezone: America/Chicago
+    - cron: '30 14 * * 0'
+      timezone: America/Chicago
+    - cron: '45 18 * * 0'
+      timezone: America/Chicago
   workflow_dispatch:
     inputs:
       recovery_mode:
@@ -91,23 +90,9 @@ jobs:
                       output.write("run=false\n")
                   print("No NFL game scheduled today")
                   raise SystemExit(0)
-              schedule = os.environ["SCHEDULE_EXPR"].split()
-              minute, hour, _, _, day_of_week = schedule
-              slots = [(8, 0), (11, 0), (14, 30), (18, 45)]
-              valid = False
-              for target_hour, target_minute in slots:
-                  local = dt.datetime.combine(
-                      now.date(),
-                      dt.time(target_hour, target_minute),
-                      tzinfo=central,
-                  )
-                  utc = local.astimezone(dt.timezone.utc)
-                  cron_day = (utc.weekday() + 1) % 7
-                  allowed_days = {int(value) for value in day_of_week.split(",")}
-                  if int(minute) == target_minute and int(hour) == utc.hour and cron_day in allowed_days:
-                      valid = True
-                      break
-              reason = "Central Time preset matched" if valid else "This UTC schedule is the daylight-saving alternate"
+              schedule = os.environ["SCHEDULE_EXPR"]
+              valid = schedule in {"0 8 * * 0", "0 11 * * 0", "30 14 * * 0", "45 18 * * 0"}
+              reason = "Central Time preset matched" if valid else "Unrecognized Sunday schedule"
           with open(os.environ["GITHUB_OUTPUT"], "a") as output:
               output.write(f"run={'true' if valid else 'false'}\n")
           print(reason)
