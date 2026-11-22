@@ -52,7 +52,11 @@ class VerifiedScoreboardKickoffTests(unittest.TestCase):
 
     def test_game_already_kicked_off_remains_earlier(self):
         after = self.now + timedelta(hours=1)
-        self.assertLess(scoreboard_kickoffs(self.schedules, self.feed, after)['2026_11_PIT_PHI'], after)
+        self.schedules[0]['gametime'] = '16:25'
+        updates = scoreboard_kickoffs(self.schedules, self.feed, after)
+        self.assertLess(updates['2026_11_PIT_PHI'], after)
+        with self.assertRaisesRegex(ValueError, 'No upcoming scheduled games'):
+            forecast(self.schedules, [], after, kickoff_overrides=updates)
 
 
 if __name__ == '__main__':
