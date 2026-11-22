@@ -6,6 +6,8 @@ on:
       - 'live/pregame_refresh_state.py'
       - 'live/dk_game_refresh.py'
       - 'live/generate.py'
+      - 'live/verified_scoreboard_kickoffs.py'
+      - 'tests/test_verified_scoreboard_kickoffs.py'
       - 'tests/test_dk_game_refresh.py'
       - 'tests/test_pregame_refresh_state.py'
       - 'scripts/check_pregame_forecast_window.py'
@@ -22,6 +24,8 @@ on:
       - 'live/pregame_refresh_state.py'
       - 'live/dk_game_refresh.py'
       - 'live/generate.py'
+      - 'live/verified_scoreboard_kickoffs.py'
+      - 'tests/test_verified_scoreboard_kickoffs.py'
       - 'tests/test_dk_game_refresh.py'
       - 'tests/test_pregame_refresh_state.py'
       - 'scripts/check_pregame_forecast_window.py'
@@ -42,7 +46,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m unittest tests.test_stale_forecast_recovery -v
-      - run: python -m unittest tests.test_forecast_refresh_schedule tests.test_refresh_reliability -v
+      - run: python -m unittest tests.test_forecast_refresh_schedule tests.test_refresh_reliability tests.test_verified_scoreboard_kickoffs -v
       - run: python -m unittest discover -s tests -p 'test_pregame_refresh_state.py' -v
       - run: python -m unittest discover -s tests -p 'test_pregame_capture_guard.py' -v
       - run: python -m unittest discover -s tests -p 'test_dk_game_refresh.py' -v
