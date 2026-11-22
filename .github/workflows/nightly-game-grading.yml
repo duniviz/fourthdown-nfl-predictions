@@ -10,10 +10,9 @@ on:
       - 'scripts/postgame_evidence_coverage.py'
       - 'tests/test_postgame_evidence_coverage.py'
   schedule:
-    # GitHub cron is UTC. The local-time gate below chooses 04:00 UTC during
-    # daylight time and 05:00 UTC during standard time, both 11 PM Central.
-    - cron: '0 4 * * *'
-    - cron: '0 5 * * *'
+    # 11 PM Central, including daylight saving time.
+    - cron: '0 23 * * *'
+      timezone: America/Chicago
 
 permissions:
   contents: write

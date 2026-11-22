@@ -2,8 +2,9 @@ name: Tuesday pre-forecast evaluation
 on:
   workflow_dispatch:
   schedule:
-    # 6 AM Central; both UTC hours cover CST and CDT.\n    # Allow GitHub scheduling delays within the 6 AM hour.
-    - cron: '0 11,12 * * 2'
+    # Tuesday at 6 AM Central, across daylight saving time.
+    - cron: '0 6 * * 2'
+      timezone: America/Chicago
 permissions:
   contents: write
 concurrency:
