@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-21T15:03:43.892675+00:00",
+  "generated_at_utc": "2026-11-22T15:37:59.434663+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -44,9 +44,9 @@
         },
         "MIA": {
           "points": 0.0,
-          "status": "starter_confirmation_required",
+          "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 6,
+          "reported_out": 4,
           "unmodeled_injuries": [
             {
               "player": "Bradley Pinion",
@@ -56,11 +56,6 @@
             {
               "player": "Jared Wayne",
               "position": "WR",
-              "status": "Out"
-            },
-            {
-              "player": "Darrell Baker Jr.",
-              "position": "CB",
               "status": "Out"
             },
             {
@@ -451,22 +446,17 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 5,
+          "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Isaiah Simmons",
-              "position": "S",
-              "status": "Out"
-            },
-            {
-              "player": "Mike Jackson",
-              "position": "CB",
+              "player": "Brady Christensen",
+              "position": "G",
               "status": "Injured Reserve"
             },
             {
-              "player": "Bobby Okereke",
-              "position": "LB",
-              "status": "Out"
+              "player": "Isaiah Simmons",
+              "position": "S",
+              "status": "Injured Reserve"
             },
             {
               "player": "Jonathon Brooks",
@@ -474,9 +464,9 @@
               "status": "Injured Reserve"
             },
             {
-              "player": "Brady Christensen",
-              "position": "G",
-              "status": "Injured Reserve"
+              "player": "Bobby Okereke",
+              "position": "LB",
+              "status": "Out"
             }
           ]
         },
@@ -888,7 +878,7 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 2,
           "unmodeled_injuries": [
             {
               "player": "Kyler Gordon",
@@ -898,11 +888,6 @@
             {
               "player": "Zavier Scott",
               "position": "RB",
-              "status": "Injured Reserve"
-            },
-            {
-              "player": "Kentavius Street",
-              "position": "DT",
               "status": "Injured Reserve"
             }
           ]
@@ -1319,14 +1304,19 @@
           "reported_out": 6,
           "unmodeled_injuries": [
             {
-              "player": "P.J. Locke",
-              "position": "S",
-              "status": "Out"
-            },
-            {
               "player": "Jalen Thompson",
               "position": "S",
               "status": "Injured Reserve"
+            },
+            {
+              "player": "DaRon Bland",
+              "position": "CB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "P.J. Locke",
+              "position": "S",
+              "status": "Out"
             },
             {
               "player": "Jonathan Mingo",
@@ -1336,11 +1326,6 @@
             {
               "player": "Jake Ferguson",
               "position": "TE",
-              "status": "Out"
-            },
-            {
-              "player": "DaRon Bland",
-              "position": "CB",
               "status": "Out"
             },
             {
@@ -1354,8 +1339,18 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Jaylen Harrell",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Tyjae Spears",
+              "position": "RB",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Fernando Carmona",
               "position": "G",
@@ -1749,7 +1744,7 @@
             {
               "player": "Cade Mays",
               "position": "C",
-              "status": "Out"
+              "status": "Injured Reserve"
             },
             {
               "player": "Aidan Hutchinson",
@@ -2185,7 +2180,7 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 6,
+          "reported_out": 7,
           "unmodeled_injuries": [
             {
               "player": "Jon Gaines II",
@@ -2590,12 +2585,12 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 5,
+          "reported_out": 4,
           "unmodeled_injuries": [
             {
               "player": "Rodney Shelley",
               "position": "CB",
-              "status": "Out"
+              "status": "Injured Reserve"
             },
             {
               "player": "Kendall Williamson",
@@ -2606,11 +2601,6 @@
               "player": "Daiyan Henley",
               "position": "LB",
               "status": "Out"
-            },
-            {
-              "player": "Trey Pipkins III",
-              "position": "OT",
-              "status": "Injured Reserve"
             },
             {
               "player": "Branson Taylor",
@@ -3031,8 +3021,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 3,
           "unmodeled_injuries": [
+            {
+              "player": "Danny Striggow",
+              "position": "DE",
+              "status": "Out"
+            },
             {
               "player": "B.J. Green II",
               "position": "DE",
@@ -3421,16 +3416,11 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 1,
           "unmodeled_injuries": [
             {
               "player": "Caleb Lohner",
               "position": "TE",
-              "status": "Injured Reserve"
-            },
-            {
-              "player": "Eyioma Uwazurike",
-              "position": "DE",
               "status": "Injured Reserve"
             }
           ]
@@ -3824,22 +3814,17 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 2,
           "unmodeled_injuries": [
             {
               "player": "Zack Baun",
               "position": "LB",
-              "status": "Out"
-            },
-            {
-              "player": "Will Shipley",
-              "position": "RB",
               "status": "Injured Reserve"
             },
             {
               "player": "Dontayvion Wicks",
               "position": "WR",
-              "status": "Out"
+              "status": "Injured Reserve"
             }
           ]
         },
@@ -3850,14 +3835,14 @@
           "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Roman Wilson",
+              "player": "Michael Pittman Jr.",
               "position": "WR",
               "status": "Injured Reserve"
             },
             {
-              "player": "Michael Pittman Jr.",
-              "position": "WR",
-              "status": "Injured Reserve"
+              "player": "Nick Herbig",
+              "position": "LB",
+              "status": "Out"
             },
             {
               "player": "Gennings Dunker",
@@ -4247,13 +4232,8 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 6,
+          "reported_out": 5,
           "unmodeled_injuries": [
-            {
-              "player": "C.J. West",
-              "position": "DT",
-              "status": "Injured Reserve"
-            },
             {
               "player": "Nate Hobbs",
               "position": "CB",
@@ -4687,13 +4667,13 @@
           "reported_out": 2,
           "unmodeled_injuries": [
             {
-              "player": "Laremy Tunsil",
-              "position": "OT",
+              "player": "Jacory Croskey-Merritt",
+              "position": "RB",
               "status": "Injured Reserve"
             },
             {
-              "player": "Jacory Croskey-Merritt",
-              "position": "RB",
+              "player": "Laremy Tunsil",
+              "position": "OT",
               "status": "Injured Reserve"
             }
           ]
@@ -4702,16 +4682,26 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Swayze Bozeman",
-              "position": "LB",
-              "status": "Injured Reserve"
+              "player": "Dalton Risner",
+              "position": "G",
+              "status": "Out"
             },
             {
               "player": "Andrei Iosivas",
               "position": "WR",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Oren Burks",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Swayze Bozeman",
+              "position": "LB",
               "status": "Injured Reserve"
             }
           ]
