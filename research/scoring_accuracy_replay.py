@@ -81,7 +81,8 @@ def replay(schedules, team_games, weekly):
                      'actual_margin': baseline['actual_margin'], 'actual_total': baseline['actual_total'],
                      'basic': [baseline['pred_margin'], baseline['pred_total'], week],
                      'expanded': [baseline['pred_margin'], baseline['pred_total'], week] + home + away,
-                     'market_margin': -valid_number(game['spread_line']) if valid_number(game.get('spread_line')) is not None else None,
+                     # nflverse stores a positive spread when the home team is favored.
+                     'market_margin': valid_number(game.get('spread_line')),
                      'market_total': valid_number(game.get('total_line')),
                      'predictions': {n: {'margin':projections[n][gid]['pred_margin'],
                                          'total':projections[n][gid]['pred_total']} for n in PARAMETERS}})
