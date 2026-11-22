@@ -1,0 +1,36 @@
+name: Test sourced matchup previews
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/test-sourced-matchup.yml'
+      - 'tools/sourced_matchup_context.py'
+      - 'tests/test_sourced_matchup_context.py'
+      - 'assets/fd-game-preview.js'
+      - 'tests/test_game_preview.js'
+      - 'game-preview.html'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Inspect optional public ESPN matchup feed
+        run: |
+          python - <<'PY'
+          import urllib.request,json
+          for path in ('summary?event=401873077','news?limit=5'):
+            try:
+              req=urllib.request.Request('https://site.api.espn.com/apis/site/v2/sports/football/nfl/'+path,headers={'User-Agent':'fourthdown-context/1.0'})
+              with urllib.request.urlopen(req,timeout=10) as r: x=json.load(r)
+              print('FEED',path,'KEYS',list(x.keys()))
+              if 'predictor' in x: print('PREDICTOR',json.dumps(x['predictor'])[:3000])
+              if x.get('articles'):
+                a=x['articles'][0]
+                print('ARTICLE_KEYS',list(a.keys()))
+                print('ARTICLE_SAMPLE',json.dumps({k:a.get(k) for k in ('headline','description','published','links')})[:2000])
+            except Exception as e: print('FEED_UNAVAILABLE',path,type(e).__name__,str(e))
+          PY
