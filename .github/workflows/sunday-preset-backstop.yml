@@ -1,9 +1,9 @@
 name: FOURTHDOWN Sunday preset missed-run backstop
 on:
   schedule:
-    # Staggered from the primary Sunday cron. UTC windows cover CST and CDT.
-    - cron: '7,37 13,14,16,17,19,20,23 * * 0'
-    - cron: '7,37 0 * * 1'
+    # Staggered Central Time retries around each Sunday preset.
+    - cron: '7,37 8,11,14,15,18,19 * * 0'
+      timezone: America/Chicago
   workflow_dispatch:
   # Independent wake-up when GitHub skips the backstop cron itself.
   # This only runs the existing read-only decision policy, never a second writer.
@@ -16,6 +16,7 @@ on:
       - '.github/workflows/sunday-preset-game-day-refresh.yml'
       - 'scripts/sunday_preset_backstop_policy.js'
       - 'tests/test_sunday_preset_backstop.js'
+      - 'tests/test_central_sunday_schedules.py'
 permissions:
   contents: read
   actions: write
@@ -31,6 +32,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validate Central Time Sunday schedules
+        run: python -m unittest tests.test_central_sunday_schedules tests.test_gameweek_automation_reliability tests.test_refresh_reliability -v
       - name: Validate missing-run recovery guards
         run: node tests/test_sunday_preset_backstop.js
       - name: Recover a missed preset only while kickoff-safe
