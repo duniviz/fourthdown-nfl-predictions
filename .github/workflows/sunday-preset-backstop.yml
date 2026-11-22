@@ -8,7 +8,7 @@ on:
   # Independent wake-up when GitHub skips the backstop cron itself.
   # This only runs the existing read-only decision policy, never a second writer.
   workflow_run:
-    workflows: [Capture last pregame projections and DK lines, Capture pregame projections and DraftKings lines, Sunday preset game-day refresh, FOURTHDOWN independent operations watchdog, FOURTHDOWN watchdog self-healing, FOURTHDOWN pregame feed freshness audit, Freeze independent pregame game ML challengers, Publish weekly v2 forecasts]
+    workflows: [Capture last pregame projections and DK lines, Capture pregame projections and DraftKings lines, FOURTHDOWN independent operations watchdog, FOURTHDOWN watchdog self-healing, FOURTHDOWN pregame feed freshness audit, Freeze independent pregame game ML challengers, Publish weekly v2 forecasts, Sunday preset game-day refresh]
     types: [completed]
   pull_request:
     paths:
