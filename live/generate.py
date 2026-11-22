@@ -8,6 +8,7 @@ from collections import defaultdict
 from live.injury_adjust import estimate
 from live.injuries import lookup_report
 from live.qb_starter_adjust import estimate_starter_adjustment, load_qb_starters
+from live.verified_scoreboard_kickoffs import scoreboard_kickoffs
 
 def number(x):
     try:
@@ -123,7 +124,7 @@ VERIFIED_KICKOFF_OVERRIDES = {
     "2026_11_PIT_PHI": "2026-11-22T13:00:00",
 }
 
-def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None, qb_starters=None):
+def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None, qb_starters=None, kickoff_overrides=None):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None: raise ValueError("now must be timezone-aware")
     season=now.year if now.month>=3 else now.year-1
@@ -141,6 +142,9 @@ def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly
             local=datetime.fromisoformat(
                 VERIFIED_KICKOFF_OVERRIDES.get(str(g.get("game_id")), str(dt)+"T"+str(tm))
             ).replace(tzinfo=ZoneInfo("America/New_York"))
+            verified = (kickoff_overrides or {}).get(str(g.get("game_id")))
+            if verified:
+                local = verified.astimezone(ZoneInfo("America/New_York"))
         except ValueError:
             continue
         if local.astimezone(timezone.utc)>now:
@@ -309,7 +313,14 @@ def main():
             pass
     weekly=nfl.load_player_stats([season],summary_level="week").to_dicts()
     qb_starters=load_qb_starters(season)
-    data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows,qb_starters)
+    try:
+        scoreboard=json.loads(Path('data/espn-scoreboard-backup.json').read_text(encoding='utf-8'))
+        overrides=scoreboard_kickoffs(schedules,scoreboard,now)
+        print(f'Fresh scoreboard kickoff matches: {len(overrides)}')
+    except (OSError, ValueError, TypeError) as exc:
+        print(f'Scoreboard kickoff validation unavailable: {type(exc).__name__}')
+        overrides={}
+    data=forecast(schedules,epa,now,injury_reports,weekly,team_metric_rows,qb_starters,overrides)
     dest=Path("data/live-v2.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
     # The first workflow pass only discovers this week's slate for the
