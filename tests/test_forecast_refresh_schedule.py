@@ -20,7 +20,7 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         }
         for filename, cron in expected.items():
             source = (ROOT / '.github/workflows' / filename).read_text()
-            self.assertIn(cron + "\\n      timezone: America/Chicago", source)
+            self.assertIn(cron + "\n      timezone: America/Chicago", source)
 
     def test_daily_forecast_runs_on_game_day_with_safe_buffer(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
