@@ -42,6 +42,10 @@ class ReplayTest(unittest.TestCase):
         self.assertEqual([x['predictions'] for x in first],[x['predictions'] for x in second])
     def test_metrics(self):
         self.assertEqual(module.metrics([(3,1),(1,3)]),{'samples':2,'mae':2.0,'rmse':2.0,'bias':0.0})
+    def test_nflverse_spread_is_home_favorite_margin(self):
+        games,teams,weekly=self.fixtures()
+        for game in games: game['spread_line']=3.5
+        self.assertEqual(module.replay(games,teams,weekly)[0]['market_margin'],3.5)
     def test_fitted_model_excludes_target_week_outcome(self):
         games=[]; teams=[]; weekly=[]
         for season in range(2000,2040):
