@@ -120,6 +120,7 @@ def build_team_matchup_metrics(schedules, plays, season, target_week):
 VERIFIED_KICKOFF_OVERRIDES = {
     "2026_09_LV_SF": "2026-11-08T16:25:00",
     "2026_11_JAX_NYG": "2026-11-22T16:25:00",
+    "2026_11_PIT_PHI": "2026-11-22T13:00:00",
 }
 
 def forecast(schedules, team_games, now=None, injury_reports=None, player_weekly=None, team_metric_rows=None, qb_starters=None):
