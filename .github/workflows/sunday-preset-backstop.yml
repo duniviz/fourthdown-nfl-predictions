@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: '22'
       - name: Validate Central Time Sunday schedules
-        run: python -m unittest tests.test_central_sunday_schedules -v
+        run: python -m unittest tests.test_central_sunday_schedules tests.test_gameweek_automation_reliability tests.test_refresh_reliability -v
       - name: Validate missing-run recovery guards
         run: node tests/test_sunday_preset_backstop.js
       - name: Recover a missed preset only while kickoff-safe
