@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {render}=require('../assets/fd-game-preview.js');
+const p={game_id:'2026_11_MIN_SF',kickoff_utc:'2026-11-23T01:20:00Z',home:'SF',away:'MIN',projected_home_score:24,projected_away_score:18,projected_margin_home:6,projected_total:42,analysis:{home:{offense_rank:2},away:{defense_rank:3}},game_ml_shadow:{markets:{game_margin_home:{candidate:4},game_total:{candidate:46}}}};
+const now=Date.parse('2026-11-22T20:00:00Z');
+const data={live:{games:[p],generated_at_utc:'2026-11-22T19:00:00Z'},injuries:{generated_at_utc:'2026-11-22T19:00:00Z',teams:{SF:{status:'retrieved',players:[{player:'<bad>',status:'Out'}]}}},odds:{games:[{home:'SF',away:'MIN',home_spread:-3.5,total:46.5,commence_time:p.kickoff_utc,observed_at_utc:'2026-11-22T19:00:00Z'}]}};
+let html=render(p.game_id,data,now);
+assert.match(html,/ML research estimate/);assert.match(html,/SF -3\.5/);assert.match(html,/46\.5/);assert.match(html,/&lt;bad&gt;/);assert.doesNotMatch(html,/<bad>/);
+assert.match(render('unknown',data,now),/Preview unavailable/);
+assert.match(render(p.game_id,data,Date.parse('2026-11-23T02:00:00Z')),/game has started/);
+data.odds.games[0].observed_at_utc='2026-11-23T01:21:00Z';assert.doesNotMatch(render(p.game_id,data,now),/DraftKings lines/);
+console.log('Game preview checks passed');
