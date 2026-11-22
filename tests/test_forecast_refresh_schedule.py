@@ -43,7 +43,7 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
 
     def test_workflow_has_daily_and_staggered_game_day_schedules(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("cron: '17 22,23 * * *'", source)
+        self.assertIn("cron: '17 17 * * *'", source)
         self.assertIn("cron: '7,37 * * * *'", source)
         self.assertIn("scripts.daily_forecast_refresh_window", source)
         self.assertIn("scripts.check_pregame_forecast_window", source)
