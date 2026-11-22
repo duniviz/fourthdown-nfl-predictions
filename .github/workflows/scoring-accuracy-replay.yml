@@ -1,0 +1,32 @@
+name: Scoring accuracy chronological replay
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/scoring_accuracy_replay.py'
+      - 'tests/test_scoring_accuracy_replay.py'
+      - '.github/workflows/scoring-accuracy-replay.yml'
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: python -m pip install 'nflreadpy>=0.1' 'polars>=1.0' 'numpy>=1.26' 'scikit-learn>=1.4' pyarrow
+      - name: Verify chronology and scoring
+        run: python -m unittest discover -s tests -p test_scoring_accuracy_replay.py -v
+      - name: Replay prior-week predictions on 2016–2025 games
+        run: python research/scoring_accuracy_replay.py --start 2016 --end 2025 --output research/scoring-accuracy-results/report.json
+      - name: Publish report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoring-accuracy-chronological-replay
+          path: research/scoring-accuracy-results/report.json
+          if-no-files-found: warn
