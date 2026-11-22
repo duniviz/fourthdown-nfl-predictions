@@ -24,3 +24,7 @@ jobs:
         with:
           node-version: '20'
       - run: node tests/test_game_preview.js
+      - run: npm install --no-save playwright
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-preview.log 2>&1 &
+          node tests/test_game_preview_browser.js
