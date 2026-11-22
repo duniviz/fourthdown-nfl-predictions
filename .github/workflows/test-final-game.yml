@@ -1,0 +1,22 @@
+name: Test finished game projections
+on:
+  pull_request:
+    paths: ['index.html', 'assets/fd-final-game.js', 'assets/fd-final-game.css', 'tests/test_final_game.js', 'tests/test_final_game_browser.js', '.github/workflows/test-final-game.yml']
+  push:
+    branches: [main]
+    paths: ['index.html', 'assets/fd-final-game.js', 'assets/fd-final-game.css', 'tests/test_final_game.js', 'tests/test_final_game_browser.js', '.github/workflows/test-final-game.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/test_final_game.js
+      - run: npm install --no-save playwright
+      - run: |
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/fd-final-game.log 2>&1 &
+          node tests/test_final_game_browser.js
