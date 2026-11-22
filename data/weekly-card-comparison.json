@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-22T21:42:23.018667+00:00",
+  "generated_at_utc": "2026-11-22T23:56:11.472430+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8,12 +8,12 @@
         {
           "market": "game_margin_home",
           "label": "Game margin",
-          "samples": 1,
-          "regular_mae": 16.15,
-          "ml_mae": 13.31,
+          "samples": 2,
+          "regular_mae": 9.89,
+          "ml_mae": 8.38,
           "winner": "ml",
           "regular_wins": 0,
-          "ml_wins": 1,
+          "ml_wins": 2,
           "ties": 0,
           "details": [
             {
@@ -27,17 +27,29 @@
               "ml_error": 13.31,
               "winner": "ml",
               "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_NYJ_LAC",
+              "market": "game_margin_home",
+              "label": "NYJ @ LAC",
+              "actual": -3.0,
+              "regular": 0.63,
+              "ml": 0.45,
+              "regular_error": 3.63,
+              "ml_error": 3.45,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
             }
           ]
         },
         {
           "market": "game_total",
           "label": "Game total",
-          "samples": 1,
-          "regular_mae": 14.43,
-          "ml_mae": 18.43,
+          "samples": 2,
+          "regular_mae": 10.75,
+          "ml_mae": 13.06,
           "winner": "regular",
-          "regular_wins": 1,
+          "regular_wins": 2,
           "ml_wins": 0,
           "ties": 0,
           "details": [
@@ -50,6 +62,18 @@
               "ml": 47.43,
               "regular_error": 14.43,
               "ml_error": 18.43,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_NYJ_LAC",
+              "market": "game_total",
+              "label": "NYJ @ LAC",
+              "actual": 51.0,
+              "regular": 43.93,
+              "ml": 43.31,
+              "regular_error": 7.07,
+              "ml_error": 7.69,
               "winner": "regular",
               "ml_model": "Existing ML estimate"
             }
