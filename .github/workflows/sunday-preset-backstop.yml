@@ -1,9 +1,9 @@
 name: FOURTHDOWN Sunday preset missed-run backstop
 on:
   schedule:
-    # Staggered from the primary Sunday cron. UTC windows cover CST and CDT.
-    - cron: '7,37 13,14,16,17,19,20,23 * * 0'
-    - cron: '7,37 0 * * 1'
+    # Staggered Central Time retries around each Sunday preset.
+    - cron: '7,37 8,11,14,15,18,19 * * 0'
+      timezone: America/Chicago
   workflow_dispatch:
   # Independent wake-up when GitHub skips the backstop cron itself.
   # This only runs the existing read-only decision policy, never a second writer.
