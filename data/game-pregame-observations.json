@@ -17282,6 +17282,90 @@
           }
         }
       }
+    },
+    {
+      "game_id": "2026_11_MIN_SF",
+      "season": 2026,
+      "week": 11,
+      "home": "SF",
+      "away": "MIN",
+      "kickoff_utc": "2026-11-23T01:20:00+00:00",
+      "forecast_at_utc": "2026-11-23T01:03:17.072189+00:00",
+      "dk_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "captured_at_utc": "2026-11-23T01:04:04.778137+00:00",
+      "predicted_winner": "SF",
+      "projected_margin_home": 6.77,
+      "projected_total": 43.09,
+      "dk_home_spread": -4.5,
+      "dk_total": 44.5,
+      "dk_home_spread_updated_at_utc": "2026-11-23T00:54:24+00:00",
+      "dk_total_updated_at_utc": "2026-11-23T00:54:24+00:00",
+      "dk_home_spread_observed_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "dk_total_observed_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "source": "DraftKings",
+      "projected_home_score": 24.9,
+      "projected_away_score": 18.2,
+      "game_ml_shadow": {
+        "family": "game-score-ridge-v1",
+        "markets": {
+          "game_margin_home": {
+            "baseline": 6.77,
+            "candidate": 4.51,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          },
+          "game_total": {
+            "baseline": 43.09,
+            "candidate": 47.09,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          }
+        }
+      }
+    },
+    {
+      "game_id": "2026_11_CIN_WAS",
+      "season": 2026,
+      "week": 11,
+      "home": "WAS",
+      "away": "CIN",
+      "kickoff_utc": "2026-11-24T01:15:00+00:00",
+      "forecast_at_utc": "2026-11-23T01:03:17.072189+00:00",
+      "dk_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "captured_at_utc": "2026-11-23T01:04:04.778137+00:00",
+      "predicted_winner": "CIN",
+      "projected_margin_home": -4.05,
+      "projected_total": 51.95,
+      "dk_home_spread": 6.0,
+      "dk_total": 54.5,
+      "dk_home_spread_updated_at_utc": "2026-11-23T00:54:24+00:00",
+      "dk_total_updated_at_utc": "2026-11-23T00:54:24+00:00",
+      "dk_home_spread_observed_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "dk_total_observed_at_utc": "2026-11-23T00:54:33.820731+00:00",
+      "source": "DraftKings",
+      "projected_home_score": 23.9,
+      "projected_away_score": 28.0,
+      "game_ml_shadow": {
+        "family": "game-score-ridge-v1",
+        "markets": {
+          "game_margin_home": {
+            "baseline": -4.05,
+            "candidate": -4.32,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          },
+          "game_total": {
+            "baseline": 51.95,
+            "candidate": 48.24,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          }
+        }
+      }
     }
   ]
 }
