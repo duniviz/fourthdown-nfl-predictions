@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-23T03:41:41.431044+00:00",
+  "generated_at_utc": "2026-11-23T22:53:14.292054+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -13,23 +13,18 @@
       "kickoff_utc": "2026-11-24T01:15:00+00:00",
       "home": "WAS",
       "away": "CIN",
-      "projected_home_score": 23.9,
+      "projected_home_score": 24.0,
       "projected_away_score": 28.0,
-      "projected_margin_home": -4.05,
-      "projected_total": 51.95,
+      "projected_margin_home": -3.95,
+      "projected_total": 51.96,
       "predicted_winner": "CIN",
       "injury_adjustments": {
         "WAS": {
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 2,
+          "reported_out": 1,
           "unmodeled_injuries": [
-            {
-              "player": "Jacory Croskey-Merritt",
-              "position": "RB",
-              "status": "Injured Reserve"
-            },
             {
               "player": "Laremy Tunsil",
               "position": "OT",
@@ -44,22 +39,22 @@
           "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Dalton Risner",
-              "position": "G",
-              "status": "Out"
-            },
-            {
               "player": "Andrei Iosivas",
               "position": "WR",
               "status": "Injured Reserve"
             },
             {
-              "player": "Oren Burks",
-              "position": "LB",
+              "player": "Jalen Davis",
+              "position": "CB",
               "status": "Injured Reserve"
             },
             {
-              "player": "Swayze Bozeman",
+              "player": "Dalton Risner",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Oren Burks",
               "position": "LB",
               "status": "Injured Reserve"
             }
@@ -84,8 +79,8 @@
         "home": {
           "team": "WAS",
           "games_used": 9,
-          "offense_epa_rating": -0.0077,
-          "defense_epa_rating": 0.014,
+          "offense_epa_rating": -0.0095,
+          "defense_epa_rating": 0.0132,
           "offense_rank": 18,
           "defense_rank": 20,
           "ranked_teams": 32,
@@ -132,8 +127,8 @@
         "away": {
           "team": "CIN",
           "games_used": 9,
-          "offense_epa_rating": 0.1208,
-          "defense_epa_rating": 0.0193,
+          "offense_epa_rating": 0.1209,
+          "defense_epa_rating": 0.0224,
           "offense_rank": 1,
           "defense_rank": 24,
           "ranked_teams": 32,
@@ -229,16 +224,16 @@
               "value": 0.16
             },
             "home_defense": {
-              "rank": 22,
+              "rank": 20,
               "value": 0.03
             },
             "home_offense": {
-              "rank": 19,
+              "rank": 20,
               "value": -0.01
             },
             "away_defense": {
-              "rank": 15,
-              "value": 0.0
+              "rank": 16,
+              "value": 0.01
             }
           },
           {
@@ -247,15 +242,15 @@
             "unit": "EPA/pass",
             "away_offense": {
               "rank": 3,
-              "value": 0.26
+              "value": 0.25
             },
             "home_defense": {
-              "rank": 15,
+              "rank": 16,
               "value": 0.03
             },
             "home_offense": {
               "rank": 21,
-              "value": -0.01
+              "value": -0.02
             },
             "away_defense": {
               "rank": 12,
@@ -267,20 +262,20 @@
             "label": "EPA / rush",
             "unit": "EPA/rush",
             "away_offense": {
-              "rank": 17,
-              "value": -0.03
+              "rank": 16,
+              "value": -0.0
             },
             "home_defense": {
-              "rank": 31,
-              "value": 0.04
+              "rank": 29,
+              "value": 0.05
             },
             "home_offense": {
               "rank": 15,
-              "value": -0.02
+              "value": 0.0
             },
             "away_defense": {
-              "rank": 27,
-              "value": 0.03
+              "rank": 28,
+              "value": 0.05
             }
           },
           {
@@ -391,8 +386,8 @@
         ],
         "estimated_home_advantage_points": 1.5,
         "scoring_edge_components": {
-          "home_offense_vs_away_defense": 0.52,
-          "away_offense_vs_home_defense": 6.07,
+          "home_offense_vs_away_defense": 0.58,
+          "away_offense_vs_home_defense": 6.03,
           "home_field_points": 1.5,
           "home_qb_adjustment_points": 0.0,
           "away_qb_adjustment_points": 0.0
@@ -408,14 +403,14 @@
         "family": "game-score-ridge-v1",
         "markets": {
           "game_margin_home": {
-            "baseline": -4.05,
+            "baseline": -3.95,
             "candidate": -4.32,
             "active": false,
             "trained_season": 2026,
             "trained_week": 10
           },
           "game_total": {
-            "baseline": 51.95,
+            "baseline": 51.96,
             "candidate": 48.24,
             "active": false,
             "trained_season": 2026,

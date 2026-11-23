@@ -1,23 +1,23 @@
 {
-  "updated_at_utc": "2026-11-23T03:41:38.845183+00:00",
+  "updated_at_utc": "2026-11-23T22:53:12.328422+00:00",
   "method": "Week-blocked walk-forward residual correction; zero-weight baseline, minimum 60 prior forecasts, 40 holdout forecasts across 4 weeks, >0.15 yards MAE improvement",
   "weights": {
     "passing_yards": {
       "weight": 0.0,
       "status": "insufficient_holdout",
-      "samples": 25,
+      "samples": 27,
       "weeks": 1
     },
     "receiving_yards": {
       "weight": 0.0,
       "status": "insufficient_holdout",
-      "samples": 683,
+      "samples": 704,
       "weeks": 3
     },
     "rushing_yards": {
       "weight": 0.0,
       "status": "insufficient_holdout",
-      "samples": 416,
+      "samples": 429,
       "weeks": 3
     }
   }
