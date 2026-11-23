@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-22T23:58:37.838025+00:00",
+  "generated_at_utc": "2026-11-23T01:03:17.072189+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_uncalibrated",
@@ -21,10 +21,30 @@
       "injury_adjustments": {
         "SF": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 5,
+          "reported_out": 10,
           "unmodeled_injuries": [
+            {
+              "player": "Dre Greenlaw",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Khalid Kareem",
+              "position": "DE",
+              "status": "Out"
+            },
+            {
+              "player": "Demarcus Robinson",
+              "position": "WR",
+              "status": "Out"
+            },
+            {
+              "player": "Enrique Cruz Jr.",
+              "position": "OT",
+              "status": "Out"
+            },
             {
               "player": "Nate Hobbs",
               "position": "CB",
@@ -56,17 +76,27 @@
           "points": 0.0,
           "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 6,
           "unmodeled_injuries": [
             {
-              "player": "Bo Richter",
-              "position": "LB",
-              "status": "Injured Reserve"
+              "player": "Jay Ward",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Isaiah Rodgers",
+              "position": "CB",
+              "status": "Out"
             },
             {
               "player": "Jordan Addison",
               "position": "WR",
               "status": "Out"
+            },
+            {
+              "player": "Bo Richter",
+              "position": "LB",
+              "status": "Injured Reserve"
             }
           ]
         }

@@ -1,25 +1,25 @@
 {
-  "generated_at_utc": "2026-11-22T23:58:34.383903+00:00",
+  "generated_at_utc": "2026-11-23T01:03:15.110072+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 36,
+  "graded_games": 38,
   "summary": {
     "winner": {
-      "hits": 27,
-      "misses": 9,
+      "hits": 28,
+      "misses": 10,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 75.0
+      "hit_pct": 73.7
     },
     "ats": {
-      "hits": 14,
-      "misses": 22,
+      "hits": 15,
+      "misses": 23,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 38.9
+      "hit_pct": 39.5
     },
     "ou": {
-      "hits": 18,
-      "misses": 18,
+      "hits": 19,
+      "misses": 19,
       "pushes": 0,
       "ungraded": 0,
       "hit_pct": 50.0
@@ -780,6 +780,48 @@
       "dk_total": 43.5,
       "winner_result": "miss",
       "ats_result": "hit",
+      "ou_result": "hit"
+    },
+    {
+      "game_id": "2026_11_JAX_NYG",
+      "season": 2026,
+      "week": 11,
+      "home": "NYG",
+      "away": "JAX",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "lock_status": "early_pregame",
+      "lock_cutoff_utc": "2026-11-22T20:55:00+00:00",
+      "forecast_at_utc": "2026-11-22T20:36:41.176495+00:00",
+      "dk_at_utc": "2026-11-22T20:46:03.314078+00:00",
+      "home_score": 23.0,
+      "away_score": 18.0,
+      "projected_margin_home": -3.73,
+      "projected_total": 45.84,
+      "dk_home_spread": 6.0,
+      "dk_total": 45.5,
+      "winner_result": "miss",
+      "ats_result": "hit",
+      "ou_result": "miss"
+    },
+    {
+      "game_id": "2026_11_LV_DEN",
+      "season": 2026,
+      "week": 11,
+      "home": "DEN",
+      "away": "LV",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "lock_status": "early_pregame",
+      "lock_cutoff_utc": "2026-11-22T20:55:00+00:00",
+      "forecast_at_utc": "2026-11-22T20:36:41.176495+00:00",
+      "dk_at_utc": "2026-11-22T20:46:03.314078+00:00",
+      "home_score": 38.0,
+      "away_score": 24.0,
+      "projected_margin_home": 6.08,
+      "projected_total": 47.38,
+      "dk_home_spread": -10.5,
+      "dk_total": 40.5,
+      "winner_result": "hit",
+      "ats_result": "miss",
       "ou_result": "hit"
     }
   ]
