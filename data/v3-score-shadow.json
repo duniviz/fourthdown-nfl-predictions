@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-23T01:03:34.451284+00:00",
+  "generated_at_utc": "2026-11-23T03:07:09.104766+00:00",
   "season": 2026,
   "week": 11,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_11_MIN_SF",
-      "season": 2026,
-      "week": 11,
-      "kickoff_utc": "2026-11-23T01:20:00+00:00",
-      "home": "SF",
-      "away": "MIN",
-      "projected_home_score": 25.0,
-      "projected_away_score": 17.5,
-      "projected_margin_home": 7.49,
-      "projected_total": 42.47,
-      "predicted_winner": "SF",
-      "v2_reference": {
-        "projected_margin_home": 6.77,
-        "projected_total": 43.09
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.619,
-        "margin_from_success_and_pass_proxy": 0.716,
-        "home_features": {
-          "plays_per_game": 61.6,
-          "success_rate": 0.506,
-          "neutral_pass_proxy": 0.536
-        },
-        "away_features": {
-          "plays_per_game": 55.4,
-          "success_rate": 0.408,
-          "neutral_pass_proxy": 0.57
-        }
-      }
-    },
     {
       "game_id": "2026_11_CIN_WAS",
       "season": 2026,

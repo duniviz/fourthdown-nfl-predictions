@@ -1,76 +1,6 @@
 {
   "schema_version": 1,
   "games": {
-    "2026_11_MIN_SF": {
-      "headline": "MIN at SF: contrasting offenses shape the outlook",
-      "stories": [
-        {
-          "title": "Where the offenses diverge",
-          "body": "FOURTHDOWN has SF ahead in this matchup, projecting MIN 17.5 and SF 24.3, a 6.8-point difference. The offensive efficiency gap is worth watching, although it does not guarantee a scoring gap of the same size. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "SF ranks 2 of 32 on offense and 11 on defense in the model; MIN ranks 29 offensively and 3 defensively. Across their latest 5 and 5 games, respectively, SF won 4 and MIN won 3. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-17T15:58:14.881244+00:00",
-      "kickoff_utc": "2026-11-23T01:20:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": -0.0759, \"defense_rank\": 3, \"games_used\": 9, \"offense_epa_rating\": -0.0754, \"offense_rank\": 29, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 3.0, \"avg_points_against\": 15.0, \"avg_points_for\": 18.0, \"games\": 5, \"results\": [{\"points_against\": 13, \"points_for\": 23, \"result\": \"W\", \"week\": 5}, {\"points_against\": 10, \"points_for\": 16, \"result\": \"W\", \"week\": 7}, {\"points_against\": 19, \"points_for\": 15, \"result\": \"L\", \"week\": 8}, {\"points_against\": 23, \"points_for\": 6, \"result\": \"L\", \"week\": 9}, {\"points_against\": 10, \"points_for\": 30, \"result\": \"W\", \"week\": 10}], \"wins\": 3}, \"team\": \"MIN\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.0156, \"defense_rank\": 11, \"games_used\": 9, \"offense_epa_rating\": 0.1094, \"offense_rank\": 2, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 5.4, \"avg_points_against\": 26.4, \"avg_points_for\": 31.8, \"games\": 5, \"results\": [{\"points_against\": 29, \"points_for\": 32, \"result\": \"W\", \"week\": 5}, {\"points_against\": 17, \"points_for\": 23, \"result\": \"W\", \"week\": 6}, {\"points_against\": 29, \"points_for\": 20, \"result\": \"L\", \"week\": 7}, {\"points_against\": 17, \"points_for\": 38, \"result\": \"W\", \"week\": 9}, {\"points_against\": 40, \"points_for\": 46, \"result\": \"W\", \"week\": 10}], \"wins\": 4}, \"team\": \"SF\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 1, \"value\": 14.0}, \"away_offense\": {\"rank\": 25, \"value\": 19.56}, \"category\": \"total\", \"home_defense\": {\"rank\": 11, \"value\": 21.78}, \"home_offense\": {\"rank\": 2, \"value\": 31.22}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 2, \"value\": 4.61}, \"away_offense\": {\"rank\": 27, \"value\": 4.82}, \"category\": \"total\", \"home_defense\": {\"rank\": 5, \"value\": 4.99}, \"home_offense\": {\"rank\": 1, \"value\": 6.82}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 1, \"value\": -0.13}, \"away_offense\": {\"rank\": 29, \"value\": -0.1}, \"category\": \"epa\", \"home_defense\": {\"rank\": 9, \"value\": -0.02}, \"home_offense\": {\"rank\": 1, \"value\": 0.2}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 1, \"value\": -0.16}, \"away_offense\": {\"rank\": 26, \"value\": -0.09}, \"category\": \"epa\", \"home_defense\": {\"rank\": 17, \"value\": 0.04}, \"home_offense\": {\"rank\": 1, \"value\": 0.27}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 5, \"value\": -0.08}, \"away_offense\": {\"rank\": 29, \"value\": -0.11}, \"category\": \"epa\", \"home_defense\": {\"rank\": 1, \"value\": -0.1}, \"home_offense\": {\"rank\": 2, \"value\": 0.11}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 1, \"value\": 4.11}, \"away_offense\": {\"rank\": 24, \"value\": 2.89}, \"category\": \"negative\", \"home_defense\": {\"rank\": 28, \"value\": 1.78}, \"home_offense\": {\"rank\": 3, \"value\": 1.44}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 4, \"value\": 1.67}, \"away_offense\": {\"rank\": 12, \"value\": 1.0}, \"category\": \"negative\", \"home_defense\": {\"rank\": 8, \"value\": 1.44}, \"home_offense\": {\"rank\": 9, \"value\": 1.0}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 4, \"value\": 32.2}, \"away_offense\": {\"rank\": 19, \"value\": 38.0}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 18, \"value\": 41.2}, \"home_offense\": {\"rank\": 2, \"value\": 52.5}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 17, \"value\": 53.8}, \"away_offense\": {\"rank\": 18, \"value\": 55.6}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 18, \"value\": 55.6}, \"home_offense\": {\"rank\": 5, \"value\": 72.7}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 1, \"value\": 25.0}, \"away_offense\": {\"rank\": 24, \"value\": 52.2}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 12, \"value\": 53.6}, \"home_offense\": {\"rank\": 1, \"value\": 80.6}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -4.1, \"away_qb_adjustment_points\": 0.33, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 1.51, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"MIN\", \"home\": \"SF\", \"kickoff\": \"2026-11-23T01:20:00+00:00\", \"scores\": [24.3, 17.5]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "Minnesota Vikings at San Francisco 49ers: Inactive Lists for Both Teams - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOUFFnUW1BeXRUVjkzbFAyeDVjVXUyZkNvV3Z2WUF6UnhFSjBLd0hYUHgzRTNwLVQyZ3lWTVV6S3hscFZoZmVPZldBWThPXzVhV0twMlNWLUxhcEoycGpHY3JrUTRDVk1uM0M3S1h0dDVVNjk5VWp4Z3JuX2FSUHIyOGtIU0hOUnY4VWFieXZ4RQ?oc=5",
-          "published_at_utc": "2026-11-23T00:36:00+00:00",
-          "publisher": "Yahoo Sports"
-        },
-        {
-          "title": "Sunday Night Football: How to watch the Minnesota Vikings vs. San Francisco 49ers international game tonight - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQMUJnbFpxRTRJQTJDelhlQzlTbVhtV3dzLXRmOU4tbXRVMk9kTEFSdlpuUjBUODNLakxTa2Y3OHdBQ1dEMlYwVW9yUjRHb2JWakZ2Nkp6SzhFTWhsSkkwcEpVZzJWQ0FDTEJ3eHU2ME90cXZ3d1IzY2xzUmxtVkV5azdRT1hldDJzTGJ1OXM4OXNobjZmMnNSV2dNT2FBamU5YVFkeldUaXVvUGlrYWdFcGx2Vl9tVkk4WWxKeG5nRXI3Z2lTZ3owcXRPYklYRUpXUE15QUdrU1dVSlFUX1VJaFlrdVMtT2VmSi1mc3dFZw?oc=5",
-          "published_at_utc": "2026-11-22T17:49:38+00:00",
-          "publisher": "Yahoo Sports"
-        },
-        {
-          "title": "Mike Evans Active, Dre Greenlaw OUT vs. Vikings; Inactives Week 11 #MINvsSF - San Francisco 49ers",
-          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPOVAyZmFqd3J2RWZYa2NjcF95MWJXXzFxMVV0UmVIcVBEYjQ3VkNXcG1kUWZXNmdjT0pjbTRtT25tZzhTZVhCdS1CSGZtVnkxT0ozd3ZLWTM3Q1BYeTVzdk9Ed240QWhnSGhjdFlSMGdBWEVzc0M3QTdfVmF0bE1BRG91RXp0T05GVkpoTk4tR3diVUNXeTNSMVFEemtzVU0?oc=5",
-          "published_at_utc": "2026-11-22T23:52:36+00:00",
-          "publisher": "San Francisco 49ers"
-        },
-        {
-          "title": "Dan Orlovsky picks 49ers player who puts ‘fear of God' in Brian Flores, Vikings - NBC Sports Bay Area & California",
-          "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOTTh1bU9VbFdNUnd4eHQyZkUxNG0xZGZ1aUozalE0V1pSbmRxY1Z4N0Y2QkdhYzFiM25HNlBQeW9meGNlZUxoQnJTZUVoUTlrNmVzYmxGLWhhWEFxSnB0N3BZNlFjVXF6NlhMSDJ3QnA0dnNreEZMSWdLb01Yb1lRWV8zczBtVDFrdklnN0p1bkRfYjZCSElpbUdMcmJmaG5feU5ud2Nfc01YUdIBsgFBVV95cUxOczBPeDl0QldleV9EeV90MW9YS2xKcGQ0S3JzeVktNnJ5RWRwTW1WNlV3XzRyMUVpTkNTZTBMOS1Jd2VneENrenItUGFRdFlDWDY4aEV6Y0Z6VkJLNTJ0Y01xZmNKSG4wQkV5LWpJNmZYNllhenV3SFJuQTlJQVZ6WmNfaG1HT0FTbHBNSUpaQ2NscWM0ZXVubE9SR0E4VTMxS0hXUF9YbWpUamhIZS16R2pB?oc=5",
-          "published_at_utc": "2026-11-22T01:14:24+00:00",
-          "publisher": "NBC Sports Bay Area & California"
-        }
-      ],
-      "external_context": {
-        "event_id": "401873077",
-        "kickoff_utc": "2026-11-23T01:20:00+00:00",
-        "predictor": {
-          "source": "ESPN Matchup Predictor",
-          "home_pct": 63.0,
-          "away_pct": 36.7,
-          "retrieved_at_utc": "2026-11-23T01:03:17.640726+00:00",
-          "url": "https://www.espn.com/nfl/game/_/gameId/401873077"
-        },
-        "article": {
-          "source": "AP",
-          "headline": "Vikings-49ers matchup in Mexico features the best defense vs. the best offense",
-          "excerpt": "“He’s more unique than all the other 31 guys,” 49ers coach Kyle Shanahan said of Flores' heavy blitz packages.",
-          "published_at_utc": "2026-11-19T19:09:34+00:00",
-          "updated_at_utc": "2026-11-19T21:25:08+00:00",
-          "url": "https://www.espn.com/nfl/preview?gameId=401873077"
-        }
-      }
-    },
     "2026_11_CIN_WAS": {
       "headline": "CIN at WAS: contrasting offenses shape the outlook",
       "stories": [
@@ -97,28 +27,28 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "'NFL GameDay Preview' take a closer look at Cincinnati Bengals-Washington Commanders Week 11 matchup - NFL.com",
-          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQYXNOOWhqSXZTVjRxOVFPbmVnMHdONl9LdzdzUnBvU29VeldkSl8tWTI4azZlQzJjSjBFOTR5MjgyOUMwU1FSZ05jNkFmMEw4YlA2NjZyX2N1WjFGRkdVeHlQN2tJSk5ndTYzdk05RTFlaV8zZVBfdHEwQ0tBUExVN09xY2ZoZTVETmNWYTFleHYzSnREUUJuQVVfNDg5Z1hjMUJRQ1Z3?oc=5",
-          "published_at_utc": "2026-11-22T17:52:41+00:00",
-          "publisher": "NFL.com"
-        },
-        {
           "title": "Practice notes | Croskey-Merritt says goal is to play vs. Bengals - Washington Commanders",
           "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbGtXbUdFNmQ5bnNBTHhEajIxVXVvYVJERjhRWV9qQlp1Q3FfNkhKREhMZjFtWENxdGh5RGN5MDNtVHBVNWNEOEp3R1VoamN3N1RrM2k0ekM5ZzlHMmR6TGpzNnFVVjhUVW93ZXhjRnV2T0tyMC00SXJLY2RFLUZzRG13TkRaX0t2TlN0RVNfcnY5ZzU4S0tXZnlkUzFkeXZ6Mjg3Vw?oc=5",
           "published_at_utc": "2026-11-20T20:42:28+00:00",
           "publisher": "Washington Commanders"
         },
         {
-          "title": "Commanders' 2024 win over Bengals resonates as another 'Monday Night Football' matchup looms - LancasterOnline",
-          "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxQWFlfM0lCMzJLSkRVV1djOGEtTkxZUVpUMjA3SExqMlNEcHk4VkR2TkotVVFRMnN3R2UzTGY1TUZGbmxOQ1JxdVN4QloyYkVBVTBzcGlYMWxTcWJVRjhaV0hoMjBiYXhQek9XOXhpc1ZqYVdwRkkxeVhScTE4RnROYzhjZEtKNDBVZWtfNXZuS3ZVY1EwU2djT0dPTVJMeThfNHFHQnY2el9Ba2w1SXVXYVNselVTQU5fMmFweDNGTDBlYWRNM3FlT0RSMWhaTDdpVXE4NTBnNDRaejJxS3B3U0pMVWtXLTVGX1lON0lWZWxCXzN5R0Z0bVpYRl92UHAzYTdKbUNBY1k4QQ?oc=5",
-          "published_at_utc": "2026-11-22T18:29:11+00:00",
-          "publisher": "LancasterOnline"
-        },
-        {
           "title": "Evan Silva’s Matchups: Bengals at Commanders - Establish The Run",
           "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB1cFhQR000T0F0OGNaWW1jNjBBSjMtaTNfa1VfQ2Y5c2FxM2FFVmNpRHZDVDNhZTkyYXpNZjFaSjg2LWZCZzNQNWN2dVR5VzBsQUp3YmRobTh4dGNBZEJmWDdFZGtuQXJHcEtMeV91RXIzWmlRTEFkMURaYw?oc=5",
           "published_at_utc": "2026-11-22T01:20:34+00:00",
           "publisher": "Establish The Run"
+        },
+        {
+          "title": "Bengals provide injury update ahead of MNF matchup with Commanders - WLWT",
+          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQMjMwMlJ0UW9MZ180SUdZdUMwMldpZ3VKdEExWlZVUzR3eTIyQl8tcGU0cm5EWEJGX2stNld5T2trcWFpQmI4VENSMDNQN0FCMEN6X182ckx5a1c3S1V1a0xiVWxrZ1RKeEVVX1NxNUdabHFYNnNSeWlSWVF0NHpXQWZURmNjUS1WZXd1VWd3X0F3X2xqZWJYdTYxWGUzNE1XRnc?oc=5",
+          "published_at_utc": "2026-11-22T02:23:00+00:00",
+          "publisher": "WLWT"
+        },
+        {
+          "title": "Experts release Bengals vs. Commanders predictions for Monday Night Football Week 11 - OregonLive.com",
+          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQMUM3WDlfTU9CZ3BQTlBROHEydUQ3VjZWRGpBazFpc1oyVzdZaTZmdzk3VUlXQ0t4aFg5UkxjbkRxaDVvZFdVcC1oTURXaUg1RkZsbHRHU1RFTjM4SHl3X01LNWNZc200bjRaNnF6OG1fYUNieG9yMC1rSGpuVWw0WmpvcDhJRHdDTFVqZXBtZUhJUmVVaEdsdjZEaTVKai1sNUxpSnFJNVMwZktQdFhUSkFMQzVyUmM4RFk1X2hiNGQ5RC1jN3BrajdOQQ?oc=5",
+          "published_at_utc": "2026-11-23T02:15:00+00:00",
+          "publisher": "OregonLive.com"
         }
       ],
       "external_context": {
@@ -128,7 +58,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 23.8,
           "away_pct": 76.0,
-          "retrieved_at_utc": "2026-11-23T01:03:17.640726+00:00",
+          "retrieved_at_utc": "2026-11-23T03:06:48.926984+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873078"
         },
         "article": {
