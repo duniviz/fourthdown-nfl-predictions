@@ -70,6 +70,7 @@ def build(game_results, locks, player_results, snapshots, history, batches):
         key = (str(h.get('game_id')), str(h.get('player_id')), str(h.get('stat_key')), str(h.get('forecast_captured_at_utc')))
         hist[key].append(h)
     byweek = defaultdict(list)
+    shadow_byweek = defaultdict(list)
     def add(gid, market, name, actual, regular, ml, model):
         try: season, week = map(int, gid.split('_')[:2])
         except (ValueError, AttributeError): return
@@ -83,10 +84,23 @@ def build(game_results, locks, player_results, snapshots, history, batches):
         lock=locks.get(gid) or {}; kick=stamp(lock.get('kickoff_utc')); captured=stamp(lock.get('captured_at_utc')); forecast=stamp(lock.get('forecast_at_utc'))
         home,away=number(result.get('home_score')),number(result.get('away_score'))
         if not kick or not captured or not forecast or not (forecast <= captured < kick) or home is None or away is None: continue
-        if lock.get('lock_status') not in ('official','last_available','forecast_only'): continue
         for market, actual, field in [('game_margin_home',home-away,'projected_margin_home'),('game_total',home+away,'projected_total')]:
             raw=(lock.get('game_ml_shadow') or {}).get('markets',{}).get(market,{})
             incumbent=number(raw.get('candidate')); batch=batches.get((gid,'GAME',market))
+            regular=number(lock.get(field))
+            if incumbent is not None and regular is not None:
+                try:
+                    season, week = map(int, gid.split('_')[:2])
+                except (ValueError, AttributeError):
+                    continue
+                shadow_byweek[(season,week)].append({
+                    'game_id':gid, 'market':market, 'actual':actual,
+                    'regular':regular, 'shadow':incumbent,
+                    'regular_error':round(abs(regular-actual),2),
+                    'shadow_error':round(abs(incumbent-actual),2),
+                    'lock_status':lock.get('lock_status'),
+                    'captured_at_utc':lock.get('captured_at_utc')})
+            if lock.get('lock_status') not in ('official','last_available','forecast_only'): continue
             ml=batch_value(batch,incumbent,forecast,captured,kick) if batch and incumbent is not None else None
             if ml: add(gid,market,f"{lock.get('away')} @ {lock.get('home')}",actual,number(lock.get(field)),ml[0],ml[1])
     unique_snapshots=unique_map(snapshots,lambda r:(str(r.get('game_id')),str(r.get('player_id')),str(r.get('market'))))
@@ -116,7 +130,20 @@ def build(game_results, locks, player_results, snapshots, history, batches):
                 'regular_wins':sum(r['winner']=='regular' for r in items),'ml_wins':sum(r['winner']=='ml' for r in items),
                 'ties':sum(r['winner']=='tie' for r in items),'details':items})
         weeks.append({'season':season,'week':week,'markets':groups})
+    shadow_weeks=[]
+    for (season,week), rows in sorted(shadow_byweek.items(),reverse=True):
+        markets=[]
+        for market in ('game_margin_home','game_total'):
+            items=[row for row in rows if row['market']==market]
+            if not items: continue
+            markets.append({'market':market,'samples':len(items),
+                'regular_mae':round(sum(r['regular_error'] for r in items)/len(items),2),
+                'shadow_mae':round(sum(r['shadow_error'] for r in items)/len(items),2),
+                'details':items})
+        shadow_weeks.append({'season':season,'week':week,'markets':markets})
     return {'generated_at_utc':datetime.now(timezone.utc).isoformat(),'weeks':weeks,
+      'game_shadow_comparisons':shadow_weeks,
+      'game_shadow_note':'Saved game-lock shadow candidates, including early locks; these are not necessarily the selected ML card model.',
       'note':'Only matched, saved pregame card estimates with verified final results; incomplete markets remain absent.'}
 
 def main():
