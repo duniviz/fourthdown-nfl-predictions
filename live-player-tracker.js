@@ -50,9 +50,10 @@ const samePlayer=(a,b)=>playerKey(a)===playerKey(b)||(shortNameKey(a)!==''&&shor
 // Resolve by ESPN athlete ID when the saved card has one. Otherwise require
 // a unique name match within the same team, market and (when available) game.
 // Never silently attach another player's stats to a prop.
+const teamKey=x=>{const key=playerKey(x);return key==='wsh'?'was':key;};
 function matchActual(rows,player,team,market,playerId='',gameId=''){
  if(!String(gameId||'').trim())return null;
- const candidates=rows.filter(r=>r.market===market&&playerKey(r.team)===playerKey(team)&&(!gameId||String(r.game_id)===String(gameId)));
+ const candidates=rows.filter(r=>r.market===market&&teamKey(r.team)===teamKey(team)&&(!gameId||String(r.game_id)===String(gameId)));
  const id=String(playerId||'').trim();
  if(id){
   const byId=candidates.filter(r=>String(r.player_id||'')===id);
