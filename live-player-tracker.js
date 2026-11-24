@@ -141,22 +141,22 @@ function paintModalTotals(){
  if(!panel)return;
  const body=panel.querySelector('.fd-live-player-body');if(!body)return;
  const gameId=String(panel.dataset.fdLiveGameId||'');
- const home=playerKey(panel.dataset.fdLiveHome),away=playerKey(panel.dataset.fdLiveAway);
- const rows=state.rows.filter(x=>String(x.game_id)===gameId&&[home,away].includes(playerKey(x.team)));
+ const home=teamKey(panel.dataset.fdLiveHome),away=teamKey(panel.dataset.fdLiveAway);
+ const rows=state.rows.filter(x=>String(x.game_id)===gameId&&[home,away].includes(teamKey(x.team)));
  if(!rows.length && !panel.closest('.fd-merged-player-props')){body.innerHTML='<p class="fd-modal-muted">'+(state.feedError?'ESPN live stats are temporarily unavailable.':state.games.some(x=>x.id===gameId)?'Waiting for player box-score stats.':'No live player totals for this game right now. Stats appear when ESPN reports the game in progress.')+'</p>';return;}
  const quotes=[...document.querySelectorAll('.fd-result-row[data-fd-player][data-fd-team][data-fd-market]')].filter(el=>el.closest('.scorecard')||el.closest('.fd-modal'));
  const markets={passing_yards:'Passing yards',rushing_yards:'Rushing yards',receiving_yards:'Receiving yards',player_pass_completions:'Completions',player_rush_attempts:'Rush attempts',player_receptions:'Receptions'};
- const lookup=x=>quotes.find(el=>samePlayer(el.dataset.fdPlayer,x.player)&&playerKey(el.dataset.fdTeam)===playerKey(x.team)&&el.dataset.fdMarket===x.market);
+ const lookup=x=>quotes.find(el=>samePlayer(el.dataset.fdPlayer,x.player)&&teamKey(el.dataset.fdTeam)===teamKey(x.team)&&el.dataset.fdMarket===x.market);
  const sorted=rows.filter(x=>markets[x.market]).sort((a,b)=>a.team.localeCompare(b.team)||a.player.localeCompare(b.player)||a.market.localeCompare(b.market));
  const dataset=window.fdLiveMatchupData?.gameId===gameId?window.fdLiveMatchupData:null;
  const sortedRows=sorted.map(x=>{
-  const stored=(dataset?.projections||[]).find(p=>samePlayer(p.player,x.player)&&playerKey(p.team)===playerKey(x.team)&&p.market===x.market);
+  const stored=(dataset?.projections||[]).find(p=>samePlayer(p.player,x.player)&&teamKey(p.team)===teamKey(x.team)&&p.market===x.market);
   const marketMap={passing_yards:'player_pass_yds',rushing_yards:'player_rush_yds',receiving_yards:'player_rec_yds'};
   const quote=(dataset?.quotes||[]).find(p=>samePlayer(p.player,x.player)&&p.market===(marketMap[x.market]||x.market));
   // The visible pregame card is authoritative for the frozen line displayed
   // to the user. Do not substitute a refreshed quote in the live grading row.
   const cards=[...document.querySelectorAll('.fd-merged-player-props .fd-mobile-prop-card[data-fd-player][data-fd-market]')];
-  const matchingCards=cards.filter(c=>samePlayer(c.dataset.fdPlayer,x.player)&&playerKey(c.dataset.fdTeam)===playerKey(x.team)&&c.dataset.fdMarket===x.market);
+  const matchingCards=cards.filter(c=>samePlayer(c.dataset.fdPlayer,x.player)&&teamKey(c.dataset.fdTeam)===teamKey(x.team)&&c.dataset.fdMarket===x.market);
   const visibleLine=matchingCards.length===1?matchingCards[0].querySelector('.fd-mobile-prop-numbers>div:nth-child(2) b')?.textContent?.trim():null;
   const raw=visibleLine&&Number.isFinite(Number(visibleLine))?visibleLine:(stored?.dk_line??quote?.line);
   const line=raw!==null&&raw!==undefined&&raw!==''?Number(raw):NaN;
@@ -187,7 +187,7 @@ function paintModalTotals(){
    const liveByKey=new Map(liveRows.map(row=>[key(row.dataset.fdLivePlayer)+'|'+key(row.dataset.fdLiveMarket),row]));
    const forecastCards=panel.fd2ForecastCards||[];
    for(const card of forecastCards){
-    const candidates=liveRows.filter(row=>samePlayer(row.dataset.fdLivePlayer,card.dataset.fdPlayer)&&row.dataset.fdLiveMarket===card.dataset.fdMarket&&(!row.dataset.fdLiveTeam||playerKey(row.dataset.fdLiveTeam)===playerKey(card.dataset.fdTeam)));
+    const candidates=liveRows.filter(row=>samePlayer(row.dataset.fdLivePlayer,card.dataset.fdPlayer)&&row.dataset.fdLiveMarket===card.dataset.fdMarket&&(!row.dataset.fdLiveTeam||teamKey(row.dataset.fdLiveTeam)===teamKey(card.dataset.fdTeam)));
     const match=candidates.length===1?candidates[0]:null;
     const direct=matchActual(state.rows,card.dataset.fdPlayer,card.dataset.fdTeam,card.dataset.fdMarket,card.dataset.fdPlayerId,gameId);
     if(direct)showCardActual(card,direct);
