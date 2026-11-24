@@ -43,6 +43,9 @@ def batch_value(batch, incumbent, forecast_at, saved_at, kickoff):
     """Only use the same saved candidate as the captured source feed."""
     generated = stamp(batch.get('generated_at_utc')) if batch else None
     if not generated or not forecast_at or not saved_at or not (forecast_at <= generated <= saved_at < kickoff): return None
+    if batch.get('published_at_utc') is not None:
+        published=stamp(batch['published_at_utc'])
+        if not published or not (generated<=published<=saved_at): return None
     if saved_at - generated > timedelta(hours=120): return None
     predictions = batch.get('predictions') or {}
     current = number(predictions.get('current'))
@@ -58,10 +61,24 @@ def batch_value(batch, incumbent, forecast_at, saved_at, kickoff):
     value = number(predictions.get(model))
     return (value, model.replace('_', ' ')) if value is not None else None
 
+def saved_batch_value(batches, incumbent, forecast_at, saved_at, kickoff):
+    """Choose the latest unambiguous batch that existed at snapshot time."""
+    eligible=[]
+    for batch in batches:
+        value=batch_value(batch,incumbent,forecast_at,saved_at,kickoff)
+        if value is not None:
+            eligible.append((stamp(batch['generated_at_utc']),value))
+    if not eligible:return None
+    latest=max(t for t,_ in eligible)
+    values={value for t,value in eligible if t==latest}
+    return next(iter(values)) if len(values)==1 else None
+
 def build(game_results, locks, player_results, snapshots, history, batches):
     games = unique_map(game_results, lambda r: str(r.get('game_id')))
     locks = unique_map(locks, lambda r: str(r.get('game_id')))
-    batches = unique_map(batches, lambda r: (str(r.get('game_id')), str(r.get('player_id')), str(r.get('market'))))
+    batch_versions = defaultdict(list)
+    for row in batches:
+        batch_versions[(str(row.get('game_id')),str(row.get('player_id')),str(row.get('market')))].append(row)
     actuals = unique_map([r for r in player_results if not r.get('dnp') and r.get('played') is not False],
                          lambda r: (str(r.get('game_id')), str(r.get('player_id')), str(r.get('stat_key'))))
     # Different line observations can accompany exactly the same published forecast.
@@ -86,7 +103,7 @@ def build(game_results, locks, player_results, snapshots, history, batches):
         if not kick or not captured or not forecast or not (forecast <= captured < kick) or home is None or away is None: continue
         for market, actual, field in [('game_margin_home',home-away,'projected_margin_home'),('game_total',home+away,'projected_total')]:
             raw=(lock.get('game_ml_shadow') or {}).get('markets',{}).get(market,{})
-            incumbent=number(raw.get('candidate')); batch=batches.get((gid,'GAME',market))
+            incumbent=number(raw.get('candidate')); batch=batch_versions.get((gid,'GAME',market),[])
             regular=number(lock.get(field))
             if incumbent is not None and regular is not None:
                 try:
@@ -101,7 +118,7 @@ def build(game_results, locks, player_results, snapshots, history, batches):
                     'lock_status':lock.get('lock_status'),
                     'captured_at_utc':lock.get('captured_at_utc')})
             if lock.get('lock_status') not in ('official','last_available','forecast_only'): continue
-            ml=batch_value(batch,incumbent,forecast,captured,kick) if batch and incumbent is not None else None
+            ml=saved_batch_value(batch,incumbent,forecast,captured,kick) if batch and incumbent is not None else None
             if ml: add(gid,market,f"{lock.get('away')} @ {lock.get('home')}",actual,number(lock.get(field)),ml[0],ml[1])
     unique_snapshots=unique_map(snapshots,lambda r:(str(r.get('game_id')),str(r.get('player_id')),str(r.get('market'))))
     for s in unique_snapshots.values():
@@ -115,8 +132,8 @@ def build(game_results, locks, player_results, snapshots, history, batches):
         shadows={number((h.get('player_ml_shadow') or {}).get('candidate')) for h in matches}
         shadows.discard(None)
         if len(shadows)>1: continue
-        incumbent=next(iter(shadows),None); batch=batches.get((gid,pid,BATCH_MARKETS.get(market,market)))
-        ml=batch_value(batch,incumbent,forecast,saved,kick) if batch and (incumbent is not None or market in BATCH_MARKETS) else None
+        incumbent=next(iter(shadows),None); batch=batch_versions.get((gid,pid,BATCH_MARKETS.get(market,market)),[])
+        ml=saved_batch_value(batch,incumbent,forecast,saved,kick) if batch and (incumbent is not None or market in BATCH_MARKETS) else None
         if ml: add(gid,market,str(s.get('player') or pid),number(actual.get('actual')),regular,ml[0],ml[1])
     weeks=[]
     for (season,week), rows in sorted(byweek.items(),reverse=True):
@@ -151,8 +168,12 @@ def main():
         value=json.loads((DATA/name).read_text()).get(key)
         if not isinstance(value,list): raise ValueError(f'Invalid {name}: missing {key} list')
         return value
+    history_path=DATA/'ml-card-batch-history.json'
+    historical=read('ml-card-batch-history.json','rows') if history_path.exists() else []
+    if (DATA/'ml-card-batch-recovered.json').exists():
+        historical+=read('ml-card-batch-recovered.json','rows')
     report=build(read('game-official-results.json','rows'),read('game-official-pregame-locks.json','records'),
-      read('player-results.json','rows'),read('pregame-snapshots.json','records'),read('player-history.json','players'),read('ml-card-batches.json','rows'))
+      read('player-results.json','rows'),read('pregame-snapshots.json','records'),read('player-history.json','players'),historical+read('ml-card-batches.json','rows'))
     (DATA/'weekly-card-comparison.json').write_text(json.dumps(report,indent=2)+'\n')
     print('Weekly matched card comparisons:',[(w['season'],w['week'],sum(m['samples'] for m in w['markets'])) for w in report['weeks']])
 
