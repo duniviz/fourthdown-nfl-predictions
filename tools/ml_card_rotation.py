@@ -221,6 +221,7 @@ def run(now=None):
     live_time=stamp(live.get('generated_at_utc'));player_time=stamp(players.get('generated_at_utc'))
     if not live_time or not player_time or live_time>now or player_time>now:raise ValueError('Invalid forecast timestamps')
     prior=read('ml-card-batches.json',{}).get('rows',[])
+    history=read('ml-card-batch-history.json',{}).get('rows',[])
     finals=actuals(read('player-results.json',{}).get('rows',[]),read('game-official-results.json',{}).get('rows',[]))
     yard_rows,yard_version,yard_coverage=load_yard_training(target)
     versions={market:yard_version for market in YARDS}
@@ -314,13 +315,24 @@ def run(now=None):
         elif key in stored and stored[key].get('model_version') in ('same-refresh-v1','same-refresh-v2'):
             display.append(stored[key])
     candidates=display
+    # Preserve every published pregame version so later refreshes cannot erase
+    # the model and selection that accompanied an earlier projection lock.
+    archive={}
+    for row in history+prior+list(stored.values()):
+        generated=stamp(row.get('generated_at_utc'))
+        kickoff=stamp(row.get('kickoff_utc'))
+        if not generated or not kickoff or generated>=kickoff:continue
+        key=(row.get('game_id'),row.get('player_id'),row.get('market'),row.get('generated_at_utc'))
+        if key in archive and archive[key]!=row:
+            raise ValueError('Conflicting ML batch versions for '+str(key))
+        archive[key]=row
     out={'schema_version':1,'research_only':True,'season':season,'week':week,
          'generated_at_utc':finished.isoformat(),'forecast_generated_at_utc':live.get('generated_at_utc'),
          'player_generated_at_utc':players.get('generated_at_utc'),
          'count_generated_at_utc':counts.get('generated_at_utc'),
          'training_coverage':{'player_yards':yard_coverage},
          'decisions':decisions,'candidates':candidates}
-    for name,obj in [('ml-card-rotation.json',out),('ml-card-batches.json',{'schema_version':1,'rows':list(stored.values())})]:
+    for name,obj in [('ml-card-rotation.json',out),('ml-card-batches.json',{'schema_version':1,'rows':list(stored.values())}),('ml-card-batch-history.json',{'schema_version':1,'rows':list(archive.values())})]:
         path=DATA/name;tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(obj,indent=2)+'\n');tmp.replace(path)
     print('ML card batch:',len(candidates),'candidates;',len(decisions),'weekly selections')
 if __name__=='__main__':run()
