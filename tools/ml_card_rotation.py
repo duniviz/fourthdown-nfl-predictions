@@ -322,9 +322,10 @@ def run(now=None):
         generated=stamp(row.get('generated_at_utc'))
         kickoff=stamp(row.get('kickoff_utc'))
         if not generated or not kickoff or generated>=kickoff:continue
-        key=(row.get('game_id'),row.get('player_id'),row.get('market'),row.get('generated_at_utc'))
-        if key in archive and archive[key]!=row:
-            raise ValueError('Conflicting ML batch versions for '+str(key))
+        # Preserve conflicting rows too. The grader rejects ambiguous versions
+        # instead of aborting publication or silently choosing a winner.
+        key=(row.get('game_id'),row.get('player_id'),row.get('market'),
+             row.get('generated_at_utc'),json.dumps(row,sort_keys=True))
         archive[key]=row
     out={'schema_version':1,'research_only':True,'season':season,'week':week,
          'generated_at_utc':finished.isoformat(),'forecast_generated_at_utc':live.get('generated_at_utc'),
