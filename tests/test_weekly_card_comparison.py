@@ -21,6 +21,15 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch])['weeks'],[])
         self.assertEqual(build([self.game],[self.lock],[],[],[],[])['weeks'],[])
 
+    def test_saved_game_shadow_is_reported_separately_from_late_batch(self):
+        self.batch['generated_at_utc']='2026-11-20T01:00:00+00:00'
+        report=build([self.game],[self.lock],[],[],[],[self.batch])
+        self.assertEqual(report['weeks'],[])
+        group=next(m for m in report['game_shadow_comparisons'][0]['markets'] if m['market']=='game_total')
+        self.assertEqual((group['samples'],group['regular_mae'],group['shadow_mae']),(1,14.43,18.43))
+        self.lock['captured_at_utc']=self.kick
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch])['game_shadow_comparisons'],[])
+
     def test_player_requires_matching_history_snapshot_and_same_actual(self):
         snap={'game_id':self.gid,'player_id':'p','player':'Player','market':'player_rush_yds','kickoff':self.kick,'captured_at':self.forecast,'saved_at_utc':self.saved,'projection':42}
         hist={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
