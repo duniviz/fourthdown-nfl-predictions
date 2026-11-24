@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-24T00:53:31.120077+00:00",
+  "generated_at_utc": "2026-11-24T04:03:43.537594+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -2053,5 +2053,228 @@
       ]
     }
   ],
+  "game_shadow_comparisons": [
+    {
+      "season": 2026,
+      "week": 11,
+      "markets": [
+        {
+          "market": "game_margin_home",
+          "samples": 9,
+          "regular_mae": 9.83,
+          "shadow_mae": 9.94,
+          "details": [
+            {
+              "game_id": "2026_11_IND_HOU",
+              "market": "game_margin_home",
+              "actual": 23.0,
+              "regular": 6.85,
+              "shadow": 9.69,
+              "regular_error": 16.15,
+              "shadow_error": 13.31,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-20T00:53:28.011561+00:00"
+            },
+            {
+              "game_id": "2026_11_ARI_KC",
+              "market": "game_margin_home",
+              "actual": 27.0,
+              "regular": 12.83,
+              "shadow": 10.23,
+              "regular_error": 14.17,
+              "shadow_error": 16.77,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_BAL_CAR",
+              "market": "game_margin_home",
+              "actual": 2.0,
+              "regular": 5.58,
+              "shadow": 5.68,
+              "regular_error": 3.58,
+              "shadow_error": 3.68,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_MIA_BUF",
+              "market": "game_margin_home",
+              "actual": 17.0,
+              "regular": 10.72,
+              "shadow": 10.11,
+              "regular_error": 6.28,
+              "shadow_error": 6.89,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_NO_CHI",
+              "market": "game_margin_home",
+              "actual": 8.0,
+              "regular": 5.33,
+              "shadow": 4.17,
+              "regular_error": 2.67,
+              "shadow_error": 3.83,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_TB_DET",
+              "market": "game_margin_home",
+              "actual": 10.0,
+              "regular": 2.86,
+              "shadow": 5.15,
+              "regular_error": 7.14,
+              "shadow_error": 4.85,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_TEN_DAL",
+              "market": "game_margin_home",
+              "actual": 21.0,
+              "regular": 4.36,
+              "shadow": 4.78,
+              "regular_error": 16.64,
+              "shadow_error": 16.22,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_NYJ_LAC",
+              "market": "game_margin_home",
+              "actual": -3.0,
+              "regular": 0.63,
+              "shadow": 0.45,
+              "regular_error": 3.63,
+              "shadow_error": 3.45,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-22T20:46:16.958992+00:00"
+            },
+            {
+              "game_id": "2026_11_MIN_SF",
+              "market": "game_margin_home",
+              "actual": 25.0,
+              "regular": 6.77,
+              "shadow": 4.51,
+              "regular_error": 18.23,
+              "shadow_error": 20.49,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-23T00:54:45.443853+00:00"
+            }
+          ]
+        },
+        {
+          "market": "game_total",
+          "samples": 9,
+          "regular_mae": 12.43,
+          "shadow_mae": 13.34,
+          "details": [
+            {
+              "game_id": "2026_11_IND_HOU",
+              "market": "game_total",
+              "actual": 29.0,
+              "regular": 43.43,
+              "shadow": 47.43,
+              "regular_error": 14.43,
+              "shadow_error": 18.43,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-20T00:53:28.011561+00:00"
+            },
+            {
+              "game_id": "2026_11_ARI_KC",
+              "market": "game_total",
+              "actual": 41.0,
+              "regular": 44.79,
+              "shadow": 43.91,
+              "regular_error": 3.79,
+              "shadow_error": 2.91,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_BAL_CAR",
+              "market": "game_total",
+              "actual": 68.0,
+              "regular": 42.41,
+              "shadow": 42.52,
+              "regular_error": 25.59,
+              "shadow_error": 25.48,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_MIA_BUF",
+              "market": "game_total",
+              "actual": 35.0,
+              "regular": 44.32,
+              "shadow": 48.32,
+              "regular_error": 9.32,
+              "shadow_error": 13.32,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_NO_CHI",
+              "market": "game_total",
+              "actual": 34.0,
+              "regular": 43.6,
+              "shadow": 45.91,
+              "regular_error": 9.6,
+              "shadow_error": 11.91,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_TB_DET",
+              "market": "game_total",
+              "actual": 52.0,
+              "regular": 40.71,
+              "shadow": 44.71,
+              "regular_error": 11.29,
+              "shadow_error": 7.29,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_TEN_DAL",
+              "market": "game_total",
+              "actual": 81.0,
+              "regular": 52.11,
+              "shadow": 50.03,
+              "regular_error": 28.89,
+              "shadow_error": 30.97,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-22T17:30:02.387186+00:00"
+            },
+            {
+              "game_id": "2026_11_NYJ_LAC",
+              "market": "game_total",
+              "actual": 51.0,
+              "regular": 43.93,
+              "shadow": 43.31,
+              "regular_error": 7.07,
+              "shadow_error": 7.69,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-22T20:46:16.958992+00:00"
+            },
+            {
+              "game_id": "2026_11_MIN_SF",
+              "market": "game_total",
+              "actual": 45.0,
+              "regular": 43.09,
+              "shadow": 47.09,
+              "regular_error": 1.91,
+              "shadow_error": 2.09,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-23T00:54:45.443853+00:00"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "game_shadow_note": "Saved game-lock shadow candidates, including early locks; these are not necessarily the selected ML card model.",
   "note": "Only matched, saved pregame card estimates with verified final results; incomplete markets remain absent."
 }
