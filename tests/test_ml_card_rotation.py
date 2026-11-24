@@ -70,6 +70,8 @@ class WeeklySelectionTests(unittest.TestCase):
                 rot.run(datetime(2026,11,20,17,50,tzinfo=timezone.utc))
                 after=json.loads((root/'ml-card-batches.json').read_text())
                 self.assertEqual(next(r for r in after['rows'] if r['player_id']=='new'),frozen)
+                history=json.loads((root/'ml-card-batch-history.json').read_text())['rows']
+                self.assertIn(frozen,history)
                 display=json.loads((root/'ml-card-rotation.json').read_text())['candidates']
                 self.assertEqual(next(r for r in display if r['player_id']=='new'),frozen)
 
