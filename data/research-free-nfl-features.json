@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-19T22:43:53.907652+00:00",
+  "generated_at_utc": "2026-11-24T22:05:09.958481+00:00",
   "research_only": true,
   "production_changed": false,
   "automatic_promotion": false,
@@ -19,8 +19,8 @@
       "eligible_rows": 537
     },
     "ngs_passing_2026": {
-      "rows": 340,
-      "eligible_rows": 303
+      "rows": 366,
+      "eligible_rows": 329
     },
     "ngs_rushing_2023": {
       "rows": 623,
@@ -35,8 +35,8 @@
       "eligible_rows": 569
     },
     "ngs_rushing_2026": {
-      "rows": 344,
-      "eligible_rows": 299
+      "rows": 373,
+      "eligible_rows": 323
     },
     "ngs_receiving_2023": {
       "rows": 1473,
@@ -51,8 +51,8 @@
       "eligible_rows": 1213
     },
     "ngs_receiving_2026": {
-      "rows": 799,
-      "eligible_rows": 688
+      "rows": 867,
+      "eligible_rows": 749
     },
     "weekly_2023": {
       "rows": 17806,
@@ -79,7 +79,7 @@
       "eligible_rows": 0
     },
     "players_2023": {
-      "rows": 24871,
+      "rows": 24872,
       "eligible_rows": 0
     },
     "pfr_pass_2023": {
@@ -179,338 +179,338 @@
       "eligible_rows": 0
     },
     "weekly_2026": {
-      "rows": 10446,
-      "eligible_rows": 10436
+      "rows": 11339,
+      "eligible_rows": 11328
     },
     "situational_2026": {
-      "rows": 18447,
-      "eligible_rows": 18447
+      "rows": 20042,
+      "eligible_rows": 20042
     },
     "ftn_2026": {
-      "rows": 25480,
-      "eligible_rows": 25480
+      "rows": 27470,
+      "eligible_rows": 27470
     },
     "snap_2026": {
-      "rows": 14004,
-      "eligible_rows": 14004
+      "rows": 15217,
+      "eligible_rows": 15217
     },
     "injuries_2026": {
-      "rows": 3421,
+      "rows": 3481,
       "eligible_rows": 0
     },
     "depth_2026": {
-      "rows": 812852,
+      "rows": 836475,
       "eligible_rows": 0
     },
     "pfr_pass_2026": {
-      "rows": 349,
-      "eligible_rows": 349
+      "rows": 352,
+      "eligible_rows": 352
     },
     "pfr_rush_2026": {
-      "rows": 1202,
-      "eligible_rows": 1202
+      "rows": 1210,
+      "eligible_rows": 1210
     },
     "pfr_rec_2026": {
-      "rows": 2397,
-      "eligible_rows": 2397
+      "rows": 2415,
+      "eligible_rows": 2415
     },
     "pfr_def_2026": {
-      "rows": 4324,
+      "rows": 4350,
       "eligible_rows": 0
     }
   },
   "markets": {
     "passing_yards": {
       "holdout_weeks": 12,
-      "holdout_rows": 314,
+      "holdout_rows": 308,
       "source_coverage": {
-        "ngs": 1366,
-        "snap": 1367,
+        "ngs": 1388,
+        "snap": 1389,
         "pfr": 0,
-        "pfr_new": 1367,
-        "ftn": 1367,
-        "ftn_defense": 1367,
+        "pfr_new": 1389,
+        "ftn": 1389,
+        "ftn_defense": 1389,
         "workload": 0,
-        "matchup": 1367,
-        "situational": 1367
+        "matchup": 1389,
+        "situational": 1389
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.641,
-          "improvement_pct": 3.66,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.75,
+          "improvement_pct": 3.18,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.9638,
-          "confirmation_samples": 103,
+          "selection_mae": 63.1712,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.0754,
+          "confirmation_mae": 64.9892,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.976,
-          "improvement_pct": 3.16,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.071,
+          "improvement_pct": 2.69,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.8903,
-          "confirmation_samples": 103,
+          "selection_mae": 63.4293,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.2499,
+          "confirmation_mae": 65.4453,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.678,
-          "improvement_pct": 3.6,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.812,
+          "improvement_pct": 3.08,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.1498,
-          "confirmation_samples": 103,
+          "selection_mae": 63.3041,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 68.8075,
+          "confirmation_mae": 64.9017,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.992,
-          "improvement_pct": 3.14,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.131,
+          "improvement_pct": 2.6,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.0451,
-          "confirmation_samples": 103,
+          "selection_mae": 63.5202,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.9805,
+          "confirmation_mae": 65.4391,
           "eligible_for_production": false
         },
         "opponent_efficiency": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.568,
-          "improvement_pct": 3.76,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.662,
+          "improvement_pct": 3.31,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.8776,
-          "confirmation_samples": 103,
+          "selection_mae": 63.017,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.0319,
+          "confirmation_mae": 65.0442,
           "eligible_for_production": false
         },
         "advanced_matchup": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.864,
-          "improvement_pct": 3.33,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.999,
+          "improvement_pct": 2.8,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.8703,
-          "confirmation_samples": 103,
+          "selection_mae": 63.2919,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.9488,
+          "confirmation_mae": 65.5142,
           "eligible_for_production": false
         },
         "pfr_fixed": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.915,
-          "improvement_pct": 3.25,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.947,
+          "improvement_pct": 2.88,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.154,
-          "confirmation_samples": 103,
+          "selection_mae": 63.4094,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.5238,
+          "confirmation_mae": 65.1003,
           "eligible_for_production": false
         },
         "ftn_player": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.62,
-          "improvement_pct": 3.69,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.774,
+          "improvement_pct": 3.14,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.8743,
-          "confirmation_samples": 103,
+          "selection_mae": 63.2225,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.1948,
+          "confirmation_mae": 64.9557,
           "eligible_for_production": false
         },
         "ftn_opponent": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.879,
-          "improvement_pct": 3.31,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.021,
+          "improvement_pct": 2.76,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.2387,
-          "confirmation_samples": 103,
+          "selection_mae": 63.385,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.2397,
+          "confirmation_mae": 65.3832,
           "eligible_for_production": false
         },
         "pfr_ftn": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.844,
-          "improvement_pct": 3.36,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.923,
+          "improvement_pct": 2.91,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.9747,
-          "confirmation_samples": 103,
+          "selection_mae": 63.3744,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 69.6724,
+          "confirmation_mae": 65.0995,
           "eligible_for_production": false
         },
         "pfr_plus": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 66.345,
-          "improvement_pct": 2.62,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.434,
+          "improvement_pct": 2.14,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.4448,
-          "confirmation_samples": 103,
+          "selection_mae": 63.8846,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.2386,
+          "confirmation_mae": 65.6104,
           "eligible_for_production": false
         },
         "ftn_plus": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.935,
-          "improvement_pct": 3.22,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.083,
+          "improvement_pct": 2.67,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.9063,
-          "confirmation_samples": 103,
+          "selection_mae": 63.5419,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.0908,
+          "confirmation_mae": 65.2437,
           "eligible_for_production": false
         },
         "ftn_opponent_plus": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 66.088,
-          "improvement_pct": 3.0,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.239,
+          "improvement_pct": 2.43,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.1349,
-          "confirmation_samples": 103,
+          "selection_mae": 63.4909,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.0899,
+          "confirmation_mae": 65.8434,
           "eligible_for_production": false
         },
         "pfr_ftn_plus": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 66.272,
-          "improvement_pct": 2.73,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.383,
+          "improvement_pct": 2.21,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.269,
-          "confirmation_samples": 103,
+          "selection_mae": 63.8564,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.3745,
+          "confirmation_mae": 65.5117,
           "eligible_for_production": false
         },
         "all_new": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 66.395,
-          "improvement_pct": 2.55,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 64.541,
+          "improvement_pct": 1.98,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 64.3458,
-          "confirmation_samples": 103,
+          "selection_mae": 63.8198,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.5931,
+          "confirmation_mae": 66.086,
           "eligible_for_production": false
         },
         "situational": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.194,
-          "improvement_pct": 4.31,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.286,
+          "improvement_pct": 3.88,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.3836,
-          "confirmation_samples": 103,
+          "selection_mae": 62.5211,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 68.9027,
+          "confirmation_mae": 64.9241,
           "eligible_for_production": false
         },
         "situational_plus": {
           "status": "evaluated",
-          "samples": 314,
-          "baseline_mae": 68.132,
-          "challenger_mae": 65.794,
-          "improvement_pct": 3.43,
-          "selection_samples": 211,
+          "samples": 308,
+          "baseline_mae": 65.841,
+          "challenger_mae": 63.856,
+          "improvement_pct": 3.02,
+          "selection_samples": 210,
           "selection_weeks": 8,
-          "selection_mae": 63.6748,
-          "confirmation_samples": 103,
+          "selection_mae": 63.0899,
+          "confirmation_samples": 98,
           "confirmation_weeks": 4,
-          "confirmation_mae": 70.136,
+          "confirmation_mae": 65.4976,
           "eligible_for_production": false
         }
       },
       "new_feature_comparisons": {
         "opponent_efficiency": {
-          "reference": "ngs",
+          "reference": "baseline_features",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.87757988833462,
-            "reference_mae": 63.89030893658589,
-            "candidate_rmse": 80.00405020278268,
-            "reference_rmse": 79.86392021266774
+            "candidate_mae": 63.01702255444015,
+            "reference_mae": 63.17118651248453,
+            "candidate_rmse": 78.11188798507061,
+            "reference_rmse": 78.22300217410995
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.0318880305949,
-            "reference_mae": 70.24985887859393,
-            "candidate_rmse": 85.2607356528636,
-            "reference_rmse": 85.75229674595279
+            "candidate_mae": 65.04416653094295,
+            "reference_mae": 64.98920648015199,
+            "candidate_rmse": 80.71352613863259,
+            "reference_rmse": 80.64632837355096
           }
         },
         "advanced_matchup": {
-          "reference": "ngs",
+          "reference": "baseline_features",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.870319760664444,
-            "reference_mae": 63.89030893658589,
-            "candidate_rmse": 79.9130953306849,
-            "reference_rmse": 79.86392021266774
+            "candidate_mae": 63.29192052598643,
+            "reference_mae": 63.17118651248453,
+            "candidate_rmse": 78.16311099412951,
+            "reference_rmse": 78.22300217410995
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.94881046451012,
-            "reference_mae": 70.24985887859393,
-            "candidate_rmse": 85.3259273681242,
-            "reference_rmse": 85.75229674595279
+            "candidate_mae": 65.51422810871725,
+            "reference_mae": 64.98920648015199,
+            "candidate_rmse": 80.54993496885355,
+            "reference_rmse": 80.64632837355096
           }
         }
       },
@@ -518,541 +518,541 @@
         "pfr_fixed": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.15404452849982,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 80.03419560753247,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.40939253010961,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.27340745008621,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.52376766902128,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.75132230693397,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.10028069190916,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.83805534896007,
+            "reference_rmse": 80.59839007767431
           }
         },
         "ftn_player": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.874308949060925,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.82894826552634,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.22253402633288,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.2266333449097,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.19479770646613,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.722630352105,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 64.95570166666319,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.75723763503794,
+            "reference_rmse": 80.59839007767431
           }
         },
         "ftn_opponent": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.23872280737599,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 80.25076523933429,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.38503098141547,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.36608020137515,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.23974396591422,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.52805236737595,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.38320506525002,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.92471852752357,
+            "reference_rmse": 80.59839007767431
           }
         },
         "pfr_ftn": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.97470680300581,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.80713485677465,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.374372593997464,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.19031208817869,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 69.67241896514126,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 86.02564436294195,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.09949445925545,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.91521355344675,
+            "reference_rmse": 80.59839007767431
           }
         },
         "pfr_plus": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.4448382649017,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 80.21551798592492,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.88463334422152,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.52154255383499,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.23855871547703,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.77576602783287,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.61041235592556,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.7444117659819,
+            "reference_rmse": 80.59839007767431
           }
         },
         "ftn_plus": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.906253085974775,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.72717915658541,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.54185843895781,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.24560088435292,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.09081523140752,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.78656548007838,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.2436740014021,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.47792630230465,
+            "reference_rmse": 80.59839007767431
           }
         },
         "ftn_opponent_plus": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.13485908348126,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 80.14131243355362,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.49088134398117,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.28124288015954,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.08988483048134,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.36692974429141,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.84336294753574,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.760615169978,
+            "reference_rmse": 80.59839007767431
           }
         },
         "pfr_ftn_plus": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.26896140654236,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.99999578599716,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.8563920557869,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.4462409318135,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.37447157931823,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 86.05774010957879,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.51165875570369,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.74688127461445,
+            "reference_rmse": 80.59839007767431
           }
         },
         "all_new": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 64.34581744174525,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 80.16864186597279,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.81976790975002,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 78.4083988773894,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.59311985592846,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.9541163877249,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 66.08596189378791,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 81.10219879031744,
+            "reference_rmse": 80.59839007767431
           }
         },
         "situational": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.38363872179912,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.41988143017309,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 62.52113403115206,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 77.40641137022187,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 68.90271792469012,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 84.84692132933405,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 64.92413388689955,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.59839007767431,
+            "reference_rmse": 80.59839007767431
           }
         },
         "situational_plus": {
           "reference": "situational",
           "selection": {
-            "samples": 211,
+            "samples": 210,
             "weeks": 8,
-            "candidate_mae": 63.674812610013646,
-            "reference_mae": 63.38363872179912,
-            "candidate_rmse": 79.48435740454079,
-            "reference_rmse": 79.41988143017309
+            "candidate_mae": 63.089871777089776,
+            "reference_mae": 62.52113403115206,
+            "candidate_rmse": 77.65914053105759,
+            "reference_rmse": 77.40641137022187
           },
           "confirmation": {
-            "samples": 103,
+            "samples": 98,
             "weeks": 4,
-            "candidate_mae": 70.13596137567886,
-            "reference_mae": 68.90271792469012,
-            "candidate_rmse": 85.38936714695016,
-            "reference_rmse": 84.84692132933405
+            "candidate_mae": 65.4976025808738,
+            "reference_mae": 64.92413388689955,
+            "candidate_rmse": 80.63940826986043,
+            "reference_rmse": 80.59839007767431
           }
         }
       },
       "pfr_ftn_incumbent": "situational",
       "pfr_ftn_retention": {
-        "reference": "advanced_matchup",
+        "reference": "baseline_features",
         "selection": {
-          "samples": 211,
+          "samples": 210,
           "weeks": 8,
-          "candidate_mae": 63.38363872179912,
-          "reference_mae": 63.870319760664444,
-          "candidate_rmse": 79.41988143017309,
-          "reference_rmse": 79.9130953306849
+          "candidate_mae": 62.52113403115206,
+          "reference_mae": 63.17118651248453,
+          "candidate_rmse": 77.40641137022187,
+          "reference_rmse": 78.22300217410995
         },
         "confirmation": {
-          "samples": 103,
+          "samples": 98,
           "weeks": 4,
-          "candidate_mae": 68.90271792469012,
-          "reference_mae": 69.94881046451012,
-          "candidate_rmse": 84.84692132933405,
-          "reference_rmse": 85.3259273681242
+          "candidate_mae": 64.92413388689955,
+          "reference_mae": 64.98920648015199,
+          "candidate_rmse": 80.59839007767431,
+          "reference_rmse": 80.64632837355096
         }
       }
     },
     "rushing_yards": {
       "holdout_weeks": 12,
-      "holdout_rows": 665,
+      "holdout_rows": 652,
       "source_coverage": {
-        "ngs": 2212,
-        "snap": 2946,
+        "ngs": 2250,
+        "snap": 2993,
         "pfr": 0,
-        "pfr_new": 2946,
-        "ftn": 2946,
-        "ftn_defense": 2946,
-        "workload": 2946,
-        "matchup": 2946,
-        "situational": 2946
+        "pfr_new": 2993,
+        "ftn": 2993,
+        "ftn_defense": 2993,
+        "workload": 2993,
+        "matchup": 2993,
+        "situational": 2993
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.498,
-          "improvement_pct": 1.55,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.473,
+          "improvement_pct": 1.47,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2095,
+          "selection_mae": 23.615,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1702,
+          "confirmation_mae": 23.1511,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.44,
-          "improvement_pct": 1.79,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.427,
+          "improvement_pct": 1.67,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.1591,
+          "selection_mae": 23.5792,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0934,
+          "confirmation_mae": 23.0828,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.502,
-          "improvement_pct": 1.53,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.475,
+          "improvement_pct": 1.47,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2122,
+          "selection_mae": 23.6138,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1767,
+          "confirmation_mae": 23.1602,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.434,
-          "improvement_pct": 1.82,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.421,
+          "improvement_pct": 1.69,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.1394,
+          "selection_mae": 23.5455,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1196,
+          "confirmation_mae": 23.1395,
           "eligible_for_production": false
         },
         "weekly_workload": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.48,
-          "improvement_pct": 1.62,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.449,
+          "improvement_pct": 1.57,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2473,
+          "selection_mae": 23.6532,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0219,
+          "confirmation_mae": 22.9867,
           "eligible_for_production": false
         },
         "opponent_efficiency": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
+          "samples": 652,
+          "baseline_mae": 23.824,
           "challenger_mae": 23.502,
-          "improvement_pct": 1.53,
-          "selection_samples": 465,
+          "improvement_pct": 1.35,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2337,
+          "selection_mae": 23.6565,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1261,
+          "confirmation_mae": 23.1525,
           "eligible_for_production": false
         },
         "workload_matchup": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.494,
-          "improvement_pct": 1.57,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.49,
+          "improvement_pct": 1.4,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2843,
+          "selection_mae": 23.7121,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.98,
+          "confirmation_mae": 22.9879,
           "eligible_for_production": false
         },
         "advanced_workload": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.413,
-          "improvement_pct": 1.9,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.39,
+          "improvement_pct": 1.82,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.183,
+          "selection_mae": 23.588,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9482,
+          "confirmation_mae": 22.9426,
           "eligible_for_production": false
         },
         "advanced_matchup": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.449,
-          "improvement_pct": 1.75,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.459,
+          "improvement_pct": 1.53,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.1715,
+          "selection_mae": 23.5903,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0955,
+          "confirmation_mae": 23.1611,
           "eligible_for_production": false
         },
         "advanced_all": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.424,
-          "improvement_pct": 1.86,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.429,
+          "improvement_pct": 1.66,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.211,
+          "selection_mae": 23.6342,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9184,
+          "confirmation_mae": 22.9663,
           "eligible_for_production": false
         },
         "pfr_fixed": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.454,
-          "improvement_pct": 1.73,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.436,
+          "improvement_pct": 1.63,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.1795,
+          "selection_mae": 23.5667,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0925,
+          "confirmation_mae": 23.1422,
           "eligible_for_production": false
         },
         "ftn_player": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.627,
-          "improvement_pct": 1.01,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.601,
+          "improvement_pct": 0.93,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.3621,
+          "selection_mae": 23.7713,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.2432,
+          "confirmation_mae": 23.2166,
           "eligible_for_production": false
         },
         "ftn_opponent": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.494,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.45,
           "improvement_pct": 1.57,
-          "selection_samples": 465,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2479,
+          "selection_mae": 23.6352,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.066,
+          "confirmation_mae": 23.0301,
           "eligible_for_production": false
         },
         "pfr_ftn": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.582,
-          "improvement_pct": 1.2,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.564,
+          "improvement_pct": 1.09,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.325,
+          "selection_mae": 23.7155,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1806,
+          "confirmation_mae": 23.2203,
           "eligible_for_production": false
         },
         "pfr_plus": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.394,
-          "improvement_pct": 1.98,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.38,
+          "improvement_pct": 1.86,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.0998,
+          "selection_mae": 23.4777,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0793,
+          "confirmation_mae": 23.1579,
           "eligible_for_production": false
         },
         "ftn_plus": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.573,
-          "improvement_pct": 1.23,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.553,
+          "improvement_pct": 1.14,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2849,
+          "selection_mae": 23.7004,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.2443,
+          "confirmation_mae": 23.22,
           "eligible_for_production": false
         },
         "ftn_opponent_plus": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.456,
-          "improvement_pct": 1.72,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.44,
+          "improvement_pct": 1.61,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2093,
+          "selection_mae": 23.6063,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.031,
+          "confirmation_mae": 23.0632,
           "eligible_for_production": false
         },
         "pfr_ftn_plus": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.541,
-          "improvement_pct": 1.37,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.522,
+          "improvement_pct": 1.27,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2432,
+          "selection_mae": 23.636,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.2324,
+          "confirmation_mae": 23.265,
           "eligible_for_production": false
         },
         "all_new": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.548,
-          "improvement_pct": 1.34,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.538,
+          "improvement_pct": 1.2,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.2965,
+          "selection_mae": 23.7047,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1333,
+          "confirmation_mae": 23.1602,
           "eligible_for_production": false
         },
         "situational": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.468,
-          "improvement_pct": 1.68,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.443,
+          "improvement_pct": 1.6,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.1781,
+          "selection_mae": 23.5671,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1413,
+          "confirmation_mae": 23.1625,
           "eligible_for_production": false
         },
         "situational_plus": {
           "status": "evaluated",
-          "samples": 665,
-          "baseline_mae": 23.868,
-          "challenger_mae": 23.401,
-          "improvement_pct": 1.95,
-          "selection_samples": 465,
+          "samples": 652,
+          "baseline_mae": 23.824,
+          "challenger_mae": 23.378,
+          "improvement_pct": 1.87,
+          "selection_samples": 452,
           "selection_weeks": 8,
-          "selection_mae": 23.0983,
+          "selection_mae": 23.4622,
           "confirmation_samples": 200,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.1055,
+          "confirmation_mae": 23.1893,
           "eligible_for_production": false
         }
       },
@@ -1060,115 +1060,115 @@
         "weekly_workload": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.24729088043478,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.713260919729375,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.653235640774504,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.945208858011412,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.021946486407035,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.386102782807942,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 22.98674910335408,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.031977737327075,
+            "reference_rmse": 30.265924654085744
           }
         },
         "opponent_efficiency": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.233658961350503,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.69979833437428,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.656518282588063,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.951816456634294,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.126095855874443,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.60404090477957,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 23.15247454299668,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.281299658898835,
+            "reference_rmse": 30.265924654085744
           }
         },
         "workload_matchup": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.284257905981256,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.74359348430477,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.712126366329784,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.970859666868037,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 23.980046810435102,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.408107059546733,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 22.987934065819513,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.08209572232704,
+            "reference_rmse": 30.265924654085744
           }
         },
         "advanced_workload": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.182992962599766,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.706050486333524,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.5879897913362,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.936170971441488,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 23.948167503184305,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.436156729846708,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 22.942602601098812,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.057275054048485,
+            "reference_rmse": 30.265924654085744
           }
         },
         "advanced_matchup": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.171466996417905,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.695670865719812,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.59028223633799,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.95235645171881,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.09546631094617,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.656781119131995,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 23.161133644005737,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.314937966278315,
+            "reference_rmse": 30.265924654085744
           }
         },
         "advanced_all": {
           "reference": "combined",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.211017857813825,
-            "reference_mae": 23.139386817326297,
-            "candidate_rmse": 30.741228865896254,
-            "reference_rmse": 30.66218244828972
+            "candidate_mae": 23.63420794512517,
+            "reference_mae": 23.54553050034917,
+            "candidate_rmse": 30.961451934610437,
+            "reference_rmse": 30.93566842640405
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 23.918378819896155,
-            "reference_mae": 24.119648925698996,
-            "candidate_rmse": 31.460612244742624,
-            "reference_rmse": 31.634952949988033
+            "candidate_mae": 22.966306657632934,
+            "reference_mae": 23.139473991444987,
+            "candidate_rmse": 30.11038099938644,
+            "reference_rmse": 30.265924654085744
           }
         }
       },
@@ -1176,210 +1176,210 @@
         "pfr_fixed": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.179464863591367,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.664853353947805,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.566666940312473,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.908851585727554,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.09247946462936,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.523471920619144,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.142169549510168,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.214183486317395,
+            "reference_rmse": 30.25707753229587
           }
         },
         "ftn_player": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.36210632112001,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.732153129963145,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.771328381943967,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 31.004201213168052,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.243208025542486,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.5521402814246,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.216573028788748,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.19549803605493,
+            "reference_rmse": 30.25707753229587
           }
         },
         "ftn_opponent": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.24794282449941,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.692806221952676,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.635172830651715,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.928357749877662,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.066040740363338,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.509453494715437,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.030139765048798,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.161786692038003,
+            "reference_rmse": 30.25707753229587
           }
         },
         "pfr_ftn": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.325000824322313,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.71664030067061,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.715487259360433,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.97590569657527,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.18059139131425,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.518357930364104,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.220306621079793,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.19229554306452,
+            "reference_rmse": 30.25707753229587
           }
         },
         "pfr_plus": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.099838044057037,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.64673921281881,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.477691752351102,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.898915440469068,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.07931764135024,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.604336526453682,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.157886127195876,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.25707753229587,
+            "reference_rmse": 30.25707753229587
           }
         },
         "ftn_plus": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.284933559610145,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.695534141636262,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.700405290624687,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.979461054562698,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.244333603334827,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.654304282508306,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.22002171568127,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.258989177303466,
+            "reference_rmse": 30.25707753229587
           }
         },
         "ftn_opponent_plus": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.20933027978942,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.708352024973898,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.606335520970852,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.939022166576674,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.030976623046705,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.58097366558251,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.063168353247832,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.23569702740575,
+            "reference_rmse": 30.25707753229587
           }
         },
         "pfr_ftn_plus": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.243246055673488,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.68297058751774,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.63604597617456,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.947961592020082,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.23236728200161,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.628108324885535,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.264967792070756,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.25035393299708,
+            "reference_rmse": 30.25707753229587
           }
         },
         "all_new": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.29652575147838,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.704548960708845,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.704704505870147,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.943826465517596,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.13333668458555,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.58072324832228,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.160204108226644,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.221315841387415,
+            "reference_rmse": 30.25707753229587
           }
         },
         "situational": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.178063907130095,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.686987994852583,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.56708694059189,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.917397588241187,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.141304602759448,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.50613033337995,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.162536381040564,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.222758631327057,
+            "reference_rmse": 30.25707753229587
           }
         },
         "situational_plus": {
           "reference": "pfr_plus",
           "selection": {
-            "samples": 465,
+            "samples": 452,
             "weeks": 8,
-            "candidate_mae": 23.09827768486526,
-            "reference_mae": 23.099838044057037,
-            "candidate_rmse": 30.65590470523549,
-            "reference_rmse": 30.64673921281881
+            "candidate_mae": 23.46216318154636,
+            "reference_mae": 23.477691752351102,
+            "candidate_rmse": 30.884831490881652,
+            "reference_rmse": 30.898915440469068
           },
           "confirmation": {
             "samples": 200,
             "weeks": 4,
-            "candidate_mae": 24.105534679904807,
-            "reference_mae": 24.07931764135024,
-            "candidate_rmse": 31.580403852359968,
-            "reference_rmse": 31.604336526453682
+            "candidate_mae": 23.189345687471263,
+            "reference_mae": 23.157886127195876,
+            "candidate_rmse": 30.247860693624254,
+            "reference_rmse": 30.25707753229587
           }
         }
       },
@@ -1387,330 +1387,330 @@
       "pfr_ftn_retention": {
         "reference": "combined",
         "selection": {
-          "samples": 465,
+          "samples": 452,
           "weeks": 8,
-          "candidate_mae": 23.099838044057037,
-          "reference_mae": 23.139386817326297,
-          "candidate_rmse": 30.64673921281881,
-          "reference_rmse": 30.66218244828972
+          "candidate_mae": 23.477691752351102,
+          "reference_mae": 23.54553050034917,
+          "candidate_rmse": 30.898915440469068,
+          "reference_rmse": 30.93566842640405
         },
         "confirmation": {
           "samples": 200,
           "weeks": 4,
-          "candidate_mae": 24.07931764135024,
-          "reference_mae": 24.119648925698996,
-          "candidate_rmse": 31.604336526453682,
-          "reference_rmse": 31.634952949988033
+          "candidate_mae": 23.157886127195876,
+          "reference_mae": 23.139473991444987,
+          "candidate_rmse": 30.25707753229587,
+          "reference_rmse": 30.265924654085744
         }
       }
     },
     "receiving_yards": {
       "holdout_weeks": 12,
-      "holdout_rows": 1500,
+      "holdout_rows": 1485,
       "source_coverage": {
-        "ngs": 5250,
-        "snap": 6522,
+        "ngs": 5340,
+        "snap": 6630,
         "pfr": 0,
-        "pfr_new": 6522,
-        "ftn": 6525,
-        "ftn_defense": 6525,
-        "workload": 6525,
-        "matchup": 6525,
-        "situational": 6525
+        "pfr_new": 6630,
+        "ftn": 6634,
+        "ftn_defense": 6634,
+        "workload": 6634,
+        "matchup": 6634,
+        "situational": 6634
       },
       "models": {
         "baseline_features": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.817,
-          "improvement_pct": -0.16,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.627,
+          "improvement_pct": 0.21,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.7081,
-          "confirmation_samples": 481,
+          "selection_mae": 23.5263,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0464,
+          "confirmation_mae": 23.8417,
           "eligible_for_production": false
         },
         "ngs": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.686,
-          "improvement_pct": 0.39,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.493,
+          "improvement_pct": 0.78,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4799,
-          "confirmation_samples": 481,
+          "selection_mae": 23.379,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.124,
+          "confirmation_mae": 23.7365,
           "eligible_for_production": false
         },
         "snap_counts": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.735,
-          "improvement_pct": 0.18,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.58,
+          "improvement_pct": 0.41,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.6101,
-          "confirmation_samples": 481,
+          "selection_mae": 23.455,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.001,
+          "confirmation_mae": 23.8474,
           "eligible_for_production": false
         },
         "combined": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.652,
-          "improvement_pct": 0.53,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.476,
+          "improvement_pct": 0.85,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4578,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3398,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0623,
+          "confirmation_mae": 23.7651,
           "eligible_for_production": false
         },
         "weekly_workload": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.694,
-          "improvement_pct": 0.35,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.499,
+          "improvement_pct": 0.75,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.5175,
-          "confirmation_samples": 481,
+          "selection_mae": 23.4198,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0677,
+          "confirmation_mae": 23.6681,
           "eligible_for_production": false
         },
         "opponent_efficiency": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.763,
-          "improvement_pct": 0.06,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.579,
+          "improvement_pct": 0.42,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.6653,
-          "confirmation_samples": 481,
+          "selection_mae": 23.4782,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9702,
+          "confirmation_mae": 23.7935,
           "eligible_for_production": false
         },
         "workload_matchup": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.646,
-          "improvement_pct": 0.56,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.461,
+          "improvement_pct": 0.91,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.488,
-          "confirmation_samples": 481,
+          "selection_mae": 23.382,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9807,
+          "confirmation_mae": 23.6301,
           "eligible_for_production": false
         },
         "advanced_workload": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.63,
-          "improvement_pct": 0.62,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.456,
+          "improvement_pct": 0.94,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4191,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3117,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.076,
+          "confirmation_mae": 23.7633,
           "eligible_for_production": false
         },
         "advanced_matchup": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.613,
-          "improvement_pct": 0.69,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.442,
+          "improvement_pct": 0.99,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4372,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3051,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9863,
+          "confirmation_mae": 23.7346,
           "eligible_for_production": false
         },
         "advanced_all": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.596,
-          "improvement_pct": 0.77,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.421,
+          "improvement_pct": 1.08,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4023,
-          "confirmation_samples": 481,
+          "selection_mae": 23.2821,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0061,
+          "confirmation_mae": 23.7178,
           "eligible_for_production": false
         },
         "pfr_fixed": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.802,
-          "improvement_pct": -0.1,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.605,
+          "improvement_pct": 0.31,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.6881,
-          "confirmation_samples": 481,
+          "selection_mae": 23.5084,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0438,
+          "confirmation_mae": 23.8105,
           "eligible_for_production": false
         },
         "ftn_player": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.812,
-          "improvement_pct": -0.14,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.618,
+          "improvement_pct": 0.25,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.6965,
-          "confirmation_samples": 481,
+          "selection_mae": 23.559,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0554,
+          "confirmation_mae": 23.7439,
           "eligible_for_production": false
         },
         "ftn_opponent": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.865,
-          "improvement_pct": -0.36,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.676,
+          "improvement_pct": 0.0,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.76,
-          "confirmation_samples": 481,
+          "selection_mae": 23.5825,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.086,
+          "confirmation_mae": 23.8769,
           "eligible_for_production": false
         },
         "pfr_ftn": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.788,
-          "improvement_pct": -0.04,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.586,
+          "improvement_pct": 0.39,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.678,
-          "confirmation_samples": 481,
+          "selection_mae": 23.5337,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0224,
+          "confirmation_mae": 23.6977,
           "eligible_for_production": false
         },
         "pfr_plus": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.622,
-          "improvement_pct": 0.66,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.46,
+          "improvement_pct": 0.92,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.441,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3291,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.006,
+          "confirmation_mae": 23.7392,
           "eligible_for_production": false
         },
         "ftn_plus": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.641,
-          "improvement_pct": 0.58,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.466,
+          "improvement_pct": 0.89,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4496,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3326,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0454,
+          "confirmation_mae": 23.751,
           "eligible_for_production": false
         },
         "ftn_opponent_plus": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.68,
-          "improvement_pct": 0.41,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.512,
+          "improvement_pct": 0.7,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.5069,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3857,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0467,
+          "confirmation_mae": 23.7829,
           "eligible_for_production": false
         },
         "pfr_ftn_plus": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.618,
-          "improvement_pct": 0.67,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.448,
+          "improvement_pct": 0.97,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4375,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3193,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0018,
+          "confirmation_mae": 23.7231,
           "eligible_for_production": false
         },
         "all_new": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.644,
-          "improvement_pct": 0.57,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.484,
+          "improvement_pct": 0.82,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4817,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3651,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9874,
+          "confirmation_mae": 23.7362,
           "eligible_for_production": false
         },
         "situational": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.68,
-          "improvement_pct": 0.41,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.496,
+          "improvement_pct": 0.77,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.5227,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3918,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 24.0139,
+          "confirmation_mae": 23.7186,
           "eligible_for_production": false
         },
         "situational_plus": {
           "status": "evaluated",
-          "samples": 1500,
-          "baseline_mae": 23.778,
-          "challenger_mae": 23.598,
-          "improvement_pct": 0.76,
-          "selection_samples": 1019,
+          "samples": 1485,
+          "baseline_mae": 23.677,
+          "challenger_mae": 23.439,
+          "improvement_pct": 1.01,
+          "selection_samples": 1011,
           "selection_weeks": 8,
-          "selection_mae": 23.4277,
-          "confirmation_samples": 481,
+          "selection_mae": 23.3024,
+          "confirmation_samples": 474,
           "confirmation_weeks": 4,
-          "confirmation_mae": 23.9592,
+          "confirmation_mae": 23.7299,
           "eligible_for_production": false
         }
       },
@@ -1718,115 +1718,115 @@
         "weekly_workload": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.51543665698274,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.474454027350713,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.426817716812437,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.458913460665983,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.088334319178593,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.11287263643701,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.676345682852077,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.56335433370002,
+            "reference_rmse": 31.659396237968867
           }
         },
         "opponent_efficiency": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.66526241792908,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.57966515576636,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.489003696889696,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.491307850067837,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 23.9941787529597,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.0161784505641,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.803604510752567,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.614929226720005,
+            "reference_rmse": 31.659396237968867
           }
         },
         "workload_matchup": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.486119590304202,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.46265522486283,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.388778457423776,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.437432436266533,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.00042866193746,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.056811049151385,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.638345523165615,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.54401887090639,
+            "reference_rmse": 31.659396237968867
           }
         },
         "advanced_workload": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.42416652642482,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.410671087991826,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.32981964598069,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.406446454144852,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.105154723868885,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.221211798548936,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.78849956788997,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.70715496395309,
+            "reference_rmse": 31.659396237968867
           }
         },
         "advanced_matchup": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.442287816723802,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.371837454169558,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.323251773160624,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.339820327791386,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.01521183618762,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.11839837367249,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.759748928778436,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.646310571700543,
+            "reference_rmse": 31.659396237968867
           }
         },
         "advanced_all": {
           "reference": "combined",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.407375567930316,
-            "reference_mae": 23.46290280514638,
-            "candidate_rmse": 30.39289663690619,
-            "reference_rmse": 30.38857443174438
+            "candidate_mae": 23.300216591645697,
+            "reference_mae": 23.358034800225095,
+            "candidate_rmse": 30.380536965739623,
+            "reference_rmse": 30.365483584059664
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.03506121972236,
-            "reference_mae": 24.09136562795138,
-            "candidate_rmse": 32.1801365344152,
-            "reference_rmse": 32.16522422717229
+            "candidate_mae": 23.742905046083084,
+            "reference_mae": 23.790284624221076,
+            "candidate_rmse": 31.686334620327976,
+            "reference_rmse": 31.659396237968867
           }
         }
       },
@@ -1834,210 +1834,210 @@
         "pfr_fixed": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.6935040564266,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.587851887311604,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.52693875143261,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.51006341892746,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.07288151917651,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.11039905559677,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.835763129196753,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.64460804248709,
+            "reference_rmse": 31.58301850902213
           }
         },
         "ftn_player": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.694753225394585,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.550424675245868,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.566084293120447,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.49858546175768,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.075465251022877,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.02514759402076,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.752306304279042,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.524239371311424,
+            "reference_rmse": 31.58301850902213
           }
         },
         "ftn_opponent": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.759675098408835,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.61593111051547,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.59228549161083,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.53914620734248,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.1087173357554,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.09213699607213,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.885651201671738,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.668418965398907,
+            "reference_rmse": 31.58301850902213
           }
         },
         "pfr_ftn": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.683385025122853,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.573687380617343,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.552286715546096,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.510913565492448,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.05144744141285,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 31.97136802300041,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.722792438070076,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.45758656456888,
+            "reference_rmse": 31.58301850902213
           }
         },
         "pfr_plus": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.446097281180407,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.40756718752982,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.34727118820351,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.380003657832063,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.034965301211813,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.09197704648333,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.76438309787382,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.612315601658057,
+            "reference_rmse": 31.58301850902213
           }
         },
         "ftn_plus": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.454692330602352,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.38614412058859,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.350759518525624,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.365167119427838,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.074482939038436,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.16972656812535,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.776208341013415,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.664329300514368,
+            "reference_rmse": 31.58301850902213
           }
         },
         "ftn_opponent_plus": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.512051917016155,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.40885728750251,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.40394055251617,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.382181811518556,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.07573527616519,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.13925256844514,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.80812183223561,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.684559173435964,
+            "reference_rmse": 31.58301850902213
           }
         },
         "pfr_ftn_plus": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.442665034397884,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.408921702635563,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.33748030101242,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.378481699702338,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.030796003543287,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.06425764855052,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.748211353467095,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.57154811242546,
+            "reference_rmse": 31.58301850902213
           }
         },
         "all_new": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.486833518215935,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.423563517696927,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.383372656882646,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.391933291118598,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.01632933643764,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.03813007804698,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.761298775880828,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.597321181407505,
+            "reference_rmse": 31.58301850902213
           }
         },
         "situational": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.51755219160885,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.412593043403593,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.394614426082132,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.35430324451663,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 24.03228027230732,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 31.97132417909838,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.72696410782438,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.494943075197718,
+            "reference_rmse": 31.58301850902213
           }
         },
         "situational_plus": {
           "reference": "situational_plus",
           "selection": {
-            "samples": 1018,
+            "samples": 1009,
             "weeks": 8,
-            "candidate_mae": 23.432846402080994,
-            "reference_mae": 23.432846402080994,
-            "candidate_rmse": 30.3854122045309,
-            "reference_rmse": 30.3854122045309
+            "candidate_mae": 23.320488116937575,
+            "reference_mae": 23.320488116937575,
+            "candidate_rmse": 30.34792614465784,
+            "reference_rmse": 30.34792614465784
           },
           "confirmation": {
-            "samples": 480,
+            "samples": 473,
             "weeks": 4,
-            "candidate_mae": 23.988052190104042,
-            "reference_mae": 23.988052190104042,
-            "candidate_rmse": 32.03634025737615,
-            "reference_rmse": 32.03634025737615
+            "candidate_mae": 23.754992014146058,
+            "reference_mae": 23.754992014146058,
+            "candidate_rmse": 31.58301850902213,
+            "reference_rmse": 31.58301850902213
           }
         }
       },
@@ -2045,20 +2045,20 @@
       "pfr_ftn_retention": {
         "reference": "combined",
         "selection": {
-          "samples": 1018,
+          "samples": 1009,
           "weeks": 8,
-          "candidate_mae": 23.432846402080994,
-          "reference_mae": 23.46290280514638,
-          "candidate_rmse": 30.3854122045309,
-          "reference_rmse": 30.38857443174438
+          "candidate_mae": 23.320488116937575,
+          "reference_mae": 23.358034800225095,
+          "candidate_rmse": 30.34792614465784,
+          "reference_rmse": 30.365483584059664
         },
         "confirmation": {
-          "samples": 480,
+          "samples": 473,
           "weeks": 4,
-          "candidate_mae": 23.988052190104042,
-          "reference_mae": 24.09136562795138,
-          "candidate_rmse": 32.03634025737615,
-          "reference_rmse": 32.16522422717229
+          "candidate_mae": 23.754992014146058,
+          "reference_mae": 23.790284624221076,
+          "candidate_rmse": 31.58301850902213,
+          "reference_rmse": 31.659396237968867
         }
       }
     }
