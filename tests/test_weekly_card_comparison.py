@@ -30,6 +30,17 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         self.lock['captured_at_utc']=self.kick
         self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch])['game_shadow_comparisons'],[])
 
+    def test_older_saved_batch_survives_a_later_refresh(self):
+        later={**self.batch,'generated_at_utc':'2026-11-20T01:00:00+00:00'}
+        report=build([self.game],[self.lock],[],[],[],[later,self.batch])
+        self.assertEqual(report['weeks'][0]['markets'][0]['ml_mae'],18.43)
+        conflict={**self.batch,'selected':{'model':'ridge','samples':4}}
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[self.batch,conflict])['weeks'],[])
+        recovered={**self.batch,'published_at_utc':'2026-11-20T00:54:00+00:00'}
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[recovered])['weeks'],[])
+        recovered['published_at_utc']='2026-11-20T00:01:00+00:00'
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[recovered])['weeks'][0]['markets'][0]['samples'],1)
+
     def test_player_requires_matching_history_snapshot_and_same_actual(self):
         snap={'game_id':self.gid,'player_id':'p','player':'Player','market':'player_rush_yds','kickoff':self.kick,'captured_at':self.forecast,'saved_at_utc':self.saved,'projection':42}
         hist={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
