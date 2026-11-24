@@ -1,7 +1,25 @@
 import unittest
-from tools.weekly_card_comparison import build
+from tools.weekly_card_comparison import build, pick_result, hit_summary
 
 class WeeklyCardComparisonTests(unittest.TestCase):
+    def test_pick_grading_push_no_pick_and_spread_direction(self):
+        self.assertEqual(pick_result('game_margin_home',7,10,-3.5),'hit')
+        self.assertEqual(pick_result('game_margin_home',2,10,-3.5),'miss')
+        self.assertEqual(pick_result('game_total',47,44,44),'push')
+        self.assertEqual(pick_result('game_total',44,47,44),'no_pick')
+        self.assertEqual(pick_result('game_total',47,44,None),'unavailable')
+        rows=[{'result':x} for x in ('hit','miss','push','no_pick','unavailable')]
+        self.assertEqual(hit_summary(rows,'result'),{'hits':1,'misses':1,'pushes':1,'no_picks':1,'unavailable':1,'hit_pct':50.0})
+
+    def test_line_must_be_observed_before_saved_lock(self):
+        self.lock.update({'dk_total':44.5,'dk_at_utc':'2026-11-20T00:52:00+00:00'})
+        market=build([self.game],[self.lock],[],[],[],[self.batch])['weeks'][0]['markets'][0]
+        self.assertEqual(market['regular_hits']['hit_pct'],100.0)
+        self.assertEqual(market['ml_hits']['hit_pct'],0.0)
+        self.lock['dk_at_utc']='2026-11-20T00:54:00+00:00'
+        market=build([self.game],[self.lock],[],[],[],[self.batch])['weeks'][0]['markets'][0]
+        self.assertEqual(market['regular_hits']['unavailable'],1)
+        self.assertIsNone(market['regular_hits']['hit_pct'])
     def setUp(self):
         self.gid='2026_11_IND_HOU'; self.kick='2026-11-20T01:15:00+00:00'
         self.forecast='2026-11-19T23:46:00+00:00'; self.saved='2026-11-20T00:53:00+00:00'
@@ -46,10 +64,14 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         hist={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
         actual={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','projection':42,'actual':50}
         batch={'game_id':self.gid,'player_id':'p','market':'rushing_yards','generated_at_utc':'2026-11-20T00:00:00+00:00','predictions':{'current':41.6},'selected':None}
+        snap.update({'dk_line':45.5,'dk_captured_at':'2026-11-20T00:52:00+00:00'})
         d=build([],[],[actual],[snap],[hist],[batch]);self.assertEqual(d['weeks'][0]['markets'][0]['winner'],'regular')
+        self.assertEqual(d['weeks'][0]['markets'][0]['regular_hits']['misses'],1)
+        self.assertEqual(d['weeks'][0]['markets'][0]['ml_hits']['misses'],1)
         actual['projection']=41
         self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
         actual['projection']=42;batch['predictions']['current']=30
         self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
 
 if __name__=='__main__': unittest.main()
+
