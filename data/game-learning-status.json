@@ -1,20 +1,20 @@
 {
   "season": 2026,
-  "week": 11,
+  "week": 12,
   "validation": {
     "margin": {
       "enabled": false,
       "adjustment": 0.0,
-      "walkforward_games": 14,
-      "baseline_mae": 11.06,
-      "learner_mae": 11.045
+      "walkforward_games": 27,
+      "baseline_mae": 10.072,
+      "learner_mae": 10.287
     },
     "total": {
-      "enabled": true,
-      "adjustment": 1.355,
-      "walkforward_games": 14,
-      "baseline_mae": 8.646,
-      "learner_mae": 8.459
+      "enabled": false,
+      "adjustment": 0.0,
+      "walkforward_games": 27,
+      "baseline_mae": 10.084,
+      "learner_mae": 10.037
     }
   }
 }
