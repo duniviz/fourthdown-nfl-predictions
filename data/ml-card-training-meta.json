@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "source": "completed-game prior-week retrospective player backtests",
-  "generated_at_utc": "2026-11-18T19:36:01.031823+00:00",
-  "sha256": "86c754e11f625c34ba761e3778df8acdef46ace026e0687e35d7887afd4f7ef1",
-  "rows": 32155,
+  "generated_at_utc": "2026-11-24T22:00:35.572482+00:00",
+  "sha256": "f1a84537b792c4862924fdcce0a181ec57d7d96deefca2546a2dd626ec760bf2",
+  "rows": 32333,
   "season_rows": {
     "2016": 3050,
     "2017": 3040,
@@ -15,12 +15,12 @@
     "2023": 3151,
     "2024": 3208,
     "2025": 3120,
-    "2026": 1359
+    "2026": 1537
   },
   "market_rows": {
-    "receiving_yards": 19835,
-    "passing_yards": 4020,
-    "rushing_yards": 8300
+    "receiving_yards": 19944,
+    "passing_yards": 4042,
+    "rushing_yards": 8347
   },
   "ambiguous_identities_excluded": 0,
   "note": "Retrospective training data, not saved live pregame forecasts; target week must be excluded."

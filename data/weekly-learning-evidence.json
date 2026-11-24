@@ -1,1345 +1,1380 @@
 {
-  "generated_at_utc": "2026-11-18T19:37:49.212423+00:00",
-  "week_tested": "2026_week_10",
-  "matched_player_game_markets": 902,
-  "completed_games_tested": 14,
+  "generated_at_utc": "2026-11-24T22:02:20.056722+00:00",
+  "week_tested": "2026_week_11",
+  "matched_player_game_markets": 866,
+  "completed_games_tested": 13,
   "paired_challenger_comparisons": [
     {
       "market": "game_margin_home",
       "challenger": "less_shrinkage",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.7618
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.2558
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0004",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.9679
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.5154
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0013",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.8452
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.2927
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0022",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.7225
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.07
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0031",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.5998
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.8473
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0040",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.4771
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.6246
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0103",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.6937
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.5481
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0112",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.5711
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.3254
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0121",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.4484
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.1027
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0130",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.3257
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.88
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0202",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.4196
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.5808
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0211",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.297
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.3581
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0220",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.1743
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.1354
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0301",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.1455
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.6135
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0310",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.0229
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.3908
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_0400",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 10.8714
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.6462
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1003",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.7634
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.1442
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1012",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.6407
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.9215
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1021",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.518
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.6988
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1030",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.3954
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.4762
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1102",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.4893
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.1769
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1111",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.3666
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.9542
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1120",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.2439
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.7315
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1201",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.2152
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.2096
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1210",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.0925
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.9869
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_1300",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 10.9411
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 10.2423
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2002",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.5589
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.7731
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2011",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.4363
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.5504
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2020",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.3136
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.3277
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2101",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.2848
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.8058
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2110",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.1621
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.5831
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_2200",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.0107
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.8385
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_3001",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.3545
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.4019
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_3010",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.2318
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.1792
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_3100",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.0804
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.4346
     },
     {
       "market": "game_margin_home",
       "challenger": "mix_4000",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.15
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.0308
     },
     {
       "market": "game_margin_home",
       "challenger": "ml_gradient_boosting",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.5615
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.2345
     },
     {
       "market": "game_margin_home",
       "challenger": "ml_random_forest",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.9883
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.0481
     },
     {
       "market": "game_margin_home",
       "challenger": "ml_ridge",
-      "matched_observations": 14,
-      "production_mae": 11.06,
-      "challenger_mae": 11.9868
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.2142
+    },
+    {
+      "market": "game_margin_home",
+      "challenger": "ml_xgboost",
+      "matched_observations": 13,
+      "production_mae": 9.0162,
+      "challenger_mae": 9.2669
     },
     {
       "market": "game_total",
       "challenger": "mix_0004",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.0561
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.8592
     },
     {
       "market": "game_total",
       "challenger": "mix_0013",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.3387
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.7254
     },
     {
       "market": "game_total",
       "challenger": "mix_0022",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.6214
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6308
     },
     {
       "market": "game_total",
       "challenger": "mix_0031",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.9355
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.5362
     },
     {
       "market": "game_total",
       "challenger": "mix_0040",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 9.3639
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.4415
     },
     {
       "market": "game_total",
       "challenger": "mix_0103",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.1776
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.3098
     },
     {
       "market": "game_total",
       "challenger": "mix_0112",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.3271
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.0494
     },
     {
       "market": "game_total",
       "challenger": "mix_0121",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.5824
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.9065
     },
     {
       "market": "game_total",
       "challenger": "mix_0130",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.8651
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.8119
     },
     {
       "market": "game_total",
       "challenger": "mix_0202",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4184
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.7604
     },
     {
       "market": "game_total",
       "challenger": "mix_0211",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.5679
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.5
     },
     {
       "market": "game_total",
       "challenger": "mix_0220",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7173
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.2735
     },
     {
       "market": "game_total",
       "challenger": "mix_0301",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7722
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 13.211
     },
     {
       "market": "game_total",
       "challenger": "mix_0310",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.8087
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 13.1213
     },
     {
       "market": "game_total",
       "challenger": "mix_0400",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 9.3286
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 14.0923
     },
     {
       "market": "game_total",
       "challenger": "mix_1003",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.1974
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.7727
     },
     {
       "market": "game_total",
       "challenger": "mix_1012",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4801
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6781
     },
     {
       "market": "game_total",
       "challenger": "mix_1021",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7628
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.5835
     },
     {
       "market": "game_total",
       "challenger": "mix_1030",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 9.1497
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.4889
     },
     {
       "market": "game_total",
       "challenger": "mix_1102",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.2523
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.1796
     },
     {
       "market": "game_total",
       "challenger": "mix_1111",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4411
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.9538
     },
     {
       "market": "game_total",
       "challenger": "mix_1120",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7237
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.8592
     },
     {
       "market": "game_total",
       "challenger": "mix_1201",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4931
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.6302
     },
     {
       "market": "game_total",
       "challenger": "mix_1210",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.6426
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.3698
     },
     {
       "market": "game_total",
       "challenger": "mix_1300",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7732
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 13.1654
     },
     {
       "market": "game_total",
       "challenger": "mix_2002",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.3387
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.7254
     },
     {
       "market": "game_total",
       "challenger": "mix_2011",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.6214
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6308
     },
     {
       "market": "game_total",
       "challenger": "mix_2020",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.9355
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.5362
     },
     {
       "market": "game_total",
       "challenger": "mix_2101",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.3271
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.0494
     },
     {
       "market": "game_total",
       "challenger": "mix_2110",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.5824
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.9066
     },
     {
       "market": "game_total",
       "challenger": "mix_2200",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.5679
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 12.5
     },
     {
       "market": "game_total",
       "challenger": "mix_3001",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4801
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6781
     },
     {
       "market": "game_total",
       "challenger": "mix_3010",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7628
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.5835
     },
     {
       "market": "game_total",
       "challenger": "mix_3100",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4411
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.9538
     },
     {
       "market": "game_total",
       "challenger": "mix_4000",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.6214
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6308
     },
     {
       "market": "game_total",
       "challenger": "ml_gradient_boosting",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.3321
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.4993
     },
     {
       "market": "game_total",
       "challenger": "ml_random_forest",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.7608
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6886
     },
     {
       "market": "game_total",
       "challenger": "ml_ridge",
-      "matched_observations": 14,
-      "production_mae": 8.6464,
-      "challenger_mae": 8.4143
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.838
+    },
+    {
+      "market": "game_total",
+      "challenger": "ml_xgboost",
+      "matched_observations": 13,
+      "production_mae": 11.6315,
+      "challenger_mae": 11.6263
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0004",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.3962
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.9703
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0013",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.7178
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 39.4013
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0022",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2677
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 37.6339
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0031",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.3568
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 36.2247
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0040",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.4458
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 36.8195
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0103",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.6224
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 42.9141
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0112",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.944
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 40.2576
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0121",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2655
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.1694
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0130",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.3271
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 36.5628
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0202",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.8485
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 43.9999
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0211",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.1701
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.1139
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0220",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.4917
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.705
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0301",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 84.0747
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 45.1192
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0310",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.3962
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.9703
     },
     {
       "market": "passing_yards",
       "challenger": "mix_0400",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 84.3008
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 46.6155
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1003",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.1701
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.1139
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1012",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.4917
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.705
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1021",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2974
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 37.0983
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1030",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.3865
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 36.2384
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1102",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.3962
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.9703
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1111",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.7178
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 39.4013
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1120",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2677
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 37.6339
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1201",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.6224
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 42.9141
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1210",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.944
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 40.2576
     },
     {
       "market": "passing_yards",
       "challenger": "mix_1300",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.8485
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 43.9999
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2002",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.944
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 40.2576
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2011",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2655
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.1694
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2020",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.3271
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 36.5628
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2101",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.1701
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.1139
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2110",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.4917
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.705
     },
     {
       "market": "passing_yards",
       "challenger": "mix_2200",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 83.3962
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.9703
     },
     {
       "market": "passing_yards",
       "challenger": "mix_3001",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.7178
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 39.4013
     },
     {
       "market": "passing_yards",
       "challenger": "mix_3010",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.2677
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 37.6339
     },
     {
       "market": "passing_yards",
       "challenger": "mix_3100",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.944
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 40.2576
     },
     {
       "market": "passing_yards",
       "challenger": "mix_4000",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 82.4917
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 38.705
     },
     {
       "market": "passing_yards",
       "challenger": "ml_gradient_boosting",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 87.2799
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 44.408
     },
     {
       "market": "passing_yards",
       "challenger": "ml_random_forest",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 85.7373
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.779
     },
     {
       "market": "passing_yards",
       "challenger": "ml_ridge",
-      "matched_observations": 24,
-      "production_mae": 83.3292,
-      "challenger_mae": 81.9066
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 41.8734
+    },
+    {
+      "market": "passing_yards",
+      "challenger": "ml_xgboost",
+      "matched_observations": 20,
+      "production_mae": 41.76,
+      "challenger_mae": 42.2769
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0004",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.8905
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.293
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0013",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.2236
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.8168
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0022",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.5945
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.3551
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0031",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 37.0007
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.9241
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0040",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 37.4255
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 27.5034
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0103",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.7818
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.1533
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0112",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.1125
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.6374
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0121",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.459
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.1757
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0130",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.8653
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.7309
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0202",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.7029
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.0243
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0211",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.0015
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.4579
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0220",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.3345
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.9962
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0301",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.6376
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 24.919
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0310",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.8905
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.293
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_0400",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.5724
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 24.8272
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1003",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.0016
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.4579
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1012",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.3345
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.9962
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1021",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.7299
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.5378
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1030",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 37.1361
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 27.1172
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1102",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.8905
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.293
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1111",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.2236
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.8168
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1120",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.5945
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.3551
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1201",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.7818
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.1533
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1210",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.1125
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.6374
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_1300",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.7029
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.0243
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2002",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.1125
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.6374
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2011",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.4591
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.1757
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2020",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.8653
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.7309
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2101",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.0015
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.4579
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2110",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.3345
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.9962
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_2200",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.8905
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.293
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_3001",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.2236
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.8168
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_3010",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.5945
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.3551
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_3100",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.1125
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.6374
     },
     {
       "market": "receiving_yards",
       "challenger": "mix_4000",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.3345
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.9962
     },
     {
       "market": "receiving_yards",
       "challenger": "ml_gradient_boosting",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.5487
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 26.236
     },
     {
       "market": "receiving_yards",
       "challenger": "ml_random_forest",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 36.151
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.3763
     },
     {
       "market": "receiving_yards",
       "challenger": "ml_ridge",
-      "matched_observations": 55,
-      "production_mae": 35.46,
-      "challenger_mae": 35.941
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.417
+    },
+    {
+      "market": "receiving_yards",
+      "challenger": "ml_xgboost",
+      "matched_observations": 53,
+      "production_mae": 23.4774,
+      "challenger_mae": 25.4826
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0004",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.3897
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.1291
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0013",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.7547
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.5991
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0022",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.2143
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.2088
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0031",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.7533
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.8953
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0040",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 23.4057
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 30.5987
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0103",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.2985
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.9958
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0112",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.6263
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.4143
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0121",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.0529
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.98
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0130",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.5452
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.6664
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0202",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.2561
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.8626
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0211",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.4981
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.2624
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0220",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.8915
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.7867
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0301",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.219
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.7293
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0310",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.3897
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.1291
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_0400",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.1819
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.596
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1003",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.4981
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.2624
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1012",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.8915
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.7867
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1021",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.3757
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.4376
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1030",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.9614
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 30.1241
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1102",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.3897
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.1291
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1111",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.7547
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.5991
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1120",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.2143
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.2088
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1201",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.2985
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.9958
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1210",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.6263
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.4143
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_1300",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.2561
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.8626
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2002",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.6263
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.4143
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2011",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.0529
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.9799
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2020",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.5452
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.6664
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2101",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.4981
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.2624
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2110",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.8915
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.7867
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_2200",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.3897
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.1291
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_3001",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.7546
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.5991
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_3010",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.2143
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 29.2088
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_3100",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.6263
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.4143
     },
     {
       "market": "rushing_yards",
       "challenger": "mix_4000",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 21.8915
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.7867
     },
     {
       "market": "rushing_yards",
       "challenger": "ml_gradient_boosting",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.9289
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.5811
     },
     {
       "market": "rushing_yards",
       "challenger": "ml_random_forest",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.7871
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 28.2415
     },
     {
       "market": "rushing_yards",
       "challenger": "ml_ridge",
-      "matched_observations": 47,
-      "production_mae": 19.5851,
-      "challenger_mae": 22.4956
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.6862
+    },
+    {
+      "market": "rushing_yards",
+      "challenger": "ml_xgboost",
+      "matched_observations": 45,
+      "production_mae": 26.2667,
+      "challenger_mae": 27.5714
     }
   ],
   "frozen_forecasts_only": true,

@@ -1,28 +1,28 @@
 {
   "family": "game-score-ridge-v1",
-  "generated_at_utc": "2026-11-18T19:37:47.085793+00:00",
+  "generated_at_utc": "2026-11-24T22:02:17.667585+00:00",
   "models": {
     "game_total": {
       "coefficients": [
         0.42363480953153465,
-        0.07344237857251719,
-        0.2601621181549011,
-        0.13868498568133772,
-        -0.09888335945356155
+        0.07344237857251723,
+        0.2601621181549013,
+        0.1386849856813376,
+        -0.0988833594535617
       ],
-      "intercept": 26.281727571517596,
+      "intercept": 26.2817275715176,
       "trained_season": 2026,
       "trained_week": 10
     },
     "game_margin_home": {
       "coefficients": [
         0.47651762113873647,
-        -0.47887330201093575,
-        -0.489119897547984,
-        0.2965902325190867,
-        0.10190602936300944
+        -0.4788733020109359,
+        -0.4891198975479844,
+        0.29659023251908645,
+        0.10190602936300952
       ],
-      "intercept": 5.236877910297849,
+      "intercept": 5.236877910297869,
       "trained_season": 2026,
       "trained_week": 10
     }
@@ -31,37 +31,37 @@
     "game_margin_home": {
       "active": false,
       "reason": "awaiting_paired_evidence",
-      "paired": 14,
-      "weeks": 1,
-      "baseline_mae": 11.06,
-      "candidate_mae": 12.084,
-      "recent_paired": 14,
+      "paired": 27,
+      "weeks": 2,
+      "baseline_mae": 10.072,
+      "candidate_mae": 10.703,
+      "recent_paired": 27,
       "pick_checks": {
         "winner": {
-          "games": 14,
-          "baseline_hits": 8,
-          "candidate_hits": 8
+          "games": 27,
+          "baseline_hits": 17,
+          "candidate_hits": 17
         },
         "ats": {
-          "games": 14,
-          "baseline_hits": 6,
-          "candidate_hits": 5
+          "games": 27,
+          "baseline_hits": 12,
+          "candidate_hits": 11
         }
       }
     },
     "game_total": {
       "active": false,
       "reason": "awaiting_paired_evidence",
-      "paired": 14,
-      "weeks": 1,
-      "baseline_mae": 8.646,
-      "candidate_mae": 8.311,
-      "recent_paired": 14,
+      "paired": 27,
+      "weeks": 2,
+      "baseline_mae": 10.084,
+      "candidate_mae": 10.054,
+      "recent_paired": 27,
       "pick_checks": {
         "ou": {
-          "games": 14,
-          "baseline_hits": 8,
-          "candidate_hits": 9
+          "games": 27,
+          "baseline_hits": 15,
+          "candidate_hits": 14
         }
       }
     }
