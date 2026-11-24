@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-24T04:03:43.537594+00:00",
+  "generated_at_utc": "2026-11-24T04:16:06.550142+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8,12 +8,12 @@
         {
           "market": "game_margin_home",
           "label": "Game margin",
-          "samples": 2,
-          "regular_mae": 9.89,
-          "ml_mae": 8.38,
-          "winner": "ml",
-          "regular_wins": 0,
-          "ml_wins": 2,
+          "samples": 9,
+          "regular_mae": 9.83,
+          "ml_mae": 9.94,
+          "winner": "regular",
+          "regular_wins": 5,
+          "ml_wins": 4,
           "ties": 0,
           "details": [
             {
@@ -29,6 +29,78 @@
               "ml_model": "Existing ML estimate"
             },
             {
+              "game_id": "2026_11_ARI_KC",
+              "market": "game_margin_home",
+              "label": "ARI @ KC",
+              "actual": 27.0,
+              "regular": 12.83,
+              "ml": 10.23,
+              "regular_error": 14.17,
+              "ml_error": 16.77,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_BAL_CAR",
+              "market": "game_margin_home",
+              "label": "BAL @ CAR",
+              "actual": 2.0,
+              "regular": 5.58,
+              "ml": 5.68,
+              "regular_error": 3.58,
+              "ml_error": 3.68,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_MIA_BUF",
+              "market": "game_margin_home",
+              "label": "MIA @ BUF",
+              "actual": 17.0,
+              "regular": 10.72,
+              "ml": 10.11,
+              "regular_error": 6.28,
+              "ml_error": 6.89,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_NO_CHI",
+              "market": "game_margin_home",
+              "label": "NO @ CHI",
+              "actual": 8.0,
+              "regular": 5.33,
+              "ml": 4.17,
+              "regular_error": 2.67,
+              "ml_error": 3.83,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_TB_DET",
+              "market": "game_margin_home",
+              "label": "TB @ DET",
+              "actual": 10.0,
+              "regular": 2.86,
+              "ml": 5.15,
+              "regular_error": 7.14,
+              "ml_error": 4.85,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_TEN_DAL",
+              "market": "game_margin_home",
+              "label": "TEN @ DAL",
+              "actual": 21.0,
+              "regular": 4.36,
+              "ml": 4.78,
+              "regular_error": 16.64,
+              "ml_error": 16.22,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            },
+            {
               "game_id": "2026_11_NYJ_LAC",
               "market": "game_margin_home",
               "label": "NYJ @ LAC",
@@ -39,18 +111,30 @@
               "ml_error": 3.45,
               "winner": "ml",
               "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_MIN_SF",
+              "market": "game_margin_home",
+              "label": "MIN @ SF",
+              "actual": 25.0,
+              "regular": 6.77,
+              "ml": 4.51,
+              "regular_error": 18.23,
+              "ml_error": 20.49,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
             }
           ]
         },
         {
           "market": "game_total",
           "label": "Game total",
-          "samples": 2,
-          "regular_mae": 10.75,
-          "ml_mae": 13.06,
+          "samples": 9,
+          "regular_mae": 12.43,
+          "ml_mae": 13.34,
           "winner": "regular",
-          "regular_wins": 2,
-          "ml_wins": 0,
+          "regular_wins": 6,
+          "ml_wins": 3,
           "ties": 0,
           "details": [
             {
@@ -66,6 +150,78 @@
               "ml_model": "Existing ML estimate"
             },
             {
+              "game_id": "2026_11_ARI_KC",
+              "market": "game_total",
+              "label": "ARI @ KC",
+              "actual": 41.0,
+              "regular": 44.79,
+              "ml": 43.91,
+              "regular_error": 3.79,
+              "ml_error": 2.91,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_BAL_CAR",
+              "market": "game_total",
+              "label": "BAL @ CAR",
+              "actual": 68.0,
+              "regular": 42.41,
+              "ml": 42.52,
+              "regular_error": 25.59,
+              "ml_error": 25.48,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_MIA_BUF",
+              "market": "game_total",
+              "label": "MIA @ BUF",
+              "actual": 35.0,
+              "regular": 44.32,
+              "ml": 48.32,
+              "regular_error": 9.32,
+              "ml_error": 13.32,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_NO_CHI",
+              "market": "game_total",
+              "label": "NO @ CHI",
+              "actual": 34.0,
+              "regular": 43.6,
+              "ml": 45.91,
+              "regular_error": 9.6,
+              "ml_error": 11.91,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_TB_DET",
+              "market": "game_total",
+              "label": "TB @ DET",
+              "actual": 52.0,
+              "regular": 40.71,
+              "ml": 44.71,
+              "regular_error": 11.29,
+              "ml_error": 7.29,
+              "winner": "ml",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_TEN_DAL",
+              "market": "game_total",
+              "label": "TEN @ DAL",
+              "actual": 81.0,
+              "regular": 52.11,
+              "ml": 50.03,
+              "regular_error": 28.89,
+              "ml_error": 30.97,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
               "game_id": "2026_11_NYJ_LAC",
               "market": "game_total",
               "label": "NYJ @ LAC",
@@ -74,6 +230,18 @@
               "ml": 43.31,
               "regular_error": 7.07,
               "ml_error": 7.69,
+              "winner": "regular",
+              "ml_model": "Existing ML estimate"
+            },
+            {
+              "game_id": "2026_11_MIN_SF",
+              "market": "game_total",
+              "label": "MIN @ SF",
+              "actual": 45.0,
+              "regular": 43.09,
+              "ml": 47.09,
+              "regular_error": 1.91,
+              "ml_error": 2.09,
               "winner": "regular",
               "ml_model": "Existing ML estimate"
             }
