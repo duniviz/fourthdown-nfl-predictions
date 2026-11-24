@@ -2,6 +2,20 @@ import unittest
 from tools.weekly_card_comparison import build, pick_result, hit_summary
 
 class WeeklyCardComparisonTests(unittest.TestCase):
+    def test_recovery_requires_published_pre_game_matching_observation(self):
+        obs={'game_id':self.gid,'kickoff_utc':self.kick,'forecast_at_utc':self.forecast,
+             'captured_at_utc':self.saved,'projected_total':43.43,'dk_total':44.5,
+             'dk_at_utc':'2026-11-20T00:52:00+00:00',
+             'game_ml_shadow':{'markets':{'game_total':{'candidate':47.43}}}}
+        self.lock['game_ml_shadow']={}
+        recovered={**self.batch,'published_at_utc':'2026-11-20T00:01:00+00:00'}
+        report=build([self.game],[self.lock],[],[],[],[recovered],[obs])
+        row=report['weeks'][0]['markets'][0]['details'][0]
+        self.assertEqual((row['evidence_source'],row['dk_line'],row['regular_pick_result']),('recovered_pregame_observation',44.5,'hit'))
+        recovered['published_at_utc']='2026-11-20T01:00:00+00:00'
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[recovered],[obs])['weeks'],[])
+        recovered['published_at_utc']='2026-11-20T00:01:00+00:00';obs['captured_at_utc']=self.kick
+        self.assertEqual(build([self.game],[self.lock],[],[],[],[recovered],[obs])['weeks'],[])
     def test_pick_grading_push_no_pick_and_spread_direction(self):
         self.assertEqual(pick_result('game_margin_home',7,10,-3.5),'hit')
         self.assertEqual(pick_result('game_margin_home',2,10,-3.5),'miss')
@@ -74,4 +88,5 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
 
 if __name__=='__main__': unittest.main()
+
 

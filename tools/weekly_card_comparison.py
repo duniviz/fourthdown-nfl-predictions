@@ -89,7 +89,7 @@ def hit_summary(items, field):
             'no_picks':results.count('no_pick'),'unavailable':results.count('unavailable'),
             'hit_pct':round(100*hits/(hits+misses),1) if hits+misses else None}
 
-def build(game_results, locks, player_results, snapshots, history, batches):
+def build(game_results, locks, player_results, snapshots, history, batches, observations=()):
     games = unique_map(game_results, lambda r: str(r.get('game_id')))
     locks = unique_map(locks, lambda r: str(r.get('game_id')))
     batch_versions = defaultdict(list)
@@ -104,7 +104,10 @@ def build(game_results, locks, player_results, snapshots, history, batches):
         hist[key].append(h)
     byweek = defaultdict(list)
     shadow_byweek = defaultdict(list)
-    def add(gid, market, name, actual, regular, ml, model, line=None):
+    observations_by_game=defaultdict(list)
+    for row in observations:
+        observations_by_game[str(row.get('game_id'))].append(row)
+    def add(gid, market, name, actual, regular, ml, model, line=None, evidence='official_lock'):
         try: season, week = map(int, gid.split('_')[:2])
         except (ValueError, AttributeError): return
         if None in (actual, regular, ml): return
@@ -113,7 +116,7 @@ def build(game_results, locks, player_results, snapshots, history, batches):
             'actual':round(actual, 2), 'regular':round(regular, 2), 'ml':round(ml, 2),
             'regular_error':round(re, 2), 'ml_error':round(me, 2),
             'winner':'tie' if abs(re-me)<.05 else 'regular' if re<me else 'ml', 'ml_model':model,
-            'dk_line':line,'regular_pick_result':pick_result(market,regular,actual,line),
+            'dk_line':line,'evidence_source':evidence,'regular_pick_result':pick_result(market,regular,actual,line),
             'ml_pick_result':pick_result(market,ml,actual,line)})
     for gid, result in games.items():
         lock=locks.get(gid) or {}; kick=stamp(lock.get('kickoff_utc')); captured=stamp(lock.get('captured_at_utc')); forecast=stamp(lock.get('forecast_at_utc'))
@@ -135,12 +138,35 @@ def build(game_results, locks, player_results, snapshots, history, batches):
                     'shadow_error':round(abs(incumbent-actual),2),
                     'lock_status':lock.get('lock_status'),
                     'captured_at_utc':lock.get('captured_at_utc')})
-            if lock.get('lock_status') not in ('official','last_available','forecast_only'): continue
-            ml=saved_batch_value(batch,incumbent,forecast,captured,kick) if batch and incumbent is not None else None
+            ml=saved_batch_value(batch,incumbent,forecast,captured,kick) if batch and incumbent is not None and lock.get('lock_status') in ('official','last_available','forecast_only') else None
             line_time=stamp(lock.get('dk_at_utc'))
             line=number(lock.get('dk_home_spread' if market=='game_margin_home' else 'dk_total'))
             if not line_time or not (line_time<=captured<kick):line=None
-            if ml: add(gid,market,f"{lock.get('away')} @ {lock.get('home')}",actual,number(lock.get(field)),ml[0],ml[1],line)
+            if ml:
+                add(gid,market,f"{lock.get('away')} @ {lock.get('home')}",actual,regular,ml[0],ml[1],line)
+                continue
+            # Keep official locks immutable. Recover a separate pregame
+            # observation only if the paired batch has a verified Git commit
+            # timestamp before the observation was saved.
+            candidates=[]
+            for obs in observations_by_game.get(gid,[]):
+                at=stamp(obs.get('captured_at_utc')); ft=stamp(obs.get('forecast_at_utc'))
+                okick=stamp(obs.get('kickoff_utc')); reg=number(obs.get(field))
+                shadow=number((obs.get('game_ml_shadow') or {}).get('markets',{}).get(market,{}).get('candidate'))
+                if not at or not ft or okick!=kick or not (ft<=at<kick) or reg is None or shadow is None:continue
+                committed=[b for b in batch if b.get('published_at_utc')]
+                paired=saved_batch_value(committed,shadow,ft,at,kick)
+                if not paired:continue
+                dt=stamp(obs.get('dk_at_utc'))
+                price_line=number(obs.get('dk_home_spread' if market=='game_margin_home' else 'dk_total'))
+                if not dt or not (dt<=at<kick):price_line=None
+                candidates.append((at,reg,paired,price_line))
+            if candidates:
+                latest=max(c[0] for c in candidates)
+                choices={(reg,paired,ln) for at,reg,paired,ln in candidates if at==latest}
+                if len(choices)==1:
+                    reg,paired,ln=next(iter(choices))
+                    add(gid,market,f"{lock.get('away')} @ {lock.get('home')}",actual,reg,paired[0],paired[1],ln,'recovered_pregame_observation')
     unique_snapshots=unique_map(snapshots,lambda r:(str(r.get('game_id')),str(r.get('player_id')),str(r.get('market'))))
     for s in unique_snapshots.values():
         gid=str(s.get('game_id')); pid=str(s.get('player_id')); market=MARKETS.get(s.get('market'))
@@ -198,9 +224,10 @@ def main():
     if (DATA/'ml-card-batch-recovered.json').exists():
         historical+=read('ml-card-batch-recovered.json','rows')
     report=build(read('game-official-results.json','rows'),read('game-official-pregame-locks.json','records'),
-      read('player-results.json','rows'),read('pregame-snapshots.json','records'),read('player-history.json','players'),historical+read('ml-card-batches.json','rows'))
+      read('player-results.json','rows'),read('pregame-snapshots.json','records'),read('player-history.json','players'),historical+read('ml-card-batches.json','rows'),read('game-pregame-observations.json','records'))
     (DATA/'weekly-card-comparison.json').write_text(json.dumps(report,indent=2)+'\n')
     print('Weekly matched card comparisons:',[(w['season'],w['week'],sum(m['samples'] for m in w['markets'])) for w in report['weeks']])
 
 if __name__=='__main__': main()
+
 
