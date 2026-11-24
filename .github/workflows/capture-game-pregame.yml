@@ -13,8 +13,8 @@ on:
     # the T-45 window refreshes DraftKings lines and waits until T-30 to lock.
     # Later ticks are idempotent. GitHub dropped almost every every-10-minute
     # tick on Nov 12-16, so these are slot-shaped instead of continuous.
-    # Thursday night, 7:15 PM CT: 6:37, 6:47, 7:02, 7:08.
-    - cron: '37,47 18 * * 4'
+    # Thursday night, 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
+    - cron: '31,37,47 18 * * 4'
       timezone: America/Chicago
     - cron: '2,8 19 * * 4'
       timezone: America/Chicago
@@ -36,8 +36,8 @@ on:
       timezone: America/Chicago
     - cron: '2,12 19 * * 0'
       timezone: America/Chicago
-    # Monday night, 7:15 PM CT: 6:37, 6:47, 7:02, 7:08.
-    - cron: '37,47 18 * * 1'
+    # Monday night, 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
+    - cron: '31,37,47 18 * * 1'
       timezone: America/Chicago
     - cron: '2,8 19 * * 1'
       timezone: America/Chicago
