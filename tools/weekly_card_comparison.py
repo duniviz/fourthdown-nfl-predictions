@@ -107,7 +107,7 @@ def build(game_results, locks, player_results, snapshots, history, batches, obse
     observations_by_game=defaultdict(list)
     for row in observations:
         observations_by_game[str(row.get('game_id'))].append(row)
-    def add(gid, market, name, actual, regular, ml, model, line=None, evidence='official_lock'):
+    def add(gid, market, name, actual, regular, ml, model, line=None, evidence='official_lock', position=None):
         try: season, week = map(int, gid.split('_')[:2])
         except (ValueError, AttributeError): return
         if None in (actual, regular, ml): return
@@ -116,7 +116,7 @@ def build(game_results, locks, player_results, snapshots, history, batches, obse
             'actual':round(actual, 2), 'regular':round(regular, 2), 'ml':round(ml, 2),
             'regular_error':round(re, 2), 'ml_error':round(me, 2),
             'winner':'tie' if abs(re-me)<.05 else 'regular' if re<me else 'ml', 'ml_model':model,
-            'dk_line':line,'evidence_source':evidence,'regular_pick_result':pick_result(market,regular,actual,line),
+            'dk_line':line,'evidence_source':evidence,'position':position,'regular_pick_result':pick_result(market,regular,actual,line),
             'ml_pick_result':pick_result(market,ml,actual,line)})
     for gid, result in games.items():
         lock=locks.get(gid) or {}; kick=stamp(lock.get('kickoff_utc')); captured=stamp(lock.get('captured_at_utc')); forecast=stamp(lock.get('forecast_at_utc'))
@@ -176,6 +176,8 @@ def build(game_results, locks, player_results, snapshots, history, batches, obse
         regular=number(s.get('projection'))
         if regular is None or number(actual.get('projection')) is None or abs(regular-number(actual['projection']))>.11: continue
         matches=[h for h in hist.get((gid,pid,market,str(s.get('captured_at'))),[]) if number(h.get('projection')) is not None and abs(number(h['projection'])-regular)<.11 and stamp(h.get('saved_at_utc')) and stamp(h['saved_at_utc'])<kick]
+        positions={str(h['position']).upper() for h in matches if h.get('position') and stamp(h.get('saved_at_utc'))<=saved}
+        position=next(iter(positions)) if len(positions)==1 else None
         shadows={number((h.get('player_ml_shadow') or {}).get('candidate')) for h in matches}
         shadows.discard(None)
         if len(shadows)>1: continue
@@ -183,7 +185,7 @@ def build(game_results, locks, player_results, snapshots, history, batches, obse
         ml=saved_batch_value(batch,incumbent,forecast,saved,kick) if batch and (incumbent is not None or market in BATCH_MARKETS) else None
         line_time=stamp(s.get('dk_captured_at'));line=number(s.get('dk_line'))
         if not line_time or not (line_time<=saved<kick):line=None
-        if ml: add(gid,market,str(s.get('player') or pid),number(actual.get('actual')),regular,ml[0],ml[1],line)
+        if ml: add(gid,market,str(s.get('player') or pid),number(actual.get('actual')),regular,ml[0],ml[1],line,position=position)
     weeks=[]
     for (season,week), rows in sorted(byweek.items(),reverse=True):
         groups=[]
@@ -229,5 +231,6 @@ def main():
     print('Weekly matched card comparisons:',[(w['season'],w['week'],sum(m['samples'] for m in w['markets'])) for w in report['weeks']])
 
 if __name__=='__main__': main()
+
 
 
