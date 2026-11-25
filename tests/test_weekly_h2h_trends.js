@@ -11,11 +11,11 @@ const weeks=[{season:2026,week:11,markets:[market([row('RB',40,40.5,42,38,'miss'
 const document={getElementById:()=>root,createElement:element};
 vm.runInNewContext(fs.readFileSync('assets/fd-weekly-h2h.js','utf8'),{document,fetch:async()=>({ok:true,json:async()=>({weeks})}),console,setTimeout,Date,Number,String,Math});
 setTimeout(()=>{
- assert(root.innerHTML.includes('Too high 6.0 yards'));
+ assert(root.innerHTML.includes('Projection ran 6.0 yards too high on average'));
  events['1']({target:{value:'4'}});
- assert(root.innerHTML.includes('Too high 2.0 yards'));
+ assert(root.innerHTML.includes('Projection ran 2.0 yards too high on average'));
  events['all']({target:{value:'RB'}});
- assert(root.innerHTML.includes('Too low 2.0 yards'));
- assert(root.innerHTML.includes('2 matched projections'));
+ assert(root.innerHTML.includes('Projection ran 2.0 yards too low on average'));
+ assert(root.innerHTML.includes('Across 2 matched results'));
  console.log('Trend window, position and no-line bias tests passed');
 },0);
