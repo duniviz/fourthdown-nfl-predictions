@@ -1977,6 +1977,13 @@
         "players": [
           {
             "detail": "Injured Reserve",
+            "player": "Alec Pierce",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "IND"
+          },
+          {
+            "detail": "Injured Reserve",
             "player": "Caden Curry",
             "position": "LB",
             "status": "Injured Reserve",
@@ -2000,13 +2007,6 @@
             "detail": "questionable",
             "player": "Jalen Travis",
             "position": "OT",
-            "status": "Questionable",
-            "team": "IND"
-          },
-          {
-            "detail": "questionable",
-            "player": "Charvarius Ward",
-            "position": "CB",
             "status": "Questionable",
             "team": "IND"
           },
@@ -2238,6 +2238,13 @@
           },
           {
             "detail": "questionable",
+            "player": "Omar Cooper Jr.",
+            "position": "WR",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
             "player": "Isaiah Williams",
             "position": "WR",
             "status": "Questionable",
@@ -2247,13 +2254,6 @@
             "detail": "questionable",
             "player": "Trevin Wallace",
             "position": "LB",
-            "status": "Questionable",
-            "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Omar Cooper Jr.",
-            "position": "WR",
             "status": "Questionable",
             "team": "NYJ"
           },
@@ -2463,38 +2463,38 @@
             "team": "DAL"
           },
           {
-            "detail": "questionable",
-            "player": "Arnold Ebiketie",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "PHI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Quinyon Mitchell",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "PHI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Will Shipley",
-            "position": "RB",
-            "status": "Questionable",
-            "team": "PHI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Smael Mondon Jr.",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "PHI"
-          },
-          {
-            "detail": "questionable",
+            "detail": "out",
             "player": "Jonathan Jones",
             "position": "CB",
-            "status": "Questionable",
+            "status": "Out",
+            "team": "PHI"
+          },
+          {
+            "detail": "out",
+            "player": "Arnold Ebiketie",
+            "position": "LB",
+            "status": "Out",
+            "team": "PHI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Zack Baun",
+            "position": "LB",
+            "status": "Injured Reserve",
+            "team": "PHI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Dontayvion Wicks",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "PHI"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Jalen Hurts",
+            "position": "QB",
+            "status": "Injured Reserve",
             "team": "PHI"
           }
         ],
@@ -2615,7 +2615,12 @@
           "status": "injury_report_only"
         },
         "PHI": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Jalen Hurts",
+              "status": "Injured Reserve"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -2881,6 +2886,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Bhayshul Tuten",
+            "position": "RB",
+            "status": "Questionable",
+            "team": "JAX"
+          },
+          {
+            "detail": "questionable",
             "player": "Danny Striggow",
             "position": "DE",
             "status": "Questionable",
@@ -2897,13 +2909,6 @@
             "detail": "questionable",
             "player": "Robert Hainsey",
             "position": "C",
-            "status": "Questionable",
-            "team": "JAX"
-          },
-          {
-            "detail": "questionable",
-            "player": "Bhayshul Tuten",
-            "position": "RB",
             "status": "Questionable",
             "team": "JAX"
           },
@@ -3252,6 +3257,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-25T08:27:01Z",
+  "generated_at_utc": "2026-11-25T19:13:19Z",
   "schema_version": 1
 }
