@@ -75,11 +75,12 @@ class WeeklyCardComparisonTests(unittest.TestCase):
 
     def test_player_requires_matching_history_snapshot_and_same_actual(self):
         snap={'game_id':self.gid,'player_id':'p','player':'Player','market':'player_rush_yds','kickoff':self.kick,'captured_at':self.forecast,'saved_at_utc':self.saved,'projection':42}
-        hist={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
+        hist={'game_id':self.gid,'player_id':'p','position':'RB','stat_key':'rushing_yards','forecast_captured_at_utc':self.forecast,'saved_at_utc':self.saved,'projection':42,'player_ml_shadow':{'candidate':41.6}}
         actual={'game_id':self.gid,'player_id':'p','stat_key':'rushing_yards','projection':42,'actual':50}
         batch={'game_id':self.gid,'player_id':'p','market':'rushing_yards','generated_at_utc':'2026-11-20T00:00:00+00:00','predictions':{'current':41.6},'selected':None}
         snap.update({'dk_line':45.5,'dk_captured_at':'2026-11-20T00:52:00+00:00'})
         d=build([],[],[actual],[snap],[hist],[batch]);self.assertEqual(d['weeks'][0]['markets'][0]['winner'],'regular')
+        self.assertEqual(d['weeks'][0]['markets'][0]['details'][0]['position'],'RB')
         self.assertEqual(d['weeks'][0]['markets'][0]['regular_hits']['misses'],1)
         self.assertEqual(d['weeks'][0]['markets'][0]['ml_hits']['misses'],1)
         actual['projection']=41
@@ -88,5 +89,6 @@ class WeeklyCardComparisonTests(unittest.TestCase):
         self.assertEqual(build([],[],[actual],[snap],[hist],[batch])['weeks'],[])
 
 if __name__=='__main__': unittest.main()
+
 
 
