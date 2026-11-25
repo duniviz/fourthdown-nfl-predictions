@@ -41,6 +41,46 @@ on:
       timezone: America/Chicago
     - cron: '2,8 19 * * 1'
       timezone: America/Chicago
+    # Holiday 2026 date-specific ticks (month+day, DOW *). GitHub ORs DOM and
+    # DOW when both are restricted, so these stay pinned to the calendar date.
+    # The guard no-ops when no kickoff is in the T-45 window.
+    # Wednesday, Nov 25, GB@LAR 7:00 PM CT: 6:17, 6:27, 6:37, 6:47.
+    - cron: '17,27,37,47 18 25 11 *'
+      timezone: America/Chicago
+    # Thanksgiving Thursday, Nov 26, CHI@DET noon CT: 11:17, 11:27, 11:37, 11:47.
+    - cron: '17,27,37,47 11 26 11 *'
+      timezone: America/Chicago
+    # Thanksgiving Thursday, Nov 26, PHI@DAL 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
+    - cron: '47,57 14 26 11 *'
+      timezone: America/Chicago
+    - cron: '7,17 15 26 11 *'
+      timezone: America/Chicago
+    # Thanksgiving night, Nov 26, KC@BUF 7:20 PM CT uses the Thursday-night ticks.
+    # Friday, Nov 27, DEN@PIT 2:00 PM CT: 1:17, 1:27, 1:37, 1:47.
+    - cron: '17,27,37,47 13 27 11 *'
+      timezone: America/Chicago
+    # Christmas Eve, Dec 24, HOU@PHI 7:15 PM CT uses the Thursday-night ticks.
+    # Christmas Friday, Dec 25, GB@CHI noon CT: 11:17, 11:27, 11:37, 11:47.
+    - cron: '17,27,37,47 11 25 12 *'
+      timezone: America/Chicago
+    # Christmas Friday, Dec 25, BUF@DEN 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
+    - cron: '47,57 14 25 12 *'
+      timezone: America/Chicago
+    - cron: '7,17 15 25 12 *'
+      timezone: America/Chicago
+    # Christmas Friday, Dec 25, LAR@SEA 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
+    - cron: '31,37,47 18 25 12 *'
+      timezone: America/Chicago
+    - cron: '2,8 19 25 12 *'
+      timezone: America/Chicago
+    # Saturday, Dec 26, Week 16 flex (matchups TBD) 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
+    - cron: '47,57 14 26 12 *'
+      timezone: America/Chicago
+    - cron: '7,17 15 26 12 *'
+      timezone: America/Chicago
+    # Saturday, Dec 26, Week 16 flex (matchups TBD) 7:00 PM CT: 6:17, 6:27, 6:37, 6:47.
+    - cron: '17,27,37,47 18 26 12 *'
+      timezone: America/Chicago
     # Any other kickoff still gets an hourly look from 8 AM through 11 PM CT.
     - cron: '22 8-23 * * *'
       timezone: America/Chicago
