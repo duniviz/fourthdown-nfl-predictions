@@ -10,7 +10,7 @@ on:
   schedule:
     - cron: '15 5,6,13 * * *'
   pull_request:
-    paths: ['.github/workflows/weekly-card-comparison.yml', 'tools/weekly_card_comparison.py', 'tests/test_weekly_card_comparison.py', 'assets/fd-weekly-h2h.js', 'tests/test_weekly_card_comparison_ui.js', 'model-lab.html']
+    paths: ['.github/workflows/weekly-card-comparison.yml', 'tools/weekly_card_comparison.py', 'tests/test_weekly_card_comparison.py', 'assets/fd-weekly-h2h.js', 'tests/test_weekly_card_comparison_ui.js', 'tests/test_weekly_h2h_trends.js', 'model-lab.html']
 permissions:
   contents: write
 concurrency:
@@ -30,7 +30,9 @@ jobs:
       - name: Test saved-pair and outcome safeguards
         run: python -m unittest discover -s tests -p test_weekly_card_comparison.py -v
       - name: Test weekly scoreboard rendering
-        run: node tests/test_weekly_card_comparison_ui.js
+        run: |
+          node tests/test_weekly_card_comparison_ui.js
+          node tests/test_weekly_h2h_trends.js
       - name: Build matched weekly results
         if: github.event_name != 'pull_request'
         run: python -m tools.weekly_card_comparison
