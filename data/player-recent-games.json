@@ -2,7 +2,7 @@
   "source": "ESPN final box scores",
   "season": 2026,
   "through_week": 11,
-  "updated_at_utc": "2026-11-24T23:07:01.930332+00:00",
+  "updated_at_utc": "2026-11-25T22:38:16.921061+00:00",
   "players": {
     "00-0023459|player_pass_completions": {
       "games": [
@@ -31939,6 +31939,61 @@
       ],
       "sample_size": 5
     },
+    "00-0039851|player_pass_yds": {
+      "games": [
+        {
+          "week": 6,
+          "actual": 235.0,
+          "opponent": null
+        },
+        {
+          "week": 7,
+          "actual": 321.0,
+          "opponent": null
+        },
+        {
+          "week": 8,
+          "actual": 199.0,
+          "opponent": null
+        },
+        {
+          "week": 9,
+          "actual": 299.0,
+          "opponent": null
+        },
+        {
+          "week": 10,
+          "actual": 48.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 5
+    },
+    "00-0035704|player_pass_yds": {
+      "games": [
+        {
+          "week": 1,
+          "actual": 187.0,
+          "opponent": null
+        },
+        {
+          "week": 2,
+          "actual": 235.0,
+          "opponent": null
+        },
+        {
+          "week": 9,
+          "actual": 175.0,
+          "opponent": null
+        },
+        {
+          "week": 10,
+          "actual": 240.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 4
+    },
     "00-0036389|player_pass_yds": {
       "games": [
         {
@@ -31994,31 +32049,31 @@
       ],
       "sample_size": 4
     },
-    "00-0031503|player_pass_yds": {
+    "00-0035228|player_pass_yds": {
       "games": [
         {
+          "week": 3,
+          "actual": 168.0,
+          "opponent": null
+        },
+        {
           "week": 4,
-          "actual": 250.0,
+          "actual": 247.0,
           "opponent": null
         },
         {
           "week": 5,
-          "actual": 326.0,
+          "actual": 229.0,
           "opponent": null
         },
         {
-          "week": 6,
-          "actual": 152.0,
+          "week": 7,
+          "actual": 150.0,
           "opponent": null
         },
         {
-          "week": 9,
-          "actual": 71.0,
-          "opponent": null
-        },
-        {
-          "week": 11,
-          "actual": 0.0,
+          "week": 8,
+          "actual": 210.0,
           "opponent": null
         }
       ],
@@ -32099,6 +32154,26 @@
         {
           "week": 4,
           "actual": 46.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 3
+    },
+    "00-0040668|player_pass_yds": {
+      "games": [
+        {
+          "week": 3,
+          "actual": 0.0,
+          "opponent": null
+        },
+        {
+          "week": 8,
+          "actual": 2.0,
+          "opponent": null
+        },
+        {
+          "week": 9,
+          "actual": 297.0,
           "opponent": null
         }
       ],
@@ -32234,6 +32309,36 @@
       ],
       "sample_size": 3
     },
+    "00-0038797|player_rush_yds": {
+      "games": [
+        {
+          "week": 3,
+          "actual": 14.0,
+          "opponent": null
+        },
+        {
+          "week": 4,
+          "actual": 81.0,
+          "opponent": null
+        },
+        {
+          "week": 5,
+          "actual": 61.0,
+          "opponent": null
+        },
+        {
+          "week": 6,
+          "actual": 52.0,
+          "opponent": null
+        },
+        {
+          "week": 7,
+          "actual": 100.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 5
+    },
     "00-0041251|player_rush_yds": {
       "games": [
         {
@@ -32319,6 +32424,36 @@
         {
           "week": 7,
           "actual": 6.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 5
+    },
+    "00-0035228|player_rush_yds": {
+      "games": [
+        {
+          "week": 3,
+          "actual": 17.0,
+          "opponent": null
+        },
+        {
+          "week": 4,
+          "actual": 16.0,
+          "opponent": null
+        },
+        {
+          "week": 5,
+          "actual": 51.0,
+          "opponent": null
+        },
+        {
+          "week": 7,
+          "actual": 39.0,
+          "opponent": null
+        },
+        {
+          "week": 8,
+          "actual": 35.0,
           "opponent": null
         }
       ],
@@ -32433,6 +32568,36 @@
         }
       ],
       "sample_size": 3
+    },
+    "00-0040734|player_rush_yds": {
+      "games": [
+        {
+          "week": 3,
+          "actual": 23.0,
+          "opponent": null
+        },
+        {
+          "week": 4,
+          "actual": 42.0,
+          "opponent": null
+        },
+        {
+          "week": 5,
+          "actual": 22.0,
+          "opponent": null
+        },
+        {
+          "week": 6,
+          "actual": 31.0,
+          "opponent": null
+        },
+        {
+          "week": 7,
+          "actual": 9.0,
+          "opponent": null
+        }
+      ],
+      "sample_size": 5
     }
   },
   "by_name": {
