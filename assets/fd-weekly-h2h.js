@@ -14,22 +14,33 @@
   const valid=items.filter(d=>typeof d.actual==='number'&&Number.isFinite(d.actual)&&typeof d[field]==='number'&&Number.isFinite(d[field]));
   if(!valid.length)return '<p>No matched projections yet.</p>';
   const bias=valid.reduce((sum,d)=>sum+d.actual-d[field],0)/valid.length;
-  const high=valid.filter(d=>d[field]>d.actual).length,low=valid.filter(d=>d[field]<d.actual).length;
-  const unit=market.startsWith('game_')?'points':market.includes('yards')?'yards':'units';
-  const direction=Math.abs(bias)<.05?'Near even':market==='game_margin_home'?(bias<0?'Favored home too much':'Favored away too much'):(bias<0?'Too high':'Too low');
+  const high=valid.filter(d=>d[field]>d.actual).length,low=valid.filter(d=>d[field]<d.actual).length,exact=valid.length-high-low;
+  let unit='units';
+  if(market.startsWith('game_'))unit='points';
+  else if(market.includes('yards'))unit='yards';
+  else if(market.includes('receptions'))unit='receptions';
+  else if(market.includes('completions'))unit='completions';
+  else if(market.includes('attempts'))unit='attempts';
+  const absBias=num(Math.abs(bias));
+  let summary;
+  if(market==='game_margin_home'){
+   summary=Math.abs(bias)<.05?'Home margin was about right':bias<0?'Home team was favored '+absBias+' points too much':'Home team was favored '+absBias+' points too little';
+  }else{
+   summary=Math.abs(bias)<.05?'Average projection was about right':bias<0?'Projection ran '+absBias+' '+unit+' too high on average':'Projection ran '+absBias+' '+unit+' too low on average';
+  }
   const cells={};
   for(const d of valid){
-   const line=d.dk_line, result=d[field+'_pick_result'];
+   const line=d.dk_line,result=d[field+'_pick_result'];
    if(typeof line!=='number'||!Number.isFinite(line)||!['hit','miss','push'].includes(result))continue;
    const edge=market==='game_margin_home'?d[field]+line:d[field]-line;
    if(Math.abs(edge)<1e-9)continue;
-   const side=market==='game_margin_home'?(edge>0?'Home':'Away'):(edge>0?'Over':'Under');
+   const side=market==='game_margin_home'?(edge>0?'Home team':'Away team'):(edge>0?'Over':'Under');
    const size=Math.abs(edge),band=size<2?'Under 2':size<5?'2 to under 5':'5 or more';
    for(const k of [side,band]){if(!cells[k])cells[k]={hit:0,miss:0,push:0};cells[k][result]++;}
   }
-  const fmt=k=>{const c=cells[k];if(!c)return esc(k)+': —';const n=c.hit+c.miss;return esc(k)+': '+(n?num(100*c.hit/n)+'%':'—')+' ('+c.hit+'–'+c.miss+(c.push?', '+c.push+' push':'')+')';};
-  const sides=market==='game_margin_home'?['Home','Away']:['Over','Under'];
-  return '<p><strong>'+esc(direction)+' '+num(Math.abs(bias))+' '+unit+'</strong> on average · '+valid.length+' matched projections · '+high+' high, '+low+' low, '+(valid.length-high-low)+' exact</p><p>'+sides.map(fmt).join(' · ')+'</p><p>Edge size ('+unit+'): '+['Under 2','2 to under 5','5 or more'].map(fmt).join(' · ')+'</p>';
+  const fmt=k=>{const c=cells[k];if(!c)return '<div><b>'+esc(k)+'</b><span>No graded picks</span></div>';const n=c.hit+c.miss;return '<div><b>'+esc(k)+'</b><span>'+(n?num(100*c.hit/n)+'% hit rate':'No graded picks')+' · '+c.hit+' hits, '+c.miss+' misses'+(c.push?', '+c.push+' pushes':'')+'</span></div>';};
+  const sides=market==='game_margin_home'?['Home team','Away team']:['Over','Under'];
+  return '<div class="fd-h2h-trend-summary"><strong>'+esc(summary)+'</strong><span>Across '+valid.length+' matched '+(valid.length===1?'result':'results')+'</span></div><div class="fd-h2h-trend-counts"><div><b>Predicted too high</b><span>'+high+'</span></div><div><b>Predicted too low</b><span>'+low+'</span></div><div><b>Exactly right</b><span>'+exact+'</span></div></div><div class="fd-h2h-pick-breakdown"><strong>Pick accuracy against the DraftKings line</strong><p>Hit rate excludes pushes. A pick needs a saved line and a graded result.</p>'+sides.map(fmt).join('')+'</div><details class="fd-h2h-edge-details"><summary>See results by edge size</summary><div>'+['Under 2','2 to under 5','5 or more'].map(fmt).join('')+'</div></details>';
  }
  function render(weeks,index,shadowWeeks,span=1,position='all'){
   const week=weeks[index];
@@ -41,7 +52,7 @@
    const recovered=(m.details||[]).filter(d=>d.evidence_source==='recovered_pregame_observation').length;
    const winner=m.winner==='ml'?'ML was closer':m.winner==='regular'?'Regular was closer':'About even';
    const details=(m.details||[]).map(d=>'<tr><td>'+esc(d.label)+(d.evidence_source==='recovered_pregame_observation'?' · Recovered pregame':'')+'</td><td>'+num(d.actual)+'</td><td>'+((d.dk_line==null)?'—':num(d.dk_line))+'</td><td>'+num(d.regular)+' · '+grade(d.regular_pick_result)+'</td><td>'+num(d.ml)+' · '+grade(d.ml_pick_result)+'</td></tr>').join('');
-   return '<article class="fd-h2h-card"><div class="fd-h2h-heading"><h3>'+esc(m.market==='game_margin_home'?'Against the spread':m.label)+'</h3><strong>'+winner+'</strong></div><p>Hit rate against saved DraftKings line</p><div class="fd-h2h-values">'+hitCell('Regular',m.regular_hits)+hitCell('ML',m.ml_hits)+'</div><p>'+esc(m.regular_hits?.unavailable??m.samples)+' matched projections missing a usable saved line</p><div class="fd-h2h-values"><div><span>Regular avg. miss</span><b>'+num(m.regular_mae)+'</b></div><div><span>ML avg. miss</span><b>'+num(m.ml_mae)+'</b></div></div><p>'+esc(m.samples)+' matched result'+(m.samples===1?'':'s')+(recovered?' · '+recovered+' recovered pregame':'')+' · Regular closer '+esc(m.regular_wins)+' · ML closer '+esc(m.ml_wins)+' · Ties '+esc(m.ties)+'</p><details><summary>High/low trends and pick breakdown</summary><p>Regular projection</p>'+trends(rows,m.market,'regular')+'<p>ML projection</p>'+trends(rows,m.market,'ml')+'</details><details><summary>See individual results</summary><div class="fd-h2h-scroll"><table><thead><tr><th>Game or player</th><th>Actual</th><th>DK line</th><th>Regular · result</th><th>ML · result</th></tr></thead><tbody>'+details+'</tbody></table></div></details></article>';
+   return '<article class="fd-h2h-card"><div class="fd-h2h-heading"><h3>'+esc(m.market==='game_margin_home'?'Against the spread':m.label)+'</h3><strong>'+winner+'</strong></div><p>Hit rate against saved DraftKings line</p><div class="fd-h2h-values">'+hitCell('Regular',m.regular_hits)+hitCell('ML',m.ml_hits)+'</div><p>'+esc(m.regular_hits?.unavailable??m.samples)+' matched projections missing a usable saved line</p><div class="fd-h2h-values"><div><span>Regular avg. miss</span><b>'+num(m.regular_mae)+'</b></div><div><span>ML avg. miss</span><b>'+num(m.ml_mae)+'</b></div></div><p>'+esc(m.samples)+' matched result'+(m.samples===1?'':'s')+(recovered?' · '+recovered+' recovered pregame':'')+' · Regular closer '+esc(m.regular_wins)+' · ML closer '+esc(m.ml_wins)+' · Ties '+esc(m.ties)+'</p><details class="fd-h2h-trends"><summary>Was the projection usually too high or too low?</summary><p class="fd-h2h-trends-help">Compare each saved projection with the final result. “Too high” means the model predicted more than happened.</p><h4>Regular model</h4>'+trends(rows,m.market,'regular')+'<h4>ML model</h4>'+trends(rows,m.market,'ml')+'</details><details><summary>See individual results</summary><div class="fd-h2h-scroll"><table><thead><tr><th>Game or player</th><th>Actual</th><th>DK line</th><th>Regular · result</th><th>ML · result</th></tr></thead><tbody>'+details+'</tbody></table></div></details></article>';
   }).join('');
   const shadowWeek=(shadowWeeks||[]).find(w=>w.season===week.season&&w.week===week.week);
   const shadows=(shadowWeek?.markets||[]).map(m=>'<article class="fd-h2h-card"><div class="fd-h2h-heading"><h3>'+esc(m.market==='game_margin_home'?'Game margin':'Game total')+' · Saved ML shadow</h3></div><div class="fd-h2h-values"><div><span>Regular avg. miss</span><b>'+num(m.regular_mae)+'</b></div><div><span>ML shadow avg. miss</span><b>'+num(m.shadow_mae)+'</b></div></div><p>'+esc(m.samples)+' saved game locks · Includes early locks</p><details><summary>See individual results</summary><div class="fd-h2h-scroll"><table><thead><tr><th>Game</th><th>Actual</th><th>Regular</th><th>ML shadow</th></tr></thead><tbody>'+(m.details||[]).map(d=>'<tr><td>'+esc(d.game_id)+'</td><td>'+num(d.actual)+'</td><td>'+num(d.regular)+'</td><td>'+num(d.shadow)+'</td></tr>').join('')+'</tbody></table></div></details></article>').join('');
