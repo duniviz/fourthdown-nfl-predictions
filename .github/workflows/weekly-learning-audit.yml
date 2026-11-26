@@ -1,0 +1,26 @@
+name: Audit weekly learning (research only)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'research/weekly_learning.py'
+      - '.github/workflows/weekly-learning-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Evaluate prior-week-only learning
+        run: python -m research.weekly_learning
+      - name: Upload weekly learning comparison
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: weekly-learning-audit
+          path: research/weekly-learning/
+          if-no-files-found: warn
