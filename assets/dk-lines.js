@@ -53,13 +53,15 @@ window.FDDraftKings = (() => {
       const requestedSuffix = suffix(p.player);
       let candidates = (quotesByBase.get(base) || []).filter(q => !q.ambiguous && (!requestedSuffix || !suffix(q.player) || suffix(q.player) === requestedSuffix));
       if (p.player_id != null) {
-        const withIds = candidates.filter(q => q.player_id != null);
-        if (withIds.length) candidates = withIds.filter(q => String(q.player_id) === String(p.player_id));
+        const exactIds = candidates.filter(q => q.player_id != null && String(q.player_id) === String(p.player_id));
+        // Provider IDs may use a different namespace than the projection feed.
+        // Prefer an exact ID match, but retain the strict name/team/market/game
+        // match when no provider ID agrees.
+        if (exactIds.length) candidates = exactIds;
       }
       if (candidates.length !== 1) return null;
       const quote = candidates[0];
       if (requestedSuffix && suffix(quote.player) && requestedSuffix !== suffix(quote.player)) return null;
-      if (p.player_id != null && quote.player_id != null && String(p.player_id) !== String(quote.player_id)) return null;
       const rosterId = identity(p.player, p.market_key || p.stat_key || p.market, p.team, p.opponent, 0);
       const allRoster = rosterByIdentity.get(rosterId) || [];
       const uniqueRoster = new Map();
@@ -70,7 +72,7 @@ window.FDDraftKings = (() => {
         if (!uniqueRoster.has(key)) uniqueRoster.set(key, r);
       }
       let roster = [...uniqueRoster.values()];
-      if (p.player_id != null && quote.player_id != null) {
+      if (p.player_id != null) {
         const exactId = roster.filter(r => r.player_id != null && String(r.player_id) === String(p.player_id));
         if (exactId.length) roster = exactId;
       }
@@ -86,8 +88,6 @@ window.FDDraftKings = (() => {
         const rosterPlayer = roster[0];
         const rosterSuffix = suffix(rosterPlayer.player || rosterPlayer.player_name);
         if (rosterSuffix && suffix(quote.player) && rosterSuffix !== suffix(quote.player)) return null;
-        if (quote.player_id != null && rosterPlayer.player_id != null &&
-            String(quote.player_id) !== String(rosterPlayer.player_id)) return null;
       }
       return quote;
     };
