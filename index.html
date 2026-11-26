@@ -487,7 +487,7 @@ html[data-fd-view="desktop"] .wrap{box-sizing:border-box;width:min(1600px,calc(1
 <section id="props"><div class="section-head"><div><div class="eyebrow">DraftKings lines · pregame snapshot</div><h2>Player props</h2></div><div class="actionrow"><input class="filter" id="propsearch" aria-label="Find player" placeholder="Search players or teams"><select class="filter" id="propsort" aria-label="Sort props"><option value="confidence">Highest estimated confidence</option><option value="name">Player A–Z</option></select></div></div><p class="caption">All five early-window player props available in the recorded dataset are shown. Afternoon prop candidates are not calibrated selections and are not misrepresented as confirmed model picks. This is not an exhaustive sportsbook prop board. Tap a player to read the reasoning, model-vs-line comparison, and key uncertainty.</p><div class="tablewrap"><table><thead><tr><th>Player</th><th>Selection</th><th>DK Odds</th><th>Projection</th><th>Estimated probability</th></tr></thead><tbody id="proprows"><tr><td><strong>C.J. Stroud</strong><br><span class="muted">NYG @ HOU</span></td><td>Under 256.5 passing yards</td><td>-113</td><td>222 yds</td><td class="green">63.9%</td></tr><tr><td><strong>Geno Smith</strong><br><span class="muted">MIA @ NYJ</span></td><td>Under 222.5 passing yards</td><td>-111</td><td>194 yds</td><td class="green">62.0%</td></tr><tr><td><strong>Ja&#x27;Marr Chase</strong><br><span class="muted">CIN @ BAL</span></td><td>Under 82.5 receiving yards</td><td>-113</td><td>66 yds</td><td class="green">60.3%</td></tr><tr><td><strong>Deshaun Watson</strong><br><span class="muted">CLE @ TEN</span></td><td>Under 209.5 passing yards</td><td>-111</td><td>187 yds</td><td class="green">59.3%</td></tr><tr><td><strong>Jonathan Taylor</strong><br><span class="muted">IND @ MIN</span></td><td>Under 69.5 rushing yards</td><td>-111</td><td>58 yds</td><td class="green">58.1%</td></tr></tbody></table></div></section>
 <section id="parlays"><div class="section-head"><div><div class="eyebrow">DraftKings-only · historical snapshot</div><h2>Five example pick combinations</h2></div><div class="controls"><select class="filter" id="parlayscope" aria-label="Choose parlay time window"><option value="all">Whole NFL week</option><option value="Sunday Early">Sunday early</option><option value="Sunday Afternoon">Sunday afternoon</option><option value="Sunday Night">Sunday night</option><option value="Monday Night">Monday night</option><option value="Thursday Night">Thursday night</option><option value="International Morning">International morning</option></select><select class="filter" id="parlaylegs" aria-label="Choose parlay size"><option value="2">2 legs</option><option value="3">3 legs</option><option value="4">4 legs</option></select></div></div><div class="notice" style="margin-bottom:15px"><strong>Archived examples — not live picks.</strong> This page uses only recorded DraftKings prop snapshots. Games may already be underway or finished. Historical lines are not executable. Combined odds assume standard parlay pricing and no special same-game restrictions. Probability estimates are uncalibrated and correlations are not modeled.</div><div class="pickgrid" id="parlaycards"></div><p class="caption" id="parlaystatus"></p></section>
 <section id="confidence-pool"><div class="section-head"><div><div class="eyebrow">Exploratory simulation</div><h2>Which teams are most likely to win?</h2></div><span class="caption" id="fd-confidence-meta">Loading simulated outcomes…</span></div><p class="caption">Teams ranked by how often they win in our simulations. These percentages are estimates, not guaranteed odds.</p><div class="fd-confidence-list" id="fd-confidence-list"><div class="score-placeholder">Loading published game simulations…</div></div></section></main><footer class="footer"><div class="wrap">FOURTHDOWN is independent and isn't affiliated with the NFL or DraftKings. Predictions are estimates, not guarantees. Archived pregame forecasts are separate from live updates. DraftKings quotes are third-party snapshots and may be delayed. Research metrics do not establish betting profitability. Gamble responsibly. <a href="pipeline-health.html">Pipeline Health</a> <span>FTN charting data via <a href="https://nflverse.com/">nflverse</a>; <a href="https://ftnfantasy.com/stats/sports-data">FTN Data</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Features are aggregated and modified for research.</span></div></footer>
-<noscript><div class="wrap notice">Showing all teams and players. Search, filters, and parlay controls require JavaScript enabled in your browser.</div></noscript><script src="assets/fd-teams.js?v=1"></script><script src="assets/fd-market-history.js?v=3"></script><script src="schedule-window.js?v=3"></script><script>(function(){const w=window.fdScheduleWindow?.get();const el=document.getElementById("fd-score-window");if(!w||!el)return;const fmt=x=>x.slice(4,6)+"/"+x.slice(6,8);el.textContent="Scoreboard and featured forecasts: "+fmt(w.start)+"–"+fmt(w.end)+" CT. The next slate begins Tuesday at 6:00 a.m. CT.";})();</script><script>
+<noscript><div class="wrap notice">Showing all teams and players. Search, filters, and parlay controls require JavaScript enabled in your browser.</div></noscript><script src="assets/fd-teams.js?v=1"></script><script src="assets/fd-market-history.js?v=3"></script><script src="schedule-window.js?v=4"></script><script>(function(){const w=window.fdScheduleWindow?.get();const el=document.getElementById("fd-score-window");if(!w||!el)return;const fmt=x=>x.slice(4,6)+"/"+x.slice(6,8);el.textContent="Scoreboard and featured forecasts: "+fmt(w.start)+"–"+fmt(w.end)+" CT. The next slate begins Tuesday at 6:00 a.m. CT.";})();</script><script>
 const schedule=[];
 const games=[];
 const props=[];
@@ -1826,8 +1826,10 @@ function fdSavedLock(g){
    // Ask for each Thursday-through-Monday calendar day, then keep only games in the slate.
    const slate=window.fdScheduleWindow.get(new Date());
    const espnBase='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
-   const season=slate.start.slice(0,4);
-   const dayKeys=window.fdScheduleWindow.scoreboardDates(slate);
+   const earlyDate=new Date(Date.UTC(Number(slate.start.slice(0,4)),Number(slate.start.slice(4,6))-1,Number(slate.start.slice(6,8))-1));
+   const earlyDay=earlyDate.getUTCFullYear()+String(earlyDate.getUTCMonth()+1).padStart(2,'0')+String(earlyDate.getUTCDate()).padStart(2,'0');
+   const inBoardWindow=event=>window.fdScheduleWindow.contains(slate,event.date)||window.fdScheduleWindow.centralDateKey(event.date)===earlyDay;
+   const dayKeys=[earlyDay,...window.fdScheduleWindow.scoreboardDates(slate)];
    let raw=null,scoreSource='ESPN',lastError=null;
    const dayPayloads=await Promise.all(dayKeys.map(async day=>{
      const url=espnBase+'?dates='+encodeURIComponent(day)+'&limit=100';
@@ -1845,7 +1847,7 @@ function fdSavedLock(g){
    for(const candidate of dayPayloads){
      for(const event of candidate?.events||[]){
        const id=String(event.id||'');
-       if(!id||seenIds.has(id)||!window.fdScheduleWindow.contains(slate,event.date))continue;
+       if(!id||seenIds.has(id)||!inBoardWindow(event))continue;
        seenIds.add(id);merged.push(event);
      }
    }
@@ -1862,7 +1864,7 @@ function fdSavedLock(g){
        finally{clearTimeout(timeout);}
        if(!response.ok)throw new Error('HTTP '+response.status);
        const candidate=await response.json();
-       const events=(candidate.events||[]).filter(event=>window.fdScheduleWindow.contains(slate,event.date));
+       const events=(candidate.events||[]).filter(event=>inBoardWindow(event));
        if(!events.length)throw new Error('No games in requested slate');
        raw={...candidate,events};
      }catch(err){lastError=err;}
@@ -1871,7 +1873,7 @@ function fdSavedLock(g){
      try{
        const saved=JSON.parse(localStorage.getItem('fd_espn_scoreboard_backup')||'null');
        if(saved&&Array.isArray(saved.payload?.events)&&saved.payload.events.length&&Date.now()-saved.savedAt<86400000){
-         const events=(saved.payload.events||[]).filter(event=>window.fdScheduleWindow.contains(slate,event.date));
+         const events=(saved.payload.events||[]).filter(event=>inBoardWindow(event));
          if(!events.length)throw new Error('Cached scoreboard has no games in requested slate');
          raw={...saved.payload,events};
          scoreSource='Cached ESPN scores · last saved '+new Date(saved.savedAt).toLocaleTimeString('en-US',{timeZone:'America/Chicago'})+' (not live)';
@@ -1884,7 +1886,7 @@ function fdSavedLock(g){
        if(backupResponse.ok){
          const backup=await backupResponse.json();
          const backupAge=Date.now()-Date.parse(backup.updated_at_utc);
-         const events=(backup.events||[]).filter(event=>window.fdScheduleWindow.contains(slate,event.date));
+         const events=(backup.events||[]).filter(event=>inBoardWindow(event));
          if(events.length&&backupAge>=0&&backupAge<7*86400000){
            raw={...backup,events};
            scoreSource='Published ESPN backup · updated '+new Date(backup.updated_at_utc).toLocaleTimeString('en-US',{timeZone:'America/Chicago'})+(backupAge>600000?' (delayed)':'');
@@ -2321,6 +2323,6 @@ main.wrap>#fd-more{margin:12px 0}
 .fd-merged-player-props>.fd-live-player-stats>.fd-modal-muted{font-size:11px;margin:8px 0}
 .fd-merged-player-props>.fd-mobile-prop-group{margin-top:14px}
 </style>
-<script defer src="assets/fd2-shell.js?v=4"></script><link rel="stylesheet" href="assets/fourthdown-visual-v1.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-mockup-v2.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-v1.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-layout-v2.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-phase2.css?v=1"><script defer src="assets/feed-freshness.js?v=1"></script><link rel="stylesheet" href="assets/fd-final-visual-consistency.css?v=1"><script>(function(){function elevate(){const board=document.getElementById('scoreboard'),hero=document.querySelector('.fd-command'),nav=document.querySelector('.fd-fan-nav');if(board&&hero&&nav&&board.parentNode===hero.parentNode){nav.insertAdjacentElement('afterend',board);}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',elevate,{once:true});else elevate();})();</script><link rel="stylesheet" href="assets/fd-fan-first.css?v=1"><link rel="stylesheet" href="assets/fd-mobile-readability.css?v=1">
-<link rel="stylesheet" href="assets/fd-premium-app.css?v=6"><script defer src="assets/fd-app-shell.js?v=4"></script>
-<script defer src="assets/fd-insights.js?v=2"></script><script defer src="slate-pulse.js?v=5"></script><script defer src="top-picks.js?v=3"></script><link rel="stylesheet" href="assets/fd-five-visuals.css?v=1"><script defer src="assets/fd-five-visuals.js?v=3"></script><link rel="stylesheet" href="assets/fd-mobile-first-2026.css?v=1"><link rel="stylesheet" href="assets/fd-appeal.css?v=2"><script defer src="assets/fd-team-colors.js?v=1"></script><script defer src="assets/fd-appeal.js?v=2"></script><script defer src="assets/fd-declutter.js?v=1"></script><script defer src="assets/fd-betting-board.js?v=2"></script><link rel="stylesheet" href="assets/fd-betting-board-polish.css?v=1"><link rel="stylesheet" href="assets/fd-compact-desk.css?v=7"><script defer src="assets/fd-compact-desk.js?v=1"></script></body></html>
+<script defer src="assets/fd2-shell.js?v=5"></script><link rel="stylesheet" href="assets/fourthdown-visual-v1.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-mockup-v2.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-v1.css?v=1"><link rel="stylesheet" href="assets/fd-full-matchup-layout-v2.css?v=1"><link rel="stylesheet" href="assets/fd-matchup-phase2.css?v=1"><script defer src="assets/feed-freshness.js?v=1"></script><link rel="stylesheet" href="assets/fd-final-visual-consistency.css?v=1"><script>(function(){function elevate(){const board=document.getElementById('scoreboard'),hero=document.querySelector('.fd-command'),nav=document.querySelector('.fd-fan-nav');if(board&&hero&&nav&&board.parentNode===hero.parentNode){nav.insertAdjacentElement('afterend',board);}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',elevate,{once:true});else elevate();})();</script><link rel="stylesheet" href="assets/fd-fan-first.css?v=1"><link rel="stylesheet" href="assets/fd-mobile-readability.css?v=1">
+<link rel="stylesheet" href="assets/fd-premium-app.css?v=6"><script defer src="assets/fd-app-shell.js?v=5"></script>
+<script defer src="assets/fd-insights.js?v=2"></script><script defer src="slate-pulse.js?v=6"></script><script defer src="top-picks.js?v=3"></script><link rel="stylesheet" href="assets/fd-five-visuals.css?v=1"><script defer src="assets/fd-five-visuals.js?v=3"></script><link rel="stylesheet" href="assets/fd-mobile-first-2026.css?v=1"><link rel="stylesheet" href="assets/fd-appeal.css?v=2"><script defer src="assets/fd-team-colors.js?v=1"></script><script defer src="assets/fd-appeal.js?v=2"></script><script defer src="assets/fd-declutter.js?v=1"></script><script defer src="assets/fd-betting-board.js?v=2"></script><link rel="stylesheet" href="assets/fd-betting-board-polish.css?v=1"><link rel="stylesheet" href="assets/fd-compact-desk.css?v=8"><script defer src="assets/fd-compact-desk.js?v=2"></script></body></html>
