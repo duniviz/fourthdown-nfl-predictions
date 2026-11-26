@@ -1910,6 +1910,29 @@ function fdSavedLock(g){
        }
      }catch(backupError){console.warn('Published scoreboard backup unavailable',backupError);}
    }
+   // A partial ESPN response can contain some slate games but omit another
+   // scheduled matchup. Supplement only missing future games from the published
+   // backup; never use an old pregame status to overwrite a live or finished game.
+   if(raw){
+     try{
+       const scheduleResponse=await fetch('./data/espn-scoreboard-backup.json?ts='+Date.now(),{cache:'no-store'});
+       if(scheduleResponse.ok){
+         const scheduleBackup=await scheduleResponse.json();
+         const scheduleAge=Date.now()-Date.parse(scheduleBackup.updated_at_utc);
+         if(scheduleAge>=0&&scheduleAge<7*86400000){
+           const knownIds=new Set((raw.events||[]).map(event=>String(event.id||'')).filter(Boolean));
+           const missingUpcoming=(scheduleBackup.events||[]).filter(event=>{
+             const id=String(event.id||''),kickoff=Date.parse(event.date||'');
+             return id&&!knownIds.has(id)&&inBoardWindow(event)&&Number.isFinite(kickoff)&&kickoff>Date.now();
+           });
+           if(missingUpcoming.length){
+             raw={...raw,events:[...(raw.events||[]),...missingUpcoming]};
+             if(scoreSource==='ESPN')scoreSource='ESPN + saved upcoming schedule';
+           }
+         }
+       }
+     }catch(scheduleError){console.warn('Upcoming scoreboard schedule supplement unavailable',scheduleError);}
+   }
    if(!raw)throw new Error('ESPN primary and backup unavailable: '+(lastError?.message||'unknown error'));
    const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
      const comp=(event.competitions||[])[0]||{};
