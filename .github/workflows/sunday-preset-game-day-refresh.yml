@@ -1,15 +1,5 @@
 name: Sunday preset game-day refresh
 on:
-  schedule:
-    # Fixed Sunday clock times in Central Time, including daylight saving.
-    - cron: '0 8 * * 0'
-      timezone: America/Chicago
-    - cron: '0 11 * * 0'
-      timezone: America/Chicago
-    - cron: '30 14 * * 0'
-      timezone: America/Chicago
-    - cron: '45 18 * * 0'
-      timezone: America/Chicago
   workflow_dispatch:
     inputs:
       recovery_mode:
