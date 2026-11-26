@@ -31,12 +31,14 @@ function chromePath() {
     await page.route('**/data/market-ml-research-selection.json*', route => route.fulfill({json:{player:{rushing_yards:{research_winner:'pfr_plus'}}}}));
 
     await page.goto('http://127.0.0.1:8123/model-lab.html', {waitUntil: 'domcontentloaded'});
+    await page.locator('#fd-weekly-report-card').evaluate(node => { node.closest('details').open = true; });
     await page.waitForFunction(() => document.querySelector('#fd-weekly-report-card')?.hasAttribute('data-fd-report-source'));
     const lab = await page.locator('#fd-weekly-report-card').innerText();
     assert.ok(expectedCard, 'expected a published weekly report');
     assert.equal(await page.locator('#fd-weekly-report-card').getAttribute('data-fd-report-source'), expectedCard.source);
     assert.ok(lab.includes(String(expectedCard.latest.completed_games) + ' completed games'));
     if (expectedCard.source === 'official') assert.match(lab, /verified score ledger/);
+    await page.locator('#fd-free-feature-lab').evaluate(node => { node.closest('details').open = true; });
     const feature=page.locator('#fd-free-feature-lab details').nth(1);
     await feature.locator('summary').waitFor();
     await feature.locator('summary').click();
