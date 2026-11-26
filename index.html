@@ -1157,7 +1157,7 @@ async function fdOpenMatchup(g){
  const header='<div class="fd-modal-top"><div><small>NFL · '+esc(isFinal?'Final':g.state==='in'?'Live':'Upcoming')+'</small><h2>'+esc(away)+' @ '+esc(home)+'</h2><small>'+esc(new Date(g.date).toLocaleString('en-US',{timeZone:'America/Chicago'}))+'</small></div><button class="fd-modal-close" data-close-matchup aria-label="Close matchup">×</button></div>';
  /* Mobile-first layout: existing verified game, simulation, DK and prop content; reordered only. */
  const topProps=props.replace('</h3>','</h3>'+liveStats);
- const headline='<div class="fd-detail-hero"><div class="fd-detail-teams"><div class="fd-detail-team"><span class="fd-detail-team-label">AWAY</span><strong>'+esc(away)+'</strong></div><span class="fd-detail-versus">AT</span><div class="fd-detail-team"><span class="fd-detail-team-label">HOME</span><strong>'+esc(home)+'</strong></div></div><p class="fd-detail-status">'+esc(isFinal?'Final result · archived predictions':g.state==='in'?'Game in progress':'Pregame forecast')+'</p></div>';
+ const headline='<div class="fd-detail-hero"><div class="fd-detail-teams"><div class="fd-detail-team"><span class="fd-detail-team-label">AWAY</span><strong>'+esc(away)+'</strong></div><span class="fd-detail-versus">AT</span><div class="fd-detail-team"><span class="fd-detail-team-label">HOME</span><strong>'+esc(home)+'</strong></div></div><p class="fd-detail-status">'+esc(g.score_unavailable?'Score feed unavailable':isFinal?'Final result · archived predictions':g.state==='in'?'Game in progress':'Pregame forecast')+'</p></div>';
  const previewLink=!isFinal&&g.state!=='in'&&p?.game_id?'<p style="margin:12px 0"><a href="game-preview.html?game='+encodeURIComponent(p.game_id)+'" target="_blank" rel="noopener noreferrer" style="display:block;text-align:center;padding:12px;border:1px solid #6b8d50;border-radius:12px;color:#c1f66b;font-weight:800;text-decoration:none">Open full game preview ↗</a></p>':'';
  const detailHtml=header+headline+previewLink+'<div class="fd-detail-primary">'+score+(p?fdMlGlance(p)+fdGameLineComparison(p):'')+(p?window.FDProjectionChanges.game(p):'')+'<div class="fd-detail-market">'+market+'</div></div>'
    +'<div class="fd-detail-simulation">'+fdSimulationPanel(p,g)+'</div>'
@@ -1921,13 +1921,16 @@ function fdSavedLock(g){
          const scheduleAge=Date.now()-Date.parse(scheduleBackup.updated_at_utc);
          if(scheduleAge>=0&&scheduleAge<7*86400000){
            const knownIds=new Set((raw.events||[]).map(event=>String(event.id||'')).filter(Boolean));
-           const missingUpcoming=(scheduleBackup.events||[]).filter(event=>{
+           const missingSlateGames=(scheduleBackup.events||[]).filter(event=>{
              const id=String(event.id||''),kickoff=Date.parse(event.date||'');
-             return id&&!knownIds.has(id)&&inBoardWindow(event)&&Number.isFinite(kickoff)&&kickoff>Date.now();
-           });
-           if(missingUpcoming.length){
-             raw={...raw,events:[...(raw.events||[]),...missingUpcoming]};
-             if(scoreSource==='ESPN')scoreSource='ESPN + saved upcoming schedule';
+             // Include recent kickoffs too: if ESPN omitted a game after it
+             // started, show a transparent placeholder rather than hiding it
+             // or displaying the backup's stale 0–0/pregame status.
+             return id&&!knownIds.has(id)&&inBoardWindow(event)&&Number.isFinite(kickoff)&&kickoff>Date.now()-8*3600000;
+           }).map(event=>({...event,fd_score_unavailable:Date.parse(event.date)<=Date.now()}));
+           if(missingSlateGames.length){
+             raw={...raw,events:[...(raw.events||[]),...missingSlateGames]};
+             if(scoreSource==='ESPN')scoreSource='ESPN + saved schedule';
            }
          }
        }
@@ -1937,14 +1940,16 @@ function fdSavedLock(g){
    const data={updated_at_utc:new Date().toISOString(),games:(raw.events||[]).map(event=>{
      const comp=(event.competitions||[])[0]||{};
      const teams=comp.competitors||[];
+     const scoreUnavailable=event.fd_score_unavailable===true;
      const team=(side)=>{
        const x=teams.find(t=>t.homeAway===side)||{};
        const t=x.team||{};
-       return {abbr:window.fdTeams.label(t.abbreviation||''),name:t.displayName||'',logo:t.logo||'',score:x.score??null,record:(x.records||[]).find(r=>r.type==='total')?.summary||''};
+       return {abbr:window.fdTeams.label(t.abbreviation||''),name:t.displayName||'',logo:t.logo||'',score:scoreUnavailable?null:x.score??null,record:(x.records||[]).find(r=>r.type==='total')?.summary||''};
      };
      const s=comp.status||event.status||{};
      return {id:String(event.id||''),date:event.date,home:team('home'),away:team('away'),
-       state:(s.type||{}).state||'pre',status:(s.type||{}).shortDetail||(s.type||{}).detail||'',
+       state:scoreUnavailable?'unknown':(s.type||{}).state||'pre',status:scoreUnavailable?'Score feed unavailable':(s.type||{}).shortDetail||(s.type||{}).detail||'',
+       score_unavailable:scoreUnavailable,
        broadcast:(comp.broadcasts||[]).flatMap(x=>x.names||[]).slice(0,2).join(', '),
        link:'https://www.espn.com/nfl/game/_/gameId/'+String(event.id||'')};
    }).filter(g=>g.home.abbr&&g.away.abbr)};
@@ -1982,11 +1987,12 @@ function fdSavedLock(g){
    const live=groups.live;
    const final=groups.finals;
    const upcoming=groups.upcoming;
-   const currentGames=[...live,...upcoming,...final];
+   const unavailable=data.games.filter(g=>g.score_unavailable);
+   const currentGames=[...live,...upcoming,...final,...unavailable];
    try{renderHybridSpotlight();}catch(widgetError){console.warn('Optional player spotlight unavailable',widgetError);}
    // Filter by Central calendar date to avoid hard-coding a CST UTC offset.
    const inSlate=g=>window.fdScheduleWindow.contains(slate,g.date);
-   const visibleGames=[...live.filter(inSlate),...upcoming.filter(inSlate),...final.filter(inSlate)];
+   const visibleGames=[...live.filter(inSlate),...upcoming.filter(inSlate),...final.filter(inSlate),...unavailable.filter(inSlate)];
    window.fdAllGames=currentGames;window.fdScoreboardFeed='ok';window.dispatchEvent(new CustomEvent('fd-scoreboard-updated'));const sorted=visibleGames.filter(g=>(activeFilter==='all'||(activeFilter==='picks'?!!getProjection(g):g.state===activeFilter))&&(kickoffWindow==='all'||kickoffBucket(g)===kickoffWindow));syncMatchupJump(visibleGames);
    status.textContent=(live.length?live.length+' game(s) in progress · ':'')+sorted.length+' games · Feed updated '+updated.toLocaleString('en-US',{timeZone:'America/Chicago'})+(age>45?' · DELAYED DATA':'');
    label.textContent=age<1?'Updated just now':'Updated '+age+'m ago';
@@ -1997,9 +2003,9 @@ function fdSavedLock(g){
    container.innerHTML=sorted.length?sorted.map(g=>{
      const active=g.state==='in',isFinal=g.state==='post',savedLock=fdSavedLock(g);
      const kickoff=new Date(g.date);
-     const title=active?'IN PROGRESS':isFinal?'FINAL':'UPCOMING';
+     const title=g.score_unavailable?'SCORE UNAVAILABLE':active?'IN PROGRESS':isFinal?'FINAL':'UPCOMING';
      const centralKickoff=!Number.isNaN(kickoff.getTime())?kickoff.toLocaleString('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'Scheduled';
-     const statusText=g.state==='pre'?centralKickoff:(g.status||centralKickoff);
+     const statusText=g.score_unavailable?'ESPN did not return a score · '+centralKickoff:g.state==='pre'?centralKickoff:(g.status||centralKickoff);
      const display=isFinal&&/^final$/i.test(String(g.status||'').trim())?centralKickoff:statusText;
      const team=t=>'<div class="score-team">'+(t.logo?'<img loading="lazy" src="'+esc(t.logo)+'" alt="'+esc(t.abbr||t.name||'Team')+' logo">':'')+'<span class="name">'+esc(t.abbr||t.name)+'</span><span class="points">'+(g.state==='pre'?'—':prettyScore(t.score))+'</span></div>';
      const link=typeof g.link==='string'&&g.link.startsWith('https://www.espn.com/nfl/')?g.link:null;
