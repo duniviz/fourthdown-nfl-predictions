@@ -18,6 +18,7 @@
     const home = name === '' || name === 'index.html';
     if (href.indexOf('#fd-slate-pulse') !== -1) return home && location.hash === '#fd-slate-pulse';
     if (href.indexOf('#scoreboard') !== -1) return home && location.hash === '#scoreboard';
+    if (href.indexOf('#reading-guide') !== -1) return home && location.hash === '#reading-guide';
     if (href === 'index.html') return home && location.hash !== '#scoreboard';
     return href.split('#')[0] === name;
   }
