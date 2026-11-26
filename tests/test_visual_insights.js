@@ -28,6 +28,7 @@ const assert=require('node:assert/strict');
   await page.waitForSelector('#bet-cards .fd-range');
   assert.match(await page.locator('#bet-cards .fd-range').first().innerText(),/Middle 80%/);
   await page.goto('http://127.0.0.1:8123/model-lab.html');
+  await page.locator('#fd-weekly-report-card').evaluate(node=>{node.closest('details').open=true;});
   await page.waitForFunction(()=>document.querySelector('#fd-weekly-report-card')?.innerText.includes('10.0 points'));
   assert.match(await page.locator('#fd-weekly-report-card').innerText(),/4 graded forecasts/);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
