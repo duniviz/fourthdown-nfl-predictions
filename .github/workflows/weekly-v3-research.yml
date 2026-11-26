@@ -1,16 +1,15 @@
 name: Weekly V3 research learning and readiness
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/weekly-v3-research.yml'
   workflow_dispatch:
-  schedule:
-    - cron: '30 15 * * 2'
+  workflow_run:
+    workflows: ["Weekly player ML challenger audit"]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
 jobs:
   research:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
