@@ -184,7 +184,7 @@ html.fd-mobile-layout[data-fd-view="mobile"] .fd2-header .fd2-shell{display:grid
 @media(max-width:850px){
  .fd2-bottom{
   position:fixed!important;inset:auto 0 0!important;z-index:125!important;
-  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-template-rows:1fr!important;align-items:center!important;gap:4px!important;
   height:calc(68px + env(safe-area-inset-bottom))!important;
   min-height:68px!important;max-height:110px!important;
@@ -356,4 +356,21 @@ html[data-fd-view="desktop"] .fd2-bottom-menu{display:none!important}
  .fd-desk-games-primary>summary{min-height:58px;padding:12px}
  .fd-desk-games-primary>summary strong{font-size:22px}
  .fd-desk-edges-fold>summary{padding:10px 12px;min-height:46px}
+}
+
+/* Compact links replace the old Edges and More navigation controls. */
+.fd2-tools{
+ display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+ width:min(1380px,calc(100% - 48px));margin:8px auto 12px;
+}
+.fd2-tools>a{
+ display:inline-flex;align-items:center;justify-content:center;min-height:38px;
+ padding:8px 13px;border:1px solid #35536c;border-radius:10px;
+ background:#101d2b;color:#dcebf4;text-decoration:none;font-size:12px;font-weight:800;
+}
+.fd2-tools>a:hover,.fd2-tools>a:focus-visible{border-color:#ff9b69;color:#fff}
+.fd2-tools>a[aria-current="page"]{border-color:#b6d95e;background:#202d19;color:#d8ff81}
+@media(max-width:850px){
+ .fd2-tools{width:auto;margin:8px 14px 12px;gap:7px}
+ .fd2-tools>a{flex:1 1 auto;padding:8px 10px;min-height:40px}
 }
