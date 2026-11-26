@@ -15,20 +15,20 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         expected = {
             'tuesday-preforecast-evaluation.yml': "cron: '0 6 * * 2'",
             'nightly-game-grading.yml': "cron: '0 23 * * *'",
-            'daily-dk-player-props.yml': "cron: '37 * * * 1,4,5,6'",
         }
         for filename, cron in expected.items():
             source = (ROOT / '.github/workflows' / filename).read_text()
             self.assertIn(cron + "\n      timezone: America/Chicago", source)
 
-    def test_publish_daily_forecast_is_utc_and_checks_central_hour(self):
+    def test_publish_keeps_daily_and_five_minute_forecast_checks(self):
         source = WORKFLOW.read_text()
+        self.assertIn("cron: '*/5 * * * *'", source)
         self.assertIn("cron: '17 23 * * *'", source)
         self.assertIn("cron: '17 22 * * *'", source)
         self.assertNotIn("timezone:", source)
         self.assertIn('TZ=America/Chicago date +%H)" != "17"', source)
-        self.assertIn('"${{ github.event.schedule }}" == "17 22 * * *"', source)
-        self.assertIn('"${{ github.event.schedule }}" == "17 23 * * *"', source)
+        self.assertIn('scripts.daily_forecast_refresh_window', source)
+        self.assertIn('scripts.check_pregame_forecast_window', source)
 
     def test_daily_forecast_runs_on_game_day_with_safe_buffer(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
@@ -48,32 +48,25 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         self.assertFalse(daily_run_allowed([], now)[0])
         self.assertFalse(daily_run_allowed([{}], now)[0])
 
-    def test_hourly_game_window_has_runtime_buffer(self):
+    def test_game_refresh_window_is_50_to_60_minutes(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
-        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=100)))
-        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=79)))
-        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=151)))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=55)))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=60)))
+        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=49)))
+        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=61)))
 
-    def test_recent_forecast_suppresses_duplicate_hourly_dispatch(self):
+    def test_recent_forecast_suppresses_only_near_duplicate_dispatch(self):
         now = datetime(2026, 11, 17, 0, 0, tzinfo=timezone.utc)
-        self.assertTrue(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=20)).isoformat()}, now))
-        self.assertFalse(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=46)).isoformat()}, now))
+        self.assertTrue(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=5)).isoformat()}, now))
+        self.assertFalse(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=11)).isoformat()}, now))
         self.assertFalse(recently_refreshed({"generated_at_utc": (now + timedelta(minutes=1)).isoformat()}, now))
 
-    def test_workflow_has_daily_and_staggered_game_day_schedules(self):
+    def test_schedule_guard_runs_dynamic_window_and_serializes_writers(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("cron: '17 23 * * *'", source)
-        self.assertIn("cron: '17 22 * * *'", source)
-        self.assertIn("cron: '7,37 * * * *'", source)
-        self.assertIn("scripts.daily_forecast_refresh_window", source)
-        self.assertIn("scripts.check_pregame_forecast_window", source)
+        self.assertIn("cron: '*/5 * * * *'", source)
         self.assertIn("group: pregame-pipeline", source)
-        self.assertNotIn("cron: '43,51 17 * * 1,4'", source)
-        guard = source[source.index("Check Central Time refresh window"):]
-        self.assertIn('!= "17 22 * * *"', guard)
-        self.assertIn('!= "17 23 * * *"', guard)
-        window = guard.index('!= "17 23 * * *"')
-        self.assertIn("scripts.check_pregame_forecast_window", guard[window:])
+        self.assertIn("scripts.check_pregame_forecast_window", source)
+        self.assertIn("Generate current-season v2 forecasts", source)
 
 
 if __name__ == "__main__":
