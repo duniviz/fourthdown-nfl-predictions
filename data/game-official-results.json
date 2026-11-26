@@ -1,28 +1,28 @@
 {
-  "generated_at_utc": "2026-11-26T01:04:41.953662+00:00",
+  "generated_at_utc": "2026-11-26T14:34:43.606390+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 40,
+  "graded_games": 41,
   "summary": {
     "winner": {
-      "hits": 29,
+      "hits": 30,
       "misses": 11,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 72.5
+      "hit_pct": 73.2
     },
     "ats": {
-      "hits": 16,
+      "hits": 17,
       "misses": 23,
       "pushes": 0,
       "ungraded": 1,
-      "hit_pct": 41.0
+      "hit_pct": 42.5
     },
     "ou": {
-      "hits": 19,
+      "hits": 20,
       "misses": 20,
       "pushes": 0,
       "ungraded": 1,
-      "hit_pct": 48.7
+      "hit_pct": 50.0
     }
   },
   "rows": [
@@ -865,6 +865,27 @@
       "winner_result": "miss",
       "ats_result": "not_available",
       "ou_result": "not_available"
+    },
+    {
+      "game_id": "2026_12_GB_LA",
+      "season": 2026,
+      "week": 12,
+      "home": "LA",
+      "away": "GB",
+      "kickoff_utc": "2026-11-26T01:00:00+00:00",
+      "lock_status": "last_available",
+      "lock_cutoff_utc": "2026-11-26T00:30:00+00:00",
+      "forecast_at_utc": "2026-11-26T00:51:15.462244+00:00",
+      "dk_at_utc": "2026-11-26T00:40:31.358504+00:00",
+      "home_score": 26.0,
+      "away_score": 13.0,
+      "projected_margin_home": 6.42,
+      "projected_total": 41.14,
+      "dk_home_spread": -2.5,
+      "dk_total": 43.5,
+      "winner_result": "hit",
+      "ats_result": "hit",
+      "ou_result": "hit"
     }
   ]
 }
