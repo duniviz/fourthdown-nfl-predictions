@@ -13,7 +13,6 @@ WORKFLOW = ROOT / ".github/workflows/publish-v2.yml"
 class ForecastRefreshScheduleTests(unittest.TestCase):
     def test_clock_specific_jobs_declare_central_time(self):
         expected = {
-            'publish-v2.yml': "cron: '17 17 * * *'",
             'tuesday-preforecast-evaluation.yml': "cron: '0 6 * * 2'",
             'nightly-game-grading.yml': "cron: '0 23 * * *'",
             'daily-dk-player-props.yml': "cron: '37 * * * 1,4,5,6'",
@@ -21,6 +20,15 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         for filename, cron in expected.items():
             source = (ROOT / '.github/workflows' / filename).read_text()
             self.assertIn(cron + "\n      timezone: America/Chicago", source)
+
+    def test_publish_daily_forecast_is_utc_and_checks_central_hour(self):
+        source = WORKFLOW.read_text()
+        self.assertIn("cron: '17 23 * * *'", source)
+        self.assertIn("cron: '17 22 * * *'", source)
+        self.assertNotIn("timezone:", source)
+        self.assertIn('TZ=America/Chicago date +%H)" != "17"', source)
+        self.assertIn('"${{ github.event.schedule }}" == "17 22 * * *"', source)
+        self.assertIn('"${{ github.event.schedule }}" == "17 23 * * *"', source)
 
     def test_daily_forecast_runs_on_game_day_with_safe_buffer(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
@@ -54,11 +62,18 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
 
     def test_workflow_has_daily_and_staggered_game_day_schedules(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("cron: '17 17 * * *'", source)
+        self.assertIn("cron: '17 23 * * *'", source)
+        self.assertIn("cron: '17 22 * * *'", source)
         self.assertIn("cron: '7,37 * * * *'", source)
         self.assertIn("scripts.daily_forecast_refresh_window", source)
         self.assertIn("scripts.check_pregame_forecast_window", source)
         self.assertIn("group: pregame-pipeline", source)
+        self.assertNotIn("cron: '43,51 17 * * 1,4'", source)
+        guard = source[source.index("Check Central Time refresh window"):]
+        self.assertIn('!= "17 22 * * *"', guard)
+        self.assertIn('!= "17 23 * * *"', guard)
+        window = guard.index('!= "17 23 * * *"')
+        self.assertIn("scripts.check_pregame_forecast_window", guard[window:])
 
 
 if __name__ == "__main__":

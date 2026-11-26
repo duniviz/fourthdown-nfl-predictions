@@ -1,8 +1,9 @@
-"""Slot-shaped capture schedule with several ticks inside each kickoff window."""
+"""UTC capture and forecast schedules, checked against America/Chicago kickoffs."""
 import re
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from live.pregame_capture_guard import due_lock, due_refresh, lock_wait_seconds
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,6 +11,11 @@ WORKFLOW = ROOT / ".github/workflows/capture-game-pregame.yml"
 GRADING = ROOT / ".github/workflows/nightly-game-grading.yml"
 FORECAST = ROOT / ".github/workflows/publish-v2.yml"
 WEEKLY_ML = ROOT / ".github/workflows/fourthdown-unified-weekly-ml.yml"
+CT = ZoneInfo("America/Chicago")
+UTC = timezone.utc
+
+# python weekday(): Monday=0 ... Sunday=6
+THU, SAT, SUN, MON = 3, 5, 6, 0
 
 
 def field(expr, lo, hi):
@@ -25,62 +31,137 @@ def field(expr, lo, hi):
     return out
 
 
-def cron_events(text):
-    events = []
-    lines = text.splitlines()
-    for index, line in enumerate(lines):
-        match = re.search(r"cron:\s*'([^']+)'", line)
-        if not match:
-            continue
-        timezone_name = None
-        for follow in lines[index + 1:index + 3]:
-            zone = re.search(r"timezone:\s*(\S+)", follow)
-            if zone:
-                timezone_name = zone.group(1).strip('"')
-                break
-        events.append((match.group(1), timezone_name))
-    return events
+def cron_exprs(text):
+    return re.findall(r"cron:\s*'([^']+)'", text)
 
 
-def minutes_on(events, day):
-    hits = set()
-    for expr, _zone in events:
-        minute, hour, _dom, _month, dow = expr.split()
-        if day not in field(dow, 0, 6):
+def cron_matches(expr, utc_dt):
+    minute, hour, dom, month, dow = expr.split()
+    if utc_dt.minute not in field(minute, 0, 59):
+        return False
+    if utc_dt.hour not in field(hour, 0, 23):
+        return False
+    if utc_dt.month not in field(month, 1, 12):
+        return False
+    dom_ok = utc_dt.day in field(dom, 1, 31)
+    cron_dow = (utc_dt.weekday() + 1) % 7
+    dow_ok = cron_dow in field(dow, 0, 6)
+    if dom == "*" and dow == "*":
+        return True
+    if dom == "*":
+        return dow_ok
+    if dow == "*":
+        return dom_ok
+    # GitHub runs the job when either calendar field matches.
+    return dom_ok or dow_ok
+
+
+def slot_exprs(exprs):
+    """Drop always-on nets so coverage has to come from the game ticks."""
+    kept = []
+    for expr in exprs:
+        _minute, _hour, dom, month, dow = expr.split()
+        if dom == "*" and month == "*" and dow == "*":
             continue
-        for hour_value in field(hour, 0, 23):
-            for minute_value in field(minute, 0, 59):
-                hits.add(hour_value * 60 + minute_value)
-    return hits
+        kept.append(expr)
+    return kept
+
+
+def lead_minutes(exprs, kickoff):
+    found = set()
+    for delta in range(0, 181):
+        instant = (kickoff - timedelta(minutes=delta)).astimezone(UTC).replace(second=0, microsecond=0)
+        if any(cron_matches(expr, instant) for expr in exprs):
+            found.add(delta)
+    return found
+
+
+def at_ct(year, month, day, hour, minute):
+    return datetime(year, month, day, hour, minute, tzinfo=CT)
+
+
+def first_weekday(year, month, python_weekday):
+    day = datetime(year, month, 1)
+    while day.weekday() != python_weekday:
+        day += timedelta(days=1)
+    return day.day
+
+
+def regular_kickoffs():
+    """One CST date and one CDT date for each weekly slot, plus January."""
+    slots = (
+        (THU, 19, 15),
+        (SAT, 8, 30),
+        (SUN, 8, 30),
+        (SUN, 12, 0),
+        (SUN, 15, 5),
+        (SUN, 15, 25),
+        (SUN, 19, 20),
+        (MON, 19, 15),
+    )
+    dates = []
+    for year, month in ((2026, 10), (2026, 9), (2026, 12), (2027, 1)):
+        for weekday, hour, minute in slots:
+            day = first_weekday(year, month, weekday)
+            dates.append(at_ct(year, month, day, hour, minute))
+    return dates
+
+
+HOLIDAY_KICKOFFS = (
+    at_ct(2026, 11, 26, 12, 0),
+    at_ct(2026, 11, 26, 15, 30),
+    at_ct(2026, 11, 26, 19, 20),
+    at_ct(2026, 11, 27, 14, 0),
+    at_ct(2026, 12, 24, 19, 15),
+    at_ct(2026, 12, 25, 12, 0),
+    at_ct(2026, 12, 25, 15, 30),
+    at_ct(2026, 12, 25, 19, 15),
+    at_ct(2026, 12, 26, 15, 30),
+    at_ct(2026, 12, 26, 19, 0),
+    at_ct(2026, 12, 19, 16, 0),
+    at_ct(2026, 12, 19, 19, 20),
+)
 
 
 class CaptureTimingTests(unittest.TestCase):
-    def test_slot_ticks_land_in_each_kickoff_window(self):
+    def test_schedules_are_utc_and_do_not_or_the_calendar_fields(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        events = cron_events(source)
-        self.assertGreaterEqual(len(events), 8)
-        self.assertTrue(all(zone == "America/Chicago" for _expr, zone in events))
+        forecast = FORECAST.read_text(encoding="utf-8")
+        self.assertNotIn("timezone:", source)
+        self.assertNotIn("timezone:", forecast)
         self.assertNotIn("cron: '2,12,22,32,42,52 * * * *'", source)
-        # Thursday, early Saturday/Sunday, Sunday noon, both late windows, SNF, MNF.
-        slots = (
-            (4, 19, 15),
-            (6, 8, 30),
-            (0, 8, 30),
-            (0, 12, 0),
-            (0, 15, 5),
-            (0, 15, 25),
-            (0, 19, 20),
-            (1, 19, 15),
-        )
-        for day, hour, minute in slots:
-            kickoff = hour * 60 + minute
-            hits = sorted(value for value in minutes_on(events, day) if kickoff - 40 <= value <= kickoff - 5)
-            self.assertGreaterEqual(len(hits), 3, msg=f"dow={day} {hour:02d}:{minute:02d} hits={hits}")
-            gaps = [b - a for a, b in zip(hits, hits[1:])]
-            self.assertTrue(all(gap <= 15 for gap in gaps), msg=hits)
-        for expr, _zone in events:
-            self.assertNotIn(",0,", f",{expr.split()[0]},")
-            self.assertFalse(expr.split()[0] in {"0", "*/5", "*/10"})
+        self.assertIn("cron: '22 0-5,13-23 * * *'", source)
+        for expr in cron_exprs(source) + cron_exprs(forecast):
+            minute, _hour, dom, _month, dow = expr.split()
+            self.assertFalse(dom != "*" and dow != "*", msg=expr)
+            self.assertNotIn(0, field(minute, 0, 59), msg=expr)
+            self.assertNotIn(expr.split()[0], {"0", "*/5", "*/10"})
+
+    def test_slot_ticks_land_in_each_kickoff_window(self):
+        capture = slot_exprs(cron_exprs(WORKFLOW.read_text(encoding="utf-8")))
+        forecast = slot_exprs(cron_exprs(FORECAST.read_text(encoding="utf-8")))
+        for kickoff in list(regular_kickoffs()) + list(HOLIDAY_KICKOFFS):
+            label = kickoff.strftime("%a %Y-%m-%d %H:%M %Z")
+            leads = lead_minutes(capture, kickoff)
+            lock = sorted(value for value in leads if 30 <= value <= 45)
+            late = sorted(value for value in leads if 5 <= value <= 29)
+            self.assertGreaterEqual(len(lock), 3, msg=f"{label} lock={lock}")
+            self.assertGreaterEqual(len(late), 2, msg=f"{label} late={late}")
+            self.assertLessEqual(lock[-1] - lock[0], 15, msg=lock)
+            fresh = sorted(value for value in lead_minutes(forecast, kickoff) if 80 <= value <= 120)
+            self.assertGreaterEqual(len(fresh), 3, msg=f"{label} forecast={fresh}")
+
+    def test_hourly_fallback_covers_8am_through_11pm_ct(self):
+        expr = "22 0-5,13-23 * * *"
+        self.assertIn(expr, cron_exprs(WORKFLOW.read_text(encoding="utf-8")))
+        for year, month, day in ((2026, 9, 13), (2026, 10, 4), (2026, 12, 6), (2027, 1, 10)):
+            for hour in range(8, 24):
+                local = at_ct(year, month, day, hour, 22)
+                utc = local.astimezone(UTC)
+                self.assertTrue(cron_matches(expr, utc), msg=local.isoformat())
+            # 6:22 AM CT is before the fallback in both CST and CDT.
+            early = at_ct(year, month, day, 6, 22).astimezone(UTC)
+            self.assertFalse(cron_matches(expr, early), msg=early.isoformat())
 
     def test_writer_runs_only_when_a_window_is_due(self):
         source = WORKFLOW.read_text(encoding="utf-8")

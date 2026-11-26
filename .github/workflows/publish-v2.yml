@@ -11,14 +11,87 @@ name: Publish weekly v2 forecasts
       - 'data/verified-starters.json'
       - 'data/qb-replacement-trial.json'
   schedule:
-    # Run the daily forecast at about 5 PM Central and add twice-hourly game-window recovery ticks.
-    # These game-day ticks only enter the full pipeline 80–150 minutes before a kickoff.
-    - cron: '17 17 * * *'
-      timezone: America/Chicago
+    # UTC crons. The timezone key is omitted because the Nov 25 Chicago-labeled
+    # schedules fired as UTC. Comments are America/Chicago. Game-day ticks below
+    # are T-115/T-100/T-85 (Sunday 3:25 PM uses T-83 to stay off minute 0), inside
+    # the 80–150 minute pipeline window and no earlier than T-120, so a fast run
+    # still stamps live-v2 inside the 2-hour freshness rule. Two entries per
+    # window so one dropped registration still leaves a tick. CST months are
+    # 1, 2, 11, 12 and CDT months are 9, 10.
+    # Daily forecast at 5:17 PM CT. CST = 23:17 UTC. CDT = 22:17 UTC.
+    - cron: '17 23 * * *'
+    - cron: '17 22 * * *'
+    # Twice-hourly net for a kickoff that is not listed. The guard still requires the 80–150 minute window.
     - cron: '7,37 * * * *'
-    # Give the weeknight forecast a second chance inside the lock freshness window.
-    - cron: '43,51 17 * * 1,4'
-      timezone: America/Chicago
+    # Thursday 7:15 PM CT: 5:20/5:35/5:50 PM. CST = 23:20/23:35/23:50 UTC Thursday. CDT = 22:20/22:35/22:50 UTC Thursday.
+    - cron: '20,35 23 * 1,2,11,12 4'
+    - cron: '50 23 * 1,2,11,12 4'
+    - cron: '20,35 22 * 9,10 4'
+    - cron: '50 22 * 9,10 4'
+    # Saturday/Sunday 8:30 AM CT: 6:35/6:50/7:05 AM. CST = 12:35/12:50 and 13:05 UTC. CDT = 11:35/11:50 and 12:05 UTC.
+    - cron: '35,50 12 * 1,2,11,12 0,6'
+    - cron: '5 13 * 1,2,11,12 0,6'
+    - cron: '35,50 11 * 9,10 0,6'
+    - cron: '5 12 * 9,10 0,6'
+    # Sunday noon CT: 10:05/10:20/10:35 AM. CST = 16:05/16:20/16:35 UTC. CDT = 15:05/15:20/15:35 UTC.
+    - cron: '5,20 16 * 1,2,11,12 0'
+    - cron: '35 16 * 1,2,11,12 0'
+    - cron: '5,20 15 * 9,10 0'
+    - cron: '35 15 * 9,10 0'
+    # Sunday 3:05 PM CT: 1:10/1:25/1:40 PM. CST = 19:10/19:25/19:40 UTC. CDT = 18:10/18:25/18:40 UTC.
+    - cron: '10,25 19 * 1,2,11,12 0'
+    - cron: '40 19 * 1,2,11,12 0'
+    - cron: '10,25 18 * 9,10 0'
+    - cron: '40 18 * 9,10 0'
+    # Sunday 3:25 PM CT: 1:30/1:45/2:02 PM. CST = 19:30/19:45 and 20:02 UTC. CDT = 18:30/18:45 and 19:02 UTC.
+    - cron: '30,45 19 * 1,2,11,12 0'
+    - cron: '2 20 * 1,2,11,12 0'
+    - cron: '30,45 18 * 9,10 0'
+    - cron: '2 19 * 9,10 0'
+    # Sunday 7:20 PM CT: 5:25/5:40/5:55 PM. CST = 23:25/23:40/23:55 UTC Sunday. CDT = 22:25/22:40/22:55 UTC Sunday.
+    - cron: '25,40 23 * 1,2,11,12 0'
+    - cron: '55 23 * 1,2,11,12 0'
+    - cron: '25,40 22 * 9,10 0'
+    - cron: '55 22 * 9,10 0'
+    # Monday 7:15 PM CT: 5:20/5:35/5:50 PM. CST = 23:20/23:35/23:50 UTC Monday. CDT = 22:20/22:35/22:50 UTC Monday.
+    - cron: '20,35 23 * 1,2,11,12 1'
+    - cron: '50 23 * 1,2,11,12 1'
+    - cron: '20,35 22 * 9,10 1'
+    - cron: '50 22 * 9,10 1'
+    # Thu Dec 24 7:15 PM CT (HOU@PHI) uses the Thursday CST ticks above.
+    # Thu Nov 26 noon CT (CHI@DET): 10:05/10:20/10:35 AM = 16:05/16:20/16:35 UTC.
+    - cron: '5,20 16 26 11 *'
+    - cron: '35 16 26 11 *'
+    # Thu Nov 26 3:30 PM CT (PHI@DAL): 1:35/1:50/2:05 PM = 19:35/19:50 and 20:05 UTC.
+    - cron: '35,50 19 26 11 *'
+    - cron: '5 20 26 11 *'
+    # Thu Nov 26 7:20 PM CT (KC@BUF): 5:25/5:40/5:55 PM = 23:25/23:40/23:55 UTC.
+    - cron: '25,40 23 26 11 *'
+    - cron: '55 23 26 11 *'
+    # Fri Nov 27 2:00 PM CT (DEN@PIT): 12:05/12:20/12:35 PM = 18:05/18:20/18:35 UTC.
+    - cron: '5,20 18 27 11 *'
+    - cron: '35 18 27 11 *'
+    # Fri Dec 25 noon CT (GB@CHI): 10:05/10:20/10:35 AM = 16:05/16:20/16:35 UTC.
+    - cron: '5,20 16 25 12 *'
+    - cron: '35 16 25 12 *'
+    # Fri Dec 25 3:30 PM CT (BUF@DEN): 1:35/1:50/2:05 PM = 19:35/19:50 and 20:05 UTC.
+    - cron: '35,50 19 25 12 *'
+    - cron: '5 20 25 12 *'
+    # Fri Dec 25 7:15 PM CT (LAR@SEA): 5:20/5:35/5:50 PM = 23:20/23:35/23:50 UTC.
+    - cron: '20,35 23 25 12 *'
+    - cron: '50 23 25 12 *'
+    # Sat Dec 26 3:30 PM CT flex: 1:35/1:50/2:05 PM = 19:35/19:50 and 20:05 UTC.
+    - cron: '35,50 19 26 12 *'
+    - cron: '5 20 26 12 *'
+    # Sat Dec 26 7:00 PM CT flex: 5:05/5:20/5:35 PM = 23:05/23:20/23:35 UTC.
+    - cron: '5,20 23 26 12 *'
+    - cron: '35 23 26 12 *'
+    # Sat Dec 19 4:00 PM CT (SEA@PHI): 2:05/2:20/2:35 PM = 20:05/20:20/20:35 UTC.
+    - cron: '5,20 20 19 12 *'
+    - cron: '35 20 19 12 *'
+    # Sat Dec 19 7:20 PM CT (CHI@BUF): 5:25/5:40/5:55 PM = 23:25/23:40/23:55 UTC.
+    - cron: '25,40 23 19 12 *'
+    - cron: '55 23 19 12 *'
 permissions:
   contents: write
 concurrency:
@@ -69,7 +142,7 @@ jobs:
               exit 0
             fi
           fi
-          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" == "17 17 * * *" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" && ( "${{ github.event.schedule }}" == "17 22 * * *" || "${{ github.event.schedule }}" == "17 23 * * *" ) ]]; then
             if [[ "$(TZ=America/Chicago date +%H)" != "17" ]]; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
@@ -80,7 +153,8 @@ jobs:
               exit 0
             fi
           fi
-          if [[ "${{ github.event_name }}" == "schedule" && ( "${{ github.event.schedule }}" == "7,37 * * * *" || "${{ github.event.schedule }}" == "43,51 17 * * 1,4" ) ]]; then
+          # Every other UTC schedule is a pre-kick tick or the twice-hourly net.
+          if [[ "${{ github.event_name }}" == "schedule" && "${{ github.event.schedule }}" != "17 22 * * *" && "${{ github.event.schedule }}" != "17 23 * * *" && "${{ github.event.schedule }}" != "30 0,1,2 * * 2" ]]; then
             if ! python -m scripts.check_pregame_forecast_window && ! python -m scripts.stale_forecast_recovery; then
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
