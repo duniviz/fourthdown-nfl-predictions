@@ -101,8 +101,19 @@ function scoreboardStatus(state){
  });
  async function loadForecasts(){
   try{
-   const r=await fetch('data/live-v2.json?t='+Date.now(),{cache:'no-store'});
-   if(r.ok){const data=await r.json();forecasts=Array.isArray(data.games)?data.games:[];}
+   const get=async path=>{try{const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});return r.ok?await r.json():{};}catch{return {};}};
+   const [live,locked]=await Promise.all([get('data/live-v2.json'),get('data/game-official-pregame-locks.json')]);
+   forecasts=Array.isArray(live.games)?live.games.slice():[];
+   const ids=new Set(forecasts.map(g=>String(g.game_id||'')));
+   for(const row of Array.isArray(locked.records)?locked.records:[]){
+    if(Number(row.week)!==Number(live.week)||ids.has(String(row.game_id||'')))continue;
+    const kickoff=Date.parse(row.kickoff_utc),captured=Date.parse(row.captured_at_utc||row.forecast_at_utc);
+    if(!Number.isFinite(kickoff)||!Number.isFinite(captured)||captured>=kickoff)continue;
+    if(!n(row.projected_home_score)||!n(row.projected_away_score))continue;
+    forecasts.push({game_id:row.game_id,week:row.week,home:row.home,away:row.away,kickoff_utc:row.kickoff_utc,
+     projected_home_score:Number(row.projected_home_score),projected_away_score:Number(row.projected_away_score)});
+    ids.add(String(row.game_id));
+   }
   }catch(_){}
   render();
  }

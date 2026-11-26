@@ -49,12 +49,14 @@ const assert = require('node:assert/strict');
     });
     await page.waitForFunction(() => document.querySelector('#fd-desk-games') && document.querySelector('#fd-desk-edges'));
     const nav = page.locator('.fd2-links');
-    assert.match(await nav.innerText(), /Edges/);
+    assert.doesNotMatch(await nav.innerText(), /Edges|More/);
     assert.match(await nav.innerText(), /Games/);
     assert.match(await nav.innerText(), /Props/);
     assert.match(await nav.innerText(), /Results/);
-    assert.match(await nav.evaluate(node => node.textContent), /Model Lab/);
-    assert.match(await nav.evaluate(node => node.textContent), /How to read/);
+    const toolsNav = page.locator('.fd2-tools');
+    assert.match(await toolsNav.innerText(), /Model Lab/);
+    assert.match(await toolsNav.innerText(), /Pipeline Health/);
+    assert.match(await toolsNav.innerText(), /How to read/);
     if (width === 400) {
       assert.equal(await nav.evaluate(node => getComputedStyle(node).display), 'flex', 'mobile navigation should be in the header');
       assert.equal(await page.locator('.fd2-bottom').evaluate(node => getComputedStyle(node).display), 'none', 'fixed bottom navigation should be hidden');

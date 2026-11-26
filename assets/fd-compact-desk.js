@@ -45,7 +45,7 @@
     if(scoreboard)games.append(scoreboard);
     layout.append(games);
     layout.append(edges);
-    const more=details('fd-desk-more','More this week','Top picks · featured matchups · player differences');
+    const more=details('fd-desk-more','Picks & trends','Top picks · featured matchups · player differences');
     for(const selector of ['#fd-top-picks','#fd-opportunities','.hybrid-spot','#fd-watch','#confidence-pool','.fd-command']){
       const node=document.querySelector(selector);
       if(node&&!more.contains(node))more.append(node);

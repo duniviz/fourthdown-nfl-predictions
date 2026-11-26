@@ -4,12 +4,11 @@
   const file = () => location.pathname.split('/').pop() || 'index.html';
   const onHome = () => { const name = file(); return name === '' || name === 'index.html'; };
   const items = [
-    ['index.html', 'Edges'],
     ['index.html#fd-slate-pulse', 'Games'],
     ['bets.html', 'Props'],
     ['history.html', 'Results']
   ];
-  const more = [
+  const tools = [
     ['model-lab.html', 'Model Lab'],
     ['pipeline-health.html', 'Pipeline Health'],
     ['index.html#reading-guide', 'How to read']
@@ -19,25 +18,29 @@
     const home = name === '' || name === 'index.html';
     if (href.indexOf('#fd-slate-pulse') !== -1) return home && location.hash === '#fd-slate-pulse';
     if (href.indexOf('#scoreboard') !== -1) return home && location.hash === '#scoreboard';
+    if (href.indexOf('#reading-guide') !== -1) return home && location.hash === '#reading-guide';
     if (href === 'index.html') return home && location.hash !== '#scoreboard';
     return href.split('#')[0] === name;
   }
-  function moreCurrent() {
-    const name = file();
-    return name === 'model-lab.html' || name === 'pipeline-health.html';
-  }
   function link(href, label) {
     return '<a href="' + href + '"' + (current(href) ? ' aria-current="page"' : '') + '>' + label + '</a>';
-  }
-  function menu(className) {
-    const links = more.map(([href, label]) => '<a href="' + href + '"' + (current(href) ? ' aria-current="page"' : '') + '>' + label + '</a>').join('');
-    return '<details class="fd-more' + (moreCurrent() ? ' fd-more-here' : '') + '"' + '><summary' + (moreCurrent() ? ' aria-current="page"' : '') + '>More</summary><div class="' + className + '">' + links + '</div></details>';
   }
   function render() {
     if (document.querySelector('.fd2-header')) return;
     const header = document.createElement('header');
     header.className = 'fd2-header';
-    header.innerHTML = '<div class="fd2-shell"><a class="fd2-brand" href="index.html">FOURTH<b>DOWN</b><small>NFL PREDICTIONS</small></a><nav class="fd2-links" aria-label="Primary navigation">' + items.map(([href, label]) => link(href, label)).join('') + menu('fd-more-menu') + '</nav></div>';
+    header.innerHTML = '<div class="fd2-shell"><a class="fd2-brand" href="index.html">FOURTH<b>DOWN</b><small>NFL PREDICTIONS</small></a><nav class="fd2-links" aria-label="Primary navigation">' + items.map(([href, label]) => link(href, label)).join('') + '</nav></div>';
+    if (!document.getElementById('fd2-tools-style')) {
+      const style = document.createElement('style');
+      style.id = 'fd2-tools-style';
+      style.textContent = '.fd2-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:min(1380px,calc(100% - 48px));margin:8px auto 12px}.fd2-tools>a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border:1px solid #35536c;border-radius:10px;background:#101d2b;color:#dcebf4;text-decoration:none;font-size:12px;font-weight:800}.fd2-tools>a:hover,.fd2-tools>a:focus-visible{border-color:#ff9b69;color:#fff}.fd2-tools>a[aria-current="page"]{border-color:#b6d95e;background:#202d19;color:#d8ff81}@media(max-width:850px){.fd2-tools{width:auto;margin:8px 14px 12px;gap:7px}.fd2-tools>a{flex:1 1 auto;padding:8px 10px;min-height:40px}}';
+      document.head.append(style);
+    }
+    const toolsNav = document.createElement('nav');
+    toolsNav.className = 'fd2-tools';
+    toolsNav.setAttribute('aria-label', 'Labs and tools');
+    toolsNav.innerHTML = tools.map(([href, label]) => link(href, label)).join('');
+
     document.body.insertBefore(header, document.body.firstChild);
     const badge = document.getElementById('fd-freshness-badge');
     const shell = header.querySelector('.fd2-shell');
@@ -47,38 +50,9 @@
     const bottom = document.createElement('nav');
     bottom.className = 'fd2-bottom';
     bottom.setAttribute('aria-label', 'Mobile navigation');
-    bottom.innerHTML = items.map(([href, label]) => link(href, label)).join('') +
-      '<button type="button" class="fd2-bottom-more" aria-controls="fd2-bottom-menu" aria-expanded="false">More<span class="fd2-bottom-chevron" aria-hidden="true"></span></button>';
-    const bottomMenu = document.createElement('div');
-    bottomMenu.id = 'fd2-bottom-menu';
-    bottomMenu.className = 'fd2-bottom-menu';
-    bottomMenu.hidden = true;
-    bottomMenu.innerHTML = more.map(([href, label]) =>
-      '<a href="' + href + '"' + (current(href) ? ' aria-current="page"' : '') + '>' + label + '</a>'
-    ).join('');
-    document.body.append(bottom, bottomMenu);
-    const moreButton = bottom.querySelector('.fd2-bottom-more');
-    if (moreCurrent()) moreButton.setAttribute('aria-current', 'page');
-    const setMoreOpen = open => {
-      moreButton.setAttribute('aria-expanded', String(open));
-      bottomMenu.hidden = !open;
-    };
-    moreButton.addEventListener('click', event => {
-      event.stopPropagation();
-      setMoreOpen(moreButton.getAttribute('aria-expanded') !== 'true');
-    });
-    bottom.addEventListener('click', event => {
-      if (event.target.closest('a')) setMoreOpen(false);
-    });
-    bottomMenu.addEventListener('click', event => {
-      if (event.target.closest('a')) setMoreOpen(false);
-    });
-    document.addEventListener('click', event => {
-      if (!bottom.contains(event.target) && !bottomMenu.contains(event.target)) setMoreOpen(false);
-    });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') setMoreOpen(false);
-    });
+    bottom.innerHTML = items.map(([href, label]) => link(href, label)).join('');
+    document.body.append(bottom);
+    header.insertAdjacentElement('afterend', toolsNav);
     const hero = document.querySelector('.hero,.page-intro');
     if (hero) hero.classList.add('fd2-hero');
     if (onHome()) {
