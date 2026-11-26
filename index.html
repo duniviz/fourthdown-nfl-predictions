@@ -675,7 +675,15 @@ renderParlays();
  }
  function getProjection(g){
   const kickoff=new Date(g.date).getTime();
-  return forecasts.find(p=>canon(p.home)===canon(g.home.abbr)&&canon(p.away)===canon(g.away.abbr)&&Math.abs(new Date(p.kickoff_utc).getTime()-kickoff)<12*3600000);
+  const matches=p=>canon(p.home)===canon(g.home.abbr)&&canon(p.away)===canon(g.away.abbr)&&Math.abs(new Date(p.kickoff_utc).getTime()-kickoff)<12*3600000;
+  const current=forecasts.find(matches);
+  if(current)return current;
+  // Active forecast files drop games after kickoff. For an in-progress or
+  // completed matchup, restore only a history entry demonstrably published
+  // before kickoff so the pregame score remains visible without leakage.
+  if(!Number.isFinite(kickoff)||kickoff>Date.now())return null;
+  return archived.filter(p=>matches(p)&&Number.isFinite(Date.parse(p.published_at_utc))&&Date.parse(p.published_at_utc)<kickoff)
+   .sort((a,b)=>Date.parse(b.published_at_utc)-Date.parse(a.published_at_utc))[0]||null;
  }
 
  const hybridAvatar=x=>{const team=String(x.team||x.team_abbr||'').trim().toUpperCase();const aliases={'WSH':'WAS','JAX':'JAC','LA':'LAR'};const code=aliases[team]||team;const initials=String(x.player||'').split(/\\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase();const athlete=String(x.espn_athlete_id||x.espn_id||'').trim();const photo=/^\\d+$/.test(athlete)?'<img class="fd-player-headshot" loading="lazy" alt="'+esc(x.player||'Player')+'" src="https://a.espncdn.com/i/headshots/nfl/players/full/'+encodeURIComponent(athlete)+'.png" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="fd-team-fallback" hidden>'+esc(initials)+'</span>':(/^[A-Z]{2,3}$/.test(code)?'<img class="fd-team-fallback" loading="lazy" alt="'+esc(code)+' team logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/'+encodeURIComponent(code.toLowerCase())+'.png" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>'+esc(code)+'</span>':'<span>'+esc(initials)+'</span>');return '<div class="hybrid-avatar fd-team-avatar">'+photo+'</div>';};
