@@ -1,12 +1,12 @@
-"""Allow a full forecast refresh 80–150 minutes before a published kickoff."""
+"""Allow a full forecast refresh 50–60 minutes before a published kickoff."""
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from live.game_pregame_observations import dt
 
-MIN_MINUTES = 80
-MAX_MINUTES = 150
-FRESH_MINUTES = 45
+MIN_MINUTES = 50
+MAX_MINUTES = 60
+FRESH_MINUTES = 10
 
 
 def recently_refreshed(data, now):
