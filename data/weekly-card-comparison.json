@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-26T14:20:52.297330+00:00",
+  "generated_at_utc": "2026-11-26T14:35:11.848017+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -3826,6 +3826,50 @@
     }
   ],
   "game_shadow_comparisons": [
+    {
+      "season": 2026,
+      "week": 12,
+      "markets": [
+        {
+          "market": "game_margin_home",
+          "samples": 1,
+          "regular_mae": 6.58,
+          "shadow_mae": 6.13,
+          "details": [
+            {
+              "game_id": "2026_12_GB_LA",
+              "market": "game_margin_home",
+              "actual": 13.0,
+              "regular": 6.42,
+              "shadow": 6.87,
+              "regular_error": 6.58,
+              "shadow_error": 6.13,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-26T00:53:33.868781+00:00"
+            }
+          ]
+        },
+        {
+          "market": "game_total",
+          "samples": 1,
+          "regular_mae": 2.14,
+          "shadow_mae": 6.14,
+          "details": [
+            {
+              "game_id": "2026_12_GB_LA",
+              "market": "game_total",
+              "actual": 39.0,
+              "regular": 41.14,
+              "shadow": 45.14,
+              "regular_error": 2.14,
+              "shadow_error": 6.14,
+              "lock_status": "last_available",
+              "captured_at_utc": "2026-11-26T00:53:33.868781+00:00"
+            }
+          ]
+        }
+      ]
+    },
     {
       "season": 2026,
       "week": 11,
