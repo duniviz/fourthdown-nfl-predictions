@@ -26,11 +26,9 @@
     // Keep the most useful picks visible, with the full slate one tap away.
     const edges=details('fd-desk-edges','Best picks & edges','Top 5 picks · DraftKings comparisons');
     edges.classList.add('fd-desk-edges-fold');
-    edges.open=true;
+    edges.open=false;
     home.before(edges);
     edges.append(home);
-    const topPicks=document.getElementById('fd-top-picks');
-    if(topPicks)edges.append(topPicks);
     const layout=document.createElement('div');
     layout.id='fd-weekly-desk';
     layout.className='fd-weekly-desk';
@@ -47,8 +45,8 @@
     if(scoreboard)games.append(scoreboard);
     layout.append(games);
     layout.append(edges);
-    const more=details('fd-desk-more','More picks & matchups','Featured games · player trends · extra context');
-    for(const selector of ['#fd-opportunities','.hybrid-spot','#fd-watch','#confidence-pool','.fd-command']){
+    const more=details('fd-desk-more','More this week','Top picks · featured matchups · player differences');
+    for(const selector of ['#fd-top-picks','#fd-opportunities','.hybrid-spot','#fd-watch','#confidence-pool','.fd-command']){
       const node=document.querySelector(selector);
       if(node&&!more.contains(node))more.append(node);
     }
