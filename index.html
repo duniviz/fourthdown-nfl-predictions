@@ -928,8 +928,11 @@ async function fdOpenMatchup(g){
  const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No eligible player projections are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
  const market='<div class="fd-modal-section fd-line-history"><h3>DraftKings line movement</h3>'+window.FDMarketHistory.render(g,fdGameLineHistory,fdOpeningGameOdds,fdGameOdds,fdGameOddsObservedAt)+'</div>';
  const simGame=scoreProjection?simulationGames.find(s=>s.game_id===scoreProjection.game_id):null;
- const gameLineForPicks=scoreProjection?fdLatestPregameGameLine(scoreProjection):null;
- const topGamePicks=window.FDGameTopPicks?.render({game:g,projection:scoreProjection,gameLine:gameLineForPicks,gameSimulation:simGame,playerSimulations:simulationPlayers,players})||"";
+ let gameLineForPicks=null,topGamePicks='';
+ try{
+  gameLineForPicks=scoreProjection?fdLatestPregameGameLine(scoreProjection):null;
+  topGamePicks=window.FDGameTopPicks?.render({game:g,projection:scoreProjection,gameLine:gameLineForPicks,gameSimulation:simGame,playerSimulations:simulationPlayers,players})||'';
+ }catch(error){console.warn('Optional matchup top picks unavailable',error);}
  const insight=(!isFinal&&p)?(()=>{
    const metrics=Array.isArray(analysis.matchup_metrics)?analysis.matchup_metrics:[];
    const metric=(label,offKey,defKey)=>{const row=metrics.find(x=>x.label===label);return row&&row[offKey]&&row[defKey]?row:null;};
