@@ -12,7 +12,7 @@ require('../assets/dk-lines.js');
  assert.strictEqual(FDDraftKings.create(contract,[quote],now,[player]).find(player,kickoff).line,43.5);
  const rival={...player,player:'Alex Smith Jr.',player_id:'two',team:'CHI',opponent:'GB'};
  assert.strictEqual(FDDraftKings.create(contract,[quote],now,[player,rival]).find(player,kickoff),null);
- const milton={...player,player:'Joe Milton III',player_id:'milton',team:'PHI',opponent:'DAL'};
+ const milton={...player,player:'Joe Milton III',player_id:'milton',team:'PHI',opponent:'DAL',market_key:'player_pass_yds'};
  const miltonQuote={...quote,player:'Joe Milton III',home_team:'Dallas Cowboys',
    away_team:'Philadelphia Eagles',market_key:'player_pass_yds'};
  assert.strictEqual(FDDraftKings.create(contract,[miltonQuote],now,[milton]).find(milton,kickoff).line,43.5);
