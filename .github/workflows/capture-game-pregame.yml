@@ -8,82 +8,99 @@ on:
     workflows: [Publish weekly v2 forecasts, Publish count prop projections, Sunday preset game-day refresh]
     types: [completed]
   schedule:
-    # America/Chicago, so the same clock times hold in CST and CDT.
-    # Each kickoff has several off-peak ticks. The first tick that lands in
-    # the T-45 window refreshes DraftKings lines and waits until T-30 to lock.
-    # Later ticks are idempotent. GitHub dropped almost every every-10-minute
-    # tick on Nov 12-16, so these are slot-shaped instead of continuous.
-    # Thursday night, 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
-    - cron: '31,37,47 18 * * 4'
-      timezone: America/Chicago
-    - cron: '2,8 19 * * 4'
-      timezone: America/Chicago
-    # Saturday/Sunday early and international, 8:30 AM CT: 7:52, 8:02, 8:12, 8:22.
-    - cron: '52 7 * * 0,6'
-      timezone: America/Chicago
-    - cron: '2,12,22 8 * * 0,6'
-      timezone: America/Chicago
-    # Sunday 12:00 PM CT (1:00 PM ET): 11:22, 11:32, 11:42, 11:52.
-    - cron: '22,32,42,52 11 * * 0'
-      timezone: America/Chicago
-    # Sunday 3:05 PM CT (4:05 PM ET) and 3:25 PM CT (4:25 PM ET).
-    - cron: '27,37,47,57 14 * * 0'
-      timezone: America/Chicago
-    - cron: '7,17 15 * * 0'
-      timezone: America/Chicago
-    # Sunday night, 7:20 PM CT: 6:42, 6:52, 7:02, 7:12.
-    - cron: '42,52 18 * * 0'
-      timezone: America/Chicago
-    - cron: '2,12 19 * * 0'
-      timezone: America/Chicago
-    # Monday night, 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
-    - cron: '31,37,47 18 * * 1'
-      timezone: America/Chicago
-    - cron: '2,8 19 * * 1'
-      timezone: America/Chicago
-    # Holiday 2026 date-specific ticks (month+day, DOW *). GitHub ORs DOM and
-    # DOW when both are restricted, so these stay pinned to the calendar date.
-    # The guard no-ops when no kickoff is in the T-45 window.
-    # Wednesday, Nov 25, GB@LAR 7:00 PM CT: 6:17, 6:27, 6:37, 6:47.
-    - cron: '17,27,37,47 18 25 11 *'
-      timezone: America/Chicago
-    # Thanksgiving Thursday, Nov 26, CHI@DET noon CT: 11:17, 11:27, 11:37, 11:47.
-    - cron: '17,27,37,47 11 26 11 *'
-      timezone: America/Chicago
-    # Thanksgiving Thursday, Nov 26, PHI@DAL 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
-    - cron: '47,57 14 26 11 *'
-      timezone: America/Chicago
-    - cron: '7,17 15 26 11 *'
-      timezone: America/Chicago
-    # Thanksgiving night, Nov 26, KC@BUF 7:20 PM CT uses the Thursday-night ticks.
-    # Friday, Nov 27, DEN@PIT 2:00 PM CT: 1:17, 1:27, 1:37, 1:47.
-    - cron: '17,27,37,47 13 27 11 *'
-      timezone: America/Chicago
-    # Christmas Eve, Dec 24, HOU@PHI 7:15 PM CT uses the Thursday-night ticks.
-    # Christmas Friday, Dec 25, GB@CHI noon CT: 11:17, 11:27, 11:37, 11:47.
-    - cron: '17,27,37,47 11 25 12 *'
-      timezone: America/Chicago
-    # Christmas Friday, Dec 25, BUF@DEN 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
-    - cron: '47,57 14 25 12 *'
-      timezone: America/Chicago
-    - cron: '7,17 15 25 12 *'
-      timezone: America/Chicago
-    # Christmas Friday, Dec 25, LAR@SEA 7:15 PM CT: 6:31, 6:37, 6:47, 7:02, 7:08.
-    - cron: '31,37,47 18 25 12 *'
-      timezone: America/Chicago
-    - cron: '2,8 19 25 12 *'
-      timezone: America/Chicago
-    # Saturday, Dec 26, Week 16 flex (matchups TBD) 3:30 PM CT: 2:47, 2:57, 3:07, 3:17.
-    - cron: '47,57 14 26 12 *'
-      timezone: America/Chicago
-    - cron: '7,17 15 26 12 *'
-      timezone: America/Chicago
-    # Saturday, Dec 26, Week 16 flex (matchups TBD) 7:00 PM CT: 6:17, 6:27, 6:37, 6:47.
-    - cron: '17,27,37,47 18 26 12 *'
-      timezone: America/Chicago
-    # Any other kickoff still gets an hourly look from 8 AM through 11 PM CT.
-    - cron: '22 8-23 * * *'
-      timezone: America/Chicago
+    # UTC crons. GitHub's schedule timezone key is optional; on Nov 25 the
+    # Chicago-labeled ticks fired as UTC (08:22 UTC landed near 2:22 AM CT),
+    # so the key is omitted. Comments are America/Chicago. CST is UTC-6
+    # (months 1, 2, 11, 12; clocks fell back Nov 1 2026) and CDT is UTC-5
+    # (months 9, 10). Evening CT games roll onto the next UTC date.
+    # Each kickoff has its own entries at T-43/-38/-33 (inside T-45..T-30,
+    # where the run waits until T-30 to lock) and T-18/-8 (still before T-5).
+    # A dropped entry leaves the other ticks. DOM and DOW are never both set,
+    # because GitHub ORs those two fields. The guard no-ops outside T-45.
+    # Thursday 7:15 PM CT, CST. Lock 6:32/6:37/6:42 PM = 00:32/00:37/00:42 UTC Friday; late 6:57 PM = 00:57 UTC Friday; 7:07 PM = 01:07 UTC Friday.
+    - cron: '32,37,42 0 * 1,2,11,12 5'
+    - cron: '57 0 * 1,2,11,12 5'
+    - cron: '7 1 * 1,2,11,12 5'
+    # Thursday 7:15 PM CT, CDT. Lock 6:32/6:37/6:42 PM = 23:32/23:37/23:42 UTC Thursday; late 6:57 PM = 23:57 UTC Thursday; 7:07 PM = 00:07 UTC Friday.
+    - cron: '32,37,42 23 * 9,10 4'
+    - cron: '57 23 * 9,10 4'
+    - cron: '7 0 * 9,10 5'
+    # Saturday/Sunday 8:30 AM CT, CST. Lock 7:47/7:52/7:57 AM = 13:47/13:52/13:57 UTC; late 8:12/8:22 AM = 14:12/14:22 UTC.
+    - cron: '47,52,57 13 * 1,2,11,12 0,6'
+    - cron: '12,22 14 * 1,2,11,12 0,6'
+    # Saturday/Sunday 8:30 AM CT, CDT. Lock 7:47/7:52/7:57 AM = 12:47/12:52/12:57 UTC; late 8:12/8:22 AM = 13:12/13:22 UTC.
+    - cron: '47,52,57 12 * 9,10 0,6'
+    - cron: '12,22 13 * 9,10 0,6'
+    # Sunday noon CT, CST. Lock 11:17/11:22/11:27 AM = 17:17/17:22/17:27 UTC; late 11:42/11:52 AM = 17:42/17:52 UTC.
+    - cron: '17,22,27 17 * 1,2,11,12 0'
+    - cron: '42,52 17 * 1,2,11,12 0'
+    # Sunday noon CT, CDT. Lock 11:17/11:22/11:27 AM = 16:17/16:22/16:27 UTC; late 11:42/11:52 AM = 16:42/16:52 UTC.
+    - cron: '17,22,27 16 * 9,10 0'
+    - cron: '42,52 16 * 9,10 0'
+    # Sunday 3:05 PM CT, CST. Lock 2:22/2:27/2:32 PM = 20:22/20:27/20:32 UTC; late 2:47/2:57 PM = 20:47/20:57 UTC.
+    - cron: '22,27,32 20 * 1,2,11,12 0'
+    - cron: '47,57 20 * 1,2,11,12 0'
+    # Sunday 3:25 PM CT, CST. Lock 2:42/2:52 PM = 20:42/20:52 UTC (2:47 PM is the 3:05 PM late tick); late 3:07/3:17 PM = 21:07/21:17 UTC.
+    - cron: '42,52 20 * 1,2,11,12 0'
+    - cron: '7,17 21 * 1,2,11,12 0'
+    # Sunday 3:05 PM CT, CDT. Lock 2:22/2:27/2:32 PM = 19:22/19:27/19:32 UTC; late 2:47/2:57 PM = 19:47/19:57 UTC.
+    - cron: '22,27,32 19 * 9,10 0'
+    - cron: '47,57 19 * 9,10 0'
+    # Sunday 3:25 PM CT, CDT. Lock 2:42/2:52 PM = 19:42/19:52 UTC (2:47 PM is the 3:05 PM late tick); late 3:07/3:17 PM = 20:07/20:17 UTC.
+    - cron: '42,52 19 * 9,10 0'
+    - cron: '7,17 20 * 9,10 0'
+    # Sunday 7:20 PM CT, CST. Lock 6:37/6:42/6:47 PM = 00:37/00:42/00:47 UTC Monday; late 7:02/7:12 PM = 01:02/01:12 UTC Monday.
+    - cron: '37,42,47 0 * 1,2,11,12 1'
+    - cron: '2,12 1 * 1,2,11,12 1'
+    # Sunday 7:20 PM CT, CDT. Lock 6:37/6:42/6:47 PM = 23:37/23:42/23:47 UTC Sunday; late 7:02/7:12 PM = 00:02/00:12 UTC Monday.
+    - cron: '37,42,47 23 * 9,10 0'
+    - cron: '2,12 0 * 9,10 1'
+    # Monday 7:15 PM CT, CST. Lock 6:32/6:37/6:42 PM = 00:32/00:37/00:42 UTC Tuesday; late 6:57 PM = 00:57 UTC Tuesday; 7:07 PM = 01:07 UTC Tuesday.
+    - cron: '32,37,42 0 * 1,2,11,12 2'
+    - cron: '57 0 * 1,2,11,12 2'
+    - cron: '7 1 * 1,2,11,12 2'
+    # Monday 7:15 PM CT, CDT. Lock 6:32/6:37/6:42 PM = 23:32/23:37/23:42 UTC Monday; late 6:57 PM = 23:57 UTC Monday; 7:07 PM = 00:07 UTC Tuesday.
+    - cron: '32,37,42 23 * 9,10 1'
+    - cron: '57 23 * 9,10 1'
+    - cron: '7 0 * 9,10 2'
+    # Holiday dates are CST. Day-of-week stays * so the calendar date is not ORed away.
+    # Thu Nov 26 noon CT (CHI@DET). Lock 11:17/11:22/11:27 = 17:17/17:22/17:27 UTC; late 11:42/11:52 = 17:42/17:52 UTC.
+    - cron: '17,22,27 17 26 11 *'
+    - cron: '42,52 17 26 11 *'
+    # Thu Nov 26 3:30 PM CT (PHI@DAL). Lock 2:47/2:52/2:57 = 20:47/20:52/20:57 UTC; late 3:12/3:22 = 21:12/21:22 UTC.
+    - cron: '47,52,57 20 26 11 *'
+    - cron: '12,22 21 26 11 *'
+    # Thu Nov 26 7:20 PM CT (KC@BUF). Lock 6:37/6:42/6:47 PM = 00:37/00:42/00:47 UTC Nov 27; late 7:02/7:12 PM = 01:02/01:12 UTC Nov 27.
+    - cron: '37,42,47 0 27 11 *'
+    - cron: '2,12 1 27 11 *'
+    # Fri Nov 27 2:00 PM CT (DEN@PIT). Lock 1:17/1:22/1:27 = 19:17/19:22/19:27 UTC; late 1:42/1:52 = 19:42/19:52 UTC.
+    - cron: '17,22,27 19 27 11 *'
+    - cron: '42,52 19 27 11 *'
+    # Thu Dec 24 7:15 PM CT (HOU@PHI) uses the Thursday CST ticks (00:32 UTC Dec 25 through 01:07 UTC).
+    # Fri Dec 25 noon CT (GB@CHI). Lock 11:17/11:22/11:27 = 17:17/17:22/17:27 UTC; late 11:42/11:52 = 17:42/17:52 UTC.
+    - cron: '17,22,27 17 25 12 *'
+    - cron: '42,52 17 25 12 *'
+    # Fri Dec 25 3:30 PM CT (BUF@DEN). Lock 2:47/2:52/2:57 = 20:47/20:52/20:57 UTC; late 3:12/3:22 = 21:12/21:22 UTC.
+    - cron: '47,52,57 20 25 12 *'
+    - cron: '12,22 21 25 12 *'
+    # Fri Dec 25 7:15 PM CT (LAR@SEA). Lock 6:32/6:37/6:42 PM = 00:32/00:37/00:42 UTC Dec 26; late 6:57 PM = 00:57 UTC Dec 26; 7:07 PM = 01:07 UTC Dec 26.
+    - cron: '32,37,42 0 26 12 *'
+    - cron: '57 0 26 12 *'
+    - cron: '7 1 26 12 *'
+    # Sat Dec 26 3:30 PM CT flex. Lock 2:47/2:52/2:57 = 20:47/20:52/20:57 UTC; late 3:12/3:22 = 21:12/21:22 UTC.
+    - cron: '47,52,57 20 26 12 *'
+    - cron: '12,22 21 26 12 *'
+    # Sat Dec 26 7:00 PM CT flex. Lock 6:17/6:22/6:27 PM = 00:17/00:22/00:27 UTC Dec 27; late 6:42/6:52 PM = 00:42/00:52 UTC Dec 27.
+    - cron: '17,22,27 0 27 12 *'
+    - cron: '42,52 0 27 12 *'
+    # Sat Dec 19 4:00 PM CT (SEA@PHI). Lock 3:17/3:22/3:27 = 21:17/21:22/21:27 UTC; late 3:42/3:52 = 21:42/21:52 UTC.
+    - cron: '17,22,27 21 19 12 *'
+    - cron: '42,52 21 19 12 *'
+    # Sat Dec 19 7:20 PM CT (CHI@BUF). Lock 6:37/6:42/6:47 PM = 00:37/00:42/00:47 UTC Dec 20; late 7:02/7:12 PM = 01:02/01:12 UTC Dec 20.
+    - cron: '37,42,47 0 20 12 *'
+    - cron: '2,12 1 20 12 *'
+    # Hourly :22 from 8 AM through 11 PM CT. CST is 14:22–05:22 UTC; CDT is 13:22–04:22 UTC.
+    - cron: '22 0-5,13-23 * * *'
 permissions:
   contents: write
 jobs:
