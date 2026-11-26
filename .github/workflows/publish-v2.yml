@@ -11,8 +11,11 @@ name: Publish weekly v2 forecasts
       - 'data/verified-starters.json'
       - 'data/qb-replacement-trial.json'
   schedule:
-    # Check all kickoff dates every five minutes; the guard runs forecasts only 50–60 minutes before kickoff.
+    # Frequent dynamic check for every NFL kickoff; the guard only launches game refreshes 50–60 minutes ahead.
     - cron: '*/5 * * * *'
+    # Daily non-game-day forecast refresh, Central Time across DST.
+    - cron: '17 23 * * *'
+    - cron: '17 22 * * *'
 permissions:
   contents: write
 concurrency:
