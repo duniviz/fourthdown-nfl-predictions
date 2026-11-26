@@ -13,9 +13,6 @@ on:
       timezone: America/Chicago
     - cron: '10,40 17 * * *'
       timezone: America/Chicago
-    # Preserve hourly player-line refreshes for non-Sunday game days; Sunday uses the preset pipeline below.
-    - cron: '37 * * * 1,4,5,6'
-      timezone: America/Chicago
   workflow_dispatch:
   workflow_call:
 permissions:

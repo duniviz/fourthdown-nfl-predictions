@@ -72,22 +72,20 @@ window.FDDraftKings = (() => {
         if (!uniqueRoster.has(key)) uniqueRoster.set(key, r);
       }
       let roster = [...uniqueRoster.values()];
-      if (p.player_id != null) {
-        const exactId = roster.filter(r => r.player_id != null && String(r.player_id) === String(p.player_id));
-        if (exactId.length) roster = exactId;
-      }
+      const quoteSuffix = suffix(quote.player);
+      if (requestedSuffix && quoteSuffix && requestedSuffix !== quoteSuffix) return null;
+      // Resolve a shared name by suffix before considering projection-feed IDs.
+      // Provider IDs can be from a different namespace and must not hide a
+      // second roster entry with the same normalized name.
       if (roster.length > 1) {
-        const quoteSuffix = suffix(quote.player);
         const exact = roster.filter(r =>
-          quoteSuffix && suffix(r.player || r.player_name) === quoteSuffix &&
-          (!requestedSuffix || requestedSuffix === quoteSuffix));
+          quoteSuffix && suffix(r.player || r.player_name) === quoteSuffix);
         if (exact.length !== 1) return null;
         roster = exact;
       }
       if (roster.length === 1) {
-        const rosterPlayer = roster[0];
-        const rosterSuffix = suffix(rosterPlayer.player || rosterPlayer.player_name);
-        if (rosterSuffix && suffix(quote.player) && rosterSuffix !== suffix(quote.player)) return null;
+        const rosterSuffix = suffix(roster[0].player || roster[0].player_name);
+        if (quoteSuffix && rosterSuffix && quoteSuffix !== rosterSuffix) return null;
       }
       return quote;
     };

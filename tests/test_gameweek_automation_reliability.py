@@ -44,10 +44,10 @@ class CountSourceReliabilityTests(unittest.TestCase):
         self.assertIn('reRunWorkflowFailedJobs',workflow)
         self.assertIn('const title =',workflow)
 
-    def test_backstop_wakes_on_failed_sunday_preset(self):
-        workflow=(ROOT/'.github/workflows/sunday-preset-backstop.yml').read_text()
-        self.assertIn('Sunday preset game-day refresh]',workflow)
-        self.assertIn('result.reason',workflow)
+    def test_pregame_cycle_is_the_automatic_game_day_retry(self):
+        capture=(ROOT/'.github/workflows/capture-game-pregame.yml').read_text()
+        self.assertIn("cron: '*/5 * * * *'",capture)
+        self.assertIn('python -m live.pregame_cycle',capture)
 
 if __name__=='__main__':
     unittest.main()

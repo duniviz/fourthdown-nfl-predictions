@@ -77,6 +77,32 @@ def backup_needed(games, keys, stamp):
                (not (quote:=index.find(p,targets[p["game_id"]])) or not recently_verified(quote[0]))
                for src in ("player-research","count-projections") for p in read(src,{}).get("players",[]))
 
+def fresh_dk_totals(games, keys, stamp):
+    """Require a real DraftKings total quote captured within an hour of kickoff."""
+    targets={key for key in keys if not key.startswith("evening:")}
+    if not targets:
+        return True
+    odds=read("dk-game-odds",{}).get("games",[])
+    for kickoff_key in targets:
+        kickoff=observations.dt(kickoff_key)
+        if not kickoff:
+            return False
+        game=next((g for g in games if observations.dt(g.get("kickoff_utc"))==kickoff),None)
+        if not game:
+            return False
+        match=next((row for row in odds if row.get("bookmaker")=="draftkings"
+                    and row.get("away")==game.get("away") and row.get("home")==game.get("home")
+                    and observations.dt(row.get("commence_time"))==kickoff
+                    and row.get("total") is not None),None)
+        if not match:
+            return False
+        observed=observations.dt(match.get("total_observed_at_utc") or match.get("observed_at_utc")
+                                 or match.get("total_last_verified_at_utc") or match.get("updated_at_utc"))
+        if not observed or not kickoff-timedelta(hours=1)<=observed<=stamp:
+            return False
+    return True
+
+
 def refresh(keys,games,stamp):
     state=read("dk-slate-refreshes",{"slates":[]})
     ledger=read("dk-refresh-ledger",{"refreshes":[]})
@@ -88,18 +114,42 @@ def refresh(keys,games,stamp):
     for key in keys:
         progress.setdefault(key,{})
 
+    attempted=False
+
     def run_primary(category,cmd,artifact):
+        nonlocal attempted
         if all(category_done(state,key,category) for key in keys):
+            return
+        if category=="game_odds" and fresh_dk_totals(games,keys,now()):
+            for key in keys:
+                progress[key][category]={"status":"request_completed","at_utc":now().isoformat(),
+                                         "attempts":progress.get(key,{}).get(category,{}).get("attempts",[]),
+                                         "verified_from_existing_quote":True}
+            save("dk-slate-refreshes",state)
+            publish("Confirm fresh DraftKings totals for pregame slate")
+            return
+        prior_attempts=max((progress.get(key,{}).get(category,{}).get("attempts",[]) for key in keys),
+                           key=len,default=[])
+        last_attempt=observations.dt(prior_attempts[-1]) if prior_attempts else None
+        if len(prior_attempts)>=2:
+            print(f"::warning::{category} reached its two-attempt limit for this kickoff; preserving available data")
+            return
+        if last_attempt and now()-last_attempt<timedelta(minutes=10):
+            print(f"{category} retry is cooling down; it will be checked again in ten minutes")
             return
         entries=[t for t in ledger.get("refreshes",[]) if t.startswith(month)]
         if len(entries)>=125:
             print(f"::warning::Primary request budget exhausted before {category}; slate remains incomplete")
             return
+        attempted=True
+        attempt_at=now().isoformat()
+        for key in keys:
+            previous=progress[key].get(category,{})
+            progress[key][category]={"status":"pending","attempts":[*previous.get("attempts",[]),attempt_at]}
         entries.append(now().astimezone(CENTRAL).isoformat())
         ledger["refreshes"]=entries
         save("dk-refresh-ledger",ledger)
-        # Reserve the credit before making the provider request, then commit
-        # the reservation to prevent duplicate spends after a runner restart.
+        # Persist the attempt before spending a provider request, so retries survive runner restarts.
         publish("Reserve pregame odds request")
         prior_artifact=artifact_time(*artifact)
         try:
@@ -111,17 +161,20 @@ def refresh(keys,games,stamp):
         except OSError as exc:
             print(f"::warning::{category} refresh could not start ({type(exc).__name__})")
             succeeded=False
+        if succeeded and category=="game_odds" and not fresh_dk_totals(games,keys,finished_at):
+            print("::warning::DraftKings refreshed, but one or more kickoff groups still lack a current total line; one retry remains")
+            succeeded=False
         if succeeded:
             for key in keys:
-                progress[key][category]={"status":"request_completed","at_utc":now().isoformat()}
+                progress[key][category]={"status":"request_completed","at_utc":now().isoformat(),
+                                         "attempts":progress[key][category].get("attempts",[])}
             save("dk-slate-refreshes",state)
             publish(f"Save pregame {category} refresh")
         else:
-            print(f"::warning::{category} primary refresh failed or produced no new verified artifact; it will retry before kickoff")
-
+            print(f"::warning::{category} refresh failed verification; saved data will be retried once after ten minutes")
     run_primary("game_odds",["-m","live.dk_game_refresh"],("dk-game-odds","snapshot_date_utc"))
     run_primary("player_props",["-m","tools.refresh_parlayapi_odds","--props-only"],("dk-odds","generated_at_utc"))
-    if backup_needed(games,keys,now()):
+    if attempted and backup_needed(games,keys,now()):
         try:
             subprocess.run([sys.executable,"-m","tools.refresh_sportsgameodds_backup"],check=True)
         except (OSError,subprocess.CalledProcessError) as exc:
@@ -164,9 +217,14 @@ def validate_due_locks(games, stamp):
             continue
         row=by_game.get((str(game.get("game_id")),kickoff))
         forecast=observations.dt(row.get("forecast_at_utc")) if row else None
-        fresh=bool(forecast and kickoff-(LOCK_LEAD+timedelta(minutes=90))<=forecast<kickoff)
-        if not row or row.get("lock_status") not in locks.FINAL_STATUSES or not fresh:
-            missing.append(f"{game.get('away')} @ {game.get('home')} ({game.get('game_id')})")
+        dk_at=observations.dt(row.get("dk_at_utc")) if row else None
+        fresh_forecast=bool(forecast and kickoff-timedelta(hours=1)<=forecast<=stamp and forecast<kickoff)
+        fresh_total=bool(row and row.get("dk_total") is not None and dk_at
+                         and kickoff-timedelta(hours=1)<=dk_at<=stamp and dk_at<kickoff)
+        if (not row or row.get("lock_status") not in locks.FINAL_STATUSES
+                or not fresh_forecast or not fresh_total):
+            missing.append(f"{game.get('away')} @ {game.get('home')} ({game.get('game_id')})"
+                           f" [forecast fresh={fresh_forecast}, DK total fresh={fresh_total}]")
     if missing:
         raise RuntimeError("Pregame save incomplete: no fresh final lock by T-30 for "+", ".join(missing))
     if any(row.get("lock_status")=="forecast_only" for row in saved):
