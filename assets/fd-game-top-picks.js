@@ -2,6 +2,7 @@
  'use strict';
  const number=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))?Number(x):null;
  const pct=x=>number(x)!==null&&Number(x)>=0&&Number(x)<=100?Number(x):null;
+ const norm=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
  const canon=x=>({JAX:'JAC',LAR:'LA',WSH:'WAS'}[String(x||'').toUpperCase()]||String(x||'').toUpperCase());
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const fmt=x=>number(x)===null?'—':Number(x).toFixed(1);
@@ -47,7 +48,7 @@
    const team=canon(x.team);
    if(team!==home&&team!==away)continue;
    const sim=simulations.find(s=>String(s.game_id)===String(x.game_id)&&String(s.stat_key)===market&&
-    (String(s.player_id)===String(x.player_id)||String(s.player)===String(x.player)));
+    ((x.player_id&&s.player_id&&String(s.player_id)===String(x.player_id))||norm(s.player)===norm(x.player)));
    if(!sim)continue;
    const rates=sideRates(sim,Number(x.dk_line));
    if(rates.over===null||rates.under===null)continue;
