@@ -612,64 +612,64 @@
         "players": [
           {
             "detail": "out",
+            "player": "DJ Wonnum",
+            "position": "LB",
+            "status": "Out",
+            "team": "DET"
+          },
+          {
+            "detail": "out",
             "player": "Ennis Rakestraw Jr.",
             "position": "CB",
             "status": "Out",
             "team": "DET"
           },
           {
-            "detail": "questionable",
-            "player": "Chuck Clark",
-            "position": "S",
-            "status": "Questionable",
-            "team": "DET"
-          },
-          {
-            "detail": "questionable",
-            "player": "DJ Wonnum",
+            "detail": "out",
+            "player": "Tyrus Wheat",
             "position": "LB",
-            "status": "Questionable",
+            "status": "Out",
             "team": "DET"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Skyler Gill-Howard",
-            "position": "DT",
-            "status": "Injured Reserve",
-            "team": "DET"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Cade Mays",
-            "position": "C",
-            "status": "Injured Reserve",
-            "team": "DET"
-          },
-          {
-            "detail": "questionable",
-            "player": "D'Marco Jackson",
-            "position": "LB",
-            "status": "Questionable",
-            "team": "CHI"
-          },
-          {
-            "detail": "questionable",
-            "player": "Tyrique Stevenson Sr.",
-            "position": "CB",
-            "status": "Questionable",
-            "team": "CHI"
           },
           {
             "detail": "out",
-            "player": "Kyler Gordon",
+            "player": "Chuck Clark",
+            "position": "S",
+            "status": "Out",
+            "team": "DET"
+          },
+          {
+            "detail": "out",
+            "player": "Keith Abney II",
+            "position": "CB",
+            "status": "Out",
+            "team": "DET"
+          },
+          {
+            "detail": "out",
+            "player": "Isaac Yiadom",
             "position": "CB",
             "status": "Out",
             "team": "CHI"
           },
           {
             "detail": "out",
-            "player": "Roschon Johnson",
-            "position": "RB",
+            "player": "Case Keenum",
+            "position": "QB",
+            "status": "Out",
+            "team": "CHI"
+          },
+          {
+            "detail": "out",
+            "player": "Jayden Loving",
+            "position": "DT",
+            "status": "Out",
+            "team": "CHI"
+          },
+          {
+            "detail": "out",
+            "player": "Jordan McFadden",
+            "position": "G",
             "status": "Out",
             "team": "CHI"
           },
@@ -791,7 +791,12 @@
       },
       "quarterbacks": {
         "CHI": {
-          "confirmed_out": [],
+          "confirmed_out": [
+            {
+              "player": "Case Keenum",
+              "status": "Out"
+            }
+          ],
           "expected_starter": null,
           "source": "ESPN game summary",
           "starter_verified": false,
@@ -873,15 +878,15 @@
           },
           {
             "detail": "out",
-            "player": "Taylor Rapp",
-            "position": "S",
+            "player": "Sai'vion Jones",
+            "position": "DE",
             "status": "Out",
             "team": "DEN"
           },
           {
             "detail": "out",
-            "player": "Sai'vion Jones",
-            "position": "DE",
+            "player": "Taylor Rapp",
+            "position": "S",
             "status": "Out",
             "team": "DEN"
           },
@@ -1370,6 +1375,13 @@
         "players": [
           {
             "detail": "questionable",
+            "player": "Akheem Mesidor",
+            "position": "LB",
+            "status": "Questionable",
+            "team": "LAC"
+          },
+          {
+            "detail": "questionable",
             "player": "Tuli Tuipulotu",
             "position": "LB",
             "status": "Questionable",
@@ -1398,10 +1410,10 @@
           },
           {
             "detail": "questionable",
-            "player": "Daiyan Henley",
-            "position": "LB",
+            "player": "Walter Rouse",
+            "position": "OL",
             "status": "Questionable",
-            "team": "LAC"
+            "team": "NE"
           },
           {
             "detail": "questionable",
@@ -1429,13 +1441,6 @@
             "player": "A.J. Brown",
             "position": "WR",
             "status": "Doubtful",
-            "team": "NE"
-          },
-          {
-            "detail": "questionable",
-            "player": "Walter Rouse",
-            "position": "OL",
-            "status": "Questionable",
             "team": "NE"
           }
         ],
@@ -3102,6 +3107,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-26T03:32:22Z",
+  "generated_at_utc": "2026-11-26T16:50:12Z",
   "schema_version": 1
 }
