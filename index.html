@@ -1823,9 +1823,10 @@ function fdSavedLock(g){
   try{
    // Schedule selection is independent from forecasts and DraftKings lines.
    // ESPN's site scoreboard rejects a dates=YYYYMMDD-YYYYMMDD range with HTTP 400.
-   // Ask for each Thursday-through-Monday calendar day, then keep only games in the slate.
+   // Ask for the Wednesday before the Thursday-Monday slate too, then keep current-slate games and that special early game.
    const slate=window.fdScheduleWindow.get(new Date());
    const espnBase='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+   const season=slate.start.slice(0,4);
    const earlyDate=new Date(Date.UTC(Number(slate.start.slice(0,4)),Number(slate.start.slice(4,6))-1,Number(slate.start.slice(6,8))-1));
    const earlyDay=earlyDate.getUTCFullYear()+String(earlyDate.getUTCMonth()+1).padStart(2,'0')+String(earlyDate.getUTCDate()).padStart(2,'0');
    const inBoardWindow=event=>window.fdScheduleWindow.contains(slate,event.date)||window.fdScheduleWindow.centralDateKey(event.date)===earlyDay;
