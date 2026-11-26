@@ -17,6 +17,7 @@
  function render({game={},projection=null,gameLine=null,gameSimulation=null,playerSimulations=[],players=[]}={}){
   const home=canon(game.home?.abbr||projection?.home),away=canon(game.away?.abbr||projection?.away);
   const gameId=String(projection?.game_id||'');
+  const kickoff=Date.parse(game.date||projection?.kickoff_utc||''),now=Date.now();
   const candidates=[];
   const homeScore=number(projection?.projected_home_score),awayScore=number(projection?.projected_away_score);
   const spread=number(gameLine?.home_spread),totalLine=number(gameLine?.total);
@@ -43,7 +44,8 @@
   const simulations=Array.isArray(playerSimulations)?playerSimulations:[];
   for(const x of Array.isArray(players)?players:[]){
    const market=String(x.stat_key||'');
-   if(!yardMarkets.has(market)||x.verified_starter_only||x.dk_quote_stale||number(x.projection)===null||number(x.dk_line)===null)continue;
+   const quoteAt=Date.parse(x.dk_quote_time||'');
+   if(!yardMarkets.has(market)||x.verified_starter_only||x.dk_quote_stale||number(x.projection)===null||number(x.dk_line)===null||!Number.isFinite(quoteAt)||!Number.isFinite(kickoff)||quoteAt>=kickoff||quoteAt>now)continue;
    if(gameId&&String(x.game_id||'')!==gameId)continue;
    const team=canon(x.team);
    if(team!==home&&team!==away)continue;
