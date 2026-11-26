@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-26T16:58:36.007122+00:00",
+  "generated_at_utc": "2026-11-26T21:36:01.695121+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,68 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_12_CHI_DET",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-26T18:00:00+00:00",
-      "home": "DET",
-      "away": "CHI",
-      "projected_home_score": 25.4,
-      "projected_away_score": 20.8,
-      "projected_margin_home": 4.65,
-      "projected_total": 46.19,
-      "predicted_winner": "DET",
-      "v2_reference": {
-        "projected_margin_home": 4.33,
-        "projected_total": 45.91
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.278,
-        "margin_from_success_and_pass_proxy": 0.32,
-        "home_features": {
-          "plays_per_game": 61.6,
-          "success_rate": 0.51,
-          "neutral_pass_proxy": 0.5
-        },
-        "away_features": {
-          "plays_per_game": 64.0,
-          "success_rate": 0.459,
-          "neutral_pass_proxy": 0.544
-        }
-      }
-    },
-    {
-      "game_id": "2026_12_PHI_DAL",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-26T21:30:00+00:00",
-      "home": "DAL",
-      "away": "PHI",
-      "projected_home_score": 28.1,
-      "projected_away_score": 20.6,
-      "projected_margin_home": 7.53,
-      "projected_total": 48.75,
-      "predicted_winner": "DAL",
-      "v2_reference": {
-        "projected_margin_home": 6.37,
-        "projected_total": 47.99
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.758,
-        "margin_from_success_and_pass_proxy": 1.156,
-        "home_features": {
-          "plays_per_game": 69.4,
-          "success_rate": 0.51,
-          "neutral_pass_proxy": 0.53
-        },
-        "away_features": {
-          "plays_per_game": 61.0,
-          "success_rate": 0.344,
-          "neutral_pass_proxy": 0.616
-        }
-      }
-    },
     {
       "game_id": "2026_12_KC_BUF",
       "season": 2026,
