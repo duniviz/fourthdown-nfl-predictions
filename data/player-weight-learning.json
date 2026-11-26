@@ -1,24 +1,30 @@
 {
-  "updated_at_utc": "2026-11-26T01:04:42.041169+00:00",
+  "updated_at_utc": "2026-11-26T16:57:07.243474+00:00",
   "method": "Week-blocked walk-forward residual correction; zero-weight baseline, minimum 60 prior forecasts, 40 holdout forecasts across 4 weeks, >0.15 yards MAE improvement",
   "weights": {
     "passing_yards": {
       "weight": 0.0,
       "status": "insufficient_holdout",
-      "samples": 29,
-      "weeks": 1
+      "samples": 31,
+      "weeks": 2
     },
     "receiving_yards": {
       "weight": 0.0,
-      "status": "insufficient_holdout",
-      "samples": 724,
-      "weeks": 3
+      "status": "baseline_retained",
+      "samples": 741,
+      "weeks": 4,
+      "baseline_mae": 17.397,
+      "candidate_mae": 17.397,
+      "improvement_mae": 0.0
     },
     "rushing_yards": {
       "weight": 0.0,
-      "status": "insufficient_holdout",
-      "samples": 438,
-      "weeks": 3
+      "status": "baseline_retained",
+      "samples": 449,
+      "weeks": 4,
+      "baseline_mae": 11.648,
+      "candidate_mae": 11.648,
+      "improvement_mae": 0.0
     }
   }
 }

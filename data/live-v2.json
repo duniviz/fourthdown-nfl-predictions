@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v2",
-  "generated_at_utc": "2026-11-26T01:04:47.372678+00:00",
+  "generated_at_utc": "2026-11-26T16:57:11.405839+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_uncalibrated",
@@ -23,17 +23,37 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 7,
           "unmodeled_injuries": [
             {
-              "player": "Skyler Gill-Howard",
-              "position": "DT",
-              "status": "Injured Reserve"
+              "player": "DJ Wonnum",
+              "position": "LB",
+              "status": "Out"
             },
             {
               "player": "Ennis Rakestraw Jr.",
               "position": "CB",
               "status": "Out"
+            },
+            {
+              "player": "Tyrus Wheat",
+              "position": "LB",
+              "status": "Out"
+            },
+            {
+              "player": "Chuck Clark",
+              "position": "S",
+              "status": "Out"
+            },
+            {
+              "player": "Keith Abney II",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Skyler Gill-Howard",
+              "position": "DT",
+              "status": "Injured Reserve"
             },
             {
               "player": "Cade Mays",
@@ -44,10 +64,30 @@
         },
         "CHI": {
           "points": 0.0,
-          "status": "insufficient_verified_replacement_data",
+          "status": "starter_confirmation_required",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 7,
           "unmodeled_injuries": [
+            {
+              "player": "Isaac Yiadom",
+              "position": "CB",
+              "status": "Out"
+            },
+            {
+              "player": "Jayden Loving",
+              "position": "DT",
+              "status": "Out"
+            },
+            {
+              "player": "Jordan McFadden",
+              "position": "G",
+              "status": "Out"
+            },
+            {
+              "player": "Elijah Hicks",
+              "position": "S",
+              "status": "Out"
+            },
             {
               "player": "Kyler Gordon",
               "position": "CB",
@@ -56,11 +96,6 @@
             {
               "player": "Roschon Johnson",
               "position": "RB",
-              "status": "Out"
-            },
-            {
-              "player": "Elijah Hicks",
-              "position": "S",
               "status": "Out"
             }
           ]
@@ -444,6 +479,11 @@
           "reported_out": 6,
           "unmodeled_injuries": [
             {
+              "player": "Devin Moore",
+              "position": "CB",
+              "status": "Injured Reserve"
+            },
+            {
               "player": "P.J. Locke",
               "position": "S",
               "status": "Out"
@@ -457,11 +497,6 @@
               "player": "Jake Ferguson",
               "position": "TE",
               "status": "Out"
-            },
-            {
-              "player": "Devin Moore",
-              "position": "CB",
-              "status": "Injured Reserve"
             },
             {
               "player": "DaRon Bland",
@@ -1312,13 +1347,13 @@
           "reported_out": 4,
           "unmodeled_injuries": [
             {
-              "player": "Taylor Rapp",
-              "position": "S",
+              "player": "Sai'vion Jones",
+              "position": "DE",
               "status": "Out"
             },
             {
-              "player": "Sai'vion Jones",
-              "position": "DE",
+              "player": "Taylor Rapp",
+              "position": "S",
               "status": "Out"
             },
             {
@@ -2497,16 +2532,21 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 4,
           "unmodeled_injuries": [
-            {
-              "player": "Alec Pierce",
-              "position": "WR",
-              "status": "Injured Reserve"
-            },
             {
               "player": "Caden Curry",
               "position": "LB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Cam Taylor-Britt",
+              "position": "CB",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Alec Pierce",
+              "position": "WR",
               "status": "Injured Reserve"
             },
             {
@@ -2903,10 +2943,16 @@
       "injury_adjustments": {
         "JAX": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
+          "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "reported_out": 1,
+          "unmodeled_injuries": [
+            {
+              "player": "Patrick Mekari",
+              "position": "G",
+              "status": "Injured Reserve"
+            }
+          ]
         },
         "TEN": {
           "points": 0.0,
@@ -3304,8 +3350,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 2,
           "unmodeled_injuries": [
+            {
+              "player": "David Onyemata",
+              "position": "DT",
+              "status": "Injured Reserve"
+            },
             {
               "player": "T'Vondre Sweat",
               "position": "DT",
@@ -4870,8 +4921,18 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Austen Pleasants",
+              "position": "OT",
+              "status": "Injured Reserve"
+            },
+            {
+              "player": "Colton McKivitz",
+              "position": "OT",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Sam Okuayinonu",
               "position": "DT",
@@ -4880,11 +4941,6 @@
             {
               "player": "De'Zhaun Stribling",
               "position": "WR",
-              "status": "Injured Reserve"
-            },
-            {
-              "player": "Colton McKivitz",
-              "position": "OT",
               "status": "Injured Reserve"
             }
           ]
@@ -5299,10 +5355,16 @@
         },
         "LV": {
           "points": 0.0,
-          "status": "no_confirmed_out_in_feed",
+          "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 0,
-          "unmodeled_injuries": []
+          "reported_out": 1,
+          "unmodeled_injuries": [
+            {
+              "player": "Patrick Johnson",
+              "position": "DE",
+              "status": "Injured Reserve"
+            }
+          ]
         }
       },
       "qb_starter_adjustments": {
@@ -5680,8 +5742,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 1,
+          "reported_out": 2,
           "unmodeled_injuries": [
+            {
+              "player": "Christian Rozeboom",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Jalen McMillan",
               "position": "WR",
@@ -5693,8 +5760,13 @@
           "points": 0.0,
           "status": "insufficient_verified_replacement_data",
           "players": [],
-          "reported_out": 3,
+          "reported_out": 4,
           "unmodeled_injuries": [
+            {
+              "player": "Thomas Incoom",
+              "position": "LB",
+              "status": "Injured Reserve"
+            },
             {
               "player": "Jonathon Brooks",
               "position": "RB",
