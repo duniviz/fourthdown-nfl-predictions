@@ -23,8 +23,8 @@
     }catch(e){savedCount.textContent='Slip unavailable'}}
 
     if(results&&tabs)home.insertBefore(results,tabs);
-    // Keep Best edges available, but let this week's games lead the first page.
-    const edges=details('fd-desk-edges','Best edges this week','Top 5 picks · DraftKings comparisons');
+    // Keep the most useful picks visible, with the full slate one tap away.
+    const edges=details('fd-desk-edges','Best picks & edges','Top 5 picks · DraftKings comparisons');
     edges.classList.add('fd-desk-edges-fold');
     edges.open=false;
     home.before(edges);
@@ -44,6 +44,7 @@
     // Keep the legacy matchup rows inside Best edges for direct links and archived comparison.
     if(scoreboard)games.append(scoreboard);
     layout.append(games);
+    layout.append(edges);
     const more=details('fd-desk-more','More this week','Top picks · featured matchups · player differences');
     for(const selector of ['#fd-top-picks','#fd-opportunities','.hybrid-spot','#fd-watch','#confidence-pool','.fd-command']){
       const node=document.querySelector(selector);
@@ -51,7 +52,7 @@
     }
     // A prior presentation pass may have already nested these inside Top Picks.
     layout.append(more);
-    const research=details('fd-desk-research','Research & archived examples','Past forecasts · historic comparisons · how our picks work');
+    const research=details('fd-desk-research','How it works','Past results · model testing · site details');
     for(const selector of ['#tracking','#reading-guide','#model-v2','#picks','#markets','#props','#parlays']){
       appendIf(research,document.querySelector(selector));
     }
@@ -69,7 +70,7 @@
       const hash=decodeURIComponent(location.hash.slice(1));
       const node=hash&&document.getElementById(hash);
       if(!node)return;
-      for(const fold of [games,more,research])if(fold.contains(node))fold.open=true;
+      for(const fold of [games,edges,more,research])if(fold.contains(node))fold.open=true;
     }
     function attachSlateCards(){
       const visible=Array.isArray(window.fdVisibleGames)?window.fdVisibleGames:[];
