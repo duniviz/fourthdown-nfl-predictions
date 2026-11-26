@@ -120,6 +120,14 @@ def refresh(keys,games,stamp):
         nonlocal attempted
         if all(category_done(state,key,category) for key in keys):
             return
+        if category=="game_odds" and fresh_dk_totals(games,keys,now()):
+            for key in keys:
+                progress[key][category]={"status":"request_completed","at_utc":now().isoformat(),
+                                         "attempts":progress.get(key,{}).get(category,{}).get("attempts",[]),
+                                         "verified_from_existing_quote":True}
+            save("dk-slate-refreshes",state)
+            publish("Confirm fresh DraftKings totals for pregame slate")
+            return
         prior_attempts=max((progress.get(key,{}).get(category,{}).get("attempts",[]) for key in keys),
                            key=len,default=[])
         last_attempt=observations.dt(prior_attempts[-1]) if prior_attempts else None
