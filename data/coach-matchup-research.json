@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-21T15:53:09.625852+00:00",
+  "generated_at_utc": "2026-11-26T01:02:51.675481+00:00",
   "research_only": true,
   "production_changed": false,
   "description": "Ridge scoring research baseline, not live-card forecasts; season holdouts train on earlier seasons only.",
@@ -57,10 +57,10 @@
       "matched_player_rows": 2933
     },
     "2026": {
-      "plays": 26394,
-      "baseline_games": 103,
-      "matched_games": 91,
-      "matched_player_rows": 1201
+      "plays": 28467,
+      "baseline_games": 115,
+      "matched_games": 103,
+      "matched_player_rows": 1379
     }
   },
   "game_results": [
@@ -80,9 +80,9 @@
       "variant": "coach",
       "training_games": 972,
       "matched_games": 214,
-      "mae": 9.8044,
+      "mae": 9.8045,
       "baseline_mae": 9.8105,
-      "improvement_pct": 0.063
+      "improvement_pct": 0.061
     },
     {
       "season": 2024,
@@ -90,7 +90,7 @@
       "variant": "defense",
       "training_games": 972,
       "matched_games": 214,
-      "mae": 9.7467,
+      "mae": 9.7466,
       "baseline_mae": 9.8105,
       "improvement_pct": 0.651
     },
@@ -120,9 +120,9 @@
       "variant": "coach",
       "training_games": 972,
       "matched_games": 214,
-      "mae": 10.2704,
+      "mae": 10.2703,
       "baseline_mae": 10.2189,
-      "improvement_pct": -0.504
+      "improvement_pct": -0.503
     },
     {
       "season": 2024,
@@ -160,9 +160,9 @@
       "variant": "coach",
       "training_games": 1186,
       "matched_games": 210,
-      "mae": 10.514,
+      "mae": 10.5141,
       "baseline_mae": 10.5433,
-      "improvement_pct": 0.278
+      "improvement_pct": 0.277
     },
     {
       "season": 2025,
@@ -180,9 +180,9 @@
       "variant": "combined",
       "training_games": 1186,
       "matched_games": 210,
-      "mae": 10.5883,
+      "mae": 10.5884,
       "baseline_mae": 10.5433,
-      "improvement_pct": -0.427
+      "improvement_pct": -0.428
     },
     {
       "season": 2025,
@@ -229,9 +229,9 @@
       "market": "total",
       "variant": "baseline",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.7134,
-      "baseline_mae": 10.7134,
+      "matched_games": 103,
+      "mae": 10.79,
+      "baseline_mae": 10.79,
       "improvement_pct": 0.0
     },
     {
@@ -239,39 +239,39 @@
       "market": "total",
       "variant": "coach",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.7182,
-      "baseline_mae": 10.7134,
-      "improvement_pct": -0.045
+      "matched_games": 103,
+      "mae": 10.8099,
+      "baseline_mae": 10.79,
+      "improvement_pct": -0.185
     },
     {
       "season": 2026,
       "market": "total",
       "variant": "defense",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.7221,
-      "baseline_mae": 10.7134,
-      "improvement_pct": -0.081
+      "matched_games": 103,
+      "mae": 10.774,
+      "baseline_mae": 10.79,
+      "improvement_pct": 0.148
     },
     {
       "season": 2026,
       "market": "total",
       "variant": "combined",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.7421,
-      "baseline_mae": 10.7134,
-      "improvement_pct": -0.268
+      "matched_games": 103,
+      "mae": 10.8068,
+      "baseline_mae": 10.79,
+      "improvement_pct": -0.157
     },
     {
       "season": 2026,
       "market": "margin",
       "variant": "baseline",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 9.9949,
-      "baseline_mae": 9.9949,
+      "matched_games": 103,
+      "mae": 9.8958,
+      "baseline_mae": 9.8958,
       "improvement_pct": 0.0
     },
     {
@@ -279,30 +279,30 @@
       "market": "margin",
       "variant": "coach",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.022,
-      "baseline_mae": 9.9949,
-      "improvement_pct": -0.271
+      "matched_games": 103,
+      "mae": 9.9207,
+      "baseline_mae": 9.8958,
+      "improvement_pct": -0.252
     },
     {
       "season": 2026,
       "market": "margin",
       "variant": "defense",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.0314,
-      "baseline_mae": 9.9949,
-      "improvement_pct": -0.365
+      "matched_games": 103,
+      "mae": 9.9029,
+      "baseline_mae": 9.8958,
+      "improvement_pct": -0.072
     },
     {
       "season": 2026,
       "market": "margin",
       "variant": "combined",
       "training_games": 1396,
-      "matched_games": 91,
-      "mae": 10.0064,
-      "baseline_mae": 9.9949,
-      "improvement_pct": -0.115
+      "matched_games": 103,
+      "mae": 9.8839,
+      "baseline_mae": 9.8958,
+      "improvement_pct": 0.121
     }
   ],
   "player_results": [
@@ -322,9 +322,9 @@
       "variant": "coach",
       "training_rows": 1701,
       "matched_rows": 379,
-      "mae": 62.3202,
+      "mae": 62.32,
       "baseline_mae": 62.2825,
-      "improvement_pct": -0.061
+      "improvement_pct": -0.06
     },
     {
       "season": 2024,
@@ -332,7 +332,7 @@
       "variant": "defense",
       "training_rows": 1701,
       "matched_rows": 379,
-      "mae": 62.1896,
+      "mae": 62.1898,
       "baseline_mae": 62.2825,
       "improvement_pct": 0.149
     },
@@ -342,7 +342,7 @@
       "variant": "combined",
       "training_rows": 1701,
       "matched_rows": 379,
-      "mae": 62.209,
+      "mae": 62.2088,
       "baseline_mae": 62.2825,
       "improvement_pct": 0.118
     },
@@ -372,7 +372,7 @@
       "variant": "defense",
       "training_rows": 3522,
       "matched_rows": 844,
-      "mae": 23.8173,
+      "mae": 23.8172,
       "baseline_mae": 23.8698,
       "improvement_pct": 0.22
     },
@@ -402,9 +402,9 @@
       "variant": "coach",
       "training_rows": 8546,
       "matched_rows": 1852,
-      "mae": 23.3935,
+      "mae": 23.3936,
       "baseline_mae": 23.3841,
-      "improvement_pct": -0.04
+      "improvement_pct": -0.041
     },
     {
       "season": 2024,
@@ -412,7 +412,7 @@
       "variant": "defense",
       "training_rows": 8546,
       "matched_rows": 1852,
-      "mae": 23.3383,
+      "mae": 23.3382,
       "baseline_mae": 23.3841,
       "improvement_pct": 0.196
     },
@@ -442,9 +442,9 @@
       "variant": "coach",
       "training_rows": 2080,
       "matched_rows": 371,
-      "mae": 61.3343,
+      "mae": 61.3354,
       "baseline_mae": 61.7042,
-      "improvement_pct": 0.599
+      "improvement_pct": 0.598
     },
     {
       "season": 2025,
@@ -452,7 +452,7 @@
       "variant": "defense",
       "training_rows": 2080,
       "matched_rows": 371,
-      "mae": 61.1251,
+      "mae": 61.1249,
       "baseline_mae": 61.7042,
       "improvement_pct": 0.939
     },
@@ -462,9 +462,9 @@
       "variant": "combined",
       "training_rows": 2080,
       "matched_rows": 371,
-      "mae": 60.7566,
+      "mae": 60.7572,
       "baseline_mae": 61.7042,
-      "improvement_pct": 1.536
+      "improvement_pct": 1.535
     },
     {
       "season": 2025,
@@ -492,9 +492,9 @@
       "variant": "defense",
       "training_rows": 4366,
       "matched_rows": 820,
-      "mae": 24.4105,
+      "mae": 24.4104,
       "baseline_mae": 24.301,
-      "improvement_pct": -0.451
+      "improvement_pct": -0.45
     },
     {
       "season": 2025,
@@ -502,7 +502,7 @@
       "variant": "combined",
       "training_rows": 4366,
       "matched_rows": 820,
-      "mae": 24.3654,
+      "mae": 24.3653,
       "baseline_mae": 24.301,
       "improvement_pct": -0.265
     },
@@ -532,7 +532,7 @@
       "variant": "defense",
       "training_rows": 10398,
       "matched_rows": 1742,
-      "mae": 22.6683,
+      "mae": 22.6682,
       "baseline_mae": 22.7196,
       "improvement_pct": 0.226
     },
@@ -551,9 +551,9 @@
       "market": "passing_yards",
       "variant": "baseline",
       "training_rows": 2451,
-      "matched_rows": 156,
-      "mae": 65.2186,
-      "baseline_mae": 65.2186,
+      "matched_rows": 178,
+      "mae": 63.3765,
+      "baseline_mae": 63.3765,
       "improvement_pct": 0.0
     },
     {
@@ -561,39 +561,39 @@
       "market": "passing_yards",
       "variant": "coach",
       "training_rows": 2451,
-      "matched_rows": 156,
-      "mae": 65.1449,
-      "baseline_mae": 65.2186,
-      "improvement_pct": 0.113
+      "matched_rows": 178,
+      "mae": 63.2998,
+      "baseline_mae": 63.3765,
+      "improvement_pct": 0.121
     },
     {
       "season": 2026,
       "market": "passing_yards",
       "variant": "defense",
       "training_rows": 2451,
-      "matched_rows": 156,
-      "mae": 65.7375,
-      "baseline_mae": 65.2186,
-      "improvement_pct": -0.796
+      "matched_rows": 178,
+      "mae": 63.8217,
+      "baseline_mae": 63.3765,
+      "improvement_pct": -0.702
     },
     {
       "season": 2026,
       "market": "passing_yards",
       "variant": "combined",
       "training_rows": 2451,
-      "matched_rows": 156,
-      "mae": 65.5125,
-      "baseline_mae": 65.2186,
-      "improvement_pct": -0.451
+      "matched_rows": 178,
+      "mae": 63.6935,
+      "baseline_mae": 63.3765,
+      "improvement_pct": -0.5
     },
     {
       "season": 2026,
       "market": "rushing_yards",
       "variant": "baseline",
       "training_rows": 5186,
-      "matched_rows": 302,
-      "mae": 24.4878,
-      "baseline_mae": 24.4878,
+      "matched_rows": 349,
+      "mae": 24.4843,
+      "baseline_mae": 24.4843,
       "improvement_pct": 0.0
     },
     {
@@ -601,39 +601,39 @@
       "market": "rushing_yards",
       "variant": "coach",
       "training_rows": 5186,
-      "matched_rows": 302,
-      "mae": 24.357,
-      "baseline_mae": 24.4878,
-      "improvement_pct": 0.534
+      "matched_rows": 349,
+      "mae": 24.3575,
+      "baseline_mae": 24.4843,
+      "improvement_pct": 0.518
     },
     {
       "season": 2026,
       "market": "rushing_yards",
       "variant": "defense",
       "training_rows": 5186,
-      "matched_rows": 302,
-      "mae": 24.1444,
-      "baseline_mae": 24.4878,
-      "improvement_pct": 1.402
+      "matched_rows": 349,
+      "mae": 24.0685,
+      "baseline_mae": 24.4843,
+      "improvement_pct": 1.698
     },
     {
       "season": 2026,
       "market": "rushing_yards",
       "variant": "combined",
       "training_rows": 5186,
-      "matched_rows": 302,
-      "mae": 23.9124,
-      "baseline_mae": 24.4878,
-      "improvement_pct": 2.35
+      "matched_rows": 349,
+      "mae": 23.8637,
+      "baseline_mae": 24.4843,
+      "improvement_pct": 2.535
     },
     {
       "season": 2026,
       "market": "receiving_yards",
       "variant": "baseline",
       "training_rows": 12140,
-      "matched_rows": 743,
-      "mae": 24.5686,
-      "baseline_mae": 24.5686,
+      "matched_rows": 852,
+      "mae": 24.2566,
+      "baseline_mae": 24.2566,
       "improvement_pct": 0.0
     },
     {
@@ -641,30 +641,30 @@
       "market": "receiving_yards",
       "variant": "coach",
       "training_rows": 12140,
-      "matched_rows": 743,
-      "mae": 24.5313,
-      "baseline_mae": 24.5686,
-      "improvement_pct": 0.152
+      "matched_rows": 852,
+      "mae": 24.2376,
+      "baseline_mae": 24.2566,
+      "improvement_pct": 0.078
     },
     {
       "season": 2026,
       "market": "receiving_yards",
       "variant": "defense",
       "training_rows": 12140,
-      "matched_rows": 743,
-      "mae": 24.6366,
-      "baseline_mae": 24.5686,
-      "improvement_pct": -0.277
+      "matched_rows": 852,
+      "mae": 24.3141,
+      "baseline_mae": 24.2566,
+      "improvement_pct": -0.237
     },
     {
       "season": 2026,
       "market": "receiving_yards",
       "variant": "combined",
       "training_rows": 12140,
-      "matched_rows": 743,
-      "mae": 24.6058,
-      "baseline_mae": 24.5686,
-      "improvement_pct": -0.151
+      "matched_rows": 852,
+      "mae": 24.2987,
+      "baseline_mae": 24.2566,
+      "improvement_pct": -0.173
     }
   ]
 }
