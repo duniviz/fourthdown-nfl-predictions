@@ -42,15 +42,26 @@
    }
   }
   const simulations=Array.isArray(playerSimulations)?playerSimulations:[];
+  const playerKey=value=>norm(value).replace(/(?:jr|sr|ii|iii|iv|v)$/,'');
+  const quoteTime=x=>{
+   for(const value of [x.dk_quote_time,x.dk_quote_captured_at_utc,x.quote_time,x.captured_at_utc,x.snapshot_date_utc]){
+    const stamp=Date.parse(value||'');
+    if(Number.isFinite(stamp))return stamp;
+   }
+   return null;
+  };
   for(const x of Array.isArray(players)?players:[]){
    const market=String(x.stat_key||'');
-   const quoteAt=Date.parse(x.dk_quote_time||'');
-   if(!yardMarkets.has(market)||x.verified_starter_only||x.dk_quote_stale||number(x.projection)===null||number(x.dk_line)===null||!Number.isFinite(quoteAt)||!Number.isFinite(kickoff)||quoteAt>=kickoff||quoteAt>now)continue;
+   const quoteAt=quoteTime(x);
+   // A valid line already attached to the projection may lack quote metadata in
+   // player-research. Keep it eligible for a future game unless marked stale;
+   // when a timestamp exists, still require a genuinely pregame, saved quote.
+   if(!yardMarkets.has(market)||x.verified_starter_only||x.dk_quote_stale||number(x.projection)===null||number(x.dk_line)===null||!Number.isFinite(kickoff)||kickoff<=now||(quoteAt!==null&&(quoteAt>=kickoff||quoteAt>now)))continue;
    if(gameId&&String(x.game_id||'')!==gameId)continue;
    const team=canon(x.team);
    if(team!==home&&team!==away)continue;
    const sim=simulations.find(s=>String(s.game_id)===String(x.game_id)&&String(s.stat_key)===market&&
-    ((x.player_id&&s.player_id&&String(s.player_id)===String(x.player_id))||norm(s.player)===norm(x.player)));
+    ((x.player_id&&s.player_id&&String(s.player_id)===String(x.player_id))||playerKey(s.player)===playerKey(x.player)));
    if(!sim)continue;
    const rates=sideRates(sim,Number(x.dk_line));
    if(rates.over===null||rates.under===null)continue;
@@ -64,7 +75,8 @@
   candidates.sort((a,b)=>b.confidence-a.confidence);
   const top=candidates.slice(0,3);
   const body=top.length?top.map((x,i)=>'<article class="fd-top-pick"><div class="fd-top-pick-kicker">#'+(i+1)+' · '+esc(x.kind)+'</div><h3>'+esc(x.pick)+'</h3><p>'+esc(x.detail)+'</p><div class="fd-top-pick-prob"><div class="fd-top-pick-prob-bar"><i style="width:'+x.confidence.toFixed(1)+'%"></i><b style="width:'+(100-x.confidence).toFixed(1)+'%"></b></div><div><span>Pick '+x.confidence.toFixed(1)+'% simulated</span><span>Other outcomes</span></div></div></article>').join(''):'<p class="fd-top-pick-empty">No picks have both a saved pregame line and a matching simulation for this game.</p>';
-  return '<section class="fd-modal-section fd-top-picks fd-game-top-picks" aria-label="Top simulated picks for this game"><h3>Top picks for this game</h3><div class="fd-top-picks-list">'+body+'</div><p class="fd-top-picks-note">Ranked by simulated hit chance · estimates, not guarantees.</p></section>';
+  const note=top.length<3?'Showing '+top.length+' qualifying pick'+(top.length===1?'':'s')+'. Yard picks need a saved pregame DraftKings line and a matching player simulation.':'Ranked by simulated hit chance · estimates, not guarantees.';
+  return '<section class="fd-modal-section fd-top-picks fd-game-top-picks" aria-label="Top simulated picks for this game"><h3>Top picks for this game</h3><div class="fd-top-picks-list">'+body+'</div><p class="fd-top-picks-note">'+esc(note)+' · Estimates, not guarantees.</p></section>';
  }
  return {render};
 });
