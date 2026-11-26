@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-24T22:06:59.108056+00:00",
+  "generated_at_utc": "2026-11-26T00:52:55.288501+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_only_not_for_live_or_betting_use",
@@ -268,6 +268,37 @@
       }
     },
     {
+      "game_id": "2026_12_TEN_JAX",
+      "season": 2026,
+      "week": 12,
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "home": "JAX",
+      "away": "TEN",
+      "projected_home_score": 28.9,
+      "projected_away_score": 17.5,
+      "projected_margin_home": 11.43,
+      "projected_total": 46.36,
+      "predicted_winner": "JAX",
+      "v2_reference": {
+        "projected_margin_home": 11.46,
+        "projected_total": 46.42
+      },
+      "feature_adjustments": {
+        "total_from_pace": -0.062,
+        "margin_from_success_and_pass_proxy": -0.026,
+        "home_features": {
+          "plays_per_game": 62.8,
+          "success_rate": 0.478,
+          "neutral_pass_proxy": 0.551
+        },
+        "away_features": {
+          "plays_per_game": 59.4,
+          "success_rate": 0.475,
+          "neutral_pass_proxy": 0.576
+        }
+      }
+    },
+    {
       "game_id": "2026_12_NYJ_MIA",
       "season": 2026,
       "week": 12,
@@ -326,37 +357,6 @@
           "plays_per_game": 56.8,
           "success_rate": 0.401,
           "neutral_pass_proxy": 0.613
-        }
-      }
-    },
-    {
-      "game_id": "2026_12_TEN_JAX",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-29T18:00:00+00:00",
-      "home": "JAX",
-      "away": "TEN",
-      "projected_home_score": 28.9,
-      "projected_away_score": 17.5,
-      "projected_margin_home": 11.43,
-      "projected_total": 46.36,
-      "predicted_winner": "JAX",
-      "v2_reference": {
-        "projected_margin_home": 11.46,
-        "projected_total": 46.42
-      },
-      "feature_adjustments": {
-        "total_from_pace": -0.062,
-        "margin_from_success_and_pass_proxy": -0.026,
-        "home_features": {
-          "plays_per_game": 62.8,
-          "success_rate": 0.478,
-          "neutral_pass_proxy": 0.551
-        },
-        "away_features": {
-          "plays_per_game": 59.4,
-          "success_rate": 0.475,
-          "neutral_pass_proxy": 0.576
         }
       }
     },

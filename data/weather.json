@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-24T22:06:53.122059+00:00",
+  "generated_at_utc": "2026-11-26T00:52:49.491177+00:00",
   "source": "US National Weather Service hourly forecast",
   "model_adjusted": false,
   "games": {
@@ -19,28 +19,28 @@
     "2026_12_KC_BUF": {
       "status": "forecast",
       "temperature_f": 38,
-      "wind_speed": "12 mph",
+      "wind_speed": "15 mph",
       "wind_direction": "NE",
-      "precipitation_probability": 100,
-      "conditions": "Rain",
+      "precipitation_probability": 98,
+      "conditions": "Light Rain",
       "forecast_period_start": "2026-11-26T20:00:00-05:00"
     },
     "2026_12_DEN_PIT": {
       "status": "forecast",
       "temperature_f": 43,
-      "wind_speed": "21 mph",
-      "wind_direction": "W",
-      "precipitation_probability": 79,
+      "wind_speed": "18 mph",
+      "wind_direction": "SW",
+      "precipitation_probability": 97,
       "conditions": "Light Rain",
       "forecast_period_start": "2026-11-27T15:00:00-05:00"
     },
     "2026_12_NO_CIN": {
       "status": "forecast",
       "temperature_f": 53,
-      "wind_speed": "10 mph",
+      "wind_speed": "13 mph",
       "wind_direction": "S",
-      "precipitation_probability": 45,
-      "conditions": "Chance Light Rain",
+      "precipitation_probability": 87,
+      "conditions": "Light Rain",
       "forecast_period_start": "2026-11-29T13:00:00-05:00"
     },
     "2026_12_BAL_HOU": {
@@ -53,22 +53,22 @@
       "roof": "covered_or_retractable",
       "note": "Roof position not verified; outdoor forecast may not apply"
     },
+    "2026_12_TEN_JAX": {
+      "status": "stadium_unknown"
+    },
     "2026_12_NYJ_MIA": {
       "status": "forecast",
-      "temperature_f": 76,
-      "wind_speed": "9 mph",
+      "temperature_f": 77,
+      "wind_speed": "8 mph",
       "wind_direction": "E",
-      "precipitation_probability": 45,
-      "conditions": "Chance Rain Showers",
+      "precipitation_probability": 20,
+      "conditions": "Slight Chance Rain Showers",
       "forecast_period_start": "2026-11-29T13:00:00-05:00"
     },
     "2026_12_ATL_MIN": {
       "status": "roofed_stadium",
       "roof": "covered_or_retractable",
       "note": "Roof position not verified; outdoor forecast may not apply"
-    },
-    "2026_12_TEN_JAX": {
-      "status": "stadium_unknown"
     },
     "2026_12_NE_LAC": {
       "status": "roofed_stadium",
@@ -84,27 +84,27 @@
       "status": "forecast",
       "temperature_f": 63,
       "wind_speed": "12 mph",
-      "wind_direction": "SSW",
-      "precipitation_probability": 63,
+      "wind_direction": "S",
+      "precipitation_probability": 67,
       "conditions": "Light Rain Likely",
       "forecast_period_start": "2026-11-29T13:00:00-08:00"
     },
     "2026_12_LV_CLE": {
       "status": "forecast",
-      "temperature_f": 45,
+      "temperature_f": 48,
       "wind_speed": "14 mph",
-      "wind_direction": "SW",
-      "precipitation_probability": 56,
-      "conditions": "Light Rain Likely",
+      "wind_direction": "S",
+      "precipitation_probability": 92,
+      "conditions": "Light Rain",
       "forecast_period_start": "2026-11-29T20:00:00-05:00"
     },
     "2026_12_CAR_TB": {
       "status": "forecast",
-      "temperature_f": 66,
-      "wind_speed": "5 mph",
-      "wind_direction": "SSW",
-      "precipitation_probability": 15,
-      "conditions": "Isolated Rain Showers",
+      "temperature_f": 67,
+      "wind_speed": "3 mph",
+      "wind_direction": "SE",
+      "precipitation_probability": 37,
+      "conditions": "Scattered Showers And Thunderstorms",
       "forecast_period_start": "2026-11-30T20:00:00-05:00"
     }
   }
