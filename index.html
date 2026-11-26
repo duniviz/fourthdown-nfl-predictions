@@ -927,12 +927,7 @@ async function fdOpenMatchup(g){
  const liveStats='<div class="fd-live-player-stats" data-fd-live-game-id="'+esc(g.id)+'" data-fd-live-home="'+esc(home)+'" data-fd-live-away="'+esc(away)+'"><h3>Pregame props · Live results</h3><div class="fd-live-player-body"><p class="fd-modal-muted">Checking ESPN box scores for this matchup…</p></div><p class="fd-modal-muted">ESPN actuals refresh approximately every minute. Only saved pre-kickoff projections and DK lines are displayed. No in-game odds.</p></div>';
  const props='<div class="fd-modal-section fd-mobile-props fd-merged-player-props"><h3>Player Props · Projections &amp; Actuals</h3>'+relevanceControl+(propCards?propCards:'<p>No eligible player projections are available for this matchup.</p>')+countArchiveNote+'<p class="fd-modal-muted">Saved pregame projections and DraftKings lines · ESPN actuals when available. Differences are not calibrated betting probabilities.</p></div>';
  const market='<div class="fd-modal-section fd-line-history"><h3>DraftKings line movement</h3>'+window.FDMarketHistory.render(g,fdGameLineHistory,fdOpeningGameOdds,fdGameOdds,fdGameOddsObservedAt)+'</div>';
- const simGame=scoreProjection?simulationGames.find(s=>s.game_id===scoreProjection.game_id):null;
- let gameLineForPicks=null,topGamePicks='';
- try{
-  gameLineForPicks=scoreProjection?fdLatestPregameGameLine(scoreProjection):null;
-  topGamePicks=window.FDGameTopPicks?.render({game:g,projection:scoreProjection,gameLine:gameLineForPicks,gameSimulation:simGame,playerSimulations:simulationPlayers,players})||'';
- }catch(error){console.warn('Optional matchup top picks unavailable',error);}
+ const simGame=p?simulationGames.find(s=>s.game_id===p.game_id):null;
  const insight=(!isFinal&&p)?(()=>{
    const metrics=Array.isArray(analysis.matchup_metrics)?analysis.matchup_metrics:[];
    const metric=(label,offKey,defKey)=>{const row=metrics.find(x=>x.label===label);return row&&row[offKey]&&row[defKey]?row:null;};
@@ -1164,11 +1159,18 @@ async function fdOpenMatchup(g){
  const topProps=props.replace('</h3>','</h3>'+liveStats);
  const headline='<div class="fd-detail-hero"><div class="fd-detail-teams"><div class="fd-detail-team"><span class="fd-detail-team-label">AWAY</span><strong>'+esc(away)+'</strong></div><span class="fd-detail-versus">AT</span><div class="fd-detail-team"><span class="fd-detail-team-label">HOME</span><strong>'+esc(home)+'</strong></div></div><p class="fd-detail-status">'+esc(isFinal?'Final result · archived predictions':g.state==='in'?'Game in progress':'Pregame forecast')+'</p></div>';
  const previewLink=!isFinal&&g.state!=='in'&&p?.game_id?'<p style="margin:12px 0"><a href="game-preview.html?game='+encodeURIComponent(p.game_id)+'" target="_blank" rel="noopener noreferrer" style="display:block;text-align:center;padding:12px;border:1px solid #6b8d50;border-radius:12px;color:#c1f66b;font-weight:800;text-decoration:none">Open full game preview ↗</a></p>':'';
- const detailHtml=header+headline+previewLink+'<div class="fd-detail-primary">'+score+topGamePicks+(p?fdMlGlance(p)+fdGameLineComparison(p):'')+(p?window.FDProjectionChanges.game(p):'')+'<div class="fd-detail-market">'+market+'</div></div>'
+ const detailHtml=header+headline+previewLink+'<div class="fd-detail-primary">'+score+(p?fdMlGlance(p)+fdGameLineComparison(p):'')+(p?window.FDProjectionChanges.game(p):'')+'<div class="fd-detail-market">'+market+'</div></div>'
    +'<div class="fd-detail-simulation">'+fdSimulationPanel(p,g)+'</div>'
    +'<div class="fd-detail-props">'+topProps+'</div>'
    +'<details class="fd-detail-more"><summary>AI matchup breakdown, team stats &amp; injuries <span>Expand analysis</span></summary><div class="fd-detail-more-body">'+insight+fdSpotlightPanel(p,g)+stats+(isFinal?historicalInjury+completedBox:injury)+'</div></details>';
  document.getElementById('fd-modal-body').innerHTML=detailHtml;
+ try{
+  const pickSimulation=scoreProjection?simulationGames.find(s=>s.game_id===scoreProjection.game_id):null;
+  const pickLines=scoreProjection?fdLatestPregameGameLine(scoreProjection):null;
+  const picks=window.FDGameTopPicks?.render({game:g,projection:scoreProjection,gameLine:pickLines,gameSimulation:pickSimulation,playerSimulations:simulationPlayers,players})||'';
+  const marketAnchor=document.querySelector('#fd-modal-body .fd-detail-market');
+  if(picks&&marketAnchor)marketAnchor.insertAdjacentHTML('beforebegin',picks);
+ }catch(error){console.warn('Optional matchup top picks unavailable',error);}
  if(!isFinal)loadModalGameCardInjuries(g);
  document.getElementById('fd-modal').classList.add('open');document.body.style.overflow='hidden';document.getElementById('fd-modal').scrollTop=0;document.dispatchEvent(new Event('fd-matchup-opened'));document.querySelector('[data-close-matchup]').focus();
 }
