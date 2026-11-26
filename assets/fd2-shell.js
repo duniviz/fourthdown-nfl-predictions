@@ -29,6 +29,12 @@
     const header = document.createElement('header');
     header.className = 'fd2-header';
     header.innerHTML = '<div class="fd2-shell"><a class="fd2-brand" href="index.html">FOURTH<b>DOWN</b><small>NFL PREDICTIONS</small></a><nav class="fd2-links" aria-label="Primary navigation">' + items.map(([href, label]) => link(href, label)).join('') + '</nav></div>';
+    if (!document.getElementById('fd2-tools-style')) {
+      const style = document.createElement('style');
+      style.id = 'fd2-tools-style';
+      style.textContent = '.fd2-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:min(1380px,calc(100% - 48px));margin:8px auto 12px}.fd2-tools>a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border:1px solid #35536c;border-radius:10px;background:#101d2b;color:#dcebf4;text-decoration:none;font-size:12px;font-weight:800}.fd2-tools>a:hover,.fd2-tools>a:focus-visible{border-color:#ff9b69;color:#fff}.fd2-tools>a[aria-current="page"]{border-color:#b6d95e;background:#202d19;color:#d8ff81}@media(max-width:850px){.fd2-tools{width:auto;margin:8px 14px 12px;gap:7px}.fd2-tools>a{flex:1 1 auto;padding:8px 10px;min-height:40px}}';
+      document.head.append(style);
+    }
     const toolsNav = document.createElement('nav');
     toolsNav.className = 'fd2-tools';
     toolsNav.setAttribute('aria-label', 'Labs and tools');
