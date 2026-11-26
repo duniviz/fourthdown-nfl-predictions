@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-26T00:52:55.288501+00:00",
+  "generated_at_utc": "2026-11-26T01:05:40.100047+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_12_GB_LA",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-26T01:00:00+00:00",
-      "home": "LA",
-      "away": "GB",
-      "projected_home_score": 24.3,
-      "projected_away_score": 17.3,
-      "projected_margin_home": 6.95,
-      "projected_total": 41.62,
-      "predicted_winner": "LA",
-      "v2_reference": {
-        "projected_margin_home": 6.42,
-        "projected_total": 41.14
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.478,
-        "margin_from_success_and_pass_proxy": 0.526,
-        "home_features": {
-          "plays_per_game": 63.8,
-          "success_rate": 0.508,
-          "neutral_pass_proxy": 0.514
-        },
-        "away_features": {
-          "plays_per_game": 63.8,
-          "success_rate": 0.414,
-          "neutral_pass_proxy": 0.627
-        }
-      }
-    },
     {
       "game_id": "2026_12_CHI_DET",
       "season": 2026,

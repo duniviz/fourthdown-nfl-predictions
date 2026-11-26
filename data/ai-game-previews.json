@@ -1,58 +1,6 @@
 {
   "schema_version": 1,
   "games": {
-    "2026_12_GB_LA": {
-      "headline": "GB at LA: the details behind the projected edge",
-      "stories": [
-        {
-          "title": "A closer look at the forecast",
-          "body": "FOURTHDOWN has LA ahead in this matchup, projecting GB 17.4 and LA 23.8, a 6.4-point difference. The projection is a starting point, not a guarantee; a few high-leverage possessions could change the result. The forecast reflects saved pregame model inputs rather than live game information.",
-          "evidence_keys": [
-            "teams",
-            "model_projection"
-          ]
-        },
-        {
-          "title": "What the efficiency and form numbers show",
-          "body": "LA ranks 8 of 32 on offense and 1 on defense in the model; GB ranks 13 offensively and 12 defensively. Across their latest 5 and 5 games, respectively, LA won 4 and GB won 3. These figures help frame the matchup, but do not verify injuries, lineup changes, or late news.",
-          "evidence_keys": [
-            "home_model_rankings",
-            "away_model_rankings"
-          ]
-        }
-      ],
-      "generated_at_utc": "2026-11-24T22:03:05.124863+00:00",
-      "kickoff_utc": "2026-11-26T01:00:00+00:00",
-      "free_evidence_signature": "{\"analysis\": {\"away\": {\"defense_epa_rating\": -0.019, \"defense_rank\": 12, \"games_used\": 10, \"offense_epa_rating\": 0.0058, \"offense_rank\": 13, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 2.6, \"avg_points_against\": 21.8, \"avg_points_for\": 24.4, \"games\": 5, \"results\": [{\"points_against\": 13, \"points_for\": 23, \"result\": \"W\", \"week\": 6}, {\"points_against\": 20, \"points_for\": 17, \"result\": \"L\", \"week\": 7}, {\"points_against\": 19, \"points_for\": 27, \"result\": \"W\", \"week\": 8}, {\"points_against\": 27, \"points_for\": 45, \"result\": \"W\", \"week\": 9}, {\"points_against\": 30, \"points_for\": 10, \"result\": \"L\", \"week\": 10}], \"wins\": 3}, \"team\": \"GB\"}, \"estimated_home_advantage_points\": 1.5, \"home\": {\"defense_epa_rating\": -0.0923, \"defense_rank\": 1, \"games_used\": 10, \"offense_epa_rating\": 0.0419, \"offense_rank\": 8, \"ranked_teams\": 32, \"recent_form\": {\"avg_margin\": 12.4, \"avg_points_against\": 13.4, \"avg_points_for\": 25.8, \"games\": 5, \"results\": [{\"points_against\": 18, \"points_for\": 16, \"result\": \"L\", \"week\": 6}, {\"points_against\": 21, \"points_for\": 35, \"result\": \"W\", \"week\": 7}, {\"points_against\": 9, \"points_for\": 24, \"result\": \"W\", \"week\": 8}, {\"points_against\": 13, \"points_for\": 20, \"result\": \"W\", \"week\": 9}, {\"points_against\": 6, \"points_for\": 34, \"result\": \"W\", \"week\": 10}], \"wins\": 4}, \"team\": \"LA\"}, \"matchup_metrics\": [{\"away_defense\": {\"rank\": 16, \"value\": 22.1}, \"away_offense\": {\"rank\": 14, \"value\": 22.6}, \"category\": \"total\", \"home_defense\": {\"rank\": 5, \"value\": 18.7}, \"home_offense\": {\"rank\": 12, \"value\": 24.8}, \"label\": \"Points / game\", \"unit\": \"pts/g\"}, {\"away_defense\": {\"rank\": 5, \"value\": 4.92}, \"away_offense\": {\"rank\": 14, \"value\": 5.54}, \"category\": \"total\", \"home_defense\": {\"rank\": 4, \"value\": 4.9}, \"home_offense\": {\"rank\": 8, \"value\": 5.8}, \"label\": \"Yards / play\", \"unit\": \"yds/play\"}, {\"away_defense\": {\"rank\": 8, \"value\": -0.03}, \"away_offense\": {\"rank\": 14, \"value\": 0.01}, \"category\": \"epa\", \"home_defense\": {\"rank\": 2, \"value\": -0.1}, \"home_offense\": {\"rank\": 8, \"value\": 0.08}, \"label\": \"EPA / play\", \"unit\": \"EPA/play\"}, {\"away_defense\": {\"rank\": 9, \"value\": -0.04}, \"away_offense\": {\"rank\": 9, \"value\": 0.11}, \"category\": \"epa\", \"home_defense\": {\"rank\": 2, \"value\": -0.12}, \"home_offense\": {\"rank\": 10, \"value\": 0.1}, \"label\": \"EPA / pass\", \"unit\": \"EPA/pass\"}, {\"away_defense\": {\"rank\": 10, \"value\": -0.02}, \"away_offense\": {\"rank\": 32, \"value\": -0.16}, \"category\": \"epa\", \"home_defense\": {\"rank\": 4, \"value\": -0.07}, \"home_offense\": {\"rank\": 6, \"value\": 0.06}, \"label\": \"EPA / rush\", \"unit\": \"EPA/rush\"}, {\"away_defense\": {\"rank\": 8, \"value\": 2.9}, \"away_offense\": {\"rank\": 19, \"value\": 2.5}, \"category\": \"negative\", \"home_defense\": {\"rank\": 16, \"value\": 2.1}, \"home_offense\": {\"rank\": 5, \"value\": 1.5}, \"label\": \"Sacks / game\", \"unit\": \"sacks/g\"}, {\"away_defense\": {\"rank\": 1, \"value\": 2.0}, \"away_offense\": {\"rank\": 20, \"value\": 1.3}, \"category\": \"negative\", \"home_defense\": {\"rank\": 13, \"value\": 1.2}, \"home_offense\": {\"rank\": 24, \"value\": 1.5}, \"label\": \"Turnovers / game\", \"unit\": \"TO/g\"}, {\"away_defense\": {\"rank\": 23, \"value\": 44.4}, \"away_offense\": {\"rank\": 23, \"value\": 37.5}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 2, \"value\": 30.8}, \"home_offense\": {\"rank\": 6, \"value\": 45.0}, \"label\": \"3rd down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 9, \"value\": 45.0}, \"away_offense\": {\"rank\": 10, \"value\": 64.7}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 2, \"value\": 28.6}, \"home_offense\": {\"rank\": 8, \"value\": 66.7}, \"label\": \"4th down conversion\", \"unit\": \"%\"}, {\"away_defense\": {\"rank\": 17, \"value\": 57.9}, \"away_offense\": {\"rank\": 23, \"value\": 52.8}, \"category\": \"conversion\", \"home_defense\": {\"rank\": 4, \"value\": 44.8}, \"home_offense\": {\"rank\": 4, \"value\": 67.5}, \"label\": \"Red-zone TD rate\", \"unit\": \"%\"}], \"method\": \"Recency-weighted, opponent-adjusted EPA per play with shrinkage; recent form uses last five completed prior games.\", \"scoring_edge_components\": {\"away_offense_vs_home_defense\": -3.89, \"away_qb_adjustment_points\": 0.0, \"home_field_points\": 1.5, \"home_offense_vs_away_defense\": 1.03, \"home_qb_adjustment_points\": 0.0}}, \"away\": \"GB\", \"home\": \"LA\", \"kickoff\": \"2026-11-26T01:00:00+00:00\", \"scores\": [23.8, 17.4]}",
-      "source": "Free evidence-based model commentary (not generative AI)",
-      "news": [
-        {
-          "title": "Healthy Rams pass rushing unit targeting ‘Fearsome’ performance vs. Packers - Los Angeles Times",
-          "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNdk1wRk1VQlRqWEVpZmU2ZVFCajFqY1p0RVJfTG9QMENyYmc1Yk81R1BmbHNURkJQUk5OOVU1Qk1MUEVZdW5vaFZJcGU0UEhoaUZwd1QwR05jWkdYNkgzZkhnaTluNmxwMGlRMWlibDN6TVNCWVZsR2tCVFhRMllwMFV1SUMwMHJteGJsbUR6aTU3UTU2UW5OMUZyN1hmb1diWVVlYW1kT3M4Zw?oc=5",
-          "published_at_utc": "2026-11-24T21:29:25+00:00",
-          "publisher": "Los Angeles Times"
-        },
-        {
-          "title": "Packers star Micah Parsons activated off PUP, reportedly will make season debut vs. Rams on Thanksgiving Eve - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQRkRNcld3emhXdlp2NnQ5bmhEbGRiemtOZnJsSjIxMEdONThsWURDekQ1WldlNF9NOXVRNll3aTNQckpVYVZuLXRfMjRGZXJ2VFlERURHbWJkRTZYejRGU056R3FpcjJSZ0JzX0lkeXFyMkxOUGVhajNTZjJvT2NHTk5wVksxU0ZZVmhxeHZyWU1zRlNUZ1VDR3R4T2RwRWJISXZmXzJPcnlMUEczZ3NuNEs2dTRVMjR3cUI2TTI3dm40TExMYXNGdU1vS1VyMGppdjBBand0MXZ0WExKb3BqWUZha1dYeTRYWlRDQld1WU05RDQzZDBib05HT0V1eC1YQlE?oc=5",
-          "published_at_utc": "2026-11-24T21:27:02+00:00",
-          "publisher": "Yahoo Sports"
-        },
-        {
-          "title": "Packers list eight questionable vs. Rams | Week 12 Injury Report - Green Bay Packers – packers.com",
-          "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPakc2MmRxb3RFcjhUdnljbXFuRGZCb0V6elJtZ3l1b0YzY2JCOEVUTHg3UzJXcDJqRVFEa0hWYkZJbFZ5RTFnRmNJbG11d2x3dEJxWmxxbXhiS1lkcXpUUWlMOHJSZzM1ME9XY3dhV3RtRzRGTjJMenZNdUMxQ2ktNnpObTBuTEtQYWE5bzZFRGlpbVVq?oc=5",
-          "published_at_utc": "2026-11-24T18:01:41+00:00",
-          "publisher": "Green Bay Packers – packers.com"
-        },
-        {
-          "title": "Nick Foles breaks downs Rams-Packers matchup for first-ever NFL Thanksgiving Eve game - Fox News",
-          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNTkRkSXRnenYtbUhyQ3pJWnRBdnVYSS1uSldUYXJGdFdkVW9SNFNyRjRyMU5MOTgwWk44eHFlVkhHQk5ER0RTOFJhS1ItRUpRYUhtdEI4ajR4QTFYWGxHeFJSQWp1b09xQ1c3eTZYYm5QaGxRMzZsOHlWcE5INXpzcTUyazdqZDEwVlZnZldSZ2hqVHk3Q0Z5VGhYMlNsWHMzZ3EyVThNVkdwQzlvLUpZRTQ2NnkyWk95Y3c0?oc=5",
-          "published_at_utc": "2026-11-24T12:48:20+00:00",
-          "publisher": "Fox News"
-        }
-      ],
-      "external_context": null
-    },
     "2026_12_CHI_DET": {
       "headline": "CHI at DET: contrasting offenses shape the outlook",
       "stories": [
@@ -79,15 +27,15 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Chicago Bears vs. Detroit Lions: How to watch the Thanksgiving Day early game, start time, where to stream and more - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNSHFmZU1mTngxZmJMS0FNVDhOMmZvU3BUQkh3cGpMQUlkTnVjNUwtT0FDSmM4LVl6NmNpR3ZXVTFhS2xkV2JDUnhWLTMyRHNKSVAzZkdUd2gxZzdKZ3pyblNxbXFJWEVsdUIzZ3hmdmNsVDFQSFE0U2lMb2RuMERwc0VwQWYyZ1J6UXg2UzdfT0lhdGlpT0lmVzRDOFZjRkROTVI0WGVvTmtiX2JkWk92V0ZUSmJRUlFuaUpYd3BQUzZ2aE9ickpkUGxlVkFnVzVXU2VjTmRxZ2p5emx5SEVPNmFrbHFQV0tlM1g1OUVmckZudzh3dlE?oc=5",
-          "published_at_utc": "2026-11-25T20:29:00+00:00",
+          "title": "Bears vs. Lions Latest Injury Reports for Thanksgiving Day Matchup - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPWXJEUXd4UVpFNFI3eFhQRjhuMS1MY2hNY3BCZWR3THZYeF9PSzR4czZYU3BZZ3hsTFg0eE11LXdOZ3dsYjJ6QkVwUlVkRG9pOU05Z3BXZnFSLW1QZGtuWG9JQVU1STFuem5UNURFQUFaOWFGeHZ1c1ZQMXYwMFBXcUYyOTd2WXA1MzVF?oc=5",
+          "published_at_utc": "2026-11-26T00:15:16+00:00",
           "publisher": "Yahoo Sports"
         },
         {
-          "title": "Bears vs. Lions Latest Injury Reports for Thanksgiving Day Matchup - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNQldUaFV2ZEl2U3RKMF9sWWtIODBlX3JOYU9iak43R3ZfUEVMdFd3S0VkWEZ6OGp5dXVVZFhMOG1reXJ1NU43QnFJb2U5bXRlZmRZbjRTOUFQMS1YeGJJSHFab0JudmVVdjRWa2ppUnRnbU5MMnhacHFTdlM3UlBTazJCRGhFV1FX?oc=5",
-          "published_at_utc": "2026-11-26T00:15:00+00:00",
+          "title": "Chicago Bears vs. Detroit Lions: How to watch the Thanksgiving Day early game, start time, where to stream and more - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNSHFmZU1mTngxZmJMS0FNVDhOMmZvU3BUQkh3cGpMQUlkTnVjNUwtT0FDSmM4LVl6NmNpR3ZXVTFhS2xkV2JDUnhWLTMyRHNKSVAzZkdUd2gxZzdKZ3pyblNxbXFJWEVsdUIzZ3hmdmNsVDFQSFE0U2lMb2RuMERwc0VwQWYyZ1J6UXg2UzdfT0lhdGlpT0lmVzRDOFZjRkROTVI0WGVvTmtiX2JkWk92V0ZUSmJRUlFuaUpYd3BQUzZ2aE9ickpkUGxlVkFnVzVXU2VjTmRxZ2p5emx5SEVPNmFrbHFQV0tlM1g1OUVmckZudzh3dlE?oc=5",
+          "published_at_utc": "2026-11-25T20:29:00+00:00",
           "publisher": "Yahoo Sports"
         },
         {
@@ -110,7 +58,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 55.3,
           "away_pct": 44.3,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873081"
         },
         "article": {
@@ -161,16 +109,16 @@
           "publisher": "ESPN"
         },
         {
-          "title": "Eagles at Cowboys Injury Report - Philadelphia Eagles",
-          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQWmt1MEE0dS1JTDZDR1prRWhGd1AxLS11bGdLZ25PNGlIQ0FBYXl2ODljUjlVUGw0VjJLZ2t1M3hpUUNkclBVNmJBT1QtQUlTVGwzenllWmxLN3FoNHpwYXBhdm5NTzBpdl9rSnFqT1RpSTd1dFRSTVVEUlpoZUZtXzBnOFpLYUt3UG16MGdWNDlSSzVQWU43WFJNWUxEMjY3dTdn?oc=5",
-          "published_at_utc": "2026-11-25T19:02:16+00:00",
-          "publisher": "Philadelphia Eagles"
+          "title": "Philadelphia Eagles @ Dallas Cowboys: Live game updates, stats, play-by-play - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQWkN2SVkwU3NoVWtYOFYyQzhIN2ZaY2dPT3VtU0ZKLVBEMEVZRUJRVTRsLWJuTGlpUEtvdFVYdzQ2U3h4U01NSlZnWmpLX044ajhmUzIyZm01S2twaE5oajlIc1V4djVEa0U2MW05MEhEVFNpZVR1NmZNZDFEZEt1Y0pB?oc=5",
+          "published_at_utc": "2026-11-25T22:44:27+00:00",
+          "publisher": "Yahoo Sports"
         },
         {
-          "title": "One bold prediction for each NFL Thanksgiving game, including Cowboys' Dak Prescott to feast on Eagles - CBS Sports",
-          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPZDIwUU5RODdhZjRYdFJxb2hhLUNoN1R5ZXRqQ3NrMjVQWWhNZkNJb3Y3T04xUUJxZDBwTGQzY3R5dFBBRTVUTmhVR0xNdkxlN0dTOHJzbm1pdWtadW0xYWw2V21VWHdMc2pKdDJPcnFaZFlHS0ZjSlZpdW5UMml2dzdYWEtzOXNjVFJpX1JuRUpvbWJIWnc3VXJDYm1UT05YcF9reDhONWlHWXdsVEZleTQ0MlNPV00?oc=5",
-          "published_at_utc": "2026-11-25T14:37:00+00:00",
-          "publisher": "CBS Sports"
+          "title": "Philadelphia has not been a fan of Dak Prescott's comments about Joe Milton ahead of Cowboys vs. Eagles matchup - A to Z Sports",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNR1FEd1E3a0kwOVc4dUFxbTBlWUFSZWNrb25jVHlsSXRQZ3B2NFZ0ajJ3cVBwZldMdzR1UlBMOUZSNUhkcFBtLWZJVkRtTS1QVlJfTkdWTnl5bVYtSUR4WUktbXphdnZZVXgwX1hUVHNkY05maVd6cVFiOEtFLWpVc2NXRW80YXhFOUtNZ2otYXBhR1l0dWhFTERYa3NWSVh2UFVoU2lLSVJ3REh0eTE0?oc=5",
+          "published_at_utc": "2026-11-25T17:00:58+00:00",
+          "publisher": "A to Z Sports"
         }
       ],
       "external_context": {
@@ -180,7 +128,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 82.9,
           "away_pct": 17.0,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873080"
         },
         "article": {
@@ -219,10 +167,16 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Best bets and top prop plays for Bears-Lions, Eagles-Cowboys and Chiefs-Bills - ESPN",
-          "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQZ0tyeHhUTEdlX2c5TVBmMUR2Mlpha2JTRWJGX0JnMjBiTWZMcHNUZ25VQ09mVU84bk4zYy0wdS1KREUySHdQZUxYc3FpZ0ZaLVp2MlpqRlMtN05GaW1fTWF4bUNBQTVIVmZVd2RLT0xPLW1KN2hwRnR0NGZPaGNpNFR3bDI1LTd5dUpUMTFjRGJmaTJuNFB1SDM5SlVwWFpVZWlsYjVkVmU?oc=5",
-          "published_at_utc": "2026-11-25T23:00:00+00:00",
-          "publisher": "ESPN"
+          "title": "Week 12 NFL odds, picks, predictions: Our best bets for Chiefs-Bills, Sunday's games - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNZDhaVHJGdmhZc0d0RS0xMEFoQVFuc1JNNGFNZkc1b2w0b3JHb2wzZlZqM3d5c1VFR2dJWmxhYVZ4Y3RVb0hwRE1LNmZ6bWppVFZ2cndDSHJQOG02dzUzZm92ZkpsM2lKSzI5LXZKUUVQN2lLZnYwcnB2TG16c19Fbk5fc1A0cVNGRWtGR3FsbTZjSUF0d2s3bWdPMk4tM3M4U3pKUml2MnBkamFOa2dkUDk0OWFRTjdGYU4wa0F3ZjUxRFhNRTQzelpYSk9oZTJCSlFLNlZB?oc=5",
+          "published_at_utc": "2026-11-25T23:19:26+00:00",
+          "publisher": "Yahoo Sports"
+        },
+        {
+          "title": "Patrick Mahomes Is Peaking At The Right Time Ahead Of Chiefs-Bills Matchup - FOX Sports",
+          "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPbkxOTjRlaXg5ZWo4Y29PR1VuRlltTkdFUTVrS2JxU2I3VGVTUEtTZlQ0eVpqNmpaQWJWS05DenNBN3czRmNEcEE4akViVlBpR3ZWbS12dk40TVl4cy02bTBSWG5XV0Raeklxa2I4ZzFRQklXSDhBbEZKVkFSamMzQU5Fd9IBgwFBVV95cUxNaURLbU9sOHlVcXliUExZR01TX3VmZkZnNmk0X3VRSWxabDVzbGVRejU5Z0Y4aHpycXFsbl91Sld0T0lweDlkeW1EZXRvLXE2WXQ4MXhQbGN5V3FTQzZERWVSX25YUUJrWEJOTG5uMnU5VVE1aXVLODlPLWNPMHNrdjY1OA?oc=5",
+          "published_at_utc": "2026-11-26T00:52:47+00:00",
+          "publisher": "FOX Sports"
         },
         {
           "title": "Patrick Mahomes vs Josh Allen: Who will win the NFL's biggest game of the season? Kansas City Chiefs and Buffalo Bills headline blockbuster Thanksgiving - Sky Sports",
@@ -235,12 +189,6 @@
           "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5IanZaTDBUbG14REZJYUpkLTR6dk02QW55bDJ3QlF2a1JxR2Y1T09uV0ZkQlh5anliTnJzT1p0c1QybUZIN3dPdTRMelpXZ3lFOVNDZWhJdV9PNkw0cXVoTXFNTzBlYnc4dDM3aldjX2NjWk5CbjFMdEdR?oc=5",
           "published_at_utc": "2026-11-25T22:48:17+00:00",
           "publisher": "Kansas City Chiefs"
-        },
-        {
-          "title": "'All eyes are on us' | The Bills share their excitement ahead of Thanksgiving matchup with the Chiefs - Buffalo Bills",
-          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNWnprMGRERVd0SGNYZ1BsUTJfRHpzWGF5ZVBOT3ZIblNqd3lsRmZGN1ppQlZEMEt6bXU0X3ZEZHF1eWdGZjB2N1dHWUtZLWMzRWcxN1NJQnVvdzg2YjE0MGZyU1dRN0VvSlplN0xFbE5GcmYyUzdpMGx3bDFCTWFrenFtV2k5ZlhUUzl4OFlZNDRtcVRSQUZDUG9peDdSS3dVV1lkam50Vk5EczR1eFNOcWxfMlNtT2V1cnowYUZyLVN0aVFMbm44TjJ3TQ?oc=5",
-          "published_at_utc": "2026-11-25T04:44:20+00:00",
-          "publisher": "Buffalo Bills"
         }
       ],
       "external_context": {
@@ -250,7 +198,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 53.1,
           "away_pct": 46.6,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873082"
         },
         "article": {
@@ -289,10 +237,10 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Broncos pivot after Steelers bench and release Aaron Rodgers - FOX Sports",
-          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPeFgyMGZBOEgwRmU1NFpyMUtEdlhmeW5OaVh3QURkVUQwbG0tQkRMNDNpTWkwOUtlV0NVV0ZWa3o2ak1wXzBJRG5vMmVQd3hjTUtiYmRndl8tcmxfd2t4bmRCclVwUTlxWnVMUDdldGlZd1E2WkxQNzRGeWJsNFZhU25oeGJWdmdkYlFaTjNtekVidU5RMlpqUzRXQ2pmSGhT?oc=5",
-          "published_at_utc": "2026-11-25T23:29:53+00:00",
-          "publisher": "FOX Sports"
+          "title": "T Mike McGlinchey on facing the Steelers' defense: 'We have our work cut out for us' - Denver Broncos",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQX1RGZ1NhN01JdV9EXzdTODh0Zm1nQzVzNEpQNzBNYmZQeUNidmNpand3Ympzb1VpbHlIekVObl9UU2ZPZTdmcjkxSXkxQlBRWUdPemVsekpqak92Q3JSNnRyZUZOS2hTaXZsUDdfRW9kbDNXQ0Y3VnNqbTZNSGx4cThYbW1ocTlLbmx4MkdEWHV4N0xuTE5PQUxLRVdKdHotdzkyLXNSeHZoUWdFN3ZsUHF2ZnE4UUk?oc=5",
+          "published_at_utc": "2026-11-26T00:29:53+00:00",
+          "publisher": "Denver Broncos"
         },
         {
           "title": "Steelers’ Nick Herbig still limited ahead of Broncos game - Yahoo Sports",
@@ -301,16 +249,16 @@
           "publisher": "Yahoo Sports"
         },
         {
-          "title": "Week 12 Injury Report (Broncos) - Steelers.com",
-          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5LRFB3MmNRd3JUdWJtSXRJMThTdkRVYUJ5Zl94cjZGb19ERUpiYUgyRHA4cDlVREJTZm8wa3FLdXRCWUo0cThyTG50QVAxSlR3Mmk3QUVZWVVFelhhaV9SakJ0SktnYzE3VG1TSVBkWUQwWEE?oc=5",
-          "published_at_utc": "2026-11-25T20:53:08+00:00",
-          "publisher": "Steelers.com"
+          "title": "Aaron Rodgers will be inactive for Steelers Friday vs. Broncos; Mason Rudolph to start - NFL.com",
+          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOQ3V6TlJlb093VjNNRXhER3Ffb09RSUxOeTA2QThsV2dFNS1zVEItT0tnWWVsXzFYVGZwME1VdDVVQUI1VFhZS3h0MnU1Z2J0NVIwNzlBXzYtM0RWZWNkM0VjQnlYY1c3WlRhUkVuYXlEQmRiNkp6M3NjV0ctTEtzT2NwYnBuS3h4MEdROXZGOFEta0ZRS0phaDVGUHBfUk1QZXBrUXZQMkUtaXJ3SXc?oc=5",
+          "published_at_utc": "2026-11-25T01:23:00+00:00",
+          "publisher": "NFL.com"
         },
         {
-          "title": "'This is why you play the game': Broncos preparing to play in 'tough environment' as Black Friday matchup vs. Steelers awaits - Denver Broncos",
-          "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxOUFNNaTlpNWxyVTRyTWZiVDJJT2o3YUdlZENxUjBvd3hLZTR0SXpXRTNpeExlc3MxLTZoTzFrclVuWVhlbUd1ZnQzZmdzTG1fY0NKaGV2bi1uZnBQUnM0cTFESU03SDlDdFhNa1VURy00TUFTQTFXazNoU3JMM2VFTFVvbXVBcTlBcG53dGV3UzBkcUJFdldJWllDaE5ZZnRWMWRVbjJWY25OMkVlOGlxM3h4bXdvdEp1N2JOOHFGMTFoU3ZDZU45VGk3WUVPVUVtUjQtOXl6OWpPNWNmM0JqU19RQ29PbmxPcWc?oc=5",
-          "published_at_utc": "2026-11-25T01:14:11+00:00",
-          "publisher": "Denver Broncos"
+          "title": "Week 12 Injury Report (Broncos) - Steelers.com",
+          "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5LRFB3MmNRd3JUdWJtSXRJMThTdkRVYUJ5Zl94cjZGb19ERUpiYUgyRHA4cDlVREJTZm8wa3FLdXRCWUo0cThyTG50QVAxSlR3Mmk3QUVZWVVFelhhaV9SakJ0SktnYzE3VG1TSVBkWUQwWEE?oc=5",
+          "published_at_utc": "2026-11-26T00:45:00+00:00",
+          "publisher": "Steelers.com"
         }
       ],
       "external_context": {
@@ -320,7 +268,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 51.3,
           "away_pct": 48.3,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873083"
         },
         "article": null
@@ -358,16 +306,16 @@
           "publisher": "New Orleans Saints | NewOrleansSaints.com"
         },
         {
+          "title": "Bengals look to get back on track when they host the Saints on a short week - FOX Sports",
+          "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQLW9YbUJtbTgwZWJRX1JKeHNPS1N4b2dDcHRBYktlRk1jU2tDQVN6QVYtSDZOd3lLaDBBRTNxVEZHdHhiZjdwdkhCWkZOengwZFh3endTYjZnV3l3UW9HLUFjTU9ZN05EUHJzS3NfazBRbHBob3BtQVI4SlNQV2RreWlCWk1ONmpEdnJqY3hEQ2tYX0tKRFBoYVpTcnhwVGtnenRsTWFuZkRGdWFhN3pjR3dVRXI?oc=5",
+          "published_at_utc": "2026-11-26T00:37:06+00:00",
+          "publisher": "FOX Sports"
+        },
+        {
           "title": "Bengals vs. Saints NFL Week 12 Broadcast Map: Will you be able to watch on TV? - Yahoo Sports",
           "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPTUNQUWk3TVlQU3lyUGVuTHBudENPRnhScG0wcVVBaEsybUsySHJnTnVRNXJfU2hCWW5TX0wxbU5FQWlxajMwR0pUb1hVRElQajIteXRGZ0lqeFpmdkQ5X0xFRURnQmdwQ3lXcXA0bXUya3BGZllUMVFBSUVQUHFLUkhMS1BZdw?oc=5",
           "published_at_utc": "2026-11-25T16:30:09+00:00",
           "publisher": "Yahoo Sports"
-        },
-        {
-          "title": "Bengals look to get back on track when they host the Saints on a short week - Newsday",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9aMmZYU1NJVEw3YTgyX0hDVV9DWDVaRl8xal9QSlZwSE91WnlTZmZOZDliMlpOSk5UeV8xWEdtSldNS29kVEU2TmtrOTNfc1NlNU4wUjRPZVQ4Nk5QR0MzQzFGNVprUy14a1RINy1uZnNpM1dBUmxFNQ?oc=5",
-          "published_at_utc": "2026-11-26T00:38:20+00:00",
-          "publisher": "Newsday"
         },
         {
           "title": "Bengals look to steady course against Saints - NBC Sports",
@@ -383,7 +331,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 80.7,
           "away_pct": 19.2,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873087"
         },
         "article": {
@@ -422,28 +370,28 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Texans vs. Ravens preview Week 12 - Houston Texans",
-          "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5iLVplUmIxeG42aG5ZUVl3YmUtUGZtNG05SkEyRTd3T29nQXY4X3ZjXzNFNm1UcW5yOVd3ajc3d1VNalBIVWRwUV9yR3hySGNwbElCNl96ODlkRDNKOGp2UURmWmdQMEpkX2dqOWVTd1A2V3lHNkRR?oc=5",
-          "published_at_utc": "2026-11-25T22:42:52+00:00",
-          "publisher": "Houston Texans"
-        },
-        {
           "title": "Ravens vs Texans picks, predictions, odds for NFL Week 12 game Sunday - azcentral.com and The Arizona Republic",
           "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNelhPSlRYdDVTRzZDdmRDejV3bk1kQU8tTnhDQ1F3Tm84T1hWcEFwYkRENWlhYjhhU19xRUdBWUhwZlhKcXdGNWxOM1VmdmNjd3F2V3V1dXlNODNRUGJJLWJrR1hYWF9xZUlnY2pxUWxVQ1dGNGN1ZFN3YVBQR3lia3d4YTk2X2ZKY2RJdnRsS2hobnRvVVA2NEZLdjhTTWFoQTV4cDNvVS0xTFVsVzRKSk5ITDc5VmJibTdVZHRDa2NhLWFwVjNWMExNRV85UQ?oc=5",
           "published_at_utc": "2026-11-23T19:53:03+00:00",
           "publisher": "azcentral.com and The Arizona Republic"
         },
         {
-          "title": "Texans Injury Report: 5 Players Miss Practice Ahead of Ravens Matchup - Sports Illustrated",
-          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQcjZ5Mk10MHp4ZDRhS3h4aTNxYnN6eTd2d1NfMUZKU280NGdnOEdvS05UdXluaEl2SmIzaFpxNDFjRjhtSWpmc0tOVlVnRXA0NUN5YkNRYzM2Q3o3TFhzQ3JDSHpXdTB0UHUyNWMtTGFvMjZ4aVlXaWNoMHh2ekh0R2w4UDE4aTlCSnZqYVR3ZTN1RWh4OElZYUFtT3RlZF9GYmpGWWZR?oc=5",
-          "published_at_utc": "2026-11-26T00:02:16+00:00",
-          "publisher": "Sports Illustrated"
+          "title": "Texans vs. Ravens preview Week 12 - Houston Texans",
+          "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5iLVplUmIxeG42aG5ZUVl3YmUtUGZtNG05SkEyRTd3T29nQXY4X3ZjXzNFNm1UcW5yOVd3ajc3d1VNalBIVWRwUV9yR3hySGNwbElCNl96ODlkRDNKOGp2UURmWmdQMEpkX2dqOWVTd1A2V3lHNkRR?oc=5",
+          "published_at_utc": "2026-11-25T22:42:52+00:00",
+          "publisher": "Houston Texans"
         },
         {
-          "title": "Stroud, Texans look to bury reeling Ravens - NBC Sports",
-          "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPUW5oUDRqam1HRkw2cEVJN2h2YW9mdUJXb2FZMDd2TzZNVy03ekdtbEd6cUVBSHByd200RkRXZXljblRjMS11NERQYUxqZ3d3eWtiRkZKd2tJbEROaF95V3pfUWhwZ0lqVHlFY0hIbXJvTjdrRmFfNU9EUEh5Q0hlUkM1czJnc284SURtZXBndjlGaU1HdVd0eDgzZFVhZXpNUHlablFXYTlVN1lqbVJBTURua0RUOGNNRnc?oc=5",
-          "published_at_utc": "2026-11-25T21:05:26+00:00",
-          "publisher": "NBC Sports"
+          "title": "C.J. Stroud on Nico Collins, Confidence & Ravens | Full Q&A - Houston Texans",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQenM3WXJCXy1yVFFQcERsUlJERDlnb1padDd0RHJSV21SRGthTDh2Z3YtajZRX3hIVFN2MzYtZjlyVUNkOWtLcjA5QlJQVGw5VUprMUJSUkNMT1dUR213QTNuSTBxTmJZT2VqU1JVemNqZ0dBQTBuQWUxd0RucTZOUjVzdjl0Q1NLazBtOWU0dFJKaVJ2XzJXRGcwRQ?oc=5",
+          "published_at_utc": "2026-11-25T22:52:50+00:00",
+          "publisher": "Houston Texans"
+        },
+        {
+          "title": "Texans' Chances of Beating Ravens Look Strong Based on Week 12 Odds - Sports Illustrated",
+          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNMEIxaEhEV3N1VFNNNmhIUjkzUGpmOXlfTEItU3VQYkxLWTU2LXNBSnh5SFlXRDdUX2ZRUEZETFFTM0ZIWXVQeThoeHRsMzdaMmRBOWNRakhGdHB2TlZxdGcySUNTQXlNT2NnR3Aya1o5NFpfZ0s5Mm9JbjBJZGxaYVhuRDNWLTVEcXViSDVHQmtZelFlRWJxdERaRVhvakJMRXBN?oc=5",
+          "published_at_utc": "2026-11-25T13:57:23+00:00",
+          "publisher": "Sports Illustrated"
         }
       ],
       "external_context": {
@@ -453,7 +401,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 83.4,
           "away_pct": 16.5,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873085"
         },
         "article": {
@@ -492,18 +440,6 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Injury Report: Statuses for Giants vs. Colts - Giants.com",
-          "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBOZGh5MENNRFRaZVBFcnFaRFRhQXdiY0JWbHVwWW9UR3g0N1MwOFhGbHNxUU16VzZQOGd1Yzh5cEpWbnNoSzV4alZkMVdaSHZKbUowbnJ1R2lJQTZoYnkzVW1hM3RLUU5Cdk9TYlJpTW5DdWZmVXI0M3Bn?oc=5",
-          "published_at_utc": "2026-11-25T21:17:39+00:00",
-          "publisher": "Giants.com"
-        },
-        {
-          "title": "New York Giants Slammed With Awful News Before Colts Game - Yahoo Sports",
-          "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNak5pVU9XaDNyQ2UzTlVKTWswWFhteTNGa09lbDBpV3pUeG5ieUpIYzNJMXR5cUliSHVpVENXeE9QWkpHdmQ1SHZlYTVKX1BpV0c3cWhpd0Q2MTBNM0JNcWctMk43aTJwSXRyMlVPaXFoT1JyOVVPS2ctVHc0c3M0Q2xaM0NFdw?oc=5",
-          "published_at_utc": "2026-11-24T12:00:43+00:00",
-          "publisher": "Yahoo Sports"
-        },
-        {
           "title": "QB Anthony Richardson hopes to follow J.J. McCarthy's lead when he starts for Colts against Giants - ABC7 New York",
           "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOZHhOYWhaOHJaSHYtamI4ZUlpR3pSbEhjNWZndE5McTNJc3ctWkhtZ1c4RE1mTmotZ21wQVkyaW4yb01CQ3JkdU01NV9yMWxWbHhWSmtORXljM0NzVGxSUDRwZUI4azJHOFQ1OFpMUzhPdGhEeEZKd0duUGViNjcwWlJDMWM4eHNxOXMzdTlZUzJpbUExczBkTUtTNXpybHBTQ3FfZkhkVUl6YVhQa2pNQTV1Q0c?oc=5",
           "published_at_utc": "2026-11-25T23:40:42+00:00",
@@ -514,6 +450,18 @@
           "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNU0hDTldTWU90Tkl5RjJ5Q2hkMjRiRW5CajFnVmxCSjhpbXJ4bVk1YmVyZGFmSFVVRks3ZTZWLWtDNFlHQUxqWjdCMnBmdS1CTXEwbUllVmViU3NoR09SZVhQcGc1cnhid3NVWU5OcGNBTkxDbEhKc3pveU9SQVlNaWhZV2daVHRzRUF4VA?oc=5",
           "published_at_utc": "2026-11-24T20:28:38+00:00",
           "publisher": "Colts.com"
+        },
+        {
+          "title": "Giants Star Pass Rusher Abdul Carter 'Day-to-Day' Ahead of Week 12 Matchup With Colts - Sports Illustrated",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPd0YzUm92cEZJeDFkY3dtZGE5TzBHYWtGeDd0ZmdXaWY2R3Q5WnNvR2pwa1EwVlIza0o2akRxdW96UzNhekE5Y1RmVU1EaDgta1RYNmFNOTlOenBVbXJfNkNremZSaEJkTnoweWFQektTOTFTMWhiR2ZRcEt0RmhZVVpuaGVDLUJzR1ZCZUZtNU1DbG56YzNlSTI5QQ?oc=5",
+          "published_at_utc": "2026-11-25T22:37:05+00:00",
+          "publisher": "Sports Illustrated"
+        },
+        {
+          "title": "John Harbaugh focused on Colts and NFC East, not statement Giants win - New York Daily News",
+          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOX044c2VrdGw3ZGt4dGlfcjZxczNmQi15WVJvSXdja3JwZnBiUXh6bWRDS0h4eE40Z0ZBVEE0VEJ6a3N6elAzRV8zTzdYV21aQnpwT05kV1lLbHNlT21pNno0RzZmcjIyeXl4Q1BMRy0yUHhBblJ3QnJDbjNQeGVQUVVPYzNOWVV5ZEx6R3hpSnhSVUw4LWVNS2pkRlNqTmdLRnNzMkhTZFpUZmRF?oc=5",
+          "published_at_utc": "2026-11-23T16:24:47+00:00",
+          "publisher": "New York Daily News"
         }
       ],
       "external_context": {
@@ -523,7 +471,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 52.8,
           "away_pct": 46.9,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873088"
         },
         "article": {
@@ -562,10 +510,10 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "NFL Week 12 television maps: Tennessee Titans vs. Jacksonville Jaguars - Titans Wire",
-          "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNcDhIV0wwYjhOOGhIMk5JWng1UTFicGVfVEdwamk0RGhfQjRIY2txNHcxbDZvbzJkbDZnRi1GaFFPYWotODA0NWVTN0U5N0NVMjVNOWJzdkpwWnFuWkR1eGE5RjlwTDQ1SDBaLTdWQzhMdDBSaDRSbGR2VUlLSWRNSEMxbTkyN3lydERaTzNraFNlWWwtQXJrMk82dzFsTHRucU5LSGxhMjFaZy1FVmdUVURCeTNkdDFSY2g5WlZDV0o0cUVhOEJKZGdFNXNzc0FwWlZ3alN1SjVKZ0dYbGJqRnNn?oc=5",
-          "published_at_utc": "2026-11-25T20:35:00+00:00",
-          "publisher": "Titans Wire"
+          "title": "Jaguars are simplifying the operation in hopes of bouncing back against the woeful Titans - FOX Sports",
+          "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQLVNzSE83aFpsZUNsaHg1T1FzaWEzZzZfQU5wbTQ4bDVzS2E5N202SDh3d0JtRU94TGhKUENLcDcwX3hTVklOa2VMR0VUUTNZNGdGMkRqMDd6NG9oWWdtSVhFUGVCRUlXYmh3WmhjbmNfdm5ZTm5NRFlRQ1RRLUl1RmJoVWZhWW0yYXhCanVKcThVRktHNW1BeThCRGhBMXUySTd2dHIzQUVlcW5RcnFHRlVrTU16WmVZNkdleE45ejE4RllRMVc4?oc=5",
+          "published_at_utc": "2026-11-26T00:16:55+00:00",
+          "publisher": "FOX Sports"
         },
         {
           "title": "Jaguars vs. Titans odds: Opening lines for Week 12 matchup - Big Cat Country",
@@ -574,16 +522,16 @@
           "publisher": "Big Cat Country"
         },
         {
+          "title": "NFL Week 12 television maps: Tennessee Titans vs. Jacksonville Jaguars - Titans Wire",
+          "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNcDhIV0wwYjhOOGhIMk5JWng1UTFicGVfVEdwamk0RGhfQjRIY2txNHcxbDZvbzJkbDZnRi1GaFFPYWotODA0NWVTN0U5N0NVMjVNOWJzdkpwWnFuWkR1eGE5RjlwTDQ1SDBaLTdWQzhMdDBSaDRSbGR2VUlLSWRNSEMxbTkyN3lydERaTzNraFNlWWwtQXJrMk82dzFsTHRucU5LSGxhMjFaZy1FVmdUVURCeTNkdDFSY2g5WlZDV0o0cUVhOEJKZGdFNXNzc0FwWlZ3alN1SjVKZ0dYbGJqRnNn?oc=5",
+          "published_at_utc": "2026-11-25T20:35:00+00:00",
+          "publisher": "Titans Wire"
+        },
+        {
           "title": "Early odds and bold Trevor Lawrence prediction for Titans vs. Jaguars in Week 11 - Black and Teal",
           "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNdnpGUmE1MEhBejJOQWNvZlhPYXB3V3RfZjBiRi0wbHNwTTh0bU41SFZaVkNtNlBtaDFKSHlrMGxDcWpuWTBINUZrajhpUmczZlhaTmJXaHkwY00zRzJKMFNEcmhONXQ3RnRlTlNuNXFra3Y5dzZvLWdCbHpjcEprVmU3NGNqTm9McTlaUUVyc3JIX0JIdFV2RWNsYlVudXRBa2F3ck53cjNZUlhELWs4TUpXaGZCTWRFeUY1OUN2VTU?oc=5",
           "published_at_utc": "2026-11-25T11:00:00+00:00",
           "publisher": "Black and Teal"
-        },
-        {
-          "title": "Jaguars Players Discuss 'Next Play' Mentality, Facing Titans Again in Week 12 | Media Availability - Jacksonville Jaguars",
-          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOcFlONFdpeU90Q0pnYlBhWkNsWjBUb3VCVFN0aUc3Yk4td3dralNqWm9lbUFFS2d6bnRYdXF0dURWNThuQWpOcXNiU25sLXFrOVRaZ0VUVV95QXN5ckVDSEN1WWFuZE5WMzJXdUUtNU1FOEtxNkM0UHFaU1M0UzJyMzdiS2l5S1pGRTdQVlZ2aU42dmRjV3dnMVpkdi1TYXlGY1Q1SEgyT05fVG5yMGZ4eTFoX29YQmdkVG85N2NEaXM?oc=5",
-          "published_at_utc": "2026-11-25T23:40:25+00:00",
-          "publisher": "Jacksonville Jaguars"
         }
       ],
       "external_context": {
@@ -593,7 +541,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 89.4,
           "away_pct": 10.6,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873090"
         },
         "article": {
@@ -638,22 +586,22 @@
           "publisher": "CBS Sports"
         },
         {
-          "title": "New York Jets vs. Miami Dolphins Odds, Betting Lines, Expert picks, Game Projections, DFS Projections and Player Prop Projections - Sunday 11/29 1:00 PM ET - SportsLine",
-          "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBHWHNwcHhXVzZTQmFFTEktazQtRHpBMGVBN1JfcUtZanlEOEQ4emJtX25iTzhlNUFzX0RQd2xORDdubHZPaEdtck40VjhramVLV2ZjUVluQTUtNERyanNGaFJLR0xLN0VhWWd2R1FzRzFFcUNm?oc=5",
-          "published_at_utc": "2026-11-23T12:31:12+00:00",
-          "publisher": "SportsLine"
+          "title": "NFL power rankings: Where the Jets' next opponent, the Dolphins, rank in Week 12 - Yahoo Sports",
+          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOR1UxemNjaUZUYzdwWmJvbG5lZ3dxcUt2dmpGeVZGdVJhampJQ0I2SDY5Y2lFemp2QS02T3EtTW4xRjRsdHkyaTFCV014eWotRGtWdGZMLU5rMjFKdVFwaU1SSDRDX005eTctYVAxTzg4N3JVYjNON0NabDZSSFZNNGZEYnl3dDdmWEE?oc=5",
+          "published_at_utc": "2026-11-25T22:52:39+00:00",
+          "publisher": "Yahoo Sports"
         },
         {
-          "title": "Jets Getting 366-Pound Boost Days Before Dolphins Rematch - Heavy.com",
-          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNeThZdDZVZDJ1ZnBNVnJlVFFvblZ3TUlOWTFmQU9oQVhEN2ZWS0dwWDZoczNkbXcyWXJCMEVwVnRCRGVqUXhpSEVVMU5XZlFhRUJZUUhfNEhfM19jbGZWV0NTMjVFU212S1g5Nm4xQnFqeW9QQzl3bnZxSVY0V19tNkVDWkFiMWpKeUJEcVdn?oc=5",
-          "published_at_utc": "2026-11-25T20:32:34+00:00",
-          "publisher": "Heavy.com"
+          "title": "Where to watch Miami Dolphins vs. New York Jets in Week 12 - Dolphins Wire",
+          "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNZHJYYkdvT1NieDdNdlVTN0JlRGh4bUhZVWFzN0tuN3NKMGlER2ZoTUQ3Vm4wN3l0b3daNkJTeUdYTk5oSWFJMXFkbHlrMFpFV2tIMF91amV3c0VHTWpxdzdGYkNlNi16aHlvd1E4TERVQThMSHMyTUtoWHBBRENkUTVCOGU2LWVkcDJoNG8ySjNlVTd4RVBYM1lpNjBjQ19qazFSREtyQTBoaXhVa2ZPM284MTg5N3dlcGZ3WmYyWWpsRng5VFgxS2dlWW9YUS1pOXpPd2NTdmFrcVU?oc=5",
+          "published_at_utc": "2026-11-25T18:01:00+00:00",
+          "publisher": "Dolphins Wire"
         },
         {
-          "title": "NFL power rankings: Where the Jets' next opponent, the Dolphins, rank in Week 12 - Jets Wire",
-          "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQSHkyMFZmYkJSam5OSm82SXlLcGJZbnV5MGZncFhIM25FNFNYY09DcTB2T2tUVnNjVWd2N2pBWTdUdUk2WnJPN2dOWTdoZWs5blpXSG1pX24wYmJDc2xkbUFhQTZraDF1OEc0OFd6dGdseFpyM21WaC1RaUFrakJFeWxnUFNfdzItalRrRmpwUFdtR1hEY3pIMS05bmlib1VIRVU4Z0gwSTlhMWxRUkhsOV93SGdSV2JHYkZjNndUeFVkcDdQendnSnZuTzdZb2JWU3Y4UHU2U3VqamlpekdqSQ?oc=5",
-          "published_at_utc": "2026-11-25T22:52:00+00:00",
-          "publisher": "Jets Wire"
+          "title": "Jets vs. Dolphins Prediction, Odds, Spread, Injuries, Trends for NFL Week 12 - Sports Illustrated",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOUXdxTGRGQVpUcVp5ekhlamVSUUVESWotSFNxcmJrSVRVMVJ4b1BROEJVWTRuZlgtR2c3UmhLNG0xMVpXb1p5LVNBS1FrOTlxc0l1blJoNmpocUloWV8ycDVJbDBoOXlBdEdZOU5RT2h1LUN1QWxCc2c4ckY1bUhjU1NBb2NwaWMyVTlKaWpPRjVsSzVTaFlxYTBJSGZ6YWJqY2xaWjNKcnhBaFRESFQyYQ?oc=5",
+          "published_at_utc": "2026-11-24T13:30:00+00:00",
+          "publisher": "Sports Illustrated"
         }
       ],
       "external_context": {
@@ -663,7 +611,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 30.4,
           "away_pct": 69.3,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873089"
         },
         "article": {
@@ -733,7 +681,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 80.2,
           "away_pct": 19.7,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873084"
         },
         "article": null
@@ -796,7 +744,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 59.3,
           "away_pct": 40.4,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873093"
         },
         "article": {
@@ -866,10 +814,17 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 37.2,
           "away_pct": 62.6,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873092"
         },
-        "article": null
+        "article": {
+          "source": "AP",
+          "headline": "Commanders try to continue momentum while Cardinals work to end 11-game home losing streak",
+          "excerpt": "------ See AP’s full NFL coverage here",
+          "published_at_utc": "2026-11-26T00:58:31+00:00",
+          "updated_at_utc": "2026-11-26T00:58:33+00:00",
+          "url": "https://www.espn.com/nfl/preview?gameId=401873092"
+        }
       }
     },
     "2026_12_SEA_SF": {
@@ -898,10 +853,10 @@
       "source": "Free evidence-based model commentary (not generative AI)",
       "news": [
         {
-          "title": "Purdy and the 49ers prepare for another tough test against Seahawks' stout defense - Newsday",
-          "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1tMVZaNE5YNUxPWUVrdkR5MkpvcUs4c3R2a01obEF4ZE5zWjdtenNYb1hTU1c0NWVybm84WXFTV0JUeG1heDVJcGFYaUcyZi1PU3VoWjZNZ0k0M3Y4YmYyQzJiUlV0Wnd0R3RaVmsxZE12QjF6SWloUw?oc=5",
-          "published_at_utc": "2026-11-26T00:28:26+00:00",
-          "publisher": "Newsday"
+          "title": "Purdy and the 49ers prepare for another tough test against Seahawks' stout defense - FOX Sports",
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPSW9ZQW02blUwSHZNSzBVOWxXUEtBRjJjenRhSmFONWYxZmUwVVZWNWpaOFhHN0Z6bFFkeE9WZWVFVWtjbjFTN0VncEVBU1N6WWJJZ0MwTXBlVV9JdzVSeHhwbDhZU2czR2k5QVZEOG1JSEhOU3lPZkxuOUpQVUt6eDVCdWlTYWlicTFFQzlTSUlJTjNEQmNLYjZaY0o4YTJkcGQxOExIZk5zNkRyZDhfM3VDNGFDamRPY29KRQ?oc=5",
+          "published_at_utc": "2026-11-26T00:24:58+00:00",
+          "publisher": "FOX Sports"
         },
         {
           "title": "49ers Players Preview Seahawks Rematch, Address McKivitz’s Injury | Press Pass - San Francisco 49ers",
@@ -929,7 +884,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 68.3,
           "away_pct": 31.5,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873091"
         },
         "article": {
@@ -974,16 +929,16 @@
           "publisher": "Cleveland.com"
         },
         {
-          "title": "Raiders' unofficial depth chart for Week 12 vs. Cleveland Browns - Raiders.com",
-          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPOEUwWVRQRjhMa0tGeFlXbVNqRWlONjZFOW9qRlBuSFc3VnNKSUFtdmc2ekZadUxpYlVleWVsZkNTSFpjYlpXZTkyTHEyUVduUnVpRmVOcUl2VU8wdXpDWjcxWlRJRndGYl82dDVxa1IybUxpcGhIRm1oSDBJem1xZG84YjY3am9tN0YxVFNja1dwOU9TRXc?oc=5",
-          "published_at_utc": "2026-11-25T00:24:43+00:00",
-          "publisher": "Raiders.com"
-        },
-        {
           "title": "Announcers set for Raiders vs. Browns Week 12 broadcast - Raiders Wire",
           "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNRE1NbklxT0lZaUtZQ3YzVVpOU1hvUmlSSWhjRHZkcW94UVkwdXpZOFpLeFQ5UFBfVEtuMkZiWWRYbWJtaGgxYU5uS1hGR3Y1VXNCUlNUTGphaXhDZU9taDFhUlp5VFE0TUlmU3NaOVdxbEFCelJSR0R1SFBGZDRRNk9lV3pxWFh2MzNIZkhJaWt1MUtlbXAtUmNBdXQyWHhraGFEeFdCTXluUlg2Y004NzFmZlgtNFBsbEpBVmd6MnNwWHhhNVMwV0RzS2FoYURwbXc?oc=5",
           "published_at_utc": "2026-11-25T16:48:00+00:00",
           "publisher": "Raiders Wire"
+        },
+        {
+          "title": "Browns vs Raiders Prediction, Odds, Picks, Best Bets for NFL Week 12 - FanDuel",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOSmVNdnNEZFNubkFleTVlMnB4Q2YzWk41b3lNVXdFYkt2cTJpOHFXTjRkaTlPYUpUY0dnR3dRcC1KQmRNeldXdXNRUW5jVWUwV1ZsR0FhQ0pRNUdlTDBVcFgzU0VLNEFaMTlaNkNFTndKVmhNLXNtTlAwZGZrRnl3MjNOZG5xN0R2eHN5cnhQT0FueHNORXl2c1JRVGdnY25DQ1lhT1BSQQ?oc=5",
+          "published_at_utc": "2026-11-25T03:38:04+00:00",
+          "publisher": "FanDuel"
         },
         {
           "title": "Raiders vs Browns picks, predictions, odds for NFL Week 12 game Sunday - azcentral.com and The Arizona Republic",
@@ -999,7 +954,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 67.5,
           "away_pct": 32.3,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873086"
         },
         "article": {
@@ -1069,7 +1024,7 @@
           "source": "ESPN Matchup Predictor",
           "home_pct": 67.3,
           "away_pct": 32.5,
-          "retrieved_at_utc": "2026-11-26T00:51:16.598358+00:00",
+          "retrieved_at_utc": "2026-11-26T01:04:48.071157+00:00",
           "url": "https://www.espn.com/nfl/game/_/gameId/401873094"
         },
         "article": null
