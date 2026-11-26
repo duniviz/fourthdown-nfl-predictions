@@ -1,28 +1,28 @@
 {
-  "generated_at_utc": "2026-11-26T21:34:34.672337+00:00",
+  "generated_at_utc": "2026-11-26T22:38:45.132395+00:00",
   "source": "timestamped pregame game forecast locks",
-  "graded_games": 41,
+  "graded_games": 42,
   "summary": {
     "winner": {
       "hits": 30,
-      "misses": 11,
+      "misses": 12,
       "pushes": 0,
       "ungraded": 0,
-      "hit_pct": 73.2
+      "hit_pct": 71.4
     },
     "ats": {
       "hits": 17,
-      "misses": 23,
+      "misses": 24,
       "pushes": 0,
       "ungraded": 1,
-      "hit_pct": 42.5
+      "hit_pct": 41.5
     },
     "ou": {
       "hits": 20,
-      "misses": 20,
+      "misses": 21,
       "pushes": 0,
       "ungraded": 1,
-      "hit_pct": 50.0
+      "hit_pct": 48.8
     }
   },
   "rows": [
@@ -886,6 +886,27 @@
       "winner_result": "hit",
       "ats_result": "hit",
       "ou_result": "hit"
+    },
+    {
+      "game_id": "2026_12_CHI_DET",
+      "season": 2026,
+      "week": 12,
+      "home": "DET",
+      "away": "CHI",
+      "kickoff_utc": "2026-11-26T18:00:00+00:00",
+      "lock_status": "official",
+      "lock_cutoff_utc": "2026-11-26T17:30:00+00:00",
+      "forecast_at_utc": "2026-11-26T16:57:11.405839+00:00",
+      "dk_at_utc": "2026-11-26T17:16:27.651583+00:00",
+      "home_score": 35.0,
+      "away_score": 39.0,
+      "projected_margin_home": 4.33,
+      "projected_total": 45.91,
+      "dk_home_spread": 1.5,
+      "dk_total": 56.5,
+      "winner_result": "miss",
+      "ats_result": "miss",
+      "ou_result": "miss"
     }
   ]
 }
