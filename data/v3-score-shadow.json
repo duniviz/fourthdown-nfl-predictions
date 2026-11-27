@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-27T18:18:20.386078+00:00",
+  "generated_at_utc": "2026-11-27T21:50:37.305863+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_12_DEN_PIT",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-27T20:00:00+00:00",
-      "home": "PIT",
-      "away": "DEN",
-      "projected_home_score": 22.9,
-      "projected_away_score": 21.7,
-      "projected_margin_home": 1.15,
-      "projected_total": 44.63,
-      "predicted_winner": "PIT",
-      "v2_reference": {
-        "projected_margin_home": 1.13,
-        "projected_total": 44.55
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.078,
-        "margin_from_success_and_pass_proxy": 0.018,
-        "home_features": {
-          "plays_per_game": 63.8,
-          "success_rate": 0.411,
-          "neutral_pass_proxy": 0.611
-        },
-        "away_features": {
-          "plays_per_game": 59.8,
-          "success_rate": 0.421,
-          "neutral_pass_proxy": 0.562
-        }
-      }
-    },
     {
       "game_id": "2026_12_NO_CIN",
       "season": 2026,
