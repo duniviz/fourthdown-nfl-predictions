@@ -153,8 +153,7 @@ jobs:
           git add -f data/research-free-nfl-features.json data/market-ml-research-selection.json data/player-advanced-ml-runtime.json data/player-advanced-ml-features.json
           if ! git diff --cached --quiet; then
             git commit -m "Research: weekly free NFL feature coverage and ML ablation [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi
       - name: Refresh player cards with current advanced research candidates
         if: github.event_name != 'pull_request' && steps.slate_guard.outputs.run == 'true' && github.ref == 'refs/heads/main'

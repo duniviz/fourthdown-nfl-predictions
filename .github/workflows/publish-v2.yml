@@ -215,7 +215,6 @@ jobs:
             # Generated staging files are intentionally not published; clear them
             # before rebasing the committed production feeds onto the latest main.
             git reset --hard HEAD
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi
 

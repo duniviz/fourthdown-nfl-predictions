@@ -92,6 +92,5 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh research-only accuracy diagnostics"
             git reset --hard HEAD
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi

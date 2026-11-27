@@ -31,6 +31,5 @@ jobs:
           git add data/player-final-stats.json
           if ! git diff --cached --quiet; then
             git commit -m "data: update final NFL player box scores"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi

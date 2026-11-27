@@ -71,8 +71,7 @@ jobs:
           git add data/pregame-archives/ data/weekly-model-performance.json
           if ! git diff --cached --quiet; then
             git commit -m "Archive immutable pregame projections and weekly performance"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi
       - name: Run walk-forward player yards backtest (completed weeks only)
         if: success()
@@ -267,8 +266,7 @@ jobs:
           if [ -f data/research-injury-flags.json ]; then git add data/research-injury-flags.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "Update research-only DK player comparisons"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi
       - name: Upload research reports only
         if: always()
