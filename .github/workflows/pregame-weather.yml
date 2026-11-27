@@ -53,5 +53,4 @@ jobs:
           git commit -m "data: refresh pregame weather [skip ci]"
           # Weather generation can update other tracked files. Preserve those
           # unrelated changes while rebasing the weather-only commit.
-          git -c rebase.autoStash=true pull --rebase origin main
-          git push origin HEAD:main
+          bash scripts/publish_with_retry.sh origin main

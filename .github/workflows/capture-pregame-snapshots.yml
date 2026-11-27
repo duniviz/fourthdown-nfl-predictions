@@ -111,6 +111,5 @@ jobs:
           git add -f data/weekly-shadow-forecasts.json data/pregame-snapshots.json data/player-history.json
           if ! git diff --cached --quiet; then
             git commit -m "data: preserve latest pre-kickoff projections and DK lines"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi

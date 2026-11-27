@@ -67,6 +67,5 @@ jobs:
           git add -f data/weekly-shadow-forecasts.json
           if ! git diff --cached --quiet; then
             git commit -m "Freeze independent pregame game ML challengers [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            bash scripts/publish_with_retry.sh origin main
           fi

@@ -32,8 +32,7 @@ jobs:
           git add -f research/v4-weekly-results/
           if ! git diff --cached --quiet; then
             git commit -m "Update V4 weekly grading against actual NFL results"
-            git pull --rebase origin research/challenger-metrics-2026
-            git push origin HEAD:research/challenger-metrics-2026
+            bash scripts/publish_with_retry.sh origin research/challenger-metrics-2026
           fi
       - uses: actions/upload-artifact@v4
         if: always()
