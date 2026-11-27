@@ -32,7 +32,9 @@ jobs:
           git add -f research/v4-weekly-results/
           if ! git diff --cached --quiet; then
             git commit -m "Update V4 weekly grading against actual NFL results"
-            bash scripts/publish_with_retry.sh origin research/challenger-metrics-2026
+            git fetch origin main
+            git show origin/main:scripts/publish_with_retry.sh > "$RUNNER_TEMP/publish_with_retry.sh"
+            bash "$RUNNER_TEMP/publish_with_retry.sh" origin research/challenger-metrics-2026
           fi
       - uses: actions/upload-artifact@v4
         if: always()

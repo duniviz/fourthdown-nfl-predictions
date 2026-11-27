@@ -11,7 +11,7 @@ class UniversalPregameScheduleTests(unittest.TestCase):
         guard = (ROOT / 'scripts/check_pregame_forecast_window.py').read_text()
         self.assertIn("cron: '*/5 * * * *'", publish)
         self.assertIn("cron: '*/5 * * * *'", capture)
-        self.assertIn('MIN_MINUTES = 50', guard)
+        self.assertIn('MIN_MINUTES = 40', guard)
         self.assertIn('MAX_MINUTES = 60', guard)
         self.assertIn('python -m live.pregame_cycle', capture)
         self.assertNotIn('Sunday preset game-day refresh', capture)
