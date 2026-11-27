@@ -1156,6 +1156,50 @@
       "lock_cutoff_utc": "2026-11-27T00:50:00+00:00",
       "captured_at_utc": "2026-11-27T00:59:30.641337+00:00",
       "source": "published pregame forecast and available verified DK observations"
+    },
+    {
+      "game_id": "2026_12_DEN_PIT",
+      "season": 2026,
+      "week": 12,
+      "home": "PIT",
+      "away": "DEN",
+      "kickoff_utc": "2026-11-27T20:00:00+00:00",
+      "forecast_at_utc": "2026-11-27T18:17:00.065428+00:00",
+      "dk_at_utc": "2026-11-27T19:00:25.433903+00:00",
+      "captured_at_utc": "2026-11-27T19:30:03.104682+00:00",
+      "predicted_winner": "PIT",
+      "projected_margin_home": 1.13,
+      "projected_total": 44.55,
+      "dk_home_spread": 4.5,
+      "dk_total": 36.5,
+      "dk_home_spread_updated_at_utc": "2026-11-27T19:00:11+00:00",
+      "dk_total_updated_at_utc": "2026-11-27T19:00:11+00:00",
+      "dk_home_spread_observed_at_utc": "2026-11-27T19:00:25.433903+00:00",
+      "dk_total_observed_at_utc": "2026-11-27T19:00:25.433903+00:00",
+      "source": "DraftKings",
+      "projected_home_score": 22.8,
+      "projected_away_score": 21.7,
+      "game_ml_shadow": {
+        "family": "game-score-ridge-v1",
+        "markets": {
+          "game_margin_home": {
+            "baseline": 1.13,
+            "candidate": -0.26,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          },
+          "game_total": {
+            "baseline": 44.55,
+            "candidate": 45.15,
+            "active": false,
+            "trained_season": 2026,
+            "trained_week": 10
+          }
+        }
+      },
+      "lock_cutoff_utc": "2026-11-27T19:30:00+00:00",
+      "lock_status": "official"
     }
   ]
 }
