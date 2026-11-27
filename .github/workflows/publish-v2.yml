@@ -1,6 +1,11 @@
 name: Publish weekly v2 forecasts
 'on':
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      wait_for_window:
+        description: Wait until 80–150 minutes before kickoff instead of publishing immediately
+        type: boolean
+        default: false
   workflow_call: {}
   workflow_run:
     workflows: [Daily DraftKings player prop refresh, FOURTHDOWN unified weekly ML cycle, Publish ESPN scoreboard backup]
@@ -11,21 +16,58 @@ name: Publish weekly v2 forecasts
       - 'data/verified-starters.json'
       - 'data/qb-replacement-trial.json'
   schedule:
-    # Frequent dynamic check for every NFL kickoff; the guard only launches game refreshes 50–60 minutes ahead.
-    - cron: '*/5 * * * *'
+    # Off minute 0 and off the five-minute herd. GitHub drops most of those ticks.
+    # One delivered run waits, or re-dispatches itself, until the 80–150 minute window.
+    - cron: '8,38 * * * *'
     # Daily non-game-day forecast refresh, Central Time across DST.
     - cron: '17 23 * * *'
     - cron: '17 22 * * *'
 permissions:
   contents: write
-concurrency:
-  # Serialize line refresh, forecasts, and final pregame locks.
-  group: pregame-pipeline
-  cancel-in-progress: false
+  actions: write
 jobs:
+  arm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    concurrency:
+      group: pregame-forecast-arm
+      cancel-in-progress: false
+    outputs:
+      run: ${{ steps.arm.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Hold for the 80–150 minute forecast window
+        id: arm
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          ARM_WAIT: ${{ github.event.inputs.wait_for_window }}
+        run: |
+          if [[ "${EVENT_NAME}" == "workflow_run" && "${WORKFLOW_NAME}" == "Publish ESPN scoreboard backup" ]]; then
+            if python -m live.schedule_flex_check; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Scoreboard moved a future kickoff; forecasting now"
+              exit 0
+            fi
+          fi
+          python -m scripts.pregame_window_wait --role forecast
   forecast:
+    needs: arm
+    if: needs.arm.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    concurrency:
+      # Serialize line refresh, forecasts, and final pregame locks.
+      group: pregame-pipeline
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,7 +85,7 @@ jobs:
             # An independently refreshed scoreboard can wake the pipeline if
             # a future kickoff changed; do not wait for the old kickoff window.
             if [[ "${{ github.event.workflow_run.name }}" == "Publish ESPN scoreboard backup" ]]; then
-              if python -m live.schedule_flex_check; then
+              if python -m live.schedule_flex_check || python -m scripts.check_pregame_forecast_window; then
                 echo "run=true" >> "$GITHUB_OUTPUT"
               else
                 echo "run=false" >> "$GITHUB_OUTPUT"
@@ -217,4 +259,10 @@ jobs:
             git reset --hard HEAD
             bash scripts/publish_with_retry.sh origin main
           fi
+      - name: Arm the next kickoff window
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: schedule
+        run: python -m scripts.pregame_window_wait --role forecast --follow-up
 

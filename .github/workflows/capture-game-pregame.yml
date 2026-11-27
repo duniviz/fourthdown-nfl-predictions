@@ -1,6 +1,11 @@
 name: Capture pregame projections and DraftKings lines
 on:
   workflow_dispatch:
+    inputs:
+      wait_for_window:
+        description: Wait until the T-45 capture window instead of checking once
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ['.github/workflows/capture-game-pregame.yml']
@@ -8,14 +13,19 @@ on:
     workflows: [Publish weekly v2 forecasts, Publish count prop projections]
     types: [completed]
   schedule:
-    # Dynamic slate check covers every game day and flexed kickoff without hard-coded dates.
-    - cron: '*/5 * * * *'
+    # Off minute 0 and off the five-minute herd. One delivered run waits until T-42
+    # or re-dispatches itself, so the capture still starts inside T-45 to T-30.
+    - cron: '8,38 * * * *'
 permissions:
   contents: write
+  actions: write
 jobs:
   preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 350
+    concurrency:
+      group: pregame-capture-arm
+      cancel-in-progress: false
     outputs:
       due: ${{ steps.guard.outputs.due }}
     steps:
@@ -27,15 +37,21 @@ jobs:
           python-version: '3.12'
       - name: Check kickoff window outside the shared writer queue
         id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          ARM_WAIT: ${{ github.event.inputs.wait_for_window }}
         run: |
-          if python -m live.pregame_capture_guard --mode cycle; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
+          python -m scripts.pregame_window_wait --role capture
+          if [[ "$(grep -E '^due=' "$GITHUB_OUTPUT" | tail -n 1)" == "due=true" ]]; then
             echo "### Pregame refresh starting" >> "$GITHUB_STEP_SUMMARY"
             echo "This run will refresh DraftKings lines and save them with the current projection." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "due=false" >> "$GITHUB_OUTPUT"
             echo "### No pregame refresh due" >> "$GITHUB_STEP_SUMMARY"
-            echo "No upcoming game is in its one-hour refresh or T-30 lock window. This scheduled check made no data changes." >> "$GITHUB_STEP_SUMMARY"
+            echo "No upcoming game is in its T-45 capture window yet. This check made no data changes." >> "$GITHUB_STEP_SUMMARY"
           fi
   capture:
     needs: preflight
@@ -59,5 +75,11 @@ jobs:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
         run: python -m live.pregame_cycle
+      - name: Arm the next capture window
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: schedule
+        run: python -m scripts.pregame_window_wait --role capture --follow-up
 
 # Re-check pregame locks after the verified 2026-11-22 kickoff correction.

@@ -218,7 +218,8 @@ def validate_due_locks(games, stamp):
         row=by_game.get((str(game.get("game_id")),kickoff))
         forecast=observations.dt(row.get("forecast_at_utc")) if row else None
         dk_at=observations.dt(row.get("dk_at_utc")) if row else None
-        fresh_forecast=bool(forecast and kickoff-timedelta(hours=1)<=forecast<=stamp and forecast<kickoff)
+        # Same two-hour forecast window the lock writer uses. DK totals stay on one hour.
+        fresh_forecast=bool(forecast and kickoff-timedelta(hours=2)<=forecast<=stamp and forecast<kickoff)
         fresh_total=bool(row and row.get("dk_total") is not None and dk_at
                          and kickoff-timedelta(hours=1)<=dk_at<=stamp and dk_at<kickoff)
         if (not row or row.get("lock_status") not in locks.FINAL_STATUSES
