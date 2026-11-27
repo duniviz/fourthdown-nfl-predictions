@@ -17,6 +17,7 @@ on:
       - 'scripts/stale_forecast_recovery.py'
       - 'tests/test_stale_forecast_recovery.py'
       - 'tests/test_forecast_refresh_schedule.py'
+      - 'tests/test_central_sunday_schedules.py'
       - '.github/workflows/publish-v2.yml'
       - '.github/workflows/test-pregame-refresh-retries.yml'
   push:
@@ -50,7 +51,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m unittest tests.test_stale_forecast_recovery -v
-      - run: python -m unittest tests.test_forecast_refresh_schedule tests.test_refresh_reliability tests.test_verified_scoreboard_kickoffs tests.test_schedule_flex_check tests.test_pregame_workflow_schedule -v
+      - run: python -m unittest tests.test_central_sunday_schedules tests.test_forecast_refresh_schedule tests.test_refresh_reliability tests.test_verified_scoreboard_kickoffs tests.test_schedule_flex_check tests.test_pregame_workflow_schedule -v
       - run: python -m unittest discover -s tests -p 'test_pregame_refresh_state.py' -v
       - run: python -m unittest discover -s tests -p 'test_pregame_capture_guard.py' -v
       - run: python -m unittest discover -s tests -p 'test_dk_game_refresh.py' -v
