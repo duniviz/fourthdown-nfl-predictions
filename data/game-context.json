@@ -611,20 +611,6 @@
         "event_id": "401873083",
         "players": [
           {
-            "detail": "out",
-            "player": "Alex Highsmith",
-            "position": "LB",
-            "status": "Out",
-            "team": "PIT"
-          },
-          {
-            "detail": "Injured Reserve",
-            "player": "Ben Skowronek",
-            "position": "WR",
-            "status": "Injured Reserve",
-            "team": "PIT"
-          },
-          {
             "detail": "questionable",
             "player": "Cole Holcomb",
             "position": "LB",
@@ -639,6 +625,20 @@
             "team": "PIT"
           },
           {
+            "detail": "out",
+            "player": "Alex Highsmith",
+            "position": "LB",
+            "status": "Out",
+            "team": "PIT"
+          },
+          {
+            "detail": "Injured Reserve",
+            "player": "Ben Skowronek",
+            "position": "WR",
+            "status": "Injured Reserve",
+            "team": "PIT"
+          },
+          {
             "detail": "Injured Reserve",
             "player": "Mason McCormick",
             "position": "G",
@@ -646,10 +646,10 @@
             "team": "PIT"
           },
           {
-            "detail": "questionable",
-            "player": "Tyler Badie",
-            "position": "RB",
-            "status": "Questionable",
+            "detail": "Injured Reserve",
+            "player": "Sai'vion Jones",
+            "position": "DE",
+            "status": "Injured Reserve",
             "team": "DEN"
           },
           {
@@ -660,10 +660,10 @@
             "team": "DEN"
           },
           {
-            "detail": "Injured Reserve",
-            "player": "Sai'vion Jones",
-            "position": "DE",
-            "status": "Injured Reserve",
+            "detail": "questionable",
+            "player": "Tyler Badie",
+            "position": "RB",
+            "status": "Questionable",
             "team": "DEN"
           },
           {
@@ -1857,6 +1857,13 @@
           },
           {
             "detail": "questionable",
+            "player": "Harrison Phillips",
+            "position": "DT",
+            "status": "Questionable",
+            "team": "NYJ"
+          },
+          {
+            "detail": "questionable",
             "player": "Omar Cooper Jr.",
             "position": "WR",
             "status": "Questionable",
@@ -1867,13 +1874,6 @@
             "player": "David Onyemata",
             "position": "DT",
             "status": "Injured Reserve",
-            "team": "NYJ"
-          },
-          {
-            "detail": "questionable",
-            "player": "Harrison Phillips",
-            "position": "DT",
-            "status": "Questionable",
             "team": "NYJ"
           },
           {
@@ -2083,6 +2083,13 @@
           },
           {
             "detail": "questionable",
+            "player": "Anthony Bradford",
+            "position": "G",
+            "status": "Questionable",
+            "team": "SEA"
+          },
+          {
+            "detail": "questionable",
             "player": "Drew Lock",
             "position": "QB",
             "status": "Questionable",
@@ -2106,13 +2113,6 @@
             "detail": "questionable",
             "player": "Jaxon Smith-Njigba",
             "position": "WR",
-            "status": "Questionable",
-            "team": "SEA"
-          },
-          {
-            "detail": "questionable",
-            "player": "Ernest Jones IV",
-            "position": "LB",
             "status": "Questionable",
             "team": "SEA"
           }
@@ -2645,6 +2645,6 @@
       }
     }
   },
-  "generated_at_utc": "2026-11-27T01:42:35Z",
+  "generated_at_utc": "2026-11-27T12:10:44Z",
   "schema_version": 1
 }
