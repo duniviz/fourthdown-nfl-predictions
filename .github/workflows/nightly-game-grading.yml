@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/nightly-game-grading.yml'
       - 'live/game_official_results.py'
+      - 'scripts/check_pregame_forecast_window.py'
       - 'tests/test_game_official_results.py'
       - 'scripts/postgame_evidence_coverage.py'
       - 'tests/test_postgame_evidence_coverage.py'

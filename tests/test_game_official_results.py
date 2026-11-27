@@ -67,8 +67,9 @@ class OfficialResultsTests(unittest.TestCase):
     def test_kickoff_guard(self):
         now=datetime(2026,11,8,20,tzinfo=timezone.utc)
         game=lambda m:{"kickoff_utc":(now+timedelta(minutes=m)).isoformat()}
-        self.assertTrue(due([game(85)],now))
-        self.assertFalse(due([game(20)],now))
-        self.assertFalse(due([game(155)],now))
+        self.assertTrue(due([game(55)],now))
+        self.assertTrue(due([game(40)],now))
+        self.assertFalse(due([game(39)],now))
+        self.assertFalse(due([game(61)],now))
 if __name__=="__main__":
     unittest.main()
