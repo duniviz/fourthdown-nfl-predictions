@@ -1,12 +1,12 @@
-"""Allow a full forecast refresh 50–60 minutes before a published kickoff."""
+"""Allow a forecast refresh within the hour before a published kickoff."""
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from live.game_pregame_observations import dt
 
-MIN_MINUTES = 50
+MIN_MINUTES = 40
 MAX_MINUTES = 60
-FRESH_MINUTES = 10
+FRESH_MINUTES = 45
 
 
 def recently_refreshed(data, now):
@@ -32,10 +32,10 @@ def main():
     games = data.get("games", [])
     now = datetime.now(timezone.utc)
     if recently_refreshed(data, now):
-        print("Forecast was refreshed within the last 45 minutes; skipping duplicate tick")
+        print("A fresh forecast already exists for this slate; skipping a duplicate refresh")
         raise SystemExit(1)
     if due(games, now):
-        print(f"Pregame forecast refresh due ({MIN_MINUTES}–{MAX_MINUTES} minutes before kickoff)")
+        print(f"Forecast refresh due: kickoff is {MIN_MINUTES}–{MAX_MINUTES} minutes away")
         return
     print(f"No kickoff {MIN_MINUTES}–{MAX_MINUTES} minutes away")
     raise SystemExit(1)
