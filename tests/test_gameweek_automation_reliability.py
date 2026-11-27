@@ -46,7 +46,7 @@ class CountSourceReliabilityTests(unittest.TestCase):
 
     def test_pregame_cycle_is_the_automatic_game_day_retry(self):
         capture=(ROOT/'.github/workflows/capture-game-pregame.yml').read_text()
-        self.assertIn("cron: '*/5 * * * *'",capture)
+        self.assertIn("cron: '8,38 * * * *'",capture)
         self.assertIn('python -m live.pregame_cycle',capture)
 
 if __name__=='__main__':

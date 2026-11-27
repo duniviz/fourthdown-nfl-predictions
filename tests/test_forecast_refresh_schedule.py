@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from scripts.daily_forecast_refresh_window import daily_run_allowed
-from scripts.check_pregame_forecast_window import due, recently_refreshed
+from scripts.check_pregame_forecast_window import FORECAST_FRESH, due, due_games_covered, recently_refreshed
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,7 +22,9 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
 
     def test_publish_keeps_daily_and_five_minute_forecast_checks(self):
         source = WORKFLOW.read_text()
-        self.assertIn("cron: '*/5 * * * *'", source)
+        self.assertIn("cron: '8,38 * * * *'", source)
+        self.assertNotIn("cron: '*/5 * * * *'", source)
+        self.assertIn("scripts.pregame_window_wait", source)
         self.assertIn("cron: '17 23 * * *'", source)
         self.assertIn("cron: '17 22 * * *'", source)
         self.assertNotIn("timezone:", source)
@@ -48,13 +50,19 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         self.assertFalse(daily_run_allowed([], now)[0])
         self.assertFalse(daily_run_allowed([{}], now)[0])
 
-    def test_game_refresh_window_is_within_one_hour(self):
+    def test_game_refresh_window_is_80_to_150_minutes(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
-        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=55)))
-        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=60)))
-        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=40)))
-        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=39)))
-        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=61)))
+        self.assertEqual(FORECAST_FRESH, timedelta(hours=2))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=80)))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=115)))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=150)))
+        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=79)))
+        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=151)))
+        now = kickoff - timedelta(minutes=104)
+        games = [{"kickoff_utc": kickoff.isoformat()}]
+        fresh = kickoff - timedelta(minutes=104)
+        self.assertTrue(due_games_covered(games, fresh, now))
+        self.assertFalse(due_games_covered(games, kickoff - timedelta(minutes=121), now))
 
     def test_recent_forecast_suppresses_duplicate_refreshes_for_45_minutes(self):
         now = datetime(2026, 11, 17, 0, 0, tzinfo=timezone.utc)
@@ -65,8 +73,13 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
 
     def test_schedule_guard_runs_dynamic_window_and_serializes_writers(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("cron: '*/5 * * * *'", source)
+        self.assertIn("cron: '8,38 * * * *'", source)
+        self.assertNotIn("cron: '*/5 * * * *'", source)
+        self.assertIn("scripts.pregame_window_wait", source)
         self.assertIn("group: pregame-pipeline", source)
+        self.assertIn("group: pregame-forecast-arm", source)
+        arm = source.split("forecast:", 1)[0]
+        self.assertNotIn("pregame-pipeline", arm)
         self.assertIn("scripts.check_pregame_forecast_window", source)
         self.assertIn("Generate current-season v2 forecasts", source)
 
