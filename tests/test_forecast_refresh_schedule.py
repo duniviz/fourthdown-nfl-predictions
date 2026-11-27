@@ -48,17 +48,19 @@ class ForecastRefreshScheduleTests(unittest.TestCase):
         self.assertFalse(daily_run_allowed([], now)[0])
         self.assertFalse(daily_run_allowed([{}], now)[0])
 
-    def test_game_refresh_window_is_50_to_60_minutes(self):
+    def test_game_refresh_window_is_within_one_hour(self):
         kickoff = datetime(2026, 11, 17, 1, 15, tzinfo=timezone.utc)
         self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=55)))
         self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=60)))
-        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=49)))
+        self.assertTrue(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=40)))
+        self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=39)))
         self.assertFalse(due([{"kickoff_utc": kickoff.isoformat()}], kickoff - timedelta(minutes=61)))
 
-    def test_recent_forecast_suppresses_only_near_duplicate_dispatch(self):
+    def test_recent_forecast_suppresses_duplicate_refreshes_for_45_minutes(self):
         now = datetime(2026, 11, 17, 0, 0, tzinfo=timezone.utc)
         self.assertTrue(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=5)).isoformat()}, now))
-        self.assertFalse(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=11)).isoformat()}, now))
+        self.assertTrue(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=44)).isoformat()}, now))
+        self.assertFalse(recently_refreshed({"generated_at_utc": (now - timedelta(minutes=46)).isoformat()}, now))
         self.assertFalse(recently_refreshed({"generated_at_utc": (now + timedelta(minutes=1)).isoformat()}, now))
 
     def test_schedule_guard_runs_dynamic_window_and_serializes_writers(self):

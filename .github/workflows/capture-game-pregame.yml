@@ -30,8 +30,12 @@ jobs:
         run: |
           if python -m live.pregame_capture_guard --mode cycle; then
             echo "due=true" >> "$GITHUB_OUTPUT"
+            echo "### Pregame refresh starting" >> "$GITHUB_STEP_SUMMARY"
+            echo "This run will refresh DraftKings lines and save them with the current projection." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "due=false" >> "$GITHUB_OUTPUT"
+            echo "### No pregame refresh due" >> "$GITHUB_STEP_SUMMARY"
+            echo "No upcoming game is in its one-hour refresh or T-30 lock window. This scheduled check made no data changes." >> "$GITHUB_STEP_SUMMARY"
           fi
   capture:
     needs: preflight

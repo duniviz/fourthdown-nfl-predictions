@@ -10,8 +10,9 @@ class PregameScheduleTests(unittest.TestCase):
     def test_one_paid_refresh_per_slate(self):
         kickoff=datetime(2026,11,8,18,tzinfo=timezone.utc)
         games=[{"kickoff_utc":kickoff.isoformat()}]*2
-        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=45)),[kickoff])
-        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=46)),[])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=60)),[kickoff])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=61)),[])
+        self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=46)),[kickoff])
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=30)),[kickoff])
         self.assertEqual(due_refresh(games,{kickoff.isoformat()},kickoff-timedelta(minutes=30)),[])
         self.assertEqual(due_refresh(games,set(),kickoff-timedelta(minutes=14)),[kickoff])
@@ -29,7 +30,7 @@ class PregameScheduleTests(unittest.TestCase):
         games=[{"kickoff_utc":kickoff.isoformat()}]
         self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=40)),10*60)
         self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=10)),0)
-        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=50)),0)
+        self.assertEqual(lock_wait_seconds(games,kickoff-timedelta(minutes=50)),20*60)
     def test_evening_skipped_when_a_game_is_soon(self):
         now=datetime(2026,11,7,1,tzinfo=timezone.utc)
         soon={"kickoff_utc":(now+timedelta(hours=20)).isoformat()}

@@ -1,9 +1,9 @@
-"""Decide whether to fetch odds once per kickoff slate, or check T-30 locks.
+"""Decide when each game needs its one-hour pregame refresh and final lock.
 
-No API calls are made by this module. The paid refresh opens 45 minutes before
+No API calls are made by this module. The paid refresh opens 60 minutes before
 kickoff and stays available until 5 minutes before kickoff if it has not
-succeeded yet, because GitHub often drops or delays the cron tick that was
-aimed at T-30. The final lock is taken at T-30, with late scheduled runs accepted through the last pre-kickoff window.
+succeeded yet, because GitHub can delay or drop scheduled ticks. The final
+lock is taken at T-30, using the saved forecast and DraftKings observations.
 """
 import argparse
 import json
@@ -14,7 +14,7 @@ from live.game_pregame_observations import dt
 
 MARKER=Path("data/dk-slate-refreshes.json")
 GAMES=Path("data/live-v2.json")
-ACTIVE_WINDOW=timedelta(minutes=45)
+ACTIVE_WINDOW=timedelta(minutes=60)
 LOCK_LEAD=timedelta(minutes=30)
 REFRESH_LATE=timedelta(minutes=5)
 QUOTE_MAX_AGE=timedelta(minutes=50)
@@ -26,14 +26,14 @@ def slates(games):
     return starts
 
 def due_refresh(games, done, now):
-    # One paid refresh per kickoff. A late tick can still refresh after the
-    # ideal T-30 moment, until five minutes before kickoff.
+    # Refresh each kickoff about an hour ahead. A delayed tick can still run
+    # as late as five minutes before kickoff.
     return [k for k in slates(games)
             if REFRESH_LATE <= k-now <= ACTIVE_WINDOW
             and k.isoformat() not in done]
 
 def due_followthrough(games, done, now):
-    """Refresh already succeeded; stay awake until the T-30 lock is written."""
+    """Keep the cycle active after the one-hour refresh until T-30 locking."""
     return any(LOCK_LEAD < k-now <= ACTIVE_WINDOW and k.isoformat() in done
                for k in slates(games))
 
@@ -58,7 +58,7 @@ def cycle_due(games, done, now):
                 or due_followthrough(games, done, now) or evening_key(games, done, now))
 
 def lock_wait_seconds(games, now, limit=30*60):
-    """Sleep until just before T-30 when no game has reached its lock window yet."""
+    """Keep one run alive to write the T-30 lock if the next tick is delayed."""
     active=[k for k in slates(games) if timedelta(0) < k-now <= ACTIVE_WINDOW]
     if not active or any(k-now <= LOCK_LEAD for k in active):
         return 0
