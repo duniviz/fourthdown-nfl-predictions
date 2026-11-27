@@ -1,10 +1,10 @@
 {
-  "generated_at_utc": "2026-11-26T22:39:58.152473+00:00",
-  "players_checked": 1900,
+  "generated_at_utc": "2026-11-27T18:18:03.666025+00:00",
+  "players_checked": 1728,
   "summary": {
     "error": 0,
-    "warning": 4,
-    "info": 115
+    "warning": 3,
+    "info": 105
   },
   "flags": [
     {
@@ -285,86 +285,6 @@
       "player": "Bo Nix",
       "stat_key": "passing_yards",
       "game_id": "2026_12_DEN_PIT",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Josh Allen",
-      "stat_key": "interceptions",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Josh Allen",
-      "stat_key": "passing_tds",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Josh Allen",
-      "stat_key": "attempts",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Josh Allen",
-      "stat_key": "completions",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Josh Allen",
-      "stat_key": "passing_yards",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Patrick Mahomes",
-      "stat_key": "interceptions",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Patrick Mahomes",
-      "stat_key": "passing_tds",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Patrick Mahomes",
-      "stat_key": "attempts",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Patrick Mahomes",
-      "stat_key": "completions",
-      "game_id": "2026_12_KC_BUF",
-      "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "info",
-      "code": "qb_starter_unverified",
-      "player": "Patrick Mahomes",
-      "stat_key": "passing_yards",
-      "game_id": "2026_12_KC_BUF",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
     },
     {
@@ -910,14 +830,6 @@
       "stat_key": "passing_yards",
       "game_id": "2026_12_TEN_JAX",
       "reason": "Full-game workload is conditional; starting QB has not been independently verified"
-    },
-    {
-      "severity": "warning",
-      "code": "qb_starter_limited_history",
-      "player": "Carson Beck",
-      "stat_key": "passing_yards",
-      "game_id": "2026_12_WAS_ARI",
-      "reason": "Starter role with fewer than three current-season games; workload may not reflect a full game"
     },
     {
       "severity": "info",

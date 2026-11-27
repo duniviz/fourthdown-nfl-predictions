@@ -1,6 +1,6 @@
 {
   "model": "FOURTHDOWN v3 feature shadow",
-  "generated_at_utc": "2026-11-26T22:40:15.448215+00:00",
+  "generated_at_utc": "2026-11-27T18:18:20.386078+00:00",
   "season": 2026,
   "week": 12,
   "status": "research_only_not_for_live_or_betting_use",
@@ -19,37 +19,6 @@
     "Evaluate only against the first immutable pre-kickoff snapshot."
   ],
   "games": [
-    {
-      "game_id": "2026_12_KC_BUF",
-      "season": 2026,
-      "week": 12,
-      "kickoff_utc": "2026-11-27T01:20:00+00:00",
-      "home": "BUF",
-      "away": "KC",
-      "projected_home_score": 23.4,
-      "projected_away_score": 21.5,
-      "projected_margin_home": 1.86,
-      "projected_total": 44.93,
-      "predicted_winner": "BUF",
-      "v2_reference": {
-        "projected_margin_home": 2.21,
-        "projected_total": 44.21
-      },
-      "feature_adjustments": {
-        "total_from_pace": 0.718,
-        "margin_from_success_and_pass_proxy": -0.346,
-        "home_features": {
-          "plays_per_game": 67.4,
-          "success_rate": 0.46,
-          "neutral_pass_proxy": 0.525
-        },
-        "away_features": {
-          "plays_per_game": 62.6,
-          "success_rate": 0.486,
-          "neutral_pass_proxy": 0.594
-        }
-      }
-    },
     {
       "game_id": "2026_12_DEN_PIT",
       "season": 2026,
