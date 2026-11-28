@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-28T12:53:58.511720+00:00",
+  "generated_at_utc": "2026-11-28T13:45:26.317440+00:00",
   "weeks": [
     {
       "season": 2026,
@@ -8,28 +8,28 @@
         {
           "market": "game_margin_home",
           "label": "Game margin",
-          "samples": 1,
-          "regular_mae": 8.33,
-          "ml_mae": 3.76,
+          "samples": 2,
+          "regular_mae": 14.6,
+          "ml_mae": 13.04,
           "winner": "ml",
-          "regular_wins": 0,
+          "regular_wins": 1,
           "ml_wins": 1,
           "ties": 0,
           "regular_hits": {
-            "hits": 0,
+            "hits": 1,
             "misses": 1,
             "pushes": 0,
             "no_picks": 0,
             "unavailable": 0,
-            "hit_pct": 0.0
+            "hit_pct": 50.0
           },
           "ml_hits": {
-            "hits": 0,
+            "hits": 1,
             "misses": 1,
             "pushes": 0,
             "no_picks": 0,
             "unavailable": 0,
-            "hit_pct": 0.0
+            "hit_pct": 50.0
           },
           "details": [
             {
@@ -48,22 +48,39 @@
               "position": null,
               "regular_pick_result": "miss",
               "ml_pick_result": "miss"
+            },
+            {
+              "game_id": "2026_12_DEN_PIT",
+              "market": "game_margin_home",
+              "label": "DEN @ PIT",
+              "actual": 22.0,
+              "regular": 1.13,
+              "ml": -0.33,
+              "regular_error": 20.87,
+              "ml_error": 22.33,
+              "winner": "regular",
+              "ml_model": "random forest",
+              "dk_line": 4.5,
+              "evidence_source": "official_lock",
+              "position": null,
+              "regular_pick_result": "hit",
+              "ml_pick_result": "hit"
             }
           ]
         },
         {
           "market": "game_total",
           "label": "Game total",
-          "samples": 1,
-          "regular_mae": 28.09,
-          "ml_mae": 24.13,
+          "samples": 2,
+          "regular_mae": 20.32,
+          "ml_mae": 16.88,
           "winner": "ml",
           "regular_wins": 0,
-          "ml_wins": 1,
+          "ml_wins": 2,
           "ties": 0,
           "regular_hits": {
             "hits": 0,
-            "misses": 1,
+            "misses": 2,
             "pushes": 0,
             "no_picks": 0,
             "unavailable": 0,
@@ -71,7 +88,7 @@
           },
           "ml_hits": {
             "hits": 0,
-            "misses": 1,
+            "misses": 2,
             "pushes": 0,
             "no_picks": 0,
             "unavailable": 0,
@@ -90,6 +107,23 @@
               "winner": "ml",
               "ml_model": "gradient boosting",
               "dk_line": 56.5,
+              "evidence_source": "official_lock",
+              "position": null,
+              "regular_pick_result": "miss",
+              "ml_pick_result": "miss"
+            },
+            {
+              "game_id": "2026_12_DEN_PIT",
+              "market": "game_total",
+              "label": "DEN @ PIT",
+              "actual": 32.0,
+              "regular": 44.55,
+              "ml": 41.64,
+              "regular_error": 12.55,
+              "ml_error": 9.64,
+              "winner": "ml",
+              "ml_model": "gradient boosting",
+              "dk_line": 36.5,
               "evidence_source": "official_lock",
               "position": null,
               "regular_pick_result": "miss",
@@ -5513,9 +5547,9 @@
       "markets": [
         {
           "market": "game_margin_home",
-          "samples": 2,
-          "regular_mae": 7.46,
-          "shadow_mae": 6.75,
+          "samples": 3,
+          "regular_mae": 11.93,
+          "shadow_mae": 11.92,
           "details": [
             {
               "game_id": "2026_12_GB_LA",
@@ -5538,14 +5572,25 @@
               "shadow_error": 7.38,
               "lock_status": "official",
               "captured_at_utc": "2026-11-26T17:30:02.988692+00:00"
+            },
+            {
+              "game_id": "2026_12_DEN_PIT",
+              "market": "game_margin_home",
+              "actual": 22.0,
+              "regular": 1.13,
+              "shadow": -0.26,
+              "regular_error": 20.87,
+              "shadow_error": 22.26,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-27T19:30:03.104682+00:00"
             }
           ]
         },
         {
           "market": "game_total",
-          "samples": 2,
-          "regular_mae": 15.12,
-          "shadow_mae": 16.62,
+          "samples": 3,
+          "regular_mae": 14.26,
+          "shadow_mae": 15.46,
           "details": [
             {
               "game_id": "2026_12_GB_LA",
@@ -5568,6 +5613,17 @@
               "shadow_error": 27.1,
               "lock_status": "official",
               "captured_at_utc": "2026-11-26T17:30:02.988692+00:00"
+            },
+            {
+              "game_id": "2026_12_DEN_PIT",
+              "market": "game_total",
+              "actual": 32.0,
+              "regular": 44.55,
+              "shadow": 45.15,
+              "regular_error": 12.55,
+              "shadow_error": 13.15,
+              "lock_status": "official",
+              "captured_at_utc": "2026-11-27T19:30:03.104682+00:00"
             }
           ]
         }
